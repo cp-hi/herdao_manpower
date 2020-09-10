@@ -2,8 +2,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.hdpclientdemo.oa.mapper.OrganizationMapper">
-    <resultMap id="organizationMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
+<mapper namespace="com.hedao.hdp.ehrclient.oa.mapper.OrganizationMapper">
+    <resultMap id="organizationMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
         <id property="orgOid" column="ORG_OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
@@ -23,7 +23,7 @@
         <result property="tenantId" column="TENANT_ID"/>
     </resultMap>
 
-    <resultMap id="organizationChildrenMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
+    <resultMap id="organizationChildrenMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
         <id property="orgOid" column="ORG_OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
@@ -41,10 +41,10 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="virtually" column="virtually"/>
         <result property="tenantId" column="TENANT_ID"/>
-        <collection property="children" column="ORG_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
+        <collection property="children" column="ORG_OID" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
     </resultMap>
 
-    <resultMap id="organTreeMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
+    <resultMap id="organTreeMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
         <id property="orgOid" column="ORG_OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
@@ -62,8 +62,8 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="virtually" column="virtually"/>
         <result property="tenantId" column="TENANT_ID"/>
-        <collection property="parent" column="PARENT_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectParentOrgan"></collection>
-        <collection property="children" column="ORG_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
+        <collection property="parent" column="PARENT_OID" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectParentOrgan"></collection>
+        <collection property="children" column="ORG_OID" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
     </resultMap>
 
     <!-- 点击查看组织架构详情 -->
