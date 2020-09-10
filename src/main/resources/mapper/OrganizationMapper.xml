@@ -4,11 +4,13 @@
 
 <mapper namespace="net.herdao.hdp.hdpclientdemo.oa.mapper.OrganizationMapper">
     <resultMap id="organizationMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
-        <id property="orgOid" column="ORG_OID"/>
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
         <result property="orgCode" column="ORG_CODE"/>
         <result property="parentOid" column="PARENT_OID"/>
+        <result property="parentId" column="PARENT_ID"/>
         <result property="orgLevel" column="ORG_LEVEL"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
@@ -19,16 +21,19 @@
         <result property="createdTime" column="CREATED_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
-        <result property="virtually" column="virtually"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
         <result property="tenantId" column="TENANT_ID"/>
     </resultMap>
 
     <resultMap id="organizationChildrenMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
-        <id property="orgOid" column="ORG_OID"/>
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
         <result property="orgCode" column="ORG_CODE"/>
         <result property="parentOid" column="PARENT_OID"/>
+        <result property="parentId" column="PARENT_ID"/>
         <result property="orgLevel" column="ORG_LEVEL"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
@@ -39,17 +44,20 @@
         <result property="createdTime" column="CREATED_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
-        <result property="virtually" column="virtually"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
         <result property="tenantId" column="TENANT_ID"/>
         <collection property="children" column="ORG_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
     </resultMap>
 
     <resultMap id="organTreeMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
-        <id property="orgOid" column="ORG_OID"/>
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
         <result property="orgCode" column="ORG_CODE"/>
         <result property="parentOid" column="PARENT_OID"/>
+        <result property="parentId" column="PARENT_ID"/>
         <result property="orgLevel" column="ORG_LEVEL"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
@@ -60,7 +68,8 @@
         <result property="createdTime" column="CREATED_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
-        <result property="virtually" column="virtually"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
         <result property="tenantId" column="TENANT_ID"/>
         <collection property="parent" column="PARENT_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectParentOrgan"></collection>
         <collection property="children" column="ORG_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
@@ -69,8 +78,8 @@
     <!-- 点击查看组织架构详情 -->
     <select id="selectOrganByCurrentOrgOid" resultMap="organTreeMap" parameterType="java.lang.String">
         SELECT * FROM t_organization WHERE 1=1
-        <if test="orgOid != null">
-            AND ORG_OID = #{orgOid}
+        <if test="id != null">
+            AND id = #{id}
         </if>
         order by SORT_NO
     </select>
@@ -79,37 +88,37 @@
     <select id="selectParentOrgan" resultMap="organTreeMap" parameterType="java.lang.String">
         SELECT * FROM t_organization WHERE 1=1
         <if test="parentId!=null">
-            AND ORG_OID = #{parentOid}
+            AND id = #{parentId}
         </if>
         order by SORT_NO
     </select>
 
       <!-- 先查询组织结构根级目录 -->
       <!-- 这里的返回结果必须为resultMap，并且值为上面构建的resultMap的id的值 -->
-      <select id="findAllOrganizations" resultMap="organizationChildrenMap">
+    <select id="findAllOrganizations" resultMap="organizationChildrenMap">
         SELECT
             *
         FROM
             t_organization
         WHERE
             PARENT_OID IS NULL
-      </select>
+    </select>
 
       <!-- 根据parentId 查询组织结构表 -->
-      <select id="selectOrganizationListByParentOid" resultMap="organizationChildrenMap" parameterType="java.lang.String">
-            SELECT * FROM t_organization WHERE 1=1
-            <if test="parentId!=null">
-                  AND PARENT_OID=#{parentOid}
-            </if>
-            order by SORT_NO
-       </select>
+    <select id="selectOrganizationListByParentOid" resultMap="organizationChildrenMap" parameterType="java.lang.String">
+        SELECT * FROM t_organization WHERE 1=1
+        <if test="parentId!=null">
+              AND parent_id=#{parentId}
+        </if>
+        order by SORT_NO
+    </select>
 
     <!-- 高级搜索组织架构 -->
     <select id="findOrganizationByCondition" resultMap="organizationMap" >
         SELECT * FROM t_organization WHERE 1=1
 
-        <if test="orgOid != null">
-            AND ORG_OID = #{orgOid}
+        <if test="id != null">
+            AND id = #{id}
         </if>
 
         <if test="orgLevel != null">
@@ -132,8 +141,8 @@
             AND DATE_FORMAT(CREATED_TIME, '%Y-%m-%d') = #{createdTime}
         </if>
 
-        <if test="virtually != null">
-            AND virtually = #{virtually}
+        <if test="isVirtual != null">
+            AND IS_VIRTUAL = #{isVirtual}
         </if>
 
         <if test="stopped != null">
@@ -159,12 +168,11 @@
             <if test="keyword != null">
                 or ORG_CODE = #{keyword}
             </if>
-
-            <if test="keyword != null">
-                or ORG_CODE = #{keyword}
-            </if>
          )
         ORDER BY
         SORT_NO
     </select>
+
+
+
 </mapper>

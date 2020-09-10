@@ -32,10 +32,10 @@ public interface OrganizationService extends IService<Organization> {
 
     /**
      * 查询子组织架构
-     * @param parentOid
+     * @param parentId
      * @return
      */
-     List<Organization> selectOrganizationListByParentOid(String parentOid);
+     List<Organization> selectOrganizationListByParentOid(String parentId);
 
     /**
      * 查询根组织架构
@@ -59,8 +59,8 @@ public interface OrganizationService extends IService<Organization> {
 
     /**
      * 关键字查询根组织架构
-     * @param orgOid
+     * @param id
      * @return
      */
-    List<Organization>  selectOrganByCurrentOrgOid(String orgOid);
+    List<Organization>  selectOrganByCurrentOrgOid(String id);
 }

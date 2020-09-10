@@ -32,8 +32,8 @@ import java.util.List;
 public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Organization> implements OrganizationService {
 
     @Override
-    public List<Organization> selectOrganizationListByParentOid(String parentOid) {
-        List<Organization> list = this.baseMapper.selectOrganizationListByParentOid(parentOid);
+    public List<Organization> selectOrganizationListByParentOid(String parentId) {
+        List<Organization> list = this.baseMapper.selectOrganizationListByParentOid(parentId);
         return list;
     }
 
@@ -56,8 +56,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<Organization> selectOrganByCurrentOrgOid(String keyword) {
-        List<Organization> list = this.baseMapper.selectOrganByCurrentOrgOid(keyword);
+    public List<Organization> selectOrganByCurrentOrgOid(String id) {
+        List<Organization> list = this.baseMapper.selectOrganByCurrentOrgOid(id);
         return list;
     }
 }

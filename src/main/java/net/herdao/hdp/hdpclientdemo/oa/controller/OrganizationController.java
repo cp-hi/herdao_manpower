@@ -64,14 +64,14 @@ public class OrganizationController {
 
     /**
      * 通过id查询
-     * @param orgOid id
+     * @param id id
      * @return R
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{orgOid}" )
+    @GetMapping("/{id}" )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R getById(@PathVariable("orgOid" ) String orgOid) {
-        return R.ok(organizationService.getById(orgOid));
+    public R getById(@PathVariable("id" ) String id) {
+        return R.ok(organizationService.getById(id));
     }
 
     /**
@@ -102,27 +102,27 @@ public class OrganizationController {
 
     /**
      * 通过id删除
-     * @param orgOid id
+     * @param id id
      * @return R
      */
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
     @SysLog("通过id删除" )
     //@DeleteMapping("/{orgOid}" )
     @PreAuthorize("@pms.hasPermission('oa_organization_del')" )
-    public R removeById(@PathVariable String orgOid) {
-        return R.ok(organizationService.removeById(orgOid));
+    public R removeById(@PathVariable String id) {
+        return R.ok(organizationService.removeById(id));
     }
 
 
     /**
      * 查询子组织架构表
-     * @param parentOid 组织架构表父id
+     * @param parentId 组织架构表父id
      * @return R
      */
     @ApiOperation(value = "查询子组织架构表", notes = "查询子组织架构表")
     @GetMapping("/selectOrganizationListByParentOid")
-    public R selectOrganizationListByParentOid(String parentOid) {
-        List<Organization> list = organizationService.selectOrganizationListByParentOid(parentOid);
+    public R selectOrganizationListByParentOid(String parentId) {
+        List<Organization> list = organizationService.selectOrganizationListByParentOid(parentId);
         return R.ok(list);
     }
 
@@ -167,13 +167,31 @@ public class OrganizationController {
      */
     @ApiOperation(value = "查询或复制根组织架构详情(把当前组织架构树形结构带出来,当前组织的所有父组织和子组织)", notes = "查询或复制根组织架构详情(把当前组织架构树形结构带出来,当前组织的所有父组织和子组织)")
     @GetMapping("/findOrganizationByOrgOid")
-    public R findOrganizationByOrgOid(String orgOid) {
+    public R findOrganizationByOrgOid(String id) {
         List<Organization> list=null;
-        if (null!=orgOid){
-            list = organizationService.selectOrganByCurrentOrgOid(orgOid);
+        if (null!=id){
+            list = organizationService.selectOrganByCurrentOrgOid(id);
 
         }
 
         return R.ok(list);
     }
+
+
+    /**
+     * 组织启用/停用
+     * @param organization
+     * @return R
+     */
+    @ApiOperation(value = "组织启用/停用", notes = "组织启用/停用")
+    @SysLog("组织启用/停用" )
+    @GetMapping("/stopOrStartOrgan")
+    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
+    public R stopOrStartOrgan(@RequestBody Organization organization) {
+        return R.ok(organizationService.updateById(organization));
+    }
+
 }
+
+
+
