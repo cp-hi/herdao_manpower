@@ -59,7 +59,7 @@ public interface OrganizationService extends IService<Organization> {
 
     /**
      * 关键字查询根组织架构
-     * @param keyword
+     * @param orgOid
      * @return
      */
     List<Organization>  selectOrganByCurrentOrgOid(String orgOid);
