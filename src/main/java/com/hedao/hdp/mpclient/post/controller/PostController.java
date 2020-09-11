@@ -1,15 +1,16 @@
-package com.hedao.hdp.ehrclient.post.controller;
+package com.hedao.hdp.mpclient.post.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hedao.hdp.ehrclient.annotation.ReturnResult;
-import com.hedao.hdp.ehrclient.post.entity.Post;
-import com.hedao.hdp.ehrclient.post.service.PostService;
+import com.hedao.hdp.mpclient.annotation.ReturnResult;
+import com.hedao.hdp.mpclient.post.entity.Post;
+import com.hedao.hdp.mpclient.post.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -44,9 +45,10 @@ public class PostController {
 
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
     @SysLog("通过id删除" )
-    @DeleteMapping("/{orgOid}" )
-    public R removeById(@PathVariable String orgOid) {
-        return R.ok(postService.removeById(orgOid));
+    @DeleteMapping("/{id}" )
+    public R removeById(@PathVariable String id) {
+        Post post = new Post();
+        return R.ok(postService.removeById(id));
     }
 
 }

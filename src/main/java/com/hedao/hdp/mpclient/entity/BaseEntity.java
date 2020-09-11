@@ -1,6 +1,9 @@
-package com.hedao.hdp.ehrclient.entity;
+package com.hedao.hdp.mpclient.entity;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
+
+import java.util.Date;
 
 /**
  * @ClassName BaseEntity
@@ -10,10 +13,12 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
  * @Date 2020/9/11 9:13
  * @Version 1.0
  */
-
+@Data
 public class BaseEntity<T extends Model<?>> extends Model<T> {
-
     private Integer id;
-
+    private String creatorCode;
+    private Date createdTime;
+    private String modifierCode;
+    private Date modifiedTime;
     private Integer tenantId;
 }

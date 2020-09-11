@@ -1,7 +1,7 @@
-package com.hedao.hdp.ehrclient.post.mapper;
+package com.hedao.hdp.mpclient.post.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hedao.hdp.ehrclient.post.entity.Post;
+import com.hedao.hdp.mpclient.post.entity.Post;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

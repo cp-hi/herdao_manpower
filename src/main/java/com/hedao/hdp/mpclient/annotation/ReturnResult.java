@@ -1,4 +1,4 @@
-package com.hedao.hdp.ehrclient.annotation;
+package com.hedao.hdp.mpclient.annotation;
 
 import java.lang.annotation.*;
 

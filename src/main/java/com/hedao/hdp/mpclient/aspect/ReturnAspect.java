@@ -1,6 +1,6 @@
-package com.hedao.hdp.ehrclient.aspect;
+package com.hedao.hdp.mpclient.aspect;
 
-import com.hedao.hdp.ehrclient.annotation.ReturnResult;
+import com.hedao.hdp.mpclient.annotation.ReturnResult;
 import net.herdao.hdp.common.core.util.R;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 
 public class ReturnAspect {
 
-    @Pointcut("@annotation(com.hedao.hdp.ehrclient.annotation.ReturnResult)")
+    @Pointcut("@annotation(com.hedao.hdp.mpclient.annotation.ReturnResult)")
     public void pointCut() {
     }
 

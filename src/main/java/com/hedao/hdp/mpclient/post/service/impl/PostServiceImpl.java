@@ -1,9 +1,9 @@
-package com.hedao.hdp.ehrclient.post.service.impl;
+package com.hedao.hdp.mpclient.post.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hedao.hdp.ehrclient.post.entity.Post;
-import com.hedao.hdp.ehrclient.post.mapper.PostMapper;
-import com.hedao.hdp.ehrclient.post.service.PostService;
+import com.hedao.hdp.mpclient.post.entity.Post;
+import com.hedao.hdp.mpclient.post.mapper.PostMapper;
+import com.hedao.hdp.mpclient.post.service.PostService;
 import org.springframework.stereotype.Service;
 
 /**
