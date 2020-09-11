@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,12 +41,16 @@ public class PostController {
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     public R getById(@PathVariable("id") Integer id) {
-        return R.ok(postService.getById(id));
+        try {
+            return R.ok(postService.getById(id));
+        } catch (Exception ex) {
+            return R.failed(ex.getMessage());
+        }
     }
 
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除" )
-    @DeleteMapping("/{id}" )
+    @SysLog("通过id删除")
+    @DeleteMapping("/{id}")
     public R removeById(@PathVariable String id) {
         Post post = new Post();
         return R.ok(postService.removeById(id));

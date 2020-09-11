@@ -6,6 +6,8 @@ import com.hedao.hdp.mpclient.post.mapper.PostMapper;
 import com.hedao.hdp.mpclient.post.service.PostService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @ClassName PostServiceImpl
  * @Description PostServiceImpl
@@ -16,4 +18,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
+    public List<Post> findAll() {
+        return baseMapper.findAll();
+    }
 }
