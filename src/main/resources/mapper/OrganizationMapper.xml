@@ -2,114 +2,163 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.hdpclientdemo.oa.mapper.OrganizationMapper">
-    <resultMap id="organizationMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
-        <id property="orgOid" column="ORG_OID"/>
+<mapper namespace="com.hedao.hdp.ehrclient.oa.mapper.OrganizationMapper">
+    <resultMap id="organizationMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
         <result property="orgCode" column="ORG_CODE"/>
-        <result property="parentOid" column="PARENT_OID"/>
+        <result property="parentOid" column="PARENT_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
         <result property="orgLevel" column="ORG_LEVEL"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
         <result property="welfareType" column="WELFARE_TYPE"/>
         <result property="sortNo" column="SORT_NO"/>
-        <result property="stopped" column="STOPPED"/>
+        <result property="isStop" column="isStop"/>
         <result property="creatorCode" column="CREATOR_CODE"/>
         <result property="createdTime" column="CREATED_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
-        <result property="virtually" column="virtually"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
         <result property="tenantId" column="TENANT_ID"/>
+        <result property="orgDesc" column="org_desc"/>
+        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkNo" column="org_charge_work_no"/>
+        <result property="orgSimpleDesc" column="org_simple_desc"/>
+        <result property="chargeOrg" column="charge_org"/>
+        <result property="staff" column="staff"/>
+        <result property="empInService" column="emp_in_service"/>
     </resultMap>
 
-    <resultMap id="organizationChildrenMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
-        <id property="orgOid" column="ORG_OID"/>
+    <resultMap id="organizationChildrenMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
         <result property="orgCode" column="ORG_CODE"/>
-        <result property="parentOid" column="PARENT_OID"/>
+        <result property="parentOid" column="PARENT_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
         <result property="orgLevel" column="ORG_LEVEL"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
         <result property="welfareType" column="WELFARE_TYPE"/>
         <result property="sortNo" column="SORT_NO"/>
-        <result property="stopped" column="STOPPED"/>
+        <result property="isStop" column="IS_STOP"/>
         <result property="creatorCode" column="CREATOR_CODE"/>
         <result property="createdTime" column="CREATED_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
-        <result property="virtually" column="virtually"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
         <result property="tenantId" column="TENANT_ID"/>
-        <collection property="children" column="ORG_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
+        <result property="orgDesc" column="org_desc"/>
+        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkNo" column="org_charge_work_no"/>
+        <result property="orgSimpleDesc" column="org_simple_desc"/>
+        <result property="chargeOrg" column="charge_org"/>
+        <result property="staff" column="staff"/>
+        <result property="empInService" column="emp_in_service"/>
+        <collection property="children" column="id" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
-    <resultMap id="organTreeMap" type="net.herdao.hdp.hdpclientdemo.oa.entity.Organization">
-        <id property="orgOid" column="ORG_OID"/>
+    <resultMap id="organTreeMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
         <result property="orgFullname" column="ORG_FULLNAME"/>
         <result property="orgCode" column="ORG_CODE"/>
-        <result property="parentOid" column="PARENT_OID"/>
+        <result property="parentOid" column="PARENT_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
         <result property="orgLevel" column="ORG_LEVEL"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
         <result property="welfareType" column="WELFARE_TYPE"/>
         <result property="sortNo" column="SORT_NO"/>
-        <result property="stopped" column="STOPPED"/>
+        <result property="isStop" column="is_stop"/>
         <result property="creatorCode" column="CREATOR_CODE"/>
         <result property="createdTime" column="CREATED_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
-        <result property="virtually" column="virtually"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
         <result property="tenantId" column="TENANT_ID"/>
-        <collection property="parent" column="PARENT_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectParentOrgan"></collection>
-        <collection property="children" column="ORG_OID" ofType="net.herdao.hdp.hdpclientdemo.oa.entity.Organization" select="selectOrganizationListByParentOid"></collection>
+        <result property="orgDesc" column="org_desc"/>
+        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkNo" column="org_charge_work_no"/>
+        <result property="orgSimpleDesc" column="org_simple_desc"/>
+        <result property="chargeOrg" column="charge_org"/>
+        <result property="staff" column="staff"/>
+        <result property="empInService" column="emp_in_service"/>
+        <collection property="parent"  column="PARENT_ID" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectParentOrgan"></collection>
+        <collection property="children" column="id" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
     <!-- 点击查看组织架构详情 -->
     <select id="selectOrganByCurrentOrgOid" resultMap="organTreeMap" parameterType="java.lang.String">
-        SELECT * FROM t_organization WHERE 1=1
-        <if test="orgOid != null">
-            AND ORG_OID = #{orgOid}
+        SELECT * FROM mp_organization WHERE 1=1
+        <if test="id != null">
+            AND id = #{id}
         </if>
         order by SORT_NO
     </select>
 
     <!-- 递归查询父组织架构 -->
     <select id="selectParentOrgan" resultMap="organTreeMap" parameterType="java.lang.String">
-        SELECT * FROM t_organization WHERE 1=1
+        SELECT * FROM mp_organization WHERE 1=1
         <if test="parentId!=null">
-            AND ORG_OID = #{parentOid}
+            AND id = #{parentOid}
         </if>
         order by SORT_NO
     </select>
 
-      <!-- 先查询组织结构根级目录 -->
-      <!-- 这里的返回结果必须为resultMap，并且值为上面构建的resultMap的id的值 -->
-      <select id="findAllOrganizations" resultMap="organizationChildrenMap">
+
+    <!-- 查询根组织架构 -->
+     <select id="findAllOrganizations" resultMap="organizationChildrenMap">
         SELECT
             *
         FROM
-            t_organization
-        WHERE
-            PARENT_OID IS NULL
+            mp_organization
+        WHERE 1=1
+         <if test="isRoot == true">
+             AND  PARENT_ID IS NULL
+         </if>
+
+         <if test="id != null">
+             AND id = #{id}
+         </if>
+         <if test="isStop != null">
+             AND is_stop = #{isStop}
+         </if>
+         <if test="tenantId != null">
+             AND TENANT_ID = #{tenantId}
+         </if>
       </select>
 
-      <!-- 根据parentId 查询组织结构表 -->
-      <select id="selectOrganizationListByParentOid" resultMap="organizationChildrenMap" parameterType="java.lang.String">
-            SELECT * FROM t_organization WHERE 1=1
-            <if test="parentId!=null">
-                  AND PARENT_OID=#{parentOid}
-            </if>
+      <!-- 查询子组织结构表 -->
+      <select id="selectChildrenOrgan" resultMap="organizationChildrenMap" parameterType="java.lang.String">
+            SELECT * FROM mp_organization WHERE 1=1
+          <if test="parentId != null">
+              AND PARENT_ID=#{parentId}
+          </if>
+         <!-- <if test="isStop != null">
+              AND is_stop = #{isStop}
+          </if>-->
             order by SORT_NO
        </select>
 
     <!-- 高级搜索组织架构 -->
     <select id="findOrganizationByCondition" resultMap="organizationMap" >
-        SELECT * FROM t_organization WHERE 1=1
+        SELECT * FROM mp_organization WHERE 1=1
 
-        <if test="orgOid != null">
-            AND ORG_OID = #{orgOid}
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+
+        <if test="parentId != null">
+            AND PARENT_ID = #{parentId}
         </if>
 
         <if test="orgLevel != null">
@@ -132,12 +181,16 @@
             AND DATE_FORMAT(CREATED_TIME, '%Y-%m-%d') = #{createdTime}
         </if>
 
-        <if test="virtually != null">
-            AND virtually = #{virtually}
+        <if test="isVirtual != null">
+            AND is_virtual = #{isVirtual}
         </if>
 
-        <if test="stopped != null">
-            AND STOPPED = #{stopped}
+        <if test="isStop != null">
+            AND is_stop = #{isStop}
+        </if>
+
+        <if test="tenantId != null">
+            AND TENANT_ID = #{tenantId}
         </if>
 
         order by SORT_NO
@@ -148,7 +201,7 @@
         SELECT
           *
         FROM
-        t_organization
+        mp_organization
         WHERE
         1 = 1
         and (
@@ -166,5 +219,21 @@
          )
         ORDER BY
         SORT_NO
+    </select>
+
+    <!-- 查询根组织架构 -->
+    <select id="findRootOrganizations" resultMap="organizationMap">
+        SELECT
+        *
+        FROM
+        mp_organization
+        WHERE
+        PARENT_ID IS NULL
+        <if test="isStop != null">
+            AND is_stop = #{isStop}
+        </if>
+        <if test="tenantId != null">
+            AND TENANT_ID = #{tenantId}
+        </if>
     </select>
 </mapper>

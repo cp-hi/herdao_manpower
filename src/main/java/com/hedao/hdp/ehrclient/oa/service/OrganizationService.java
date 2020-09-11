@@ -41,7 +41,7 @@ public interface OrganizationService extends IService<Organization> {
      * 查询根组织架构
      * @return
      */
-    List<Organization> findAllOrganizations();
+    List<Organization> findAllOrganizations(Organization condition);
 
     /**
      * 高级查询根组织架构
@@ -62,5 +62,13 @@ public interface OrganizationService extends IService<Organization> {
      * @param id
      * @return
      */
-    List<Organization>  selectOrganByCurrentOrgOid(String id);
+    List<Organization> selectOrganByCurrentOrgOid(String id);
+
+
+    /**
+     * 查询根组织架构
+     * @param condition
+     * @return
+     */
+     List<Organization> findRootOrganizations(Organization condition);
 }

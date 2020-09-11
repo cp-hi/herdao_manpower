@@ -42,7 +42,7 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * 查询根组织架构
      * @return
      */
-    List<Organization> findAllOrganizations();
+    List<Organization> findAllOrganizations(Organization condition);
 
     /**
      * 高级查询根组织架构
@@ -64,4 +64,11 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
     List<Organization> selectOrganByCurrentOrgOid(String keyword);
+
+    /**
+     * 查询根组织架构
+     * @param condition
+     * @return
+     */
+    List<Organization> findRootOrganizations(Organization condition);
 }

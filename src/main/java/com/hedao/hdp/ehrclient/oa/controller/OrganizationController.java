@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,7 +41,7 @@ import java.util.List;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/client/organization" )
+@RequestMapping("/organization" )
 @Api(value = "organization", tags = "管理")
 public class OrganizationController {
 
@@ -129,14 +130,18 @@ public class OrganizationController {
      * @return R
      */
     @ApiOperation(value = "查询根组织架构", notes = "查询根组织架构")
-    @GetMapping("/findAllOrganizations")
-    public R findAllOrganizations() {
-        List<Organization> list = organizationService.findAllOrganizations();
+    @PostMapping("/findAllOrganizations")
+    public R findAllOrganizations(@RequestBody  Organization condition) {
+        if (null!=condition){
+            //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
+            condition.setIsStop(1);
+        }
+        List<Organization> list = organizationService.findAllOrganizations(condition);
         return R.ok(list);
     }
 
     /**
-     * 高级查询根组织架构
+     * 高级查询根组织架构（废弃 2020/09/11)
      * @return R
      */
     @ApiOperation(value = "高级查询根组织架构", notes = "高级查询根组织架构")
@@ -187,6 +192,37 @@ public class OrganizationController {
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R stopOrStartOrgan(@RequestBody Organization organization) {
         return R.ok(organizationService.updateById(organization));
+    }
+
+
+    /**
+     * 根据当前登录租户的租户ID 查询根组织架构和二级组织架构 存在多个根组织架构的情况
+     * 默认加载展示2级组织架构（废弃 2020/09/11)
+     * @return R
+     */
+    @ApiOperation(value = "默认加载展示2级组织架构", notes = "默认加载展示2级组织架构")
+    @PostMapping("/findOrganization2LevelByCondition")
+    public R findOrganization2LevelByCondition(@RequestBody Organization condition) {
+        if (null!=condition){
+            //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
+            condition.setIsStop(1);
+        }
+        List<Organization> rootOrgans = organizationService.findRootOrganizations(condition);
+
+        if (!rootOrgans.isEmpty()){
+             for (Organization rootOrgan : rootOrgans) {
+                Organization childrenCondition=new Organization();
+                childrenCondition.setParentId(rootOrgan.getId());
+                //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
+                childrenCondition.setIsStop(1);
+
+                List<Organization> childrenOrgans = organizationService.findOrganizationByCondition(childrenCondition);
+                rootOrgan.setChildren(childrenOrgans);
+             }
+
+        }
+
+        return R.ok(rootOrgans);
     }
 
 }

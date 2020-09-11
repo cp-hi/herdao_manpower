@@ -38,8 +38,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<Organization> findAllOrganizations() {
-        List<Organization> list = this.baseMapper.findAllOrganizations();
+    public List<Organization> findAllOrganizations(Organization condition) {
+        List<Organization> list = this.baseMapper.findAllOrganizations(condition);
         return list;
     }
 
@@ -58,6 +58,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public List<Organization> selectOrganByCurrentOrgOid(String id) {
         List<Organization> list = this.baseMapper.selectOrganByCurrentOrgOid(id);
+        return list;
+    }
+
+    @Override
+    public List<Organization> findRootOrganizations(Organization condition) {
+        List<Organization> list = this.baseMapper.findRootOrganizations(condition);
         return list;
     }
 }
