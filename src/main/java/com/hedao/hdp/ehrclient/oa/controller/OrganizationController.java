@@ -158,8 +158,12 @@ public class OrganizationController {
     @ApiOperation(value = "关键字查询根组织架构", notes = "关键字查询根组织架构")
     @GetMapping("/findOrganizationByKeyWords")
     public R findOrganizationByKeyWords(String keyword) {
-        List<Organization> list = organizationService.findOrganizationByKeyWords(keyword);
-        return R.ok(list);
+        if (!keyword.isEmpty()){
+            List<Organization> list = organizationService.findOrganizationByKeyWords(keyword);
+            return R.ok(list);
+        }
+
+        return R.ok(null);
     }
 
 

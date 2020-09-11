@@ -204,19 +204,14 @@
         mp_organization
         WHERE
         1 = 1
-        and (
-            <if test="keyword != null">
+        <if test="keyword != null">
+             and (
                 ORG_NAME like CONCAT('%', #{keyword}, '%')
-            </if>
-
-            <if test="keyword != null">
+                or ORG_FULLNAME = #{orgFullname}
                 or ORG_CODE = #{keyword}
-            </if>
+             )
+        </if>
 
-            <if test="keyword != null">
-                or ORG_CODE = #{keyword}
-            </if>
-         )
         ORDER BY
         SORT_NO
     </select>
