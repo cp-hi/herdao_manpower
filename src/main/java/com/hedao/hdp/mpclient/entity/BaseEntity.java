@@ -20,16 +20,10 @@ import java.util.Date;
 public class BaseEntity<T extends Model<?>> extends Model<T> {
     @TableId(value = "ID", type = IdType.AUTO)
     private Integer id;
-//    @TableField("OID")
     private String oid;
-//    @TableField("CREATOR_CODE")
     private String creatorCode;
-//    @TableField("CREATED_TIME")
     private Date createdTime;
-//    @TableField("MODIFIER_CODE")
     private String modifierCode;
-//    @TableField("MODIFIED_TIME")
     private Date modifiedTime;
-//    @TableField("TENANT_ID")
     private Integer tenantId;
 }
