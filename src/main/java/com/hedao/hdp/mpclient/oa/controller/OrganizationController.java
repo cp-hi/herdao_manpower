@@ -1,19 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
 
 package com.hedao.hdp.mpclient.oa.controller;
 
@@ -63,7 +47,7 @@ public class OrganizationController {
 
     /**
      * 通过id查询
-     * @param id id
+     * @param id
      * @return R
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
@@ -80,10 +64,10 @@ public class OrganizationController {
      */
     @ApiOperation(value = "新增组织架构", notes = "新增组织架构")
     @SysLog("新增组织架构" )
-    @PostMapping
+    @PostMapping("/save")
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
     public R save(@RequestBody Organization organization) {
-         return R.ok(organizationService.save(organization));
+        return R.ok(organizationService.save(organization));
     }
 
     /**
