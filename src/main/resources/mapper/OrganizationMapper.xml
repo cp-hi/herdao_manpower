@@ -2,8 +2,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hedao.hdp.ehrclient.oa.mapper.OrganizationMapper">
-    <resultMap id="organizationMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
+<mapper namespace="com.hedao.hdp.mpclient.oa.mapper.OrganizationMapper">
+    <resultMap id="organizationMap" type="com.hedao.hdp.mpclient.oa.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -33,7 +33,7 @@
         <result property="empInService" column="emp_in_service"/>
     </resultMap>
 
-    <resultMap id="organizationChildrenMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
+    <resultMap id="organizationChildrenMap" type="com.hedao.hdp.mpclient.oa.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -61,10 +61,10 @@
         <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
-        <collection property="children" column="id" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="children" column="id" ofType="com.hedao.hdp.mpclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
-    <resultMap id="organTreeMap" type="com.hedao.hdp.ehrclient.oa.entity.Organization">
+    <resultMap id="organTreeMap" type="com.hedao.hdp.mpclient.oa.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -92,8 +92,8 @@
         <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
-        <collection property="parent"  column="PARENT_ID" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectParentOrgan"></collection>
-        <collection property="children" column="id" ofType="com.hedao.hdp.ehrclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="parent"  column="PARENT_ID" ofType="com.hedao.hdp.mpclient.oa.entity.Organization" select="selectParentOrgan"></collection>
+        <collection property="children" column="id" ofType="com.hedao.hdp.mpclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
     <!-- 点击查看组织架构详情 -->
