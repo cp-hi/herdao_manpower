@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hedao.hdp.mpclient.oa.mapper.SectionMapper">
+    <select id="findAll" resultType="post">
+        SELECT * FROM mp_section
+    </select>
+
+    <select id="chkSectionDuplicateCode" parameterType="section" >
+         SELECT count(*) from mp_section  where id !=#{id}  and  post_code = #{postCode}
+    </select>
+
+
+    <select id="chkSectionDuplicateName" parameterType="section" >
+      SELECT count(*) from mp_section  where id !=#{id}  and  post_name = #{postName}
+    </select>
+</mapper>

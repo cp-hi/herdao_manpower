@@ -1,16 +1,13 @@
-package com.hedao.hdp.mpclient.post.entity;
+package com.hedao.hdp.mpclient.oa.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.hedao.hdp.mpclient.entity.BaseEntity;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @ClassName Post

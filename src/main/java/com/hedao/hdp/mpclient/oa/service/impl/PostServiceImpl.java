@@ -1,9 +1,9 @@
-package com.hedao.hdp.mpclient.post.service.impl;
+package com.hedao.hdp.mpclient.oa.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hedao.hdp.mpclient.post.entity.Post;
-import com.hedao.hdp.mpclient.post.mapper.PostMapper;
-import com.hedao.hdp.mpclient.post.service.PostService;
+import com.hedao.hdp.mpclient.oa.entity.Post;
+import com.hedao.hdp.mpclient.oa.mapper.PostMapper;
+import com.hedao.hdp.mpclient.oa.service.PostService;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
@@ -31,7 +31,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     private final RemoteUserService remoteUserService;
 
-    public void addOrUpdate(Post post) {
+    public void addOrUpdate(Post post) throws Exception {
+        //TODO 验证是否已存在同名称编号的岗位
+        if (baseMapper.chkPostDuplicateCode(post))
+            throw new Exception("岗位编码重复了");
+        if (baseMapper.chkPostDuplicateName(post))
+            throw new Exception("岗位名称重复了");
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
 
         if (null == post.getId()) {

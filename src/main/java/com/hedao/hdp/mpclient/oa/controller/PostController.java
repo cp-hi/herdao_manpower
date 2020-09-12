@@ -1,9 +1,9 @@
-package com.hedao.hdp.mpclient.post.controller;
+package com.hedao.hdp.mpclient.oa.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hedao.hdp.mpclient.post.entity.Post;
-import com.hedao.hdp.mpclient.post.service.PostService;
+import com.hedao.hdp.mpclient.oa.entity.Post;
+import com.hedao.hdp.mpclient.oa.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
@@ -28,7 +28,7 @@ public class PostController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public Object page(Page page, Post post) {
+    public R page(Page page, Post post) {
         return R.ok(postService.page(page, Wrappers.query(post)));
     }
 
@@ -39,7 +39,7 @@ public class PostController {
     }
 
     @PostMapping
-    public R save(@RequestBody Post post) {
+    public R save(@RequestBody Post post) throws Exception {
         postService.addOrUpdate(post);
         return R.ok(post);
     }

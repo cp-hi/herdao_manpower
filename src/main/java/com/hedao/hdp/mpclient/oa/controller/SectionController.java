@@ -1,0 +1,53 @@
+package com.hedao.hdp.mpclient.oa.controller;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hedao.hdp.mpclient.oa.entity.Section;
+import com.hedao.hdp.mpclient.oa.service.SectionService;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * @ClassName SectionController
+ * @Description SectionController
+ * @Author ljan
+ * @mail 122092@gdpr.com
+ * @Date 2020/9/11 19:45
+ * @Version 1.0
+ */
+@RestController
+@AllArgsConstructor
+@RequestMapping("/client/section")
+public class SectionController {
+    
+    private final SectionService sectionService;
+
+
+    @GetMapping("/page")
+    @ApiOperation(value = "分页查询", notes = "分页查询")
+    public R page(Page page, Section section) {
+        return R.ok(sectionService.page(page, Wrappers.query(section)));
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    public R getById(@PathVariable("id") Integer id)   {
+        return R.ok(sectionService.getById(id));
+    }
+
+    @PostMapping
+    public R save(@RequestBody Section section) throws Exception {
+        sectionService.addOrUpdate(section);
+        return R.ok(section);
+    }
+
+    @ApiOperation(value = "通过id删除", notes = "通过id删除")
+    @SysLog("通过id删除")
+    @DeleteMapping("/{id}")
+    public R removeById(@PathVariable String id) {
+        return R.ok(sectionService.removeById(id));
+    }
+}
