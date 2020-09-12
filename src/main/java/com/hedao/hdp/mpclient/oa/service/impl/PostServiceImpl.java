@@ -25,17 +25,14 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
-    public List<Post> findAll() {
-        return baseMapper.findAll();
-    }
+
 
     private final RemoteUserService remoteUserService;
 
     public void addOrUpdate(Post post) throws Exception {
-        //TODO 验证是否已存在同名称编号的岗位
-        if (baseMapper.chkPostDuplicateCode(post))
+        if (baseMapper.chkDuplicatePostCode(post))
             throw new Exception("岗位编码重复了");
-        if (baseMapper.chkPostDuplicateName(post))
+        if (baseMapper.chkDuplicatePostName(post))
             throw new Exception("岗位名称重复了");
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
 
@@ -43,14 +40,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             post.setCreatedTime(new Date());
             if (null != userInfo) {
                 post.setCreatorCode(userInfo.getSysUser().getUsername());
-//                post.setCreatorCode(UserInfo.getSysUser().);
             }
             this.save(post);
         } else {
             post.setModifiedTime(new Date());
             if (null != userInfo) {
                 post.setModifierCode(userInfo.getSysUser().getUsername());
-//                post.setCreatorCode(UserInfo.getSysUser().);
             }
             this.updateById(post);
         }

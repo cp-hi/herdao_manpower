@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hedao.hdp.mpclient.oa.mapper.PipelineMapper">
+
+
+    <select id="chkDuplicatePipelineCode" parameterType="pipeline" >
+         SELECT count(*) from mp_Pipeline where id !=#{id}  and  post_code = #{postCode}
+    </select>
+
+
+    <select id="chkDuplicatePipelineName" parameterType="pipeline" >
+      SELECT count(*) from mp_Pipeline where id !=#{id}  and  post_name = #{postName}
+    </select>
+</mapper>

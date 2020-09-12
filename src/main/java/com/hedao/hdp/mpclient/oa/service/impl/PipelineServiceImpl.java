@@ -15,6 +15,17 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-public class PipelineServiceImpl  extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
+public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
 
+    public void addOrUpdate(Pipeline pipeline) throws Exception {
+        if (baseMapper.chkDuplicatePipelineName(pipeline))
+            throw new Exception("岗位编码重复了");
+        if (baseMapper.chkDuplicatePipelineName(pipeline))
+            throw new Exception("岗位名称重复了");
+        if (null == pipeline.getId()) {
+            this.save(pipeline);
+        } else {
+            this.updateById(pipeline);
+        }
+    }
 }

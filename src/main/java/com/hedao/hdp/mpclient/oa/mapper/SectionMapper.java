@@ -4,6 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hedao.hdp.mpclient.oa.entity.Section;
 
 public interface SectionMapper extends BaseMapper<Section> {
-    Boolean chkSectionDuplicateCode(Section section);
-    Boolean chkSectionDuplicateName(Section section);
+    Boolean chkDuplicateSectionCode(Section section);
+    Boolean chkDuplicateSectionName(Section section);
 }

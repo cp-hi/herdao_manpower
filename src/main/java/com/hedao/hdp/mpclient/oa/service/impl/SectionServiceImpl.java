@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service;
 public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
 
     public void addOrUpdate(Section section) throws Exception {
-        //TODO 验证是否已存在同名称编号的岗位
-        if (baseMapper.chkSectionDuplicateCode(section))
+        if (baseMapper.chkDuplicateSectionCode(section))
             throw new Exception("岗位编码重复了");
-        if (baseMapper.chkSectionDuplicateCode(section))
+        if (baseMapper.chkDuplicateSectionName(section))
             throw new Exception("岗位名称重复了");
+
         if (null == section.getId()) {
             this.save(section);
         } else {

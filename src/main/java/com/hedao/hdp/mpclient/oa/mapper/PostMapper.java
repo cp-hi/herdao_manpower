@@ -8,8 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper extends BaseMapper<Post> {
-    List<Post> findAll();
-
-    Boolean chkPostDuplicateCode(Post post);
-    Boolean chkPostDuplicateName(Post post);
+    Boolean chkDuplicatePostName(Post post);
+    Boolean chkDuplicatePostCode(Post post);
 }
