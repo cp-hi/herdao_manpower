@@ -10,6 +10,8 @@ import java.util.Map;
 @Mapper
 public interface PostMapper extends BaseMapper<Post> {
    List<Map> postList();
+
     Boolean chkDuplicatePostName(Post post);
+
     Boolean chkDuplicatePostCode(Post post);
 }
