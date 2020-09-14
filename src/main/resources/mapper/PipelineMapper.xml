@@ -5,7 +5,7 @@
 <mapper namespace="net.hedao.hdp.mpclient.mapper.PipelineMapper">
 
 
-    <select id="pipelineList" parameterType="post" resultType="map">
+    <select id="pipelineList" parameterType="pipeline" resultType="map">
        	select id,pipeline_code AS pipelineCode,pipeline_name AS pipelineName from mp_pipeline
     </select>
 

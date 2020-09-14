@@ -4,15 +4,15 @@
 
 <mapper namespace="net.hedao.hdp.mpclient.mapper.JobLevelMapper">
 
-    <select id="jobLevelList" parameterType="post" resultType="map">
+    <select id="jobLevelList"   resultType="map">
        	select id,job_level_code AS jobLevelCode,job_level_name AS jobLevelName from mp_job_level
     </select>
 
-    <select id="chkDuplicateJobLevelCode" parameterType="post" resultType="boolean">
+    <select id="chkDuplicateJobLevelCode" parameterType="map" resultType="boolean">
          SELECT count(*) from mp_job_level  where  (#{id} is null or  id != #{id})  and  job_level_code = #{jobLevelCode}
     </select>
 
-    <select id="chkDuplicateJobLevelName" parameterType="post" resultType="boolean" >
+    <select id="chkDuplicateJobLevelName" parameterType="map" resultType="boolean" >
         SELECT count(*) from mp_Job_Level  where  (#{id} is null or  id != #{id})   and  job_level_name = #{jobLevelName}
     </select>
 </mapper>

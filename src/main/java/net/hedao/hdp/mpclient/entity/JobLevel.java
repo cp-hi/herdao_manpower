@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("MP_JOB_LEVEL")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "岗位实体类")
+@ApiModel(value = "职级实体类")
 public class JobLevel extends BaseEntity<JobLevel>  {
     private String jobLevelName;
     private String jobLevelCode;
