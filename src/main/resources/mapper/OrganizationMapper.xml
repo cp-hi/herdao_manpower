@@ -62,6 +62,7 @@
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
         <collection property="children" column="id" ofType="com.hedao.hdp.mpclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="childrenClick" column="id" ofType="com.hedao.hdp.mpclient.oa.entity.Organization" select="selectChildrenOrganClick"></collection>
     </resultMap>
 
     <resultMap id="organTreeMap" type="com.hedao.hdp.mpclient.oa.entity.Organization">
@@ -129,6 +130,7 @@
          <if test="id != null">
              AND id = #{id}
          </if>
+
          <if test="isStop != null">
              AND is_stop = #{isStop}
          </if>
@@ -139,7 +141,9 @@
 
       <!-- 查询子组织结构表 -->
       <select id="selectChildrenOrgan" resultMap="organizationChildrenMap" parameterType="java.lang.String">
-            SELECT * FROM mp_organization WHERE 1=1
+            SELECT * FROM mp_organization
+            WHERE 1=1
+            and org_level &lt;= 2
           <if test="parentId != null">
               AND PARENT_ID=#{parentId}
           </if>
@@ -148,6 +152,19 @@
           </if>-->
             order by SORT_NO
        </select>
+
+    <!-- 查询子组织结构表 -->
+    <select id="selectChildrenOrganClick" resultMap="organizationChildrenMap" parameterType="java.lang.String">
+        SELECT * FROM mp_organization
+        WHERE 1=1
+        <if test="parentId != null">
+            AND PARENT_ID=#{parentId}
+        </if>
+        <!-- <if test="isStop != null">
+             AND is_stop = #{isStop}
+         </if>-->
+        order by SORT_NO
+    </select>
 
     <!-- 高级搜索组织架构 -->
     <select id="findOrganizationByCondition" resultMap="organizationMap" >

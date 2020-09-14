@@ -195,7 +195,13 @@ private static final long serialVersionUID = 1L;
     private List<Organization> children;
 
     @ApiModelProperty(value="判断是否加载根组织架构 传参")
+    @TableField(exist = false)
     private Boolean isRoot;
+
+    @ApiModelProperty(value="子组织架构集合 点击触发")
+    @TableField(exist = false)
+    private List<Organization> childrenClick;
+
 
 }
 
