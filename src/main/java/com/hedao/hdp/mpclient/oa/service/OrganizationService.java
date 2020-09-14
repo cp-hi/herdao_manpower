@@ -1,5 +1,6 @@
 package com.hedao.hdp.mpclient.oa.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hedao.hdp.mpclient.oa.entity.Organization;
 
@@ -53,7 +54,7 @@ public interface OrganizationService extends IService<Organization> {
      * @param condition
      * @return
      */
-     List<Organization> findRootOrganizations(Organization condition);
+    List<Organization> findRootOrganizations(Organization condition);
 
     /**
      * 停用根组织架构且（进行下级递归停用）
@@ -62,5 +63,10 @@ public interface OrganizationService extends IService<Organization> {
      */
      void stopOrganById(Long id);
 
-
+    /**
+     * 组织架构分页
+     * @param condition
+     * @return
+     */
+    List<Organization> findOrgPage(Organization condition);
 }

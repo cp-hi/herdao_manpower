@@ -261,5 +261,19 @@
     </update>
 
 
+    <!-- 组织架构分页 -->
+    <select id="findOrgPage" resultMap="organizationMap">
+        SELECT
+        *
+        FROM
+        mp_organization
+        WHERE 1=1
+        and id IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+        limit #{pageStart},#{limit}
+    </select>
 
 </mapper>

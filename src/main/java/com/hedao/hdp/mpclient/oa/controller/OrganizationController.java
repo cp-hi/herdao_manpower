@@ -1,6 +1,9 @@
 
 package com.hedao.hdp.mpclient.oa.controller;
 
+import cn.hutool.db.PageResult;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hedao.hdp.mpclient.oa.entity.Organization;
@@ -31,7 +34,6 @@ public class OrganizationController {
     private final  OrganizationService organizationService;
 
 
-
     /**
      * 分页查询
      * @param page 分页对象
@@ -42,7 +44,8 @@ public class OrganizationController {
     @GetMapping("/page" )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R getOrganizationPage(Page page, Organization organization) {
-        return R.ok(organizationService.page(page, Wrappers.query(organization)));
+        Page pageResult = organizationService.page(page, Wrappers.query(organization));
+        return R.ok(pageResult);
     }
 
 
@@ -225,16 +228,17 @@ public class OrganizationController {
     @PostMapping("/removeOrg" )
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
     public R removeOrg(@RequestBody Organization condition) {
-        //组织需停用后才能删除
+        //停用选中组织
         organizationService.stopOrganById(condition.getId());
 
         List<Map<String,Long>> orgIds=new ArrayList<>();
         //递归获取组织架构parentId
         getRecursionParentIds(condition.getId(),orgIds);
-        
+        //组织需停用后才能删除 停用选中组织的所有下层组织
         for (Map<String, Long> maps : orgIds) {
-            for (Object orgId : maps.values()) {
-                System.out.print(orgId);
+            for (Long orgId : maps.values()) {
+                Organization updateCondition = new Organization();
+                organizationService.stopOrganById(orgId);
             }
         }
 
@@ -271,7 +275,7 @@ public class OrganizationController {
     }
 
     @SysLog("递归获取组织架构parentId" )
-    private void getChildren(Organization entity,List<Map<String,Long>> orgIds) {
+    public void getChildren(Organization entity,List<Map<String,Long>> orgIds) {
         List<Organization> childrens = entity.getChildrenClick();
         if (!childrens.isEmpty()){
             for (Organization child : childrens) {
@@ -285,6 +289,68 @@ public class OrganizationController {
             }
         }
     }
+
+    /**
+     * 点击展开组织架构树（默认两级） 分页查询
+     * @param condition
+     * @return R
+     */
+    @ApiOperation(value = "点击展开组织架构树（默认两级）", notes = "点击展开组织架构树（默认两级）")
+    @SysLog("点击展开组织架构树（默认两级）" )
+    @PostMapping("/getRecursionOrgByLevel" )
+    public R getRecursionOrgByLevel(Page page,@RequestBody Organization condition){
+        List<Organization> allOrgList=new ArrayList<>();
+        List<Organization> rootOrgList = organizationService.findOrganizationByCondition(condition);
+
+        if (!rootOrgList.isEmpty()){
+            allOrgList.addAll(rootOrgList);
+            List<Organization> childrenTemp=new ArrayList<>();
+            for (Organization rootOrgan : rootOrgList) {
+                Organization childrenCondtion = new Organization();
+                childrenCondtion.setParentId(rootOrgan.getId());
+                if (StringUtils.isBlank(condition.getOrgLevel())){
+                    //默认展示两级
+                    queryOrgByParentId(childrenTemp, childrenCondtion,2);
+                }else {
+                    //传参自定义展示层级数
+                    queryOrgByParentId(childrenTemp, childrenCondtion,Integer.parseInt(condition.getOrgLevel()));
+                }
+
+            }
+            allOrgList.addAll(childrenTemp);
+        }
+
+        //查询分页结果
+        List<Long> ids=new ArrayList<>();
+        for (Organization organization : allOrgList) {
+            ids.add(organization.getId()) ;
+        }
+
+        QueryWrapper<Organization> wrapper = Wrappers.query();
+        wrapper.in("id", ids);
+        Page pageResult = organizationService.page(page, wrapper);
+
+        return R.ok(pageResult);
+    }
+
+    @SysLog("点击展开组织架构树（默认两级）" )
+    private void queryOrgByParentId(List<Organization> childrenTemp,Organization condition,Integer orgLevel){
+        List<Organization> children= organizationService.findOrganizationByCondition(condition);
+        if (!children.isEmpty()){
+            childrenTemp.addAll(children);
+            for (Organization child : children) {
+                Organization entity=new Organization();
+                entity.setParentId(child.getId());
+                //控制层级
+                if (null!=child.getOrgLevel()){
+                    if (Integer.parseInt(child.getOrgLevel()) < orgLevel){
+                        queryOrgByParentId(childrenTemp,entity,orgLevel);
+                    }
+                }
+            }
+        }
+    }
+
 
 }
 

@@ -58,5 +58,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         this.baseMapper.stopOrganById(id);
     }
 
+    @Override
+    public List<Organization> findOrgPage(Organization condition) {
+        List<Organization> list = this.baseMapper.findOrgPage(condition);
+        return list;
+    }
+
 
 }
