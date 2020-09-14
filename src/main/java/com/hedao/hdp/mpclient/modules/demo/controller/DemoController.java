@@ -1,14 +1,14 @@
-package com.hedao.hdp.mpclient.controller;
+package com.hedao.hdp.mpclient.modules.demo.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hedao.hdp.mpclient.modules.demo.entity.Demo;
+import com.hedao.hdp.mpclient.modules.demo.service.DemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import com.hedao.hdp.mpclient.entity.Demo;
-import com.hedao.hdp.mpclient.service.DemoService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

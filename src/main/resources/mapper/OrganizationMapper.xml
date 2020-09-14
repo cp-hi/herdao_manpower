@@ -97,6 +97,7 @@
         <collection property="children" column="id" ofType="com.hedao.hdp.mpclient.oa.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
+
     <!-- 点击查看组织架构详情 -->
     <select id="selectOrganByCurrentOrgOid" resultMap="organTreeMap" parameterType="java.lang.String">
         SELECT * FROM mp_organization WHERE 1=1
@@ -140,7 +141,7 @@
       </select>
 
       <!-- 查询子组织结构表 -->
-      <select id="selectChildrenOrgan" resultMap="organizationChildrenMap" parameterType="java.lang.String">
+      <select id="selectChildrenOrgan" resultMap="organizationChildrenMap">
             SELECT * FROM mp_organization
             WHERE 1=1
             and org_level &lt;= 2
@@ -248,4 +249,31 @@
             AND TENANT_ID = #{tenantId}
         </if>
     </select>
+
+
+    <update id="stopOrganById" >
+          UPDATE mp_organization m
+            SET m.IS_STOP = 0
+            WHERE 1=1
+            <if test="id != null">
+                AND  id = #{id}
+            </if>
+    </update>
+
+
+    <!-- 组织架构分页 -->
+    <select id="findOrgPage" resultMap="organizationMap">
+        SELECT
+        *
+        FROM
+        mp_organization
+        WHERE 1=1
+        and id IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+        limit #{pageStart},#{limit}
+    </select>
+
 </mapper>

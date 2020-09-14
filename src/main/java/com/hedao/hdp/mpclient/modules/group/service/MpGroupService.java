@@ -15,10 +15,10 @@
  * Author: hdp
  */
 
-package com.hedao.hdp.mpclient.group.service;
+package com.hedao.hdp.mpclient.modules.group.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hedao.hdp.mpclient.group.entity.MpGroup;
+import com.hedao.hdp.mpclient.modules.group.entity.MpGroup;
 
 /**
  * 集团表

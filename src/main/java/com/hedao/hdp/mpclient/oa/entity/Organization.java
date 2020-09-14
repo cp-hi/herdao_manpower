@@ -202,6 +202,18 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private List<Organization> childrenClick;
 
+    @ApiModelProperty(value="架构id集合 传参")
+    @TableField(exist = false)
+    private List<Long> ids;
+
+
+    @ApiModelProperty(value="起始页")
+    @TableField(exist = false)
+    private List<Integer> pageStart;
+
+    @ApiModelProperty(value="分页大小")
+    @TableField(exist = false)
+    private List<Integer> limit;
 
 }
 
