@@ -39,7 +39,7 @@ public class SectionController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Integer id) {
+    public R getById(@PathVariable("id") Long id) {
         return R.ok(sectionService.getById(id));
     }
 
@@ -52,7 +52,7 @@ public class SectionController {
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
     @SysLog("通过id删除")
     @DeleteMapping("/{id}")
-    public R removeById(@PathVariable String id) {
+    public R removeById(@PathVariable Long id) {
         return R.ok(sectionService.removeById(id));
     }
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * @ClassName BaseEntity
- * @Description BaseEntity
+ * @Description 基础实体表
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/9/11 9:13
@@ -19,10 +19,12 @@ import java.util.Date;
 @Data
 public class BaseEntity<T extends Model<?>> extends Model<T> {
     @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
     private String oid;
+    private Long creatorId;
     private String creatorCode;
     private Date createdTime;
+    private Long modifierId;
     private String modifierCode;
     private Date modifiedTime;
     private Integer tenantId;

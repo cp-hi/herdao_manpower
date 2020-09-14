@@ -39,7 +39,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     public Page page(Page page, Map<String, String> params) {
         String searchText = params.get("searchText");
-        String[] groupIds = StringUtils.split(params.get("groupIds"), ",");
+//        String[] groupIds = StringUtils.split(params.get("groupIds"), ",");
         String[] jobLevels = StringUtils.split(params.get("jobLevels"), ",");
         String[] sectionCodes = StringUtils.split(params.get("sectionCodes"), ",");
         String[] pipelineCodes = StringUtils.split(params.get("pipelineCodes"), ",");
@@ -53,7 +53,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return this.page(page, queryWrapper);
     }
 
-
     public void addOrUpdate(Post post) throws Exception {
         if (baseMapper.chkDuplicatePostCode(post))
             throw new Exception("岗位编码重复了");
@@ -65,6 +64,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             post.setCreatedTime(new Date());
             if (null != userInfo) {
                 post.setCreatorCode(userInfo.getSysUser().getUsername());
+//                post.setCreatorCode(userInfo.getSysUser().get());
             }
             this.save(post);
         } else {
