@@ -13,8 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -30,6 +29,8 @@ import java.util.List;
 public class OrganizationController {
 
     private final  OrganizationService organizationService;
+
+
 
     /**
      * 分页查询
@@ -211,6 +212,78 @@ public class OrganizationController {
         }
 
         return R.ok(rootOrgans);
+    }
+
+
+    /**
+     * 删除组织
+     * @param condition
+     * @return R
+     */
+    @ApiOperation(value = "删除组织", notes = "删除组织")
+    @SysLog("删除组织" )
+    @PostMapping("/removeOrg" )
+    //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
+    public R removeOrg(@RequestBody Organization condition) {
+        //组织需停用后才能删除
+        organizationService.stopOrganById(condition.getId());
+
+        List<Map<String,Long>> orgIds=new ArrayList<>();
+        //递归获取组织架构parentId
+        getRecursionParentIds(condition.getId(),orgIds);
+        
+        for (Map<String, Long> maps : orgIds) {
+            for (Object orgId : maps.values()) {
+                System.out.print(orgId);
+            }
+        }
+
+
+
+
+        //删除组织时，需要将当前组织及其下级组织停用
+
+
+        //删除组织，是将组织及其下级组织一并删除
+        return R.ok(null);
+    }
+
+
+    @SysLog("递归获取组织架构parentId" )
+    public void getRecursionParentIds(Long id,List<Map<String,Long>> orgIds) {
+        Organization condition=new Organization();
+        condition.setId(id);
+        List<Organization> list = organizationService.findAllOrganizations(condition);
+        if (!list.isEmpty()){
+            for (Organization entity : list) {
+                if (null!=entity){
+                    Map<String,Long> map=new HashMap<>();
+                    map.put(entity.getOrgName(),entity.getId());
+                    orgIds.add(map);
+
+                    if (!entity.getChildrenClick().isEmpty()){
+                        getChildren(entity,orgIds);
+                    }
+                }
+
+            }
+        }
+    }
+
+    @SysLog("递归获取组织架构parentId" )
+    private void getChildren(Organization entity,List<Map<String,Long>> orgIds) {
+        List<Organization> childrens = entity.getChildrenClick();
+        if (!childrens.isEmpty()){
+            for (Organization child : childrens) {
+                if (null != child){
+                    Map<String,Long> map=new HashMap<>();
+                    map.put(child.getOrgName(),child.getId());
+                    orgIds.add(map);
+                    getChildren(child,orgIds);
+                }
+
+            }
+        }
     }
 
 }
