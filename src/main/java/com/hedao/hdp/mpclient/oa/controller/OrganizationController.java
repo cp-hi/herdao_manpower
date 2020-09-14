@@ -325,9 +325,9 @@ public class OrganizationController {
         for (Organization organization : allOrgList) {
             ids.add(organization.getId()) ;
         }
-
         QueryWrapper<Organization> wrapper = Wrappers.query();
         wrapper.in("id", ids);
+
         Page pageResult = organizationService.page(page, wrapper);
 
         return R.ok(pageResult);
