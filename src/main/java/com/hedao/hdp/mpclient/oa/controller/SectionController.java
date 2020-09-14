@@ -22,9 +22,14 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/client/section")
 public class SectionController {
-    
+
     private final SectionService sectionService;
 
+    @GetMapping("/list")
+    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
+    public R list() {
+        return R.ok(sectionService.sectionList());
+    }
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
@@ -34,7 +39,7 @@ public class SectionController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Integer id)   {
+    public R getById(@PathVariable("id") Integer id) {
         return R.ok(sectionService.getById(id));
     }
 

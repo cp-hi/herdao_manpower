@@ -5,12 +5,16 @@
 <mapper namespace="com.hedao.hdp.mpclient.oa.mapper.PipelineMapper">
 
 
-    <select id="chkDuplicatePipelineCode" parameterType="pipeline" >
-         SELECT count(*) from mp_Pipeline where id !=#{id}  and  post_code = #{postCode}
+    <select id="pipelineList" parameterType="post" resultType="map">
+       	select id,pipeline_code AS pipelineCode,pipeline_name AS pipelineName from mp_pipeline
+    </select>
+
+    <select id="chkDuplicatePipelineCode" parameterType="pipeline" resultType="boolean" >
+         SELECT count(*) from mp_Pipeline where  (#{id} is null or  id != #{id})  and  pipeline_code = #{pipelineCode}
     </select>
 
 
-    <select id="chkDuplicatePipelineName" parameterType="pipeline" >
-      SELECT count(*) from mp_Pipeline where id !=#{id}  and  post_name = #{postName}
+    <select id="chkDuplicatePipelineName" parameterType="pipeline" resultType="boolean">
+      SELECT count(*) from mp_Pipeline where   (#{id} is null or  id != #{id})    and pipeline_name = #{pipelineName}
     </select>
 </mapper>

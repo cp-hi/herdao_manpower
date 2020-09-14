@@ -6,6 +6,9 @@ import com.hedao.hdp.mpclient.oa.mapper.PipelineMapper;
 import com.hedao.hdp.mpclient.oa.service.PipelineService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @ClassName PipelineServiceImpl
  * @Description PipelineServiceImpl
@@ -17,8 +20,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
 
+    public List<Map> pipelineList(){
+        return baseMapper.pipelineList();
+    }
+
     public void addOrUpdate(Pipeline pipeline) throws Exception {
-        if (baseMapper.chkDuplicatePipelineName(pipeline))
+        if (baseMapper.chkDuplicatePipelineCode(pipeline))
             throw new Exception("岗位编码重复了");
         if (baseMapper.chkDuplicatePipelineName(pipeline))
             throw new Exception("岗位名称重复了");

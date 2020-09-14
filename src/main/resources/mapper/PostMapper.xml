@@ -4,11 +4,16 @@
 
 <mapper namespace="com.hedao.hdp.mpclient.oa.mapper.PostMapper">
 
-    <select id="chkDuplicatePostCode" parameterType="post" >
-         SELECT count(*) from mp_post  where id !=#{id}  and  post_code = #{postCode}
+
+    <select id="postList" parameterType="post" resultType="map">
+       	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post
     </select>
 
-    <select id="chkDuplicatePostName" parameterType="post" >
-      SELECT count(*) from mp_post  where id !=#{id}  and  post_name = #{postName}
+    <select id="chkDuplicatePostCode" parameterType="post" resultType="boolean">
+         SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})  and  post_code = #{postCode}
+    </select>
+
+    <select id="chkDuplicatePostName" parameterType="post" resultType="boolean" >
+        SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})   and  post_name = #{postName}
     </select>
 </mapper>

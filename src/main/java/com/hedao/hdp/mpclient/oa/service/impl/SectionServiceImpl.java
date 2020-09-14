@@ -7,6 +7,9 @@ import com.hedao.hdp.mpclient.oa.service.SectionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @ClassName SectionServiceImpl
  * @Description SectionServiceImpl
@@ -18,6 +21,10 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
+
+ public    List<Map> sectionList(){
+        return baseMapper.sectionList();
+    }
 
     public void addOrUpdate(Section section) throws Exception {
         if (baseMapper.chkDuplicateSectionCode(section))

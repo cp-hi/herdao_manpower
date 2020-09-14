@@ -26,6 +26,12 @@ public class PipelineController {
 
     private final PipelineService pipelineService;
 
+    @GetMapping("/list")
+    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
+    public R list() {
+        return R.ok(pipelineService.pipelineList());
+    }
+
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(Page page, Pipeline pipeline) {

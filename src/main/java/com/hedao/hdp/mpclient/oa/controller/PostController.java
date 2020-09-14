@@ -1,6 +1,5 @@
 package com.hedao.hdp.mpclient.oa.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hedao.hdp.mpclient.oa.entity.Post;
 import com.hedao.hdp.mpclient.oa.service.PostService;
@@ -9,6 +8,8 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 /**
@@ -28,13 +29,19 @@ public class PostController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, Post post) {
-        return R.ok(postService.page(page, Wrappers.query(post)));
+    public R page( Page page, @RequestParam Map<String, String> params) {
+        return R.ok(postService.page(page,params));
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
+    public R list() {
+        return R.ok(postService.postList());
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Integer id)   {
+    public R getById(@PathVariable("id") Integer id) {
         return R.ok(postService.getById(id));
     }
 
