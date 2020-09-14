@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hedao.hdp.mpclient.mapper.JobLevelMapper">
+<mapper namespace="net.hedao.hdp.mpclient.mapper.JobLevelMapper">
 
     <select id="jobLevelList" parameterType="post" resultType="map">
        	select id,job_level_code AS jobLevelCode,job_level_name AS jobLevelName from mp_job_level

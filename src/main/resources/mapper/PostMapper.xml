@@ -2,8 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hedao.hdp.mpclient.oa.mapper.PostMapper">
-
+<mapper namespace="net.hedao.hdp.mpclient.mapper.PostMapper">
 
     <select id="postList" parameterType="post" resultType="map">
        	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post
