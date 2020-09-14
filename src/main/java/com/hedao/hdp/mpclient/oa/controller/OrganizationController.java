@@ -228,27 +228,46 @@ public class OrganizationController {
     @PostMapping("/removeOrg" )
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
     public R removeOrg(@RequestBody Organization condition) {
-        //停用选中组织
+        //停用当前选中组织
         organizationService.stopOrganById(condition.getId());
 
         List<Map<String,Long>> orgIds=new ArrayList<>();
         //递归获取组织架构parentId
         getRecursionParentIds(condition.getId(),orgIds);
-        //组织需停用后才能删除 停用选中组织的所有下层组织
+
+
         for (Map<String, Long> maps : orgIds) {
+            //停用组织及其下层组织
             for (Long orgId : maps.values()) {
-                Organization updateCondition = new Organization();
+                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能删除
+                if (1==1){
+
+                }else{
+
+                }
+
                 organizationService.stopOrganById(orgId);
             }
+
+            //组织需停用后才能删除 停用选中组织的所有下层组织
+            for (Long orgId : maps.values()) {
+                organizationService.removeById(orgId);
+            }
+
+
+
         }
 
 
 
 
-        //删除组织时，需要将当前组织及其下级组织停用
 
 
-        //删除组织，是将组织及其下级组织一并删除
+
+
+
+
+
         return R.ok(null);
     }
 
