@@ -1,4 +1,4 @@
-package com.hedao.hdp.mpclient.entity;
+package com.hedao.hdp.mpclient.oa.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

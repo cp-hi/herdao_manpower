@@ -21,16 +21,14 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hedao.hdp.mpclient.group.mapper.MpGroupMapper">
+<mapper namespace="com.hedao.hdp.mpclient.modules.group.mapper.MpGroupMapper">
 
-  <resultMap id="mpGroupMap" type="com.hedao.hdp.mpclient.group.entity.MpGroup">
+  <resultMap id="mpGroupMap" type="com.hedao.hdp.mpclient.modules.group.entity.MpGroup">
                   <id property="id" column="ID"/>
-                        <result property="oid" column="OID"/>
                         <result property="groupCode" column="GROUP_CODE"/>
                         <result property="groupName" column="GROUP_NAME"/>
                         <result property="remark" column="REMARK"/>
                         <result property="sortNo" column="SORT_NO"/>
-                        <result property="orgOid" column="ORG_OID"/>
                         <result property="orgId" column="ORG_ID"/>
                         <result property="orgCode" column="ORG_CODE"/>
                         <result property="groupFullname" column="GROUP_FULLNAME"/>

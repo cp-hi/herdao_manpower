@@ -1,7 +1,7 @@
-package com.hedao.hdp.mpclient.service;
+package com.hedao.hdp.mpclient.modules.demo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hedao.hdp.mpclient.entity.Demo;
+import com.hedao.hdp.mpclient.modules.demo.entity.Demo;
 
 
 /**

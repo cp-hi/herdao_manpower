@@ -1,9 +1,9 @@
-package com.hedao.hdp.mpclient.service.impl;
+package com.hedao.hdp.mpclient.modules.demo.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hedao.hdp.mpclient.entity.Demo;
-import com.hedao.hdp.mpclient.mapper.DemoMapper;
-import com.hedao.hdp.mpclient.service.DemoService;
+import com.hedao.hdp.mpclient.modules.demo.entity.Demo;
+import com.hedao.hdp.mpclient.modules.demo.mapper.DemoMapper;
+import com.hedao.hdp.mpclient.modules.demo.service.DemoService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -15,7 +15,7 @@
  * Author: hdp
  */
 
-package com.hedao.hdp.mpclient.group.entity;
+package com.hedao.hdp.mpclient.modules.group.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,8 +24,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 集团表
@@ -47,11 +45,6 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="主键ID")
     private Long id;
     /**
-     * 集团OID
-     */
-    @ApiModelProperty(value="集团OID")
-    private String oid;
-    /**
      * 集团编码
      */
     @ApiModelProperty(value="集团编码")
@@ -71,11 +64,6 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="排序")
     private Integer sortNo;
-    /**
-     * 取组织架构表主键
-     */
-    @ApiModelProperty(value="取组织架构表主键")
-    private String orgOid;
     /**
      * 对应组织主键
      */
