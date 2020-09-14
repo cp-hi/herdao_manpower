@@ -1,7 +1,7 @@
-package com.hedao.hdp.mpclient.mapper;
+package com.hedao.hdp.mpclient.modules.demo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hedao.hdp.mpclient.entity.Demo;
+import com.hedao.hdp.mpclient.modules.demo.entity.Demo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
