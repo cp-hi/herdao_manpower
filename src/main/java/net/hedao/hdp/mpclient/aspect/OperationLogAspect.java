@@ -1,7 +1,7 @@
 package net.hedao.hdp.mpclient.aspect;
 
 import lombok.AllArgsConstructor;
-import net.hedao.hdp.mpclient.annotation.OperationLogAnno;
+import net.hedao.hdp.mpclient.annotation.OperationEntity;
 import net.hedao.hdp.mpclient.entity.OperationLog;
 import net.hedao.hdp.mpclient.service.OperationLogService;
 import net.herdao.hdp.admin.api.dto.UserInfo;
@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import org.aspectj.lang.reflect.MethodSignature;
+
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -34,7 +35,7 @@ public class OperationLogAspect {
     private final OperationLogService operationLogService;
     private final RemoteUserService remoteUserService;
 
-    @Pointcut("@annotation(net.hedao.hdp.mpclient.annotation.OperationLogAnno)")
+    @Pointcut("@annotation(net.hedao.hdp.mpclient.annotation.OperationEntity)")
     public void pointCut() {
         System.out.println("point");
     }
@@ -43,14 +44,17 @@ public class OperationLogAspect {
     public void after(JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
-        OperationLogAnno anno = method.getAnnotation(OperationLogAnno.class);
-        if (null != anno) {
+        OperationEntity entity = method.getAnnotation(OperationEntity.class);
+        if (null != entity) {
             UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
             OperationLog log = new OperationLog();
-            log.setOperation(anno.operation());
+            log.setOperation(entity.operation());
             log.setOperatorId(userInfo.getSysUser().getUserId());
             log.setOperator(userInfo.getSysUser().getUsername());
+            if (null != entity.clazz())
+                log.setEntityClass(entity.clazz().getName());
             log.setOperatedTime(new Date());
+            operationLogService.save(log);
         }
         System.out.println("after");
     }

@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OperationLogAnno {
+public @interface OperationEntity {
     String operation() default "";
-    String entityClazz()default "";
+    Class clazz() ;
 }
