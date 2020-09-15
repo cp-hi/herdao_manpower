@@ -34,5 +34,4 @@ public class Pipeline extends Model<Pipeline> {
     private String pipelineStdCode;
     private String tenantId;
 
-    private MpGroup mpGroup;
 }
