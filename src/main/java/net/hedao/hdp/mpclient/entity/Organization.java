@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 
  *
- * @author liang
+ * @author andy
  * @date 2020-09-09 15:31:20
  */
 @Data
@@ -199,6 +199,13 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private List<Integer> orgDeptIds;
 
+    @ApiModelProperty(value="部门负责人姓名")
+    @TableField(exist = false)
+    private String postName;
+
+    @ApiModelProperty(value="组织负责人姓名")
+    @TableField(exist = false)
+    private String userName;
 }
 
 

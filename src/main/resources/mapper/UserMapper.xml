@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.hedao.hdp.mpclient.mapper.UserMapper">
+
+  <resultMap id="userMap" type="net.hedao.hdp.mpclient.entity.User">
+                  <id property="id" column="ID"/>
+                        <result property="oid" column="OID"/>
+                        <result property="userName" column="USER_NAME"/>
+                        <result property="loginCode" column="LOGIN_CODE"/>
+                        <result property="password" column="PASSWORD"/>
+                        <result property="password2" column="PASSWORD2"/>
+                        <result property="orgOid" column="ORG_OID"/>
+                        <result property="orgId" column="ORG_ID"/>
+                        <result property="orgDeptOid" column="ORG_DEPT_OID"/>
+                        <result property="orgDeptId" column="ORG_DEPT_ID"/>
+                        <result property="isStop" column="IS_STOP"/>
+                        <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
+                        <result property="remark" column="REMARK"/>
+                        <result property="leaveTime" column="LEAVE_TIME"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+            </resultMap>
+</mapper>
