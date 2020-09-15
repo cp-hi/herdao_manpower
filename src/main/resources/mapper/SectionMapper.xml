@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hedao.hdp.mpclient.oa.mapper.SectionMapper">
+<mapper namespace="net.hedao.hdp.mpclient.mapper.SectionMapper">
 
-    <select id="sectionList" parameterType="post" resultType="map">
+    <select id="sectionList" parameterType="pipeline" resultType="map">
        	select id,section_code AS sectionCode,section_name AS sectionName from mp_section
     </select>
 
