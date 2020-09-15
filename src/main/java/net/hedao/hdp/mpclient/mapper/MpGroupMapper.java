@@ -15,10 +15,11 @@
  * Author: hdp
  */
 
-package net.hedao.hdp.mpclient.modules.group.service;
+package net.hedao.hdp.mpclient.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.hedao.hdp.mpclient.modules.group.entity.MpGroup;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.hedao.hdp.mpclient.entity.MpGroup;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 集团表
@@ -26,6 +27,7 @@ import net.hedao.hdp.mpclient.modules.group.entity.MpGroup;
  * @author yangrr
  * @date 2020-09-11 11:57:16
  */
-public interface MpGroupService extends IService<MpGroup> {
+@Mapper
+public interface MpGroupMapper extends BaseMapper<MpGroup> {
 
 }

@@ -1,9 +1,9 @@
-package net.hedao.hdp.mpclient.modules.demo.controller;
+package net.hedao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.hedao.hdp.mpclient.modules.demo.entity.Demo;
-import net.hedao.hdp.mpclient.modules.demo.service.DemoService;
+import net.hedao.hdp.mpclient.entity.Demo;
+import net.hedao.hdp.mpclient.service.DemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

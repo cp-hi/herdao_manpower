@@ -15,12 +15,12 @@
  * Author: hdp
  */
 
-package net.hedao.hdp.mpclient.modules.group.controller;
+package net.hedao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.hedao.hdp.mpclient.modules.group.entity.MpGroup;
-import net.hedao.hdp.mpclient.modules.group.service.MpGroupService;
+import net.hedao.hdp.mpclient.entity.MpGroup;
+import net.hedao.hdp.mpclient.service.MpGroupService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;

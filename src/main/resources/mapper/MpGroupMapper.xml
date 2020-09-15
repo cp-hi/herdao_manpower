@@ -21,9 +21,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.hedao.hdp.mpclient.modules.group.mapper.MpGroupMapper">
+<mapper namespace="net.hedao.hdp.mpclient.mapper.MpGroupMapper">
 
-  <resultMap id="mpGroupMap" type="net.hedao.hdp.mpclient.modules.group.entity.MpGroup">
+  <resultMap id="mpGroupMap" type="net.hedao.hdp.mpclient.entity.MpGroup">
                   <id property="id" column="ID"/>
                         <result property="groupCode" column="GROUP_CODE"/>
                         <result property="groupName" column="GROUP_NAME"/>

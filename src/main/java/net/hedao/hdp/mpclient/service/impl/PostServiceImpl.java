@@ -57,22 +57,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             throw new Exception("岗位编码重复了");
         if (baseMapper.chkDuplicatePostName(post))
             throw new Exception("岗位名称重复了");
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-
-        if (null == post.getId()) {
-            post.setCreatedTime(new Date());
-            if (null != userInfo) {
-                post.setCreatorCode(userInfo.getSysUser().getUsername());
-//                post.setCreatorCode(userInfo.getSysUser().get());
-            }
-            this.save(post);
-        } else {
-            post.setModifiedTime(new Date());
-            if (null != userInfo) {
-                post.setModifierCode(userInfo.getSysUser().getUsername());
-            }
-            this.updateById(post);
-        }
+        this.saveOrUpdate(post);
     }
-
 }
