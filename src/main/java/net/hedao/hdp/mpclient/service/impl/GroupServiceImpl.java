@@ -14,11 +14,13 @@
  * this software without specific prior written permission.
  * Author: hdp
  */
+package net.hedao.hdp.mpclient.service.impl;
 
-package net.hedao.hdp.mpclient.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.hedao.hdp.mpclient.entity.MpGroup;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.hedao.hdp.mpclient.entity.Group;
+import net.hedao.hdp.mpclient.mapper.GroupMapper;
+import net.hedao.hdp.mpclient.service.GroupService;
+import org.springframework.stereotype.Service;
 
 /**
  * 集团表
@@ -26,6 +28,7 @@ import net.hedao.hdp.mpclient.entity.MpGroup;
  * @author yangrr
  * @date 2020-09-11 11:57:16
  */
-public interface MpGroupService extends IService<MpGroup> {
+@Service
+public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements GroupService {
 
 }

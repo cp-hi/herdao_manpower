@@ -19,8 +19,8 @@ package net.hedao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.hedao.hdp.mpclient.entity.MpGroup;
-import net.hedao.hdp.mpclient.service.MpGroupService;
+import net.hedao.hdp.mpclient.entity.Group;
+import net.hedao.hdp.mpclient.service.GroupService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -37,11 +37,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/mpgroup" )
-@Api(value = "mpgroup", tags = "集团表管理")
-public class MpGroupController {
+@RequestMapping("/group" )
+@Api(value = "group", tags = "集团表管理")
+public class GroupController {
 
-    private final MpGroupService mpGroupService;
+    private final GroupService groupService;
 
     /**
      * 分页查询
@@ -52,8 +52,8 @@ public class MpGroupController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
-    public R getMpGroupPage(Page page, MpGroup mpGroup) {
-        return R.ok(mpGroupService.page(page, Wrappers.query(mpGroup)));
+    public R getMpGroupPage(Page page, Group mpGroup) {
+        return R.ok(groupService.page(page, Wrappers.query(mpGroup)));
     }
 
 
@@ -66,7 +66,7 @@ public class MpGroupController {
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
     public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(mpGroupService.getById(id));
+        return R.ok(groupService.getById(id));
     }
 
     /**
@@ -78,8 +78,8 @@ public class MpGroupController {
     @SysLog("新增集团表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_add')" )
-    public R save(@RequestBody MpGroup mpGroup) {
-        return R.ok(mpGroupService.save(mpGroup));
+    public R save(@RequestBody Group mpGroup) {
+        return R.ok(groupService.save(mpGroup));
     }
 
     /**
@@ -91,8 +91,8 @@ public class MpGroupController {
     @SysLog("修改集团表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_edit')" )
-    public R updateById(@RequestBody MpGroup mpGroup) {
-        return R.ok(mpGroupService.updateById(mpGroup));
+    public R updateById(@RequestBody Group mpGroup) {
+        return R.ok(groupService.updateById(mpGroup));
     }
 
     /**
@@ -105,7 +105,7 @@ public class MpGroupController {
     @DeleteMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_del')" )
     public R removeById(@PathVariable Long id) {
-        return R.ok(mpGroupService.removeById(id));
+        return R.ok(groupService.removeById(id));
     }
 
 }
