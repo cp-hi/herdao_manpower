@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, hdp All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: hdp
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.hedao.hdp.mpclient.mapper.CompanyMapper">
+
+  <resultMap id="mpCompanyMap" type="net.hedao.hdp.mpclient.entity.Company">
+                  <id property="id" column="ID"/>
+                        <result property="oid" column="OID"/>
+                        <result property="companyCode" column="COMPANY_CODE"/>
+                        <result property="companyName" column="COMPANY_NAME"/>
+                        <result property="registrationNo" column="REGISTRATION_NO"/>
+                        <result property="legal" column="LEGAL"/>
+                        <result property="registeredCapital" column="REGISTERED_CAPITAL"/>
+                        <result property="address" column="ADDRESS"/>
+                        <result property="orgOid" column="ORG_OID"/>
+                        <result property="orgId" column="ORG_ID"/>
+                        <result property="creatorCode" column="CREATOR_CODE"/>
+                        <result property="createdTime" column="CREATED_TIME"/>
+                        <result property="modifierCode" column="MODIFIER_CODE"/>
+                        <result property="modifiedTime" column="MODIFIED_TIME"/>
+                        <result property="cityOid" column="CITY_OID"/>
+                        <result property="cityFundOid" column="CITY_FUND_OID"/>
+                        <result property="targetSysOid" column="TARGET_SYS_OID"/>
+                        <result property="cityId" column="CITY_ID"/>
+                        <result property="cityFundId" column="CITY_FUND_ID"/>
+                        <result property="targetSysId" column="TARGET_SYS_ID"/>
+                        <result property="payAcctNo" column="PAY_ACCT_NO"/>
+                        <result property="taxerNo" column="TAXER_NO"/>
+                        <result property="lohnkostenRate" column="LOHNKOSTEN_RATE"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+            </resultMap>
+</mapper>

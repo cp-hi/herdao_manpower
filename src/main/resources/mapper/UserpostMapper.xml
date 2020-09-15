@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.hedao.hdp.mpclient.mapper.UserpostMapper">
+
+  <resultMap id="userpostMap" type="net.hedao.hdp.mpclient.entity.Userpost">
+                  <id property="id" column="id"/>
+                  <result property="oid" column="OID"/>
+                  <result property="userOid" column="USER_OID"/>
+                  <result property="postOid" column="POST_OID"/>
+                  <result property="orgOid" column="ORG_OID"/>
+                  <result property="orgDeptOid" column="ORG_DEPT_OID"/>
+                  <result property="userId" column="USER_ID"/>
+                  <result property="postId" column="POST_ID"/>
+                  <result property="orgId" column="ORG_ID"/>
+                  <result property="orgDeptId" column="ORG_DEPT_ID"/>
+                  <result property="mainPost" column="MAIN_POST"/>
+                  <result property="actualJob" column="ACTUAL_JOB"/>
+                  <result property="creatorCode" column="CREATOR_CODE"/>
+                  <result property="createdTime" column="CREATED_TIME"/>
+                  <result property="modifierCode" column="MODIFIER_CODE"/>
+                  <result property="modifiedTime" column="MODIFIED_TIME"/>
+                  <result property="isVirtual" column="IS_VIRTUAL"/>
+                  <result property="startDate" column="START_DATE"/>
+                  <result property="endDate" column="END_DATE"/>
+                  <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
+                  <result property="tenantId" column="TENANT_ID"/>
+  </resultMap>
+
+      <!-- 组织架构分页 -->
+      <select id="findUserPost" resultMap="userpostMap">
+            SELECT
+            *
+            FROM
+            mp_userpost
+            WHERE 1=1
+            <if test="orgDeptIds != null">
+                  and  ORG_DEPT_ID IN
+                  <foreach collection="orgDeptIds" item="id" index="index" open="(" close=")" separator=",">
+                        #{id}
+                  </foreach>
+            </if>
+
+
+      </select>
+
+</mapper>
