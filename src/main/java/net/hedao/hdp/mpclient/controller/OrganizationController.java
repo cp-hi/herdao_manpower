@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import net.hedao.hdp.mpclient.entity.Organization;
 import net.hedao.hdp.mpclient.entity.Userpost;
 import net.hedao.hdp.mpclient.service.OrganizationService;
@@ -31,6 +32,7 @@ import java.util.*;
 @AllArgsConstructor
 @RequestMapping("/organization" )
 @Api(value = "organization", tags = "管理")
+@Slf4j
 public class OrganizationController {
 
     private final OrganizationService organizationService;
@@ -253,6 +255,9 @@ public class OrganizationController {
                 List<Userpost> userPostList = userpostService.findUserPost(userpost);
                 if (!userPostList.isEmpty()){
                     delFlag=true;
+
+                    log.error("删除组织失败,该组织及其下属组织有挂靠员工！");
+                    R.failed("删除组织失败,该组织及其下属组织有挂靠员工！");
                 }
 
                 //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
@@ -270,13 +275,13 @@ public class OrganizationController {
                         }
                     }
                 }
-
             }
         }catch (Exception ex){
-
+            log.error("删除组织失败,事务回滚！");
+            R.failed("删除组织失败,事务回滚！");
         }
 
-        return R.ok(null);
+        return R.ok("删除组织成功");
     }
 
 
