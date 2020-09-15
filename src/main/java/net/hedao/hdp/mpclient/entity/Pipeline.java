@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 @Data
 @TableName("MP_Pipeline")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "管线")
 public class Pipeline extends Model<Pipeline> {
     @TableId(value = "ID", type = IdType.AUTO)
     private Integer id;

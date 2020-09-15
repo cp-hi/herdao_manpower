@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("MP_Section")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "板块")
 public class Section extends Model<Section> {
     @TableId(value = "ID", type = IdType.AUTO)
     private Integer id;

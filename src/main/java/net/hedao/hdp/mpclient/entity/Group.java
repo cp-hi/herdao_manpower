@@ -15,7 +15,7 @@
  * Author: hdp
  */
 
-package net.hedao.hdp.mpclient.modules.group.entity;
+package net.hedao.hdp.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -35,7 +35,7 @@ import lombok.EqualsAndHashCode;
 @TableName("mp_group")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "集团表")
-public class MpGroup extends Model<MpGroup> {
+public class Group extends Model<Group> {
 private static final long serialVersionUID = 1L;
 
     /**

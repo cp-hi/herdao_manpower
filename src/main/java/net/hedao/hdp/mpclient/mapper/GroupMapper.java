@@ -15,10 +15,10 @@
  * Author: hdp
  */
 
-package net.hedao.hdp.mpclient.modules.group.mapper;
+package net.hedao.hdp.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.hedao.hdp.mpclient.modules.group.entity.MpGroup;
+import net.hedao.hdp.mpclient.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +28,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2020-09-11 11:57:16
  */
 @Mapper
-public interface MpGroupMapper extends BaseMapper<MpGroup> {
+public interface GroupMapper extends BaseMapper<Group> {
 
 }

@@ -1,4 +1,4 @@
-package net.hedao.hdp.mpclient.modules.demo.entity;
+package net.hedao.hdp.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

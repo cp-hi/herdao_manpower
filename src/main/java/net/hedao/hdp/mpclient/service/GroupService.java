@@ -15,10 +15,10 @@
  * Author: hdp
  */
 
-package net.hedao.hdp.mpclient.modules.group.service;
+package net.hedao.hdp.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.hedao.hdp.mpclient.modules.group.entity.MpGroup;
+import net.hedao.hdp.mpclient.entity.Group;
 
 /**
  * 集团表
@@ -26,6 +26,6 @@ import net.hedao.hdp.mpclient.modules.group.entity.MpGroup;
  * @author yangrr
  * @date 2020-09-11 11:57:16
  */
-public interface MpGroupService extends IService<MpGroup> {
+public interface GroupService extends IService<Group> {
 
 }

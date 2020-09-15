@@ -2,6 +2,7 @@ package net.hedao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.hedao.hdp.mpclient.annotation.OperationEntity;
 import net.hedao.hdp.mpclient.entity.Pipeline;
 import net.hedao.hdp.mpclient.service.PipelineService;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ public class PipelineController {
     private final PipelineService pipelineService;
 
     @GetMapping("/list")
+    @OperationEntity(operation = "获取管线列表", clazz = Pipeline.class)
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list() {
         return R.ok(pipelineService.pipelineList());
@@ -39,7 +41,7 @@ public class PipelineController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Long id)   {
+    public R getById(@PathVariable("id") Long id) {
         return R.ok(pipelineService.getById(id));
     }
 
