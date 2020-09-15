@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.hedao.hdp.mpclient.entity.Organization;
+import net.hedao.hdp.mpclient.entity.Userpost;
 import net.hedao.hdp.mpclient.service.OrganizationService;
+import net.hedao.hdp.mpclient.service.UserpostService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +33,8 @@ import java.util.*;
 public class OrganizationController {
 
     private final OrganizationService organizationService;
+
+    private final UserpostService userpostService;
 
 
     /**
@@ -227,45 +231,44 @@ public class OrganizationController {
     @PostMapping("/removeOrg" )
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
     public R removeOrg(@RequestBody Organization condition) {
-        //停用当前选中组织
-        organizationService.stopOrganById(condition.getId());
-
         List<Map<String,Long>> orgIds=new ArrayList<>();
         //递归获取组织架构parentId
         getRecursionParentIds(condition.getId(),orgIds);
 
-
-        for (Map<String, Long> maps : orgIds) {
-            //停用组织及其下层组织
-            for (Long orgId : maps.values()) {
-                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能删除
-                if (1==1){
-
-                }else{
-
+        if (!orgIds.isEmpty()){
+            List<Long> orgIdList=new ArrayList<>();
+            //删除标志
+            boolean delFlag=false;
+            for (Map<String, Long> maps : orgIds) {
+                for (Long orgId : maps.values()) {
+                    orgIdList.add(orgId);
                 }
-
-                organizationService.stopOrganById(orgId);
+            }
+            Userpost userpost=new Userpost();
+            userpost.setOrgDeptIds(orgIdList);
+            //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
+            List<Userpost> userPostList = userpostService.findUserPost(userpost);
+            if (!userPostList.isEmpty()){
+                delFlag=true;
             }
 
-            //组织需停用后才能删除 停用选中组织的所有下层组织
-            for (Long orgId : maps.values()) {
-                organizationService.removeById(orgId);
+            //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
+            if (delFlag==true){
+                //遍历循环组织架构id
+                for (Map<String, Long> maps : orgIds) {
+                    //停用组织及其下层组织
+                    for (Long orgId : maps.values()) {
+                        organizationService.stopOrganById(orgId);
+                    }
+
+                    //组织需停用后才能删除 停用选中组织的所有下层组织
+                    for (Long orgId : maps.values()) {
+                        organizationService.removeById(orgId);
+                    }
+                }
             }
-
-
 
         }
-
-
-
-
-
-
-
-
-
-
 
         return R.ok(null);
     }
