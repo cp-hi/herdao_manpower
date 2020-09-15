@@ -36,7 +36,7 @@ import java.util.List;
  * @date 2020-09-15 08:57:53
  */
 @Data
-@TableName("t_userpost")
+@TableName("mp_userpost")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "")
 public class Userpost extends Model<Userpost> {

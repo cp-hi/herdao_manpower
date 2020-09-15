@@ -33,7 +33,7 @@
             SELECT
             *
             FROM
-            t_userpost
+            mp_userpost
             WHERE 1=1
             <if test="orgDeptIds != null">
                   and  ORG_DEPT_ID IN
