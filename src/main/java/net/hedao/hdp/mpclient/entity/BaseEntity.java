@@ -25,6 +25,6 @@ public class BaseEntity<T extends Model<?>> extends Model<T> {
     private Date createdTime;
     private Long modifierId;
     private String modifierCode;
-    private Date modifierTime;
+    private Date modifiedTime;
     private Integer tenantId;
 }

@@ -1,12 +1,9 @@
 package net.hedao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.*;
 import net.hedao.hdp.mpclient.entity.Post;
 import net.hedao.hdp.mpclient.service.PostService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -52,6 +49,9 @@ public class PostController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
+//    @ApiResponses({
+//            @ApiResponse()
+//    })
     public R getById(@PathVariable("id") Long id) {
         return R.ok(postService.getById(id));
     }

@@ -1,13 +1,16 @@
 package net.hedao.hdp.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.hedao.hdp.mpclient.entity.JobLevel;
+import net.hedao.hdp.mpclient.entity.Post;
 import net.hedao.hdp.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,21 +28,20 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/client/joblevel")
-@Api( tags = "职级管理")
-public class JobLevelController  {
+@Api(tags = "职级管理")
+public class JobLevelController {
 
     private JobLevelService jobLevelService;
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name="searchText",value="字符串搜索"),
-//            @ApiImplicitParam(name="jobLevels",value="职级"),
-//            @ApiImplicitParam(name="sectionCodes",value="板块编码"),
-//            @ApiImplicitParam(name="pipelineCodes",value="管线编码"),
-//    })
-    public R page(Page page, @RequestParam Map<String, String> params) {
-        return R.ok(jobLevelService.page(page,params));
+    public R page(Page page, JobLevel jobLevel) {
+        QueryWrapper<JobLevel> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .like(StringUtils.isNotBlank(jobLevel.getJobLevelCode()), "JOB_LEVEL_CODE", jobLevel.getJobLevelCode())
+                .or()
+                .like(StringUtils.isNotBlank(jobLevel.getJobLevelName()), "JOB_LEVEL_NAME", jobLevel.getJobLevelName());
+        return R.ok(jobLevelService.page(page, queryWrapper));
     }
 
     @GetMapping("/list")

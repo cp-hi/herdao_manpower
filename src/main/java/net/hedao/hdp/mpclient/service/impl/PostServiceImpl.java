@@ -38,13 +38,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     public Page page(Page page, Map<String, String> params) {
         String searchText = params.get("searchText");
-//        String[] groupIds = StringUtils.split(params.get("groupIds"), ",");
+        /*TODO 问清楚 group 与 section 及  pipeline 之间关联查询方式
+         * 1.条件是否都可以多选，集团与板块 管线之间存在从属关系，
+         *      是否存在联动选择，从属条件是否根据集团排序
+         * 2.是否传groupIds 过来 就只查 集团所属的板块与管线下的岗位
+         * 3.是否允许选择非从属关系的条件
+         */
+        String[] groupIds = StringUtils.split(params.get("groupIds"), ",");
         String[] jobLevels = StringUtils.split(params.get("jobLevels"), ",");
         String[] sectionCodes = StringUtils.split(params.get("sectionCodes"), ",");
         String[] pipelineCodes = StringUtils.split(params.get("pipelineCodes"), ",");
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
         queryWrapper
-//                .in(null != groupIds, "GROUP_ID", groupIds)
                 .in(null != jobLevels, "JOB_LEVEL", jobLevels)
                 .in(null != sectionCodes, "SECTION_CODE", sectionCodes)
                 .in(null != pipelineCodes, "PIPELINE_CODE", pipelineCodes)
@@ -52,11 +57,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return this.page(page, queryWrapper);
     }
 
-    public void addOrUpdate(Post post) throws Exception {
+    @Override
+    public boolean saveOrUpdate(Post post) {
         if (baseMapper.chkDuplicatePostCode(post))
-            throw new Exception("岗位编码重复了");
+            throw new RuntimeException("岗位编码重复了");
         if (baseMapper.chkDuplicatePostName(post))
-            throw new Exception("岗位名称重复了");
-        this.saveOrUpdate(post);
+            throw new RuntimeException("岗位名称重复了");
+        return super.saveOrUpdate(post);
     }
 }

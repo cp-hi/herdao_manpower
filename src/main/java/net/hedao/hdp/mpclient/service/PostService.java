@@ -10,5 +10,5 @@ import java.util.Map;
 public interface PostService extends IService<Post> {
     List<Map> postList();
     Page page (Page page,Map<String, String> params);
-    void addOrUpdate(Post post)throws Exception;
+    boolean saveOrUpdate(Post post);
 }

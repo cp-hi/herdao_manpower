@@ -33,4 +33,6 @@ public class Pipeline extends Model<Pipeline> {
     private Boolean stop;
     private String pipelineStdCode;
     private String tenantId;
+
+    private MpGroup mpGroup;
 }

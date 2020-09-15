@@ -6,7 +6,7 @@
 
 
     <select id="pipelineList" parameterType="pipeline" resultType="map">
-       	select id,pipeline_code AS pipelineCode,pipeline_name AS pipelineName from mp_pipeline
+       	select id,pipeline_code AS pipelineCode,pipeline_name AS pipelineName , group_id as groupId from mp_pipeline
     </select>
 
     <select id="chkDuplicatePipelineCode" parameterType="pipeline" resultType="boolean" >

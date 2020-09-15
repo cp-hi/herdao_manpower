@@ -34,23 +34,23 @@ public class OperationLogAspect {
     private final OperationLogService operationLogService;
     private final RemoteUserService remoteUserService;
 
+    /**
+     * 记录操作的切入点
+     */
     @Pointcut("@annotation(net.hedao.hdp.mpclient.annotation.OperationEntity)")
     public void pointCut1() {
         System.out.println("point1");
     }
 
+    /**
+     * 保存时设置操作人信息的切入点
+     */
     @Pointcut("execution(public * net.hedao.hdp.mpclient.service..*.addOrUpdate(..))")
     public void pointCut2() {
         System.out.println("point2");
     }
 
-//    @Around("pointCut2()")
-//    public Object around(ProceedingJoinPoint point) throws Throwable {
-//        Object result = point.proceed();
-//        return result;
-//    }
-
-    @Before("pointCut2()")//保存时设置操作人信息
+    @Before("pointCut2()")
     public void before(JoinPoint point) {
         Object[] args = point.getArgs();
         if (null == args || 0 == args.length) return;
@@ -65,26 +65,12 @@ public class OperationLogAspect {
                     entity.setCreatorCode(userInfo.getSysUser().getUsername());
                     entity.setCreatorId(Long.valueOf(userInfo.getSysUser().getUserId()));
                 } else {
-                    entity.setModifierTime(new Date());
+                    entity.setModifiedTime(new Date());
                     entity.setModifierCode(userInfo.getSysUser().getUsername());
                     entity.setModifierId(Long.valueOf(userInfo.getSysUser().getUserId()));
                 }
-
             }
         }
-//        if(null == entity) return;
-//        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-//
-//        if(null == entity.getId() || 0 == entity.getId()){
-//            entity.setCreatedTime(new Date());
-//            entity.setCreatorCode(userInfo.getSysUser().getUsername());
-//            entity.setCreatorId(Long.valueOf( userInfo.getSysUser().getUserId()));
-//        }else {
-//            entity.setModifierTime(new Date());
-//            entity.setModifierCode(userInfo.getSysUser().getUsername());
-//            entity.setModifierId(Long.valueOf( userInfo.getSysUser().getUserId()));
-//        }
-
     }
 
     @After("pointCut1()")
