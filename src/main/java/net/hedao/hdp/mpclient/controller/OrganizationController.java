@@ -58,8 +58,8 @@ public class OrganizationController {
     @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R getOrganizationPage(Page page, Organization organization) {
-        Page pageResult = organizationService.page(page, Wrappers.query(organization));
-        return R.ok(pageResult);
+        R result = organizationService.getRecursionOrgByLevel(page, organization);
+        return R.ok(result);
     }
 
 
@@ -155,13 +155,9 @@ public class OrganizationController {
      *
      * @return R
      */
-    @ApiOperation(value = "查询根组织架构", notes = "查询根组织架构")
+    //@ApiOperation(value = "查询根组织架构", notes = "查询根组织架构")
     @PostMapping("/findAllOrganizations")
     public R findAllOrganizations(@RequestBody Organization condition) {
-        if (null != condition) {
-            //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
-            condition.setIsStop(1);
-        }
         List<Organization> list = organizationService.findAllOrganizations(condition);
         return R.ok(list);
     }
@@ -249,6 +245,7 @@ public class OrganizationController {
 
 
     /**
+     *
      * 删除组织
      * @param condition
      * @return R
@@ -265,13 +262,18 @@ public class OrganizationController {
 
     /**
      * 点击展开组织架构树（默认两级） 分页查询
-     *
      * @param condition
      * @return R
      */
-    @ApiOperation(value = "点击展开组织架构树（默认两级）", notes = "点击展开组织架构树（默认两级）")
+    //@ApiOperation(value = "点击展开组织架构树（默认两级）", notes = "点击展开组织架构树（默认两级）")
     @SysLog("点击展开组织架构树（默认两级）")
     @PostMapping("/getRecursionOrgByLevel")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="组织架构主键ID"),
+            @ApiImplicitParam(name="tenantId",value="租户ID"),
+            @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
+            @ApiImplicitParam(name="orgTreeLevel",value="组织结构数层级(默认2级) （可选参数）"),
+    })
     public R getRecursionOrgByLevel(Page page, @RequestBody Organization condition) {
         return organizationService.getRecursionOrgByLevel(page, condition);
     }
@@ -295,6 +297,26 @@ public class OrganizationController {
         组织启用后，将变更启用日期为当前时间*/
         organizationService.startOrStopOrg(condition);
         return R.ok("组织启用/停用成功");
+    }
+
+
+    /**
+     * 分页查询组织架构
+     * @param page 分页对象
+     * @param organization
+     * @return
+     */
+    @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
+    @PostMapping("/findOrgPage")
+    @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="组织架构主键ID"),
+            @ApiImplicitParam(name="orgName",value="组织名称"),
+    })
+    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
+    public R findOrgPage(Page page, @RequestBody Organization organization) {
+        Page pageResult = organizationService.findOrgPage(page, organization);
+        return R.ok(pageResult);
     }
 
 

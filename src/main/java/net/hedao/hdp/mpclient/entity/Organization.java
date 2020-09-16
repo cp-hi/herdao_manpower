@@ -174,7 +174,13 @@ private static final long serialVersionUID = 1L;
      * 停用日期
      */
     @ApiModelProperty(value="停用日期")
-    private String endDate;
+    private String stopDate;
+
+    /**
+     * 组织树层级
+     */
+    @ApiModelProperty(value="组织树层级")
+    private Long orgTreeLevel;
 
     /**
      * 父组织架构集合
@@ -202,7 +208,6 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private List<Long> ids;
 
-
     @ApiModelProperty(value="起始页")
     @TableField(exist = false)
     private List<Integer> pageStart;
@@ -218,6 +223,7 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="组织负责人姓名")
     @TableField(exist = false)
     private String userName;
+
 
 
 }

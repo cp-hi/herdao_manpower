@@ -70,9 +70,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return list;
     }
 
-
-
-
     @Override
     public List<Organization> findOrgPage(Organization condition) {
         List<Organization> list = this.baseMapper.findOrgPage(condition);
@@ -188,14 +185,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             allOrgList.addAll(rootOrgList);
             List<Organization> childrenTemp = new ArrayList<>();
             for (Organization rootOrgan : rootOrgList) {
-                Organization childrenCondtion = new Organization();
-                childrenCondtion.setParentId(rootOrgan.getId());
-                if (StringUtils.isBlank(condition.getOrgLevel())) {
+                Organization childrenCondition = new Organization();
+                childrenCondition.setParentId(rootOrgan.getId());
+                if (null == condition.getOrgTreeLevel()) {
                     //默认展示两级
-                    queryOrgByParentId(childrenTemp, childrenCondtion, 2);
+                    queryOrgByParentId(childrenTemp, childrenCondition, 2L);
                 } else {
                     //传参自定义展示层级数
-                    queryOrgByParentId(childrenTemp, childrenCondtion, Integer.parseInt(condition.getOrgLevel()));
+                    queryOrgByParentId(childrenTemp, childrenCondition, condition.getOrgTreeLevel());
                 }
 
             }
@@ -216,7 +213,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @SysLog("点击展开组织架构树（默认两级）")
-    private void queryOrgByParentId(List<Organization> childrenTemp, Organization condition, Integer orgLevel) {
+    private void queryOrgByParentId(List<Organization> childrenTemp, Organization condition, Long orgLevel) {
         List<Organization> children = this.baseMapper.findOrganizationByCondition(condition);
         if (!children.isEmpty()) {
             childrenTemp.addAll(children);
@@ -316,5 +313,39 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         }
 
         return R.ok(rootOrgans);
+    }
+
+
+    /**
+     * 分页查询组织架构
+     * @param page 分页对象
+     * @param organization
+     * @return
+     */
+    @Override
+    public Page findOrgPage(Page page, Organization organization) {
+        Organization childrenCondition=new Organization();
+        childrenCondition.setParentId(organization.getId());
+
+        List<Organization> childrenOrgList = this.baseMapper.findOrganizationByCondition(childrenCondition);
+        QueryWrapper<Organization> wrapper = Wrappers.query();
+
+        if (!StringUtils.isBlank(organization.getOrgName())){
+            wrapper.like("org_name",organization.getOrgName());
+        }
+
+        if (null != organization && organization.getId()!=null){
+            List<Long> orgIds=new ArrayList<>();
+            orgIds.add(organization.getId());
+            if (null != childrenOrgList && !childrenOrgList.isEmpty()){
+                for (Organization entity : childrenOrgList) {
+                    orgIds.add(entity.getId());
+                }
+            }
+
+            wrapper.in("id", orgIds);
+        }
+
+        return super.page(page, wrapper);
     }
 }

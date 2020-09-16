@@ -11,7 +11,7 @@
         <result property="orgCode" column="ORG_CODE"/>
         <result property="parentOid" column="PARENT_ID"/>
         <result property="parentId" column="PARENT_ID"/>
-        <result property="orgLevel" column="ORG_LEVEL"/>
+        <result property="orgLevel" column="org_tree_level"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
         <result property="welfareType" column="WELFARE_TYPE"/>
@@ -31,6 +31,9 @@
         <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
+        <result property="startDate" column="start_date"/>
+        <result property="stopDate" column="stop_date"/>
+        <result property="orgTreeLevel" column="org_tree_level"/>
     </resultMap>
 
     <resultMap id="organizationChildrenMap" type="net.hedao.hdp.mpclient.entity.Organization">
@@ -41,7 +44,7 @@
         <result property="orgCode" column="ORG_CODE"/>
         <result property="parentOid" column="PARENT_ID"/>
         <result property="parentId" column="PARENT_ID"/>
-        <result property="orgLevel" column="ORG_LEVEL"/>
+        <result property="orgLevel" column="org_tree_level"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
         <result property="welfareType" column="WELFARE_TYPE"/>
@@ -61,9 +64,11 @@
         <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
+        <result property="startDate" column="start_date"/>
+        <result property="stopDate" column="stop_date"/>
+        <result property="orgTreeLevel" column="org_tree_level"/>
         <collection property="children" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
-        <collection property="childrenClick" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectChildrenOrganClick"></collection>
-    </resultMap>
+     </resultMap>
 
     <resultMap id="organTreeMap" type="net.hedao.hdp.mpclient.entity.Organization">
         <id property="id" column="ID"/>
@@ -73,7 +78,7 @@
         <result property="orgCode" column="ORG_CODE"/>
         <result property="parentOid" column="PARENT_ID"/>
         <result property="parentId" column="PARENT_ID"/>
-        <result property="orgLevel" column="ORG_LEVEL"/>
+        <result property="orgLevel" column="org_tree_level"/>
         <result property="organizational" column="ORGANIZATIONAL"/>
         <result property="pipelineCode" column="PIPELINE_CODE"/>
         <result property="welfareType" column="WELFARE_TYPE"/>
@@ -93,6 +98,9 @@
         <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
+        <result property="startDate" column="start_date"/>
+        <result property="stopDate" column="stop_date"/>
+        <result property="orgTreeLevel" column="org_tree_level"/>
         <collection property="parent" column="PARENT_ID" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectParentOrgan"></collection>
         <collection property="children" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
@@ -125,7 +133,7 @@
             mp_organization
         WHERE 1=1
          <if test="isRoot == true">
-             AND  PARENT_ID IS NULL
+             AND PARENT_ID IS NULL
          </if>
 
          <if test="id != null">
@@ -144,7 +152,7 @@
       <select id="selectChildrenOrgan" resultMap="organizationChildrenMap">
             SELECT * FROM mp_organization
             WHERE 1=1
-            and org_level &lt;= 2
+            and org_tree_level &lt;= 2
           <if test="parentId != null">
               AND PARENT_ID=#{parentId}
           </if>
@@ -180,7 +188,7 @@
         </if>
 
         <if test="orgLevel != null">
-            AND ORG_LEVEL = #{orgLevel}
+            AND org_tree_level = #{orgLevel}
         </if>
 
         <if test="orgName != null">
@@ -192,7 +200,7 @@
         </if>
 
         <if test="orgLevel != null">
-            AND ORG_LEVEL = #{orgLevel}
+            AND org_tree_level = #{orgLevel}
         </if>
 
         <if test="createdTime != null">

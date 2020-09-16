@@ -99,4 +99,12 @@ public interface OrganizationService extends IService<Organization> {
      * @return R
      */
     R findOrganization2LevelByCondition(@RequestBody Organization condition);
+
+    /**
+     * 分页查询组织架构
+     * @param page 分页对象
+     * @param organization
+     * @return
+     */
+    Page findOrgPage(Page page, Organization organization);
 }
