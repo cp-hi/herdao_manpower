@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.hedao.hdp.mpclient.annotation.OperationEntity;
 import net.hedao.hdp.mpclient.entity.Organization;
 import net.hedao.hdp.mpclient.entity.Post;
 import net.hedao.hdp.mpclient.entity.User;
@@ -44,14 +47,15 @@ public class OrganizationController {
     private final UserService userService;
 
     /**
-     * 分页查询
+     * 分页查询组织架构
      *
-     * @param page         分页对象
+     * @param page 分页对象
      * @param organization
      * @return
      */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
+    @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
     @GetMapping("/page")
+    @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R getOrganizationPage(Page page, Organization organization) {
         Page pageResult = organizationService.page(page, Wrappers.query(organization));
@@ -60,13 +64,14 @@ public class OrganizationController {
 
 
     /**
-     * 通过id查询
+     * 通过id查询组织架构
      *
      * @param id
      * @return R
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}")
+    @OperationEntity(operation = "通过id查询组织架构" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R getById(@PathVariable("id") String id) {
         return R.ok(organizationService.getById(id));
@@ -225,13 +230,19 @@ public class OrganizationController {
 
 
     /**
-     * 根据当前登录租户的租户ID 查询根组织架构和二级组织架构 存在多个根组织架构的情况
-     * 默认加载展示2级组织架构（废弃 2020/09/11)
+     * 根据当前登录租户的租户ID 查询该组织架构和二级组织架构 存在多个根组织架构的情况
+     * 默认加载展示2级组织架构
      *
      * @return R
      */
-    @ApiOperation(value = "默认加载展示2级组织架构", notes = "默认加载展示2级组织架构")
+    @ApiOperation(value = "展示组织管理，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)", notes = "展示组织管理，点击切换启用状态 。 （默认展示两级架构，根组织及其下一层子组织。)")
     @PostMapping("/findOrganization2LevelByCondition")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="组织架构主键ID"),
+        @ApiImplicitParam(name="tenantId",value="租户ID"),
+        @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
+        @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
+     })
     public R findOrganization2LevelByCondition(@RequestBody Organization condition) {
         return organizationService.findOrganization2LevelByCondition(condition);
     }

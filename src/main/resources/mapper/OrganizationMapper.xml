@@ -240,8 +240,13 @@
         *
         FROM
         mp_organization
-        WHERE
-        PARENT_ID IS NULL
+        WHERE 1=1
+        <if test="id != null">
+            AND  id = #{id}
+        </if>
+        <if test="isRoot == true ">
+            AND  PARENT_ID IS NULL
+        </if>
         <if test="isStop != null">
             AND is_stop = #{isStop}
         </if>
