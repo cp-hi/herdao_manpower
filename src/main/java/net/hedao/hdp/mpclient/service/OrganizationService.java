@@ -63,20 +63,6 @@ public interface OrganizationService extends IService<Organization> {
      */
     List<Organization> findRootOrganizations(Organization condition);
 
-    /**
-     * 停用根组织架构且（进行下级递归停用）
-     * @param id
-     * @return
-     */
-     void stopOrganById(Long id);
-
-    /**
-     * 启用当前组织架构
-     * @param id
-     * @return
-     */
-    void startOrganById(Long id);
-
 
     /**
      * 组织架构分页
@@ -106,4 +92,11 @@ public interface OrganizationService extends IService<Organization> {
      * @return R
      */
      void startOrStopOrg(@RequestBody Organization condition);
+
+    /**
+     * 默认加载展示2级组织架构
+     * @param condition
+     * @return R
+     */
+    R findOrganization2LevelByCondition(@RequestBody Organization condition);
 }

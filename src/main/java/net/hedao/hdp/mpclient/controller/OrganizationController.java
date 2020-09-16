@@ -233,27 +233,9 @@ public class OrganizationController {
     @ApiOperation(value = "默认加载展示2级组织架构", notes = "默认加载展示2级组织架构")
     @PostMapping("/findOrganization2LevelByCondition")
     public R findOrganization2LevelByCondition(@RequestBody Organization condition) {
-        if (null != condition) {
-            //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
-            condition.setIsStop(1);
-        }
-        List<Organization> rootOrgans = organizationService.findRootOrganizations(condition);
-
-        if (!rootOrgans.isEmpty()) {
-            for (Organization rootOrgan : rootOrgans) {
-                Organization childrenCondition = new Organization();
-                childrenCondition.setParentId(rootOrgan.getId());
-                //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
-                childrenCondition.setIsStop(1);
-
-                List<Organization> childrenOrgans = organizationService.findOrganizationByCondition(childrenCondition);
-                rootOrgan.setChildren(childrenOrgans);
-            }
-
-        }
-
-        return R.ok(rootOrgans);
+        return organizationService.findOrganization2LevelByCondition(condition);
     }
+
 
     /**
      * 删除组织

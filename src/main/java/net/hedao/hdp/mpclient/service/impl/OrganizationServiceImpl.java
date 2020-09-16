@@ -33,7 +33,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     private final UserpostService userpostService;
 
-    private final OrganizationService organizationService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -71,15 +70,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return list;
     }
 
-    @Override
-    public void stopOrganById(Long id) {
-        this.baseMapper.stopOrganById(id);
-    }
 
-    @Override
-    public void startOrganById(Long id) {
-        this.baseMapper.startOrganById(id);
-    }
+
 
     @Override
     public List<Organization> findOrgPage(Organization condition) {
@@ -101,6 +93,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         //如果是启用操作，则直接启用当前组织。
         if (null != condition && condition.getIsStop() == 1){
             this.baseMapper.startOrganById(condition.getId());
+
+            //更新该组织的启用日期  start_date
+            this.baseMapper.updateById(condition);
         }
 
         //如果是停用操作
@@ -134,12 +129,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     for (Map<String, Long> maps : orgIds) {
                         //停用组织及其下层组织
                         for (Long orgId : maps.values()) {
-                            organizationService.stopOrganById(orgId);
+                            this.baseMapper.stopOrganById(orgId);
+                            //更新该组织的停用日期  end_date
+                            Organization updateCondition=new Organization();
+                            this.baseMapper.updateById(updateCondition);
                         }
                     }
                 }
             }
-
         }
     }
 
@@ -148,7 +145,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public void getRecursionParentIds(Long id, List<Map<String, Long>> orgIds) {
         Organization condition = new Organization();
         condition.setId(id);
-        List<Organization> list = organizationService.findAllOrganizations(condition);
+        List<Organization> list = this.baseMapper.findAllOrganizations(condition);
         if (!list.isEmpty()) {
             for (Organization entity : list) {
                 if (null != entity) {
@@ -185,7 +182,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public R getRecursionOrgByLevel(Page page, @RequestBody Organization condition) {
         List<Organization> allOrgList = new ArrayList<>();
-        List<Organization> rootOrgList = organizationService.findOrganizationByCondition(condition);
+        List<Organization> rootOrgList = this.baseMapper.findOrganizationByCondition(condition);
 
         if (!rootOrgList.isEmpty()) {
             allOrgList.addAll(rootOrgList);
@@ -213,14 +210,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         QueryWrapper<Organization> wrapper = Wrappers.query();
         wrapper.in("id", ids);
 
-        Page pageResult = organizationService.page(page, wrapper);
+        Page pageResult = super.page(page, wrapper);
 
         return R.ok(pageResult);
     }
 
     @SysLog("点击展开组织架构树（默认两级）")
     private void queryOrgByParentId(List<Organization> childrenTemp, Organization condition, Integer orgLevel) {
-        List<Organization> children = organizationService.findOrganizationByCondition(condition);
+        List<Organization> children = this.baseMapper.findOrganizationByCondition(condition);
         if (!children.isEmpty()) {
             childrenTemp.addAll(children);
             for (Organization child : children) {
@@ -274,12 +271,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     for (Map<String, Long> maps : orgIds) {
                         //停用组织及其下层组织
                         for (Long orgId : maps.values()) {
-                            organizationService.stopOrganById(orgId);
+                            this.baseMapper.stopOrganById(orgId);
                         }
 
                         //组织需停用后才能删除 停用选中组织的所有下层组织
                         for (Long orgId : maps.values()) {
-                            organizationService.removeById(orgId);
+                            //this.baseMapper.removeById(orgId);
                         }
                     }
                 }
@@ -290,5 +287,34 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         }
 
         return R.ok("删除组织成功");
+    }
+
+     /**
+     * 默认加载展示2级组织架构
+     * @param condition
+     * @return R
+     */
+    @Override
+    public  R findOrganization2LevelByCondition(@RequestBody Organization condition) {
+        if (null != condition) {
+            //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
+            condition.setIsStop(1);
+        }
+        List<Organization> rootOrgans = this.baseMapper.findRootOrganizations(condition);
+
+        if (!rootOrgans.isEmpty()) {
+            for (Organization rootOrgan : rootOrgans) {
+                Organization childrenCondition = new Organization();
+                childrenCondition.setParentId(rootOrgan.getId());
+                //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
+                childrenCondition.setIsStop(1);
+
+                List<Organization> childrenOrgans = this.baseMapper.findOrganizationByCondition(childrenCondition);
+                rootOrgan.setChildren(childrenOrgans);
+            }
+
+        }
+
+        return R.ok(rootOrgans);
     }
 }

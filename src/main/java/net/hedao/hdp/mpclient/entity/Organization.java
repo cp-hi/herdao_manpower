@@ -165,6 +165,18 @@ private static final long serialVersionUID = 1L;
     private String empInService;
 
     /**
+     * 启用日期
+     */
+    @ApiModelProperty(value="启用日期")
+    private String startDate;
+
+    /**
+     * 停用日期
+     */
+    @ApiModelProperty(value="停用日期")
+    private String endDate;
+
+    /**
      * 父组织架构集合
      */
     @ApiModelProperty(value="父组织架构集合")
@@ -206,6 +218,8 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="组织负责人姓名")
     @TableField(exist = false)
     private String userName;
+
+
 }
 
 
