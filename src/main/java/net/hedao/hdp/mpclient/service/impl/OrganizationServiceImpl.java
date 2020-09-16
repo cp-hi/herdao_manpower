@@ -276,7 +276,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
                         //组织需停用后才能删除 停用选中组织的所有下层组织
                         for (Long orgId : maps.values()) {
-                            //this.baseMapper.removeById(orgId);
+                            super.removeById(orgId);
                         }
                     }
                 }
