@@ -63,6 +63,7 @@ public class OrganizationController {
         if (null != organization){
             QueryWrapper<Organization> wrapper = Wrappers.query();
             wrapper.eq("id",organization.getParentId());
+            //获取父组织
             Organization parentOrg = organizationService.getOne(wrapper);
             if (null != parentOrg){
                 organization.setParentName(parentOrg.getOrgName());
@@ -98,6 +99,15 @@ public class OrganizationController {
                 organization.setUserName(user.getUserName());
             }
 
+            QueryWrapper<Organization> wrapper = Wrappers.query();
+            wrapper.eq("id",organization.getParentId());
+            //获取父组织
+            Organization parentOrg = organizationService.getOne(wrapper);
+            if (null != parentOrg){
+                if (null != parentOrg.getOrgTreeLevel()){
+                    organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel());
+                }
+            }
         }
         organizationService.save(organization);
 
@@ -256,7 +266,6 @@ public class OrganizationController {
         return removeOrg(condition);
     }
 
-
     /**
      * 点击展开组织架构树（默认两级） 分页查询
      * @param condition
@@ -275,7 +284,6 @@ public class OrganizationController {
     public R getRecursionOrgByLevel(@RequestBody Organization condition) {
         return organizationService.getRecursionOrgByLevel(condition);
     }
-
 
     /**
      * 组织启用/停用
@@ -316,8 +324,6 @@ public class OrganizationController {
         Page pageResult = organizationService.findOrgPage(page, organization);
         return R.ok(pageResult);
     }
-
-
 
 
 }
