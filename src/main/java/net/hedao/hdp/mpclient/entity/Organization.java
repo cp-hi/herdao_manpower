@@ -224,7 +224,12 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private String userName;
 
-
+    /**
+     * 父ID
+     */
+    @ApiModelProperty(value="父组织name")
+    @TableField(exist = false)
+    private String parentName;
 
 }
 

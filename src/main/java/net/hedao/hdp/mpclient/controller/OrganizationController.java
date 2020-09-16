@@ -2,7 +2,6 @@
 package net.hedao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,11 +11,9 @@ import net.hedao.hdp.mpclient.annotation.OperationEntity;
 import net.hedao.hdp.mpclient.entity.Organization;
 import net.hedao.hdp.mpclient.entity.Post;
 import net.hedao.hdp.mpclient.entity.User;
-import net.hedao.hdp.mpclient.entity.Userpost;
 import net.hedao.hdp.mpclient.service.OrganizationService;
 import net.hedao.hdp.mpclient.service.PostService;
 import net.hedao.hdp.mpclient.service.UserService;
-import net.hedao.hdp.mpclient.service.UserpostService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,35 +43,33 @@ public class OrganizationController {
 
     private final UserService userService;
 
-    /**
-     * 分页查询组织架构
-     *
-     * @param page 分页对象
-     * @param organization
-     * @return
-     */
-    @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
-    @GetMapping("/page")
-    @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R getOrganizationPage(Page page, Organization organization) {
-        R result = organizationService.getRecursionOrgByLevel(page, organization);
-        return R.ok(result);
-    }
-
 
     /**
-     * 通过id查询组织架构
+     * 通过id查询组织架构详情
      *
      * @param id
      * @return R
      */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}")
-    @OperationEntity(operation = "通过id查询组织架构" ,clazz = Organization.class )
+    @ApiOperation(value = "通过id查询组织架构详情", notes = "通过id查询组织架构详情")
+    @GetMapping("/fetchOrg/{id}")
+    @OperationEntity(operation = "通过id查询组织架构详情" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R getById(@PathVariable("id") String id) {
-        return R.ok(organizationService.getById(id));
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="组织架构主键ID")
+    })
+    public R fetchOrg(@PathVariable("id") String id) {
+        Organization organization = organizationService.getById(id);
+
+        if (null != organization){
+            QueryWrapper<Organization> wrapper = Wrappers.query();
+            wrapper.eq("id",organization.getParentId());
+            Organization parentOrg = organizationService.getOne(wrapper);
+            if (null != parentOrg){
+                organization.setParentName(parentOrg.getOrgName());
+            }
+        }
+
+        return R.ok(organization);
     }
 
     /**
@@ -85,10 +80,10 @@ public class OrganizationController {
      */
     @ApiOperation(value = "新增组织架构", notes = "新增组织架构")
     @SysLog("新增组织架构")
-    @PostMapping("/save")
+    @PostMapping("/saveOrg")
     @Transactional
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
-    public R save(@RequestBody Organization organization) {
+    public R saveOrg(@RequestBody Organization organization) {
         if (null != organization) {
             //查询岗位负责人姓名 mp_post表
             Post post = postService.getById(organization.getChargeOrg());
@@ -238,9 +233,9 @@ public class OrganizationController {
         @ApiImplicitParam(name="tenantId",value="租户ID"),
         @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
         @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
-     })
+    })
     public R findOrganization2LevelByCondition(@RequestBody Organization condition) {
-        return organizationService.findOrganization2LevelByCondition(condition);
+        return organizationService.findOrganization2Level(condition);
     }
 
 
@@ -274,8 +269,8 @@ public class OrganizationController {
             @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
             @ApiImplicitParam(name="orgTreeLevel",value="组织结构数层级(默认2级) （可选参数）"),
     })
-    public R getRecursionOrgByLevel(Page page, @RequestBody Organization condition) {
-        return organizationService.getRecursionOrgByLevel(page, condition);
+    public R getRecursionOrgByLevel(@RequestBody Organization condition) {
+        return organizationService.getRecursionOrgByLevel(condition);
     }
 
 

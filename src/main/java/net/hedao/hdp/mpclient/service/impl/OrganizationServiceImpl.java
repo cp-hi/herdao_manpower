@@ -177,7 +177,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     @SysLog("点击展开组织架构树（默认两级）")
     @Override
-    public R getRecursionOrgByLevel(Page page, @RequestBody Organization condition) {
+    public R getRecursionOrgByLevel(@RequestBody Organization condition) {
         List<Organization> allOrgList = new ArrayList<>();
         List<Organization> rootOrgList = this.baseMapper.findOrganizationByCondition(condition);
 
@@ -207,9 +207,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         QueryWrapper<Organization> wrapper = Wrappers.query();
         wrapper.in("id", ids);
 
-        Page pageResult = super.page(page, wrapper);
+        List<Organization> list = super.list(wrapper);
 
-        return R.ok(pageResult);
+        return R.ok(list);
     }
 
     @SysLog("点击展开组织架构树（默认两级）")
@@ -292,7 +292,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @return R
      */
     @Override
-    public  R findOrganization2LevelByCondition(@RequestBody Organization condition) {
+    public  R findOrganization2Level(@RequestBody Organization condition) {
         if (null != condition) {
             //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
             condition.setIsStop(1);
@@ -333,6 +333,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         if (!StringUtils.isBlank(organization.getOrgName())){
             wrapper.like("org_name",organization.getOrgName());
         }
+
+        if (null != organization.getIsStop()){
+            wrapper.eq("is_stop",organization.getIsStop());
+        }else {
+            //默认查询已启用的组织
+            wrapper.eq("is_stop",1);
+        }
+
 
         if (null != organization && organization.getId()!=null){
             List<Long> orgIds=new ArrayList<>();

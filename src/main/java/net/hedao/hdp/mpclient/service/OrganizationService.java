@@ -77,7 +77,7 @@ public interface OrganizationService extends IService<Organization> {
      * @param condition
      * @return
      */
-    R getRecursionOrgByLevel(Page page, @RequestBody Organization condition);
+    R getRecursionOrgByLevel(@RequestBody Organization condition);
 
     /**
      * 删除组织
@@ -98,7 +98,7 @@ public interface OrganizationService extends IService<Organization> {
      * @param condition
      * @return R
      */
-    R findOrganization2LevelByCondition(@RequestBody Organization condition);
+    R findOrganization2Level(@RequestBody Organization condition);
 
     /**
      * 分页查询组织架构
