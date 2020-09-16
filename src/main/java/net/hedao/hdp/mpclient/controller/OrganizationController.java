@@ -420,6 +420,72 @@ public class OrganizationController {
     }
 
 
+    /**
+     * 组织启用/停用
+     * @param condition
+     * @return R
+     */
+    @ApiOperation(value = "组织启用/停用", notes = "组织启用/停用")
+    @SysLog("组织启用/停用")
+    @PostMapping("/startOrStopOrg")
+    //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
+    @Transactional
+    public R startOrStopOrg(@RequestBody Organization condition) {
+        /*组织启用/停用
+        当组织下无在职员工，方能停用组织，组织停用后，员工入职、转正、调职将不能使用该组织
+        组织停用后，才能操作删除组织，但组织变更记录不能删除
+        组织停用后，将变更停用日期为当前时间
+        组织启用后，将变更启用日期为当前时间*/
+
+        // 是否停用 ： 0 停用 ，1启用（默认），3全部
+        //如果是启用操作，则直接启用当前组织。
+        if (null != condition && condition.getIsStop() == 1){
+            organizationService.startOrganById(condition.getId());
+        }
+
+        //如果是停用操作
+        if (null != condition && condition.getIsStop() == 0){
+            List<Map<String, Long>> orgIds = new ArrayList<>();
+            //递归获取组织架构parentId
+            getRecursionParentIds(condition.getId(), orgIds);
+
+            if (!orgIds.isEmpty()) {
+                List<Long> orgIdList = new ArrayList<>();
+                //操作标志
+                boolean operFlag = false;
+                for (Map<String, Long> maps : orgIds) {
+                    for (Long orgId : maps.values()) {
+                        orgIdList.add(orgId);
+                    }
+                }
+                Userpost userpost = new Userpost();
+                userpost.setOrgDeptIds(orgIdList);
+                //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
+                List<Userpost> userPostList = userpostService.findUserPost(userpost);
+                if (!userPostList.isEmpty()) {
+                    operFlag = true;
+                    log.error("停用组织失败,该组织及其下属组织有挂靠员工！");
+                    R.failed("停用组织失败,该组织及其下属组织有挂靠员工！");
+                }
+
+                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
+                if (operFlag == true) {
+                    //遍历循环组织架构id
+                    for (Map<String, Long> maps : orgIds) {
+                        //停用组织及其下层组织
+                        for (Long orgId : maps.values()) {
+                            organizationService.stopOrganById(orgId);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return R.ok("组织启用/停用成功");
+    }
+
+
 }
 
 

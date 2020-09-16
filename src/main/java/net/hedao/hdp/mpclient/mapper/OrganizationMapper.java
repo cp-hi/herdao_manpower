@@ -71,4 +71,12 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
     List<Organization> findOrgPage(Organization condition);
+
+    /**
+     * 启用当前组织架构
+     * @param id
+     * @return
+     */
+    void startOrganById(Long id);
+
 }

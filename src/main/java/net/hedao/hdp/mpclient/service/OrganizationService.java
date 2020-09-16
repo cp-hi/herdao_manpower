@@ -63,6 +63,14 @@ public interface OrganizationService extends IService<Organization> {
      void stopOrganById(Long id);
 
     /**
+     * 启用当前组织架构
+     * @param id
+     * @return
+     */
+    void startOrganById(Long id);
+
+
+    /**
      * 组织架构分页
      * @param condition
      * @return
