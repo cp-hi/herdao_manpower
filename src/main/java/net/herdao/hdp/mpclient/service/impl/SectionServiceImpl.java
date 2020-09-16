@@ -1,0 +1,37 @@
+package net.herdao.hdp.mpclient.service.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.mpclient.entity.Section;
+import net.herdao.hdp.mpclient.mapper.SectionMapper;
+import net.herdao.hdp.mpclient.service.SectionService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @ClassName SectionServiceImpl
+ * @Description SectionServiceImpl
+ * @Author ljan
+ * @mail 122092@gdpr.com
+ * @Date 2020/9/11 19:46
+ * @Version 1.0
+ */
+@Service
+@AllArgsConstructor
+public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
+
+    public List<Map> sectionList() {
+        return baseMapper.sectionList();
+    }
+
+    @Override
+    public boolean saveOrUpdate(Section section)  {
+        if (baseMapper.chkDuplicateSectionCode(section))
+            throw new RuntimeException("板块编码重复了");
+        if (baseMapper.chkDuplicateSectionName(section))
+            throw new RuntimeException("板块名称重复了");
+        return super.saveOrUpdate(section);
+    }
+}

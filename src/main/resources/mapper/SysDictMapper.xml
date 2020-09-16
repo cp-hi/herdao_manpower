@@ -21,17 +21,15 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.GroupMapper">
+<mapper namespace="net.herdao.hdp.admin.mapper.SysDictMapper">
 
-  <resultMap id="mpGroupMap" type="net.herdao.hdp.mpclient.entity.Group">
-                  <id property="id" column="ID"/>
-                        <result property="groupCode" column="GROUP_CODE"/>
-                        <result property="groupName" column="GROUP_NAME"/>
-                        <result property="remark" column="REMARK"/>
-                        <result property="sortNo" column="SORT_NO"/>
-                        <result property="orgId" column="ORG_ID"/>
-                        <result property="orgCode" column="ORG_CODE"/>
-                        <result property="groupFullname" column="GROUP_FULLNAME"/>
-                        <result property="tenantId" column="TENANT_ID"/>
-            </resultMap>
+	<resultMap id="sysDictMap" type="net.herdao.hdp.admin.api.entity.SysDict">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="description" column="description"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="remarks" column="remarks"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
 </mapper>
