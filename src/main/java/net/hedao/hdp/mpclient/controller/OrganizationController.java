@@ -105,7 +105,8 @@ public class OrganizationController {
             Organization parentOrg = organizationService.getOne(wrapper);
             if (null != parentOrg){
                 if (null != parentOrg.getOrgTreeLevel()){
-                    organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel());
+                    //当前新增组织的组织树层级数+1
+                    organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
                 }
             }
         }
