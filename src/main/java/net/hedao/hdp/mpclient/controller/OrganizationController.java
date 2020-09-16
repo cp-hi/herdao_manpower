@@ -39,8 +39,6 @@ public class OrganizationController {
 
     private final OrganizationService organizationService;
 
-    private final UserpostService userpostService;
-
     private final PostService postService;
 
     private final UserService userService;
@@ -257,10 +255,8 @@ public class OrganizationController {
         return R.ok(rootOrgans);
     }
 
-
     /**
      * 删除组织
-     *
      * @param condition
      * @return R
      */
@@ -270,92 +266,9 @@ public class OrganizationController {
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
     @Transactional
     public R removeOrg(@RequestBody Organization condition) {
-        try {
-            List<Map<String, Long>> orgIds = new ArrayList<>();
-            //递归获取组织架构parentId
-            getRecursionParentIds(condition.getId(), orgIds);
-
-            if (!orgIds.isEmpty()) {
-                List<Long> orgIdList = new ArrayList<>();
-                //删除标志
-                boolean delFlag = false;
-                for (Map<String, Long> maps : orgIds) {
-                    for (Long orgId : maps.values()) {
-                        orgIdList.add(orgId);
-                    }
-                }
-                Userpost userpost = new Userpost();
-                userpost.setOrgDeptIds(orgIdList);
-                //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
-                List<Userpost> userPostList = userpostService.findUserPost(userpost);
-                if (!userPostList.isEmpty()) {
-                    delFlag = true;
-
-                    log.error("删除组织失败,该组织及其下属组织有挂靠员工！");
-                    R.failed("删除组织失败,该组织及其下属组织有挂靠员工！");
-                }
-
-                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
-                if (delFlag == true) {
-                    //遍历循环组织架构id
-                    for (Map<String, Long> maps : orgIds) {
-                        //停用组织及其下层组织
-                        for (Long orgId : maps.values()) {
-                            organizationService.stopOrganById(orgId);
-                        }
-
-                        //组织需停用后才能删除 停用选中组织的所有下层组织
-                        for (Long orgId : maps.values()) {
-                            organizationService.removeById(orgId);
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            log.error("删除组织失败,事务回滚！");
-            R.failed("删除组织失败,事务回滚！");
-        }
-
-        return R.ok("删除组织成功");
+        return removeOrg(condition);
     }
 
-
-    @SysLog("递归获取组织架构parentId")
-    public void getRecursionParentIds(Long id, List<Map<String, Long>> orgIds) {
-        Organization condition = new Organization();
-        condition.setId(id);
-        List<Organization> list = organizationService.findAllOrganizations(condition);
-        if (!list.isEmpty()) {
-            for (Organization entity : list) {
-                if (null != entity) {
-                    Map<String, Long> map = new HashMap<>();
-                    map.put(entity.getOrgName(), entity.getId());
-                    orgIds.add(map);
-
-                    if (!entity.getChildrenClick().isEmpty()) {
-                        getChildren(entity, orgIds);
-                    }
-                }
-
-            }
-        }
-    }
-
-    @SysLog("递归获取组织架构parentId")
-    public void getChildren(Organization entity, List<Map<String, Long>> orgIds) {
-        List<Organization> childrens = entity.getChildrenClick();
-        if (!childrens.isEmpty()) {
-            for (Organization child : childrens) {
-                if (null != child) {
-                    Map<String, Long> map = new HashMap<>();
-                    map.put(child.getOrgName(), child.getId());
-                    orgIds.add(map);
-                    getChildren(child, orgIds);
-                }
-
-            }
-        }
-    }
 
     /**
      * 点击展开组织架构树（默认两级） 分页查询
@@ -367,56 +280,7 @@ public class OrganizationController {
     @SysLog("点击展开组织架构树（默认两级）")
     @PostMapping("/getRecursionOrgByLevel")
     public R getRecursionOrgByLevel(Page page, @RequestBody Organization condition) {
-        List<Organization> allOrgList = new ArrayList<>();
-        List<Organization> rootOrgList = organizationService.findOrganizationByCondition(condition);
-
-        if (!rootOrgList.isEmpty()) {
-            allOrgList.addAll(rootOrgList);
-            List<Organization> childrenTemp = new ArrayList<>();
-            for (Organization rootOrgan : rootOrgList) {
-                Organization childrenCondtion = new Organization();
-                childrenCondtion.setParentId(rootOrgan.getId());
-                if (StringUtils.isBlank(condition.getOrgLevel())) {
-                    //默认展示两级
-                    queryOrgByParentId(childrenTemp, childrenCondtion, 2);
-                } else {
-                    //传参自定义展示层级数
-                    queryOrgByParentId(childrenTemp, childrenCondtion, Integer.parseInt(condition.getOrgLevel()));
-                }
-
-            }
-            allOrgList.addAll(childrenTemp);
-        }
-
-        //查询分页结果
-        List<Long> ids = new ArrayList<>();
-        for (Organization organization : allOrgList) {
-            ids.add(organization.getId());
-        }
-        QueryWrapper<Organization> wrapper = Wrappers.query();
-        wrapper.in("id", ids);
-
-        Page pageResult = organizationService.page(page, wrapper);
-
-        return R.ok(pageResult);
-    }
-
-    @SysLog("点击展开组织架构树（默认两级）")
-    private void queryOrgByParentId(List<Organization> childrenTemp, Organization condition, Integer orgLevel) {
-        List<Organization> children = organizationService.findOrganizationByCondition(condition);
-        if (!children.isEmpty()) {
-            childrenTemp.addAll(children);
-            for (Organization child : children) {
-                Organization entity = new Organization();
-                entity.setParentId(child.getId());
-                //控制层级
-                if (null != child.getOrgLevel()) {
-                    if (Integer.parseInt(child.getOrgLevel()) < orgLevel) {
-                        queryOrgByParentId(childrenTemp, entity, orgLevel);
-                    }
-                }
-            }
-        }
+        return organizationService.getRecursionOrgByLevel(page, condition);
     }
 
 
@@ -436,54 +300,11 @@ public class OrganizationController {
         组织停用后，才能操作删除组织，但组织变更记录不能删除
         组织停用后，将变更停用日期为当前时间
         组织启用后，将变更启用日期为当前时间*/
-
-        // 是否停用 ： 0 停用 ，1启用（默认），3全部
-        //如果是启用操作，则直接启用当前组织。
-        if (null != condition && condition.getIsStop() == 1){
-            organizationService.startOrganById(condition.getId());
-        }
-
-        //如果是停用操作
-        if (null != condition && condition.getIsStop() == 0){
-            List<Map<String, Long>> orgIds = new ArrayList<>();
-            //递归获取组织架构parentId
-            getRecursionParentIds(condition.getId(), orgIds);
-
-            if (!orgIds.isEmpty()) {
-                List<Long> orgIdList = new ArrayList<>();
-                //操作标志
-                boolean operFlag = false;
-                for (Map<String, Long> maps : orgIds) {
-                    for (Long orgId : maps.values()) {
-                        orgIdList.add(orgId);
-                    }
-                }
-                Userpost userpost = new Userpost();
-                userpost.setOrgDeptIds(orgIdList);
-                //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
-                List<Userpost> userPostList = userpostService.findUserPost(userpost);
-                if (!userPostList.isEmpty()) {
-                    operFlag = true;
-                    log.error("停用组织失败,该组织及其下属组织有挂靠员工！");
-                    R.failed("停用组织失败,该组织及其下属组织有挂靠员工！");
-                }
-
-                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
-                if (operFlag == true) {
-                    //遍历循环组织架构id
-                    for (Map<String, Long> maps : orgIds) {
-                        //停用组织及其下层组织
-                        for (Long orgId : maps.values()) {
-                            organizationService.stopOrganById(orgId);
-                        }
-                    }
-                }
-            }
-
-        }
-
+        organizationService.startOrStopOrg(condition);
         return R.ok("组织启用/停用成功");
     }
+
+
 
 
 }
