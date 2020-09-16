@@ -82,6 +82,7 @@ public class OrganizationController {
     @SysLog("新增组织架构")
     @PostMapping("/saveOrg")
     @Transactional
+    @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
     public R saveOrg(@RequestBody Organization organization) {
         if (null != organization) {
@@ -146,12 +147,13 @@ public class OrganizationController {
     }
 
     /**
-     * 查询根组织架构
+     * 查询根组织架构树
      *
      * @return R
      */
-    //@ApiOperation(value = "查询根组织架构", notes = "查询根组织架构")
+    @ApiOperation(value = "查询根组织架构树", notes = "查询根组织架构树")
     @PostMapping("/findAllOrganizations")
+    @OperationEntity(operation = "查询根组织架构树，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)" ,clazz = Organization.class )
     public R findAllOrganizations(@RequestBody Organization condition) {
         List<Organization> list = organizationService.findAllOrganizations(condition);
         return R.ok(list);
@@ -269,6 +271,7 @@ public class OrganizationController {
             @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
             @ApiImplicitParam(name="orgTreeLevel",value="组织结构数层级(默认2级) （可选参数）"),
     })
+    @OperationEntity(operation = "点击展开组织架构树（默认两级）" ,clazz = Organization.class )
     public R getRecursionOrgByLevel(@RequestBody Organization condition) {
         return organizationService.getRecursionOrgByLevel(condition);
     }
