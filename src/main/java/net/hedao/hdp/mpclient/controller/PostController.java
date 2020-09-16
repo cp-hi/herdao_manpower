@@ -58,7 +58,7 @@ public class PostController {
 
     @PostMapping
     public R save(@RequestBody Post post) throws Exception {
-        postService.addOrUpdate(post);
+        postService.saveOrUpdate(post);
         return R.ok(post);
     }
 
