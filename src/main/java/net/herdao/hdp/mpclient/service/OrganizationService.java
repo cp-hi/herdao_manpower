@@ -1,9 +1,16 @@
 package net.herdao.hdp.mpclient.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.mpclient.entity.Organization;
+import net.hedao.hdp.mpclient.entity.Userpost;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -55,20 +62,6 @@ public interface OrganizationService extends IService<Organization> {
      */
     List<Organization> findRootOrganizations(Organization condition);
 
-    /**
-     * 停用根组织架构且（进行下级递归停用）
-     * @param id
-     * @return
-     */
-     void stopOrganById(Long id);
-
-    /**
-     * 启用当前组织架构
-     * @param id
-     * @return
-     */
-    void startOrganById(Long id);
-
 
     /**
      * 组织架构分页
@@ -76,4 +69,41 @@ public interface OrganizationService extends IService<Organization> {
      * @return
      */
     List<Organization> findOrgPage(Organization condition);
+
+
+    /**
+     * 组织架构分页
+     * @param condition
+     * @return
+     */
+    R getRecursionOrgByLevel(@RequestBody Organization condition);
+
+    /**
+     * 删除组织
+     * @param condition
+     * @return R
+     */
+     R removeOrg(@RequestBody Organization condition);
+
+    /**
+     * 组织启用/停用
+     * @param condition
+     * @return R
+     */
+     void startOrStopOrg(@RequestBody Organization condition);
+
+    /**
+     * 默认加载展示2级组织架构
+     * @param condition
+     * @return R
+     */
+    R findOrganization2Level(@RequestBody Organization condition);
+
+    /**
+     * 分页查询组织架构
+     * @param page 分页对象
+     * @param organization
+     * @return
+     */
+    Page findOrgPage(Page page, Organization organization);
 }
