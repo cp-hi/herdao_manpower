@@ -25,19 +25,15 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         return baseMapper.jobLevelList();
     }
 
-    public Page page(Page page, Map<String, String> params) {
-        return null;
-    }
+//    public Page page(Page page, Map<String, String> params) {
+//        return null;
+//    }
 
     public void addOrUpdate(JobLevel jobLevel) throws Exception {
         if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
             throw new Exception("职级编码重复了");
         if (baseMapper.chkDuplicateJobLevelName(jobLevel))
             throw new Exception("职级名称重复了");
-        if (null == jobLevel.getId()) {
-            this.save(jobLevel);
-        } else {
-            this.updateById(jobLevel);
-        }
+        this.saveOrUpdate(jobLevel);
     }
 }

@@ -27,7 +27,7 @@ public class PipelineController {
     private final PipelineService pipelineService;
 
     @GetMapping("/list")
-    @OperationEntity(operation = "获取管线列表", clazz = Pipeline.class)
+//    @OperationEntity(operation = "获取管线列表", clazz = Pipeline.class)
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list() {
         return R.ok(pipelineService.pipelineList());

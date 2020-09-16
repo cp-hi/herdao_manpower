@@ -26,13 +26,9 @@ public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> i
 
     public void addOrUpdate(Pipeline pipeline) throws Exception {
         if (baseMapper.chkDuplicatePipelineCode(pipeline))
-            throw new Exception("岗位编码重复了");
+            throw new Exception("管线编码重复了");
         if (baseMapper.chkDuplicatePipelineName(pipeline))
-            throw new Exception("岗位名称重复了");
-        if (null == pipeline.getId()) {
-            this.save(pipeline);
-        } else {
-            this.updateById(pipeline);
-        }
+            throw new Exception("管线名称重复了");
+        this.saveOrUpdate(pipeline);
     }
 }

@@ -22,20 +22,15 @@ import java.util.Map;
 @AllArgsConstructor
 public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
 
- public    List<Map> sectionList(){
+    public List<Map> sectionList() {
         return baseMapper.sectionList();
     }
 
     public void addOrUpdate(Section section) throws Exception {
         if (baseMapper.chkDuplicateSectionCode(section))
-            throw new Exception("岗位编码重复了");
+            throw new Exception("板块编码重复了");
         if (baseMapper.chkDuplicateSectionName(section))
-            throw new Exception("岗位名称重复了");
-
-        if (null == section.getId()) {
-            this.save(section);
-        } else {
-            this.updateById(section);
-        }
+            throw new Exception("板块名称重复了");
+        this.saveOrUpdate(section);
     }
 }
