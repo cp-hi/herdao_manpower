@@ -1,10 +1,14 @@
 package net.herdao.hdp.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.mpclient.entity.Pipeline;
 import net.herdao.hdp.mpclient.entity.Section;
 import net.herdao.hdp.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.mpclient.service.SectionService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +30,13 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
         return baseMapper.sectionList();
     }
 
+    public IPage<Section> page(Page<Section> page, String searchTxt) {
+        if (StringUtils.isBlank(searchTxt)) searchTxt = "";
+        return baseMapper.query(page, searchTxt);
+    }
+
     @Override
-    public boolean saveOrUpdate(Section section)  {
+    public boolean saveOrUpdate(Section section) {
         if (baseMapper.chkDuplicateSectionCode(section))
             throw new RuntimeException("板块编码重复了");
         if (baseMapper.chkDuplicateSectionName(section))

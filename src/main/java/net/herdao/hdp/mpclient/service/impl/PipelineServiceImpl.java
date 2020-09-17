@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.mpclient.entity.Pipeline;
 import net.herdao.hdp.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.mpclient.service.PipelineService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,9 +28,9 @@ public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> i
         return baseMapper.pipelineList();
     }
 
-    public IPage<Pipeline> page(Page<Pipeline> page) {
-        IPage<Pipeline> p =baseMapper.query(page);
-        return p;
+    public IPage<Pipeline> page(Page<Pipeline> page, String searchTxt) {
+        if (StringUtils.isBlank(searchTxt)) searchTxt = "";
+        return baseMapper.query(page, searchTxt);
     }
 
     @Override

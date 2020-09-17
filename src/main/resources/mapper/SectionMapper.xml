@@ -4,6 +4,19 @@
 
 <mapper namespace="net.herdao.hdp.mpclient.mapper.SectionMapper">
 
+    <resultMap id="sectionMap" type="section">
+        <association property="group" column="group_id" select="getGroup" javaType="group"/>
+    </resultMap>
+
+    <select id="query" resultMap="sectionMap" parameterType="String">
+        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
+        select * from mp_section where  section_code like #{likeTxt} or section_name like #{likeTxt}
+    </select>
+
+    <select id="getGroup" parameterType="int" resultType="group">
+        select * from  mp_group WHERE id=#{id}
+    </select>
+
     <select id="sectionList" parameterType="pipeline" resultType="map">
        	select id,section_code AS sectionCode,section_name AS sectionName, group_id as groupId from mp_section
     </select>
