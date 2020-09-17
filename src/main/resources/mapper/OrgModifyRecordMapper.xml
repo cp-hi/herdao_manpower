@@ -7,6 +7,7 @@
 
   <resultMap id="orgModifyRecordMap" type="net.herdao.hdp.mpclient.entity.OrgModifyRecord">
             <id property="id" column="id"/>
+            <result property="curOrgId" column="cur_org_id"/>
             <result property="curOrgName" column="cur_org_name"/>
             <result property="curOrgCode" column="cur_org_code"/>
             <result property="curOrgParentId" column="cur_org_parent_id"/>

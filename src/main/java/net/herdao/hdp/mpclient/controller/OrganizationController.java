@@ -46,8 +46,6 @@ public class OrganizationController {
     private final UserService userService;
 
 
-
-
     /**
      * 通过id查询组织架构详情
      *
@@ -222,19 +220,7 @@ public class OrganizationController {
     }
 
 
-    /**
-     * 组织启用/停用
-     *
-     * @param organization
-     * @return R
-     */
-    @ApiOperation(value = "组织启用/停用", notes = "组织启用/停用")
-    @SysLog("组织启用/停用")
-    @GetMapping("/stopOrStartOrgan")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R stopOrStartOrgan(@RequestBody Organization organization) {
-        return R.ok(organizationService.updateById(organization));
-    }
+
 
 
     /**

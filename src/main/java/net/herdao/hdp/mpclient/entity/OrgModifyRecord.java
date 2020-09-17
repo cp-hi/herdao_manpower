@@ -32,6 +32,14 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="ID")
     private Long id;
+
+
+    /**
+     * 现组织ID
+     */
+    @ApiModelProperty(value="现组织ID")
+    private Long curOrgId;
+
     /**
      * 现组织名称
      */
