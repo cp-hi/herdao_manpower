@@ -1,9 +1,9 @@
-package net.herdao.hdp.mpclient.aspect;
+package net.herdao.hdp.sys.aspect;
 
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.mpclient.annotation.OperationEntity;
+import net.herdao.hdp.sys.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.BaseEntity;
-import net.herdao.hdp.mpclient.entity.OperationLog;
+import net.herdao.hdp.sys.entity.OperationLog;
 import net.herdao.hdp.mpclient.service.OperationLogService;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
@@ -38,7 +38,7 @@ public class OperationLogAspect {
     /**
      * 记录操作的切入点
      */
-    @Pointcut("@annotation(net.herdao.hdp.mpclient.annotation.OperationEntity)")
+    @Pointcut("@annotation(net.herdao.hdp.sys.annotation.OperationEntity)")
     public void pointCut1() {
         System.out.println("point1");
     }

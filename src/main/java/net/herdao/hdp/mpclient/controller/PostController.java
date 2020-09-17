@@ -2,7 +2,7 @@ package net.herdao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
-import net.herdao.hdp.mpclient.annotation.OperationEntity;
+import net.herdao.hdp.sys.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.Post;
 import net.herdao.hdp.mpclient.service.PostService;
 import lombok.AllArgsConstructor;
