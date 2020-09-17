@@ -82,26 +82,26 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @ApiOperation(value = "组织启用/停用", notes = "组织启用/停用")
     @SysLog("组织启用/停用")
     @Override
-    public void startOrStopOrg(@RequestBody Organization condition) {
+    public R startOrStopOrg(@RequestBody Organization condition) {
         // 是否停用 ： 0 停用 ，1启用（默认），3全部
         //如果是启用操作，则直接启用当前组织。
         if (null != condition && condition.getIsStop() == 1){
-            this.baseMapper.startOrganById(condition.getId());
 
-            //更新该组织的启用日期  start_date
+            //更新该组织的启用日期 设为启用
             this.baseMapper.updateById(condition);
+            return R.ok("组织的启用成功");
         }
 
         //如果是停用操作
         if (null != condition && condition.getIsStop() == 0){
             List<Map<String, Long>> orgIds = new ArrayList<>();
             //递归获取组织架构parentId
-            getRecursionParentIds(condition.getId(), orgIds);
+            getRecursionParentIds(condition.getId(), orgIds,"stopOrg");
 
             if (!orgIds.isEmpty()) {
                 List<Long> orgIdList = new ArrayList<>();
                 //操作标志
-                boolean operFlag = false;
+                boolean operFlag = true;
                 for (Map<String, Long> maps : orgIds) {
                     for (Long orgId : maps.values()) {
                         orgIdList.add(orgId);
@@ -112,9 +112,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
                 List<Userpost> userPostList = userpostService.findUserPost(userpost);
                 if (!userPostList.isEmpty()) {
-                    operFlag = true;
+                    operFlag = false;
                     log.error("停用组织失败,该组织及其下属组织有挂靠员工！");
                     R.failed("停用组织失败,该组织及其下属组织有挂靠员工！");
+
+                    return R.ok("停用组织失败,该组织及其下属组织有挂靠员工！");
                 }
 
                 //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
@@ -123,23 +125,32 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     for (Map<String, Long> maps : orgIds) {
                         //停用组织及其下层组织
                         for (Long orgId : maps.values()) {
-                            this.baseMapper.stopOrganById(orgId);
+                            this.baseMapper.updateById(condition);
                             //更新该组织的停用日期  end_date
                             Organization updateCondition=new Organization();
                             this.baseMapper.updateById(updateCondition);
                         }
                     }
+                    return R.ok("组织的停用成功");
                 }
             }
         }
+
+        return R.ok("组织的停用成功");
     }
 
 
     @SysLog("递归获取组织架构parentId")
-    public void getRecursionParentIds(Long id, List<Map<String, Long>> orgIds) {
+    public void getRecursionParentIds(Long id, List<Map<String, Long>> orgIds,String operate) {
         Organization condition = new Organization();
         condition.setId(id);
-        List<Organization> list = this.baseMapper.findAllOrganizations(condition);
+        List<Organization> list=new ArrayList<>();
+        if (null != operate && operate=="stopOrg"){
+            list = this.baseMapper.findAllOrg(condition);
+        }else{
+            list = this.baseMapper.findAllOrganizations(condition);
+        }
+
         if (!list.isEmpty()) {
             for (Organization entity : list) {
                 if (null != entity) {
@@ -147,7 +158,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     map.put(entity.getOrgName(), entity.getId());
                     orgIds.add(map);
 
-                    if (!entity.getChildrenClick().isEmpty()) {
+                    if (null !=entity.getChildren() && !entity.getChildren().isEmpty()) {
                         getChildren(entity, orgIds);
                     }
                 }
@@ -158,9 +169,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     @SysLog("递归获取组织架构parentId")
     public void getChildren(Organization entity, List<Map<String, Long>> orgIds) {
-        List<Organization> childrens = entity.getChildrenClick();
-        if (!childrens.isEmpty()) {
-            for (Organization child : childrens) {
+        List<Organization> children = entity.getChildren();
+        if (!children.isEmpty()) {
+            for (Organization child : children) {
                 if (null != child) {
                     Map<String, Long> map = new HashMap<>();
                     map.put(child.getOrgName(), child.getId());
@@ -237,7 +248,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         try {
             List<Map<String, Long>> orgIds = new ArrayList<>();
             //递归获取组织架构parentId
-            getRecursionParentIds(condition.getId(), orgIds);
+            getRecursionParentIds(condition.getId(), orgIds,"removeOrg");
 
             if (!orgIds.isEmpty()) {
                 List<Long> orgIdList = new ArrayList<>();
@@ -254,7 +265,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 List<Userpost> userPostList = userpostService.findUserPost(userpost);
                 if (!userPostList.isEmpty()) {
                     delFlag = true;
-
                     log.error("删除组织失败,该组织及其下属组织有挂靠员工！");
                     R.failed("删除组织失败,该组织及其下属组织有挂靠员工！");
                 }
@@ -352,5 +362,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         }
 
         return super.page(page, wrapper);
+    }
+
+    @Override
+    public List<Organization> findAllOrg(Organization condition) {
+        List<Organization> list = this.baseMapper.findAllOrg(condition);
+        return list;
     }
 }

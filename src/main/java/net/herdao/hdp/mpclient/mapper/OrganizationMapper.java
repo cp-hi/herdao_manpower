@@ -79,4 +79,11 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      */
     void startOrganById(Long id);
 
+
+    /**
+     * 查询无限级组织架构
+     * @param condition
+     * @return
+     */
+    List<Organization> findAllOrg(Organization condition);
 }

@@ -265,7 +265,7 @@ public class OrganizationController {
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
     @Transactional
     public R removeOrg(@RequestBody Organization condition) {
-        return removeOrg(condition);
+        return organizationService.removeOrg(condition);
     }
 
     /**
@@ -303,8 +303,8 @@ public class OrganizationController {
         组织停用后，才能操作删除组织，但组织变更记录不能删除
         组织停用后，将变更停用日期为当前时间
         组织启用后，将变更启用日期为当前时间*/
-        organizationService.startOrStopOrg(condition);
-        return R.ok("组织启用/停用成功");
+        R result = organizationService.startOrStopOrg(condition);
+        return result;
     }
 
 
