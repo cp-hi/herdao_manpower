@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 
@@ -45,7 +46,7 @@ private static final long serialVersionUID = 1L;
      * 现上级组织id
      */
     @ApiModelProperty(value="现上级组织id")
-    private String curOrgParentId;
+    private Long curOrgParentId;
     /**
      * 现上级组织名称
      */
@@ -65,7 +66,7 @@ private static final long serialVersionUID = 1L;
      * 原上级组织ID
      */
     @ApiModelProperty(value="原上级组织ID")
-    private String oldOrgParentId;
+    private Long oldOrgParentId;
     /**
      * 原上级组织名称
      */
@@ -75,12 +76,12 @@ private static final long serialVersionUID = 1L;
      * 原组织层级(树形层级）
      */
     @ApiModelProperty(value="原组织层级(树形层级）")
-    private String oldOrgTreeLevel;
+    private Long oldOrgTreeLevel;
     /**
      * 生效日期
      */
     @ApiModelProperty(value="生效日期")
-    private LocalDateTime effectTime;
+    private Date effectTime;
     /**
      * 操作人id
      */
@@ -95,5 +96,19 @@ private static final long serialVersionUID = 1L;
      * 操作时间
      */
     @ApiModelProperty(value="操作时间")
-    private LocalDateTime operatorTime;
-    }
+    private Date operatorTime;
+
+    /**
+     * 原组织编码
+     */
+    @ApiModelProperty(value="原组织编码")
+    private String oldOrgCode;
+
+    /**
+     * 操作简述
+     */
+    @ApiModelProperty(value="操作简述")
+    private String operateDesc;
+
+ }
+

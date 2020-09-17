@@ -8,9 +8,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
+import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Userpost;
 import net.herdao.hdp.mpclient.mapper.OrganizationMapper;
+import net.herdao.hdp.mpclient.service.OrgModifyRecordService;
 import net.herdao.hdp.mpclient.service.OrganizationService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -28,9 +34,11 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Organization> implements OrganizationService {
-
     private final UserpostService userpostService;
 
+    private final OrgModifyRecordService orgModifyRecordService;
+
+    private final RemoteUserService remoteUserService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -59,18 +67,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public List<Organization> selectOrganByCurrentOrgOid(String id) {
         List<Organization> list = this.baseMapper.selectOrganByCurrentOrgOid(id);
-        return list;
-    }
-
-    @Override
-    public List<Organization> findRootOrganizations(Organization condition) {
-        List<Organization> list = this.baseMapper.findRootOrganizations(condition);
-        return list;
-    }
-
-    @Override
-    public List<Organization> findOrgPage(Organization condition) {
-        List<Organization> list = this.baseMapper.findOrgPage(condition);
         return list;
     }
 
@@ -379,9 +375,89 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return super.page(page, wrapper);
     }
 
+
+
+    /**
+     * 编辑更新组织
+     * @param organization
+     * @return R
+     */
+    @SysLog("编辑更新组织")
     @Override
-    public List<Organization> findAllOrg(Organization condition) {
-        List<Organization> list = this.baseMapper.findAllOrg(condition);
-        return list;
+    @Transactional
+    public R updateOrg(@RequestBody Organization organization) {
+        try {
+            Organization oldOrg = super.getById(organization.getId());
+
+            OrgModifyRecord record=new OrgModifyRecord();
+            boolean operateFlag = false;
+
+            //现组织名称 原组织名称
+            if (null != oldOrg.getOrgName()&& !oldOrg.getOrgName().equals(organization.getOrgName())){
+                record.setCurOrgName(organization.getOrgName());
+                record.setOldOrgName(oldOrg.getOrgName());
+                operateFlag = true;
+            }
+
+            //现组织编码 原组织名称
+            if (null != oldOrg.getOrgCode()&& !oldOrg.getOrgCode().equals(organization.getOrgCode())){
+                record.setCurOrgCode(organization.getOrgCode());
+                record.setOldOrgName(oldOrg.getOrgCode());
+                operateFlag = true;
+            }
+
+            if (null != oldOrg.getParentId() && !oldOrg.getParentId().equals(organization.getParentId())){
+                Organization oldParenOrg = super.getById(oldOrg.getParentId());
+                Organization curParenOrg = super.getById(organization.getParentId());
+
+                record.setCurOrgParentId(organization.getParentId());
+                //现上级组织id
+                if (null != oldParenOrg){
+                    record.setOldOrgParentId(oldParenOrg.getId());
+                    record.setOldOrgParentName(oldParenOrg.getOrgName());
+
+                    //现组织层级 原组织层级
+                    if (null != oldOrg.getOrgTreeLevel()&& !oldOrg.getOrgCode().equals(organization.getOrgTreeLevel())){
+                        record.setCurOrgTreeLevel(organization.getOrgTreeLevel());
+                        record.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
+                        operateFlag = true;
+                    }
+                }
+
+                //现上级组织名称
+                if (null != curParenOrg){
+                    record.setCurOrgName(curParenOrg.getOrgName());
+                }
+
+                operateFlag = true;
+            }
+
+
+            //生效时间
+            record.setEffectTime(new Date());
+            //操作时间
+            record.setOperatorTime(new Date());
+
+            UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+            if (null != userInfo){
+                //操作人ID
+                record.setOperatorId(userInfo.getSysUser().getUserId().toString());
+                //操作人名称
+                record.setOperatorName(userInfo.getSysUser().getUsername());
+            }
+
+            //新增变更记录
+            if (operateFlag){
+                record.setOperateDesc("修改组织架构");
+                orgModifyRecordService.save(record);
+            }
+
+            super.updateById(organization);
+        }catch (Exception ex){
+            log.error("编辑更新组织组织失败",ex);
+            return R.failed("编辑更新组织组织失败");
+        }
+
+        return R.ok(organization);
     }
 }

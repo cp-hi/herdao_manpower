@@ -2,6 +2,7 @@ package net.herdao.hdp.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.common.core.util.R;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,23 +53,6 @@ public interface OrganizationService extends IService<Organization> {
      */
     List<Organization> selectOrganByCurrentOrgOid(String id);
 
-
-    /**
-     * 查询根组织架构
-     * @param condition
-     * @return
-     */
-    List<Organization> findRootOrganizations(Organization condition);
-
-
-    /**
-     * 组织架构分页
-     * @param condition
-     * @return
-     */
-    List<Organization> findOrgPage(Organization condition);
-
-
     /**
      * 组织架构分页
      * @param condition
@@ -107,10 +91,10 @@ public interface OrganizationService extends IService<Organization> {
 
 
     /**
-     * 查询无限级组织架构
-     * @param condition
-     * @return
+     * 编辑更新组织
+     * @param organization
+     * @return R
      */
-    List<Organization> findAllOrg(Organization condition);
-
+    @SysLog("编辑更新组织")
+    R updateOrg(@RequestBody Organization organization);
 }

@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.mpclient.entity.OrgModifyRecord;
+import net.herdao.hdp.mpclient.service.OrgModifyRecordService;
 import net.herdao.hdp.sys.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Post;
@@ -42,6 +44,8 @@ public class OrganizationController {
     private final PostService postService;
 
     private final UserService userService;
+
+
 
 
     /**
@@ -325,6 +329,21 @@ public class OrganizationController {
         Page pageResult = organizationService.findOrgPage(page, organization);
         return R.ok(pageResult);
     }
+
+
+    /**
+     * 编辑更新组织
+     * @param organization
+     * @return R
+     */
+    @ApiOperation(value = "编辑更新组织", notes = "编辑更新组织")
+    @SysLog("编辑更新组织")
+    @PostMapping("/updateOrg")
+    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
+    public R updateOrg(@RequestBody Organization organization) {
+        return organizationService.updateOrg(organization);
+    }
+
 
 
 }

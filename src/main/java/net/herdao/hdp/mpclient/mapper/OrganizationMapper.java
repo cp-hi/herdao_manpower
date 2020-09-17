@@ -64,22 +64,6 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      */
     void stopOrganById(Long id);
 
-
-    /**
-     * 组织架构分页
-     * @param condition
-     * @return
-     */
-    List<Organization> findOrgPage(Organization condition);
-
-    /**
-     * 启用当前组织架构
-     * @param id
-     * @return
-     */
-    void startOrganById(Long id);
-
-
     /**
      * 查询无限级组织架构
      * @param condition
