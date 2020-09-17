@@ -2,8 +2,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.hedao.hdp.mpclient.mapper.OrganizationMapper">
-    <resultMap id="organizationMap" type="net.hedao.hdp.mpclient.entity.Organization">
+<mapper namespace="net.herdao.hdp.mpclient.mapper.OrganizationMapper">
+    <resultMap id="organizationMap" type="net.herdao.hdp.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -36,7 +36,7 @@
         <result property="orgTreeLevel" column="org_tree_level"/>
     </resultMap>
 
-    <resultMap id="organizationChildrenMap" type="net.hedao.hdp.mpclient.entity.Organization">
+    <resultMap id="organizationChildrenMap" type="net.herdao.hdp.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -67,10 +67,10 @@
         <result property="startDate" column="start_date"/>
         <result property="stopDate" column="stop_date"/>
         <result property="orgTreeLevel" column="org_tree_level"/>
-        <collection property="children" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="children" column="id" ofType="net.herdao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
      </resultMap>
 
-    <resultMap id="organTreeMap" type="net.hedao.hdp.mpclient.entity.Organization">
+    <resultMap id="organTreeMap" type="net.herdao.hdp.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -101,8 +101,8 @@
         <result property="startDate" column="start_date"/>
         <result property="stopDate" column="stop_date"/>
         <result property="orgTreeLevel" column="org_tree_level"/>
-        <collection property="parent" column="PARENT_ID" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectParentOrgan"></collection>
-        <collection property="children" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="parent" column="PARENT_ID" ofType="net.herdao.hdp.mpclient.entity.Organization" select="selectParentOrgan"></collection>
+        <collection property="children" column="id" ofType="net.herdao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
     <resultMap id="orgAllChildMap" type="net.hedao.hdp.mpclient.entity.Organization">

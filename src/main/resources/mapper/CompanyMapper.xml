@@ -21,9 +21,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.hedao.hdp.mpclient.mapper.CompanyMapper">
+<mapper namespace="net.herdao.hdp.mpclient.mapper.CompanyMapper">
 
-  <resultMap id="mpCompanyMap" type="net.hedao.hdp.mpclient.entity.Company">
+  <resultMap id="mpCompanyMap" type="net.herdao.hdp.mpclient.entity.Company">
                   <id property="id" column="ID"/>
                         <result property="oid" column="OID"/>
                         <result property="companyCode" column="COMPANY_CODE"/>

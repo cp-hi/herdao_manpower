@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.hedao.hdp.mpclient.mapper.UserpostMapper">
+<mapper namespace="net.herdao.hdp.mpclient.mapper.UserpostMapper">
 
-  <resultMap id="userpostMap" type="net.hedao.hdp.mpclient.entity.Userpost">
+  <resultMap id="userpostMap" type="net.herdao.hdp.mpclient.entity.Userpost">
                   <id property="id" column="id"/>
                   <result property="oid" column="OID"/>
                   <result property="userOid" column="USER_OID"/>
