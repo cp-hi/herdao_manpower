@@ -1,6 +1,7 @@
 
 package net.herdao.hdp.mpclient.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -12,6 +13,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.mpclient.common.Utils.DateUtils;
 import net.herdao.hdp.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Userpost;
@@ -24,7 +26,6 @@ import net.herdao.hdp.mpclient.service.UserpostService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.*;
 
 /**
@@ -34,6 +35,7 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Organization> implements OrganizationService {
+
     private final UserpostService userpostService;
 
     private final OrgModifyRecordService orgModifyRecordService;
@@ -81,70 +83,103 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @Transactional
     public R startOrStopOrg(@RequestBody Organization condition) {
-        // 是否停用 ： 0 停用 ，1启用（默认），3全部
-        //如果是启用操作，则直接启用当前组织。
-        if (null != condition && condition.getIsStop() == 1){
-            //更新该组织的启用日期 设为启用
-            condition.setStartOrgOperateDate(new Date());
-            this.baseMapper.updateById(condition);
-            return R.ok("组织的启用成功");
-        }
+        try {
+            //更新组织变更记录表
+            OrgModifyRecord record=new OrgModifyRecord();
+            record.setCurOrgId(condition.getId());
+            record.setCurOrgName(condition.getOrgName());
+            record.setCurOrgCode(condition.getOrgCode());
+            record.setCurOrgParentId(condition.getParentId());
+            record.setCurOrgTreeLevel(condition.getOrgTreeLevel());
+            record.setOperatorTime(new Date());
+            UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+            if (null != userInfo){
+                //操作人ID
+                record.setOperatorId(userInfo.getSysUser().getUserId().toString());
+                //操作人名称
+                record.setOperatorName(userInfo.getSysUser().getUsername());
+            }
 
-        //如果是停用操作
-        if (null != condition && condition.getIsStop() == 0){
-            List<Map<String, Long>> orgIds = new ArrayList<>();
-            //递归获取组织架构parentId
-            getRecursionParentIds(condition.getId(), orgIds,"stopOrg");
+            // 是否停用 ： 0 停用 ，1启用（默认），3全部
+            //如果是启用操作，则直接启用当前组织。
+            if (null != condition && condition.getIsStop() == 1){
+                //更新该组织的启用日期 设为启用
+                condition.setStartOrgOperateDate(new Date());
+                this.baseMapper.updateById(condition);
 
-            if (!orgIds.isEmpty()) {
-                List<Long> orgIdList = new ArrayList<>();
-                //操作标志
-                boolean operFlag = false;
-                for (Map<String, Long> maps : orgIds) {
-                    for (Long orgId : maps.values()) {
-                        orgIdList.add(orgId);
-                    }
-                }
-                Userpost userpost = new Userpost();
-                userpost.setOrgDeptIds(orgIdList);
-                //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
-                List<Userpost> userPostList = userpostService.findUserPost(userpost);
-                if (!userPostList.isEmpty()) {
-                    log.error("停用组织失败,该组织及其下属组织有挂靠员工！");
-                    R.failed("停用组织失败,该组织及其下属组织有挂靠员工！");
-                    return R.ok("停用组织失败,该组织及其下属组织有挂靠员工！");
-                }else{
-                    operFlag = true;
-                }
+                record.setOperateDesc("启用组织");
+                record.setEffectTime(DateUtils.parseDate(condition.getStartDate(),"yyyy-MM-dd HH:mm:ss"));
+                return R.ok("组织的启用成功");
+            }
 
-                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
-                if (operFlag) {
+            //如果是停用操作
+            if (null != condition && condition.getIsStop() == 0){
+                record.setOperateDesc("停用组织");
+                 record.setEffectTime(DateUtils.parseDate(condition.getStopDate(),"yyyy-MM-dd HH:mm:ss"));
 
-                    try {
-                        //遍历循环组织架构id
-                        for (Map<String, Long> maps : orgIds) {
-                            //停用组织及其下层组织
-                            for (Long orgId : maps.values()) {
-                                //更新该组织的停用日期 设置为停用状态
-                                Organization updateCondition=new Organization();
-                                updateCondition.setId(orgId);
-                                updateCondition.setIsStop(0);
-                                updateCondition.setStartOrgOperateDate(new Date());
-                                if(null != condition.getStopDate()){
-                                    updateCondition.setStopDate(condition.getStopDate());
-                                }
+                List<Map<String, Long>> orgIds = new ArrayList<>();
+                //递归获取组织架构parentId
+                getRecursionParentIds(condition.getId(), orgIds,"stopOrg");
 
-                                this.baseMapper.updateById(updateCondition);
-                            }
+                if (!orgIds.isEmpty()) {
+                    List<Long> orgIdList = new ArrayList<>();
+                    //操作标志
+                    boolean operFlag = false;
+                    for (Map<String, Long> maps : orgIds) {
+                        for (Long orgId : maps.values()) {
+                            orgIdList.add(orgId);
                         }
-                    }catch (Exception ex){
-                        log.error("组织的停用失败");
-                        return R.failed("组织的停用失败");
+                    }
+                    Userpost userpost = new Userpost();
+                    userpost.setOrgDeptIds(orgIdList);
+                    //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
+                    List<Userpost> userPostList = userpostService.findUserPost(userpost);
+                    if (!userPostList.isEmpty()) {
+                        log.error("停用组织失败,该组织及其下属组织有挂靠员工！");
+                        R.failed("停用组织失败,该组织及其下属组织有挂靠员工！");
+                        return R.ok("停用组织失败,该组织及其下属组织有挂靠员工！");
+                    }else{
+                        operFlag = true;
                     }
 
-                    return R.ok("组织的停用成功");
+                    //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
+                    if (operFlag) {
+                        try {
+                            //遍历循环组织架构id
+                            for (Map<String, Long> maps : orgIds) {
+                                //停用组织及其下层组织
+                                for (Long orgId : maps.values()) {
+                                    //更新该组织的停用日期 设置为停用状态
+                                    Organization updateCondition=new Organization();
+                                    updateCondition.setId(orgId);
+                                    updateCondition.setIsStop(0);
+                                    updateCondition.setStartOrgOperateDate(new Date());
+                                    if(null != condition.getStopDate()){
+                                        updateCondition.setStopDate(condition.getStopDate());
+                                    }
+
+                                    this.baseMapper.updateById(updateCondition);
+                                }
+                            }
+
+                            //更新组织变更记录表
+                            orgModifyRecordService.update();
+
+                        }catch (Exception ex){
+                            log.error("组织的停用失败");
+                            return R.failed("组织的停用失败");
+                        }
+
+                        return R.ok("组织的停用成功");
+                    }
                 }
             }
+
+            //更新组织变更记录表
+            orgModifyRecordService.save(record);
+        }catch (Exception ex){
+            log.error("组织启用/停用失败",ex);
+            return R.failed("组织启用/停用失败");
         }
 
         return R.ok("组织的停用成功");
@@ -431,7 +466,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
                 operateFlag = true;
             }
-
 
             //生效时间
             record.setEffectTime(new Date());
