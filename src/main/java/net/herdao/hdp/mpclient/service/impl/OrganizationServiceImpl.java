@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Andy
@@ -91,8 +88,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         // 是否停用 ： 0 停用 ，1启用（默认），3全部
         //如果是启用操作，则直接启用当前组织。
         if (null != condition && condition.getIsStop() == 1){
-
             //更新该组织的启用日期 设为启用
+            condition.setStartOrgOperateDate(new Date());
             this.baseMapper.updateById(condition);
             return R.ok("组织的启用成功");
         }
@@ -136,6 +133,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                                 Organization updateCondition=new Organization();
                                 updateCondition.setId(orgId);
                                 updateCondition.setIsStop(0);
+                                updateCondition.setStartOrgOperateDate(new Date());
                                 if(null != condition.getStopDate()){
                                     updateCondition.setStopDate(condition.getStopDate());
                                 }

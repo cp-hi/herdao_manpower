@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +27,6 @@ import java.util.List;
 @ApiModel(value = "")
 public class Organization extends Model<Organization> {
 private static final long serialVersionUID = 1L;
-
     /**
      * 主键ID
      */
@@ -183,6 +183,19 @@ private static final long serialVersionUID = 1L;
     private Long orgTreeLevel;
 
     /**
+     * 启用日期操作时间
+     */
+    @ApiModelProperty(value="启用日期操作时间")
+    private Date startOrgOperateDate;
+
+
+    /**
+     * 停用日期操作时间
+     */
+    @ApiModelProperty(value="停用日期操作时间")
+    private Date endOrgOperateDate;
+
+    /**
      * 父组织架构集合
      */
     @ApiModelProperty(value="父组织架构集合")
@@ -230,6 +243,8 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="父组织name")
     @TableField(exist = false)
     private String parentName;
+
+
 
 }
 
