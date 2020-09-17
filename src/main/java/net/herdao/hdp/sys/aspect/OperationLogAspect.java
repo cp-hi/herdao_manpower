@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.sys.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.BaseEntity;
 import net.herdao.hdp.sys.entity.OperationLog;
-import net.herdao.hdp.mpclient.service.OperationLogService;
+import net.herdao.hdp.sys.service.OperationLogService;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;

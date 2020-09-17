@@ -1,9 +1,9 @@
-package net.herdao.hdp.mpclient.service.impl;
+package net.herdao.hdp.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.sys.entity.OperationLog;
 import net.herdao.hdp.mpclient.mapper.OperationLogMapper;
-import net.herdao.hdp.mpclient.service.OperationLogService;
+import net.herdao.hdp.sys.service.OperationLogService;
 import org.springframework.stereotype.Service;
 
 /**
