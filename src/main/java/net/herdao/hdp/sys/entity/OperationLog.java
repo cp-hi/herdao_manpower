@@ -1,4 +1,4 @@
-package net.herdao.hdp.mpclient.entity;
+package net.herdao.hdp.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

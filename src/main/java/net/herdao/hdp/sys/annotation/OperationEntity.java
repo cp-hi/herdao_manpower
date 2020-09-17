@@ -1,4 +1,4 @@
-package net.herdao.hdp.mpclient.annotation;
+package net.herdao.hdp.sys.annotation;
 
 import java.lang.annotation.*;
 
