@@ -1,4 +1,4 @@
-package net.herdao.hdp.mpclient.service;
+package net.herdao.hdp.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.sys.entity.OperationLog;
