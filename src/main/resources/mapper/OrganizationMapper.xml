@@ -105,6 +105,42 @@
         <collection property="children" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
+    <resultMap id="orgAllChildMap" type="net.hedao.hdp.mpclient.entity.Organization">
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
+        <result property="orgName" column="ORG_NAME"/>
+        <result property="orgFullname" column="ORG_FULLNAME"/>
+        <result property="orgCode" column="ORG_CODE"/>
+        <result property="parentOid" column="PARENT_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="orgLevel" column="org_tree_level"/>
+        <result property="organizational" column="ORGANIZATIONAL"/>
+        <result property="pipelineCode" column="PIPELINE_CODE"/>
+        <result property="welfareType" column="WELFARE_TYPE"/>
+        <result property="sortNo" column="SORT_NO"/>
+        <result property="isStop" column="is_stop"/>
+        <result property="creatorCode" column="CREATOR_CODE"/>
+        <result property="createdTime" column="CREATED_TIME"/>
+        <result property="modifierCode" column="MODIFIER_CODE"/>
+        <result property="modifiedTime" column="MODIFIED_TIME"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
+        <result property="tenantId" column="TENANT_ID"/>
+        <result property="orgDesc" column="org_desc"/>
+        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkNo" column="org_charge_work_no"/>
+        <result property="orgSimpleDesc" column="org_simple_desc"/>
+        <result property="chargeOrg" column="charge_org"/>
+        <result property="staff" column="staff"/>
+        <result property="empInService" column="emp_in_service"/>
+        <result property="startDate" column="start_date"/>
+        <result property="stopDate" column="stop_date"/>
+        <result property="orgTreeLevel" column="org_tree_level"/>
+        <collection property="children" column="id" ofType="net.hedao.hdp.mpclient.entity.Organization" select="getAllChildrenOrgan"></collection>
+    </resultMap>
+
+
+
 
     <!-- 点击查看组织架构详情 -->
     <select id="selectOrganByCurrentOrgOid" resultMap="organTreeMap" parameterType="java.lang.String">
@@ -148,6 +184,29 @@
          </if>
       </select>
 
+    <!-- 查询根组织架构 无限级递归 -->
+    <select id="findAllOrg" resultMap="orgAllChildMap">
+        SELECT
+        *
+        FROM
+        mp_organization
+        WHERE 1=1
+        <if test="isRoot == true">
+            AND PARENT_ID IS NULL
+        </if>
+
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+
+        <if test="isStop != null">
+            AND is_stop = #{isStop}
+        </if>
+        <if test="tenantId != null">
+            AND TENANT_ID = #{tenantId}
+        </if>
+    </select>
+
       <!-- 查询子组织结构表 -->
       <select id="selectChildrenOrgan" resultMap="organizationChildrenMap">
             SELECT * FROM mp_organization
@@ -156,11 +215,20 @@
           <if test="parentId != null">
               AND PARENT_ID=#{parentId}
           </if>
-         <!-- <if test="isStop != null">
-              AND is_stop = #{isStop}
-          </if>-->
+
             order by SORT_NO
        </select>
+
+    <!-- 查询子组织结构表 -->
+    <select id="getAllChildrenOrgan" resultMap="orgAllChildMap">
+        SELECT * FROM mp_organization
+        WHERE 1=1
+        <if test="parentId != null">
+            AND PARENT_ID=#{parentId}
+        </if>
+
+        order by SORT_NO
+    </select>
 
     <!-- 查询子组织结构表 -->
     <select id="selectChildrenOrganClick" resultMap="organizationChildrenMap" parameterType="java.lang.String">

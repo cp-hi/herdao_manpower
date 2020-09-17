@@ -91,7 +91,7 @@ public interface OrganizationService extends IService<Organization> {
      * @param condition
      * @return R
      */
-     void startOrStopOrg(@RequestBody Organization condition);
+     R startOrStopOrg(@RequestBody Organization condition);
 
     /**
      * 默认加载展示2级组织架构
@@ -107,4 +107,13 @@ public interface OrganizationService extends IService<Organization> {
      * @return
      */
     Page findOrgPage(Page page, Organization organization);
+
+
+    /**
+     * 查询无限级组织架构
+     * @param condition
+     * @return
+     */
+    List<Organization> findAllOrg(Organization condition);
+
 }
