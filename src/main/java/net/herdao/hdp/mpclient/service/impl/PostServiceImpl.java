@@ -4,13 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.mpclient.entity.Post;
+import net.herdao.hdp.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.mpclient.mapper.PostMapper;
+import net.herdao.hdp.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.mpclient.service.PostService;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +29,8 @@ import java.util.Map;
 @AllArgsConstructor
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
 
-    private final RemoteUserService remoteUserService;
+    final PipelineMapper pipelineMapper;
+    final SectionMapper sectionMapper;
 
     public List<Map> postList() {
         return baseMapper.postList();
@@ -40,15 +44,27 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
          * 2.是否传groupIds 过来 就只查 集团所属的板块与管线下的岗位
          * 3.是否允许选择非从属关系的条件
          */
-        String[] groupIds = StringUtils.split(params.get("groupIds"), ",");
-        String[] jobLevels = StringUtils.split(params.get("jobLevels"), ",");
-        String[] sectionCodes = StringUtils.split(params.get("sectionCodes"), ",");
-        String[] pipelineCodes = StringUtils.split(params.get("pipelineCodes"), ",");
+
+        String groupId = params.get("groupId");
+        String jobLevel = params.get("jobLevel");
+        String sectionCode = params.get("sectionCodes");
+        String pipelineCode = params.get("pipelineCodes");
+        boolean hasGroupId = StringUtils.isNotBlank(groupId);
+        List<String> sectionCodes = new ArrayList<>();
+        List<String> pipelineCodes = new ArrayList<>();
+        if (hasGroupId) {
+            Long gid = Long.valueOf(groupId);
+            sectionCodes = sectionMapper.getSectionCodesByGroupId(gid);
+            pipelineCodes = pipelineMapper.getPipelineCodesByGroupId(gid);
+        }
+
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
         queryWrapper
-                .in(null != jobLevels, "JOB_LEVEL", jobLevels)
-                .in(null != sectionCodes, "SECTION_CODE", sectionCodes)
-                .in(null != pipelineCodes, "PIPELINE_CODE", pipelineCodes)
+                .eq(StringUtils.isNotBlank(jobLevel), "JOB_LEVEL", jobLevel)
+                .eq(StringUtils.isNotBlank(sectionCode), "SECTION_CODE", sectionCode)
+                .eq(StringUtils.isNotBlank(pipelineCode), "PIPELINE_CODE", pipelineCode)
+                .in(StringUtils.isBlank(sectionCode) && sectionCodes.size() > 0, "SECTION_CODE", sectionCodes)
+                .in(StringUtils.isBlank(pipelineCode) && pipelineCodes.size() > 0, "SECTION_CODE", pipelineCodes)
                 .like(StringUtils.isNotBlank(searchText), "POST_NAME", searchText);
         Page p = this.page(page, queryWrapper);
         return p;

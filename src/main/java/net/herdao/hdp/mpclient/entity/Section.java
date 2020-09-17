@@ -26,7 +26,6 @@ public class Section extends Model<Section> {
     private Integer id;
     private String sectionCode;
     private String sectionName;
-    private String groupOid;
     private Integer groupId;
     private Integer sortNo;
     @TableField("IS_STOP")

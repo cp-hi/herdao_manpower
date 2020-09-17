@@ -4,35 +4,39 @@
 
 <mapper namespace="net.herdao.hdp.mpclient.mapper.PipelineMapper">
 
-    <resultMap id="postMap" type="net.herdao.hdp.mpclient.entity.Pipeline">
-        <association property="group" javaType="group">
-            <id property="id" column="group_id" />
-            <result property="groupCode" column="group_code" />
-            <result property="groupName" column="group_name" />
-        </association>
-<!--        <association property="group" column="group_id" select="getGroup"/>-->
+    <resultMap id="pipelineMap" type="pipeline">
+        <!--        <association property="group" javaType="group">-->
+        <!--            <id property="id" column="group_id"/>-->
+        <!--            <result property="groupCode" column="group_code"/>-->
+        <!--            <result property="groupName" column="group_name"/>-->
+        <!--        </association>-->
+        <association property="group" column="group_id" select="getGroup" javaType="group"/>
     </resultMap>
 
-    <select id="page" resultType="pipeline">
-       	select p.*,g.group_code,g.group_name from mp_pipeline p
-       	left join mp_group g on p.group_id = g.id
--- 	    select * from mp_pipeline
+    <select id="query" resultMap="pipelineMap">
+--        	select p.*,g.group_code,g.group_name from mp_pipeline p
+--        	left join mp_group g on p.group_id = g.id
+	    select * from mp_pipeline
     </select>
 
-<!--    <select id="getGroup" parameterType="int" resultType="Group">-->
-<!--          	select * from  mp_group WHERE id=#{id}-->
-<!--       </select>-->
+    <select id="getGroup" parameterType="int" resultType="Group">
+        select * from  mp_group WHERE id=#{id}
+    </select>
 
     <select id="pipelineList" parameterType="pipeline" resultType="map">
        	select id,pipeline_code AS pipelineCode,pipeline_name AS pipelineName , group_id as groupId from mp_pipeline
     </select>
 
-    <select id="chkDuplicatePipelineCode" parameterType="pipeline" resultType="boolean" >
+    <select id="chkDuplicatePipelineCode" parameterType="pipeline" resultType="boolean">
          SELECT count(*) from mp_Pipeline where  (#{id} is null or  id != #{id})  and  pipeline_code = #{pipelineCode}
     </select>
-
 
     <select id="chkDuplicatePipelineName" parameterType="pipeline" resultType="boolean">
       SELECT count(*) from mp_Pipeline where   (#{id} is null or  id != #{id})    and pipeline_name = #{pipelineName}
     </select>
+
+    <select id="getPipelineCodesByGroupId" parameterType="long" resultType="String">
+      SELECT pipeline_code from mp_Pipeline where group_id = #{groupId}
+    </select>
+
 </mapper>
