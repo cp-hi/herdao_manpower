@@ -12,4 +12,5 @@ public interface SectionMapper extends BaseMapper<Section> {
     List<Map> sectionList();
     Boolean chkDuplicateSectionCode(Section section);
     Boolean chkDuplicateSectionName(Section section);
+    List<String>  getSectionCodesByGroupId(Long groupId);
 }

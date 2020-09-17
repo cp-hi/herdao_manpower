@@ -26,7 +26,6 @@ public class Pipeline extends Model<Pipeline> {
     private Integer id;
     private String pipelineCode;
     private String pipelineName;
-    private String groupOid;
     private Integer groupId;
     private Integer sortNo;
     @TableField("IS_STOP")
@@ -34,6 +33,6 @@ public class Pipeline extends Model<Pipeline> {
     private String pipelineStdCode;
     private String tenantId;
 
-//    @TableField(exist = false)
+    @TableField(exist = false)
     private Group group;
 }

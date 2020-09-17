@@ -13,9 +13,11 @@ import java.util.List;
 public interface PipelineMapper extends BaseMapper<Pipeline> {
     List<Map> pipelineList();
 
-    IPage<Pipeline> page(Page<Pipeline> page);
+    IPage<Pipeline> query(Page<Pipeline> page);
 
     Boolean chkDuplicatePipelineName(Pipeline pipeline);
 
     Boolean chkDuplicatePipelineCode(Pipeline pipeline);
+
+    List<String> getPipelineCodesByGroupId(Long groupId);
 }

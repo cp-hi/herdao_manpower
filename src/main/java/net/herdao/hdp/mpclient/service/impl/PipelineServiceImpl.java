@@ -28,7 +28,8 @@ public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> i
     }
 
     public IPage<Pipeline> page(Page<Pipeline> page) {
-        return baseMapper.page(page);
+        IPage<Pipeline> p =baseMapper.query(page);
+        return p;
     }
 
     @Override

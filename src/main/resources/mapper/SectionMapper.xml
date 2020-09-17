@@ -15,4 +15,9 @@
     <select id="chkDuplicateSectionName" parameterType="section" resultType="boolean">
         SELECT count(*) from mp_section  where  (#{id} is null or  id != #{id})  and  section_name = #{sectionName}
     </select>
+
+    <select id="getSectionCodesByGroupId" parameterType="long" resultType="String">
+      SELECT SECTION_CODE from mp_section where group_id = #{groupId}
+    </select>
+
 </mapper>
