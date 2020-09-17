@@ -19,7 +19,6 @@ public interface PostSeqMapper extends BaseMapper<PostSeq> {
 
     IPage<PostSeq> query(Page<PostSeq> page, @Param("searchTxt") String searchTxt);
 
-
     Boolean chkDuplicatePostSeqName(PostSeq postSeq);
 
     Boolean chkDuplicatePostSeqCode(PostSeq postSeq);
