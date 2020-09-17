@@ -26,7 +26,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseCrudRestController {
+public class PostController {
 
     private final PostService postService;
 
