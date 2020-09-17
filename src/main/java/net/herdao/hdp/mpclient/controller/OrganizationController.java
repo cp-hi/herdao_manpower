@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.mpclient.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Post;
 import net.herdao.hdp.mpclient.entity.User;

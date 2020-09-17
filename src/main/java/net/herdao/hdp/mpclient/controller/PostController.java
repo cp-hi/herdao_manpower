@@ -1,7 +1,6 @@
 package net.herdao.hdp.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.diboot.core.controller.BaseCrudRestController;
 import io.swagger.annotations.*;
 import net.herdao.hdp.mpclient.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.Post;

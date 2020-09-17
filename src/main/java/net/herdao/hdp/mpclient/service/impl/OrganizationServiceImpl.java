@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.mpclient.entity.Organization;
+import net.herdao.hdp.mpclient.entity.Userpost;
 import net.herdao.hdp.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.mpclient.service.OrganizationService;
-import net.hedao.hdp.mpclient.service.UserpostService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.mpclient.service.UserpostService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 

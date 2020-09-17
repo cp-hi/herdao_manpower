@@ -3,9 +3,7 @@ package net.herdao.hdp.mpclient.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.mpclient.entity.Organization;
-import net.hedao.hdp.mpclient.entity.Userpost;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
