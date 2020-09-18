@@ -17,9 +17,7 @@
 
 package net.herdao.hdp.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,15 +33,7 @@ import lombok.EqualsAndHashCode;
 @TableName("mp_group")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "集团表")
-public class Group extends Model<Group> {
-private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键ID
-     */
-    @TableId
-    @ApiModelProperty(value="主键ID")
-    private Long id;
+public class Group extends BaseEntity<Group> {
     /**
      * 集团编码
      */
@@ -79,9 +69,5 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="集团全称(表头名称)")
     private String groupFullname;
-    /**
-     * 租户ID
-     */
-    @ApiModelProperty(value="租户ID")
-    private Long tenantId;
-    }
+
+}

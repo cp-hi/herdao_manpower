@@ -17,9 +17,7 @@
 
 package net.herdao.hdp.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,15 +35,8 @@ import java.time.LocalDateTime;
 @TableName("mp_company")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "注册公司")
-public class Company extends Model<Company> {
-private static final long serialVersionUID = 1L;
+public class Company extends BaseEntity<Company> {
 
-    /**
-     * 主键ID
-     */
-    @TableId
-    @ApiModelProperty(value="主键ID")
-    private Long id;
     /**
      * 公司编码
      */
@@ -131,9 +122,5 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="工会费比例")
     private BigDecimal lohnkostenRate;
-    /**
-     * 租户ID
-     */
-    @ApiModelProperty(value="租户ID")
-    private Long tenantId;
-    }
+
+}
