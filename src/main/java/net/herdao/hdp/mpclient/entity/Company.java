@@ -73,26 +73,6 @@ public class Company extends BaseEntity<Company> {
     @ApiModelProperty(value="对应组织主键")
     private Long orgId;
     /**
-     * 新建用户
-     */
-    @ApiModelProperty(value="新建用户")
-    private String creatorCode;
-    /**
-     * 新建时间
-     */
-    @ApiModelProperty(value="新建时间")
-    private LocalDateTime createdTime;
-    /**
-     * 最后修改人
-     */
-    @ApiModelProperty(value="最后修改人")
-    private String modifierCode;
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="最后修改时间")
-    private LocalDateTime modifiedTime;
-    /**
      * 所在城市ID
      */
     @ApiModelProperty(value="所在城市ID")
