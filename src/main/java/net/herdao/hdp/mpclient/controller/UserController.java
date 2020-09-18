@@ -17,17 +17,24 @@
 
 package net.herdao.hdp.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
 import net.herdao.hdp.mpclient.entity.User;
+import net.herdao.hdp.mpclient.listener.UserExcelListener;
 import net.herdao.hdp.mpclient.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 
 
 /**
@@ -108,5 +115,7 @@ public class UserController {
     public R removeById(@PathVariable Long id) {
         return R.ok(userService.removeById(id));
     }
+
+
 
 }

@@ -1,21 +1,19 @@
 
 package net.herdao.hdp.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
-import net.herdao.hdp.mpclient.entity.OrgModifyRecord;
-import net.herdao.hdp.mpclient.service.OrgModifyRecordService;
+import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
+import net.herdao.hdp.mpclient.listener.UserExcelListener;
 import net.herdao.hdp.sys.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.Organization;
-import net.herdao.hdp.mpclient.entity.Post;
 import net.herdao.hdp.mpclient.entity.User;
 import net.herdao.hdp.mpclient.service.OrganizationService;
-import net.herdao.hdp.mpclient.service.PostService;
-import net.herdao.hdp.mpclient.service.UserService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +23,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 
@@ -39,12 +38,7 @@ import java.util.*;
 @Slf4j
 public class OrganizationController {
 
-    private final OrganizationService organizationService;
-
-    private final PostService postService;
-
-    private final UserService userService;
-
+    private final OrganizationService orgService;
 
     /**
      * 通过id查询组织架构详情
@@ -60,13 +54,13 @@ public class OrganizationController {
         @ApiImplicitParam(name="id",value="组织架构主键ID")
     })
     public R fetchOrg(@PathVariable("id") String id) {
-        Organization organization = organizationService.getById(id);
+        Organization organization = orgService.getById(id);
 
         if (null != organization){
             QueryWrapper<Organization> wrapper = Wrappers.query();
             wrapper.eq("id",organization.getParentId());
             //获取父组织
-            Organization parentOrg = organizationService.getOne(wrapper);
+            Organization parentOrg = orgService.getOne(wrapper);
             if (null != parentOrg){
                 organization.setParentName(parentOrg.getOrgName());
             }
@@ -84,38 +78,13 @@ public class OrganizationController {
     @ApiOperation(value = "新增组织架构", notes = "新增组织架构")
     @SysLog("新增组织架构")
     @PostMapping("/saveOrg")
-    @Transactional
     @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
     public R saveOrg(@RequestBody Organization organization) {
-        if (null != organization) {
-            //查询岗位负责人姓名 mp_post表
-            Post post = postService.getById(organization.getChargeOrg());
-            if (null != post) {
-                organization.setPostName(post.getPostName());
-            }
-
-            //查询组织负责人
-            User user = userService.getById(organization.getOrgChargeWorkNo());
-            if (null != user) {
-                organization.setUserName(user.getUserName());
-            }
-
-            QueryWrapper<Organization> wrapper = Wrappers.query();
-            wrapper.eq("id",organization.getParentId());
-            //获取父组织
-            Organization parentOrg = organizationService.getOne(wrapper);
-            if (null != parentOrg){
-                if (null != parentOrg.getOrgTreeLevel()){
-                    //当前新增组织的组织树层级数+1
-                    organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
-                }
-            }
-        }
-        organizationService.save(organization);
-
-        return R.ok(organization);
+        return orgService.saveOrg(organization);
     }
+
+
 
     /**
      * 修改
@@ -128,7 +97,7 @@ public class OrganizationController {
     @PutMapping
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R updateById(@RequestBody Organization organization) {
-        return R.ok(organizationService.updateById(organization));
+        return R.ok(orgService.updateById(organization));
     }
 
     /**
@@ -142,7 +111,7 @@ public class OrganizationController {
     //@DeleteMapping("/{orgOid}" )
     @PreAuthorize("@pms.hasPermission('oa_organization_del')")
     public R removeById(@PathVariable String id) {
-        return R.ok(organizationService.removeById(id));
+        return R.ok(orgService.removeById(id));
     }
 
 
@@ -155,7 +124,7 @@ public class OrganizationController {
     @ApiOperation(value = "查询子组织架构表", notes = "查询子组织架构表")
     @GetMapping("/selectOrganizationListByParentOid")
     public R selectOrganizationListByParentOid(String parentId) {
-        List<Organization> list = organizationService.selectOrganizationListByParentOid(parentId);
+        List<Organization> list = orgService.selectOrganizationListByParentOid(parentId);
         return R.ok(list);
     }
 
@@ -168,7 +137,7 @@ public class OrganizationController {
     @PostMapping("/findAllOrganizations")
     @OperationEntity(operation = "查询根组织架构树，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)" ,clazz = Organization.class )
     public R findAllOrganizations(@RequestBody Organization condition) {
-        List<Organization> list = organizationService.findAllOrganizations(condition);
+        List<Organization> list = orgService.findAllOrganizations(condition);
         return R.ok(list);
     }
 
@@ -180,7 +149,7 @@ public class OrganizationController {
     @ApiOperation(value = "高级查询根组织架构", notes = "高级查询根组织架构")
     @GetMapping("/findOrganizationByCondition")
     public R findOrganizationByCondition(Organization condition) {
-        List<Organization> list = organizationService.findOrganizationByCondition(condition);
+        List<Organization> list = orgService.findOrganizationByCondition(condition);
         return R.ok(list);
     }
 
@@ -193,7 +162,7 @@ public class OrganizationController {
     @GetMapping("/findOrganizationByKeyWords")
     public R findOrganizationByKeyWords(String keyword) {
         if (!keyword.isEmpty()) {
-            List<Organization> list = organizationService.findOrganizationByKeyWords(keyword);
+            List<Organization> list = orgService.findOrganizationByKeyWords(keyword);
             return R.ok(list);
         }
 
@@ -212,15 +181,12 @@ public class OrganizationController {
     public R findOrganizationByOrgOid(String id) {
         List<Organization> list = null;
         if (null != id) {
-            list = organizationService.selectOrganByCurrentOrgOid(id);
+            list = orgService.selectOrganByCurrentOrgOid(id);
 
         }
 
         return R.ok(list);
     }
-
-
-
 
 
     /**
@@ -238,7 +204,7 @@ public class OrganizationController {
         @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
     })
     public R findOrganization2LevelByCondition(@RequestBody Organization condition) {
-        return organizationService.findOrganization2Level(condition);
+        return orgService.findOrganization2Level(condition);
     }
 
 
@@ -254,7 +220,7 @@ public class OrganizationController {
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
     @Transactional
     public R removeOrg(@RequestBody Organization condition) {
-        return organizationService.removeOrg(condition);
+        return orgService.removeOrg(condition);
     }
 
     /**
@@ -273,7 +239,7 @@ public class OrganizationController {
     })
     @OperationEntity(operation = "点击展开组织架构树（默认两级）" ,clazz = Organization.class )
     public R getRecursionOrgByLevel(@RequestBody Organization condition) {
-        return organizationService.getRecursionOrgByLevel(condition);
+        return orgService.getRecursionOrgByLevel(condition);
     }
 
     /**
@@ -292,7 +258,7 @@ public class OrganizationController {
         组织停用后，才能操作删除组织，但组织变更记录不能删除
         组织停用后，将变更停用日期为当前时间
         组织启用后，将变更启用日期为当前时间*/
-        R result = organizationService.startOrStopOrg(condition);
+        R result = orgService.startOrStopOrg(condition);
         return result;
     }
 
@@ -312,7 +278,7 @@ public class OrganizationController {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findOrgPage(Page page, @RequestBody Organization organization) {
-        Page pageResult = organizationService.findOrgPage(page, organization);
+        Page pageResult = orgService.findOrgPage(page, organization);
         return R.ok(pageResult);
     }
 
@@ -327,7 +293,7 @@ public class OrganizationController {
     @PostMapping("/updateOrg")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R updateOrg(@RequestBody Organization organization) {
-        return organizationService.updateOrg(organization);
+        return orgService.updateOrg(organization);
     }
 
 

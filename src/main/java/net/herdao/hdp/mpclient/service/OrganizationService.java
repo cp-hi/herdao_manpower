@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.common.core.util.R;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
@@ -95,6 +96,19 @@ public interface OrganizationService extends IService<Organization> {
      * @param organization
      * @return R
      */
-    @SysLog("编辑更新组织")
-    R updateOrg(@RequestBody Organization organization);
+
+    @SysLog("新增组织架构")
+    /**
+     * 新增组织架构
+     * @param organization
+     * @return R
+     */
+     R saveOrg(@RequestBody Organization organization);
+
+    /**
+     * 编辑更新组织
+     * @param organization
+     * @return R
+     */
+     R updateOrg(@RequestBody Organization organization);
 }

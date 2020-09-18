@@ -14,15 +14,11 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.mpclient.common.Utils.DateUtils;
-import net.herdao.hdp.mpclient.entity.OrgModifyRecord;
-import net.herdao.hdp.mpclient.entity.Organization;
-import net.herdao.hdp.mpclient.entity.Userpost;
+import net.herdao.hdp.mpclient.entity.*;
 import net.herdao.hdp.mpclient.mapper.OrganizationMapper;
-import net.herdao.hdp.mpclient.service.OrgModifyRecordService;
-import net.herdao.hdp.mpclient.service.OrganizationService;
+import net.herdao.hdp.mpclient.service.*;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.mpclient.service.UserpostService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +37,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private final OrgModifyRecordService orgModifyRecordService;
 
     private final RemoteUserService remoteUserService;
+
+    private final PostService postService;
+
+    private final UserService userService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -491,6 +491,38 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             log.error("编辑更新组织组织失败",ex);
             return R.failed("编辑更新组织组织失败");
         }
+
+        return R.ok(organization);
+    }
+
+    @SysLog("新增组织架构")
+    @Override
+    public R saveOrg(@RequestBody Organization organization) {
+        if (null != organization) {
+            //查询岗位负责人姓名 mp_post表
+            Post post = postService.getById(organization.getChargeOrg());
+            if (null != post) {
+                organization.setPostName(post.getPostName());
+            }
+
+            //查询组织负责人
+            User user = userService.getById(organization.getOrgChargeWorkNo());
+            if (null != user) {
+                organization.setUserName(user.getUserName());
+            }
+
+            QueryWrapper<Organization> wrapper = Wrappers.query();
+            wrapper.eq("id",organization.getParentId());
+            //获取父组织
+            Organization parentOrg = super.getOne(wrapper);
+            if (null != parentOrg){
+                if (null != parentOrg.getOrgTreeLevel()){
+                    //当前新增组织的组织树层级数+1
+                    organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
+                }
+            }
+        }
+        super.save(organization);
 
         return R.ok(organization);
     }

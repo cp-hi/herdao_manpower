@@ -1,22 +1,10 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
+
 
 package net.herdao.hdp.mpclient.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -24,6 +12,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.common.Utils.DataConverter;
 
 import java.time.LocalDateTime;
 
@@ -45,6 +34,7 @@ private static final long serialVersionUID = 1L;
      */
     @TableId
     @ApiModelProperty(value="id")
+    @ExcelIgnore
     private Long id;
     /**
      * 用户ID
@@ -75,11 +65,13 @@ private static final long serialVersionUID = 1L;
      * 所属组织外键
      */
     @ApiModelProperty(value="所属组织外键")
+    @ExcelProperty(value = "所属组织外键", index = 1,converter = DataConverter.class)
     private Long orgOid;
     /**
      * 
      */
     @ApiModelProperty(value="")
+    @ExcelIgnore
     private Long orgId;
     /**
      * 所属部门外键
@@ -90,16 +82,19 @@ private static final long serialVersionUID = 1L;
      * 
      */
     @ApiModelProperty(value="")
+    @ExcelIgnore
     private Long orgDeptId;
     /**
      * 是否停用
      */
     @ApiModelProperty(value="是否停用")
+    @ExcelIgnore
     private Long isStop;
     /**
      * 最后登陆时间
      */
     @ApiModelProperty(value="最后登陆时间")
+    @ExcelIgnore
     private LocalDateTime lastLoginTime;
     /**
      * 备注
@@ -110,10 +105,12 @@ private static final long serialVersionUID = 1L;
      * 
      */
     @ApiModelProperty(value="")
+    @ExcelIgnore
     private LocalDateTime leaveTime;
     /**
      * 租户ID
      */
     @ApiModelProperty(value="租户ID")
+    @ExcelIgnore
     private Long tenantId;
     }
