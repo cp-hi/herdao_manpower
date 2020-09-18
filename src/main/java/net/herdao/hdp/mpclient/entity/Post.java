@@ -67,4 +67,6 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "职等名称")
     private String gradeName;
 
+    private String oid;
+
 }

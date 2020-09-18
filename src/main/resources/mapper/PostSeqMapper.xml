@@ -5,7 +5,13 @@
 <mapper namespace="net.herdao.hdp.mpclient.mapper.PostSeqMapper">
 
     <select id="postSeqList"  resultType="map">
-       	select id,POST_SEQ_CODE AS postSeqCode,POST_SEQ_NAME AS postSeqName from mp_post_seq
+       	select id,POST_SEQ_CODE AS postSeqCode,POST_SEQ_NAME AS postSeqName,
+       	 group_id as groupId ,parent_id as parentId from mp_post_seq
+    </select>
+
+    <select id="query" resultType="postSeq" parameterType="String">
+        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
+        select * from mp_post_seq where post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt}
     </select>
 
     <select id="chkDuplicatePostSeqCode" parameterType="postSeq" resultType="boolean">

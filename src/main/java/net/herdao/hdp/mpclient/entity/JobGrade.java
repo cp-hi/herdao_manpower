@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @ClassName JobLevel
- * @Description JobLevel
+ * @ClassName JobGrade
+ * @Description 职等实体类
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/9/14 18:55

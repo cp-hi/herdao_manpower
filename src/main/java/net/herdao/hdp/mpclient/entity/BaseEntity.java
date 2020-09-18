@@ -20,7 +20,6 @@ import java.util.Date;
 public class BaseEntity<T extends Model<?>> extends Model<T> {
     @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
-    private String oid;
     private Long creatorId;
     private String creatorCode;
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
