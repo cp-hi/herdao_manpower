@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.mpclient.mapper.PostSeqMapper">
+
+    <select id="postSeqList"  resultType="map">
+       	select id,POST_SEQ_CODE AS postSeqCode,POST_SEQ_NAME AS postSeqName from mp_post_seq
+    </select>
+
+    <select id="chkDuplicatePostSeqCode" parameterType="postSeq" resultType="boolean">
+         SELECT count(*) from mp_post_seq  where (#{id} is null or id != #{id}) and post_seq_code = #{postSeqCode}
+    </select>
+
+    <select id="chkDuplicatePostSeqName" parameterType="postSeq" resultType="boolean" >
+        SELECT count(*) from mp_post_seq  where  (#{id} is null or id != #{id}) and post_seq_name = #{postSeqName}
+    </select>
+
+</mapper>

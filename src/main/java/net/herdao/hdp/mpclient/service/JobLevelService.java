@@ -9,8 +9,5 @@ import java.util.Map;
 public interface JobLevelService extends IService<JobLevel> {
     List<Map> jobLevelList();
 
-//    Page page(Page page, Map<String, String> params);
-
-    boolean saveOrUpdate(JobLevel jobLevel)  ;
-
+    boolean saveOrUpdate(JobLevel jobLevel);
 }

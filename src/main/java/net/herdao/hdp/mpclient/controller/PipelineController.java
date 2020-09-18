@@ -26,7 +26,6 @@ public class PipelineController {
     private final PipelineService pipelineService;
 
     @GetMapping("/list")
-//    @OperationEntity(operation = "获取管线列表", clazz = Pipeline.class)
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list() {
         return R.ok(pipelineService.pipelineList());
@@ -34,14 +33,13 @@ public class PipelineController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page<Pipeline> page, Pipeline pipeline) {
-        IPage<Pipeline> p = pipelineService.page(page);
-        return R.ok(p);
+    public R page(Page<Pipeline> page, String searchTxt) {
+        return R.ok(pipelineService.page(page,searchTxt));
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Long id) {
+    public R getById(@PathVariable Long id) {
         return R.ok(pipelineService.getById(id));
     }
 
@@ -51,8 +49,8 @@ public class PipelineController {
         return R.ok(pipeline);
     }
 
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除")
+    @ApiOperation(value = "通过id删除管线", notes = "通过id删除")
+//    @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
         return R.ok(pipelineService.removeById(id));

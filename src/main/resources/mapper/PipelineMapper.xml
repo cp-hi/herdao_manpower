@@ -5,21 +5,15 @@
 <mapper namespace="net.herdao.hdp.mpclient.mapper.PipelineMapper">
 
     <resultMap id="pipelineMap" type="pipeline">
-        <!--        <association property="group" javaType="group">-->
-        <!--            <id property="id" column="group_id"/>-->
-        <!--            <result property="groupCode" column="group_code"/>-->
-        <!--            <result property="groupName" column="group_name"/>-->
-        <!--        </association>-->
         <association property="group" column="group_id" select="getGroup" javaType="group"/>
     </resultMap>
 
-    <select id="query" resultMap="pipelineMap">
---        	select p.*,g.group_code,g.group_name from mp_pipeline p
---        	left join mp_group g on p.group_id = g.id
-	    select * from mp_pipeline
+    <select id="query" resultMap="pipelineMap" parameterType="String">
+        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
+        select * from mp_pipeline where  pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
     </select>
 
-    <select id="getGroup" parameterType="int" resultType="Group">
+    <select id="getGroup" parameterType="int" resultType="group">
         select * from  mp_group WHERE id=#{id}
     </select>
 

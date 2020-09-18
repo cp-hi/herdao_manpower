@@ -33,8 +33,8 @@ public class SectionController {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, Section section) {
-        return R.ok(sectionService.page(page, Wrappers.query(section)));
+    public R page(Page page, String searchTxt) {
+        return R.ok(sectionService.page(page, searchTxt));
     }
 
     @GetMapping("/{id}")

@@ -50,12 +50,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         String sectionCode = params.get("sectionCodes");
         String pipelineCode = params.get("pipelineCodes");
         boolean hasGroupId = StringUtils.isNotBlank(groupId);
-        List<String> sectionCodes = new ArrayList<>();
-        List<String> pipelineCodes = new ArrayList<>();
+        List<String> sectionCodes = new ArrayList<>(), pipelineCodes = new ArrayList<>();
         if (hasGroupId) {
-            Long gid = Long.valueOf(groupId);
-            sectionCodes = sectionMapper.getSectionCodesByGroupId(gid);
-            pipelineCodes = pipelineMapper.getPipelineCodesByGroupId(gid);
+            sectionCodes = sectionMapper.getSectionCodesByGroupId(Long.valueOf(groupId));
+            pipelineCodes = pipelineMapper.getPipelineCodesByGroupId(Long.valueOf(groupId));
         }
 
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
@@ -66,6 +64,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 .in(StringUtils.isBlank(sectionCode) && sectionCodes.size() > 0, "SECTION_CODE", sectionCodes)
                 .in(StringUtils.isBlank(pipelineCode) && pipelineCodes.size() > 0, "SECTION_CODE", pipelineCodes)
                 .like(StringUtils.isNotBlank(searchText), "POST_NAME", searchText);
+
         Page p = this.page(page, queryWrapper);
         return p;
     }

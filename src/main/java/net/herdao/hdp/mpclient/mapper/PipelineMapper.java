@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.mpclient.entity.Pipeline;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface PipelineMapper extends BaseMapper<Pipeline> {
     List<Map> pipelineList();
 
-    IPage<Pipeline> query(Page<Pipeline> page);
+    IPage<Pipeline> query(Page<Pipeline> page,@Param("searchTxt") String searchTxt);
 
     Boolean chkDuplicatePipelineName(Pipeline pipeline);
 
