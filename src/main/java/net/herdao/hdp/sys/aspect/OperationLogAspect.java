@@ -46,7 +46,7 @@ public class OperationLogAspect {
     /**
      * 保存时设置操作人信息的切入点
      */
-    @Pointcut("execution(public * net.hedao.hdp.mpclient.service..*.saveOrUpdate(..))")
+    @Pointcut("execution(public * net.herdao.hdp.mpclient.service..*.saveOrUpdate(..))")
     public void pointCut2() {
         System.out.println("point2");
     }
