@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.entity.base.BaseEntity;
 
 /**
  * @ClassName PostSeq
@@ -17,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @TableName("MP_Post_Seq")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位序列")
-public class PostSeq  extends BaseEntity<PostSeq>{
+public class PostSeq  extends BaseEntity<PostSeq> {
     private String postSeqName;
     private String postSeqCode;
     private String description;

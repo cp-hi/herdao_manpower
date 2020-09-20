@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import net.herdao.hdp.sys.annotation.ExcludeField;
 
 /**
  * @ClassName Pipeline
@@ -17,6 +18,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
  * @Date 2020/9/12 14:55
  * @Version 1.0
  */
+@ExcludeField(excludes = {"tenantId"})
 @Data
 @TableName("MP_Pipeline")
 @EqualsAndHashCode(callSuper = true)
