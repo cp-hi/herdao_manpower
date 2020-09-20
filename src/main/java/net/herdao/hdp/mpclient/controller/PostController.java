@@ -68,6 +68,7 @@ public class PostController {
     @DeleteMapping("/{id}")
     @OperationEntity(operation = "删除岗位", clazz = Post.class)
     public R removeById(@PathVariable Long id) {
-        return R.ok(postService.removeById(id));
+        Post post = postService.getById(id);
+        return R.ok(post.logicDel(true));
     }
 }

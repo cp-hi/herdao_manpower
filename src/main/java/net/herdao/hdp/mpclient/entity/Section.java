@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.entity.base.BaseModel;
 
 /**
  * @ClassName Section
@@ -21,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @TableName("MP_Section")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "板块")
-public class Section extends Model<Section> {
+public class Section extends BaseModel<Section> {
     @TableId(value = "ID", type = IdType.AUTO)
     private Integer id;
     private String sectionCode;
@@ -30,5 +31,4 @@ public class Section extends Model<Section> {
     private Integer sortNo;
     @TableField("IS_STOP")
     private Boolean stop;
-    private Integer tenantId;
 }

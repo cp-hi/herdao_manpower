@@ -53,6 +53,7 @@ public class PipelineController {
 //    @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
-        return R.ok(pipelineService.removeById(id));
+        Pipeline pipeline =pipelineService.getById(id);
+        return R.ok(pipeline.logicDel(true));
     }
 }

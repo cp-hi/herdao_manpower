@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
@@ -69,13 +70,13 @@ public class OperationLogAspect {
         Class cls = point.getSignature().getDeclaringType();
         if (null == cls) return;
         ExcludeField excludeField = (ExcludeField) cls.getAnnotation(ExcludeField.class);
-        if (null == excludeField || excludeField.excludes().length == 0) return;
-        List<String> excludeFields = Arrays.asList(excludeField.excludes());
+        if (null == excludeField || excludeField.value().length == 0) return;
+        List<String> excludeFields = Arrays.asList(excludeField.value());
         for (Field field : cls.getFields()) {
-           if(excludeFields.contains(field.getName())){
-               //TODO 为字段加上排队注解   @TableField(exist = false)
-               System.out.println("字段名是-------------"+field.getName());
-           }
+            if (excludeFields.contains(field.getName())) {
+                //TODO 为字段加上排队注解   @TableField(exist = false)
+                System.out.println("字段名是-------------" + field.getName());
+            }
         }
     }
 
@@ -88,6 +89,11 @@ public class OperationLogAspect {
         for (Object arg : args) {
             if (arg != null && arg instanceof BaseEntity) {
                 BaseEntity entity = (BaseEntity) arg;
+                Field[] fields = entity.getClass().getDeclaredFields();
+                for (Field f : fields) {
+                    Annotation[] annos = f.getAnnotations();
+                    System.out.println(annos);
+                }
 
                 if (null == entity.getId() || 0 == entity.getId()) {
                     entity.setCreatedTime(new Date());

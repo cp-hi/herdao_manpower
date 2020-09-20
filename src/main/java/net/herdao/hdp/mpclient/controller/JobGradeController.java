@@ -63,6 +63,7 @@ public class JobGradeController {
     @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
-        return R.ok(jobGradeService.removeById(id));
+        JobGrade jobGrade = jobGradeService.getById(id);
+        return R.ok(jobGrade.logicDel(true));
     }
 }

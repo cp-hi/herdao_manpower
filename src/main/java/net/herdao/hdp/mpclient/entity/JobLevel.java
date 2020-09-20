@@ -14,6 +14,7 @@ import net.herdao.hdp.mpclient.entity.base.BaseEntity;
  * @Date 2020/9/14 18:55
  * @Version 1.0
  */
+
 @Data
 @TableName("MP_JOB_LEVEL")
 @EqualsAndHashCode(callSuper = true)
