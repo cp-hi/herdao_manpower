@@ -6,9 +6,13 @@ import net.herdao.hdp.mpclient.entity.JobGrade;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author ljan
+ */
 public interface JobGradeService extends IService<JobGrade> {
     List<Map> jobGradeList();
 
-    boolean saveOrUpdate(JobGrade jobGrade)  ;
+    @Override
+    boolean saveOrUpdate(JobGrade jobGrade) ;
 
 }

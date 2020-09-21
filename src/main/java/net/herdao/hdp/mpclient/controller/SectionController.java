@@ -53,7 +53,6 @@ public class SectionController {
     @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
-        Section section = sectionService.getById(id);
-        return R.ok(section.logicDel(true));
+        return R.ok(sectionService.removeById(id));
     }
 }

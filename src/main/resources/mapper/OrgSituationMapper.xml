@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.herdao.hdp.mpclient.mapper.OrgSituationMapper">
+
+            <resultMap id="orgSituationMap" type="net.herdao.hdp.mpclient.entity.OrgSituation">
+                  <id property="fullTimeJobCount" column="full_time_job_count"/>
+                        <result property="onJobCount" column="on_job_count"/>
+                        <result property="postCount" column="post_count"/>
+                        <result property="trailCount" column="trail_count"/>
+                        <result property="establishCount" column="establish_count"/>
+                        <result property="fullTimeJobZb" column="full_time_job_zb"/>
+                        <result property="traineeJobCount" column="trainee_job_count"/>
+                        <result property="traineeJobZb" column="trainee_job_zb"/>
+                        <result property="partTimeJobCount" column="part_time_job_count"/>
+                        <result property="partTimeJobZb" column="part_time_job_zb"/>
+                        <result property="laborJobCount" column="labor_job_count"/>
+                        <result property="laborJobZb" column="labor_job_zb"/>
+                        <result property="outerJobCount" column="outer_job_count"/>
+                        <result property="outerJobZb" column="outer_job_zb"/>
+                        <result property="retireJobCount" column="retire_job_count"/>
+                        <result property="retireJobZb" column="retire_job_zb"/>
+            </resultMap>
+
+
+      <!-- 获取组织概况 -->
+      <select id="fetchOrgSituation" resultMap="orgSituationMap">
+          SELECT sum( CASE WHEN s.JOB_TYPE = '全职' THEN 1 ELSE 0 END ) full_time_job_count,
+                 sum( CASE WHEN s.JOB_TYPE = '全职' and s.STAFF_SCOPE='在职人员' THEN 1 ELSE 0 END ) on_job_count,
+                 count(distinct( u.post_id))  post_count ,
+                 0  trail_count,
+                 0  establish_count
+            FROM
+            mp_organization a
+            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
+            AND u.MAIN_POST = 1
+            INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
+            WHERE 1=1
+            <if test="orgCode != null">
+                  AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+      </select>
+
+    <!-- 员工任职类型分布 -->
+    <select id="fetchOrgSituationByJobType" resultMap="orgSituationMap">
+         SELECT t.full_time_job_count,
+                concat(ROUND(t.full_time_job_count/t.job_type_total,2)*100,'%')  full_time_job_zb,
+   	            t.trainee_job_count,
+			    concat(ROUND(t.trainee_job_count/t.job_type_total,2)*100,'%')  trainee_job_zb,
+			    t.part_time_job_count,
+			    concat(ROUND(t.part_time_job_count/t.job_type_total,2)*100,'%')  part_time_job_zb,
+ 	   	        t.labor_job_count,
+			    concat(ROUND(t.labor_job_count/t.job_type_total,2)*100,'%')  labor_job_zb,
+			    t.outer_job_count,
+			    concat(ROUND(t.outer_job_count/t.job_type_total,2)*100,'%')  outer_job_zb,
+			    t.retire_job_count,
+			    concat(ROUND(t.retire_job_count/t.job_type_total,2)*100,'%')  retire_job_zb
+        from (
+                SELECT sum( CASE WHEN t.JOB_TYPE = '全职' THEN t.job_type_count ELSE 0 END ) full_time_job_count,
+                       sum( CASE WHEN t.JOB_TYPE = '实习生' THEN t.job_type_count ELSE 0 END ) trainee_job_count,
+                       sum( CASE WHEN t.JOB_TYPE = '兼职' THEN t.job_type_count ELSE 0 END ) part_time_job_count,
+                       sum( CASE WHEN t.JOB_TYPE = '劳务派遣' THEN t.job_type_count ELSE 0 END ) labor_job_count,
+                       sum( CASE WHEN t.JOB_TYPE = '外包' THEN t.job_type_count ELSE 0 END ) outer_job_count,
+                       sum( CASE WHEN t.JOB_TYPE = '退休返聘' THEN t.job_type_count ELSE 0 END ) retire_job_count,
+                       sum( t.job_type_count ) job_type_total
+                FROM
+                    (
+                            SELECT DISTINCT
+                                s.JOB_TYPE,
+                                count( 1 ) job_type_count
+                            FROM
+                                mp_organization a
+                                INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
+                                AND u.MAIN_POST = 1
+                                INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
+                            WHERE 1=1
+                                <if test="orgCode != null">
+                                    AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+                                </if>
+                            GROUP BY
+                            s.JOB_TYPE
+                    ) t
+            )t
+    </select>
+
+
+</mapper>

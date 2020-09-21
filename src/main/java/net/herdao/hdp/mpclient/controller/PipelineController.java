@@ -50,10 +50,8 @@ public class PipelineController {
     }
 
     @ApiOperation(value = "通过id删除管线", notes = "通过id删除")
-//    @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
-        Pipeline pipeline =pipelineService.getById(id);
-        return R.ok(pipeline.logicDel(true));
+        return R.ok(pipelineService.removeById(id));
     }
 }
