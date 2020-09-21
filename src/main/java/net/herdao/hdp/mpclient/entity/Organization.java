@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.mpclient.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.common.Utils.DataConverter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -33,16 +35,20 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="主键ID")
     private Long id;
+
     /**
      * 组织OID
      */
     @ApiModelProperty(value="组织OID")
     private String oid;
+
     /**
      * 组织名称
      */
+    @ExcelProperty(value = "组织名称", index = 0)
     @ApiModelProperty(value="组织名称")
     private String orgName;
+
     /**
      * 组织全名
      */
@@ -58,11 +64,22 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="上级OID")
     private String parentOid;
+
     /**
      * 父ID
      */
     @ApiModelProperty(value="父ID")
     private Long parentId;
+
+    /**
+     * 父ID
+     */
+    @ExcelProperty(value = "上级组织编字符串传参", index = 1)
+    @ApiModelProperty(value="父ID")
+    @TableField(exist = false)
+    private String parentIdStr;
+
+
     /**
      * 组织级别
      */
@@ -82,6 +99,7 @@ private static final long serialVersionUID = 1L;
      * 福利类型
      */
     @ApiModelProperty(value="福利类型")
+    @ExcelProperty(value = "福利类型", index = 5)
     private String welfareType;
     /**
      * 排序
@@ -122,7 +140,9 @@ private static final long serialVersionUID = 1L;
      * 组织类型
      */
     @ApiModelProperty(value="组织类型")
+    @ExcelProperty(value = "上级组织编码", index = 2)
     private String orgType;
+
     /**
      * 租户ID
      */
@@ -138,9 +158,11 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="组织负责人姓名")
     private String orgChargeName;
+
     /**
      * 组织负责人工号
      */
+    @ExcelProperty(value = "组织负责人", index = 3)
     @ApiModelProperty(value="组织负责人工号")
     private String orgChargeWorkNo;
     /**
@@ -148,11 +170,14 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="组织简称")
     private String orgSimpleDesc;
+
     /**
      * 部门负责人岗位（负责岗位）
      */
+    @ExcelProperty(value = "负责岗位", index = 4)
     @ApiModelProperty(value="部门负责人岗位（负责岗位）")
     private String chargeOrg;
+
     /**
      * 人员编制
      */

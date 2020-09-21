@@ -9,7 +9,7 @@ import com.alibaba.excel.util.NumberUtils;
 import com.alibaba.excel.util.StringUtils;
 
 import java.text.ParseException;
-public class DataConverter implements   Converter<Long>{
+public class DataConverter implements Converter<Long>{
     @Override
     public Class supportJavaTypeKey() {
         return Long.class;

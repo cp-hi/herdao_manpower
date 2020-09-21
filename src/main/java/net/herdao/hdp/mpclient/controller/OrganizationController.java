@@ -9,21 +9,29 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
+import net.herdao.hdp.mpclient.listener.OrgExcelListener;
 import net.herdao.hdp.mpclient.listener.UserExcelListener;
+import net.herdao.hdp.mpclient.service.ExcelOperateRecordService;
+import net.herdao.hdp.mpclient.service.PostService;
+import net.herdao.hdp.mpclient.service.UserService;
 import net.herdao.hdp.sys.annotation.OperationEntity;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.User;
 import net.herdao.hdp.mpclient.service.OrganizationService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.sys.service.SysDictItemService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -39,6 +47,13 @@ import java.util.*;
 public class OrganizationController {
 
     private final OrganizationService orgService;
+
+    private final SysDictItemService sysDictItemService;
+
+    private final UserService userService;
+
+    private final PostService postService;
+    private final ExcelOperateRecordService excelOperateRecordService;
 
     /**
      * 通过id查询组织架构详情
@@ -83,7 +98,6 @@ public class OrganizationController {
     public R saveOrg(@RequestBody Organization organization) {
         return orgService.saveOrg(organization);
     }
-
 
 
     /**
@@ -207,7 +221,6 @@ public class OrganizationController {
         return orgService.findOrganization2Level(condition);
     }
 
-
     /**
      *
      * 删除组织
@@ -297,6 +310,26 @@ public class OrganizationController {
     }
 
 
+    /**
+     * 批量导入组织 (excel导入)
+     * @param file
+     * @return R
+     */
+    @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
+    @PostMapping("/batchImportOrg")
+    @ResponseBody
+    @Transactional
+    public R batchImportOrg(@RequestParam(value = "file") MultipartFile file){
+        try {
+            InputStream inputStream = file.getInputStream();
+            EasyExcel.read(inputStream,Organization.class, new OrgExcelListener(orgService,sysDictItemService,userService,postService,excelOperateRecordService)).sheet().doRead();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            R.failed("导入失败");
+        }
+
+        return  R.ok("导入成功");
+    }
 
 }
 

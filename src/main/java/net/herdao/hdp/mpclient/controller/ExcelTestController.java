@@ -2,6 +2,7 @@ package net.herdao.hdp.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
 import net.herdao.hdp.mpclient.entity.User;
 import net.herdao.hdp.mpclient.listener.UserExcelListener;
@@ -10,40 +11,59 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+
+
+/**
+ *
+ * excel 测试类
+ * @author andy
+ * @date 2020-09-18 19:46:22
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/excelTest" )
 public class ExcelTestController {
     private final UserService userService;
 
-    // easyexcel导出Excel到web
+
+    /**
+     * easyexcel导出Excel到web
+     * @param  response
+     * @return R
+     */
     @GetMapping("/export2Web")
-    public void export2Web(HttpServletResponse response) {
+    public R export2Web(HttpServletResponse response) {
         try {
             ExcelUtils.export2Web(response, "组织架构表", "组织架构表1", User.class, userService.list());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return  R.ok("导出成功");
     }
 
-    // easyexcel读取文件
+     /**
+     *  easyexcel读取文件
+     * @return R
+     */
     @GetMapping("/read4File")
     @ResponseBody
-    public String read4File() {
+    public R read4File() {
         String fileName = "C:\\Users\\Administrator\\Desktop\\" + "用户表导入.xlsx";
         EasyExcel.read(fileName, User.class, new UserExcelListener(userService)).sheet().doRead();
-        /* EasyExcel.read(serviceFile,User.class, new UserExcelListener(userService)).sheet().doRead();*/
-        return "读取成功";
+        return  R.ok(" easyexcel成读取文件");
     }
 
-    // easyexcel读取文件
+    /**
+     * easyexcel读取上传文件
+     * @return R
+     */
     @PostMapping("/read4FileUpload")
     @ResponseBody
-    public String read4FileUpload(@RequestParam(value = "file") MultipartFile file) throws IOException {
+    public R read4FileUpload(@RequestParam(value = "file") MultipartFile file) throws IOException {
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream,User.class, new UserExcelListener(userService)).sheet().doRead();
@@ -51,7 +71,7 @@ public class ExcelTestController {
             ex.printStackTrace();
         }
 
-        return "读取成功";
+        return R.ok(" easyexcel读取上传文件成功");
     }
 
 }
