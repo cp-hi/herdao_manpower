@@ -19,4 +19,11 @@ public interface OrgSituationMapper extends BaseMapper<OrgSituation> {
      * @return orgSituation
      */
     OrgSituation fetchOrgSituation(OrgSituation orgSituation);
+
+    /**
+     * 获取员工任职类型分布
+     * @param orgSituation
+     * @return orgSituation
+     */
+    OrgSituation fetchOrgSituationByJobType(OrgSituation orgSituation);
 }

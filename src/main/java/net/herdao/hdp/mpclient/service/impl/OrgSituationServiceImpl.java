@@ -20,4 +20,10 @@ public class OrgSituationServiceImpl extends ServiceImpl<OrgSituationMapper, Org
         OrgSituation result = this.baseMapper.fetchOrgSituation(orgSituation);
         return result;
     }
+
+    @Override
+    public OrgSituation fetchOrgSituationByJobType(OrgSituation orgSituation) {
+        OrgSituation result = this.baseMapper.fetchOrgSituationByJobType(orgSituation);
+        return result;
+    }
 }

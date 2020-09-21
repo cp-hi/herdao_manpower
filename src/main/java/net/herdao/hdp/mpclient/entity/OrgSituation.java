@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * @date 2020-09-21 15:10:10
  */
 @Data
-@TableName("org_situation")
+/*@TableName("org_situation")*/
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "")
 public class OrgSituation extends Model<OrgSituation> {

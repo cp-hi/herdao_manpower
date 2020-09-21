@@ -95,7 +95,6 @@ public class OrgSituationController {
         return R.ok(orgSituationService.removeById(fullTimeJobCount));
     }
 
-
     /**
      * 获取组织概况
      * @param orgSituation
@@ -109,6 +108,22 @@ public class OrgSituationController {
     })
     public R fetchOrgSituation(@RequestBody OrgSituation orgSituation) {
         OrgSituation result = orgSituationService.fetchOrgSituation(orgSituation);
+        return R.ok(result);
+    }
+
+    /**
+     * 获取员工任职类型分布
+     * @param orgSituation
+     * @return R
+     */
+    @ApiOperation(value = "获取员工任职类型分布", notes = "获取员工任职类型分布")
+    @SysLog("获取员工任职类型分布" )
+    @PostMapping("/fetchOrgSituationByJobType")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgCode", value = "组织代码"),
+    })
+    public R fetchOrgSituationByJobType(@RequestBody OrgSituation orgSituation) {
+        OrgSituation result = orgSituationService.fetchOrgSituationByJobType(orgSituation);
         return R.ok(result);
     }
 }
