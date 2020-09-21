@@ -1,10 +1,13 @@
-package net.herdao.hdp.mpclient.entity;
+package net.herdao.hdp.mpclient.entity.base;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
 
@@ -17,17 +20,16 @@ import java.util.Date;
  * @Version 1.0
  */
 @Data
-public class BaseEntity<T extends Model<?>> extends Model<T> {
+@EqualsAndHashCode(callSuper = true)
+public class BaseEntity<T extends Model<?>> extends BaseModel<T> {
     @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
-    private String oid;
     private Long creatorId;
-    private String creatorCode;
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    private String creatorName;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdTime;
     private Long modifierId;
-    private String modifierCode;
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    private String modifierName;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date modifiedTime;
-    private Integer tenantId;
 }

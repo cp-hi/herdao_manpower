@@ -52,6 +52,7 @@ public class PostSeqController {
     @ApiOperation(value = "通过id删除岗位序列", notes = "通过id删除")
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
-        return R.ok(postSeqService.removeById(id));
+        PostSeq postSeq= postSeqService.getById(id);
+        return R.ok(postSeq.logicDel(true));
     }
 }

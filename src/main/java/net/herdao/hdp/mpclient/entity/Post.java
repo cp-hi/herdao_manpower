@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.entity.base.BaseEntity;
 
 import java.math.BigDecimal;
 
@@ -66,5 +67,6 @@ public class Post extends BaseEntity<Post> {
     private String postClan;
     @ApiModelProperty(value = "职等名称")
     private String gradeName;
+    private String oid;
 
 }

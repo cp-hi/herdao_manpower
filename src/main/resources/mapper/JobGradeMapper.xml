@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.mpclient.mapper.JobGradeMapper">
+
+    <select id="jobGradeList"   resultType="map">
+       	select id,job_Grade_code AS jobGradeCode,job_Grade_name AS jobGradeName from mp_job_Grade
+    </select>
+
+    <select id="chkDuplicateJobGradeCode" parameterType="jobGrade" resultType="boolean">
+         SELECT count(*) from mp_job_Grade  where  (#{id} is null or  id != #{id})  and  job_Grade_code = #{jobGradeCode}
+    </select>
+
+    <select id="chkDuplicateJobGradeName" parameterType="jobGrade" resultType="boolean" >
+        SELECT count(*) from mp_Job_Grade  where  (#{id} is null or  id != #{id})   and  job_Grade_name = #{jobGradeName}
+    </select>
+</mapper>

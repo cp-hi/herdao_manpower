@@ -17,13 +17,13 @@
 
 package net.herdao.hdp.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.entity.base.BaseEntity;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -37,15 +37,8 @@ import java.time.LocalDateTime;
 @TableName("mp_company")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "注册公司")
-public class Company extends Model<Company> {
-private static final long serialVersionUID = 1L;
+public class Company extends BaseEntity<Company> {
 
-    /**
-     * 主键ID
-     */
-    @TableId
-    @ApiModelProperty(value="主键ID")
-    private Long id;
     /**
      * 公司编码
      */
@@ -82,26 +75,6 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="对应组织主键")
     private Long orgId;
     /**
-     * 新建用户
-     */
-    @ApiModelProperty(value="新建用户")
-    private String creatorCode;
-    /**
-     * 新建时间
-     */
-    @ApiModelProperty(value="新建时间")
-    private LocalDateTime createdTime;
-    /**
-     * 最后修改人
-     */
-    @ApiModelProperty(value="最后修改人")
-    private String modifierCode;
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="最后修改时间")
-    private LocalDateTime modifiedTime;
-    /**
      * 所在城市ID
      */
     @ApiModelProperty(value="所在城市ID")
@@ -131,9 +104,5 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="工会费比例")
     private BigDecimal lohnkostenRate;
-    /**
-     * 租户ID
-     */
-    @ApiModelProperty(value="租户ID")
-    private Long tenantId;
-    }
+
+}

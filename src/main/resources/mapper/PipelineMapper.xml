@@ -10,7 +10,7 @@
 
     <select id="query" resultMap="pipelineMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_pipeline where  pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
+        select * from mp_pipeline where pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
     </select>
 
     <select id="getGroup" parameterType="int" resultType="group">
