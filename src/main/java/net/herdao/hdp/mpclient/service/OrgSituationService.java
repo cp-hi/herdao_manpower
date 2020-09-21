@@ -28,5 +28,10 @@ public interface OrgSituationService extends IService<OrgSituation> {
      */
     OrgSituation fetchOrgSituationByJobType(OrgSituation orgSituation);
 
-
+    /**
+     * 获取在职员工年龄分布
+     * @param orgSituation
+     * @return orgSituation
+     */
+    OrgSituation fetchOrgSituationByAge(OrgSituation orgSituation);
 }

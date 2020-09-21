@@ -19,6 +19,14 @@
                         <result property="outerJobZb" column="outer_job_zb"/>
                         <result property="retireJobCount" column="retire_job_count"/>
                         <result property="retireJobZb" column="retire_job_zb"/>
+                        <result property="lessThan20" column="less_than_20"/>
+                        <result property="lessThan20Zb" column="less_than_20_zb"/>
+                        <result property="in2030" column="in_20_30"/>
+                        <result property="in2030Zb" column="in_20_30_zb"/>
+                        <result property="in3040" column="in_30_40"/>
+                        <result property="in3040Zb" column="in_30_40_zb"/>
+                        <result property="largeThan40" column="large_than_40"/>
+                        <result property="largeThan40Zb" column="large_than_40_zb"/>
             </resultMap>
 
 
@@ -82,5 +90,34 @@
             )t
     </select>
 
-
+    <!-- 在职员工年龄分布 -->
+    <select id="fetchOrgSituationByAge" resultMap="orgSituationMap">
+       SELECT   t.less_than_20,
+                concat(ROUND(t.less_than_20/t.total,2)*100,'%')  less_than_20_zb,
+                t.in_20_30,
+                concat(ROUND(t.in_20_30/t.total,2)*100,'%')  in_20_30_zb,
+                t.in_30_40,
+                concat(ROUND(t.in_30_40/t.total,2)*100,'%')  in_30_40_zb,
+                t.large_than_40,
+                concat(ROUND(t.large_than_40/t.total,2)*100,'%')  large_than_40_zb
+        from (
+             SELECT SUM(case when t.age &lt; 20 then 1 else 0 end ) less_than_20,
+                    SUM(case when t.age >=20 and t.age &lt;= 30 then 1 else 0 end ) in_20_30,
+                    SUM(case when t.age >=30 and t.age &lt;= 40 then 1 else 0 end ) in_30_40,
+                    SUM(case when t.age >=40  then 1 else 0 end ) large_than_40,
+                    COUNT(t.staff_id) total
+            FROM
+            (
+                  SELECT  s.id staff_id,
+                          DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(s.BIRTHDAY)), '%Y')+0 AS age
+                    FROM  mp_organization a
+                    INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID AND u.MAIN_POST = 1
+                    INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
+                    WHERE 1=1
+                        <if test="orgCode != null">
+                            AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+                        </if>
+            ) t
+         )t
+    </select>
 </mapper>

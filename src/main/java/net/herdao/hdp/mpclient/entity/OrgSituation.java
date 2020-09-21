@@ -108,6 +108,47 @@ public class OrgSituation extends Model<OrgSituation> {
     private String retireJobZb;
 
     /**
+     * 20岁以下
+     */
+    @ApiModelProperty(value="20岁以下")
+    private Integer lessThan20;
+    /**
+     * 20岁以下占比
+     */
+    @ApiModelProperty(value="20岁以下占比")
+    private String lessThan20Zb;
+    /**
+     * 20-30岁
+     */
+    @ApiModelProperty(value="20-30岁")
+    private Integer in2030;
+    /**
+     * 20-30岁占比
+     */
+    @ApiModelProperty(value="20-30岁占比")
+    private String in2030Zb;
+    /**
+     * 30-40岁
+     */
+    @ApiModelProperty(value="30-40岁")
+    private Integer in3040;
+    /**
+     * 30-40岁占比
+     */
+    @ApiModelProperty(value="30-40岁占比")
+    private String in3040Zb;
+    /**
+     * 40岁以上
+     */
+    @ApiModelProperty(value="40岁以上")
+    private Integer largeThan40;
+    /**
+     * 40岁以上占比
+     */
+    @ApiModelProperty(value="40岁以上占比")
+    private String largeThan40Zb;
+
+    /**
      * 组织编码 传参
      */
     @ApiModelProperty(value="组织编码 传参")

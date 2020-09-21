@@ -126,4 +126,20 @@ public class OrgSituationController {
         OrgSituation result = orgSituationService.fetchOrgSituationByJobType(orgSituation);
         return R.ok(result);
     }
+
+    /**
+     * 获取在职员工年龄分布
+     * @param orgSituation
+     * @return R
+     */
+    @ApiOperation(value = "获取在职员工年龄分布", notes = "获取在职员工年龄分布")
+    @SysLog("获取在职员工年龄分布" )
+    @PostMapping("/fetchOrgSituationByAge")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgCode", value = "组织代码"),
+    })
+    public R fetchOrgSituationByAge(@RequestBody OrgSituation orgSituation) {
+        OrgSituation result = orgSituationService.fetchOrgSituationByAge(orgSituation);
+        return R.ok(result);
+    }
 }
