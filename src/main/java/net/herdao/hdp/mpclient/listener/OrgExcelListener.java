@@ -103,37 +103,8 @@ public class OrgExcelListener extends AnalysisEventListener<Organization> {
                             org.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
                         }
 
-                        Map<String,Object> childrenParams =new HashMap<>();
-                        childrenParams.put("parentId",parentOrg.getId());
-                        List<Organization> childOrgList = getOrgList(childrenParams);
-                        //挂靠父组织 父组织下有多个子组织 拿子组织中最大的组织编码
-                        if (childOrgList !=null && !childOrgList.isEmpty()){
-                            String orgCodeTemp ="";
-                            Long maxOrgCode=null;
-                            for (Organization organization : childOrgList) {
-                                if (null == maxOrgCode){
-                                    maxOrgCode = Long.parseLong(organization.getOrgCode());
-                                    orgCodeTemp = organization.getOrgCode();
-                                }
-                                if (Long.parseLong(organization.getOrgCode())>maxOrgCode){
-                                    maxOrgCode = Long.parseLong(organization.getOrgCode());
-                                    orgCodeTemp = organization.getOrgCode();
-                                }
-
-                                org.setOrgCode(orgCodeTemp);
-                            }
-
-                            //组装组织编码
-                            if (orgCodeTemp !=null && !orgCodeTemp.isEmpty()){
-                                int orgLength = orgCodeTemp.length();
-                                Long temp= Long.parseLong(orgCodeTemp)+1;
-                                String newOrgCode= String.format("%0"+orgLength+"d", temp);
-                                org.setOrgCode(newOrgCode);
-                            }
-                        }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
-                            String newOrgCode=org.getParentIdStr()+"001";
-                            org.setOrgCode(newOrgCode);
-                        }
+                        //生成组织编码 orgCode
+                        createOrgCode(org, parentOrg);
                     }
 
                     organizationService.save(org);
@@ -150,6 +121,43 @@ public class OrgExcelListener extends AnalysisEventListener<Organization> {
                 }
             }
      }
+
+    /**
+     * 生成组织编码 orgCode
+     */
+    private void createOrgCode(Organization org, Organization parentOrg) {
+        Map<String,Object> childrenParams =new HashMap<>();
+        childrenParams.put("parentId",parentOrg.getId());
+        List<Organization> childOrgList = getOrgList(childrenParams);
+        //挂靠父组织 父组织下有多个子组织 拿子组织中最大的组织编码
+        if (childOrgList !=null && !childOrgList.isEmpty()){
+            String orgCodeTemp ="";
+            Long maxOrgCode=null;
+            for (Organization organization : childOrgList) {
+                if (null == maxOrgCode){
+                    maxOrgCode = Long.parseLong(organization.getOrgCode());
+                    orgCodeTemp = organization.getOrgCode();
+                }
+                if (Long.parseLong(organization.getOrgCode())>maxOrgCode){
+                    maxOrgCode = Long.parseLong(organization.getOrgCode());
+                    orgCodeTemp = organization.getOrgCode();
+                }
+
+                org.setOrgCode(orgCodeTemp);
+            }
+
+            //组装组织编码
+            if (orgCodeTemp !=null && !orgCodeTemp.isEmpty()){
+                int orgLength = orgCodeTemp.length();
+                Long temp= Long.parseLong(orgCodeTemp)+1;
+                String newOrgCode= String.format("%0"+orgLength+"d", temp);
+                org.setOrgCode(newOrgCode);
+            }
+        }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
+            String newOrgCode=org.getParentIdStr()+"001";
+            org.setOrgCode(newOrgCode);
+        }
+    }
 
     /**
      * 导入前先校检组织
