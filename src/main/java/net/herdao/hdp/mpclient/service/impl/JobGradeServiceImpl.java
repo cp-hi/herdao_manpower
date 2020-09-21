@@ -20,6 +20,7 @@ import java.util.Map;
 @Service
 public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> implements JobGradeService {
 
+    @Override
     public List<Map> jobGradeList() {
         return baseMapper.jobGradeList();
     }
