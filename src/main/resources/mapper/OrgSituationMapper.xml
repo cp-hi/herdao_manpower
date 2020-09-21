@@ -120,4 +120,40 @@
             ) t
          )t
     </select>
+
+    <!-- 岗位人数分布 -->
+    <select id="fetchOrgSituationByPostCode" resultMap="orgSituationMap">
+         SELECT  t.POST_NAME,
+				 t.post_count,
+	             concat(ROUND(t.post_count/t.post_total,2)*100,'%')  post_zb
+ 		from
+          (
+                SELECT
+                    s.POST_NAME,
+                    COUNT(s.id) post_count,
+                  (
+                        SELECT
+                            sum( CASE WHEN s.id IS NOT NULL THEN 1 ELSE 0 END )
+                        FROM
+                            mp_organization a
+                            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
+                            AND u.MAIN_POST = 1
+                            INNER JOIN mp_post s ON s.id = u.POST_ID
+                        WHERE 1=1
+                            <if test="orgCode != null">
+                                AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+                            </if>
+                     ) post_total
+                FROM
+                    mp_organization a
+                    INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
+                    AND u.MAIN_POST = 1
+                    INNER JOIN mp_post s ON s.id = u.POST_ID
+                WHERE 1=1
+                    <if test="orgCode != null">
+                        AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+                    </if>
+                    GROUP BY s.POST_CODE,POST_NAME
+            ) t
+    </select>
 </mapper>

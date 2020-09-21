@@ -7,6 +7,8 @@ import net.herdao.hdp.mpclient.mapper.OrgSituationMapper;
 import net.herdao.hdp.mpclient.service.OrgSituationService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 组织概况报表
  * @author andy
@@ -31,5 +33,11 @@ public class OrgSituationServiceImpl extends ServiceImpl<OrgSituationMapper, Org
     public OrgSituation fetchOrgSituationByAge(OrgSituation orgSituation) {
         OrgSituation result = this.baseMapper.fetchOrgSituationByAge(orgSituation);
         return result;
+    }
+
+    @Override
+    public List<OrgSituation> fetchOrgSituationByPostCode(OrgSituation orgSituation) {
+        List<OrgSituation> list = this.baseMapper.fetchOrgSituationByPostCode(orgSituation);
+        return list;
     }
 }

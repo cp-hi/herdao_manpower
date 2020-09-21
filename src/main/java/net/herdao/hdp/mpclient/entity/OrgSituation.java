@@ -149,6 +149,18 @@ public class OrgSituation extends Model<OrgSituation> {
     private String largeThan40Zb;
 
     /**
+     * 岗位名称
+     */
+    @ApiModelProperty(value="岗位名称")
+    private String postName;
+
+    /**
+     * 岗位人数占比
+     */
+    @ApiModelProperty(value="岗位人数占比")
+    private String postZb;
+
+    /**
      * 组织编码 传参
      */
     @ApiModelProperty(value="组织编码 传参")

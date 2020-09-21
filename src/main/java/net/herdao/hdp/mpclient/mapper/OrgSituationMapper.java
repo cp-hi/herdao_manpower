@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.mpclient.entity.OrgSituation;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 组织概况报表
  * @author andy
@@ -33,5 +35,12 @@ public interface OrgSituationMapper extends BaseMapper<OrgSituation> {
      * @return orgSituation
      */
     OrgSituation fetchOrgSituationByAge(OrgSituation orgSituation);
+
+    /**
+     * 获取岗位人数分布
+     * @param orgSituation
+     * @return orgSituation
+     */
+    List<OrgSituation> fetchOrgSituationByPostCode(OrgSituation orgSituation);
 
 }

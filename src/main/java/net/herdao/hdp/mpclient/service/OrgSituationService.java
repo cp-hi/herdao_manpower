@@ -5,6 +5,7 @@ package net.herdao.hdp.mpclient.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.mpclient.entity.OrgSituation;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,4 +35,12 @@ public interface OrgSituationService extends IService<OrgSituation> {
      * @return orgSituation
      */
     OrgSituation fetchOrgSituationByAge(OrgSituation orgSituation);
+
+
+    /**
+     * 获取岗位人数分布
+     * @param orgSituation
+     * @return orgSituation
+     */
+    List<OrgSituation> fetchOrgSituationByPostCode(OrgSituation orgSituation);
 }

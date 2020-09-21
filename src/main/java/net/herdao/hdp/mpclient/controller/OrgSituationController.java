@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 组织概况报表
@@ -136,10 +138,27 @@ public class OrgSituationController {
     @SysLog("获取在职员工年龄分布" )
     @PostMapping("/fetchOrgSituationByAge")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgCode", value = "组织代码"),
+            @ApiImplicitParam(name = "orgCode", value = "组织代码")
     })
     public R fetchOrgSituationByAge(@RequestBody OrgSituation orgSituation) {
         OrgSituation result = orgSituationService.fetchOrgSituationByAge(orgSituation);
         return R.ok(result);
+    }
+
+
+    /**
+     * 获取岗位人数分布
+     * @param orgSituation
+     * @return R
+     */
+    @ApiOperation(value = "获取岗位人数分布", notes = "获取岗位人数分布")
+    @SysLog("获取岗位人数分布" )
+    @PostMapping("/fetchOrgSituationByPostCode")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgCode", value = "组织代码")
+    })
+    public R fetchOrgSituationByPostCode(@RequestBody OrgSituation orgSituation) {
+        List<OrgSituation> list = orgSituationService.fetchOrgSituationByPostCode(orgSituation);
+        return R.ok(list);
     }
 }
