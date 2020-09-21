@@ -20,6 +20,12 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
+
+/**
+ * 组织excel导入监听处理
+ * @author Andy
+ * @date 2020-09-17 11:03:56
+ */
 @Slf4j
 public class OrgExcelListener extends AnalysisEventListener<Organization> {
 
@@ -80,87 +86,10 @@ public class OrgExcelListener extends AnalysisEventListener<Organization> {
      * 保存组织
      */
     private void saveCurOrgCode() {
-         boolean importFlag=true;
-         List<Map<String,Object>> importErrorList=new ArrayList<>();
-
-         //导入前先校检，校检合格后才导入
-         for (Organization org : list) {
-            //织名称、上级组织编码必填
-            if (org.getOrgName()==null && org.getOrgCode()==null){
-                Map<String,Object> errorMap=new HashMap<>();
-                errorMap.put("必填","组织名称、上级组织编码必填");
-                importErrorList.add(errorMap);
-                importFlag =false;
-            }
-
-            //组织名称唯一性校验
-            Map<String,Object> paramMap =new HashMap<>();
-            paramMap.put("orgName",org.getOrgName());
-            paramMap.put("isStop",1);
-            Organization entity = getOrg(paramMap);
-            if (entity!=null){
-                Map<String,Object> errorMap=new HashMap<>();
-                errorMap.put("orgName",org.getOrgName()+"组织名称已存在");
-                importErrorList.add(errorMap);
-                importFlag =false;
-            }
-
-            //上级组织编码有效性校验
-            Map<String,Object> paramCodeMap =new HashMap<>();
-            paramCodeMap.put("id",org.getParentId());
-            paramMap.put("isStop",1);
-            Organization parentEntity = getOrg(paramMap);
-            if (parentEntity==null){
-                Map<String,Object> errorMap=new HashMap<>();
-                errorMap.put("parentId",org.getOrgName()+"上级组织编码不存在或已停用");
-                importErrorList.add(errorMap);
-                importFlag =false;
-            }
-
-            //组织类型校验
-            boolean orgTypeFlag=false;
-            if (org.getOrgType()!=null){
-                List<SysDictItem> zzlxList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
-                if (zzlxList !=null && !zzlxList.isEmpty()){
-                    for (SysDictItem item : zzlxList) {
-                       if (item.getLabel().equals(org.getOrgType())) {
-                           org.setOrgType(item.getId().toString());
-                           orgTypeFlag = true;
-                           break;
-                       }
-                    }
-                }
-            }
-            if (orgTypeFlag==false){
-                Map<String,Object> errorMap=new HashMap<>();
-                errorMap.put("orgType",org.getOrgName()+"组织类型不存在");
-                importErrorList.add(errorMap);
-                importFlag =false;
-            }
-
-             //组织负责人校检
-             if (org.getOrgChargeWorkNo()!=null){
-                 User user = userService.getById(org.getOrgChargeWorkNo());
-                 if (null == user) {
-                     importFlag =false;
-                     Map<String,Object> errorMap=new HashMap<>();
-                     errorMap.put("orgChargeWorkNo",org.getOrgName()+"组织负责人不存在或已离职");
-                     importErrorList.add(errorMap);
-                 }
-             }
-
-             //岗位负责人校检
-             if (org.getOrgChargeWorkNo()!=null){
-                 Post post = postService.getById(org.getChargeOrg());
-                 if (null == post) {
-                     importFlag =false;
-                     Map<String,Object> errorMap=new HashMap<>();
-                     errorMap.put("chargeOrg",org.getOrgName()+"负责岗位不存在或已停用");
-                 }
-             }
-
-             //若Excel中填写了福利类型，需校验岗位是否在系统已存在且福利类型态，否则不允许导入
-        }
+        boolean importFlag=true;
+        List<Map<String,Object>> importErrorList=new ArrayList<>();
+        //导入前先校检
+        importFlag = checkOrg(importFlag, importErrorList);
 
         //如果校检通过 则导入数据
         if (importFlag){
@@ -194,14 +123,13 @@ public class OrgExcelListener extends AnalysisEventListener<Organization> {
                                 org.setOrgCode(orgCodeTemp);
                             }
 
-                            //组装组装编码
+                            //组装组织编码
                             if (orgCodeTemp !=null && !orgCodeTemp.isEmpty()){
                                 int orgLength = orgCodeTemp.length();
                                 Long temp= Long.parseLong(orgCodeTemp)+1;
                                 String newOrgCode= String.format("%0"+orgLength+"d", temp);
                                 org.setOrgCode(newOrgCode);
                             }
-
                         }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
                             String newOrgCode=org.getParentIdStr()+"001";
                             org.setOrgCode(newOrgCode);
@@ -212,7 +140,6 @@ public class OrgExcelListener extends AnalysisEventListener<Organization> {
                 }
             }else{ //记录excel导入错误信息
                 for (Map<String, Object> map : importErrorList) {
-
                     Set<Map.Entry<String, Object>> entries = map.entrySet();
                     for (Map.Entry<String, Object> entry : entries) {
                         ExcelOperateRecord record=new ExcelOperateRecord();
@@ -220,10 +147,94 @@ public class OrgExcelListener extends AnalysisEventListener<Organization> {
                         record.setError(entry.getValue().toString());
                         excelOperateRecordService.save(record);
                     }
-
                 }
             }
      }
+
+    /**
+     * 导入前先校检组织
+     */
+    private boolean checkOrg(boolean importFlag, List<Map<String, Object>> importErrorList) {
+        //导入前先校检，校检合格后才导入
+        for (Organization org : list) {
+           //织名称、上级组织编码必填
+           if (org.getOrgName()==null && org.getOrgCode()==null){
+               Map<String,Object> errorMap=new HashMap<>();
+               errorMap.put("必填","组织名称、上级组织编码必填");
+               importErrorList.add(errorMap);
+               importFlag =false;
+           }
+
+           //组织名称唯一性校验
+           Map<String,Object> paramMap =new HashMap<>();
+           paramMap.put("orgName",org.getOrgName());
+           paramMap.put("isStop",1);
+           Organization entity = getOrg(paramMap);
+           if (entity!=null){
+               Map<String,Object> errorMap=new HashMap<>();
+               errorMap.put("orgName",org.getOrgName()+"组织名称已存在");
+               importErrorList.add(errorMap);
+               importFlag =false;
+           }
+
+           //上级组织编码有效性校验
+           Map<String,Object> paramCodeMap =new HashMap<>();
+           paramCodeMap.put("id",org.getParentId());
+           paramMap.put("isStop",1);
+           Organization parentEntity = getOrg(paramMap);
+           if (parentEntity==null){
+               Map<String,Object> errorMap=new HashMap<>();
+               errorMap.put("parentId",org.getOrgName()+"上级组织编码不存在或已停用");
+               importErrorList.add(errorMap);
+               importFlag =false;
+           }
+
+           //组织类型校验
+           boolean orgTypeFlag=false;
+           if (org.getOrgType()!=null){
+               List<SysDictItem> zzlxList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
+               if (zzlxList !=null && !zzlxList.isEmpty()){
+                   for (SysDictItem item : zzlxList) {
+                      if (item.getLabel().equals(org.getOrgType())) {
+                          org.setOrgType(item.getId().toString());
+                          orgTypeFlag = true;
+                          break;
+                      }
+                   }
+               }
+           }
+           if (orgTypeFlag==false){
+               Map<String,Object> errorMap=new HashMap<>();
+               errorMap.put("orgType",org.getOrgName()+"组织类型不存在");
+               importErrorList.add(errorMap);
+               importFlag =false;
+           }
+
+            //组织负责人校检
+            if (org.getOrgChargeWorkNo()!=null){
+                User user = userService.getById(org.getOrgChargeWorkNo());
+                if (null == user) {
+                    importFlag =false;
+                    Map<String,Object> errorMap=new HashMap<>();
+                    errorMap.put("orgChargeWorkNo",org.getOrgName()+"组织负责人不存在或已离职");
+                    importErrorList.add(errorMap);
+                }
+            }
+
+            //岗位负责人校检
+            if (org.getOrgChargeWorkNo()!=null){
+                Post post = postService.getById(org.getChargeOrg());
+                if (null == post) {
+                    importFlag =false;
+                    Map<String,Object> errorMap=new HashMap<>();
+                    errorMap.put("chargeOrg",org.getOrgName()+"负责岗位不存在或已停用");
+                }
+            }
+
+            //若Excel中填写了福利类型，需校验岗位是否在系统已存在且福利类型态，否则不允许导入
+       }
+        return importFlag;
+    }
 
     /**
      * 获取单个组织

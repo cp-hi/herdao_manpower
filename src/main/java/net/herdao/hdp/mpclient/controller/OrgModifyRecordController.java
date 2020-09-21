@@ -31,8 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 
- *
+ * 组织变更记录
  * @author Andy
  * @date 2020-09-17 11:03:56
  */

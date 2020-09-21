@@ -14,6 +14,12 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * 用户excel导入监听处理
+ * @author Andy
+ * @date 2020-09-17 11:03:56
+ */
 @Slf4j
 public class UserExcelListener extends AnalysisEventListener<User> {
 
@@ -28,8 +34,6 @@ public class UserExcelListener extends AnalysisEventListener<User> {
      */
     private static final int BATCH_COUNT = 5;
     List<User> list = new ArrayList<User>();
-
-
 
     @Override
     public void invoke(User data, AnalysisContext context) {

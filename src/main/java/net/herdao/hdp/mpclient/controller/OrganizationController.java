@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
+import net.herdao.hdp.mpclient.common.Utils.UUIDUtil;
 import net.herdao.hdp.mpclient.listener.OrgExcelListener;
 import net.herdao.hdp.mpclient.listener.UserExcelListener;
 import net.herdao.hdp.mpclient.service.ExcelOperateRecordService;
@@ -321,6 +322,8 @@ public class OrganizationController {
     @Transactional
     public R batchImportOrg(@RequestParam(value = "file") MultipartFile file){
         try {
+            //生成导出批次ID
+            String exportId = UUIDUtil.getUUID();
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream,Organization.class, new OrgExcelListener(orgService,sysDictItemService,userService,postService,excelOperateRecordService)).sheet().doRead();
         }catch (Exception ex){
