@@ -60,7 +60,7 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "绩效工资比例")
     private String perforSalaryRatio;
     @ApiModelProperty(value = "职级")
-    private String jobLevel;
+    private String jobLevelCode;
     @ApiModelProperty(value = "岗位序列")
     private String postSequence;
     @ApiModelProperty(value = "岗位族")
