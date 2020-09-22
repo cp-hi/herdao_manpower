@@ -28,4 +28,10 @@ public class OrgReportServiceImpl extends ServiceImpl<OrgReportMapper, OrgReport
         List<OrgReport> list = this.baseMapper.exportOrg(condition);
         return list;
     }
+
+    @Override
+    public List<OrgReport> exportDetailsOrg(OrgReport condition) {
+        List<OrgReport> list = this.baseMapper.exportDetailsOrg(condition);
+        return list;
+    }
 }

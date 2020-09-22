@@ -56,7 +56,7 @@
                 LIMIT 0, 10
     </select>
 
-    <!-- 组织架构预览 -->
+    <!-- 组织架构导出 -->
     <select id="exportOrg" resultMap="orgReportMap">
         SELECT  org.ORG_NAME,
                 org.ORG_CODE,
@@ -70,5 +70,40 @@
             <if test="orgCode != null">
                 AND org.ORG_CODE LIKE concat(#{orgCode},'%')
             </if>
+    </select>
+
+    <!-- 组织架构明细导出 -->
+    <select id="exportDetailsOrg" resultMap="orgReportMap">
+        SELECT  org.ORG_NAME,
+                org.ORG_CODE,
+                ( SELECT p.ORG_NAME FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_name,
+                ( SELECT p.ORG_CODE FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_code,
+                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_level ) org_level,
+                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
+                org.org_desc,
+                CASE 	WHEN org.ORGANIZATIONAL = 0 THEN
+                '否'
+                when 	org.ORGANIZATIONAL = 1 THEN
+                '是'
+                END center_status ,
+                (
+                SELECT u.USER_NAME FROM mp_user u WHERE u.ID=org.org_charge_work_no
+                ) charge_user_name,
+                (
+                SELECT p.POST_NAME FROM mp_post p WHERE p.ID=org.charge_org
+                ) charge_post_name,
+                CASE WHEN org.IS_VIRTUAL = 0 THEN
+                '否'
+                when 	org.IS_VIRTUAL = 1 THEN
+                '是'
+                END virtual_status ,
+                org.CREATED_TIME
+                FROM
+                mp_organization org
+        WHERE 1=1
+        <if test="orgCode != null">
+            AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+        </if>
+        ORDER BY org.ORG_CODE ASC
     </select>
 </mapper>

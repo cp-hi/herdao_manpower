@@ -27,4 +27,12 @@ public interface OrgReportService extends IService<OrgReport> {
      * @return
      */
     List<OrgReport> exportOrg(OrgReport condition);
+
+    /**
+     * 组织架构表明细下载
+     * @param condition
+     * @return
+     */
+    List<OrgReport> exportDetailsOrg(OrgReport condition);
+
 }
