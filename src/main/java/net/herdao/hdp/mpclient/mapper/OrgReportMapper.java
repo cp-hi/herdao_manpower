@@ -3,6 +3,8 @@
 package net.herdao.hdp.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.mpclient.entity.JobLevel;
+import net.herdao.hdp.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.mpclient.entity.OrgReport;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -36,5 +38,12 @@ public interface OrgReportMapper extends BaseMapper<OrgReport> {
      * @return
      */
     List<OrgReport> exportDetailsOrg(OrgReport condition);
+
+    /**
+     * 组织职级统计下载
+     * @param condition
+     * @return
+     */
+    List<JobLevel> exportOrgJobLevel(JobLevelReport condition);
 
 }

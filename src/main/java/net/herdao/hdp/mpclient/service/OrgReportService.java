@@ -2,6 +2,8 @@
 package net.herdao.hdp.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.mpclient.entity.JobLevel;
+import net.herdao.hdp.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.mpclient.entity.OrgReport;
 import net.herdao.hdp.mpclient.entity.Organization;
 
@@ -34,5 +36,13 @@ public interface OrgReportService extends IService<OrgReport> {
      * @return
      */
     List<OrgReport> exportDetailsOrg(OrgReport condition);
+
+    /**
+     * 组织职级统计下载
+     * @param condition
+     * @return
+     */
+    List<JobLevel> exportOrgJobLevel(JobLevelReport condition);
+
 
 }
