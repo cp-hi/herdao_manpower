@@ -79,7 +79,6 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private String parentIdStr;
 
-
     /**
      * 组织级别
      */

@@ -49,6 +49,7 @@ public class ExcelUtils {
         // 这里URLEncoder.encode可以防止中文乱码
         excelName = URLEncoder.encode(excelName, "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
+        //response.setHeader("Content-disposition", "attachment;filename=" + new String(excelName.getBytes("utf-8"),"ISO-8859-1" ) + ExcelTypeEnum.XLSX.getValue());
         EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(data);
     }
 
