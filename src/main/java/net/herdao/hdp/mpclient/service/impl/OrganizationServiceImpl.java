@@ -520,10 +520,67 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     //当前新增组织的组织树层级数+1
                     organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
                 }
+
+                //生成组织编码orgCode
+                createOrgCode(organization, parentOrg);
             }
         }
         super.save(organization);
 
         return R.ok(organization);
+    }
+
+
+
+    /**
+     * 生成组织编码 orgCode
+     */
+    private void createOrgCode(Organization org, Organization parentOrg) {
+        Map<String,Object> childrenParams =new HashMap<>();
+        childrenParams.put("parentId",parentOrg.getId());
+        List<Organization> childOrgList = getOrgList(childrenParams);
+        //挂靠父组织 父组织下有多个子组织 拿子组织中最大的组织编码
+        if (childOrgList !=null && !childOrgList.isEmpty()){
+            String orgCodeTemp ="";
+            Long maxOrgCode=null;
+            for (Organization organization : childOrgList) {
+                if (null == maxOrgCode){
+                    maxOrgCode = Long.parseLong(organization.getOrgCode());
+                    orgCodeTemp = organization.getOrgCode();
+                }
+                if (Long.parseLong(organization.getOrgCode())>maxOrgCode){
+                    maxOrgCode = Long.parseLong(organization.getOrgCode());
+                    orgCodeTemp = organization.getOrgCode();
+                }
+
+                org.setOrgCode(orgCodeTemp);
+            }
+
+            //组装组织编码
+            if (orgCodeTemp !=null && !orgCodeTemp.isEmpty()){
+                int orgLength = orgCodeTemp.length();
+                Long temp= Long.parseLong(orgCodeTemp)+1;
+                String newOrgCode= String.format("%0"+orgLength+"d", temp);
+                org.setOrgCode(newOrgCode);
+            }
+        }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
+            String newOrgCode=org.getParentIdStr()+"001";
+            org.setOrgCode(newOrgCode);
+        }
+    }
+
+    /**
+     * 获取组织集合
+     */
+    private List<Organization> getOrgList(Map<String,Object> params){
+        QueryWrapper<Organization> wrapper = Wrappers.query();
+        if ( null!=params && !params.isEmpty()){
+            if (params.get("parentId")!=null){
+                wrapper.eq("parent_id",params.get("parentId"));
+            }
+        }
+
+        List<Organization> list = super.list(wrapper);
+        return list;
     }
 }

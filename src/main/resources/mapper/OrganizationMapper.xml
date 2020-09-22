@@ -335,7 +335,6 @@
         </if>
     </select>
 
-
     <update id="stopOrganById" >
           UPDATE mp_organization m
             SET m.IS_STOP = 0
@@ -345,7 +344,6 @@
             </if>
     </update>
 
-
     <update id="startOrganById" >
         UPDATE mp_organization m
         SET m.IS_STOP = 1
@@ -354,7 +352,6 @@
             AND  id = #{id}
         </if>
     </update>
-
 
     <!-- 组织架构分页 -->
     <select id="findOrgPage" resultMap="organizationMap">
