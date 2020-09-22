@@ -26,7 +26,7 @@ import java.util.List;
 @Data
 @TableName("mp_organization")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "组织")
 public class Organization extends Model<Organization> {
 private static final long serialVersionUID = 1L;
     /**
