@@ -26,7 +26,7 @@ import java.util.List;
 @Data
 @TableName("mp_organization")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "组织")
 public class Organization extends Model<Organization> {
 private static final long serialVersionUID = 1L;
     /**
@@ -98,7 +98,6 @@ private static final long serialVersionUID = 1L;
      * 福利类型
      */
     @ApiModelProperty(value="福利类型")
-    @ExcelProperty(value = "福利类型", index = 5)
     private String welfareType;
     /**
      * 排序
@@ -139,7 +138,6 @@ private static final long serialVersionUID = 1L;
      * 组织类型
      */
     @ApiModelProperty(value="组织类型")
-    @ExcelProperty(value = "上级组织编码", index = 2)
     private String orgType;
 
     /**
@@ -257,7 +255,7 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private String postName;
 
-    @ApiModelProperty(value="组织负责人姓名")
+    @ApiModelProperty(value="组织负责人姓名 传参")
     @TableField(exist = false)
     private String userName;
 
