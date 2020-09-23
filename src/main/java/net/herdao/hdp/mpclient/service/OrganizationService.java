@@ -96,7 +96,7 @@ public interface OrganizationService extends IService<Organization> {
      * @param searchTxt
      * @return
      */
-    Page<Organization> findOrgPage(Page<Organization> page, @Param("orgCode") String searchTxt);
+    Page<Organization> findOrgPage(Page<Organization> page, @Param("searchTxt") String searchTxt);
 
 
     /**
