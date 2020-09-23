@@ -19,7 +19,6 @@ import java.io.Serializable;
 @Data
 @ToString
 public class BaseModel<T extends Model<?>> extends Model<T> {
-    private Integer tenantId;
     private String field1;
     private String field2;
     private String field3;

@@ -45,7 +45,7 @@ public class OperationLogAspect {
      * 记录操作的切入点
      */
     @Pointcut("@annotation(net.herdao.hdp.sys.annotation.OperationEntity)")
-    public void pointCut1() {
+    public void pointCutOperat() {
         System.out.println("point1");
     }
 
@@ -53,35 +53,36 @@ public class OperationLogAspect {
      * 保存时设置操作人信息的切入点
      */
     @Pointcut("execution(public * net.herdao.hdp.mpclient.service..*.saveOrUpdate(..))")
-    public void pointCut2() {
+    public void pointCutSave() {
         System.out.println("point2");
     }
 
     /**
      * 排除字段
      */
-    @Pointcut("@annotation(net.herdao.hdp.sys.annotation.ExcludeField)")
-    public void pointCut3() {
-        System.out.println("point3");
-    }
+//    @Pointcut("@annotation(net.herdao.hdp.sys.annotation.ExcludeField)")
+//    public void pointCut3() {
+//        System.out.println("point3");
+//    }
 
-    @Before("pointCut3()")
-    public void excludeField(JoinPoint point) {
-        Class cls = point.getSignature().getDeclaringType();
-        if (null == cls) return;
-        ExcludeField excludeField = (ExcludeField) cls.getAnnotation(ExcludeField.class);
-        if (null == excludeField || excludeField.value().length == 0) return;
-        List<String> excludeFields = Arrays.asList(excludeField.value());
-        for (Field field : cls.getFields()) {
-            if (excludeFields.contains(field.getName())) {
-                //TODO 为字段加上排队注解   @TableField(exist = false)
-                System.out.println("字段名是-------------" + field.getName());
-            }
-        }
-    }
+//    @Before("pointCut3()")
+//    public void excludeField(JoinPoint point) {
+//        Class cls = point.getSignature().getDeclaringType();
+//        if (null == cls) return;
+//        ExcludeField excludeField = (ExcludeField) cls.getAnnotation(ExcludeField.class);
+//        if (null == excludeField || excludeField.value().length == 0) return;
+//        List<String> excludeFields = Arrays.asList(excludeField.value());
+//        for (Field field : cls.getFields()) {
+//            if (excludeFields.contains(field.getName())) {
+//                //TODO 为字段加上排队注解   @TableField(exist = false)
+//                System.out.println("字段名是-------------" + field.getName());
+//            }
+//        }
+//    }
 
-    @Before("pointCut2()")
-    public void before(JoinPoint point) {
+    //region 保存实体
+    @Before("pointCutSave()")
+    public void beforeSave(JoinPoint point) {
         Object[] args = point.getArgs();
         if (null == args || 0 == args.length) return;
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
@@ -108,7 +109,37 @@ public class OperationLogAspect {
         }
     }
 
-    @After("pointCut1()")
+    @Before("pointCutSave()")
+    public void afterSave(JoinPoint point) {
+        Object[] args = point.getArgs();
+        if (null == args || 0 == args.length) return;
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+
+        for (Object arg : args) {
+            if (arg != null && arg instanceof BaseEntity) {
+                BaseEntity entity = (BaseEntity) arg;
+                Field[] fields = entity.getClass().getDeclaredFields();
+                for (Field f : fields) {
+                    Annotation[] annos = f.getAnnotations();
+                    System.out.println(annos);
+                }
+
+                if (null == entity.getId() || 0 == entity.getId()) {
+                    entity.setCreatedTime(new Date());
+                    entity.setCreatorName(userInfo.getSysUser().getUsername());
+                    entity.setCreatorId(Long.valueOf(userInfo.getSysUser().getUserId()));
+                } else {
+                    entity.setModifiedTime(new Date());
+                    entity.setModifierName(userInfo.getSysUser().getUsername());
+                    entity.setModifierId(Long.valueOf(userInfo.getSysUser().getUserId()));
+                }
+            }
+        }
+    }
+    //endregion
+
+    //region 操作记录
+    @After("pointCutOperat()")
     public void after(JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
@@ -133,6 +164,7 @@ public class OperationLogAspect {
             operationLogService.save(log);
         }
     }
+    //endregion
 
 
 }

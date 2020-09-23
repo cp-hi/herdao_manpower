@@ -9,4 +9,5 @@ public @interface OperationEntity {
     String operation() default "";
     String key() default "";
     Class clazz() ;
+    String random() default "";
 }

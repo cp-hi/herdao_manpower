@@ -32,6 +32,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     final PipelineMapper pipelineMapper;
     final SectionMapper sectionMapper;
 
+    @Override
     public List<Map> postList() {
         return baseMapper.postList();
     }
@@ -44,7 +45,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
          * 2.是否传groupIds 过来 就只查 集团所属的板块与管线下的岗位
          * 3.是否允许选择非从属关系的条件
          */
-
         String groupId = params.get("groupId");
         String jobLevel = params.get("jobLevel");
         String sectionCode = params.get("sectionCodes");
@@ -71,10 +71,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public boolean saveOrUpdate(Post post) {
-        if (baseMapper.chkDuplicatePostCode(post))
+        if (baseMapper.chkDuplicatePostCode(post)) {
             throw new RuntimeException("岗位编码重复了");
-        if (baseMapper.chkDuplicatePostName(post))
+        }
+        if (baseMapper.chkDuplicatePostName(post)) {
             throw new RuntimeException("岗位名称重复了");
+        }
         return super.saveOrUpdate(post);
     }
 }
