@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 员工家庭成员
  *
- * @author liang
+ * @author andy
  * @date 2020-09-23 10:53:08
  */
 @RestController
@@ -99,17 +99,15 @@ public class FamilystatusController {
         return R.ok(b);
     }
 
-
-
     /**
      * 员工家庭情况分页
      * @param page 分页对象
      * @param orgId
      * @return
      */
-    @ApiOperation(value = "员工家庭情况分页", notes = "员工家庭情况分页")
-    @GetMapping("/findFamilyStatusPage")
-    @OperationEntity(operation = "员工家庭情况分页" ,clazz = Organization.class )
+    @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
+    @PostMapping("/findFamilyStatusPage")
+    @OperationEntity(operation = "员工教育经历分页" ,clazz = Organization.class )
     @ApiImplicitParams({
           @ApiImplicitParam(name="orgId",value="组织ID"),
           @ApiImplicitParam(name="staffName",value="员工姓名"),

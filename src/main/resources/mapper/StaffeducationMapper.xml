@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.mpclient.mapper.StaffeducationMapper">
+
+            <resultMap id="staffEducationMap" type="net.herdao.hdp.mpclient.entity.Staffeducation">
+                  <id property="id" column="id"/>
+                        <result property="oid" column="OID"/>
+                        <result property="period" column="PERIOD"/>
+                        <result property="schoolName" column="SCHOOL_NAME"/>
+                        <result property="professional" column="PROFESSIONAL"/>
+                        <result property="educationDegree" column="EDUCATION_DEGREE"/>
+                        <result property="learnForm" column="LEARN_FORM"/>
+                        <result property="creatorCode" column="CREATOR_CODE"/>
+                        <result property="createdTime" column="CREATED_TIME"/>
+                        <result property="modifierCode" column="MODIFIER_CODE"/>
+                        <result property="modifiedTime" column="MODIFIED_TIME"/>
+                        <result property="staffId" column="STAFF_ID"/>
+                        <result property="endDate" column="END_DATE"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="beginDate" column="BEGIN_DATE"/>
+                        <result property="modifierName" column="modifier_name"/>
+                        <result property="createName" column="modifier_name"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+             </resultMap>
+
+      <!-- 员工家庭情况分页 -->
+      <select id="findStaffEducationPage" resultMap="staffEducationMap">
+            SELECT      e.BEGIN_DATE,
+                        e.END_DATE,
+                        e.SCHOOL_NAME,
+                        e.PROFESSIONAL,
+                        e.EDUCATION_DEGREE,
+                        e.LEARN_FORM,
+                        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
+                        e.MODIFIED_TIME,
+                        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
+                        e.CREATED_TIME
+            FROM  mp_staffeducation e
+            INNER JOIN mp_staff s ON s.ID = e.STAFF_ID
+            INNER JOIN mp_userpost u ON u.USER_ID = s.USER_ID
+            AND u.MAIN_POST = 1
+            where 1=1
+            <if test="orgId != null">
+                  and u.ORG_DEPT_ID = #{orgId}
+            </if>
+            <if test="staffName != null">
+                  or s.staff_name LIKE concat(#{staffName},'%')
+            </if>
+            <if test="staffCode != null">
+                  or s.staff_code LIKE concat(#{staffCode},'%')
+            </if>
+      </select>
+</mapper>
