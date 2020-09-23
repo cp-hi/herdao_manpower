@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * 组织列表
+ */
 public class OrgListDto {
     /**
      * 主键ID
