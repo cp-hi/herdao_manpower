@@ -26,7 +26,7 @@ import java.util.List;
 @Data
 @TableName("mp_organization")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "组织")
 public class Organization extends Model<Organization> {
 private static final long serialVersionUID = 1L;
     /**
@@ -85,9 +85,9 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="组织级别")
     private String orgLevel;
     /**
-     * 是否组织
+     * 是否组织 是否项目/中心及以上
      */
-    @ApiModelProperty(value="是否组织")
+    @ApiModelProperty(value="是否组织 是否项目/中心及以上")
     private Boolean organizational;
     /**
      * 管线编码
@@ -98,7 +98,6 @@ private static final long serialVersionUID = 1L;
      * 福利类型
      */
     @ApiModelProperty(value="福利类型")
-    @ExcelProperty(value = "福利类型", index = 5)
     private String welfareType;
     /**
      * 排序
@@ -110,6 +109,15 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="是否停用")
     private Integer isStop;
+
+    /**
+     * 是否停用 页面展示
+     */
+    @ApiModelProperty(value="是否停用 页面展示")
+    @TableField(exist = false)
+    private String enableStatus;
+
+
     /**
      * 新建用户
      */
@@ -139,7 +147,6 @@ private static final long serialVersionUID = 1L;
      * 组织类型
      */
     @ApiModelProperty(value="组织类型")
-    @ExcelProperty(value = "上级组织编码", index = 2)
     private String orgType;
 
     /**
@@ -178,9 +185,9 @@ private static final long serialVersionUID = 1L;
     private String chargeOrg;
 
     /**
-     * 人员编制
+     * 人员编制 组织编制
      */
-    @ApiModelProperty(value="人员编制")
+    @ApiModelProperty(value="人员编制 组织编制")
     private String staff;
     /**
      * 在职员工数
@@ -257,17 +264,31 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private String postName;
 
-    @ApiModelProperty(value="组织负责人姓名")
+    @ApiModelProperty(value="组织负责人姓名 传参")
     @TableField(exist = false)
     private String userName;
 
     /**
-     * 父ID
+     * 父组织name
      */
     @ApiModelProperty(value="父组织name")
     @TableField(exist = false)
     private String parentName;
 
+
+    /**
+     * 创建情况
+     */
+    @ApiModelProperty(value="创建情况")
+    @TableField(exist = false)
+    private String createDesc;
+
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @TableField(exist = false)
+    private String updateDesc;
 
 }
 

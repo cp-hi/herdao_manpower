@@ -36,6 +36,8 @@
         <result property="startOrgOperateDate" column="start_org_oper_date"/>
         <result property="endOrgOperateDate" column="end_org_oper_date"/>
         <result property="orgTreeLevel" column="org_tree_level"/>
+        <result property="createDesc" column="create_desc"/>
+        <result property="updateDesc" column="update_desc"/>
     </resultMap>
 
     <resultMap id="organizationChildrenMap" type="net.herdao.hdp.mpclient.entity.Organization">
@@ -146,6 +148,86 @@
         <result property="endOrgOperateDate" column="end_org_oper_date"/>
         <collection property="children" column="id" ofType="net.herdao.hdp.mpclient.entity.Organization" select="getAllChildrenOrgan"></collection>
     </resultMap>
+
+
+    <!-- 类型是部门的组织架构树 -->
+    <resultMap id="organDeptTreeMap" type="net.herdao.hdp.mpclient.entity.Organization">
+        <id property="id" column="ID"/>
+        <result property="oid" column="OID"/>
+        <result property="orgName" column="ORG_NAME"/>
+        <result property="orgFullname" column="ORG_FULLNAME"/>
+        <result property="orgCode" column="ORG_CODE"/>
+        <result property="parentOid" column="PARENT_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="orgLevel" column="org_tree_level"/>
+        <result property="organizational" column="ORGANIZATIONAL"/>
+        <result property="pipelineCode" column="PIPELINE_CODE"/>
+        <result property="welfareType" column="WELFARE_TYPE"/>
+        <result property="sortNo" column="SORT_NO"/>
+        <result property="isStop" column="is_stop"/>
+        <result property="creatorCode" column="CREATOR_CODE"/>
+        <result property="createdTime" column="CREATED_TIME"/>
+        <result property="modifierCode" column="MODIFIER_CODE"/>
+        <result property="modifiedTime" column="MODIFIED_TIME"/>
+        <result property="isVirtual" column="IS_VIRTUAL"/>
+        <result property="orgType" column="ORG_TYPE"/>
+        <result property="tenantId" column="TENANT_ID"/>
+        <result property="orgDesc" column="org_desc"/>
+        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkNo" column="org_charge_work_no"/>
+        <result property="orgSimpleDesc" column="org_simple_desc"/>
+        <result property="chargeOrg" column="charge_org"/>
+        <result property="staff" column="staff"/>
+        <result property="empInService" column="emp_in_service"/>
+        <result property="startDate" column="start_date"/>
+        <result property="stopDate" column="stop_date"/>
+        <result property="orgTreeLevel" column="org_tree_level"/>
+        <result property="startOrgOperateDate" column="start_org_oper_date"/>
+        <result property="endOrgOperateDate" column="end_org_oper_date"/>
+        <collection property="children" column="{parentId=id,orgType=ORG_TYPE}" ofType="net.herdao.hdp.mpclient.entity.Organization" select="fetchChildrenDeptTree"></collection>
+    </resultMap>
+
+    <!-- 查询类型是部门的组织架构树 -->
+    <select id="fetchDeptTree" resultMap="organDeptTreeMap">
+        SELECT
+        *
+        FROM
+        mp_organization
+        WHERE 1=1
+        <if test="isRoot!= null and isRoot == true">
+            AND PARENT_ID IS NULL
+        </if>
+
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+
+        <if test="isStop != null">
+            AND is_stop = #{isStop}
+        </if>
+
+        <if test="tenantId != null">
+            AND TENANT_ID = #{tenantId}
+        </if>
+        <if test="orgType != null">
+            AND org_type = #{orgType}
+        </if>
+    </select>
+
+    <!-- 查询子组织结构表 -->
+    <select id="fetchChildrenDeptTree" resultMap="organDeptTreeMap">
+        SELECT * FROM mp_organization
+        WHERE 1=1
+        <if test="parentId != null">
+            AND PARENT_ID = #{parentId}
+        </if>
+        <if test="orgType != null">
+            AND ORG_TYPE = #{orgType}
+        </if>
+
+        order by SORT_NO
+    </select>
+
 
     <!-- 点击查看组织架构详情 -->
     <select id="selectOrganByCurrentOrgOid" resultMap="organTreeMap" parameterType="java.lang.String">
@@ -355,17 +437,52 @@
 
     <!-- 组织架构分页 -->
     <select id="findOrgPage" resultMap="organizationMap">
+        SELECT  t.ORG_NAME,
+                t.ORG_CODE,
+                t.org_type,
+                t.org_charge_name,
+                t.charge_org,
+                t.staff,
+                t.emp_in_service,
+                CONCAT(t.create_user_name,' 于 ',t.CREATED_TIME ,'创建') create_desc,
+                CONCAT(t.update_user_name,' 于 ',t.update_user_name ,'更新') update_desc
+        from
+        (
         SELECT
-        *
+        org.ORG_NAME,
+        org.ORG_CODE,
+        ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
+        ( SELECT u.USER_NAME FROM mp_user u WHERE u.ID = org.org_charge_work_no ) org_charge_name,
+        ( SELECT p.POST_NAME FROM mp_post p WHERE p.ID = org.charge_org ) charge_org,
+        0  staff ,
+        (
+        SELECT
+        sum( CASE WHEN s.JOB_TYPE = '全职' AND s.STAFF_SCOPE = '在职人员' THEN 1 ELSE 0 END )
         FROM
-        mp_organization
+        mp_userpost u ,mp_staff s
+        where u.ORG_DEPT_ID = org.ID
+        AND u.MAIN_POST = 1
+        AND u.USER_ID = s.USER_ID
+        ) emp_in_service,
+        (
+        SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.CREATOR_CODE
+        ) create_user_name,
+        (
+        SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.MODIFIER_CODE
+        ) update_user_name,
+        org.CREATED_TIME,
+        org.MODIFIED_TIME
+        FROM
+        mp_organization org
         WHERE 1=1
-        and id IN
-        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-            #{id}
-        </foreach>
+            <if test="searchTxt != null">
+                AND  org.ORG_CODE LIKE concat(#{searchTxt},'%')
+            </if>
+        ) t
 
-        limit #{pageStart},#{limit}
     </select>
+
+
+
 
 </mapper>

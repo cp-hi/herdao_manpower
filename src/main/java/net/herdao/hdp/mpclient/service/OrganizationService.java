@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.common.core.util.R;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,6 +33,13 @@ public interface OrganizationService extends IService<Organization> {
      * @return
      */
     List<Organization> findAllOrganizations(Organization condition);
+
+    /**
+     * 查询部门结构树
+     * @return
+     */
+    List<Organization> fetchDeptTree(Organization condition);
+
 
     /**
      * 高级查询根组织架构
@@ -85,10 +93,10 @@ public interface OrganizationService extends IService<Organization> {
     /**
      * 分页查询组织架构
      * @param page 分页对象
-     * @param organization
+     * @param searchTxt
      * @return
      */
-    Page findOrgPage(Page page, Organization organization);
+    Page<Organization> findOrgPage(Page<Organization> page, @Param("searchTxt") String searchTxt);
 
 
     /**

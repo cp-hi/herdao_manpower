@@ -148,7 +148,7 @@ public class OperationLogAspect {
             UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
             OperationLog log = new OperationLog();
             log.setOperation(entity.operation());
-            log.setOperatorId(userInfo.getSysUser().getUserId());
+            log.setOperatorId(userInfo.getSysUser().getUserId().intValue());
             log.setOperator(userInfo.getSysUser().getUsername());
             if (null != entity.clazz())
                 log.setEntityClass(entity.clazz().getName());

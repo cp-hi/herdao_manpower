@@ -37,8 +37,7 @@
                  count(distinct( u.post_id))  post_count ,
                  0  trail_count,
                  0  establish_count
-            FROM
-            mp_organization a
+            FROM  mp_organization a
             INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
             AND u.MAIN_POST = 1
             INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
@@ -74,7 +73,7 @@
                     (
                             SELECT DISTINCT
                                 s.JOB_TYPE,
-                                count( 1 ) job_type_count
+        count( 1 ) job_type_count
                             FROM
                                 mp_organization a
                                 INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID

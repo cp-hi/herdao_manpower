@@ -55,6 +55,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
+    public List<Organization> fetchDeptTree(Organization condition) {
+        List<Organization> list = this.baseMapper.fetchDeptTree(condition);
+        return list;
+    }
+
+    @Override
     public List<Organization> findOrganizationByCondition(Organization condition) {
         List<Organization> list = this.baseMapper.findOrganizationByCondition(condition);
         return list;
@@ -368,48 +374,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return R.ok(rootOrgans);
     }
 
-
-    /**
-     * 分页查询组织架构
-     * @param page 分页对象
-     * @param organization
-     * @return
-     */
     @Override
-    public Page findOrgPage(Page page, Organization organization) {
-        Organization childrenCondition=new Organization();
-        childrenCondition.setParentId(organization.getId());
-
-        List<Organization> childrenOrgList = this.baseMapper.findOrganizationByCondition(childrenCondition);
-        QueryWrapper<Organization> wrapper = Wrappers.query();
-
-        if (!StringUtils.isBlank(organization.getOrgName())){
-            wrapper.like("org_name",organization.getOrgName());
-        }
-
-        if (null != organization.getIsStop()){
-            wrapper.eq("is_stop",organization.getIsStop());
-        }else {
-            //默认查询已启用的组织
-            wrapper.eq("is_stop",1);
-        }
-
-
-        if (null != organization && organization.getId()!=null){
-            List<Long> orgIds=new ArrayList<>();
-            orgIds.add(organization.getId());
-            if (null != childrenOrgList && !childrenOrgList.isEmpty()){
-                for (Organization entity : childrenOrgList) {
-                    orgIds.add(entity.getId());
-                }
-            }
-
-            wrapper.in("id", orgIds);
-        }
-
-        return super.page(page, wrapper);
+    public Page<Organization> findOrgPage(Page<Organization> page, String searchTxt) {
+        Page<Organization> result = this.baseMapper.findOrgPage(page, searchTxt);
+        return result;
     }
-
 
 
     /**

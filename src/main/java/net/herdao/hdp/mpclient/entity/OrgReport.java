@@ -18,6 +18,7 @@
 package net.herdao.hdp.mpclient.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -28,7 +29,6 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 组织报表
- *
  * @author andy
  * @date 2020-09-22 10:13:05
  */
@@ -38,6 +38,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "组织报表")
 public class OrgReport extends Model<OrgReport> {
     private static final long serialVersionUID = 1L;
+
     /**
      * 组织名称
      */
@@ -98,7 +99,7 @@ public class OrgReport extends Model<OrgReport> {
     /**
      * 是否项目/中心及以上
      */
-    @ApiModelProperty(value="组织负责人、")
+    @ApiModelProperty(value="组织负责人")
     @ExcelProperty(value = "组织负责人", index = 8)
     private String chargeUserName;
 
@@ -123,4 +124,6 @@ public class OrgReport extends Model<OrgReport> {
     @ApiModelProperty(value="组织创建日期")
     @ExcelProperty(value = "组织创建日期", index = 11)
     private String createdTime;
+
+
 }

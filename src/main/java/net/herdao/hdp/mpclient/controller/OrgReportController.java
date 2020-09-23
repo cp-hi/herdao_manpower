@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
-import net.herdao.hdp.mpclient.entity.OrgMinReport;
-import net.herdao.hdp.mpclient.entity.OrgReport;
-import net.herdao.hdp.mpclient.entity.User;
+import net.herdao.hdp.mpclient.entity.*;
 import net.herdao.hdp.mpclient.service.OrgReportService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
@@ -161,6 +159,29 @@ public class OrgReportController {
 
         return R.ok("导出成功");
     }
+
+    /**
+     * 组织职级统计导出Excel
+     * @param  response
+     * @return R
+     */
+    @ApiOperation(value = "组织职级统计导出Excel", notes = "组织职级统计导出Excel")
+    @SysLog("组织职级统计导出Excel" )
+    @PostMapping("/exportOrgJobLevel")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgCode",value="组织编码")
+    })
+    public R exportOrgJobLevel(HttpServletResponse response,@RequestBody JobLevelReport condition) {
+        try {
+            ExcelUtils.export2Web(response, "组织职级统计表", "组织职级统计表", JobLevelReport.class, orgReportService.exportOrgJobLevel(condition));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ok("导出失败");
+        }
+
+        return R.ok("导出成功");
+    }
+
 
 
 }

@@ -54,6 +54,7 @@ public class OrganizationController {
     private final UserService userService;
 
     private final PostService postService;
+
     private final ExcelOperateRecordService excelOperateRecordService;
 
     /**
@@ -144,7 +145,20 @@ public class OrganizationController {
     }
 
     /**
-     * 查询根组织架构树
+     * 查询部门结构树
+     * @return R
+     */
+    @ApiOperation(value = "查询部门结构树", notes = "查询部门结构树")
+    @PostMapping("/fetchDeptTree")
+    @OperationEntity(operation = "查询部门结构树" ,clazz = Organization.class )
+    public R fetchDeptTree(@RequestBody Organization condition) {
+        List<Organization> list = orgService.fetchDeptTree(condition);
+        return R.ok(list);
+    }
+
+
+    /**
+     * 查询b组织架构树
      *
      * @return R
      */
@@ -155,6 +169,7 @@ public class OrganizationController {
         List<Organization> list = orgService.findAllOrganizations(condition);
         return R.ok(list);
     }
+
 
     /**
      * 高级查询根组织架构（废弃 2020/09/11)
@@ -280,19 +295,19 @@ public class OrganizationController {
     /**
      * 分页查询组织架构
      * @param page 分页对象
-     * @param organization
+     * @param searchText
      * @return
      */
     @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
-    @PostMapping("/findOrgPage")
+    @GetMapping("/findOrgPage")
     @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
             @ApiImplicitParam(name="orgName",value="组织名称"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findOrgPage(Page page, @RequestBody Organization organization) {
-        Page pageResult = orgService.findOrgPage(page, organization);
+    public R findOrgPage(Page page, String searchText) {
+        Page pageResult = orgService.findOrgPage(page, searchText);
         return R.ok(pageResult);
     }
 
