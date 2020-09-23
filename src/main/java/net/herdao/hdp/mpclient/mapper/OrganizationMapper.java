@@ -3,8 +3,12 @@
 package net.herdao.hdp.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.mpclient.entity.Organization;
+import net.herdao.hdp.mpclient.entity.Pipeline;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -70,4 +74,18 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
     List<Organization> findAllOrg(Organization condition);
+
+    /**
+     * 分页查询组织架构
+     * @param page 分页对象
+     * @param searchTxt
+     * @return
+     */
+    Page<Organization> findOrgPage(Page<Organization> page, @Param("searchTxt") String searchTxt);
+
+    /**
+     * 查询部门结构树
+     * @return
+     */
+    List<Organization> fetchDeptTree(Organization condition);
 }

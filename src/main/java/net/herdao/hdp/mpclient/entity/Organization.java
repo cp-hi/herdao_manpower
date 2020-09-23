@@ -267,6 +267,20 @@ private static final long serialVersionUID = 1L;
     private String parentName;
 
 
+    /**
+     * 创建情况
+     */
+    @ApiModelProperty(value="创建情况")
+    @TableField(exist = false)
+    private String createDesc;
+
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @TableField(exist = false)
+    private String updateDesc;
+
 }
 
 

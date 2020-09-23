@@ -310,8 +310,9 @@ public class OrgChartController {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findOrgPage(Page page, @RequestBody Organization organization) {
-        Page pageResult = organizationService.findOrgPage(page, organization);
-        return R.ok(pageResult);
+       /* Page pageResult = organizationService.findOrgPage(page, organization);
+        return R.ok(pageResult);*/
+       return null;
     }
 
 
