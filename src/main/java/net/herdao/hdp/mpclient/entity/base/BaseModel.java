@@ -23,6 +23,5 @@ public class BaseModel<T extends Model<?>> extends Model<T> {    private String 
     private String field3;
     private String field4;
     private String field5;
-    @TableLogic(value = "0",delval = "1")
     private Boolean delFlag;
 }
