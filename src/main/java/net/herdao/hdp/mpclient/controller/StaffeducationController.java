@@ -84,8 +84,11 @@ public class StaffeducationController {
     @PostMapping("/saveEducation")
    // @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_add')" )
     public R save(@RequestBody Staffeducation staffeducation) {
-        return R.ok(staffeducationService.save(staffeducation));
+        boolean status = staffeducationService.saveEdu(staffeducation);
+        return R.ok(status);
     }
+
+
 
     /**
      * 修改员工教育经历
@@ -97,7 +100,8 @@ public class StaffeducationController {
     @PutMapping("/updateEducation")
     // @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_edit')" )
     public R updateById(@RequestBody Staffeducation staffeducation) {
-        return R.ok(staffeducationService.updateById(staffeducation));
+        boolean status = staffeducationService.updateEdu(staffeducation);
+        return R.ok(status);
     }
 
     /**

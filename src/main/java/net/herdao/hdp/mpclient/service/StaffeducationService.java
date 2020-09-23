@@ -23,6 +23,7 @@ import net.herdao.hdp.mpclient.entity.Familystatus;
 import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Staffeducation;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 员工教育经历
@@ -41,4 +42,18 @@ public interface StaffeducationService extends IService<Staffeducation> {
      * @return
      */
     Page<Organization> findStaffEducationPage(Page<Familystatus> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+    /**
+     * 新增员工教育经历
+     * @param staffeducation 分页对象
+     * @return
+     */
+     Boolean saveEdu(@RequestBody Staffeducation staffeducation);
+
+    /**
+     * 更新员工教育经历
+     * @param staffeducation 分页对象
+     * @return
+     */
+     boolean updateEdu(@RequestBody Staffeducation staffeducation);
 }
