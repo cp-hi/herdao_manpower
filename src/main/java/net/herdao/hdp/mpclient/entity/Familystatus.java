@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.mpclient.entity.base.BaseModel;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -38,7 +40,7 @@ import java.time.LocalDateTime;
 @TableName("mp_familystatus")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工家庭成员")
-public class Familystatus extends Model<Familystatus> {
+public class Familystatus extends BaseModel<Familystatus> {
 private static final long serialVersionUID = 1L;
 
     /**

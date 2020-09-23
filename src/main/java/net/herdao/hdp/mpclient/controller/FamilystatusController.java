@@ -79,8 +79,8 @@ public class FamilystatusController {
      */
     @ApiOperation(value = "修改员工家庭成员", notes = "修改员工家庭成员")
     @SysLog("修改员工家庭成员" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_familystatus_edit')" )
+    @PutMapping("/updateFamily")
+    // @PreAuthorize("@pms.hasPermission('mpclient_familystatus_edit')" )
     public R updateById(@RequestBody Familystatus familystatus) {
         return R.ok(familystatusService.updateById(familystatus));
     }
@@ -92,11 +92,13 @@ public class FamilystatusController {
      */
     @ApiOperation(value = "通过id删除员工家庭成员", notes = "通过id删除员工家庭成员")
     @SysLog("通过id删除员工家庭成员" )
-    @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_familystatus_del')" )
+    @DeleteMapping("/del/{id}" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_familystatus_del')" )
     public R removeById(@PathVariable Long id) {
-        return R.ok(familystatusService.removeById(id));
+        Boolean b =  familystatusService.removeById(id);
+        return R.ok(b);
     }
+
 
 
     /**
