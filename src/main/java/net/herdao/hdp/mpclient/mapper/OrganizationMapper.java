@@ -78,10 +78,10 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     /**
      * 分页查询组织架构
      * @param page 分页对象
-     * @param searchTxt
+     * @param orgCode
      * @return
      */
-    Page<Organization> findOrgPage(Page<Organization> page, @Param("searchTxt") String searchTxt);
+    Page<Organization> findOrgPage(Page<Organization> page, @Param("orgCode") String orgCode, @Param("treeLevel") Long treeLevel);
 
     /**
      * 查询部门结构树

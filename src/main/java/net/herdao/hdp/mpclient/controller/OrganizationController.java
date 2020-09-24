@@ -163,10 +163,20 @@ public class OrganizationController {
      * @return R
      */
     @ApiOperation(value = "查询根组织架构树", notes = "查询根组织架构树")
-    @PostMapping("/findAllOrganizations")
+    @GetMapping("/findAllOrganizations")
     @OperationEntity(operation = "查询根组织架构树，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)" ,clazz = Organization.class )
-    public R findAllOrganizations(@RequestBody Organization condition) {
-        List<Organization> list = orgService.findAllOrganizations(condition);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="组织架构主键ID"),
+            @ApiImplicitParam(name="tenantId",value="租户ID"),
+            @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
+            @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
+    })
+     public R findAllOrganizations(Long tenantId,Integer isStop,Boolean isRoot) {
+        Organization organization=new Organization();
+        organization.setTenantId(tenantId);
+        organization.setIsStop(isStop);
+        organization.setIsRoot(isRoot);
+        List<Organization> list = orgService.findAllOrganizations(organization);
         return R.ok(list);
     }
 
@@ -295,7 +305,7 @@ public class OrganizationController {
     /**
      * 分页查询组织架构
      * @param page 分页对象
-     * @param searchText
+     * @param orgCode
      * @return
      */
     @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
@@ -303,11 +313,12 @@ public class OrganizationController {
     @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="orgName",value="组织名称"),
+            @ApiImplicitParam(name="orgCode",value="组织编码"),
+            @ApiImplicitParam(name="treeLevel",value="树形层级"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findOrgPage(Page page, String searchText) {
-        Page pageResult = orgService.findOrgPage(page, searchText);
+    public R findOrgPage(Page page, String orgCode,Long treeLevel) {
+        Page pageResult = orgService.findOrgPage(page, orgCode , treeLevel);
         return R.ok(pageResult);
     }
 
