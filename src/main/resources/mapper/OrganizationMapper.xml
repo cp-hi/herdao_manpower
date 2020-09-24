@@ -437,7 +437,8 @@
 
     <!-- 组织架构分页 -->
     <select id="findOrgPage" resultMap="organizationMap">
-        SELECT  t.ORG_NAME,
+        SELECT  t.id,
+                t.ORG_NAME,
                 t.ORG_CODE,
                 t.org_type,
                 t.org_charge_name,
@@ -449,6 +450,7 @@
         from
         (
         SELECT
+        org.id,
         org.ORG_NAME,
         org.ORG_CODE,
         ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
