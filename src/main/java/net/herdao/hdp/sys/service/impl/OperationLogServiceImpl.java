@@ -17,11 +17,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements OperationLogService {
-
-//    @Override
-//    public boolean save(OperationLog operationLog) {
-//        if (StringUtils.isNotBlank(operationLog.getObjId()))
-//            return super.save(operationLog);
-//        return false;
-//    }
 }

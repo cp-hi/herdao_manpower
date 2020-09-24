@@ -70,7 +70,8 @@ public class OperationLogAspect {
         System.out.println("point2");
     }
 
-    //region 保存实体
+    //region 保存实体 设置操作人信息以及实体主键
+
     @Before("pointCutSave()")
     public void beforeSave(JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
@@ -135,12 +136,14 @@ public class OperationLogAspect {
             log.setOperatorId(sysUser.getUserId().longValue());
             if (null != operation.clazz())
                 log.setEntityClass(operation.clazz().getName());
-            if (StringUtils.isNotBlank(operation.key()) && StringUtils.isBlank(operation.objId())) {
+
+            if (StringUtils.isNotBlank(operation.objId())) {
+                log.setObjId(Long.valueOf(operation.objId()));
+            } else if (StringUtils.isNotBlank(operation.key())
+                    && StringUtils.isBlank(operation.objId())) {
                 int index = Arrays.binarySearch(signature.getParameterNames(), operation.key());
                 Object objId = point.getArgs()[index];
                 log.setObjId((Long) objId);
-            } else if (StringUtils.isNotBlank(operation.objId())) {
-                log.setObjId(Long.valueOf(operation.objId()));
             }
             log.setOperatedTime(new Date());
             operationLogService.save(log);
@@ -150,14 +153,14 @@ public class OperationLogAspect {
     //endregion
 
 
-    private void setAnnotationInfo(OperationEntity operation, String key, Object val) {
+    private void setAnnotationInfo(Annotation annotation, String key, Object val) {
         InvocationHandler h;
         Field field;
         Map memberValues = null;
         try {
-            if (null != operation) {
+            if (null != annotation) {
                 //获取 foo 这个代理实例所持有的 InvocationHandler
-                h = Proxy.getInvocationHandler(operation);
+                h = Proxy.getInvocationHandler(annotation);
                 // 获取 AnnotationInvocationHandler 的 memberValues 字段
                 field = h.getClass().getDeclaredField("memberValues");
                 // 因为这个字段事 private final 修饰，所以要打开权限
