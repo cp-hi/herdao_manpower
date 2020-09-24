@@ -469,6 +469,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return R.ok(organization);
     }
 
+    @Override
+    public Organization findOrgDetails(Organization condition) {
+        Organization organization = this.baseMapper.findOrgDetails(condition);
+        return organization;
+    }
+
     @SysLog("新增组织架构")
     @Override
     public R saveOrg(@RequestBody Organization organization) {

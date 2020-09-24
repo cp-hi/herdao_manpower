@@ -119,4 +119,11 @@ public interface OrganizationService extends IService<Organization> {
      * @return R
      */
      R updateOrg(@RequestBody Organization organization);
+
+    /**
+     * 查询组织架构详情
+     * @param condition
+     * @return
+     */
+    Organization findOrgDetails(Organization condition);
 }
