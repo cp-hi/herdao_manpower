@@ -459,9 +459,9 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="个人社保号（省）")
     private String socialSecurityNumberpRovince;
     /**
-     * 涓汉绀句繚鍙凤紙甯傦級
+     * 个人社保号（市）
      */
-    @ApiModelProperty(value="涓汉绀句繚鍙凤紙甯傦級")
+    @ApiModelProperty(value="个人社保号（市）")
     private String socialSecurityNumberCity;
     /**
      * 工资发放形式

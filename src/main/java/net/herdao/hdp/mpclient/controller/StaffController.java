@@ -52,7 +52,7 @@ public class StaffController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getStaffPage(Page page, Staff staff) {
         return R.ok(staffService.page(page, Wrappers.query(staff)));
     }
@@ -65,7 +65,7 @@ public class StaffController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getById(@PathVariable("id" ) Long id) {
         return R.ok(staffService.getById(id));
     }
@@ -78,7 +78,7 @@ public class StaffController {
     @ApiOperation(value = "新增员工表", notes = "新增员工表")
     @SysLog("新增员工表" )
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
     public R save(@RequestBody Staff staff) {
         return R.ok(staffService.save(staff));
     }
@@ -91,7 +91,7 @@ public class StaffController {
     @ApiOperation(value = "修改员工表", notes = "修改员工表")
     @SysLog("修改员工表" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
     public R updateById(@RequestBody Staff staff) {
         return R.ok(staffService.updateById(staff));
     }
@@ -104,7 +104,7 @@ public class StaffController {
     @ApiOperation(value = "通过id删除员工表", notes = "通过id删除员工表")
     @SysLog("通过id删除员工表" )
     @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_staff_del')" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_del')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(staffService.removeById(id));
     }
