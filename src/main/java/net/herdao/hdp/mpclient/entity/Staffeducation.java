@@ -31,54 +31,54 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 员工家庭成员
+ * 员工教育经历
  *
  * @author andy
- * @date 2020-09-23 10:53:08
+ * @date 2020-09-23 17:59:39
  */
 @Data
-@TableName("mp_familystatus")
+@TableName("mp_staffeducation")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "员工家庭成员")
-public class Familystatus extends BaseModel<Familystatus> {
+@ApiModel(value = "员工教育经历")
+public class Staffeducation extends BaseModel<Staffeducation> {
 private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     * id
      */
     @TableId
-    @ApiModelProperty(value="主键ID")
+    @ApiModelProperty(value="id")
     private Long id;
     /**
      * 
      */
-    @ApiModelProperty(value="oid")
+    @ApiModelProperty(value="")
     private String oid;
     /**
-     * 姓名
+     * 起止时间
      */
-    @ApiModelProperty(value="姓名")
-    private String name;
+    @ApiModelProperty(value="起止时间")
+    private String period;
     /**
-     * 关系
+     * 学校名称
      */
-    @ApiModelProperty(value="关系")
-    private String relations;
+    @ApiModelProperty(value="学校名称")
+    private String schoolName;
     /**
-     * 年龄
+     * 专业
      */
-    @ApiModelProperty(value="年龄")
-    private Integer age;
-    /**
-     * 职业
-     */
-    @ApiModelProperty(value="职业")
+    @ApiModelProperty(value="专业")
     private String professional;
     /**
-     * 工作单位/就读学校
+     * 学历与学位
      */
-    @ApiModelProperty(value="工作单位/就读学校")
-    private String workUnit;
+    @ApiModelProperty(value="学历与学位")
+    private String educationDegree;
+    /**
+     * 学习形式
+     */
+    @ApiModelProperty(value="学习形式")
+    private String learnForm;
     /**
      * 新建用户
      */
@@ -103,52 +103,61 @@ private static final long serialVersionUID = 1L;
      * 人员外键
      */
     @ApiModelProperty(value="人员外键")
-    private String staffOid;
+    private String staffId;
     /**
-     * 人员外键
+     * 结束时间
      */
-    @ApiModelProperty(value="人员外键")
-    private Long staffId;
-    /**
-     * 出生日期
-     */
-    @ApiModelProperty(value="出生日期")
-    private LocalDateTime birthday;
+    @ApiModelProperty(value="结束时间")
+    private LocalDateTime endDate;
     /**
      * 租户ID
      */
     @ApiModelProperty(value="租户ID")
     private Long tenantId;
-
     /**
      * 预留字段1
      */
     @ApiModelProperty(value="预留字段1")
     private String field1;
-
     /**
      * 预留字段2
      */
     @ApiModelProperty(value="预留字段2")
     private String field2;
-
     /**
      * 预留字段3
      */
     @ApiModelProperty(value="预留字段3")
     private String field3;
-
     /**
      * 预留字段4
      */
     @ApiModelProperty(value="预留字段4")
     private String field4;
-
     /**
      * 预留字段5
      */
     @ApiModelProperty(value="预留字段5")
     private String field5;
+    /**
+     * 结束时间
+     */
+    @ApiModelProperty(value="结束时间")
+    private LocalDateTime beginDate;
+
+    /**
+     * modifierName
+     */
+    @ApiModelProperty(value="最后修改人")
+    @TableField(exist = false)
+    private String modifierName;
+
+    /**
+     * 新建用户
+     */
+    @ApiModelProperty(value="新建用户")
+    @TableField(exist = false)
+    private String createName;
 
     /**
      * 是否删除
@@ -156,29 +165,4 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="是否删除")
     private Boolean delFlag;
 
-    /**
-     * 所在地址
-     */
-    @ApiModelProperty(value="所在地址")
-    private String address;
-
-    /**
-     * 修改人(操作人姓名)
-     */
-    @ApiModelProperty(value="修改人(操作人姓名)")
-    private String modifierName;
-
-    /**
-     * 员工姓名
-     */
-    @ApiModelProperty(value="员工姓名")
-    @TableField(exist = false)
-    private String staffName;
-
-    /**
-     * 员工工号
-     */
-    @ApiModelProperty(value="员工工号")
-    @TableField(exist = false)
-    private String staffCode;
- }
+}
