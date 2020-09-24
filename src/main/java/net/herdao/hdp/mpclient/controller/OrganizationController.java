@@ -295,7 +295,7 @@ public class OrganizationController {
     /**
      * 分页查询组织架构
      * @param page 分页对象
-     * @param searchText
+     * @param orgCode
      * @return
      */
     @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
@@ -303,11 +303,12 @@ public class OrganizationController {
     @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="orgName",value="组织名称"),
+            @ApiImplicitParam(name="orgCode",value="组织编码"),
+            @ApiImplicitParam(name="treeLevel",value="树形层级"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findOrgPage(Page page, String searchText) {
-        Page pageResult = orgService.findOrgPage(page, searchText);
+    public R findOrgPage(Page page, String orgCode,Long treeLevel) {
+        Page pageResult = orgService.findOrgPage(page, orgCode , treeLevel);
         return R.ok(pageResult);
     }
 

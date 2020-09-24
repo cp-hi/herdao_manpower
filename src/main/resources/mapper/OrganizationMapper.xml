@@ -475,8 +475,11 @@
         FROM
         mp_organization org
         WHERE 1=1
-            <if test="searchTxt != null">
-                AND  org.ORG_CODE LIKE concat(#{searchTxt},'%')
+            <if test="orgCode != null">
+                AND  org.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+            <if test="treeLevel != null">
+                AND  org.org_tree_level  &lt;= #{treeLevel}
             </if>
         ) t
 

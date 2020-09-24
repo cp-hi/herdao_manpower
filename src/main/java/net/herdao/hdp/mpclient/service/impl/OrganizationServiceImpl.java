@@ -375,8 +375,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public Page<Organization> findOrgPage(Page<Organization> page, String searchTxt) {
-        Page<Organization> result = this.baseMapper.findOrgPage(page, searchTxt);
+    public Page<Organization> findOrgPage(Page<Organization> page, String orgCode,Long treeLevel) {
+        if (treeLevel != null){
+            treeLevel++;
+        }else{
+            treeLevel=1L;
+        }
+        Page<Organization> result = this.baseMapper.findOrgPage(page, orgCode,treeLevel);
         return result;
     }
 
