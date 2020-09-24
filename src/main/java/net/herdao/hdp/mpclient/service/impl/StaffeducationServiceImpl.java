@@ -55,7 +55,7 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     @Override
     public Boolean saveEdu(Staffeducation staffeducation) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId();
+        Integer userId = userInfo.getSysUser().getUserId().intValue();
         staffeducation.setCreatorCode(userId.toString());
         LocalDateTime now = LocalDateTime.now();
         staffeducation.setCreatedTime(now);
@@ -66,7 +66,7 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     @Override
     public boolean updateEdu(Staffeducation staffeducation) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId();
+        Integer userId = userInfo.getSysUser().getUserId().intValue();
         staffeducation.setModifierCode(userId.toString());
         LocalDateTime now = LocalDateTime.now();
         staffeducation.setModifiedTime(now);
