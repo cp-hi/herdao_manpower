@@ -23,11 +23,12 @@ import java.util.Map;
  */
 @Service
 public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
-
+    @Override
     public List<Map> pipelineList() {
         return baseMapper.pipelineList();
     }
 
+    @Override
     public IPage<Pipeline> page(Page<Pipeline> page, String searchTxt) {
         if (StringUtils.isBlank(searchTxt)) searchTxt = "";
         return baseMapper.query(page, searchTxt);

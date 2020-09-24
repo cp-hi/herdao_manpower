@@ -10,6 +10,7 @@ import net.herdao.hdp.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.mpclient.service.PostService;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.sys.annotation.OperationEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     final PipelineMapper pipelineMapper;
     final SectionMapper sectionMapper;
 
+    @Override
     public List<Map> postList() {
         return baseMapper.postList();
     }
@@ -44,7 +46,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
          * 2.是否传groupIds 过来 就只查 集团所属的板块与管线下的岗位
          * 3.是否允许选择非从属关系的条件
          */
-
         String groupId = params.get("groupId");
         String jobLevel = params.get("jobLevel");
         String sectionCode = params.get("sectionCodes");
@@ -70,6 +71,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
+    @OperationEntity(operation = "保存",clazz = Post.class)
     public boolean saveOrUpdate(Post post) {
         if (baseMapper.chkDuplicatePostCode(post))
             throw new RuntimeException("岗位编码重复了");

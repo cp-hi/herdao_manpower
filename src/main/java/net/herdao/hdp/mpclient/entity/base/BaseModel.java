@@ -18,13 +18,10 @@ import java.io.Serializable;
  */
 @Data
 @ToString
-public class BaseModel<T extends Model<?>> extends Model<T> {
-    private Long tenantId;
-    private String field1;
+public class BaseModel<T extends Model<?>> extends Model<T> {    private String field1;
     private String field2;
     private String field3;
     private String field4;
     private String field5;
-    @TableLogic(value = "0",delval = "1")
     private Boolean delFlag;
 }

@@ -28,7 +28,7 @@ public class OperationLog {
     @ApiModelProperty(value="操作",required = true)
     private String operation;
     @ApiModelProperty(value="操作者ID",required = true)
-    private Integer operatorId;
+    private Long operatorId;
     @ApiModelProperty(value="操作者名称",required = true)
     private String operator;
     @ApiModelProperty(value="操作时间",required = true)
@@ -36,5 +36,5 @@ public class OperationLog {
     @ApiModelProperty(value="被操作的实体类",required = true)
     private String entityClass;
     @ApiModelProperty(value="被操作的实体类主键")
-    private String objId;
+    private Long objId;
 }

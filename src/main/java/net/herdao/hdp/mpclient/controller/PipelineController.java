@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.sys.annotation.OperationEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,7 +35,7 @@ public class PipelineController {
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(Page<Pipeline> page, String searchTxt) {
-        return R.ok(pipelineService.page(page,searchTxt));
+        return R.ok(pipelineService.page(page, searchTxt));
     }
 
     @GetMapping("/{id}")
@@ -43,14 +44,16 @@ public class PipelineController {
         return R.ok(pipelineService.getById(id));
     }
 
+
     @PostMapping
-    public R save(@RequestBody Pipeline pipeline) throws Exception {
+    public R save(@RequestBody Pipeline pipeline) {
         pipelineService.saveOrUpdate(pipeline);
         return R.ok(pipeline);
     }
 
-    @ApiOperation(value = "通过id删除管线", notes = "通过id删除")
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "删除", notes = "通过id删除")
+    @OperationEntity(operation = "删除", key = "id", clazz = Pipeline.class)
     public R removeById(@PathVariable Long id) {
         return R.ok(pipelineService.removeById(id));
     }
