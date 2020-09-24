@@ -437,7 +437,8 @@
 
     <!-- 组织架构分页 -->
     <select id="findOrgPage" resultMap="organizationMap">
-        SELECT  t.ORG_NAME,
+        SELECT  t.id,
+                t.ORG_NAME,
                 t.ORG_CODE,
                 t.org_type,
                 t.org_charge_name,
@@ -449,6 +450,7 @@
         from
         (
         SELECT
+        org.id,
         org.ORG_NAME,
         org.ORG_CODE,
         ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
@@ -486,6 +488,40 @@
     </select>
 
 
-
+    <!-- 组织架构详情 -->
+    <select id="findOrgDetails" resultMap="organizationMap">
+            SELECT  org.id,
+                    org.ORG_NAME,-- 组织名称
+                    org.org_simple_desc,-- 组织简称
+                    org.ORG_CODE,-- 组织编码
+                    ( SELECT p.ORG_NAME FROM mp_organization p WHERE p.id = org.PARENT_ID ) parentName,-- 上级组织
+                    ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.ORG_LEVEL ) org_level,-- 组织层级
+                    ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,-- 组织类型
+                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.ID = org.org_charge_work_no ) org_charge_name,-- 部门负责人
+                    ( SELECT p.POST_NAME FROM mp_post p WHERE p.ID = org.charge_org ) charge_org,-- 负责岗位
+                    0 staff,-- 组织编制
+                    '福利' welfareType,   -- 福利类型
+                    org.org_desc, -- 组织描述
+                    CASE
+                        WHEN org.IS_VIRTUAL = 0 THEN
+                        '否'
+                        WHEN org.IS_VIRTUAL = 1 THEN
+                        '是'
+                    END VIRTUA,  -- 是否虚拟组织
+                    org.start_date,  -- 启用日期
+                    org.stop_date,  -- 停用日期
+                    CASE
+                        WHEN org.IS_STOP = 0 THEN
+                        '否'
+                        WHEN org.IS_STOP = 1 THEN
+                        '是'
+                    END enableStatus
+                    FROM
+                        mp_organization org
+                where 1=1
+                <if test="id != null">
+                    AND  org.id = #{id}
+                </if>
+    </select>
 
 </mapper>

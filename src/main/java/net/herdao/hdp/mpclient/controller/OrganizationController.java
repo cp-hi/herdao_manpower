@@ -70,20 +70,11 @@ public class OrganizationController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="组织架构主键ID")
     })
-    public R fetchOrg(@PathVariable("id") String id) {
-        Organization organization = orgService.getById(id);
-
-        if (null != organization){
-            QueryWrapper<Organization> wrapper = Wrappers.query();
-            wrapper.eq("id",organization.getParentId());
-            //获取父组织
-            Organization parentOrg = orgService.getOne(wrapper);
-            if (null != parentOrg){
-                organization.setParentName(parentOrg.getOrgName());
-            }
-        }
-
-        return R.ok(organization);
+    public R fetchOrg(@PathVariable("id") Long id) {
+        Organization condition=new Organization();
+        condition.setId(id);
+        Organization result = orgService.findOrgDetails(condition);
+        return R.ok(result);
     }
 
     /**

@@ -44,8 +44,8 @@
                         ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
                         e.CREATED_TIME
             FROM  mp_staffeducation e
-            INNER JOIN mp_staff s ON s.ID = e.STAFF_ID
-            INNER JOIN mp_userpost u ON u.USER_ID = s.USER_ID
+            LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
+            LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
             AND u.MAIN_POST = 1
             where 1=1
             <if test="orgId != null">

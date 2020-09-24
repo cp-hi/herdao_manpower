@@ -88,4 +88,10 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
     List<Organization> fetchDeptTree(Organization condition);
+
+    /**
+     * 查询组织架构详情
+     * @return
+     */
+     Organization findOrgDetails(Organization condition);
 }

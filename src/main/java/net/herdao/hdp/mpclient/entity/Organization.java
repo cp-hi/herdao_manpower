@@ -290,6 +290,13 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private String updateDesc;
 
+    /**
+     * 是否虚拟组织 页面展示
+     */
+    @ApiModelProperty(value="是否虚拟组织 页面展示")
+    @TableField(exist = false)
+    private String virtual;
+
 }
 
 
