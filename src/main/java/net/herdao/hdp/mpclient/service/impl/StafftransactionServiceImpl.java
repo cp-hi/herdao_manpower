@@ -30,6 +30,7 @@ import net.herdao.hdp.mpclient.service.StafftransactionService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 异动情况
@@ -43,8 +44,8 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     private RemoteUserService remoteUserService;
 
     @Override
-    public Page<Organization> findStaffTransPage(Page<Stafftransaction> page, String orgId, String staffName, String staffCode) {
-        Page<Organization> pageResult = this.baseMapper.findStaffTransPage(page, orgId, staffName, staffCode);
+    public Page<Stafftransaction> findStaffTransPage(Page<Stafftransaction> page, String orgId, String staffName, String staffCode) {
+        Page<Stafftransaction> pageResult = this.baseMapper.findStaffTransPage(page, orgId, staffName, staffCode);
         return pageResult;
     }
 
@@ -68,5 +69,11 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
         stafftransaction.setModifiedTime(now);
         boolean status = super.updateById(stafftransaction);
         return status;
+    }
+
+    @Override
+    public List<Stafftransaction> findStaffTrans(String orgId, String staffName, String staffCode) {
+        List<Stafftransaction> list = this.baseMapper.findStaffTrans(orgId, staffName, staffCode);
+        return list;
     }
 }

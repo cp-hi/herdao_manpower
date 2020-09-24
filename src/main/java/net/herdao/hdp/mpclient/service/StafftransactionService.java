@@ -23,6 +23,8 @@ import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Stafftransaction;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 异动情况
  *
@@ -38,7 +40,7 @@ public interface StafftransactionService extends IService<Stafftransaction> {
      * @param staffCode
      * @return
      */
-    Page<Organization> findStaffTransPage(Page<Stafftransaction> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<Stafftransaction> findStaffTransPage(Page<Stafftransaction> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
     /**
      * 新增员工异动情况
@@ -54,5 +56,15 @@ public interface StafftransactionService extends IService<Stafftransaction> {
      * @return
      */
     Boolean updateTrans(Stafftransaction stafftransaction);
+
+    /**
+     * 员工异动情况
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<Stafftransaction> findStaffTrans(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
 
 }

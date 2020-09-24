@@ -25,6 +25,8 @@ import net.herdao.hdp.mpclient.entity.Stafftransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 异动情况
  *
@@ -41,6 +43,15 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
      * @param staffCode
      * @return
      */
-    Page<Organization> findStaffTransPage(Page<Stafftransaction> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<Stafftransaction> findStaffTransPage(Page<Stafftransaction> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+    /**
+     * 员工异动情况
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<Stafftransaction> findStaffTrans(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
 }

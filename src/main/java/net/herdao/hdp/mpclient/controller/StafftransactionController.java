@@ -23,6 +23,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
+import net.herdao.hdp.mpclient.entity.OrgMinReport;
+import net.herdao.hdp.mpclient.entity.OrgReport;
+import net.herdao.hdp.mpclient.entity.Organization;
 import net.herdao.hdp.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.mpclient.service.StafftransactionService;
 import net.herdao.hdp.sys.annotation.OperationEntity;
@@ -31,6 +35,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
@@ -133,5 +140,30 @@ public class StafftransactionController {
     public R findStaffTransPage(Page page, String orgId,String staffName, String staffCode) {
         Page pageResult = stafftransactionService.findStaffTransPage(page, orgId, staffName, staffCode);
         return R.ok(pageResult);
+    }
+
+    /**
+     * 导出员工异动情况Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "导出员工异动情况Excel", notes = "导出员工异动情况Excel")
+    @SysLog("导出员工异动情况Excel")
+    @PostMapping("/exportTrans")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="staffName",value="员工姓名"),
+        @ApiImplicitParam(name="staffCode",value="员工工号")
+    })
+    public void exportTrans(HttpServletResponse response, String orgId,String staffName, String staffCode) {
+        try {
+            List<Stafftransaction> list = stafftransactionService.findStaffTrans(orgId, staffName, staffCode);
+            ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", Stafftransaction.class,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            R.ok("导出失败");
+        }
+
+        R.ok("导出成功");
     }
 }
