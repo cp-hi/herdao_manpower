@@ -46,8 +46,8 @@
                       f.MODIFIED_TIME
                   FROM
                       mp_familystatus f
-                      INNER JOIN mp_staff s ON s.ID = f.STAFF_id
-                      INNER JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
+                      LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+                      LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
                       where 1=1
                       <if test="orgId != null">
                           and u.ORG_DEPT_ID = #{orgId}

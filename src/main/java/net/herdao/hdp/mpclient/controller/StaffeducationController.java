@@ -126,7 +126,7 @@ public class StaffeducationController {
      */
     @ApiOperation(value = "员工家庭情况分页", notes = "员工家庭情况分页")
     @GetMapping("/findStaffEducationPage")
-    @OperationEntity(operation = "员工家庭情况分页" ,clazz = Organization.class )
+    @OperationEntity(operation = "员工家庭情况分页" ,clazz = Staffeducation.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="orgId",value="组织ID"),
             @ApiImplicitParam(name="staffName",value="员工姓名"),
