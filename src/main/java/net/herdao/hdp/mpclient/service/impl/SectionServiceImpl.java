@@ -26,6 +26,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
 
+    @Override
     public List<Map> sectionList() {
         return baseMapper.sectionList();
     }

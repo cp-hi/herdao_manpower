@@ -19,7 +19,7 @@ import net.herdao.hdp.sys.annotation.ExcludeField;
  * @Date 2020/9/12 14:55
  * @Version 1.0
  */
-//@ExcludeField(value = {"tenantId"})
+
 @Data
 @TableName("MP_Pipeline")
 @EqualsAndHashCode(callSuper = true)

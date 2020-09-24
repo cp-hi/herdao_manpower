@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.sys.entity.OperationLog;
 import net.herdao.hdp.mpclient.mapper.OperationLogMapper;
 import net.herdao.hdp.sys.service.OperationLogService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,4 +17,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements OperationLogService {
+
+//    @Override
+//    public boolean save(OperationLog operationLog) {
+//        if (StringUtils.isNotBlank(operationLog.getObjId()))
+//            return super.save(operationLog);
+//        return false;
+//    }
 }
