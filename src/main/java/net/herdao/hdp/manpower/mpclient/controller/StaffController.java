@@ -26,12 +26,14 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,6 +103,24 @@ public class StaffController {
                 .orderByDesc("MODIFIED_TIME")
         );
         StaffHomePage entity = new StaffHomePage(staff, expList, familyList);
+        return R.ok(entity);
+    }
+
+    /**
+     * 通过id查询员工表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工详情", notes = "通过id查询")
+    @GetMapping("/staffdetail/{id}" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public R getStaffDetail(@PathVariable("id" ) Long id) {
+        Staff staff = staffService.getById(id);
+        List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
+                .eq("STAFF_ID", staff.getId())
+                .orderByDesc("MODIFIED_TIME")
+        );
+        StaffHomePage entity = new StaffHomePage(staff, null, familyList);
         return R.ok(entity);
     }
 
