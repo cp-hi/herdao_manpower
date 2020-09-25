@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.ExcelOperateRecordMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.ExcelOperateRecordMapper">
 
-  <resultMap id="excelOperateRecordMap" type="net.herdao.hdp.mpclient.entity.ExcelOperateRecord">
+  <resultMap id="excelOperateRecordMap" type="net.herdao.hdp.manpower.mpclient.entity.ExcelOperateRecord">
                   <id property="id" column="id"/>
                         <result property="filed" column="filed"/>
                         <result property="type" column="type"/>
