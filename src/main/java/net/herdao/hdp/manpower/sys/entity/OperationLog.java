@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.sys.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class OperationLog {
     @ApiModelProperty(value="操作者名称",required = true)
     private String operator;
     @ApiModelProperty(value="操作时间",required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date operatedTime;
     @ApiModelProperty(value="被操作的实体类",required = true)
     private String entityClass;

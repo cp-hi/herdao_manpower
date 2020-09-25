@@ -10,5 +10,9 @@ import java.util.Map;
 public interface PostService extends IService<Post> {
     List<Map> postList();
     Page page (Page page,Map<String, String> params);
+    @Override
     boolean saveOrUpdate(Post post);
+
+    Map getPostStaffInfo(Long postId);
+
 }

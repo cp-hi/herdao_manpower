@@ -15,4 +15,8 @@ public interface PostMapper extends BaseMapper<Post> {
     Boolean chkDuplicatePostName(Post post);
 
     Boolean chkDuplicatePostCode(Post post);
+
+    Integer getPostStaffCount(String condition);
+
+    List<Map<String, Integer>> getPostStaffAges(Long postId);
 }

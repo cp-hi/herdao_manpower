@@ -6,6 +6,8 @@ import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.mpclient.mapper.OperationLogMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @ClassName OperationLogServiceImpl
  * @Description OperationLogServiceImpl
@@ -16,4 +18,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements OperationLogService {
+    @Override
+    public List<OperationLog> findByEntity(Long objId, String clazz) {
+        return baseMapper.findByEntity(objId,clazz);
+    }
 }
