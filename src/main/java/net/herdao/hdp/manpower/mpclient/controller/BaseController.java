@@ -1,4 +1,4 @@
-package net.herdao.hdp.mpclient.controller;
+package net.herdao.hdp.manpower.mpclient.controller;
 
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Version 1.0
  */
 @AllArgsConstructor
-public class BaseController<T> {
+public class BaseController<T extends Class<T>> {
   final   OperationLogService operationLogService;
 
   @GetMapping("operationLog")
   public R getOperationLogs(Long objId){
+//      T t = new T();
+//      operationLogService.findByEntity(objId,)
       return R.ok();
   }
 }
