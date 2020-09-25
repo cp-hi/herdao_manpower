@@ -15,19 +15,17 @@
  * Author: hdp
  */
 
-package net.herdao.hdp.mpclient.entity;
+package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import io.swagger.annotations.ApiModel;
+ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.herdao.hdp.mpclient.common.Utils.LocalDateTimeConverter;
-import net.herdao.hdp.mpclient.entity.base.BaseModel;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

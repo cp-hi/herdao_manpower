@@ -15,7 +15,7 @@
  * Author: hdp
  */
 
-package net.herdao.hdp.mpclient.controller;
+package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,11 +23,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.mpclient.common.Utils.ExcelUtils;
-import net.herdao.hdp.mpclient.entity.Stafftrain;
-import net.herdao.hdp.mpclient.entity.Stafftransaction;
-import net.herdao.hdp.mpclient.service.StafftrainService;
-import net.herdao.hdp.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
+import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,7 +49,7 @@ import java.util.List;
 @Api(value = "stafftrain", tags = "员工培训管理")
 public class StafftrainController {
 
-    private final  StafftrainService stafftrainService;
+    private final StafftrainService stafftrainService;
 
     /**
      * 分页查询
