@@ -3,9 +3,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.StaffeducationMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffeducationMapper">
 
-            <resultMap id="staffEducationMap" type="net.herdao.hdp.mpclient.entity.Staffeducation">
+            <resultMap id="staffEducationMap" type="net.herdao.hdp.manpower.mpclient.entity.Staffeducation">
                   <id property="id" column="id"/>
                         <result property="oid" column="OID"/>
                         <result property="period" column="PERIOD"/>

@@ -21,9 +21,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.StaffMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffMapper">
 
-  <resultMap id="staffMap" type="net.herdao.hdp.mpclient.entity.Staff">
+  <resultMap id="staffMap" type="net.herdao.hdp.manpower.mpclient.entity.Staff">
                   <id property="id" column="ID"/>
                         <result property="userId" column="user_id"/>
                         <result property="staffCode" column="STAFF_CODE"/>

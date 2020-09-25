@@ -4,9 +4,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.StafftransactionMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StafftransactionMapper">
 
-      <resultMap id="stafftransactionMap" type="net.herdao.hdp.mpclient.entity.Stafftransaction">
+      <resultMap id="stafftransactionMap" type="net.herdao.hdp.manpower.mpclient.entity.Stafftransaction">
             <id property="id" column="id"/>
             <result property="oid" column="OID"/>
             <result property="tranTime" column="TRAN_TIME"/>

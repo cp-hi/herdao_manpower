@@ -4,8 +4,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.OrgReportMapper">
-        <resultMap id="orgReportMap" type="net.herdao.hdp.mpclient.entity.OrgReport">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OrgReportMapper">
+        <resultMap id="orgReportMap" type="net.herdao.hdp.manpower.mpclient.entity.OrgReport">
             <id property="orgName" column="ORG_NAME"/>
             <result property="orgCode" column="ORG_CODE"/>
             <result property="parentName" column="parent_name"/>
@@ -20,7 +20,7 @@
             <result property="createdTime" column="CREATED_TIME"/>
         </resultMap>
 
-        <resultMap id="jobLevelMap" type="net.herdao.hdp.mpclient.entity.JobLevelReport">
+        <resultMap id="jobLevelMap" type="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
         </resultMap>
 
     <!-- 组织架构预览 -->

@@ -4,8 +4,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.StafftrainMapper">
-          <resultMap id="stafftrainMap" type="net.herdao.hdp.mpclient.entity.Stafftrain">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StafftrainMapper">
+          <resultMap id="stafftrainMap" type="net.herdao.hdp.manpower.mpclient.entity.Stafftrain">
                   <id property="id" column="id"/>
                   <result property="staffTrainOid" column="staff_train_oid"/>
                   <result property="trainingTime" column="training_time"/>
