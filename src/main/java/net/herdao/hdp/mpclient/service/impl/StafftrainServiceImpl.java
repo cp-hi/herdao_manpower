@@ -29,6 +29,7 @@ import net.herdao.hdp.mpclient.service.StafftrainService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 员工培训
@@ -67,5 +68,11 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
         stafftrain.setModifiedTime(now);
         boolean status = super.updateById(stafftrain);
         return status;
+    }
+
+    @Override
+    public List<Stafftrain> findStaffTrain(String orgId, String staffName, String staffCode) {
+        List<Stafftrain> list = this.baseMapper.findStaffTrain(orgId, staffName, staffCode);
+        return list;
     }
 }

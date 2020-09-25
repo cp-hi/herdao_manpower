@@ -23,6 +23,8 @@ import net.herdao.hdp.mpclient.entity.Stafftrain;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 员工培训
  *
@@ -40,5 +42,15 @@ public interface StafftrainMapper extends BaseMapper<Stafftrain> {
      * @return
      */
     Page<Stafftrain> findStaffTrainPage(Page<Stafftrain> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+
+    /**
+     * 员工培训
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<Stafftrain> findStaffTrain(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
 }
