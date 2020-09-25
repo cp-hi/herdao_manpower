@@ -17,24 +17,17 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
-import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
-import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,6 +50,8 @@ public class StaffController {
     private final WorkexperienceService workexperienceService;
 
     private final FamilystatusService familystatusService;
+
+    private final UserposthistoryService userposthistoryService;
 
     /**
      * 分页查询
@@ -94,6 +89,10 @@ public class StaffController {
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getHomePage(@PathVariable("id" ) Long id) {
         Staff staff = staffService.getById(id);
+        List<Userposthistory> uphList = userposthistoryService.list(new QueryWrapper<Userposthistory>()
+                .eq("USER_ID", staff.getUserId())
+                .orderByDesc("START_DATE")
+        );
         List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
                 .eq("STAFF_ID", staff.getId())
                 .orderByDesc("BEGIN_DATE")
@@ -102,7 +101,7 @@ public class StaffController {
                 .eq("STAFF_ID", staff.getId())
                 .orderByDesc("MODIFIED_TIME")
         );
-        StaffHomePage entity = new StaffHomePage(staff, expList, familyList);
+        StaffHomePage entity = new StaffHomePage(staff, uphList, expList, familyList);
         return R.ok(entity);
     }
 
@@ -120,7 +119,7 @@ public class StaffController {
                 .eq("STAFF_ID", staff.getId())
                 .orderByDesc("MODIFIED_TIME")
         );
-        StaffHomePage entity = new StaffHomePage(staff, null, familyList);
+        StaffHomePage entity = new StaffHomePage(staff, null,null, familyList);
         return R.ok(entity);
     }
 

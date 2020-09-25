@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, hdp All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: hdp
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.UserposthistoryMapper">
+
+  <resultMap id="userposthistoryMap" type="net.herdao.hdp.manpower.mpclient.entity.Userposthistory">
+                  <id property="id" column="ID"/>
+                        <result property="userId" column="USER_ID"/>
+                        <result property="postId" column="POST_ID"/>
+                        <result property="orgId" column="ORG_ID"/>
+                        <result property="orgDeptId" column="ORG_DEPT_ID"/>
+                        <result property="mainPost" column="MAIN_POST"/>
+                        <result property="actualJob" column="ACTUAL_JOB"/>
+                        <result property="startDate" column="START_DATE"/>
+                        <result property="endDate" column="END_DATE"/>
+                        <result property="isVirtual" column="IS_VIRTUAL"/>
+                        <result property="creatorId" column="CREATOR_ID"/>
+                        <result property="creatorName" column="CREATOR_NAME"/>
+                        <result property="createdTime" column="CREATED_TIME"/>
+                        <result property="modifierId" column="MODIFIER_ID"/>
+                        <result property="modifierName" column="MODIFIER_NAME"/>
+                        <result property="modifiedTime" column="MODIFIED_TIME"/>
+                        <result property="userPostId" column="USER_POST_ID"/>
+                        <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+            </resultMap>
+</mapper>
