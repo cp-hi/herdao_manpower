@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -18,5 +19,5 @@ public interface PostMapper extends BaseMapper<Post> {
 
     Integer getPostStaffCount(String condition);
 
-    List<Map<String, Integer>> getPostStaffAges(Long postId);
+    List<Map<String, BigDecimal>> getPostStaffAges(Long postId);
 }

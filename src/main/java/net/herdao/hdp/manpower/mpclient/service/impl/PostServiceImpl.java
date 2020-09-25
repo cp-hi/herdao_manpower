@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -100,7 +101,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         map.put("authorized", authorized);//编制
 
         //年龄分布
-        List<Map<String, Integer>> ages = baseMapper.getPostStaffAges(postId);
+        List<Map<String, BigDecimal>> ages = baseMapper.getPostStaffAges(postId);
         map.put("little", ages.size() > 0 ? ages.get(0).get("little") : 0);
         map.put("youth", ages.size() > 0 ? ages.get(0).get("youth") : 0);
         map.put("middle", ages.size() > 0 ? ages.get(0).get("middle") : 0);
