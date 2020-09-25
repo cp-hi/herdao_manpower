@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @AllArgsConstructor
 public class BaseController<T extends Class<T>> {
-  final   OperationLogService operationLogService;
+//  final   OperationLogService operationLogService;
 
   @GetMapping("operationLog")
   public R getOperationLogs(Long objId){

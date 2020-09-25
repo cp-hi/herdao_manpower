@@ -12,5 +12,5 @@ public interface OperationLogService extends IService<OperationLog> {
      * @param clazz
      * @return
      */
-    List<OperationLog> findByEntity(Long objId,String clazz);
+//    List<OperationLog> findByEntity(Long objId,String clazz);
 }
