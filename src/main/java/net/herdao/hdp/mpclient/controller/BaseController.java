@@ -2,7 +2,7 @@ package net.herdao.hdp.mpclient.controller;
 
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.sys.service.OperationLogService;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
