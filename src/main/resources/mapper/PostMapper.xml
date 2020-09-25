@@ -29,12 +29,20 @@
             and s.STAFF_SCOPE = '1' and p.id =  #{postId}
         )
         select
-        sum( case when years &lt; 20 then 1 else 0 end) as little ,
-        sum( case when years &lt; 30 and years &gt;= 20 then 1 else 0 end) as youth,
-        sum( case when years &lt; 40 and years &gt;= 30 then 1 else 0 end) as middle,
-        sum( case when years &gt; 40 then 1 else 0 end) as agedness
+        sum( case when years &lt; 20 then 1 else 0 end) as age1 ,
+        sum( case when years &lt; 30 and years &gt;= 20 then 1 else 0 end) as age2,
+        sum( case when years &lt; 40 and years &gt;= 30 then 1 else 0 end) as age3,
+        sum( case when years &lt; 50 and years &gt;= 40 then 1 else 0 end) as age4,
+        sum( case when years &lt; 65 and years &gt;= 50 then 1 else 0 end) as age5,
+        sum( case when years &gt; 65 then 1 else 0 end) as age6
         from  ages
     </select>
+
+
+    <select id="getPostStaffAges" parameterType="long" resultType="map" >
+      
+    </select>
+
 
 
 </mapper>

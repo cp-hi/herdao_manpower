@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -31,6 +32,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -71,6 +74,22 @@ public class StaffeducationController {
     @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_view')" )
     public R getById(@PathVariable("id" ) Long id) {
         return R.ok(staffeducationService.getById(id));
+    }
+
+    /**
+     * 通过员工id查询员工教育经历
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过staff_id查询", notes = "通过staff_id查询")
+    @GetMapping("/staff/{id}" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_view')" )
+    public R getByStaffId(@PathVariable("id" ) Long id) {
+        List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+                .eq("STAFF_ID", id)
+                .orderByDesc("BEGIN_DATE")
+        );
+        return R.ok(eduList);
     }
 
     /**
