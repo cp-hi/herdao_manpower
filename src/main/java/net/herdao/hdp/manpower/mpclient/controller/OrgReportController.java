@@ -9,7 +9,6 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgMinReport;
-import net.herdao.hdp.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
 import net.herdao.hdp.manpower.mpclient.service.OrgReportService;
 import org.springframework.security.access.prepost.PreAuthorize;
