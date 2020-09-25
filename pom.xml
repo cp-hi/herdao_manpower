@@ -8,11 +8,9 @@
         <version>3.9.0</version>
     </parent>
 
-    <groupId>net.herdao.hdp</groupId>
     <artifactId>hdp-manpower</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>hdp-manpower</name>
-    <description>hdp微服务单元demo</description>
+    <packaging>jar</packaging>
+    <description>核心人事微服务</description>
 
 
     <dependencies>
@@ -45,5 +43,17 @@
         </repository>
     </repositories>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

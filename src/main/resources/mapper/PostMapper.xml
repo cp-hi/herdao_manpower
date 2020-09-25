@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.PostMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostMapper">
 
     <select id="postList"  resultType="map">
        	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post
@@ -15,4 +15,26 @@
     <select id="chkDuplicatePostName" parameterType="post" resultType="boolean" >
         SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})   and  post_name = #{postName}
     </select>
+
+    <select id="getPostStaffCount" parameterType="string" resultType="int" >
+        select count(*) from mp_post p, mp_userpost up , mp_staff s
+        where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
+        ${condition}
+    </select>
+
+    <select id="getPostStaffAges" parameterType="long" resultType="map" >
+       with ages as  (
+            select TIMESTAMPDIFF(YEAR ,BIRTHDAY, now()) AS years from mp_post p, mp_userpost up , mp_staff s
+            where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
+            and s.STAFF_SCOPE = '1' and p.id =  #{postId}
+        )
+        select
+        sum( case when years &lt; 20 then 1 else 0 end) as little ,
+        sum( case when years &lt; 30 and years &gt;= 20 then 1 else 0 end) as youth,
+        sum( case when years &lt; 40 and years &gt;= 30 then 1 else 0 end) as middle,
+        sum( case when years &gt; 40 then 1 else 0 end) as agedness
+        from  ages
+    </select>
+
+
 </mapper>

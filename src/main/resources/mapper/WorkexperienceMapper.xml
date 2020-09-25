@@ -21,9 +21,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.WorkexperienceMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper">
 
-      <resultMap id="workexperienceMap" type="net.herdao.hdp.mpclient.entity.Workexperience">
+      <resultMap id="workexperienceMap" type="net.herdao.hdp.manpower.mpclient.entity.Workexperience">
                   <id property="id" column="ID"/>
                   <result property="oid" column="OID"/>
                   <result property="period" column="PERIOD"/>

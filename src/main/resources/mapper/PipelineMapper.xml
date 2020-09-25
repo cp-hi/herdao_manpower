@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.PipelineMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper">
 
     <resultMap id="pipelineMap" type="pipeline">
         <association property="group" column="group_id" select="getGroup" javaType="group"/>

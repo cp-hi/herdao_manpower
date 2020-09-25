@@ -2,8 +2,8 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.mpclient.mapper.OrganizationMapper">
-    <resultMap id="organizationMap" type="net.herdao.hdp.mpclient.entity.Organization">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper">
+    <resultMap id="organizationMap" type="net.herdao.hdp.manpower.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -40,7 +40,7 @@
         <result property="updateDesc" column="update_desc"/>
     </resultMap>
 
-    <resultMap id="organizationChildrenMap" type="net.herdao.hdp.mpclient.entity.Organization">
+    <resultMap id="organizationChildrenMap" type="net.herdao.hdp.manpower.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -73,10 +73,10 @@
         <result property="startOrgOperateDate" column="start_org_oper_date"/>
         <result property="endOrgOperateDate" column="end_org_oper_date"/>
         <result property="orgTreeLevel" column="org_tree_level"/>
-        <collection property="children" column="id" ofType="net.herdao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="children" column="id" ofType="net.herdao.hdp.manpower.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
      </resultMap>
 
-    <resultMap id="organTreeMap" type="net.herdao.hdp.mpclient.entity.Organization">
+    <resultMap id="organTreeMap" type="net.herdao.hdp.manpower.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -109,11 +109,11 @@
         <result property="orgTreeLevel" column="org_tree_level"/>
         <result property="startOrgOperateDate" column="start_org_oper_date"/>
         <result property="endOrgOperateDate" column="end_org_oper_date"/>
-        <collection property="parent" column="PARENT_ID" ofType="net.herdao.hdp.mpclient.entity.Organization" select="selectParentOrgan"></collection>
-        <collection property="children" column="id" ofType="net.herdao.hdp.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
+        <collection property="parent" column="PARENT_ID" ofType="net.herdao.hdp.manpower.mpclient.entity.Organization" select="selectParentOrgan"></collection>
+        <collection property="children" column="id" ofType="net.herdao.hdp.manpower.mpclient.entity.Organization" select="selectChildrenOrgan"></collection>
     </resultMap>
 
-    <resultMap id="orgAllChildMap" type="net.herdao.hdp.mpclient.entity.Organization">
+    <resultMap id="orgAllChildMap" type="net.herdao.hdp.manpower.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -146,12 +146,12 @@
         <result property="orgTreeLevel" column="org_tree_level"/>
         <result property="startOrgOperateDate" column="start_org_oper_date"/>
         <result property="endOrgOperateDate" column="end_org_oper_date"/>
-        <collection property="children" column="id" ofType="net.herdao.hdp.mpclient.entity.Organization" select="getAllChildrenOrgan"></collection>
+        <collection property="children" column="id" ofType="net.herdao.hdp.manpower.mpclient.entity.Organization" select="getAllChildrenOrgan"></collection>
     </resultMap>
 
 
     <!-- 类型是部门的组织架构树 -->
-    <resultMap id="organDeptTreeMap" type="net.herdao.hdp.mpclient.entity.Organization">
+    <resultMap id="organDeptTreeMap" type="net.herdao.hdp.manpower.mpclient.entity.Organization">
         <id property="id" column="ID"/>
         <result property="oid" column="OID"/>
         <result property="orgName" column="ORG_NAME"/>
@@ -184,7 +184,7 @@
         <result property="orgTreeLevel" column="org_tree_level"/>
         <result property="startOrgOperateDate" column="start_org_oper_date"/>
         <result property="endOrgOperateDate" column="end_org_oper_date"/>
-        <collection property="children" column="{parentId=id,orgType=ORG_TYPE}" ofType="net.herdao.hdp.mpclient.entity.Organization" select="fetchChildrenDeptTree"></collection>
+        <collection property="children" column="{parentId=id,orgType=ORG_TYPE}" ofType="net.herdao.hdp.manpower.mpclient.entity.Organization" select="fetchChildrenDeptTree"></collection>
     </resultMap>
 
     <!-- 查询类型是部门的组织架构树 -->
