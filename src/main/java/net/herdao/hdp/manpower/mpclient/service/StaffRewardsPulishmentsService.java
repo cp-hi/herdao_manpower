@@ -21,39 +21,53 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 /**
- * 员工教育经历
+ * 员工奖惩
  *
  * @author andy
- * @date 2020-09-23 17:22:28
+ * @date 2020-09-25 16:26:20
  */
-public interface StaffeducationService extends IService<Staffeducation> {
+public interface StaffRewardsPulishmentsService extends IService<StaffRewardsPulishments> {
+    /**
+     * 新增员工奖惩
+     * @param entity
+     * @return
+     */
+    Boolean saveStaffRp(@RequestBody StaffRewardsPulishments entity);
 
     /**
-     * 员工教育经历分页
+     * 更新员工奖惩
+     * @param entity
+     * @return
+     */
+    Boolean updateStaffRp(@RequestBody StaffRewardsPulishments entity);
+
+
+    /**
+     * 员工奖惩分页
      * @param page 分页对象
      * @param orgId
      * @param staffName
      * @param staffCode
      * @return
      */
-    Page<Organization> findStaffEducationPage(Page<Familystatus> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StaffRewardsPulishments> findStaffRpPage(Page<StaffRewardsPulishments> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
     /**
-     * 新增员工教育经历
-     * @param staffeducation
+     * 员工奖惩
+     * @param orgId
+     * @param staffName
+     * @param staffCode
      * @return
      */
-     Boolean saveEdu(@RequestBody Staffeducation staffeducation);
+    List<StaffRewardsPulishments> findStaffRp(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
-    /**
-     * 更新员工教育经历
-     * @param staffeducation
-     * @return
-     */
-     boolean updateEdu(@RequestBody Staffeducation staffeducation);
+
 }
