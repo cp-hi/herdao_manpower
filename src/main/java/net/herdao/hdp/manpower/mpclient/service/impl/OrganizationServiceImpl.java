@@ -475,40 +475,43 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     @SysLog("新增组织架构")
     @Override
-    public R saveOrg(@RequestBody Organization organization) {
-        if (null != organization) {
-            //查询岗位负责人姓名 mp_post表
-            Post post = postService.getById(organization.getChargeOrg());
-            if (null != post) {
-                organization.setPostName(post.getPostName());
-            }
-
-            //查询组织负责人
-            User user = userService.getById(organization.getOrgChargeWorkNo());
-            if (null != user) {
-                organization.setUserName(user.getUserName());
-            }
-
-            QueryWrapper<Organization> wrapper = Wrappers.query();
-            wrapper.eq("id",organization.getParentId());
-            //获取父组织
-            Organization parentOrg = super.getOne(wrapper);
-            if (null != parentOrg){
-                if (null != parentOrg.getOrgTreeLevel()){
-                    //当前新增组织的组织树层级数+1
-                    organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
+    public Boolean saveOrg(@RequestBody Organization organization) {
+        Boolean status=false;
+        try {
+            if (null != organization) {
+                //查询岗位负责人姓名 mp_post表
+                Post post = postService.getById(organization.getChargeOrg());
+                if (null != post) {
+                    organization.setPostName(post.getPostName());
                 }
 
-                //生成组织编码orgCode
-                createOrgCode(organization, parentOrg);
+                //查询组织负责人
+                User user = userService.getById(organization.getOrgChargeWorkNo());
+                if (null != user) {
+                    organization.setUserName(user.getUserName());
+                }
+
+                QueryWrapper<Organization> wrapper = Wrappers.query();
+                wrapper.eq("id",organization.getParentId());
+                //获取父组织
+                Organization parentOrg = super.getOne(wrapper);
+                if (null != parentOrg){
+                    if (null != parentOrg.getOrgTreeLevel()){
+                        //当前新增组织的组织树层级数+1
+                        organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
+                    }
+
+                    //生成组织编码orgCode
+                    createOrgCode(organization, parentOrg);
+                }
+                status = super.save(organization);
             }
+          }catch (Exception ex){
+            log.error("编辑更新组织组织失败",ex);
         }
-        super.save(organization);
 
-        return R.ok(organization);
+        return status;
     }
-
-
 
     /**
      * 生成组织编码 orgCode

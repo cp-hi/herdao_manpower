@@ -106,9 +106,9 @@ public interface OrganizationService extends IService<Organization> {
     /**
      * 新增组织架构
      * @param organization
-     * @return R
+     * @return
      */
-     R saveOrg(@RequestBody Organization organization);
+     Boolean saveOrg(@RequestBody Organization organization);
 
     /**
      * 编辑更新组织

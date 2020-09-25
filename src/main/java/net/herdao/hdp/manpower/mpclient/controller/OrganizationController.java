@@ -82,7 +82,8 @@ public class OrganizationController {
     @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
     public R saveOrg(@RequestBody Organization organization) {
-        return orgService.saveOrg(organization);
+        Boolean status = orgService.saveOrg(organization);
+        return  R.ok(status);
     }
 
 
