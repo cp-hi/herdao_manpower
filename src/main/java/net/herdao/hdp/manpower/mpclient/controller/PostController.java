@@ -88,4 +88,6 @@ public class PostController   {
     public R getOperationLogs(@PathVariable Long objId){
         return R.ok(operationLogService.findByEntity(objId,Post.class.getName()));
     }
+
+
 }

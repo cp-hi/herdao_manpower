@@ -102,10 +102,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         //年龄分布
         List<Map<String, BigDecimal>> ages = baseMapper.getPostStaffAges(postId);
-        map.put("little", ages.size() > 0 ? ages.get(0).get("little") : 0);
-        map.put("youth", ages.size() > 0 ? ages.get(0).get("youth") : 0);
-        map.put("middle", ages.size() > 0 ? ages.get(0).get("middle") : 0);
-        map.put("agedness", ages.size() > 0 ? ages.get(0).get("agedness") : 0);
+        map.put("age1", ages.size() > 0 ? ages.get(0).get("age1") : 0);
+        map.put("age2", ages.size() > 0 ? ages.get(0).get("age2") : 0);
+        map.put("age3", ages.size() > 0 ? ages.get(0).get("age3") : 0);
+        map.put("age4", ages.size() > 0 ? ages.get(0).get("age4") : 0);
+        map.put("age5", ages.size() > 0 ? ages.get(0).get("age5") : 0);
+        map.put("age6", ages.size() > 0 ? ages.get(0).get("age6") : 0);
 
         return map;
     }
