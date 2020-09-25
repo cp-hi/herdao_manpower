@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.mpclient.mapper.StafftrainMapper">
+          <resultMap id="stafftrainMap" type="net.herdao.hdp.mpclient.entity.Stafftrain">
+                  <id property="id" column="id"/>
+                  <result property="staffTrainOid" column="staff_train_oid"/>
+                  <result property="trainingTime" column="training_time"/>
+                  <result property="trainingContent" column="training_content"/>
+                  <result property="certificate" column="certificate"/>
+                  <result property="organizer" column="organizer"/>
+                  <result property="staffFk" column="staff_FK"/>
+                  <result property="staffId" column="STAFF_ID"/>
+                  <result property="creatorCode" column="CREATOR_CODE"/>
+                  <result property="createdTime" column="CREATED_TIME"/>
+                  <result property="modifierCode" column="MODIFIER_CODE"/>
+                  <result property="modifiedTime" column="MODIFIED_TIME"/>
+                  <result property="tenantId" column="TENANT_ID"/>
+                  <result property="field1" column="FIELD1"/>
+                  <result property="field2" column="FIELD2"/>
+                  <result property="field3" column="FIELD3"/>
+                  <result property="field4" column="FIELD4"/>
+                  <result property="field5" column="FIELD5"/>
+                  <result property="delFlag" column="DEL_FLAG"/>
+                  <result property="beginTime" column="begin_time"/>
+                  <result property="endTime" column="end_time"/>
+                  <result property="trainPeriod" column="train_period"/>
+                  <result property="trainLearnPeriod" column="train_learn_period"/>
+                  <result property="trainType" column="train_type"/>
+                  <result property="trainCompany" column="train_company"/>
+                  <result property="score" column="score"/>
+                  <result property="certificateName" column="certificate_name"/>
+                  <result property="certificateCode" column="certificate_code"/>
+                  <result property="operator" column="operator"/>
+                  <result property="operatorTime" column="operator_time"/>
+                  <result property="remarks" column="remarks"/>
+       </resultMap>
+
+      <!-- 员工培训分页-->
+      <select id="findStaffTrainPage" resultMap="stafftrainMap">
+            SELECT
+            s.staff_name,
+            s.staff_code,
+            f.begin_time,
+            f.end_time,
+            f.train_period,
+            f.train_learn_period,
+            f.score,
+            f.train_type,
+            f.train_company,
+            f.score,
+            f.certificate_name,
+            f.certificate_code,
+            f.remarks,
+            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIER_CODE ) modifier_name,
+            f.MODIFIED_TIME,
+            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.CREATOR_CODE ) create_name,
+            f.CREATED_TIME
+            FROM
+            mp_stafftrain f
+            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
+            where 1=1
+             <if test="orgId != null">
+                  and u.ORG_DEPT_ID = #{orgId}
+            </if>
+            <if test="staffName != null">
+                  or s.staff_name LIKE concat(#{staffName},'%')
+            </if>
+            <if test="staffCode != null">
+                  or s.staff_code LIKE concat(#{staffCode},'%')
+            </if>
+
+      </select>
+</mapper>
