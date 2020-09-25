@@ -14,9 +14,7 @@ import net.herdao.hdp.sys.annotation.OperationEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName PostServiceImpl
@@ -38,6 +36,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return baseMapper.postList();
     }
 
+    @Override
     public Page page(Page page, Map<String, String> params) {
         String searchText = params.get("searchText");
         /*TODO 问清楚 group 与 section 及  pipeline 之间关联查询方式
@@ -71,12 +70,43 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    @OperationEntity(operation = "保存",clazz = Post.class)
+    @OperationEntity(operation = "保存", clazz = Post.class)
     public boolean saveOrUpdate(Post post) {
         if (baseMapper.chkDuplicatePostCode(post))
             throw new RuntimeException("岗位编码重复了");
         if (baseMapper.chkDuplicatePostName(post))
             throw new RuntimeException("岗位名称重复了");
         return super.saveOrUpdate(post);
+    }
+
+
+    @Override
+    public Map getPostStaffInfo(Long postId) {
+        Map map = new LinkedHashMap();
+        Integer onJobs = baseMapper.getPostStaffCount("and s.STAFF_SCOPE = '1' and p.id =" + postId);
+        Integer fullTimes = baseMapper.getPostStaffCount("and s.STAFF_SCOPE = '1' and s.JOB_TYPE = '1' and p.id = " + postId);
+        Integer partTimes = baseMapper.getPostStaffCount("and s.STAFF_SCOPE = '1' and s.JOB_TYPE = '2' and p.id = " + postId);
+        Integer exchanges = baseMapper.getPostStaffCount("and s.STAFF_SCOPE = '1' and s.JOB_TYPE = '4' and p.id = " + postId);
+
+        Integer interns = 0; //实习
+        Integer probation = 0;//试用
+        Integer authorized = 0;//编制
+
+        map.put("onJobs", onJobs);//在职
+        map.put("interns", interns);//实习
+        map.put("fullTimes", fullTimes);//全职
+        map.put("partTimes", partTimes);//兼职
+        map.put("exchanges", exchanges);//交流
+        map.put("probation", probation);//试用
+        map.put("authorized", authorized);//编制
+
+        //年龄分布
+        List<Map<String, Integer>> ages = baseMapper.getPostStaffAges(postId);
+        map.put("little", ages.size() > 0 ? ages.get(0).get("little") : 0);
+        map.put("youth", ages.size() > 0 ? ages.get(0).get("youth") : 0);
+        map.put("middle", ages.size() > 0 ? ages.get(0).get("middle") : 0);
+        map.put("agedness", ages.size() > 0 ? ages.get(0).get("agedness") : 0);
+
+        return map;
     }
 }

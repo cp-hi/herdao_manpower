@@ -70,4 +70,12 @@ public class PostController {
     public R removeById(@PathVariable Long id) {
         return R.ok(postService.removeById(id));
     }
+
+
+    @ApiOperation(value = "获取岗位员工信息")
+    @SysLog("获取岗位员工信息")
+    @GetMapping("/postStaff/{postId}")
+    public R getPostStaffInfo(@PathVariable Long postId) {
+        return R.ok(postService.getPostStaffInfo(postId));
+    }
 }
