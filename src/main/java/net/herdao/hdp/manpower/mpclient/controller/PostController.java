@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,15 +26,18 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController {
+public class PostController   {
 
     private final PostService postService;
+
+    private final     OperationLogService operationLogService;
+
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "searchText", value = "字符串搜索"),
-//            @ApiImplicitParam(name="groupIds",value="集团编码"),
+            @ApiImplicitParam(name = "groupIds", value = "集团编码"),
             @ApiImplicitParam(name = "jobLevels", value = "职级"),
             @ApiImplicitParam(name = "sectionCodes", value = "板块编码"),
             @ApiImplicitParam(name = "pipelineCodes", value = "管线编码"),
@@ -77,5 +81,11 @@ public class PostController {
     @GetMapping("/postStaff/{postId}")
     public R getPostStaffInfo(@PathVariable Long postId) {
         return R.ok(postService.getPostStaffInfo(postId));
+    }
+
+    @ApiOperation(value = "获取岗位操作日志")
+    @GetMapping("/operationLog/{objId}")
+    public R getOperationLogs(@PathVariable Long objId){
+        return R.ok(operationLogService.findByEntity(objId,Post.class.getName()));
     }
 }
