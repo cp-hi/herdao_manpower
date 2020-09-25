@@ -32,6 +32,7 @@ public class DemoController {
     @ApiOperation(value = "测试", notes = "试试")
     @GetMapping("/shishi" )
     public R getDemoPage(String shishi) {
+        System.out.println("这是试试   ： " + shishi + "  " + new Date());
         return R.ok("这是试试   ： " + shishi + "  " + new Date());
     }
 
