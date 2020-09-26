@@ -45,13 +45,14 @@ private static final long serialVersionUID = 1L;
     /**
      * 奖惩类别 通报表扬；年度优秀员工奖；特殊贡献奖。下拉框选择
      */
-    @ExcelProperty(value = "奖惩类别", index = 0)
+   @ExcelProperty(value = "奖惩类别", index = 0)
    private String type;
 
     /**
      * 奖惩内容
      */
     @ExcelProperty(value = "奖惩内容", index = 1)
+    @ExcelIgnore
     private String content;
 
     /**

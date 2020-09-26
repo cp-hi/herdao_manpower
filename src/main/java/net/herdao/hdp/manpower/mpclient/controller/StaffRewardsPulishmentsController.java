@@ -154,7 +154,7 @@ public class StaffRewardsPulishmentsController {
             @ApiImplicitParam(name="staffName",value="员工姓名"),
             @ApiImplicitParam(name="staffCode",value="员工工号")
     })
-    public void exportTrans(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+    public void exportStaffRp(HttpServletResponse response, String orgId, String staffName, String staffCode) {
         try {
             List<StaffRewardsPulishments> list = staffRewardsPulishmentsService.findStaffRp(orgId, staffName, staffCode);
             ExcelUtils.export2Web(response, "员工奖惩情况表", "员工奖惩情况表", StaffRp.class,list);
