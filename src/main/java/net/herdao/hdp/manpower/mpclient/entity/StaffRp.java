@@ -52,7 +52,6 @@ private static final long serialVersionUID = 1L;
      * 奖惩内容
      */
     @ExcelProperty(value = "奖惩内容", index = 1)
-    @ExcelIgnore
     private String content;
 
     /**
