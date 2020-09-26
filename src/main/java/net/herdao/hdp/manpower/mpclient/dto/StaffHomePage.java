@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class StaffHomePage {
 
     @ApiModelProperty(value="员工信息")
     private Staff staff;
+
+    @ApiModelProperty(value="任职轨迹")
+    private List<Userposthistory> uphList;
 
     @ApiModelProperty(value="工作经历")
     private List<Workexperience> expList;
