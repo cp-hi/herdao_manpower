@@ -39,10 +39,41 @@
     </select>
 
 
-    <select id="getPostStaffAges" parameterType="long" resultType="map" >
-      
+    <!-- TODO 还差组织层级-->
+    <select id="getPostDetails" parameterType="string" resultType="map" >
+        select
+        p.POST_NAME postName,
+        p.POST_CODE postCode,
+        p.CREATOR_NAME creatorName,
+        p.CREATED_TIME createdTime,
+        s.SECTION_NAME sectionName,
+        pp.PIPELINE_NAME pipelineName,
+        j.JOB_LEVEL_NAME jobLevelName,
+        jg.JOB_grade_NAME jobGradeName,
+        COALESCE(g1.GROUP_NAME,g2.GROUP_NAME) groupName
+        from  mp_post p
+        left join mp_section s on p.SECTION_CODE = s.SECTION_CODE
+        left join mp_pipeline pp on p.PIPELINE_CODE = pp.PIPELINE_CODE
+        left join mp_job_level j on p.JOB_LEVEL_CODE = j.JOB_LEVEL_CODE
+        left join mp_job_grade jg on j.JOB_grade_CODE = jg.JOB_grade_CODE
+        left join mp_group g1 on s.GROUP_ID = g1.id
+        left join mp_group g2 on pp.GROUP_ID = g2.id
+        ${limit}
     </select>
 
-
+    <!-- TODO 还差所在部门-->
+    <select id="getPostStaffs" parameterType="string" resultType="map" >
+        select
+        p.POST_NAME postName,
+        p.POST_CODE postCode,
+        s.STAFF_NAME staffName,
+        s.STAFF_CODE staffCode,
+        s.MOBILE mobile,
+        up.ORG_DEPT_ID deptId
+        from  mp_post p
+        inner join mp_userpost up on p.id= up.POST_ID
+        inner join mp_staff  s on s.user_id = up.USER_ID
+        order by p.id  ${limit}
+    </select>
 
 </mapper>

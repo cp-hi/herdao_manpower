@@ -11,6 +11,8 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,12 +28,17 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController   {
+public class PostController {
 
     private final PostService postService;
 
-    private final     OperationLogService operationLogService;
+    private final OperationLogService operationLogService;
 
+    @ApiOperation(value = "获取岗位操作日志")
+    @GetMapping("/operationLog/{objId}")
+    public R getOperationLogs(@PathVariable Long objId) {
+        return R.ok(operationLogService.findByEntity(objId, Post.class.getName()));
+    }
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
@@ -83,11 +90,23 @@ public class PostController   {
         return R.ok(postService.getPostStaffInfo(postId));
     }
 
-    @ApiOperation(value = "获取岗位操作日志")
-    @GetMapping("/operationLog/{objId}")
-    public R getOperationLogs(@PathVariable Long objId){
-        return R.ok(operationLogService.findByEntity(objId,Post.class.getName()));
+    @ApiOperation(value = "获取岗位信息明细")
+    @GetMapping("/getPostDetails")
+    public R getPostDetails(String operation, String size) {
+        List<Map<String, String>> list = postService.getPostDetails(operation, size);
+        if ("download".equals(operation)) {
+            return null;
+        }
+        return R.ok(list);
     }
 
-
+    @ApiOperation(value = "获取岗位员工信息")
+    @GetMapping("/getPostStaffs")
+    public R getPostStaffs(String operation, String size) {
+        List<Map<String, String>> list = postService.getPostStaffs(operation, size);
+        if ("download".equals(operation)) {
+            return null;
+        }
+        return R.ok(list);
+    }
 }

@@ -111,4 +111,26 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         return map;
     }
+
+    @Override
+    public List<Map<String, String>> getPostDetails(String operation, String size) {
+        String limit = "";
+        if (!"download".equals(operation)) {
+            if (StringUtils.isBlank(size))
+                size = "10";
+            limit = "limit " + size;
+        }
+        return baseMapper.getPostDetails(limit);
+    }
+
+    @Override
+    public List<Map<String, String>> getPostStaffs(String operation, String size) {
+        String limit = "";
+        if (!"download".equals(operation)) {
+            if (StringUtils.isBlank(size))
+                size = "10";
+            limit = "limit " + size;
+        }
+        return baseMapper.getPostStaffs(limit);
+    }
 }

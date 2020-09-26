@@ -20,4 +20,9 @@ public interface PostMapper extends BaseMapper<Post> {
     Integer getPostStaffCount(String condition);
 
     List<Map<String, BigDecimal>> getPostStaffAges(Long postId);
+
+    List<Map<String, String>> getPostDetails(String limit);
+
+    List<Map<String, String>> getPostStaffs(String limit);
+
 }
