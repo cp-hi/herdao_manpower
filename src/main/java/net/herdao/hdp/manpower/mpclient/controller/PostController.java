@@ -2,8 +2,11 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.herdao.hdp.manpower.mpclient.dto.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
@@ -11,7 +14,10 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,21 +98,31 @@ public class PostController {
 
     @ApiOperation(value = "获取岗位信息明细")
     @GetMapping("/getPostDetails")
-    public R getPostDetails(String operation, String size) {
-        List<Map<String, String>> list = postService.getPostDetails(operation, size);
+    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
+        List<PostDetailDTO> data = postService.getPostDetails(postId, operation, size);
         if ("download".equals(operation)) {
+            try {
+                ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailDTO.class, data);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             return null;
         }
-        return R.ok(list);
+        return R.ok(data);
     }
 
     @ApiOperation(value = "获取岗位员工信息")
     @GetMapping("/getPostStaffs")
-    public R getPostStaffs(String operation, String size) {
-        List<Map<String, String>> list = postService.getPostStaffs(operation, size);
+    public R getPostStaffs(HttpServletResponse response, Long postId, String operation, String size) {
+        List<PostStaffDTO> data = postService.getPostStaffs(postId, operation, size);
         if ("download".equals(operation)) {
+            try {
+                ExcelUtils.export2Web(response, "岗位员工信息细表", "岗位员工信息细表", PostStaffDTO.class, data);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             return null;
         }
-        return R.ok(list);
+        return R.ok(data);
     }
 }

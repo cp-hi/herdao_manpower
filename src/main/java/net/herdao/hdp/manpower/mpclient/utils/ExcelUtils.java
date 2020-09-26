@@ -1,7 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.utils;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.util.IOUtils;
 
@@ -11,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -51,6 +56,29 @@ public class ExcelUtils {
         response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
         //response.setHeader("Content-disposition", "attachment;filename=" + new String(excelName.getBytes("utf-8"),"ISO-8859-1" ) + ExcelTypeEnum.XLSX.getValue());
         EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(data);
+    }
+
+    public static void export2Web(HttpServletResponse response, String excelName, List<LinkedHashMap<String, String>> data) throws Exception {
+        List<List<Object>> dataList = new ArrayList<>();
+        List<List<String>> headList = new ArrayList<>();
+        for (String k : data.get(0).keySet()) {
+            List<String> head = new ArrayList<>();
+            head.add(k);
+            headList.add(head);
+        }
+        for (LinkedHashMap<String, String> map : data) {
+            List<Object> objs = new ArrayList<>();
+            for (List<String> h : headList) {
+                objs.add(map.get(h.get(0)));
+            }
+            dataList.add(objs);
+        }
+
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        excelName = URLEncoder.encode(excelName, "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
+        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
     }
 
     /**

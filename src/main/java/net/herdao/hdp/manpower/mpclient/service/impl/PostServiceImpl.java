@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
@@ -113,24 +115,24 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public List<Map<String, String>> getPostDetails(String operation, String size) {
+    public List<PostDetailDTO> getPostDetails(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size))
                 size = "10";
             limit = "limit " + size;
         }
-        return baseMapper.getPostDetails(limit);
+        return baseMapper.getPostDetails(postId, limit);
     }
 
     @Override
-    public List<Map<String, String>> getPostStaffs(String operation, String size) {
+    public List<PostStaffDTO> getPostStaffs(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size))
                 size = "10";
             limit = "limit " + size;
         }
-        return baseMapper.getPostStaffs(limit);
+        return baseMapper.getPostStaffs(postId, limit);
     }
 }

@@ -2,9 +2,12 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,12 +15,14 @@ public interface PostService extends IService<Post> {
 
     /**
      * 岗位列表
-      * @return
+     *
+     * @return
      */
     List<Map> postList();
 
     /**
      * 分页数据
+     *
      * @param page
      * @param params
      * @return
@@ -26,6 +31,7 @@ public interface PostService extends IService<Post> {
 
     /**
      * 保存岗位
+     *
      * @param post
      * @return
      */
@@ -34,6 +40,7 @@ public interface PostService extends IService<Post> {
 
     /**
      * 岗位员工信息
+     *
      * @param postId
      * @return
      */
@@ -41,14 +48,16 @@ public interface PostService extends IService<Post> {
 
     /**
      * 岗位明细
+     *
      * @return
      */
-    List<Map<String, String>> getPostDetails(String operation,String size);
+    List<PostDetailDTO> getPostDetails(Long postId, String operation, String size);
 
     /**
      * 岗位员工
+     *
      * @return
      */
-    List<Map<String, String>> getPostStaffs(String operation,String size);
+    List<PostStaffDTO> getPostStaffs(Long postId, String operation, String size);
 
 }
