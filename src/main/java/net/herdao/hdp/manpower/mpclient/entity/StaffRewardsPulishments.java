@@ -19,6 +19,8 @@ package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.ContentRowHeight;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -41,6 +43,8 @@ import java.time.LocalDateTime;
 @TableName("mp_staff_rewards_pulishments")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工奖惩")
+@ContentRowHeight(30)
+@ColumnWidth(20)
 public class StaffRewardsPulishments extends BaseModel<StaffRewardsPulishments> {
 private static final long serialVersionUID = 1L;
 
@@ -50,6 +54,7 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="")
     @ExcelIgnore
+    @ExcelProperty("ID")
     private Long id;
 
     /**
@@ -122,6 +127,7 @@ private static final long serialVersionUID = 1L;
      */
     @ExcelIgnore
     @ApiModelProperty(value="租户ID")
+    @ExcelProperty("tenantId")
     private Long tenantId;
 
     /**
@@ -129,6 +135,7 @@ private static final long serialVersionUID = 1L;
      */
     @ExcelIgnore
     @ApiModelProperty(value="预留字段1")
+    @ExcelProperty("field1")
     private String field1;
 
     /**
@@ -136,6 +143,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="预留字段2")
     @ExcelIgnore
+    @ExcelProperty("field2")
     private String field2;
 
     /**
@@ -143,12 +151,14 @@ private static final long serialVersionUID = 1L;
      */
     @ExcelIgnore
     @ApiModelProperty(value="预留字段3")
+    @ExcelProperty("field3")
     private String field3;
 
     /**
      * 预留字段4
      */
     @ExcelIgnore
+    @ExcelProperty("field4")
     @ApiModelProperty(value="预留字段4")
     private String field4;
 
@@ -163,6 +173,7 @@ private static final long serialVersionUID = 1L;
      * 是否删除
      */
     @ExcelIgnore
+    @ExcelProperty("delFlag")
     @ApiModelProperty(value="是否删除")
     private Boolean delFlag;
 }
