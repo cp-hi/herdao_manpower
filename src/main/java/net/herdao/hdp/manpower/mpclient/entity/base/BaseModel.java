@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.entity.base;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -18,10 +19,22 @@ import java.io.Serializable;
  */
 @Data
 @ToString
-public class BaseModel<T extends Model<?>> extends Model<T> {    private String field1;
+public class BaseModel<T extends Model<?>> extends Model<T> {
+    @ExcelIgnore
+    private String field1;
+
+    @ExcelIgnore
     private String field2;
+
+    @ExcelIgnore
     private String field3;
+
+    @ExcelIgnore
     private String field4;
+
+    @ExcelIgnore
     private String field5;
+
+    @ExcelIgnore
     private Boolean delFlag;
 }
