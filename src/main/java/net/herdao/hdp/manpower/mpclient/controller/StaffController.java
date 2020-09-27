@@ -174,6 +174,7 @@ public class StaffController {
 		@ApiImplicitParam(name = "searchText", value = "查询内容", required = true),
 		@ApiImplicitParam(name = "isLikeSearch", value = "是否为模糊查询， 值：“1” 为 true, 不传或者传其它值 为 false ", required = false)
 	})
+    @ApiOperation(value = "员工选择组件", notes = "员工选择组件")
     @GetMapping("/selectStaffOrganizationComponent")
     public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch) {
         return staffService.selectStaffOrganizationComponent(searchText, isLikeSearch);

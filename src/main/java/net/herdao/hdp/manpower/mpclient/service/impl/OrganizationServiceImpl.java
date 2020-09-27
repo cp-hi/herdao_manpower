@@ -1,26 +1,42 @@
 
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.util.*;
+import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
+import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
+import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
+import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
+import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo;
 
 /**
  * @author Andy
@@ -564,4 +580,25 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         List<Organization> list = super.list(wrapper);
         return list;
     }
+
+	@Override
+	public R<?> selectOrganization(String searchText, String isLikeSearch) {
+		// 获取用户信息 TODO 待完善
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        if(userInfo != null) {
+        	// 获取当前人员部门信息
+        	Organization organization = this.getById(userInfo.getSysUser().getDeptId());
+        	// 默认查询当前人员所在部门
+        	searchText = organization.getOrgCode();
+        }
+		OrganizationComponentVo organizationComponentVo = this.baseMapper.selectOrganization(searchText);
+		organizationComponentVo.setOrganizationComponents(selectOrganizationChildrens(searchText, isLikeSearch));
+		return R.ok(organizationComponentVo);
+	}
+
+	@Override
+	public List<OrganizationComponentVo> selectOrganizationChildrens(String searchText, String isLikeSearch) {
+		// TODO 待完善
+		return this.baseMapper.selectOrganizationChildrens(searchText);
+	}
 }

@@ -2,13 +2,16 @@
 
 package net.herdao.hdp.manpower.mpclient.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo;
 
 /**
  * 
@@ -92,4 +95,20 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
      Organization findOrgDetails(Organization condition);
+     
+     /**
+ 	 * 查询部门/组织信息（包含子部门/组织信息）
+ 	 * 
+ 	 * @param searchText
+ 	 * @return
+ 	 */
+ 	OrganizationComponentVo selectOrganization(String searchText);
+ 	
+ 	/**
+ 	 * 子部门/组织信息
+ 	 * 
+ 	 * @param searchText
+ 	 * @return
+ 	 */
+ 	List<OrganizationComponentVo> selectOrganizationChildrens(String searchText);
 }
