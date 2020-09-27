@@ -20,6 +20,9 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 集团表
  *
@@ -27,5 +30,6 @@ import net.herdao.hdp.manpower.mpclient.entity.Group;
  * @date 2020-09-11 11:57:16
  */
 public interface GroupService extends IService<Group> {
+    List<Map<String,String>> groupList();
 
 }

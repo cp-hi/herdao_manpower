@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface PipelineMapper extends BaseMapper<Pipeline> {
-    List<Map> pipelineList();
+    List<Map> pipelineList(Long groupId);
 
     IPage<Pipeline> query(Page<Pipeline> page,@Param("searchTxt") String searchTxt);
 

@@ -34,4 +34,10 @@
                         <result property="groupFullname" column="GROUP_FULLNAME"/>
                         <result property="tenantId" column="TENANT_ID"/>
             </resultMap>
+
+
+
+    <select id="groupList" parameterType="pipeline" resultType="map">
+       	select id,group_code AS code,group_name AS name from mp_group
+    </select>
 </mapper>

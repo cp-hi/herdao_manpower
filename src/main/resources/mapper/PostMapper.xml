@@ -5,7 +5,7 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostMapper">
 
     <select id="postList"  resultType="map">
-       	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post
+       	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post where group_id = #{groupId}
     </select>
 
     <select id="chkDuplicatePostCode" parameterType="post" resultType="boolean">
@@ -66,14 +66,14 @@
     <select id="getPostStaffs"  resultType="net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO">
         select
         p.POST_NAME,
-       -- p.POST_CODE postCode,
         s.STAFF_NAME,
         s.STAFF_CODE,
         s.MOBILE,
-        up.ORG_DEPT_ID
+        o.ORG_NAME
         from  mp_post p
         inner join mp_userpost up on p.id= up.POST_ID
         inner join mp_staff  s on s.user_id = up.USER_ID
+        inner join mp_organization o on up.ORG_DEPT_ID = o.id
         where p.id = #{postId}  order by p.id  ${limit}
     </select>
 

@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 public interface PipelineService extends IService<Pipeline> {
     IPage<Pipeline> page(Page<Pipeline> page,String searchTxt);
 
-    List<Map> pipelineList();
-
+    List<Map> pipelineList(Long groupId);
+@Override
     boolean saveOrUpdate(Pipeline pipeline);
 }

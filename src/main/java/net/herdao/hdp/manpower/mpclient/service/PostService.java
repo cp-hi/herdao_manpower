@@ -18,7 +18,7 @@ public interface PostService extends IService<Post> {
      *
      * @return
      */
-    List<Map> postList();
+    List<Map> postList(Long groupId);
 
     /**
      * 分页数据

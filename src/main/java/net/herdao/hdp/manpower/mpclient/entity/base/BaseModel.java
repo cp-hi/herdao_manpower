@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.entity.base;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -23,5 +24,6 @@ public class BaseModel<T extends Model<?>> extends Model<T> {    private String 
     private String field3;
     private String field4;
     private String field5;
+    @ApiModelProperty(value = "删除标记" )
     private Boolean delFlag;
 }
