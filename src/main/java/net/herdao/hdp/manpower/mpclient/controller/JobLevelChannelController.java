@@ -38,7 +38,7 @@ public class JobLevelChannelController {
         QueryWrapper<JobLevelChannel> queryWrapper = new QueryWrapper<>();
         queryWrapper
                 .like(StringUtils.isNotBlank(jobLevelChannel.getJobLevelChannelCode()), "JOB_LEVEL_CHANNEL_CODE", jobLevelChannel.getJobLevelChannelCode())
-                .or( )
+                .or()
                 .like(StringUtils.isNotBlank(jobLevelChannel.getJobLevelChannelName()), "JOB_LEVEL_CHANNEL_NAME", jobLevelChannel.getJobLevelChannelName());
         return R.ok(jobLevelChannelService.page(page, queryWrapper));
     }
