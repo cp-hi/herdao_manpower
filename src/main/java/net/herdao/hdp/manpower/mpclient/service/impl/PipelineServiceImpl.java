@@ -24,8 +24,8 @@ import java.util.Map;
 @Service
 public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
     @Override
-    public List<Map> pipelineList() {
-        return baseMapper.pipelineList();
+    public List<Map> pipelineList(Long groupId) {
+        return baseMapper.pipelineList(  groupId);
     }
 
     @Override

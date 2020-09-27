@@ -43,6 +43,14 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
+    @GetMapping("/list")
+//    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
+    public R list() {
+        return R.ok(groupService.groupList());
+    }
+
+
     /**
      * 分页查询
      * @param page 分页对象

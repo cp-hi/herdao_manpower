@@ -21,6 +21,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 集团表
  *
@@ -29,5 +32,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface GroupMapper extends BaseMapper<Group> {
-
+    List<Map<String,String>> groupList();
 }

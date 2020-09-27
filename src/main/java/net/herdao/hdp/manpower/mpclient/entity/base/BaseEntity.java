@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,14 +21,21 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BaseEntity<T extends Model<?>> extends BaseModel<T> {
+    @ApiModelProperty(value = "主键", required = true)
     @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
+    @ApiModelProperty(value = "创建人ID" )
     private Long creatorId;
+    @ApiModelProperty(value = "创建人名称" )
     private String creatorName;
+    @ApiModelProperty(value = "创建时间" )
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdTime;
+    @ApiModelProperty(value = "修改ID" )
     private Long modifierId;
+    @ApiModelProperty(value = "修改人名称" )
     private String modifierName;
+    @ApiModelProperty(value = "修改时间" )
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date modifiedTime;
 }

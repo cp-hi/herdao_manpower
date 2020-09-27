@@ -1,42 +1,32 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import java.io.InputStream;
-import java.util.List;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.listener.OrgExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
-import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
+import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
+import org.springframework.security.access.prepost.PreAuthorize;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+import java.util.*;
 
 
 /**
@@ -353,22 +343,6 @@ public class OrganizationController {
         }
 
         return  R.ok("导入成功");
-    }
-    
-    /**
-     * 部门选择组件
-     * @param searchText
-     * @param isLikeSearch
-     * @return
-     */
-    @ApiImplicitParams({
-		@ApiImplicitParam(name = "searchText", value = "查询内容", required = true),
-		@ApiImplicitParam(name = "isLikeSearch", value = "是否为模糊查询， 值：“1” 为 true, 不传或者传其它值 为 false ", required = false)
-	})
-    @ApiOperation(value = "部门选择组件", notes = "部门选择组件")
-    @GetMapping("/selectOrganizationComponent")
-    public R<?> selectOrganizationComponent(String searchText, String isLikeSearch) {
-        return orgService.selectOrganization(searchText, isLikeSearch);
     }
 
 }

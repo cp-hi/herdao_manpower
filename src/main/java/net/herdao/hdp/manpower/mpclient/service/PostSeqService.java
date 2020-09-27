@@ -11,7 +11,7 @@ import java.util.Map;
 public interface PostSeqService extends IService<PostSeq> {
     IPage<PostSeq> page(Page<PostSeq> page, String searchTxt);
 
-    List<Map> postSeqList();
+    List<Map> postSeqList(Long groupId);
 
     boolean saveOrUpdate(PostSeq postSeq);
 }

@@ -34,8 +34,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     final SectionMapper sectionMapper;
 
     @Override
-    public List<Map> postList() {
-        return baseMapper.postList();
+    public List<Map> postList(Long groupId) {
+        return baseMapper.postList(    groupId);
     }
 
     @Override
