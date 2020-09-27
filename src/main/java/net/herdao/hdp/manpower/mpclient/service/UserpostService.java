@@ -17,8 +17,13 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -34,4 +39,17 @@ public interface UserpostService extends IService<Userpost> {
      * @return
      */
     List<Userpost> findUserPost(Userpost condition);
+
+
+
+      /**
+     * 现任职情况分页
+     * @param page 分页对象
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
 }

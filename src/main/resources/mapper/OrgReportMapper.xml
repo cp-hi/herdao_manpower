@@ -45,7 +45,7 @@
                 ) charge_post_name,
                CASE WHEN org.IS_VIRTUAL = 0 THEN
                     '否'
-                   when 	org.IS_VIRTUAL = 1 THEN
+                   when org.IS_VIRTUAL = 1 THEN
                     '是'
                     END virtual_status ,
                     org.CREATED_TIME

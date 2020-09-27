@@ -17,7 +17,9 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
@@ -36,5 +38,11 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     public List<Userpost> findUserPost(Userpost condition) {
         List<Userpost> list = this.baseMapper.findUserPost(condition);
         return list;
+    }
+
+    @Override
+    public Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, String orgId, String staffName, String staffCode) {
+        Page<UserpostNow> pageResult = this.baseMapper.findUserPostNowPage(page, orgId, staffName, staffCode);
+        return pageResult;
     }
 }
