@@ -139,7 +139,7 @@
        <result property="delFlag" column="DEL_FLAG"/>
    </resultMap>
    
-   <!-- 部门信息 MAP -->
+    <!-- 部门信息 MAP -->
 	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo" id="organizationComponentMap">
 		<result column="id" property="id" />
 		<result column="orgName" property="org_name" />
@@ -168,11 +168,11 @@
 			org.org_code
 		FROM mp_organization org
 		<where>
-			AND org.org_code = #{searchText}
+			AND ( org.org_code = #{searchText} OR org.org_name = #{searchText} )
 		</where>
 	</select>
 	
-	<!-- 查询子部门信息 -->
+	<!-- 查询子部门/组织信息 -->
 	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
 		SELECT 
 			org.id,
