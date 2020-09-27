@@ -17,8 +17,13 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVo;
 
 /**
  * 员工表
@@ -27,5 +32,22 @@ import net.herdao.hdp.manpower.mpclient.entity.Staff;
  * @date 2020-09-23 18:10:29
  */
 public interface StaffService extends IService<Staff> {
+	
+	/**
+	 * 查询员工信息（返回结果包含员工所在部门/组织信息）组件
+	 * @param searchText 查询内容
+	 * @param isLikeSearch 是否为模糊查询， 值：“1” 为 true, 不传或者传其它值 为 false
+	 * @return
+	 */
+	public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch);
+	
+	/**
+	 * 查询员工信息组件
+	 * 
+	 * @param searchText 查询内容
+	 * @param isLikeSearch 是否模糊查询， 值：“1” 为  true, 值：0 或者 null 为  false
+	 * @return
+	 */
+	public List<StaffComponentVo> selectStaffComponent(String searchText, String isLikeSearch);
 
 }

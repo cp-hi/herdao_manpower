@@ -26,6 +26,8 @@ import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -160,6 +162,21 @@ public class StaffController {
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_del')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(staffService.removeById(id));
+    }
+    
+    /**
+     * 员工选择组件
+     * @param searchText
+     * @param isLikeSearch
+     * @return
+     */
+    @ApiImplicitParams({
+		@ApiImplicitParam(name = "searchText", value = "查询内容", required = true),
+		@ApiImplicitParam(name = "isLikeSearch", value = "是否为模糊查询， 值：“1” 为 true, 不传或者传其它值 为 false ", required = false)
+	})
+    @GetMapping("/selectStaffOrganizationComponent")
+    public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch) {
+        return staffService.selectStaffOrganizationComponent(searchText, isLikeSearch);
     }
 
 }
