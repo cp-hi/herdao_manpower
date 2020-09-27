@@ -21,6 +21,12 @@
             <version>3.9.0</version>
         </dependency>
 
+        <!--spring security 、oauth、jwt依赖-->
+        <dependency>
+            <groupId>net.herdao</groupId>
+            <artifactId>hdp-common-security</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
