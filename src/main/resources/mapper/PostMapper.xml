@@ -4,7 +4,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostMapper">
 
-    <select id="postList"  resultType="map">
+    <select id="postList"    resultType="map">
        	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post where group_id = #{groupId}
     </select>
 

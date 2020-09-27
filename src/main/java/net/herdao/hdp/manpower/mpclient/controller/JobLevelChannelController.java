@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -9,10 +10,15 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelChannel;
+import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.listener.UserExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelChannelService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
 
 /**
  * @ClassName JobLevelController
@@ -67,4 +73,20 @@ public class JobLevelChannelController {
     public R removeById(@PathVariable Long id) {
         return R.ok(jobLevelChannelService.removeById(id));
     }
+
+
+    @ApiOperation("导入")
+    @SysLog("导入")
+    @PostMapping("/import")
+    public R importData(@RequestParam(value = "file") MultipartFile file) {
+        try {
+            InputStream inputStream = file.getInputStream();
+//            EasyExcel.read(inputStream, User.class, new UserExcelListener(userService)).sheet().doRead();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return R.ok(" easyexcel读取上传文件成功");
+    }
+
 }

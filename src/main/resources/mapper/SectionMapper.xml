@@ -17,7 +17,7 @@
         select * from  mp_group WHERE id=#{id}
     </select>
 
-    <select id="sectionList" parameterType="pipeline" resultType="map">
+    <select id="sectionList"  resultType="map">
        	select id,section_code AS code,section_name AS name  from mp_section where group_id = #{groupId}
     </select>
 
