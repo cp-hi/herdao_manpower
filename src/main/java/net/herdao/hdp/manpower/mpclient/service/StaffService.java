@@ -18,6 +18,8 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 
 /**
@@ -28,4 +30,12 @@ import net.herdao.hdp.manpower.mpclient.entity.Staff;
  */
 public interface StaffService extends IService<Staff> {
 
+	/**
+ 	 * 查询员工信息
+ 	 * 
+ 	 * @param searchText
+ 	 * @param isLikeSearch
+ 	 * @return
+ 	 */
+	public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch);
 }

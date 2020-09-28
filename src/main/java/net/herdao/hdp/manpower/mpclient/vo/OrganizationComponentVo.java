@@ -17,8 +17,6 @@
 
 package net.herdao.hdp.manpower.mpclient.vo;
 
-import java.util.List;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -42,7 +40,10 @@ public class OrganizationComponentVo {
 	@ApiModelProperty(value = "部门/组织编码")
 	private String orgCode;
 	
-	@ApiModelProperty(value = "下级部门/组织")
-	private List<OrganizationComponentVo> organizationComponents;
+	@ApiModelProperty(value = "父部门/组织名称")
+	private String parentOrgName;
+
+	@ApiModelProperty(value = "父部门/组织编码")
+	private String parentOrgCode;
 	
 }

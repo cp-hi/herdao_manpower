@@ -17,20 +17,37 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
+import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
+import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 
 
 /**
@@ -160,6 +177,22 @@ public class StaffController {
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_del')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(staffService.removeById(id));
+    }
+    
+    
+    /**
+     * 员工选择组件
+     * @param searchText
+     * @param isLikeSearch
+     * @return
+     */
+    @ApiImplicitParams({
+		@ApiImplicitParam(name = "searchText", value = "查询内容", required = true),
+		@ApiImplicitParam(name = "isLikeSearch", value = "是否为模糊查询， 值：“1” 为 true, 不传或者传其它值 为 false ", required = false)
+	})
+    @GetMapping("/selectStaffOrganizationComponent")
+    public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch) {
+        return staffService.selectStaffOrganizationComponent(searchText, isLikeSearch);
     }
 
 }

@@ -17,38 +17,26 @@
 
 package net.herdao.hdp.manpower.mpclient.vo;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 员工信息组件Vo
+ * 员工组件信息Vo
  *
  * @author shuling
  * @date 2020-09-24 15:01:48
  */
 @Data
-@ApiModel(value = "员工信息")
-public class StaffComponentVo {
-
-	@ApiModelProperty(value = "员工id")
-	private String id;
+@ApiModel(value = "员工组件信息")
+public class StaffOrganizationDataComponentVo {
 	
-	@ApiModelProperty(value = "工号")
-	private String staffCode;
-
-	@ApiModelProperty(value = "姓名")
-	private String staffName;
-
-	@ApiModelProperty(value = "部门/组织编码")
-	private String orgCode;
+	@ApiModelProperty(value = "员工信息")
+	private List<StaffComponentVo> staffComponents;
 	
-	@ApiModelProperty(value = "部门/组织名称")
-	private String orgName;
+	@ApiModelProperty(value = "下级部门/组织")
+	private List<StaffOrganizationComponentVo> organizationComponents;
 	
-	@ApiModelProperty(value = "父部门/组织编码")
-	private String parentOrgCode;
-	
-	@ApiModelProperty(value = "父部门/组织名称")
-	private String parentOrgName;
 }

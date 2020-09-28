@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+
+import cn.hutool.core.util.BooleanUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
@@ -13,6 +16,7 @@ import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
+
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
@@ -564,4 +568,17 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         List<Organization> list = super.list(wrapper);
         return list;
     }
+
+	@Override
+	public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch) {
+		// 是否模糊查询
+		Boolean likeSearch = BooleanUtil.toBoolean(isLikeSearch);
+		
+		if(likeSearch) {
+			return R.ok(this.baseMapper.selectLikeOrganization(searchText, likeSearch));
+		}else {
+			return R.ok(this.baseMapper.selectOrganization(searchText));
+		}
+	}
+	
 }

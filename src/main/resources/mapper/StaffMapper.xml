@@ -24,118 +24,220 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffMapper">
 
   <resultMap id="staffMap" type="net.herdao.hdp.manpower.mpclient.entity.Staff">
-                  <id property="id" column="ID"/>
-                        <result property="userId" column="user_id"/>
-                        <result property="staffCode" column="STAFF_CODE"/>
-                        <result property="staffName" column="STAFF_NAME"/>
-                        <result property="personnelNature" column="PERSONNEL_NATURE"/>
-                        <result property="personnelType" column="PERSONNEL_TYPE"/>
-                        <result property="staffScope" column="STAFF_SCOPE"/>
-                        <result property="jobType" column="JOB_TYPE"/>
-                        <result property="actualJob" column="ACTUAL_JOB"/>
-                        <result property="actualCity" column="ACTUAL_CITY"/>
-                        <result property="sex" column="SEX"/>
-                        <result property="birthday" column="BIRTHDAY"/>
-                        <result property="country" column="COUNTRY"/>
-                        <result property="birthplace" column="BIRTHPLACE"/>
-                        <result property="nation" column="NATION"/>
-                        <result property="maritalStatus" column="MARITAL_STATUS"/>
-                        <result property="fertility" column="FERTILITY"/>
-                        <result property="healthStatus" column="HEALTH_STATUS"/>
-                        <result property="height" column="HEIGHT"/>
-                        <result property="weight" column="WEIGHT"/>
-                        <result property="politicsStatus" column="POLITICS_STATUS"/>
-                        <result property="educationDegree" column="EDUCATION_DEGREE"/>
-                        <result property="professional" column="PROFESSIONAL"/>
-                        <result property="graduatedFrom" column="GRADUATED_FROM"/>
-                        <result property="graduatedTime" column="GRADUATED_TIME"/>
-                        <result property="workDate" column="WORK_DATE"/>
-                        <result property="workSeniority" column="WORK_SENIORITY"/>
-                        <result property="entryTime" column="ENTRY_TIME"/>
-                        <result property="companySeniority" column="COMPANY_SENIORITY"/>
-                        <result property="entryThreeGroupsTime" column="ENTRY_THREE_GROUPS_TIME"/>
-                        <result property="threeGroupsSeniority" column="THREE_GROUPS_SENIORITY"/>
-                        <result property="goalPosts" column="GOAL_POSTS"/>
-                        <result property="currAddress" column="CURR_ADDRESS"/>
-                        <result property="postCode" column="POST_CODE"/>
-                        <result property="province" column="PROVINCE"/>
-                        <result property="city" column="CITY"/>
-                        <result property="accountAddress" column="ACCOUNT_ADDRESS"/>
-                        <result property="accountType" column="ACCOUNT_TYPE"/>
-                        <result property="email" column="EMAIL"/>
-                        <result property="idNumber" column="ID_NUMBER"/>
-                        <result property="homePhone" column="HOME_PHONE"/>
-                        <result property="mobile" column="MOBILE"/>
-                        <result property="officePhone" column="OFFICE_PHONE"/>
-                        <result property="emergencyContacts" column="EMERGENCY_CONTACTS"/>
-                        <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
-                        <result property="interests" column="INTERESTS"/>
-                        <result property="specialty" column="SPECIALTY"/>
-                        <result property="characteristics" column="CHARACTERISTICS"/>
-                        <result property="advantage" column="ADVANTAGE"/>
-                        <result property="shortcoming" column="SHORTCOMING"/>
-                        <result property="professionalExperience" column="PROFESSIONAL_EXPERIENCE"/>
-                        <result property="managementExperience" column="MANAGEMENT_EXPERIENCE"/>
-                        <result property="realestateExperience" column="REALESTATE_EXPERIENCE"/>
-                        <result property="writingAbility" column="WRITING_ABILITY"/>
-                        <result property="professionalCompetence" column="PROFESSIONAL_COMPETENCE"/>
-                        <result property="management" column="MANAGEMENT"/>
-                        <result property="foreignLanguages" column="FOREIGN_LANGUAGES"/>
-                        <result property="computerProficiency" column="COMPUTER_PROFICIENCY"/>
-                        <result property="resources" column="RESOURCES"/>
-                        <result property="internalConnections" column="INTERNAL_CONNECTIONS"/>
-                        <result property="admissionGraduates" column="ADMISSION_GRADUATES"/>
-                        <result property="collectiveHouseholdsTime" column="COLLECTIVE_HOUSEHOLDS_TIME"/>
-                        <result property="archivesSituation" column="ARCHIVES_SITUATION"/>
-                        <result property="acceptedAssignment" column="ACCEPTED_ASSIGNMENT"/>
-                        <result property="assignmentLocations" column="ASSIGNMENT_LOCATIONS"/>
-                        <result property="bankName" column="BANK_NAME"/>
-                        <result property="bankAddress" column="BANK_ADDRESS"/>
-                        <result property="bankAccount" column="BANK_ACCOUNT"/>
-                        <result property="fundArchiveBankName" column="FUND_ARCHIVE_BANK_NAME"/>
-                        <result property="fundArchiveBankAccount" column="FUND_ARCHIVE_BANK_ACCOUNT"/>
-                        <result property="title" column="TITLE"/>
-                        <result property="assessmentUnit" column="ASSESSMENT_UNIT"/>
-                        <result property="professionalQualifications" column="PROFESSIONAL_QUALIFICATIONS"/>
-                        <result property="titleCode" column="TITLE_CODE"/>
-                        <result property="certificationTime" column="CERTIFICATION_TIME"/>
-                        <result property="qualificationUnit" column="QUALIFICATION_UNIT"/>
-                        <result property="contractCompany" column="CONTRACT_COMPANY"/>
-                        <result property="contractTerm" column="CONTRACT_TERM"/>
-                        <result property="paidUnit" column="PAID_UNIT"/>
-                        <result property="securityUnit" column="SECURITY_UNIT"/>
-                        <result property="fundUnit" column="FUND_UNIT"/>
-                        <result property="securityArchiveTime" column="SECURITY_ARCHIVE_TIME"/>
-                        <result property="fundArchiveTime" column="FUND_ARCHIVE_TIME"/>
-                        <result property="socialSecurityNumberpRovince" column="SOCIAL_SECURITY_NUMBERP_ROVINCE"/>
-                        <result property="socialSecurityNumberCity" column="SOCIAL_SECURITY_NUMBER_CITY"/>
-                        <result property="paySalaryType" column="PAY_SALARY_TYPE"/>
-                        <result property="funding" column="FUNDING"/>
-                        <result property="insurance" column="INSURANCE"/>
-                        <result property="welfare" column="WELFARE"/>
-                        <result property="securityType" column="SECURITY_TYPE"/>
-                        <result property="creatorId" column="CREATOR_ID"/>
-                        <result property="creatorName" column="CREATOR_NAME"/>
-                        <result property="createdTime" column="CREATED_TIME"/>
-                        <result property="modifierId" column="MODIFIER_ID"/>
-                        <result property="modifierName" column="MODIFIER_NAME"/>
-                        <result property="modifiedTime" column="MODIFIED_TIME"/>
-                        <result property="photoAddr" column="PHOTO_ADDR"/>
-                        <result property="remark" column="REMARK"/>
-                        <result property="noWorkingSeniority" column="NO_WORKING_SENIORITY"/>
-                        <result property="dueBankName" column="DUE_BANK_NAME"/>
-                        <result property="dueBankCode" column="DUE_BANK_CODE"/>
-                        <result property="dailyInspection" column="DAILY_INSPECTION"/>
-                        <result property="paySalaryUnit" column="PAY_SALARY_UNIT"/>
-                        <result property="paySecurityUnit" column="PAY_SECURITY_UNIT"/>
-                        <result property="payFundUnit" column="PAY_FUND_UNIT"/>
-                        <result property="insuredTime" column="INSURED_TIME"/>
-                        <result property="interruptYear" column="INTERRUPT_YEAR"/>
-                        <result property="field1" column="FIELD1"/>
-                        <result property="field2" column="FIELD2"/>
-                        <result property="field3" column="FIELD3"/>
-                        <result property="field4" column="FIELD4"/>
-                        <result property="field5" column="FIELD5"/>
-                        <result property="delFlag" column="DEL_FLAG"/>
-            </resultMap>
+       <id property="id" column="ID"/>
+       <result property="userId" column="user_id"/>
+       <result property="staffCode" column="STAFF_CODE"/>
+       <result property="staffName" column="STAFF_NAME"/>
+       <result property="personnelNature" column="PERSONNEL_NATURE"/>
+       <result property="personnelType" column="PERSONNEL_TYPE"/>
+       <result property="staffScope" column="STAFF_SCOPE"/>
+       <result property="jobType" column="JOB_TYPE"/>
+       <result property="actualJob" column="ACTUAL_JOB"/>
+       <result property="actualCity" column="ACTUAL_CITY"/>
+       <result property="sex" column="SEX"/>
+       <result property="birthday" column="BIRTHDAY"/>
+       <result property="country" column="COUNTRY"/>
+       <result property="birthplace" column="BIRTHPLACE"/>
+       <result property="nation" column="NATION"/>
+       <result property="maritalStatus" column="MARITAL_STATUS"/>
+       <result property="fertility" column="FERTILITY"/>
+       <result property="healthStatus" column="HEALTH_STATUS"/>
+       <result property="height" column="HEIGHT"/>
+       <result property="weight" column="WEIGHT"/>
+       <result property="politicsStatus" column="POLITICS_STATUS"/>
+       <result property="educationDegree" column="EDUCATION_DEGREE"/>
+       <result property="professional" column="PROFESSIONAL"/>
+       <result property="graduatedFrom" column="GRADUATED_FROM"/>
+       <result property="graduatedTime" column="GRADUATED_TIME"/>
+       <result property="workDate" column="WORK_DATE"/>
+       <result property="workSeniority" column="WORK_SENIORITY"/>
+       <result property="entryTime" column="ENTRY_TIME"/>
+       <result property="companySeniority" column="COMPANY_SENIORITY"/>
+       <result property="entryThreeGroupsTime" column="ENTRY_THREE_GROUPS_TIME"/>
+       <result property="threeGroupsSeniority" column="THREE_GROUPS_SENIORITY"/>
+       <result property="goalPosts" column="GOAL_POSTS"/>
+       <result property="currAddress" column="CURR_ADDRESS"/>
+       <result property="postCode" column="POST_CODE"/>
+       <result property="province" column="PROVINCE"/>
+       <result property="city" column="CITY"/>
+       <result property="accountAddress" column="ACCOUNT_ADDRESS"/>
+       <result property="accountType" column="ACCOUNT_TYPE"/>
+       <result property="email" column="EMAIL"/>
+       <result property="idNumber" column="ID_NUMBER"/>
+       <result property="homePhone" column="HOME_PHONE"/>
+       <result property="mobile" column="MOBILE"/>
+       <result property="officePhone" column="OFFICE_PHONE"/>
+       <result property="emergencyContacts" column="EMERGENCY_CONTACTS"/>
+       <result property="emergencyPhone" column="EMERGENCY_PHONE"/>
+       <result property="interests" column="INTERESTS"/>
+       <result property="specialty" column="SPECIALTY"/>
+       <result property="characteristics" column="CHARACTERISTICS"/>
+       <result property="advantage" column="ADVANTAGE"/>
+       <result property="shortcoming" column="SHORTCOMING"/>
+       <result property="professionalExperience" column="PROFESSIONAL_EXPERIENCE"/>
+       <result property="managementExperience" column="MANAGEMENT_EXPERIENCE"/>
+       <result property="realestateExperience" column="REALESTATE_EXPERIENCE"/>
+       <result property="writingAbility" column="WRITING_ABILITY"/>
+       <result property="professionalCompetence" column="PROFESSIONAL_COMPETENCE"/>
+       <result property="management" column="MANAGEMENT"/>
+       <result property="foreignLanguages" column="FOREIGN_LANGUAGES"/>
+       <result property="computerProficiency" column="COMPUTER_PROFICIENCY"/>
+       <result property="resources" column="RESOURCES"/>
+       <result property="internalConnections" column="INTERNAL_CONNECTIONS"/>
+       <result property="admissionGraduates" column="ADMISSION_GRADUATES"/>
+       <result property="collectiveHouseholdsTime" column="COLLECTIVE_HOUSEHOLDS_TIME"/>
+       <result property="archivesSituation" column="ARCHIVES_SITUATION"/>
+       <result property="acceptedAssignment" column="ACCEPTED_ASSIGNMENT"/>
+       <result property="assignmentLocations" column="ASSIGNMENT_LOCATIONS"/>
+       <result property="bankName" column="BANK_NAME"/>
+       <result property="bankAddress" column="BANK_ADDRESS"/>
+       <result property="bankAccount" column="BANK_ACCOUNT"/>
+       <result property="fundArchiveBankName" column="FUND_ARCHIVE_BANK_NAME"/>
+       <result property="fundArchiveBankAccount" column="FUND_ARCHIVE_BANK_ACCOUNT"/>
+       <result property="title" column="TITLE"/>
+       <result property="assessmentUnit" column="ASSESSMENT_UNIT"/>
+       <result property="professionalQualifications" column="PROFESSIONAL_QUALIFICATIONS"/>
+       <result property="titleCode" column="TITLE_CODE"/>
+       <result property="certificationTime" column="CERTIFICATION_TIME"/>
+       <result property="qualificationUnit" column="QUALIFICATION_UNIT"/>
+       <result property="contractCompany" column="CONTRACT_COMPANY"/>
+       <result property="contractTerm" column="CONTRACT_TERM"/>
+       <result property="paidUnit" column="PAID_UNIT"/>
+       <result property="securityUnit" column="SECURITY_UNIT"/>
+       <result property="fundUnit" column="FUND_UNIT"/>
+       <result property="securityArchiveTime" column="SECURITY_ARCHIVE_TIME"/>
+       <result property="fundArchiveTime" column="FUND_ARCHIVE_TIME"/>
+       <result property="socialSecurityNumberpRovince" column="SOCIAL_SECURITY_NUMBERP_ROVINCE"/>
+       <result property="socialSecurityNumberCity" column="SOCIAL_SECURITY_NUMBER_CITY"/>
+       <result property="paySalaryType" column="PAY_SALARY_TYPE"/>
+       <result property="funding" column="FUNDING"/>
+       <result property="insurance" column="INSURANCE"/>
+       <result property="welfare" column="WELFARE"/>
+       <result property="securityType" column="SECURITY_TYPE"/>
+       <result property="creatorId" column="CREATOR_ID"/>
+       <result property="creatorName" column="CREATOR_NAME"/>
+       <result property="createdTime" column="CREATED_TIME"/>
+       <result property="modifierId" column="MODIFIER_ID"/>
+       <result property="modifierName" column="MODIFIER_NAME"/>
+       <result property="modifiedTime" column="MODIFIED_TIME"/>
+       <result property="photoAddr" column="PHOTO_ADDR"/>
+       <result property="remark" column="REMARK"/>
+       <result property="noWorkingSeniority" column="NO_WORKING_SENIORITY"/>
+       <result property="dueBankName" column="DUE_BANK_NAME"/>
+       <result property="dueBankCode" column="DUE_BANK_CODE"/>
+       <result property="dailyInspection" column="DAILY_INSPECTION"/>
+       <result property="paySalaryUnit" column="PAY_SALARY_UNIT"/>
+       <result property="paySecurityUnit" column="PAY_SECURITY_UNIT"/>
+       <result property="payFundUnit" column="PAY_FUND_UNIT"/>
+       <result property="insuredTime" column="INSURED_TIME"/>
+       <result property="interruptYear" column="INTERRUPT_YEAR"/>
+       <result property="field1" column="FIELD1"/>
+       <result property="field2" column="FIELD2"/>
+       <result property="field3" column="FIELD3"/>
+       <result property="field4" column="FIELD4"/>
+       <result property="field5" column="FIELD5"/>
+       <result property="delFlag" column="DEL_FLAG"/>
+   </resultMap>
+   
+    <!-- 部门信息 MAP -->
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo" id="organizationComponentMap">
+		<result column="id" property="id" />
+		<result column="orgName" property="org_name" />
+		<result column="orgCode" property="org_code" />
+		<result column="parentOrgName" property="parent_org_name" />
+		<result column="parentOrgCode" property="parent_org_code" />
+	</resultMap>
+	
+	<!-- 人员信息组件MAP -->
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffComponentVo" id="staffComponentMap">
+		<result column="id" property="id"/>
+		<result column="staffName" property="staff_name"/>
+		<result column="staffCode" property="staff_code"/>
+		<result column="orgCode" property="org_code" />
+		<result column="orgName" property="org_name" />
+		<result column="parentOrgName" property="parent_org_name" />
+		<result column="parentOrgCode" property="parent_org_code" />
+	</resultMap>
+	
+	<!-- 统计部门/组织下的人员数（包括子部门/子组织人员） -->
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo" id="staffTotalMap">
+		<result column="orgCode" property="org_code" />
+		<result column="total" property="total" />
+	</resultMap>
+	
+	<!-- 查询部门信息组件  -->
+	<select id="selectOrganizations" resultMap="organizationComponentMap">
+		SELECT 
+			org.id,
+			org.org_name, 
+			org.org_code,
+		    orgp.org_name AS parent_org_name, 
+			orgp.org_code AS parent_org_code
+		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+		<where>
+			<if test="searchText != null">
+				AND org.org_code = #{searchText} 
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询子部门/组织信息 -->
+	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
+		SELECT 
+			org.id,
+			org.org_name, 
+			org.org_code,
+			orgp.org_name AS parent_org_name, 
+			orgp.org_code AS parent_org_code
+		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+		<where>
+			AND org.org_code != #{searchText}
+			AND org.org_code like CONCAT('',#{searchText},'%')
+			AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 
+		</where>
+	</select>
+	
+	<!-- 人员查询条件  -->
+	<sql id="staffSqlWhereFragment">
+		<if test="searchText != null">
+			( org.org_code like CONCAT('',#{searchText},'%')
+				AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 ) 
+		</if>
+	</sql>
+	
+	<!-- 统计部门/组织下的人员数 （包括下级部门/组织人员）-->
+	<select id="getStaffTotals" resultMap="staffTotalMap">
+		SELECT 
+			count(sf.staff_code) AS total,
+			org.org_code
+		FROM mp_staff sf
+		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
+		INNER JOIN mp_organization org ON org.id = ut.org_dept_id 
+		<where>
+			<include refid="staffSqlWhereFragment"></include>
+		</where>
+		GROUP BY org.org_code
+	</select>
+	
+	<!-- 查询当前部门下的所有人员 -->
+	<select id="selectStaffs" resultMap="staffComponentMap">
+		SELECT 
+			sf.id, 
+			sf.staff_name, 
+			sf.staff_code, 
+			org.org_code,
+			org.org_name,
+			orgp.org_code AS parent_org_code,
+			orgp.org_name AS parent_org_name
+		FROM mp_staff sf
+		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
+		INNER JOIN mp_organization org ON org.id = ut.org_dept_id 
+		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+		<where>
+			<include refid="staffSqlWhereFragment"></include>
+			<if test="isLikeSearch">
+				OR CONCAT(IFNULL(org.org_name,''),IFNULL(sf.staff_name,''),IFNULL(sf.staff_code,'')) LIKE CONCAT('%',#{searchText},'%')
+			</if>
+		</where>
+	</select>
 </mapper>
