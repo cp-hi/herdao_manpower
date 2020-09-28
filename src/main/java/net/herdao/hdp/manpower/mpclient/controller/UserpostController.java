@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/userpost" )
-@Api(value = "userpost", tags = "管理")
+@Api(value = "userpost", tags = "用户岗位")
 public class UserpostController {
 
     private final UserpostService userpostService;
@@ -122,7 +122,6 @@ public class UserpostController {
         Page pageResult = userpostService.findUserPostNowPage(page, orgId, staffName, staffCode);
         return R.ok(pageResult);
     }
-
 
     /**
      * 导出现任职情况Excel

@@ -24,6 +24,8 @@ import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 员工岗位历史表
  *
@@ -33,7 +35,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
     /**
-     * 历史职情况分页
+     * 历史任职情况分页
      * @param page 分页对象
      * @param orgId
      * @param staffName
@@ -41,5 +43,14 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
      * @return
      */
     Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+    /**
+     * 历史任职情况分页
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<UserpostDTO> findUserPostHistory(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
 }
