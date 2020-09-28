@@ -194,6 +194,7 @@
 		<result column="orgCode" property="org_code" />
 		<result column="parentOrgName" property="parent_org_name" />
 		<result column="parentOrgCode" property="parent_org_code" />
+		<collection column="{orgCode=org_code}" property="organizationComponents" ofType="OrganizationComponentVo" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
 	</resultMap>
 
     <!-- 查询类型是部门的组织架构树 -->
@@ -534,26 +535,7 @@
     </select>
     
     <!-- 查询部门信息组件  -->
-	<select id="selectOrganization" resultMap="organizationComponentMap">
-		SELECT 
-			org.id,
-			org.org_name, 
-			org.org_code
-		FROM mp_organization org
-		<where>
-			<choose>
-                <when test="searchText != null">
-                   AND org.org_code = #{searchText}
-                </when>
-                <otherwise>
-                   AND org.org_code IS NULL
-                </otherwise>
-            </choose>
-		</where>
-	</select>
-
-	<!-- 查询子部门/组织信息 -->
-	<select id="selectLikeOrganization" resultMap="organizationComponentMap">
+	<select id="selectOrganizations" resultMap="organizationComponentMap">
 		SELECT 
 			org.id,
 			org.org_name, 
@@ -562,12 +544,24 @@
 			orgp.org_code AS parent_org_code
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
-			<if test="searchText != null">
-				<!-- 待完善 -->
-				AND org.org_code != #{searchText}
-				AND org.org_code like CONCAT('',#{searchText},'%')
-				AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 
-			</if>
+			AND org.parent_id IS NULL
+			 <if test="searchText != null">
+                  <!-- 权限条件 -->
+              </if>
+		</where>
+	</select>
+
+	<!-- 查询子部门/组织信息 -->
+	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
+		SELECT 
+			org.id,
+			org.org_name, 
+			org.org_code,
+			orgp.org_name AS parent_org_name, 
+			orgp.org_code AS parent_org_code
+		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+		<where>
+			AND orgp.org_code = #{orgCode}
 		</where>
 	</select>
 </mapper>

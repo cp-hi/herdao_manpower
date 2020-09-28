@@ -102,14 +102,6 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
  	 * @param searchText
  	 * @return
  	 */
-     List<OrganizationComponentVo> selectOrganization(String searchText);
+     List<OrganizationComponentVo> selectOrganizations(@Param("searchText") String searchText);
  	
- 	/**
- 	 * 查询部门/组织信息(模糊查询)
- 	 * 
- 	 * @param searchText
- 	 * @param isLikeSearch
- 	 * @return
- 	 */
- 	List<OrganizationComponentVo> selectLikeOrganization(@Param("searchText")String searchText, @Param("isLikeSearch")Boolean isLikeSearch);
 }
