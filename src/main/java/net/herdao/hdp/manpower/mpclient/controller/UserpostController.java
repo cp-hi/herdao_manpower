@@ -5,18 +5,24 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
+import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
@@ -58,16 +64,17 @@ public class UserpostController {
     }
 
     /**
-     * 新增
+     * 新增现任职情况
      * @param userpost 
      * @return R
      */
     @ApiOperation(value = "新增", notes = "新增")
     @SysLog("新增" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('generator_userpost_add')" )
+    @PostMapping("/saveUserPostNow")
+    //@PreAuthorize("@pms.hasPermission('generator_userpost_add')" )
     public R save(@RequestBody Userpost userpost) {
-        return R.ok(userpostService.save(userpost));
+        boolean status = userpostService.saveUserPostNow(userpost);
+        return R.ok(status);
     }
 
     /**
@@ -77,21 +84,22 @@ public class UserpostController {
      */
     @ApiOperation(value = "修改", notes = "修改")
     @SysLog("修改" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('generator_userpost_edit')" )
+    @PutMapping("/updateUserpostNow")
+    //@PreAuthorize("@pms.hasPermission('generator_userpost_edit')" )
     public R updateById(@RequestBody Userpost userpost) {
-        return R.ok(userpostService.updateById(userpost));
+        boolean status = userpostService.updateUserPostNow(userpost);
+        return R.ok(status);
     }
 
     /**
      * 通过id删除
-     * @param id id
+     * @param id
      * @return R
      */
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除" )
-    @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('generator_userpost_del')" )
+    @SysLog("通过id删除")
+    @DeleteMapping("/del/{id}" )
+    //@PreAuthorize("@pms.hasPermission('generator_userpost_del')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(userpostService.removeById(id));
     }
@@ -116,5 +124,30 @@ public class UserpostController {
         return R.ok(pageResult);
     }
 
+
+    /**
+     * 导出现任职情况Excel
+     * @param  response
+     * @return R
+     */
+    @ApiOperation(value = "导出现任职情况Excel", notes = "导出现任职情况Excel")
+    @SysLog("导出现任职情况Excel" )
+    @PostMapping("/exportStaffNowJob")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="orgId",value="组织ID"),
+            @ApiImplicitParam(name="staffName",value="员工姓名"),
+            @ApiImplicitParam(name="staffCode",value="员工工号")
+    })
+    public R exportStaffNowJob(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+        try {
+            List<UserpostNow> list = userpostService.findUserPostNow(orgId, staffName, staffCode);
+            ExcelUtils.export2Web(response, "现任职情况", "现任职情况表", UserpostNow.class,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ok("导出失败");
+        }
+
+        return R.ok("导出成功");
+    }
 
 }

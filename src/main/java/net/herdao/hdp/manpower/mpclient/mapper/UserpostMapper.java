@@ -37,4 +37,14 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      */
     Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
+    /**
+     * 现任职情况
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<UserpostNow> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+
 }

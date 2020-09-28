@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,9 +41,7 @@ public interface UserpostService extends IService<Userpost> {
      */
     List<Userpost> findUserPost(Userpost condition);
 
-
-
-      /**
+    /**
      * 现任职情况分页
      * @param page 分页对象
      * @param orgId
@@ -52,4 +51,27 @@ public interface UserpostService extends IService<Userpost> {
      */
     Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
+    /**
+     * 现任职情况
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<UserpostNow> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+    /**
+     * 新增现任职情况
+     * @param entity
+     * @return
+     */
+    Boolean saveUserPostNow(Userpost entity);
+
+
+    /**
+     * 更新现任职情况
+     * @param entity
+     * @return
+     */
+    Boolean updateUserPostNow(Userpost entity);
 }

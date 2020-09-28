@@ -25,21 +25,20 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 
- *
- * @author liang
+ * @author andy
  * @date 2020-09-15 08:57:53
  */
 @Data
 @TableName("mp_userpost")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "")
-public class Userpost extends Model<Userpost> {
+public class Userpost extends BaseModel<Userpost> {
 private static final long serialVersionUID = 1L;
 
     /**
@@ -51,27 +50,27 @@ private static final long serialVersionUID = 1L;
     /**
      * 用户岗位OID
      */
-    @ApiModelProperty(value="用户岗位OID")
+    //@ApiModelProperty(value="用户岗位OID")
     private String oid;
     /**
      * 用户外键
      */
-    @ApiModelProperty(value="用户外键")
+   // @ApiModelProperty(value="用户外键")
     private String userOid;
     /**
      * 岗位外键
      */
-    @ApiModelProperty(value="岗位外键")
+    //@ApiModelProperty(value="岗位外键")
     private String postOid;
     /**
      * 所属组织外键
      */
-    @ApiModelProperty(value="所属组织外键")
+   // @ApiModelProperty(value="所属组织外键")
     private String orgOid;
     /**
      * 所属部门外键
      */
-    @ApiModelProperty(value="所属部门外键")
+    //@ApiModelProperty(value="所属部门外键")
     private String orgDeptOid;
     /**
      * 用户外键
