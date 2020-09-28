@@ -24,7 +24,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
@@ -49,14 +49,14 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
-    public Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, String orgId, String staffName, String staffCode) {
-        Page<UserpostNow> pageResult = this.baseMapper.findUserPostNowPage(page, orgId, staffName, staffCode);
+    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page, orgId, staffName, staffCode);
         return pageResult;
     }
 
     @Override
-    public List<UserpostNow> findUserPostNow(String orgId, String staffName, String staffCode) {
-        List<UserpostNow> list = this.baseMapper.findUserPostNow(orgId, staffName, staffCode);
+    public List<UserpostDTO> findUserPostNow(String orgId, String staffName, String staffCode) {
+        List<UserpostDTO> list = this.baseMapper.findUserPostNow(orgId, staffName, staffCode);
         return list;
     }
 

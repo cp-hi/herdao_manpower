@@ -94,4 +94,11 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="代码表行政级别")
     private String administrativeLevel;
+
+    /**
+     * 是否定制岗位
+     */
+    @ApiModelProperty(value="是否定制岗位")
+    private String officePostType;
+
 }

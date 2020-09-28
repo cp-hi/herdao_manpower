@@ -5,31 +5,32 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper">
 
   <resultMap id="userpostMap" type="net.herdao.hdp.manpower.mpclient.entity.Userpost">
-                  <id property="id" column="id"/>
-                  <result property="oid" column="OID"/>
-                  <result property="userOid" column="USER_OID"/>
-                  <result property="postOid" column="POST_OID"/>
-                  <result property="orgOid" column="ORG_OID"/>
-                  <result property="orgDeptOid" column="ORG_DEPT_OID"/>
-                  <result property="userId" column="USER_ID"/>
-                  <result property="postId" column="POST_ID"/>
-                  <result property="orgId" column="ORG_ID"/>
-                  <result property="orgDeptId" column="ORG_DEPT_ID"/>
-                  <result property="mainPost" column="MAIN_POST"/>
-                  <result property="actualJob" column="ACTUAL_JOB"/>
-                  <result property="creatorCode" column="CREATOR_CODE"/>
-                  <result property="createdTime" column="CREATED_TIME"/>
-                  <result property="modifierCode" column="MODIFIER_CODE"/>
-                  <result property="modifiedTime" column="MODIFIED_TIME"/>
-                  <result property="isVirtual" column="IS_VIRTUAL"/>
-                  <result property="startDate" column="START_DATE"/>
-                  <result property="endDate" column="END_DATE"/>
-                  <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
-                  <result property="tenantId" column="TENANT_ID"/>
+          <id property="id" column="id"/>
+          <result property="oid" column="OID"/>
+          <result property="userOid" column="USER_OID"/>
+          <result property="postOid" column="POST_OID"/>
+          <result property="orgOid" column="ORG_OID"/>
+          <result property="orgDeptOid" column="ORG_DEPT_OID"/>
+          <result property="userId" column="USER_ID"/>
+          <result property="postId" column="POST_ID"/>
+          <result property="orgId" column="ORG_ID"/>
+          <result property="orgDeptId" column="ORG_DEPT_ID"/>
+          <result property="mainPost" column="MAIN_POST"/>
+          <result property="actualJob" column="ACTUAL_JOB"/>
+          <result property="creatorCode" column="CREATOR_CODE"/>
+          <result property="createdTime" column="CREATED_TIME"/>
+          <result property="modifierCode" column="MODIFIER_CODE"/>
+          <result property="modifiedTime" column="MODIFIED_TIME"/>
+          <result property="isVirtual" column="IS_VIRTUAL"/>
+          <result property="startDate" column="START_DATE"/>
+          <result property="endDate" column="END_DATE"/>
+          <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
+          <result property="tenantId" column="TENANT_ID"/>
+          <result property="officePostType" column="office_post_type"/>
   </resultMap>
 
       <!-- 现任职情况 -->
-      <select id="findUserPostNowPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostNow">
+      <select id="findUserPostNowPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
           SELECT  S.STAFF_NAME staffName,
                   S.STAFF_CODE staffCode,
                   u.START_DATE startDate,
@@ -60,7 +61,7 @@
       </select>
 
     <!-- 现任职情况 -->
-    <select id="findUserPostNow" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostNow">
+    <select id="findUserPostNow" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
         SELECT  S.STAFF_NAME staffName,
                 S.STAFF_CODE staffCode,
                 u.START_DATE startDate,

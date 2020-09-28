@@ -19,10 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import org.apache.ibatis.annotations.Param;
 
@@ -49,7 +46,7 @@ public interface UserpostService extends IService<Userpost> {
      * @param staffCode
      * @return
      */
-    Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
     /**
      * 现任职情况
@@ -58,7 +55,7 @@ public interface UserpostService extends IService<Userpost> {
      * @param staffCode
      * @return
      */
-    List<UserpostNow> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<UserpostDTO> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
     /**
      * 新增现任职情况

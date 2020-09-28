@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
-import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
@@ -140,8 +139,8 @@ public class UserpostController {
     })
     public R exportStaffNowJob(HttpServletResponse response, String orgId, String staffName, String staffCode) {
         try {
-            List<UserpostNow> list = userpostService.findUserPostNow(orgId, staffName, staffCode);
-            ExcelUtils.export2Web(response, "现任职情况", "现任职情况表", UserpostNow.class,list);
+            List<UserpostDTO> list = userpostService.findUserPostNow(orgId, staffName, staffCode);
+            ExcelUtils.export2Web(response, "现任职情况", "现任职情况表", UserpostDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");

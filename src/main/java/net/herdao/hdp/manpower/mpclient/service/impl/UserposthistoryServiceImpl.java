@@ -16,7 +16,9 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import net.herdao.hdp.manpower.mpclient.mapper.UserposthistoryMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
@@ -31,4 +33,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMapper, Userposthistory> implements UserposthistoryService {
 
+    @Override
+    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page, orgId, staffName, staffCode);
+        return pageResult;
+    }
 }

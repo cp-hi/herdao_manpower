@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @ApiModel(value = "现任职情况")
 @AllArgsConstructor
-public class UserpostNow {
+public class UserpostDTO {
     @ExcelProperty(value = "员工姓名")
     @ApiModelProperty(value="员工姓名")
     private String staffName;
