@@ -155,6 +155,8 @@
 		<result column="staffCode" property="staff_code"/>
 		<result column="orgCode" property="org_code" />
 		<result column="orgName" property="org_name" />
+		<result column="parentOrgName" property="parent_org_name" />
+		<result column="parentOrgCode" property="parent_org_code" />
 	</resultMap>
 	
 	<!-- 统计部门/组织下的人员数（包括子部门/子组织人员） -->
@@ -224,10 +226,13 @@
 			sf.staff_name, 
 			sf.staff_code, 
 			org.org_code,
-			org.org_name
+			org.org_name,
+			orgp.org_code AS parent_org_code,
+			orgp.org_name AS parent_org_name
 		FROM mp_staff sf
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
 		INNER JOIN mp_organization org ON org.id = ut.org_dept_id 
+		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
 			<include refid="staffSqlWhereFragment"></include>
 			<if test="isLikeSearch">
