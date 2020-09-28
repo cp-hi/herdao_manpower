@@ -129,10 +129,8 @@ public interface OrganizationService extends IService<Organization> {
     /**
  	 * 查询部门/组织信息
  	 * 
- 	 * @param searchText
- 	 * @param isLikeSearch
  	 * @return
  	 */
-   R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch);
+   R<?> selectOrganizations();
 
 }

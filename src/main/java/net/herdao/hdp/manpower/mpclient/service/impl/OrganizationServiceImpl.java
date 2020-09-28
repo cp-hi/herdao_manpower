@@ -570,15 +570,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
 	@Override
-	public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch) {
-		// 是否模糊查询
-		Boolean likeSearch = BooleanUtil.toBoolean(isLikeSearch);
-		
-		if(likeSearch) {
-			return R.ok(this.baseMapper.selectLikeOrganization(searchText, likeSearch));
-		}else {
-			return R.ok(this.baseMapper.selectOrganization(searchText));
-		}
+	public R<?> selectOrganizations() {
+		String searchText = "";
+		return R.ok(this.baseMapper.selectOrganizations(searchText));
 	}
 	
 }
