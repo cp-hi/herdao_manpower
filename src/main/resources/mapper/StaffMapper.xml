@@ -205,7 +205,7 @@
 			org.org_code
 		FROM mp_staff sf
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
-		INNER JOIN mp_organization org ON org.id = ut.org_dept_id 
+		INNER JOIN mp_organization org ON org.id = ut.org_dept_id
 		GROUP BY org.org_code
 		<!-- 查询条件待完善 -->
 	</select>

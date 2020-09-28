@@ -54,22 +54,51 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				                                         .collect(Collectors.toMap(StaffTotalComponentVo::getOrgCode, StaffTotalComponentVo::getTotal));
 		// 部门/组织员工数
 		organizations.forEach(organization -> {
-			Integer staffTotal = taffTotalComponentMap.get(organization.getOrgCode());
-			organization.setStaffTotal(staffTotal == null ? 0 : staffTotal);
+			Integer staffTotal = sumKeyLike(taffTotalComponentMap, organization.getOrgCode());
+			organization.setStaffTotal(staffTotal);
 		});
 				
 		organizations.forEach(organization -> {
 			List<StaffOrganizationComponentVo> staffOrganizationComponents = organization.getStaffOrganizationComponents();
-			if(!ObjectUtil.isEmpty(staffOrganizationComponents)) {
-				staffOrganizationComponents.forEach(organizationChildren ->{
-					// 子部门/组织员工数
-					Integer staffTotal = taffTotalComponentMap.get(organizationChildren.getOrgCode());
-					organizationChildren.setStaffTotal(staffTotal == null ? 0 : staffTotal);
-				});
+			if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
+				recursionOrganization(staffOrganizationComponents, taffTotalComponentMap);
 			}
 		});
 		
 		return R.ok(organizations);
+	}
+	
+	/**
+	 * 递归合计部门/组织人员数
+	 * @param staffOrganizationComponents
+	 * @param taffTotalComponentMap
+	 */
+	public void recursionOrganization(List<StaffOrganizationComponentVo> staffOrganizationComponents, Map<String, Integer> taffTotalComponentMap) {
+		if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
+			staffOrganizationComponents.forEach(organizationChildren ->{
+				// 子部门/组织员工数
+				Integer staffTotal = sumKeyLike(taffTotalComponentMap, organizationChildren.getOrgCode());
+				organizationChildren.setStaffTotal(staffTotal);
+				recursionOrganization(organizationChildren.getStaffOrganizationComponents(), taffTotalComponentMap);
+			});
+		}
+	}
+	
+	/**
+	 * map 集合模糊匹配 合计
+	 * 
+	 * @param dataMap map集合
+	 * @param keyLike 模糊key
+	 * @return
+	 */
+	public Integer sumKeyLike(Map<String, Integer> dataMap, String keyLike) {
+		Integer valSum = 0;
+		for (Map.Entry<String, Integer> entity : dataMap.entrySet()) {
+			if (entity.getKey().startsWith(keyLike)) {
+				valSum += entity.getValue();
+			}
+		}
+		return valSum;
 	}
 
 }
