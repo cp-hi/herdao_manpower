@@ -185,5 +185,16 @@ public class OrgReportController {
     }
 
 
+    /**
+     * 组织职级统计预览
+     * @param condition 组织职级
+     * @return R
+     */
+    @ApiOperation(value = "组织职级统计预览", notes = "组织职级统计预览")
+    @SysLog("组织职级统计预览")
+    @PostMapping("/fetchOrgJobLevelView")
+    public R fetchOrgJobLevelView(@RequestBody JobLevelReport condition) {
+        return R.ok(orgReportService.fetchOrgJobLevel(condition));
+    }
 
 }

@@ -43,5 +43,11 @@ public interface OrgReportService extends IService<OrgReport> {
      */
     List<JobLevel> exportOrgJobLevel(JobLevelReport condition);
 
+    /**
+     * 组织职级统计
+     * @param condition
+     * @return
+     */
+    List<JobLevel> fetchOrgJobLevel(JobLevelReport condition);
 
 }
