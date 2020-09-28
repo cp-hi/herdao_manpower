@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo;
 
 /**
  * 
@@ -134,6 +133,6 @@ public interface OrganizationService extends IService<Organization> {
  	 * @param isLikeSearch
  	 * @return
  	 */
-    R<?> selectOrganization(String searchText, String isLikeSearch);
+   R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch);
 
 }

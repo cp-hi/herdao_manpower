@@ -19,37 +19,52 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.UserpostNow;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 /**
- * @author andy
- * @date 2020-09-15 08:57:53
+ * 员工合同签订
+ *
+ * @author liang
+ * @date 2020-09-27 09:15:28
  */
-public interface UserpostService extends IService<Userpost> {
-
+public interface StaffcontractService extends IService<Staffcontract> {
     /**
-     * 查询用户岗位
-     * @param condition
-     * @return
-     */
-    List<Userpost> findUserPost(Userpost condition);
-
-
-
-      /**
-     * 现任职情况分页
+     * 员工合同签订分页
      * @param page 分页对象
      * @param orgId
      * @param staffName
      * @param staffCode
      * @return
      */
-    Page<UserpostNow> findUserPostNowPage(Page<UserpostNow> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<Staffcontract> findStaffContractPage(Page<Staffcontract> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
+    /**
+     * 员工合同签订
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<Staffcontract> findStaffContract(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+    /**
+     * 新增员工合同签订
+     * @param staffcontract
+     * @return
+     */
+    Boolean saveContract(@RequestBody Staffcontract staffcontract);
+
+    /**
+     * 更新员工合同签订
+     * @param staffcontract
+     * @return
+     */
+    boolean UpateContract(@RequestBody Staffcontract staffcontract);
 }

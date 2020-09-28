@@ -26,12 +26,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
-import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVo;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationDataComponentVo;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
@@ -43,7 +41,6 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
  * @date 2020-09-23 18:10:29
  */
 @Service
-@AllArgsConstructor
 public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements StaffService {
 	
 	@Override
@@ -62,7 +59,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				return R.failed("查询条件为空！");
 			}
 			// 员工信息   
-			staffOrganizationDataComponentVo.setStaffComponents(this.selectStaffComponent(searchText, isLikeSearch));			
+			staffOrganizationDataComponentVo.setStaffComponents(this.baseMapper.selectStaffs(searchText, likeSearch));			
 		} else {
 			// 下級部门/组织信息
 			List<StaffOrganizationComponentVo> organizationChildrenVos = null;
@@ -75,7 +72,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				organizationChildrenVos = this.baseMapper.selectOrganizationChildrens(searchText);
 				
 				// 员工信息
-				staffOrganizationDataComponentVo.setStaffComponents(this.selectStaffComponent(searchText, null));
+				staffOrganizationDataComponentVo.setStaffComponents(this.baseMapper.selectStaffs(searchText, null));
 			}
 			
 			// 获取部门员工数
@@ -91,11 +88,6 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			staffOrganizationDataComponentVo.setOrganizationComponents(organizationChildrenVos);
 		}
 		return R.ok(staffOrganizationDataComponentVo);
-	}
-
-	@Override
-	public List<StaffComponentVo> selectStaffComponent(String searchText, String isLikeSearch) {
-		return this.baseMapper.selectStaffs(searchText, BooleanUtil.toBoolean(isLikeSearch));
 	}
 
 }

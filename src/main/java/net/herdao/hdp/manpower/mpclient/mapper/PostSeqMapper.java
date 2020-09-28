@@ -13,7 +13,7 @@ import java.util.Map;
 @Mapper
 public interface PostSeqMapper extends BaseMapper<PostSeq> {
 
-    List<Map> postSeqList();
+    List<Map> postSeqList(Long groupId);
 
     IPage<PostSeq> query(Page<PostSeq> page, @Param("searchTxt") String searchTxt);
 

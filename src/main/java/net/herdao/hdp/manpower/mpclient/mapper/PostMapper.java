@@ -15,7 +15,7 @@ import java.util.Map;
 @Mapper
 public interface PostMapper extends BaseMapper<Post> {
 
-    List<Map> postList();
+    List<Map> postList(Long groupId);
 
     Boolean chkDuplicatePostName(Post post);
 

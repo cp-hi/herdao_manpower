@@ -22,6 +22,9 @@ import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 集团表
  *
@@ -30,5 +33,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements GroupService {
-
+    @Override
+    public List<Map<String, String>> groupList() {
+        return baseMapper.groupList();
+    }
 }

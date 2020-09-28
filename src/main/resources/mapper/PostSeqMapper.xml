@@ -5,8 +5,8 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper">
 
     <select id="postSeqList"  resultType="map">
-       	select id,POST_SEQ_CODE AS postSeqCode,POST_SEQ_NAME AS postSeqName,
-       	 group_id as groupId ,parent_id as parentId from mp_post_seq
+       	select id,POST_SEQ_CODE AS code,POST_SEQ_NAME AS name,
+       	 group_id as groupId ,parent_id as parentId from mp_post_seq where group_id = #{groupId}
     </select>
 
     <select id="query" resultType="postSeq" parameterType="String">

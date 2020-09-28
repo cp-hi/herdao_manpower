@@ -368,7 +368,7 @@ public class OrganizationController {
     @ApiOperation(value = "部门选择组件", notes = "部门选择组件")
     @GetMapping("/selectOrganizationComponent")
     public R<?> selectOrganizationComponent(String searchText, String isLikeSearch) {
-        return orgService.selectOrganization(searchText, isLikeSearch);
+        return orgService.selectStaffOrganizationComponent(searchText, isLikeSearch);
     }
 
 }

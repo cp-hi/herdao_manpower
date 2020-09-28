@@ -27,5 +27,5 @@ public class PostStaffDTO {
     @ExcelProperty(value = "手机号码")
     private String mobile;
     @ExcelProperty(value = "所在部门")
-    private String orgDeptId;
+    private String orgName;
 }

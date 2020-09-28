@@ -20,13 +20,10 @@ import java.util.Map;
 @Service
 public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
+    @Override
     public List<Map> jobLevelList() {
         return baseMapper.jobLevelList();
     }
-
-//    public Page page(Page page, Map<String, String> params) {
-//        return null;
-//    }
 
     @Override
     public boolean saveOrUpdate(JobLevel jobLevel) {

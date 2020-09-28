@@ -26,8 +26,8 @@ import java.util.Map;
 public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
 
     @Override
-    public List<Map> sectionList() {
-        return baseMapper.sectionList();
+    public List<Map> sectionList(Long groupId) {
+        return baseMapper.sectionList(  groupId);
     }
 
     public IPage<Section> page(Page<Section> page, String searchTxt) {

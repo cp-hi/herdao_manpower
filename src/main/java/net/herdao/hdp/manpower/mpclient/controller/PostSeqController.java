@@ -25,8 +25,8 @@ public class PostSeqController {
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
-    public R list() {
-        return R.ok(postSeqService.postSeqList());
+    public R list(Long groupId) {
+        return R.ok(postSeqService.postSeqList(    groupId));
     }
 
     @GetMapping("/page")

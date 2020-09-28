@@ -3,11 +3,15 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 
- *
- * @author liang
+ * @author andy
  * @date 2020-09-15 08:57:53
  */
 @RestController
@@ -93,5 +95,26 @@ public class UserpostController {
     public R removeById(@PathVariable Long id) {
         return R.ok(userpostService.removeById(id));
     }
+
+    /**
+     * 现任职情况分页
+     * @param page 分页对象
+     * @param orgId
+     * @return
+     */
+    @ApiOperation(value = "现任职情况分页", notes = "现任职情况分页")
+    @GetMapping("/findUserPostNowPage")
+    @OperationEntity(operation = "员工异动情况分页" ,clazz = Stafftransaction.class )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="orgId",value="组织ID"),
+            @ApiImplicitParam(name="staffName",value="员工姓名"),
+            @ApiImplicitParam(name="staffCode",value="员工工号")
+    })
+    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
+    public R findUserPostNowPage(Page page, String orgId,String staffName, String staffCode) {
+        Page pageResult = userpostService.findUserPostNowPage(page, orgId, staffName, staffCode);
+        return R.ok(pageResult);
+    }
+
 
 }

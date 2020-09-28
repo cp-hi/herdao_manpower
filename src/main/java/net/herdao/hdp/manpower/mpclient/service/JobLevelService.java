@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface JobLevelService extends IService<JobLevel> {
+
     List<Map> jobLevelList();
 
+    @Override
     boolean saveOrUpdate(JobLevel jobLevel);
 }

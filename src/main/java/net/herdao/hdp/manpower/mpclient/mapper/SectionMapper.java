@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Mapper
 public interface SectionMapper extends BaseMapper<Section> {
-    List<Map> sectionList();
+    List<Map> sectionList(Long groupId);
     IPage<Section> query(Page<Section> page, @Param("searchTxt") String searchTxt);
 
     Boolean chkDuplicateSectionCode(Section section);

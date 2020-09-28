@@ -26,8 +26,8 @@ public class SectionController {
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
-    public R list() {
-        return R.ok(sectionService.sectionList());
+    public R list(Long groupId) {
+        return R.ok(sectionService.sectionList(  groupId));
     }
 
     @GetMapping("/page")

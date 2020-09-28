@@ -22,9 +22,9 @@ import java.util.Map;
  */
 @Service
 public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
-
-    public List<Map> postSeqList() {
-        return baseMapper.postSeqList();
+@Override
+    public List<Map> postSeqList(Long groupId) {
+        return baseMapper.postSeqList(    groupId);
     }
 
     public IPage<PostSeq> page(Page<PostSeq> page, String searchTxt) {

@@ -5,7 +5,7 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper">
 
     <select id="jobLevelList"   resultType="map">
-       	select id,job_level_code AS jobLevelCode,job_level_name AS jobLevelName from mp_job_level
+       	select id,job_level_code AS code,job_level_name AS name from mp_job_level
     </select>
 
     <select id="chkDuplicateJobLevelCode" parameterType="jobLevel" resultType="boolean">
