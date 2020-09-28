@@ -128,20 +128,12 @@ public interface OrganizationService extends IService<Organization> {
     Organization findOrgDetails(Organization condition);
     
     /**
- 	 * 查询部门/组织信息（包含子部门/组织信息）
+ 	 * 查询部门/组织信息
  	 * 
  	 * @param searchText
  	 * @param isLikeSearch
  	 * @return
  	 */
- 	R<?> selectOrganization(String searchText, String isLikeSearch);
- 	
- 	/**
- 	 * 子部门/组织信息
- 	 * 
- 	 * @param searchText
- 	 * @param isLikeSearch
- 	 * @return
- 	 */
- 	List<OrganizationComponentVo> selectOrganizationChildrens(String searchText, String isLikeSearch);
+    R<?> selectOrganization(String searchText, String isLikeSearch);
+
 }

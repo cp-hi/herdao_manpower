@@ -25,21 +25,15 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.admin.api.dto.UserInfo;
-import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
-import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVo;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo;
+import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationDataComponentVo;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
 
 /**
@@ -52,59 +46,51 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
 @AllArgsConstructor
 public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements StaffService {
 	
-	private final RemoteUserService remoteUserService;
-	
-	private final OrganizationService organizationService;
-	
 	@Override
 	public R<?> selectStaffOrganizationComponent(String searchText, String isLikeSearch) {
 		
+		// 待接入用户权限 TODO
+		
 		// 是否模糊查询
 		Boolean likeSearch = BooleanUtil.toBoolean(isLikeSearch);
-
+		
+		StaffOrganizationDataComponentVo staffOrganizationDataComponentVo = new StaffOrganizationDataComponentVo();
+		
 		// 部门/组织员工合计数（包含下级）
 		if (likeSearch) {
-			// 模糊查询员工信息
-			return R.ok(this.selectStaffComponent(searchText, isLikeSearch));
+			if(StrUtil.isBlank(StrUtil.toString(searchText).trim())) {
+				return R.failed("查询条件为空！");
+			}
+			// 员工信息   
+			staffOrganizationDataComponentVo.setStaffComponents(this.selectStaffComponent(searchText, isLikeSearch));			
 		} else {
-			
-			if(StrUtil.isEmpty(searchText)) {
-				// 获取用户信息
-		        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-		        if(userInfo != null) {
-		        	// 获取当前人员部门信息
-		        	Organization organization = organizationService.getById(userInfo.getSysUser().getDeptId());
-		        	// 默认查询当前人员所在部门
-		        	searchText = organization.getOrgCode();
-		        }
-			}
-			
-			// 员工部门/组织信息
-			StaffOrganizationComponentVo organizationComponentVo = this.baseMapper.selectOrganization(searchText);
-			if(organizationComponentVo == null) {
-				return R.failed("没有符合查询条件的部门/组织信息！");
-			}
 			// 下級部门/组织信息
-			List<StaffOrganizationComponentVo> organizationChildrenVos = this.baseMapper.selectOrganizationChildrens(searchText);
+			List<StaffOrganizationComponentVo> organizationChildrenVos = null;
+			// 部门/组织信息
+			if(StrUtil.isBlank(searchText)) {
+				// 下級部门/组织信息
+				organizationChildrenVos = this.baseMapper.selectOrganizations(searchText);
+			}else {
+				// 下級部门/组织信息
+				organizationChildrenVos = this.baseMapper.selectOrganizationChildrens(searchText);
+				
+				// 员工信息
+				staffOrganizationDataComponentVo.setStaffComponents(this.selectStaffComponent(searchText, null));
+			}
+			
 			// 获取部门员工数
 			Map<String, Integer> taffTotalComponentMap = this.baseMapper.getStaffTotals(searchText).stream()
 					                                         .collect(Collectors.toMap(StaffTotalComponentVo::getOrgCode, StaffTotalComponentVo::getTotal));
 			// 子部门/组织员工数
 			organizationChildrenVos.forEach(organizationChildren -> {
-				organizationChildren.setStaffTotal(taffTotalComponentMap.get(organizationChildren.getOrgCode()));
+				Integer staffTotal = taffTotalComponentMap.get(organizationChildren.getOrgCode());
+				organizationChildren.setStaffTotal(staffTotal == null ? 0 : staffTotal);
 			});
+			
 			// 子部门/组织信息
-			organizationComponentVo.setOrganizationComponents(organizationChildrenVos);
-			
-			Integer staffTotal = NumberUtil.parseInt(StrUtil.toString(taffTotalComponentMap.get(organizationComponentVo.getOrgCode())));
-			
-			// 当前部门/组织员工数
-			organizationComponentVo.setStaffTotal(staffTotal);
-			// 员工信息
-			organizationComponentVo.setStaffComponents(this.selectStaffComponent(searchText, null));
-			
-			return R.ok(organizationComponentVo);
+			staffOrganizationDataComponentVo.setOrganizationComponents(organizationChildrenVos);
 		}
+		return R.ok(staffOrganizationDataComponentVo);
 	}
 
 	@Override

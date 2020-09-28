@@ -97,18 +97,19 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      Organization findOrgDetails(Organization condition);
      
      /**
- 	 * 查询部门/组织信息（包含子部门/组织信息）
+ 	 * 查询部门/组织信息
  	 * 
  	 * @param searchText
  	 * @return
  	 */
- 	OrganizationComponentVo selectOrganization(String searchText);
+     List<OrganizationComponentVo> selectOrganization(String searchText);
  	
  	/**
- 	 * 子部门/组织信息
+ 	 * 查询部门/组织信息(模糊查询)
  	 * 
  	 * @param searchText
+ 	 * @param isLikeSearch
  	 * @return
  	 */
- 	List<OrganizationComponentVo> selectOrganizationChildrens(String searchText);
+ 	List<OrganizationComponentVo> selectLikeOrganization(@Param("searchText")String searchText, @Param("isLikeSearch")Boolean isLikeSearch);
 }

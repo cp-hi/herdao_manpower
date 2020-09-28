@@ -44,7 +44,7 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param searchText
 	 * @return
 	 */
-	public StaffOrganizationComponentVo selectOrganization(@Param("searchText") String searchText);
+	public List<StaffOrganizationComponentVo> selectOrganizations(@Param("searchText") String searchText);
 	
 	/**
 	 * 查询员工所在下级部门/组织信息

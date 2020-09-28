@@ -539,21 +539,31 @@
 			org.org_code
 		FROM mp_organization org
 		<where>
-			AND ( org.org_code = #{searchText} OR org.org_name = #{searchText} )
+			<choose>
+                <when test="searchText != null">
+                   AND org.org_code = #{searchText}
+                </when>
+                <otherwise>
+                   AND org.org_code IS NULL
+                </otherwise>
+            </choose>
 		</where>
 	</select>
-	
+
 	<!-- 查询子部门/组织信息 -->
-	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
+	<select id="selectLikeOrganization" resultMap="organizationComponentMap">
 		SELECT 
 			org.id,
 			org.org_name, 
 			org.org_code
 		FROM mp_organization org
 		<where>
-			AND org.org_code != #{searchText}
-			AND org.org_code like CONCAT('',#{searchText},'%')
-			AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 
+			<if test="searchText != null">
+				<!-- 待完善 -->
+				AND org.org_code != #{searchText}
+				AND org.org_code like CONCAT('',#{searchText},'%')
+				AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 
+			</if>
 		</where>
 	</select>
 

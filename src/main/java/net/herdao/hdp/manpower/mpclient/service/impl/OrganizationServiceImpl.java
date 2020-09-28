@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import cn.hutool.core.util.BooleanUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
@@ -36,7 +37,6 @@ import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo;
 
 /**
  * @author Andy
@@ -583,22 +583,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 	@Override
 	public R<?> selectOrganization(String searchText, String isLikeSearch) {
-		// 获取用户信息 TODO 待完善
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        if(userInfo != null) {
-        	// 获取当前人员部门信息
-        	Organization organization = this.getById(userInfo.getSysUser().getDeptId());
-        	// 默认查询当前人员所在部门
-        	searchText = organization.getOrgCode();
-        }
-		OrganizationComponentVo organizationComponentVo = this.baseMapper.selectOrganization(searchText);
-		organizationComponentVo.setOrganizationComponents(selectOrganizationChildrens(searchText, isLikeSearch));
-		return R.ok(organizationComponentVo);
-	}
-
-	@Override
-	public List<OrganizationComponentVo> selectOrganizationChildrens(String searchText, String isLikeSearch) {
-		// TODO 待完善
-		return this.baseMapper.selectOrganizationChildrens(searchText);
+		
+		// 是否模糊查询
+		Boolean likeSearch = BooleanUtil.toBoolean(isLikeSearch);
+		
+		if(likeSearch) {
+			return R.ok(this.baseMapper.selectLikeOrganization(searchText, likeSearch));
+		}else {
+			return R.ok(this.baseMapper.selectOrganization(searchText));
+		}
 	}
 }

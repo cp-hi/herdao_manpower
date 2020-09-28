@@ -144,6 +144,8 @@
 		<result column="id" property="id" />
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />
+		<result column="parentOrgName" property="parent_org_name" />
+		<result column="parentOrgCode" property="parent_org_code" />
 	</resultMap>
 	
 	<!-- 人员信息组件MAP -->
@@ -152,6 +154,7 @@
 		<result column="staffName" property="staff_name"/>
 		<result column="staffCode" property="staff_code"/>
 		<result column="orgCode" property="org_code" />
+		<result column="orgName" property="org_name" />
 	</resultMap>
 	
 	<!-- 统计部门/组织下的人员数（包括子部门/子组织人员） -->
@@ -161,14 +164,18 @@
 	</resultMap>
 	
 	<!-- 查询部门信息组件  -->
-	<select id="selectOrganization" resultMap="organizationComponentMap">
+	<select id="selectOrganizations" resultMap="organizationComponentMap">
 		SELECT 
 			org.id,
 			org.org_name, 
-			org.org_code
-		FROM mp_organization org
+			org.org_code,
+		    orgp.org_name AS parent_org_name, 
+			orgp.org_code AS parent_org_code
+		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
-			AND ( org.org_code = #{searchText} OR org.org_name = #{searchText} )
+			<if test="searchText != null">
+				AND org.org_code = #{searchText} 
+			</if>
 		</where>
 	</select>
 	
@@ -177,8 +184,10 @@
 		SELECT 
 			org.id,
 			org.org_name, 
-			org.org_code
-		FROM mp_organization org
+			org.org_code,
+			orgp.org_name AS parent_org_name, 
+			orgp.org_code AS parent_org_code
+		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
 			AND org.org_code != #{searchText}
 			AND org.org_code like CONCAT('',#{searchText},'%')
@@ -188,8 +197,10 @@
 	
 	<!-- 人员查询条件  -->
 	<sql id="staffSqlWhereFragment">
-		( org.org_code like CONCAT('',#{searchText},'%')
-			AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 ) 
+		<if test="searchText != null">
+			( org.org_code like CONCAT('',#{searchText},'%')
+				AND LENGTH(org.org_code) &lt;= LENGTH(#{searchText}) + 3 ) 
+		</if>
 	</sql>
 	
 	<!-- 统计部门/组织下的人员数 （包括下级部门/组织人员）-->
@@ -212,16 +223,15 @@
 			sf.id, 
 			sf.staff_name, 
 			sf.staff_code, 
-			org.org_code
+			org.org_code,
+			org.org_name
 		FROM mp_staff sf
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
 		INNER JOIN mp_organization org ON org.id = ut.org_dept_id 
 		<where>
 			<include refid="staffSqlWhereFragment"></include>
 			<if test="isLikeSearch">
-				OR org.org_name like CONCAT('%',#{searchText},'%')
-				OR sf.staff_name like CONCAT('%',#{searchText},'%')
-				OR sf.staff_code like CONCAT('%',#{searchText},'%')
+				OR CONCAT(IFNULL(org.org_name,''),IFNULL(sf.staff_name,''),IFNULL(sf.staff_code,'')) LIKE CONCAT('%',#{searchText},'%')
 			</if>
 		</where>
 	</select>
