@@ -159,6 +159,8 @@
 		<result column="orgName" property="org_name" />
 		<result column="parentOrgName" property="parent_org_name" />
 		<result column="parentOrgCode" property="parent_org_code" />
+		<result column="postCode" property="post_code" />
+		<result column="postName" property="post_name" />
 	</resultMap>
 	
 	<!-- 统计部门/组织下的人员数（包括子部门/子组织人员） -->
@@ -219,12 +221,16 @@
 			org.org_code,
 			org.org_name,
 			orgp.org_code AS parent_org_code,
-			orgp.org_name AS parent_org_name
+			orgp.org_name AS parent_org_name,
+			ps.post_code,
+			ps.post_name
 		FROM mp_staff sf
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
-		INNER JOIN mp_organization org ON org.id = ut.org_dept_id 
+		INNER JOIN mp_organization org ON org.id = ut.org_dept_id
+		INNER JOIN mp_post ps ON ps.id = ut.post_id
 		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
+			AND ut.office_post_type = '1'
 			AND org.org_code = #{orgCode}
 		</where>
 	</select>
