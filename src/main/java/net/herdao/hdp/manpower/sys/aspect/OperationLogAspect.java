@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -62,7 +63,7 @@ public class OperationLogAspect {
     /**
      * 保存时设置操作人信息的切入点
      */
-    @Pointcut("execution(public * net.herdao.hdp.mpclient.service..*.saveOrUpdate(..))")
+    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))")
     public void pointCutSave() {
         System.out.println("point2");
     }
@@ -76,6 +77,12 @@ public class OperationLogAspect {
         OperationEntity operation = method.getAnnotation(OperationEntity.class);
         Object[] args = point.getArgs();
         if (null == args || 0 == args.length) return;
+
+        Class<?> service = method.getDeclaringClass();
+        //TODO 完善保存前验证 EntityService
+//        if(service instanceof EntityService){
+//
+//        }
         SysUser sysUser = getSysUser();
         for (Object arg : args) {
             if (arg != null && arg instanceof BaseEntity) {
@@ -87,11 +94,15 @@ public class OperationLogAspect {
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
                     setAnnotationInfo(operation, "operation", "新增" + model.value());
+                    if (StringUtils.isBlank(operation.content()))
+                        setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {
                     entity.setModifiedTime(new Date());
                     entity.setModifierName(sysUser.getUsername());
                     entity.setModifierId(Long.valueOf(sysUser.getUserId()));
                     setAnnotationInfo(operation, "operation", "修改" + model.value());
+                    if (StringUtils.isBlank(operation.content()))
+                        setAnnotationInfo(operation, "content", "修改" + model.value());
                 }
 
             }
@@ -129,6 +140,7 @@ public class OperationLogAspect {
             SysUser sysUser = getSysUser();
             OperationLog log = new OperationLog();
             log.setOperation(operation.operation());
+            log.setContent(operation.content());
             log.setOperator(sysUser.getUsername());
             log.setOperatorId(sysUser.getUserId().longValue());
             if (null != operation.clazz())

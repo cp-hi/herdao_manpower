@@ -42,7 +42,6 @@ public class PipelineController {
         return R.ok(pipelineService.getById(id));
     }
 
-
     @PostMapping
     public R save(@RequestBody Pipeline pipeline) {
         pipelineService.saveOrUpdate(pipeline);
@@ -51,7 +50,7 @@ public class PipelineController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除", notes = "通过id删除")
-    @OperationEntity(operation = "删除", key = "id", clazz = Pipeline.class)
+    @OperationEntity(operation = "删除", key = "id",content = "通过id删除", clazz = Pipeline.class)
     public R removeById(@PathVariable Long id) {
         return R.ok(pipelineService.removeById(id));
     }

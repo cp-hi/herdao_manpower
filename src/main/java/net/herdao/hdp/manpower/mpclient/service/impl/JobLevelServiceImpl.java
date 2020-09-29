@@ -21,8 +21,8 @@ import java.util.Map;
 public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
     @Override
-    public List<Map> jobLevelList() {
-        return baseMapper.jobLevelList();
+    public List<Map> jobLevelList(Long groupId) {
+        return baseMapper.jobLevelList(  groupId);
     }
 
     @Override

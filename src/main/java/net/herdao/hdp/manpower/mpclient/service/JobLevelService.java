@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface JobLevelService extends IService<JobLevel> {
 
-    List<Map> jobLevelList();
+    List<Map> jobLevelList(Long groupId);
 
     @Override
     boolean saveOrUpdate(JobLevel jobLevel);

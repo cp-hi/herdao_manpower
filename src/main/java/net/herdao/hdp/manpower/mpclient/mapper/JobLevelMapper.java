@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 @Mapper
 public interface JobLevelMapper extends BaseMapper<JobLevel> {
-    List<Map> jobLevelList();
+    List<Map> jobLevelList(Long groupId);
 
     Boolean chkDuplicateJobLevelName(JobLevel jobLevel);
 

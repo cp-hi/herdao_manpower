@@ -43,8 +43,8 @@ public class JobLevelController {
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
-    public R list() {
-        return R.ok(jobLevelService.jobLevelList());
+    public R list(Long groupId) {
+        return R.ok(jobLevelService.jobLevelList(  groupId));
     }
 
     @GetMapping("/{id}")

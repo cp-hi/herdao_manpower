@@ -28,6 +28,8 @@ public class OperationLog {
     private Integer id;
     @ApiModelProperty(value="操作",required = true)
     private String operation;
+    @ApiModelProperty(value="操作内容",required = true)
+    private String content;
     @ApiModelProperty(value="操作者ID",required = true)
     private Long operatorId;
     @ApiModelProperty(value="操作者名称",required = true)

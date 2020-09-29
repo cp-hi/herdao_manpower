@@ -11,6 +11,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelChannel;
 import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.listener.UserExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelChannelService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
@@ -52,7 +53,7 @@ public class JobLevelChannelController {
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list() {
-        return R.ok(jobLevelChannelService.jobLevelChannelList() );
+        return R.ok(jobLevelChannelService.jobLevelChannelList());
     }
 
     @GetMapping("/{id}")
@@ -81,8 +82,8 @@ public class JobLevelChannelController {
     public R importData(@RequestParam(value = "file") MultipartFile file) {
         try {
             InputStream inputStream = file.getInputStream();
-//            EasyExcel.read(inputStream, User.class, new UserExcelListener(userService)).sheet().doRead();
-        }catch (Exception ex){
+            EasyExcel.read(inputStream, JobLevelChannel.class, new ImportExcelListener(jobLevelChannelService)).sheet().doRead();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
