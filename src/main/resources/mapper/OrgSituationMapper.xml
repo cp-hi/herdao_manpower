@@ -3,7 +3,7 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OrgSituationMapper">
 
             <resultMap id="orgSituationMap" type="net.herdao.hdp.manpower.mpclient.entity.OrgSituation">
-                  <id property="fullTimeJobCount" column="full_time_job_count"/>
+                        <id property="fullTimeJobCount" column="full_time_job_count"/>
                         <result property="onJobCount" column="on_job_count"/>
                         <result property="postCount" column="post_count"/>
                         <result property="trailCount" column="trail_count"/>
@@ -50,17 +50,17 @@
     <!-- 员工任职类型分布 -->
     <select id="fetchOrgSituationByJobType" resultMap="orgSituationMap">
          SELECT t.full_time_job_count,
-                concat(ROUND(t.full_time_job_count/t.job_type_total,2)*100,'%')  full_time_job_zb,
+                ROUND(t.full_time_job_count/t.job_type_total,2)*100  full_time_job_zb,
    	            t.trainee_job_count,
-			    concat(ROUND(t.trainee_job_count/t.job_type_total,2)*100,'%')  trainee_job_zb,
+			    ROUND(t.trainee_job_count/t.job_type_total,2)*100  trainee_job_zb,
 			    t.part_time_job_count,
-			    concat(ROUND(t.part_time_job_count/t.job_type_total,2)*100,'%')  part_time_job_zb,
+			    ROUND(t.part_time_job_count/t.job_type_total,2)*100  part_time_job_zb,
  	   	        t.labor_job_count,
-			    concat(ROUND(t.labor_job_count/t.job_type_total,2)*100,'%')  labor_job_zb,
+			    ROUND(t.labor_job_count/t.job_type_total,2)*100 labor_job_zb,
 			    t.outer_job_count,
-			    concat(ROUND(t.outer_job_count/t.job_type_total,2)*100,'%')  outer_job_zb,
+			    ROUND(t.outer_job_count/t.job_type_total,2)*100  outer_job_zb,
 			    t.retire_job_count,
-			    concat(ROUND(t.retire_job_count/t.job_type_total,2)*100,'%')  retire_job_zb
+			    ROUND(t.retire_job_count/t.job_type_total,2)*100  retire_job_zb
         from (
                 SELECT sum( CASE WHEN t.JOB_TYPE = '全职' THEN t.job_type_count ELSE 0 END ) full_time_job_count,
                        sum( CASE WHEN t.JOB_TYPE = '实习生' THEN t.job_type_count ELSE 0 END ) trainee_job_count,
@@ -73,7 +73,7 @@
                     (
                             SELECT DISTINCT
                                 s.JOB_TYPE,
-        count( 1 ) job_type_count
+                                count( 1 ) job_type_count
                             FROM
                                 mp_organization a
                                 INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
@@ -92,13 +92,13 @@
     <!-- 在职员工年龄分布 -->
     <select id="fetchOrgSituationByAge" resultMap="orgSituationMap">
        SELECT   t.less_than_20,
-                concat(ROUND(t.less_than_20/t.total,2)*100,'%')  less_than_20_zb,
+                ROUND(t.less_than_20/t.total,2)*100 less_than_20_zb,
                 t.in_20_30,
-                concat(ROUND(t.in_20_30/t.total,2)*100,'%')  in_20_30_zb,
+                ROUND(t.in_20_30/t.total,2)*100 in_20_30_zb,
                 t.in_30_40,
-                concat(ROUND(t.in_30_40/t.total,2)*100,'%')  in_30_40_zb,
+                ROUND(t.in_30_40/t.total,2)*100 in_30_40_zb,
                 t.large_than_40,
-                concat(ROUND(t.large_than_40/t.total,2)*100,'%')  large_than_40_zb
+                ROUND(t.large_than_40/t.total,2)*100 large_than_40_zb
         from (
              SELECT SUM(case when t.age &lt; 20 then 1 else 0 end ) less_than_20,
                     SUM(case when t.age >=20 and t.age &lt;= 30 then 1 else 0 end ) in_20_30,
@@ -124,7 +124,7 @@
     <select id="fetchOrgSituationByPostCode" resultMap="orgSituationMap">
          SELECT  t.POST_NAME,
 				 t.post_count,
-	             concat(ROUND(t.post_count/t.post_total,2)*100,'%')  post_zb
+	             ROUND(t.post_count/t.post_total,2)*100 post_zb
  		from
           (
                 SELECT

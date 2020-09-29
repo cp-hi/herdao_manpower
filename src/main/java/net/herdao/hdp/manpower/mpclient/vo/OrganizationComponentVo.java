@@ -42,7 +42,13 @@ public class OrganizationComponentVo {
 	@ApiModelProperty(value = "部门/组织编码")
 	private String orgCode;
 	
-	@ApiModelProperty(value = "下级部门/组织")
+	@ApiModelProperty(value = "父部门/组织名称")
+	private String parentOrgName;
+
+	@ApiModelProperty(value = "父部门/组织编码")
+	private String parentOrgCode;
+	
+	@ApiModelProperty(value = "子部门/组织信息")
 	private List<OrganizationComponentVo> organizationComponents;
 	
 }

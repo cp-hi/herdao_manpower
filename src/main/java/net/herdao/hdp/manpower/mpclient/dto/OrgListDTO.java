@@ -1,14 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.dto;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * 组织列表
  */
-public class OrgListDto {
+@Data
+@ApiModel(value = "组织列表")
+public class OrgListDTO {
     /**
      * 主键ID
      */
@@ -67,6 +68,5 @@ public class OrgListDto {
      * 最近更新情况
      */
     @ApiModelProperty(value="最近更新情况")
-    @TableField(exist = false)
     private String updateDesc;
 }

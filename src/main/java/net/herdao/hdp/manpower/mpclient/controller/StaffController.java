@@ -17,20 +17,33 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.service.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -52,6 +65,12 @@ public class StaffController {
     private final FamilystatusService familystatusService;
 
     private final UserposthistoryService userposthistoryService;
+
+    private final StaffcontractService staffcontractService;
+
+    private final  StafftransactionService stafftransactionService;
+
+    private final UserpostService userpostService;
 
     /**
      * 分页查询
@@ -124,6 +143,57 @@ public class StaffController {
     }
 
     /**
+     * 通过id查询员工劳资情况
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工劳资情况", notes = "通过id查询")
+    @GetMapping("/staffwelfare/{id}" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public R getStaffWelfare(@PathVariable("id" ) Long id) {
+        Staff staff = staffService.getById(id);
+        List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
+                .eq("SATFF_ID", staff.getId())
+                .orderByDesc("MODIFIED_TIME")
+        );
+        Map<String, Object> map = new HashMap<>();
+        map.put("staff", staff);
+        map.put("contractList", contractList);
+        return R.ok(map);
+    }
+
+    /**
+     * 通过id查询员工工作情况
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工工作情况", notes = "通过id查询")
+    @GetMapping("/staffwork/{id}" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public R getStaffWork(@PathVariable("id" ) Long id) {
+        Staff staff = staffService.getById(id);
+        List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
+                .eq("STAFF_ID", staff.getId())
+                .orderByDesc("BEGIN_DATE")
+        );
+        List<Stafftransaction> transactionList = stafftransactionService.list(new QueryWrapper<Stafftransaction>()
+                .eq("STAFF_ID", staff.getId())
+                .orderByDesc("TRAN_TIME")
+        );
+        List<Userpost> upList = userpostService.list(new QueryWrapper<Userpost>()
+                .eq("USER_ID", staff.getUserId())
+                .orderByDesc("MODIFIED_TIME")
+        );
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("staff", staff);
+        map.put("expList", expList);
+        map.put("transactionList", transactionList);
+        map.put("upList", upList);
+        return R.ok(map);
+    }
+
+    /**
      * 新增员工表
      * @param staff 员工表
      * @return R
@@ -160,6 +230,17 @@ public class StaffController {
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_del')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(staffService.removeById(id));
+    }
+    
+    
+    /**
+     * 员工选择组件
+
+     * @return
+     */
+    @GetMapping("/selectStaffOrganizationComponent")
+    public R<?> selectStaffOrganizationComponent() {
+        return staffService.selectStaffOrganizationComponent();
     }
 
 }

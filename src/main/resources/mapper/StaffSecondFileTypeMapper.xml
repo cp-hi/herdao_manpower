@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffSecondFileTypeMapper">
+      <resultMap id="staffSecondFileTypeMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType">
+            <id property="id" column="ID"/>
+            <result property="name" column="NAME"/>
+            <result property="supeerId" column="SUPEER_ID"/>
+            <result property="staffId" column="STAFF_ID"/>
+            <result property="tenantId" column="TENANT_ID"/>
+            <result property="creatorCode" column="CREATOR_CODE"/>
+            <result property="createdTime" column="CREATED_TIME"/>
+            <result property="modifierCode" column="MODIFIER_CODE"/>
+            <result property="modifiedTime" column="MODIFIED_TIME"/>
+            <result property="field1" column="FIELD1"/>
+            <result property="field2" column="FIELD2"/>
+            <result property="field3" column="FIELD3"/>
+            <result property="field4" column="FIELD4"/>
+            <result property="field5" column="FIELD5"/>
+            <result property="delFlag" column="DEL_FLAG"/>
+            <result property="status" column="status"/>
+      </resultMap>
+
+      <!-- 员工附件分类分页-->
+      <select id="findStaffFileTypePage" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffFileTypeDto">
+            SELECT    sc.id,
+                      s.STAFF_CODE staffCode,
+                      s.STAFF_NAME staffName,
+                      sc.`NAME` type,
+                      i.label superType,
+                      case when sc.status =0 then '禁用'
+                              when sc.status =1 then '启用'
+                              end  enableStatus,
+                      ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_CODE ) modifierName,
+                      sc.MODIFIED_TIME modifyTime,
+                      ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.CREATOR_CODE ) createName,
+                      sc.CREATED_TIME createTime
+                   FROM
+                      mp_staff_second_file_type sc
+                      LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
+                      LEFT JOIN sys_dict_item i ON i.id=sc.SUPEER_ID
+                      where 1=1
+                      and sc.del_flag = 0
+        </select>
+
+
+</mapper>

@@ -1,52 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  ~
-  ~      Copyright (c) 2018-2025, hdp All rights reserved.
-  ~
-  ~  Redistribution and use in source and binary forms, with or without
-  ~  modification, are permitted provided that the following conditions are met:
-  ~
-  ~ Redistributions of source code must retain the above copyright notice,
-  ~  this list of conditions and the following disclaimer.
-  ~  Redistributions in binary form must reproduce the above copyright
-  ~  notice, this list of conditions and the following disclaimer in the
-  ~  documentation and/or other materials provided with the distribution.
-  ~  Neither the name of the pig4cloud.com developer nor the names of its
-  ~  contributors may be used to endorse or promote products derived from
-  ~  this software without specific prior written permission.
-  ~  Author: hdp
-  ~
-  -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.UserposthistoryMapper">
 
-  <resultMap id="userposthistoryMap" type="net.herdao.hdp.manpower.mpclient.entity.Userposthistory">
+      <resultMap id="userposthistoryMap" type="net.herdao.hdp.manpower.mpclient.entity.Userposthistory">
                   <id property="id" column="ID"/>
-                        <result property="userId" column="USER_ID"/>
-                        <result property="postId" column="POST_ID"/>
-                        <result property="orgId" column="ORG_ID"/>
-                        <result property="orgDeptId" column="ORG_DEPT_ID"/>
-                        <result property="mainPost" column="MAIN_POST"/>
-                        <result property="actualJob" column="ACTUAL_JOB"/>
-                        <result property="startDate" column="START_DATE"/>
-                        <result property="endDate" column="END_DATE"/>
-                        <result property="isVirtual" column="IS_VIRTUAL"/>
-                        <result property="creatorId" column="CREATOR_ID"/>
-                        <result property="creatorName" column="CREATOR_NAME"/>
-                        <result property="createdTime" column="CREATED_TIME"/>
-                        <result property="modifierId" column="MODIFIER_ID"/>
-                        <result property="modifierName" column="MODIFIER_NAME"/>
-                        <result property="modifiedTime" column="MODIFIED_TIME"/>
-                        <result property="userPostId" column="USER_POST_ID"/>
-                        <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
-                        <result property="field1" column="FIELD1"/>
-                        <result property="field2" column="FIELD2"/>
-                        <result property="field3" column="FIELD3"/>
-                        <result property="field4" column="FIELD4"/>
-                        <result property="field5" column="FIELD5"/>
-                        <result property="delFlag" column="DEL_FLAG"/>
-            </resultMap>
+                  <result property="userId" column="USER_ID"/>
+                  <result property="postId" column="POST_ID"/>
+                  <result property="orgId" column="ORG_ID"/>
+                  <result property="orgDeptId" column="ORG_DEPT_ID"/>
+                  <result property="mainPost" column="MAIN_POST"/>
+                  <result property="actualJob" column="ACTUAL_JOB"/>
+                  <result property="startDate" column="START_DATE"/>
+                  <result property="endDate" column="END_DATE"/>
+                  <result property="isVirtual" column="IS_VIRTUAL"/>
+                  <result property="creatorId" column="CREATOR_ID"/>
+                  <result property="creatorName" column="CREATOR_NAME"/>
+                  <result property="createdTime" column="CREATED_TIME"/>
+                  <result property="modifierId" column="MODIFIER_ID"/>
+                  <result property="modifierName" column="MODIFIER_NAME"/>
+                  <result property="modifiedTime" column="MODIFIED_TIME"/>
+                  <result property="userPostId" column="USER_POST_ID"/>
+                  <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
+                  <result property="field1" column="FIELD1"/>
+                  <result property="field2" column="FIELD2"/>
+                  <result property="field3" column="FIELD3"/>
+                  <result property="field4" column="FIELD4"/>
+                  <result property="field5" column="FIELD5"/>
+                  <result property="delFlag" column="DEL_FLAG"/>
+                  <result property="officePostType" column="office_post_type"/>
+                  <result property="creatorCode" column="CREATOR_CODE"/>
+                  <result property="modifierCode" column="MODIFIER_CODE"/>
+      </resultMap>
+
+    <!-- 历史任职情况分页 -->
+    <select id="findUserPostHistoryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+        SELECT  S.STAFF_NAME staffName,
+                S.STAFF_CODE staffCode,
+                u.START_DATE startDate,
+                a.ORG_NAME orgName,
+                sec.SECTION_NAME  sectionName,
+                pi.PIPELINE_NAME pipelineName,
+                p.POST_NAME postName,
+                p.JOB_LEVEL_CODE jobLevelCode,
+                di.label customPost
+         FROM   mp_userposthistory u
+            LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID AND u.MAIN_POST = 1
+            LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
+            LEFT JOIN mp_post p on p.ID=u.POST_ID
+            LEFT JOIN mp_section sec on sec.id=p.SECTION_CODE
+            LEFT JOIN mp_pipeline pi on pi.id=p.PIPELINE_CODE
+            LEFT JOIN sys_dict_item  di on di.id= u.office_post_type
+            WHERE 1=1
+            and u.del_flag = 0
+            <if test="orgId != null">
+                and u.ORG_DEPT_ID = #{orgId}
+            </if>
+            <if test="staffName != null">
+                or s.staff_name LIKE concat(#{staffName},'%')
+            </if>
+            <if test="staffCode != null">
+                or s.staff_code LIKE concat(#{staffCode},'%')
+            </if>
+    </select>
+
+    <!-- 历史任职情况 -->
+    <select id="findUserPostHistory" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+        SELECT  S.STAFF_NAME staffName,
+                S.STAFF_CODE staffCode,
+                u.START_DATE startDate,
+                a.ORG_NAME orgName,
+                sec.SECTION_NAME  sectionName,
+                pi.PIPELINE_NAME pipelineName,
+                p.POST_NAME postName,
+                p.JOB_LEVEL_CODE jobLevelCode,
+                di.label customPost
+         FROM   mp_userposthistory u
+        LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID AND u.MAIN_POST = 1
+        LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
+        LEFT JOIN mp_post p on p.ID=u.POST_ID
+        LEFT JOIN mp_section sec on sec.id=p.SECTION_CODE
+        LEFT JOIN mp_pipeline pi on pi.id=p.PIPELINE_CODE
+        LEFT JOIN sys_dict_item  di on di.id= u.office_post_type
+        WHERE 1=1
+        and u.del_flag = 0
+        <if test="orgId != null">
+            and u.ORG_DEPT_ID = #{orgId}
+        </if>
+        <if test="staffName != null">
+            or s.staff_name LIKE concat(#{staffName},'%')
+        </if>
+        <if test="staffCode != null">
+            or s.staff_code LIKE concat(#{staffCode},'%')
+        </if>
+    </select>
 </mapper>

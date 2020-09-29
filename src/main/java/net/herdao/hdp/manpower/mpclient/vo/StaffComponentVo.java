@@ -42,4 +42,19 @@ public class StaffComponentVo {
 
 	@ApiModelProperty(value = "部门/组织编码")
 	private String orgCode;
+	
+	@ApiModelProperty(value = "部门/组织名称")
+	private String orgName;
+	
+	@ApiModelProperty(value = "父部门/组织编码")
+	private String parentOrgCode;
+	
+	@ApiModelProperty(value = "父部门/组织名称")
+	private String parentOrgName;
+	
+	@ApiModelProperty(value = "岗位编码")
+	private String postCode;
+	
+	@ApiModelProperty(value = "岗位名称")
+	private String postName;
 }

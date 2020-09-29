@@ -1,14 +1,16 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.common.core.util.R;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
 
 /**
  * 
@@ -123,4 +125,12 @@ public interface OrganizationService extends IService<Organization> {
      * @return
      */
     Organization findOrgDetails(Organization condition);
+    
+    /**
+ 	 * 查询部门/组织信息
+ 	 * 
+ 	 * @return
+ 	 */
+   R<?> selectOrganizations();
+
 }

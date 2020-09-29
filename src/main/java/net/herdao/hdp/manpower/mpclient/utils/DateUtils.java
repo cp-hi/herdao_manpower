@@ -2,13 +2,14 @@ package net.herdao.hdp.manpower.mpclient.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
  * TimeUtil 日期时间工具类
- * @author wangdy
+ * @author andy
  */
 public class DateUtils {
 
@@ -839,4 +840,13 @@ public class DateUtils {
         return sdf.format(now.getTime());
     }
 
-}
+    /**
+     * 获取localDateTime格式的当前时间
+     * @return
+     */
+    public static LocalDateTime getNowLocalDateTime(){
+        LocalDateTime now = LocalDateTime.now();
+        return now;
+    }
+
+ }
