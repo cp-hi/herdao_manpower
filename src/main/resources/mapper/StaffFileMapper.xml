@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffFileMapper">
+        <resultMap id="staffFileMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffFile">
+             <id property="id" column="ID"/>
+             <result property="name" column="NAME"/>
+             <result property="staffId" column="STAFF_ID"/>
+             <result property="tenantId" column="TENANT_ID"/>
+             <result property="creatorId" column="CREATOR_ID"/>
+             <result property="createdTime" column="CREATED_TIME"/>
+             <result property="modifierId" column="MODIFIER_ID"/>
+             <result property="modifiedTime" column="MODIFIED_TIME"/>
+             <result property="field1" column="FIELD1"/>
+             <result property="field2" column="FIELD2"/>
+             <result property="field3" column="FIELD3"/>
+             <result property="field4" column="FIELD4"/>
+             <result property="field5" column="FIELD5"/>
+             <result property="delFlag" column="DEL_FLAG"/>
+             <result property="secondTypeId" column="SECOND_TYPE_ID"/>
+       </resultMap>
+
+     <!-- 员工附件分页-->
+     <select id="findStaffFilePage" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffFileDto">
+            SELECT 	sc.id,
+				s.STAFF_CODE staffCode,
+				s.STAFF_NAME staffName,
+				f.`NAME` fileType,
+				sc.`NAME` fileName,
+			 ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
+				sc.MODIFIED_TIME modifyTime,
+				( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.CREATOR_ID ) createName,
+				sc.CREATED_TIME createTime
+			FROM
+				mp_staff_file sc
+				LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
+				LEFT JOIN mp_staff_second_file_type f ON f.ID = sc.SECOND_TYPE_ID
+				WHERE 1=1
+				and sc.DEL_FLAG=0
+     </select>
+
+</mapper>
