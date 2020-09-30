@@ -64,30 +64,15 @@ public class StaffSecondFileTypeController {
 
     /**
      * 新增员工附件二级分类
-     * @param staffSecondFileType 员工附件二级分类
+     * @param entity 员工附件二级分类
      * @return R
      */
     @ApiOperation(value = "新增员工附件二级分类", notes = "新增员工附件二级分类")
     @SysLog("新增员工附件二级分类" )
-    @PostMapping("/saveStaffFileType")
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffsecondfiletype_add')" )
-    public R save(@RequestBody StaffSecondFileType staffSecondFileType) {
-        boolean status = staffSecondFileTypeService.saveStaffFileType(staffSecondFileType);
+    @PostMapping("/saveOrUpdate")
+    public R saveOrUpdate(@RequestBody StaffSecondFileType entity) {
+        boolean status = staffSecondFileTypeService.saveOrUpdate(entity);
         return R.ok(status);
-    }
-
-    /**
-     * 修改员工附件二级分类
-     * @param staffSecondFileType 员工附件二级分类
-     * @return R
-     */
-    @ApiOperation(value = "修改员工附件二级分类", notes = "修改员工附件二级分类")
-    @SysLog("修改员工附件二级分类" )
-    @PutMapping("/updateStaffFile")
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffsecondfiletype_edit')" )
-    public R updateById(@RequestBody StaffSecondFileType staffSecondFileType) {
-        boolean flag = staffSecondFileTypeService.updateStaffFileType(staffSecondFileType);
-        return R.ok(flag);
     }
 
     /**

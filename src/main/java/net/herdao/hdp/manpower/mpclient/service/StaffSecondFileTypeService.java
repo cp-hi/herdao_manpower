@@ -32,14 +32,10 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
      * @param entity
      * @return
      */
-    Boolean saveStaffFileType(@RequestBody StaffSecondFileType entity);
+    @Override
+    boolean saveOrUpdate(StaffSecondFileType entity);
 
-    /**
-     * 更新员员工附件分类
-     * @param entity
-     * @return
-     */
-    Boolean updateStaffFileType(@RequestBody StaffSecondFileType entity);
+
 
 
 

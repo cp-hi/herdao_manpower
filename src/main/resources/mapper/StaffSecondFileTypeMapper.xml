@@ -11,9 +11,9 @@
             <result property="supeerId" column="SUPEER_ID"/>
             <result property="staffId" column="STAFF_ID"/>
             <result property="tenantId" column="TENANT_ID"/>
-            <result property="creatorCode" column="CREATOR_CODE"/>
+            <result property="creatorCode" column="CREATOR_ID"/>
             <result property="createdTime" column="CREATED_TIME"/>
-            <result property="modifierCode" column="MODIFIER_CODE"/>
+            <result property="modifierCode" column="MODIFIER_ID"/>
             <result property="modifiedTime" column="MODIFIED_TIME"/>
             <result property="field1" column="FIELD1"/>
             <result property="field2" column="FIELD2"/>
@@ -34,9 +34,9 @@
                       case when sc.status =0 then '禁用'
                               when sc.status =1 then '启用'
                               end  enableStatus,
-                      ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_CODE ) modifierName,
+                      ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
                       sc.MODIFIED_TIME modifyTime,
-                      ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.CREATOR_CODE ) createName,
+                      ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.CREATOR_ID ) createName,
                       sc.CREATED_TIME createTime
                    FROM
                       mp_staff_second_file_type sc

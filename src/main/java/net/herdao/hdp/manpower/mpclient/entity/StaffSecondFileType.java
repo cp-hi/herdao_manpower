@@ -9,10 +9,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 员工附件二级分类
@@ -24,8 +26,8 @@ import java.time.LocalDateTime;
 @TableName("mp_staff_second_file_type")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工附件二级分类")
-public class StaffSecondFileType extends BaseModel<StaffSecondFileType> {
-private static final long serialVersionUID = 1L;
+public class StaffSecondFileType extends BaseEntity<StaffSecondFileType> {
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -53,28 +55,19 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="租户ID")
     private Long tenantId;
-    /**
-     * 新建用户
 
-     */
-    @ApiModelProperty(value="新建用户")
-    private String creatorCode;
     /**
      * 新建时间
 
      */
     @ApiModelProperty(value="新建时间 ")
-    private LocalDateTime createdTime;
-    /**
-     * 最后修改人
-     */
-    @ApiModelProperty(value="最后修改人")
-    private String modifierCode;
+    private Date createdTime;
+
     /**
      * 最后修改时间
      */
     @ApiModelProperty(value="最后修改时间")
-    private LocalDateTime modifiedTime;
+    private Date modifiedTime;
     /**
      * 预留字段1
      */
