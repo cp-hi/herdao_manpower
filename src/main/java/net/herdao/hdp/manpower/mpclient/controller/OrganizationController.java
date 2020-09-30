@@ -4,6 +4,8 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import java.io.InputStream;
 import java.util.List;
 
+import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,6 +62,9 @@ public class OrganizationController {
 
     private final ExcelOperateRecordService excelOperateRecordService;
 
+    private final OperationLogService operationLogService;
+
+
     /**
      * 通过id查询组织架构详情
      *
@@ -81,18 +86,16 @@ public class OrganizationController {
     }
 
     /**
-     * 新增组织架构
-     *
+     * 新增或更新组织架构
      * @param organization
      * @return R
      */
-    @ApiOperation(value = "新增组织架构", notes = "新增组织架构")
-    @SysLog("新增组织架构")
-    @PostMapping("/saveOrg")
-    @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class )
+    @ApiOperation(value = "新增或更新组织架构", notes = "新增或更新组织架构")
+    @SysLog("新增或更新组织架构")
+    @PostMapping("/saveOrUpdate")
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
-    public R saveOrg(@RequestBody Organization organization) {
-        Boolean status = orgService.saveOrg(organization);
+    public R saveOrUpdate(@RequestBody Organization organization) {
+        Boolean status = orgService.saveOrUpdate(organization);
         return  R.ok(status);
     }
 
@@ -317,21 +320,6 @@ public class OrganizationController {
         return R.ok(pageResult);
     }
 
-
-    /**
-     * 编辑更新组织
-     * @param organization
-     * @return R
-     */
-    @ApiOperation(value = "编辑更新组织", notes = "编辑更新组织")
-    @SysLog("编辑更新组织")
-    @PostMapping("/updateOrg")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R updateOrg(@RequestBody Organization organization) {
-        return orgService.updateOrg(organization);
-    }
-
-
     /**
      * 批量导入组织 (excel导入)
      * @param file
@@ -364,6 +352,13 @@ public class OrganizationController {
     @GetMapping("/selectOrganizationComponent")
     public R<?> selectOrganizationComponent() {
         return orgService.selectOrganizations();
+    }
+
+
+    @ApiOperation(value = "获取组织操作日志")
+    @GetMapping("/getOrgLog/{objId}")
+    public R getOrgLog(@PathVariable Long objId) {
+        return R.ok(operationLogService.findByEntity(objId, Organization.class.getName()));
     }
 
 }

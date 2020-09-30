@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -26,7 +27,7 @@ import java.util.List;
 @TableName("mp_organization")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "组织")
-public class Organization extends Model<Organization> {
+public class Organization extends BaseEntity<Organization> {
 private static final long serialVersionUID = 1L;
     /**
      * 主键ID
@@ -116,27 +117,6 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)
     private String enableStatus;
 
-
-    /**
-     * 新建用户
-     */
-    @ApiModelProperty(value="新建用户")
-    private String creatorCode;
-    /**
-     * 新建时间
-     */
-    @ApiModelProperty(value="新建时间")
-    private LocalDateTime createdTime;
-    /**
-     * 最后修改人
-     */
-    @ApiModelProperty(value="最后修改人")
-    private String modifierCode;
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="最后修改时间")
-    private LocalDateTime modifiedTime;
     /**
      * 是否虚拟组织
      */

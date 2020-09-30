@@ -295,39 +295,9 @@ public class OrgChartController {
     }
 
 
-    /**
-     * 分页查询组织架构
-     * @param page 分页对象
-     * @param organization
-     * @return
-     */
-    @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
-    @PostMapping("/findOrgPage")
-    @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="orgName",value="组织名称"),
-    })
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findOrgPage(Page page, @RequestBody Organization organization) {
-       /* Page pageResult = organizationService.findOrgPage(page, organization);
-        return R.ok(pageResult);*/
-       return null;
-    }
 
 
-    /**
-     * 编辑更新组织
-     * @param organization
-     * @return R
-     */
-    @ApiOperation(value = "编辑更新组织", notes = "编辑更新组织")
-    @SysLog("编辑更新组织")
-    @PostMapping("/updateOrg")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R updateOrg(@RequestBody Organization organization) {
-        return organizationService.updateOrg(organization);
-    }
+
 
 
 

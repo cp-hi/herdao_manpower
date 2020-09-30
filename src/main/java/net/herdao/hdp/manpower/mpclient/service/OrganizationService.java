@@ -104,20 +104,15 @@ public interface OrganizationService extends IService<Organization> {
      * @return R
      */
 
-    @SysLog("新增组织架构")
+
     /**
      * 新增组织架构
      * @param organization
      * @return
      */
-     Boolean saveOrg(@RequestBody Organization organization);
-
-    /**
-     * 编辑更新组织
-     * @param organization
-     * @return R
-     */
-     R updateOrg(@RequestBody Organization organization);
+     @Override
+     @SysLog("新增组织架构")
+     boolean saveOrUpdate(@RequestBody Organization organization);
 
     /**
      * 查询组织架构详情

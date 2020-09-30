@@ -21,6 +21,7 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -388,15 +389,15 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
 
+
     /**
      * 编辑更新组织
      * @param organization
      * @return R
      */
     @SysLog("编辑更新组织")
-    @Override
     @Transactional
-    public R updateOrg(@RequestBody Organization organization) {
+    boolean updateOrg(@RequestBody Organization organization) {
         try {
             Organization oldOrg = super.getById(organization.getId());
 
@@ -465,10 +466,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             super.updateById(organization);
         }catch (Exception ex){
             log.error("编辑更新组织组织失败",ex);
-            return R.failed("编辑更新组织组织失败");
+            return true;
         }
-
-        return R.ok(organization);
+        return false;
     }
 
     @Override
@@ -477,9 +477,32 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return organization;
     }
 
-    @SysLog("新增组织架构")
+    @SysLog("新增或更新组织架构")
     @Override
-    public Boolean saveOrg(@RequestBody Organization organization) {
+    @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class)
+    public boolean saveOrUpdate(@RequestBody Organization organization) {
+        boolean status = false;
+        if (null != organization){
+            //更新
+            if ( null != organization.getId()){
+                status = updateOrg(organization);
+            }
+
+            //新增
+            if ( null == organization.getId()){
+                status = saveOrg(organization);
+            }
+        }
+
+        return status;
+    }
+
+    /**
+     * 新增组织
+     * @param organization
+     * @return R
+     */
+    private boolean saveOrg(@RequestBody Organization organization) {
         Boolean status=false;
         try {
             if (null != organization) {
@@ -508,7 +531,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     //生成组织编码orgCode
                     createOrgCode(organization, parentOrg);
                 }
-                status = super.save(organization);
+                status = super.saveOrUpdate(organization);
             }
           }catch (Exception ex){
             log.error("编辑更新组织组织失败",ex);
