@@ -21,7 +21,6 @@ import java.io.*;
  * <p>
  *  远程文件操作
  * </p>
- *
  * @author andy
  * @since 2019-03-19
  */
@@ -31,8 +30,8 @@ import java.io.*;
 @Api(value = "remoteFile", tags = "远程文件操作")
 @Slf4j
 public class RemoteFileController {
-	/*@Value("${upload.file.url.dev")
-	private String uploadDevUrl;*/
+
+	private Environment env;
 
 	/**
 	 * 文件上传
@@ -42,9 +41,7 @@ public class RemoteFileController {
 	@PostMapping("/uploadFile")
  	public R uploadFile(@RequestParam(value = "file") MultipartFile file)  {
 		try {
-
-			/*System.out.println(uploadDevUrl);*/
-
+			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
 		}catch (Exception ex){
 			log.error("文件上传失败。",ex);
 			return R.ok("文件上传失败。");
