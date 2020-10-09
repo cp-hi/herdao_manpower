@@ -32,4 +32,18 @@ public class UUIDUtil {
         }
         return list;
     }
+
+
+    /**
+     * 获取一个指定长度的UUID值
+     * @return UUID值[String]
+     */
+    public static String getFixUUID(Integer length){
+         return UUID.randomUUID().toString().replaceAll("-","").substring(0,length);
+    }
+
+    public static void main(String[] args) {
+        String fixUUID = UUIDUtil.getFixUUID(5);
+        System.out.println(fixUUID);
+    }
 }
