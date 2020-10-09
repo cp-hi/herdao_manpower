@@ -58,7 +58,7 @@ public class UserUtils{
     public static Integer getUserId(){
         UserInfo userInfo = userService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         SysUser sysUser = userInfo.getSysUser();
-        Integer userId = sysUser.getUserId();
+        Integer userId = sysUser.getUserId().intValue();
         return userId;
     }
 
