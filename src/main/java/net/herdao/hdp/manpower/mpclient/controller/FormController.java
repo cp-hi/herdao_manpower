@@ -62,7 +62,7 @@ public class FormController {
             formDto1.setName("组织架构表");
             Map<String,Object> operateMap1=new HashMap<>();
             operateMap1.put("download","/orgReport/exportOrg");
-            operateMap1.put("preview"," /orgReport/findOrgReportView");
+            operateMap1.put("preview","/orgReport/findOrgReportView");
             formDto1.setOperateMap(operateMap1);
             formDtoList.add(formDto1);
 
@@ -77,7 +77,7 @@ public class FormController {
             FormDto formDto3 = new FormDto();
             formDto3.setName("织职级统计表");
             Map<String,Object> operateMap3=new HashMap<>();
-            operateMap3.put("download"," /orgReport/exportOrgJobLevel");
+            operateMap3.put("download","/orgReport/exportOrgJobLevel");
             operateMap3.put("preview","/orgReport/fetchOrgJobLevelView");
             formDto3.setOperateMap(operateMap3);
             formDtoList.add(formDto3);
