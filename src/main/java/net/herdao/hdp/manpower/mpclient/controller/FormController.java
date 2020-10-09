@@ -60,7 +60,7 @@ public class FormController {
 
         if (name!=null && name.equals("组织报表")){
             FormDto formDto1 = new FormDto();
-            formDto1.setId( UUIDUtil.getFixUUID(5));
+            formDto1.setId("1");
             formDto1.setName("组织架构表");
             Map<String,Object> operateMap1=new HashMap<>();
             operateMap1.put("download","/orgReport/exportOrg");
@@ -69,7 +69,7 @@ public class FormController {
             formDtoList.add(formDto1);
 
             FormDto formDto2 = new FormDto();
-            formDto2.setId( UUIDUtil.getFixUUID(5));
+            formDto2.setId("2");
             formDto2.setName("组织编制情况表");
             Map<String,Object> operateMap2=new HashMap<>();
             operateMap2.put("download","");
@@ -78,7 +78,7 @@ public class FormController {
             formDtoList.add(formDto2);
 
             FormDto formDto3 = new FormDto();
-            formDto3.setId( UUIDUtil.getFixUUID(5));
+            formDto3.setId("3");
             formDto3.setName("织职级统计表");
             Map<String,Object> operateMap3=new HashMap<>();
             operateMap3.put("download","/orgReport/exportOrgJobLevel");
@@ -87,7 +87,7 @@ public class FormController {
             formDtoList.add(formDto3);
 
             FormDto formDto4 = new FormDto();
-            formDto4.setId( UUIDUtil.getFixUUID(5));
+            formDto4.setId("4");
             formDto4.setName("组织明细信息表");
             Map<String,Object> operateMap4=new HashMap<>();
             operateMap4.put("download","/orgReport/exportDetailsOrg");
