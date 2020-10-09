@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.dto;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -93,4 +95,35 @@ public class OrgDetailDTO {
      */
     @ApiModelProperty(value="福利类型")
     private String welfareType;
+
+    /**
+     * 是否停用 页面展示
+     */
+    @ApiModelProperty(value="是否停用 页面展示")
+    @TableField(exist = false)
+    private String enableStatus;
+
+    /**
+     * 启用日期
+     */
+    @ApiModelProperty(value="启用日期")
+    private String startDate;
+
+    /**
+     * 停用日期
+     */
+    @ApiModelProperty(value="停用日期")
+    private String stopDate;
+
+    /**
+     * 父ID 新增或修改时使用
+     */
+    @ApiModelProperty(value="父ID 新增或修改时使用")
+    private Long parentId;
+
+    /**
+     * 组织负责人工号
+     */
+    @ApiModelProperty(value="组织负责人工号 新增或修改时使用")
+    private String orgChargeWorkNo;
 }
