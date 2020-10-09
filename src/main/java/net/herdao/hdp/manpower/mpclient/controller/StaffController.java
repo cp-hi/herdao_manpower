@@ -17,12 +17,17 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +49,8 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -94,6 +101,42 @@ public class StaffController {
         }
         return R.ok(staffService.page(page, Wrappers.query(staff)));
     }
+
+    @ApiOperation(value = "导出员工信息", notes = "导出员工信息")
+    @GetMapping("/export" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab) {
+        if("1".equals(tab)){
+
+        }else if("2".equals(tab)){
+            staff.setJobType("1");
+        }else if("3".equals(tab)){
+            staff.setJobType("2");
+        }else if("4".equals(tab)){
+            staff.setJobType("3");
+        }
+        page.setCurrent(1);
+        page.setSize(50000);
+        IPage result = staffService.page(page, Wrappers.query(staff));
+        long total = result.getTotal();
+        if(total>50000){
+            return;
+        }
+        List<Staff> list = result.getRecords();
+        List<StaffDto> entityList = new ArrayList<>();
+        StaffDto entity;
+        for(int i=0;i<list.size();i++){
+            entity = DtoUtils.transferObject(list.get(i), StaffDto.class);
+            entityList.add(entity);
+        }
+        try {
+            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffDto.class,entityList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * 花名册员工数量
      */
