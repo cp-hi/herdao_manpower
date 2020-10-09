@@ -76,13 +76,32 @@ public class StaffController {
      * 分页查询
      * @param page 分页对象
      * @param staff 员工表
+     * @param tab 页签
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffPage(Page page, Staff staff) {
+    public R getStaffPage(Page page, Staff staff, String tab) {
+        if("1".equals(tab)){
+
+        }else if("2".equals(tab)){
+            staff.setJobType("1");
+        }else if("3".equals(tab)){
+            staff.setJobType("2");
+        }else if("4".equals(tab)){
+            staff.setJobType("3");
+        }
         return R.ok(staffService.page(page, Wrappers.query(staff)));
+    }
+    /**
+     * 花名册员工数量
+     */
+    @ApiOperation(value = "查询员工数量", notes = "查询员工数量")
+    @GetMapping("/count" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public R getStaffCount() {
+        return R.ok(staffService.queryCount());
     }
 
 
