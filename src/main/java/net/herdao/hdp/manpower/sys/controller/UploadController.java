@@ -55,7 +55,7 @@ import java.io.*;
 
 /**
  * <p>
- * 文件上传
+ * 本地文件操作
  * </p>
  *
  * @author andy
@@ -64,7 +64,7 @@ import java.io.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/sys/file")
-@Api(value = "upload", tags = "文件上传")
+@Api(value = "file", tags = "本地文件操作")
 @Slf4j
 public class UploadController {
 	private Environment env;

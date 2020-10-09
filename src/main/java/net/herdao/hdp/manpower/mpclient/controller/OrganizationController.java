@@ -73,7 +73,6 @@ public class OrganizationController {
      */
     @ApiOperation(value = "通过id查询组织架构详情", notes = "通过id查询组织架构详情")
     @GetMapping("/fetchOrg/{id}")
-    @OperationEntity(operation = "通过id查询组织架构详情" ,clazz = Organization.class )
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="组织架构主键ID")
