@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffProfessionMapper">
+
+         <resultMap id="staffProfessionMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffProfession">
+                    <id property="id" column="id"/>
+                    <result property="proName" column="pro_name"/>
+                    <result property="proCase" column="pro_case"/>
+                    <result property="evaluateUnit" column="evaluate_unit"/>
+                    <result property="proNo" column="pro_no"/>
+                    <result property="certificateTime" column="certificate_time"/>
+                    <result property="depandUnit" column="depand_unit"/>
+                    <result property="creatorId" column="CREATOR_ID"/>
+                    <result property="createdTime" column="CREATED_TIME"/>
+                    <result property="modifierId" column="MODIFIER_ID"/>
+                    <result property="modifiedTime" column="MODIFIED_TIME"/>
+                    <result property="staffId" column="STAFF_ID"/>
+                    <result property="tenantId" column="TENANT_ID"/>
+                    <result property="field1" column="FIELD1"/>
+                    <result property="field2" column="FIELD2"/>
+                    <result property="field3" column="FIELD3"/>
+                    <result property="field4" column="FIELD4"/>
+                    <result property="field5" column="FIELD5"/>
+                    <result property="delFlag" column="DEL_FLAG"/>
+                    <result property="staffId" column="STAFF_ID"/>
+        </resultMap>
+
+        <!-- 员工职称及职业资料分页 -->
+        <select id="findStaffProPage" resultMap="staffProfessionMap" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffProDto">
+             SELECT p.id,
+                    p.pro_name,
+                    p.pro_case,
+                    p.evaluate_unit,
+                    p.pro_no,
+                    p.certificate_time,
+                    p.depand_unit,
+                    s.STAFF_NAME staffName,
+                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = p.MODIFIER_ID ) modifierName,
+                    p.MODIFIED_TIME modifiedTime,
+                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = p.CREATOR_ID ) createName,
+                    p.CREATED_TIME createdTime
+                FROM
+                    mp_staff_profession p
+                    LEFT JOIN mp_staff s ON p.STAFF_ID = s.ID
+                    WHERE 1=1
+                    and p.DEL_FLAG=0
+        </select>
+</mapper>

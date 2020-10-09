@@ -12,6 +12,8 @@ import java.util.Map;
 @Data
 @ApiModel(value = "页面DTO")
 public class FormDto {
+    @ApiModelProperty(value="id")
+    private String id;
 
     @ApiModelProperty(value="名称")
     private String name;
@@ -21,6 +23,7 @@ public class FormDto {
 
     @ApiModelProperty(value="操作")
     private Map<String,Object> operateMap;
+
 
 
 }

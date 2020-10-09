@@ -34,6 +34,12 @@
             <artifactId>hdp-common-oss</artifactId>
             <version>3.9.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.herdao</groupId>
+            <artifactId>hdp-common-security</artifactId>
+            <version>3.9.0</version>
+        </dependency>
     </dependencies>
 
 
