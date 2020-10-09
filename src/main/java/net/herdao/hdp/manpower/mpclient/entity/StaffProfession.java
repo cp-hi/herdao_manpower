@@ -17,6 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -104,5 +106,13 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="人员外键")
     private String staffId;
+
+    /**
+     * 租户ID
+     */
+    @ExcelIgnore
+    @ApiModelProperty(value="租户ID")
+    @ExcelProperty("tenantId")
+    private Long tenantId;
 
 }

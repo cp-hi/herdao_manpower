@@ -19,6 +19,14 @@
                     <result property="modifierId" column="MODIFIER_ID"/>
                     <result property="modifiedTime" column="MODIFIED_TIME"/>
                     <result property="staffId" column="STAFF_ID"/>
+                    <result property="tenantId" column="TENANT_ID"/>
+                    <result property="field1" column="FIELD1"/>
+                    <result property="field2" column="FIELD2"/>
+                    <result property="field3" column="FIELD3"/>
+                    <result property="field4" column="FIELD4"/>
+                    <result property="field5" column="FIELD5"/>
+                    <result property="delFlag" column="DEL_FLAG"/>
+                    <result property="staffId" column="STAFF_ID"/>
         </resultMap>
 
         <!-- 员工职称及职业资料分页 -->
