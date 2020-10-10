@@ -18,6 +18,7 @@
              <result property="field5" column="FIELD5"/>
              <result property="delFlag" column="DEL_FLAG"/>
              <result property="secondTypeId" column="SECOND_TYPE_ID"/>
+             <result property="uploadId" column="UPLOAD_ID"/>
        </resultMap>
 
      <!-- 员工附件分页-->
