@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffProTitleMapper">
+            <resultMap id="staffProTitleMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffProTitle">
+                  <id property="id" column="id"/>
+                  <result property="titleName" column="title_name"/>
+                  <result property="assessmentUnit" column="assessment_unit"/>
+                  <result property="professionalQualifications" column="professional_qualifications"/>
+                  <result property="titleCode" column="title_code"/>
+                  <result property="qualitificationUnit" column="qualitification_unit"/>
+                  <result property="certificateTime" column="certificate_time"/>
+                  <result property="creatorId" column="CREATOR_ID"/>
+                  <result property="createdTime" column="CREATED_TIME"/>
+                  <result property="modifierId" column="MODIFIER_ID"/>
+                  <result property="modifiedTime" column="MODIFIED_TIME"/>
+                  <result property="staffId" column="STAFF_ID"/>
+                  <result property="delFlag" column="DEL_FLAG"/>
+                  <result property="tenantId" column="TENANT_ID"/>
+                  <result property="field1" column="FIELD1"/>
+                  <result property="field2" column="FIELD2"/>
+                  <result property="field3" column="FIELD3"/>
+                  <result property="field4" column="FIELD4"/>
+                  <result property="field5" column="FIELD5"/>
+            </resultMap>
+
+      <!-- 员工职称分页 -->
+      <select id="findStaffProTitlePage" resultMap="staffProTitleMap">
+        SELECT  p.id,
+                p.title_name,
+                p.assessment_unit,
+                p.professional_qualifications,
+                p.title_code,
+                p.qualitification_unit,
+                p.certificate_time
+            FROM
+                mp_staff_pro_title p
+            WHERE
+                p.DEL_FLAG = 0
+                and p.STAFF_ID=1
+      </select>
+
+</mapper>

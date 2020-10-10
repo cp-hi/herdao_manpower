@@ -32,7 +32,7 @@
         <dependency>
             <groupId>net.herdao</groupId>
             <artifactId>hdp-common-oss</artifactId>
-            <version>3.9.1</version>
+            <version>3.9.0</version>
         </dependency>
     </dependencies>
 

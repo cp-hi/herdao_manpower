@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
@@ -125,6 +126,19 @@ public class StaffPracticeController {
     @OperationEntity(operation = "删除员工实习记录", clazz = StaffProfession.class)
     public R removeById(@PathVariable Long id) {
         return R.ok(staffPracticeService.removeById(id));
+    }
+
+
+    /**
+     * 查询员工实习记录
+     * @param staffId 员工ID
+     * @return R
+     */
+    @ApiOperation(value = "查询员工实习记录", notes = "查询员工实习记录")
+    @GetMapping("/findStaffPractice" )
+    public R findStaffPractice(String staffId) {
+        StaffPracticeDto result = staffPracticeService.findStaffPractice(staffId);
+        return R.ok(result);
     }
 
 }

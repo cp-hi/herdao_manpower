@@ -18,30 +18,33 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto;
-import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
+import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 /**
- * 员工实习记录
+ * 员工职称
+ *
  * @author andy
- * @date 2020-10-09 17:51:16
+ * @date 2020-10-10 16:37:15
  */
 @Mapper
-public interface StaffPracticeMapper extends BaseMapper<StaffPractice> {
-
-
+public interface StaffProTitleMapper extends BaseMapper<StaffProTitle> {
     /**
-     * 员工实习记录
-     * @param staffId
+     * 员工职称分页
+     * @param page 分页对象
+     * @param staffId 员工ID
      * @return
      */
-    StaffPracticeDto findStaffPractice(String staffId);
+    Page<StaffProTitle> findStaffProTitlePage(Page<StaffProTitle> page,  @Param("staffId") String staffId);
 
-
-
+    /**
+     * 新增或修改员工职称
+     * @param entity
+     * @return
+     */
+     boolean saveOrUpdate(StaffProTitle entity);
 }

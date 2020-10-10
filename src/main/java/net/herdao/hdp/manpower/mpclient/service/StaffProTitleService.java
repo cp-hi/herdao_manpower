@@ -17,32 +17,35 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto;
-import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
-import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
-
-import java.util.List;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import org.apache.ibatis.annotations.Param;
 
 /**
- * 员工实习记录
+ * 员工职称
+ *
  * @author andy
- * @date 2020-10-09 17:51:16
+ * @date 2020-10-10 16:37:15
  */
-public interface StaffPracticeService extends IService<StaffPractice> {
+public interface StaffProTitleService extends IService<StaffProTitle> {
     /**
-     * 新增或修改员工实习记录
-     * @param practice
+     * 员工职称分页
+     * @param page 分页对象
+     * @param staffId 员工ID
+     * @return
+     */
+    Page<StaffProTitle> findStaffProTitlePage(Page<StaffProTitle> page,String staffId);
+
+
+    /**
+     * 新增或修改员工职称
+     * @param entity
      * @return
      */
     @Override
-    boolean saveOrUpdate(StaffPractice practice);
-
-    /**
-     * 员工实习记录
-     * @param staffId
-     * @return
-     */
-    StaffPracticeDto findStaffPractice(String staffId);
+    boolean saveOrUpdate(StaffProTitle entity);
 
 }

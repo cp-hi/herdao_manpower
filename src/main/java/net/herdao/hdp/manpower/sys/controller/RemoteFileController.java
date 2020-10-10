@@ -10,18 +10,14 @@ import net.herdao.hdp.common.security.service.HdpUser;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 
 /**
  * <p>
@@ -53,7 +49,7 @@ public class RemoteFileController {
 		try {
 			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
 			HdpUser user = SecurityUtils.getUser();
-			R result = OssFileUtils.uploadFile(file, "hdp", user.getId(), uploadFileUrlDev);
+			R result = OssFileUtils.uploadFile(file,"hdc", "ftp"+File.separator+"hdp", user.getId(), uploadFileUrlDev);
 			if (result != null){
 				//保存附件上传记录
 				String fileId = result.getData().toString();
@@ -86,17 +82,20 @@ public class RemoteFileController {
 	 * @return
 	 */
 	@PostMapping("/downloadFile")
- 	public R downloadFile(HttpServletResponse response,String fileId)  {
+ 	public void downloadFile(HttpServletResponse response,String fileId)  {
 		try {
-			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
-			fileId="1619eae4-4fc7-45ae-9d04-8429a86671fb";
-			String fileName="（新）蓝凌LBPM集成服务接口规范";
-			OssFileUtils.downloadFile(response,fileId,fileName,uploadFileUrlDev);
+			String downFileUrlDev = env.getProperty("download.file.url.dev");
+			fileId="1839edb3-c1f7-4a37-b4c8-da75f1f17711";
+			String fileName="（新）蓝凌LBPM集成服务接口规范.docx";
+
+			OssFileUtils.downloadFile(response,fileId,fileName,downFileUrlDev);
+
+
 		}catch (Exception ex){
 			log.error("文件下载失败。",ex);
-			return R.failed("文件下载失败。");
+
 		}
-		return R.failed("文件下载成功。");
+
 	}
 
 	/**
@@ -105,16 +104,21 @@ public class RemoteFileController {
 	 * @author andy
 	 * @return
 	 */
-	@PostMapping("/previewPic")
- 	public R previewPic(HttpServletResponse response)  {
+	@GetMapping("/previewPic")
+ 	public void previewPic(HttpServletResponse response)  {
 		try {
 			String downloadAddr = env.getProperty("download.file.url.dev");
-			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "6172dcff-fbaf-4818-84a4-cdad2abae74c");
+			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "f083cae5-b049-4f1a-81c0-5ef326ba19d7");
  			OutputStream os = response.getOutputStream();
-			byte[] b = new byte[1024];
-			while (fileInputStream.read(b) != -1) {
-				os.write(b);
+
+			byte[] bytes = new byte[1024];
+			boolean var8 = false;
+
+			int len;
+			while((len = fileInputStream.read(bytes)) != -1) {
+				os.write(bytes, 0, len);
 			}
+
 			fileInputStream.close();
 			os.flush();
 			os.close();
@@ -124,7 +128,7 @@ public class RemoteFileController {
 			log.error("文件预览失败。",e);
 			//return R.failed("文件预览失败。");
 		}
-	 	return  null;
+
 	}
 
 }
