@@ -98,6 +98,11 @@ public class PostController {
 
     @ApiOperation(value = "获取岗位信息明细")
     @GetMapping("/getPostDetails")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
+            @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
+            @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
+    })
     public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
         List<PostDetailDTO> data = postService.getPostDetails(postId, operation, size);
         if ("download".equals(operation)) {
@@ -113,6 +118,11 @@ public class PostController {
 
     @ApiOperation(value = "获取岗位员工信息")
     @GetMapping("/getPostStaffs")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
+            @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
+            @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
+    })
     public R getPostStaffs(HttpServletResponse response, Long postId, String operation, String size) {
         List<PostStaffDTO> data = postService.getPostStaffs(postId, operation, size);
         if ("download".equals(operation)) {

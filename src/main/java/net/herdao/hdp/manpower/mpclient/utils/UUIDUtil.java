@@ -42,8 +42,4 @@ public class UUIDUtil {
          return UUID.randomUUID().toString().replaceAll("-","").substring(0,length);
     }
 
-    public static void main(String[] args) {
-        String fixUUID = UUIDUtil.getFixUUID(5);
-        System.out.println(fixUUID);
-    }
 }

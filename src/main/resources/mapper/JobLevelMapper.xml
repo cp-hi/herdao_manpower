@@ -4,15 +4,21 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper">
 
-    <select id="jobLevelList"   resultType="map">
+    <select id="jobLevelList" resultType="map">
        	select id,job_level_code AS code,job_level_name AS name from mp_job_level where group_id = #{groupId}
+    </select>
+
+    <select id="chkCodeAndName" parameterType="jobLevel" resultType="boolean">
+        SELECT count(*) from mp_job_level  where
+        ( JOB_LEVEL_NAME = #{jobLevelName} AND JOB_LEVEL_CODE != #{jobLevelCode} ) OR
+        ( JOB_LEVEL_NAME != #{jobLevelName} AND JOB_LEVEL_CODE = #{jobLevelCode} )
     </select>
 
     <select id="chkDuplicateJobLevelCode" parameterType="jobLevel" resultType="boolean">
          SELECT count(*) from mp_job_level  where  (#{id} is null or  id != #{id})  and  job_level_code = #{jobLevelCode}
     </select>
 
-    <select id="chkDuplicateJobLevelName" parameterType="jobLevel" resultType="boolean" >
+    <select id="chkDuplicateJobLevelName" parameterType="jobLevel" resultType="boolean">
         SELECT count(*) from mp_Job_Level  where  (#{id} is null or  id != #{id})   and  job_level_name = #{jobLevelName}
     </select>
 </mapper>

@@ -34,12 +34,6 @@
             <artifactId>hdp-common-oss</artifactId>
             <version>3.9.4</version>
         </dependency>
-
-        <dependency>
-            <groupId>net.herdao</groupId>
-            <artifactId>hdp-common-security</artifactId>
-            <version>3.9.0</version>
-        </dependency>
     </dependencies>
 
 
@@ -66,6 +60,9 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
