@@ -107,7 +107,23 @@ public class RemoteFileController {
 	 */
 	@PostMapping("/previewPic")
  	public R previewPic(HttpServletResponse response)  {
-
+		try {
+			String downloadAddr = env.getProperty("download.file.url.dev");
+			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "6172dcff-fbaf-4818-84a4-cdad2abae74c");
+ 			OutputStream os = response.getOutputStream();
+			byte[] b = new byte[1024];
+			while (fileInputStream.read(b) != -1) {
+				os.write(b);
+			}
+			fileInputStream.close();
+			os.flush();
+			os.close();
+			log.info("文件预览成功。");
+			//return R.failed("文件预览成功。");
+		} catch (Exception e) {
+			log.error("文件预览失败。",e);
+			//return R.failed("文件预览失败。");
+		}
 	 	return  null;
 	}
 
