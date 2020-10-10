@@ -85,8 +85,8 @@ public class RemoteFileController {
  	public void downloadFile(HttpServletResponse response,String fileId)  {
 		try {
 			String downFileUrlDev = env.getProperty("download.file.url.dev");
-			fileId="f083cae5-b049-4f1a-81c0-5ef326ba19d7";
-			String fileName="1111.jpg";
+			fileId="1839edb3-c1f7-4a37-b4c8-da75f1f17711";
+			String fileName="（新）蓝凌LBPM集成服务接口规范.docx";
 
 			OssFileUtils.downloadFile(response,fileId,fileName,downFileUrlDev);
 
