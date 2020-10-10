@@ -122,5 +122,9 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="员工附件2级分类ID （关联员工二级分类表）")
     private Long secondTypeId;
 
-
+    /**
+     * 上传ID(调用平台上传功能后返回的ID)
+     */
+    @ApiModelProperty(value="上传ID(调用平台上传功能后返回的ID)")
+    private String fileId;
 }

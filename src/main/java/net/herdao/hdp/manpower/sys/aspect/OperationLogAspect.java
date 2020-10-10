@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.sys.annotation.ImportField;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -57,8 +58,13 @@ public class OperationLogAspect {
      */
     @Pointcut("@annotation(net.herdao.hdp.manpower.sys.annotation.OperationEntity)")
     public void pointCutOperate() {
-        System.out.println("point1");
+        System.out.println("pointCutOperate");
     }
+
+//    @Pointcut("@annotation(net.herdao.hdp.manpower.sys.annotation.ImportField)")
+//    public void pointCutImport() {
+//        System.out.println("pointCutImport");
+//    }
 
     /**
      * 保存时设置操作人信息的切入点
@@ -72,17 +78,16 @@ public class OperationLogAspect {
 
     @Before("pointCutSave()")
     public void beforeSave(JoinPoint point) {
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        OperationEntity operation = method.getAnnotation(OperationEntity.class);
-        Object[] args = point.getArgs();
-        if (null == args || 0 == args.length) return;
-
+        Method method = getJoinPointMethod(point);
+        OperationEntity operation = getOperationEntity(method);
+        if (0 == point.getArgs().length || null == operation)
+            return;
         Class<?> service = method.getDeclaringClass();
         //TODO 完善保存前验证 EntityService
 //        if(service instanceof EntityService){
 //
 //        }
+        Object[] args = point.getArgs();
         SysUser sysUser = getSysUser();
         for (Object arg : args) {
             if (arg != null && arg instanceof BaseEntity) {
@@ -111,12 +116,10 @@ public class OperationLogAspect {
 
     @After("pointCutSave()")
     public void afterSave(JoinPoint point) {
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
+        OperationEntity operation = getOperationEntity(point);
+        if (null == operation || 0 == point.getArgs().length)
+            return;
         Object[] args = point.getArgs();
-        if (null == args || 0 == args.length) return;
-        OperationEntity operation = method.getAnnotation(OperationEntity.class);
-        if (null == operation) return;
         for (Object arg : args) {
             if (arg != null && arg instanceof BaseEntity) {
                 BaseEntity entity = (BaseEntity) arg;
@@ -134,34 +137,46 @@ public class OperationLogAspect {
     @After("pointCutOperate()")
     public void afterOperate(JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        OperationEntity operation = method.getAnnotation(OperationEntity.class);
-        if (null != operation) {
-            SysUser sysUser = getSysUser();
-            OperationLog log = new OperationLog();
-            log.setOperation(operation.operation());
-            log.setContent(operation.content());
-            log.setOperator(sysUser.getUsername());
-            log.setOperatorId(sysUser.getUserId().longValue());
-            if (null != operation.clazz())
-                log.setEntityClass(operation.clazz().getName());
+        OperationEntity operation = getOperationEntity(point);
+        SysUser sysUser = getSysUser();
+        OperationLog log = new OperationLog();
+        log.setOperation(operation.operation());
+        log.setContent(operation.content());
+        log.setOperator(sysUser.getUsername());
+        log.setOperatorId(sysUser.getUserId().longValue());
+        if (null != operation.clazz())
+            log.setEntityClass(operation.clazz().getName());
 
-            if (StringUtils.isNotBlank(operation.objId())) {
-                log.setObjId(Long.valueOf(operation.objId()));
-            } else if (StringUtils.isNotBlank(operation.key())
-                    && StringUtils.isBlank(operation.objId())) {
-                int index = Arrays.binarySearch(signature.getParameterNames(), operation.key());
-                Object objId = point.getArgs()[index];
-                log.setObjId((Long) objId);
-            }
-            log.setOperatedTime(new Date());
-            operationLogService.save(log);
+        if (StringUtils.isNotBlank(operation.objId())) {
+            log.setObjId(Long.valueOf(operation.objId()));
+        } else if (StringUtils.isNotBlank(operation.key())
+                && StringUtils.isBlank(operation.objId())) {
+            //TODO 验证key 索引是否正确
+            int index = Arrays.binarySearch(signature.getParameterNames(), operation.key());
+            Object objId = point.getArgs()[index];
+            log.setObjId((Long) objId);
         }
+        log.setOperatedTime(new Date());
+        operationLogService.save(log);
     }
 
     //endregion
 
+//    @Before("pointCutImport()")
+//    public void beforeImport(JoinPoint point){
+//        MethodSignature signature = (MethodSignature) point.getSignature();
+//        Method method = signature.getMethod();
+//        ImportField field = method.getAnnotation(ImportField.class);
+//        Object[] args = point.getArgs();
+//    }
 
+    /**
+     * 设置注解值
+     *
+     * @param annotation
+     * @param key
+     * @param val
+     */
     private void setAnnotationInfo(Annotation annotation, String key, Object val) {
         InvocationHandler h;
         Field field;
@@ -181,6 +196,24 @@ public class OperationLogAspect {
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private Method getJoinPointMethod(JoinPoint point) {
+        MethodSignature signature = (MethodSignature) point.getSignature();
+        Method method = signature.getMethod();
+        return method;
+    }
+
+    private OperationEntity getOperationEntity(Method method) {
+        OperationEntity operation = method.getAnnotation(OperationEntity.class);
+        return operation;
+    }
+
+    private OperationEntity getOperationEntity(JoinPoint point) {
+        MethodSignature signature = (MethodSignature) point.getSignature();
+        Method method = signature.getMethod();
+        OperationEntity operation = method.getAnnotation(OperationEntity.class);
+        return operation;
     }
 
 }

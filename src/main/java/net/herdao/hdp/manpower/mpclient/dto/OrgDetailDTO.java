@@ -75,7 +75,7 @@ public class OrgDetailDTO {
     /**
      * 部门负责人
      */
-    @ApiModelProperty(value="部门负责人姓名 部门负责人")
+    @ApiModelProperty(value="部门负责人姓名 部门负责人 展示页面")
     private String postName;
 
     /**

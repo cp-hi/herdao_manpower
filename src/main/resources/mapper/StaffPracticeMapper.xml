@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffPracticeMapper">
+
+  <resultMap id="staffPracticeMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffPractice">
+                  <id property="id" column="id"/>
+                        <result property="beginDate" column="begin_date"/>
+                        <result property="endDate" column="end_date"/>
+                        <result property="period" column="period"/>
+                        <result property="groupId" column="group_id"/>
+                        <result property="cooperationId" column="cooperation_id"/>
+                        <result property="departId" column="depart_id"/>
+                        <result property="plateId" column="plate_id"/>
+                        <result property="pipeId" column="pipe_id"/>
+                        <result property="postId" column="post_id"/>
+                        <result property="jobLevel" column="job_level"/>
+                        <result property="score" column="score"/>
+                        <result property="evaluate" column="evaluate"/>
+                        <result property="evaluateId" column="evaluate_id"/>
+                        <result property="evaluateName" column="evaluate_name"/>
+                        <result property="evaluateTime" column="evaluate_time"/>
+                        <result property="creatorId" column="CREATOR_ID"/>
+                        <result property="createdTime" column="CREATED_TIME"/>
+                        <result property="modifierId" column="MODIFIER_ID"/>
+                        <result property="modifiedTime" column="MODIFIED_TIME"/>
+                        <result property="staffId" column="STAFF_ID"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+            </resultMap>
+</mapper>
