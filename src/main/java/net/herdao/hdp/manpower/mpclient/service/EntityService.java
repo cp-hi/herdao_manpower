@@ -1,25 +1,18 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.validation.annotation.Validated;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 
-import javax.validation.Valid;
-import java.util.Map;
-@Validated
 public interface EntityService<T> extends IService<T> {
     /**
      * 保存核验
-     *
      * @param t
      */
-    @Validated
-    void saveVerify(@Valid T t);
+    void saveVerify(T t);
 
     /**
      * 导入校验
-     *
      * @param t
      */
-    @Validated
-    void importVerify(@Valid T t);
+    void importVerify(T t);
 }

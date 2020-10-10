@@ -28,21 +28,7 @@ public class JobLevelChannelServiceImpl extends ServiceImpl<JobLevelChannelMappe
     }
 
     @Override
-    public void saveVerify(JobLevelChannel jobLevelChannel) {
-        if (baseMapper.chkDuplicateJobLevelChannelCode(jobLevelChannel))
-            throw new RuntimeException("职级通道编码重复了");
-        if (baseMapper.chkDuplicateJobLevelChannelName(jobLevelChannel))
-            throw new RuntimeException("职级通道名称重复了");
-    }
-
-    @Override
-    public void importVerify(JobLevelChannel jobLevelChannel) {
-    }
-
-
-    @Override
     public boolean saveOrUpdate(JobLevelChannel jobLevelChannel) {
-        this.saveVerify(jobLevelChannel);
         return super.saveOrUpdate(jobLevelChannel);
     }
 }

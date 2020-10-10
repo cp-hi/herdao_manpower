@@ -35,7 +35,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public List<Map> postList(Long groupId) {
-        return baseMapper.postList(    groupId);
+        return baseMapper.postList(groupId);
     }
 
     @Override
@@ -48,25 +48,24 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
          * 3.是否允许选择非从属关系的条件
          */
         String groupId = params.get("groupId");
-        String jobLevel = params.get("jobLevel");
-        String sectionCode = params.get("sectionCodes");
-        String pipelineCode = params.get("pipelineCodes");
-        boolean hasGroupId = StringUtils.isNotBlank(groupId);
-        List<String> sectionCodes = new ArrayList<>(), pipelineCodes = new ArrayList<>();
-        if (hasGroupId) {
-            sectionCodes = sectionMapper.getSectionCodesByGroupId(Long.valueOf(groupId));
-            pipelineCodes = pipelineMapper.getPipelineCodesByGroupId(Long.valueOf(groupId));
-        }
+        String jobLevelId = params.get("jobLevelId");
+        String sectionId = params.get("sectionId");
+        String pipelineId = params.get("pipelineId");
+//        List<String> sectionCodes = new ArrayList<>(), pipelineCodes = new ArrayList<>();
+//        if (StringUtils.isNotBlank(groupId)) {
+//            sectionCodes = sectionMapper.getSectionCodesByGroupId(Long.valueOf(groupId));
+//            pipelineCodes = pipelineMapper.getPipelineCodesByGroupId(Long.valueOf(groupId));
+//        }
 
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
         queryWrapper
-                .eq(StringUtils.isNotBlank(jobLevel), "JOB_LEVEL", jobLevel)
-                .eq(StringUtils.isNotBlank(sectionCode), "SECTION_CODE", sectionCode)
-                .eq(StringUtils.isNotBlank(pipelineCode), "PIPELINE_CODE", pipelineCode)
-                .in(StringUtils.isBlank(sectionCode) && sectionCodes.size() > 0, "SECTION_CODE", sectionCodes)
-                .in(StringUtils.isBlank(pipelineCode) && pipelineCodes.size() > 0, "SECTION_CODE", pipelineCodes)
+                .eq(StringUtils.isNotBlank(groupId), "GROUP_ID",Long.valueOf(groupId))
+                .eq(StringUtils.isNotBlank(jobLevelId), "JOB_LEVEL_ID", Long.valueOf(jobLevelId))
+                .eq(StringUtils.isNotBlank(sectionId), "SECTION_ID", Long.valueOf(sectionId))
+                .eq(StringUtils.isNotBlank(pipelineId), "PIPELINE_ID", Long.valueOf(pipelineId))
+//                .in(StringUtils.isBlank(sectionCode) && sectionCodes.size() > 0, "SECTION_CODE", sectionCodes)
+//                .in(StringUtils.isBlank(pipelineCode) && pipelineCodes.size() > 0, "SECTION_CODE", pipelineCodes)
                 .like(StringUtils.isNotBlank(searchText), "POST_NAME", searchText);
-
         Page p = this.page(page, queryWrapper);
         return p;
     }

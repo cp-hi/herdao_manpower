@@ -10,7 +10,4 @@ import java.util.Map;
 public interface JobLevelService extends EntityService<JobLevel> {
 
     List<Map> jobLevelList(Long groupId);
-
-    @Override
-    boolean saveOrUpdate(JobLevel jobLevel);
 }

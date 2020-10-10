@@ -32,7 +32,6 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@Validated
 @AllArgsConstructor
 public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
@@ -50,8 +49,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    @Validated
-    public void saveVerify(@Valid JobLevel jobLevel) {
+    public void saveVerify( JobLevel jobLevel) {
         if (baseMapper.chkCodeAndName(jobLevel))
             throw new RuntimeException("请检查职级的名称和编码");
         if (baseMapper.chkDuplicateJobLevelCode(jobLevel))

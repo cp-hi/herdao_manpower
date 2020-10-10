@@ -28,8 +28,8 @@ public class Post extends BaseEntity<Post> {
     private String postCode;
     @ApiModelProperty(value = "岗位名称", required = true)
     private String postName;
-    @ApiModelProperty(value = "管线编码", required = true)
-    private String pipelineCode;
+    @ApiModelProperty(value = "管线ID", required = true)
+    private Long pipelineId;
     @ApiModelProperty(value = "岗位级别", required = true)
     private String postLevel;
     @ApiModelProperty(value = "福利级别", required = true)
@@ -49,8 +49,8 @@ public class Post extends BaseEntity<Post> {
     private Boolean stop;
     @ApiModelProperty(value = "组织类型", required = true)
     private String orgType;
-    @ApiModelProperty(value = "板块编码", required = true)
-    private String sectionCode;
+    @ApiModelProperty(value = "板块id", required = true)
+    private String sectionId;
     @ApiModelProperty(value = "岗位职责", required = true)
     private String postDescr;
     @ApiModelProperty(value = "备注")
@@ -60,9 +60,9 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "绩效工资比例")
     private String perforSalaryRatio;
     @ApiModelProperty(value = "职级")
-    private String jobLevelCode;
+    private Long jobLevelId;
     @ApiModelProperty(value = "岗位序列")
-    private String postSequence;
+    private Long postSeqId;
     @ApiModelProperty(value = "岗位族")
     private String postClan;
     @ApiModelProperty(value = "职等名称")

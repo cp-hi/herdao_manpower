@@ -42,6 +42,9 @@ public class PostController {
 
     @ApiOperation(value = "获取岗位操作日志")
     @GetMapping("/operationLog/{objId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "objId", value = "岗位ID"),
+    })
     public R getOperationLogs(@PathVariable Long objId) {
         return R.ok(operationLogService.findByEntity(objId, Post.class.getName()));
     }
@@ -50,10 +53,12 @@ public class PostController {
     @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "searchText", value = "字符串搜索"),
-            @ApiImplicitParam(name = "groupIds", value = "集团编码"),
-            @ApiImplicitParam(name = "jobLevels", value = "职级"),
-            @ApiImplicitParam(name = "sectionCodes", value = "板块编码"),
-            @ApiImplicitParam(name = "pipelineCodes", value = "管线编码"),
+            @ApiImplicitParam(name = "groupId", value = "集团ID"),
+            @ApiImplicitParam(name = "jobLevel", value = "职级ID"),
+            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
+            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
     })
     public R page(Page page, @RequestParam Map<String, String> params) {
         return R.ok(postService.page(page, params));
@@ -61,6 +66,9 @@ public class PostController {
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "groupId", value = "集团ID"),
+    })
     public R list(Long groupId) {
         return R.ok(postService.postList(  groupId));
     }
@@ -70,6 +78,9 @@ public class PostController {
 //    @ApiResponses({
 //            @ApiResponse()
 //    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位ID"),
+    })
     public R getById(@PathVariable("id") Long id) {
         return R.ok(postService.getById(id));
     }
@@ -84,6 +95,9 @@ public class PostController {
     @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     @OperationEntity(operation = "删除岗位", clazz = Post.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位ID"),
+    })
     public R removeById(@PathVariable Long id) {
         return R.ok(postService.removeById(id));
     }
@@ -91,9 +105,12 @@ public class PostController {
 
     @ApiOperation(value = "获取岗位员工信息")
     @SysLog("获取岗位员工信息")
-    @GetMapping("/postStaff/{postId}")
-    public R getPostStaffInfo(@PathVariable Long postId) {
-        return R.ok(postService.getPostStaffInfo(postId));
+    @GetMapping("/postStaff/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位ID"),
+    })
+    public R getPostStaffInfo(@PathVariable Long id) {
+        return R.ok(postService.getPostStaffInfo(id));
     }
 
     @ApiOperation(value = "获取岗位信息明细")

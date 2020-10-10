@@ -6,10 +6,7 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevelChannel;
 import java.util.List;
 import java.util.Map;
 
-public interface JobLevelChannelService extends EntityService<JobLevelChannel> {
-
+public interface JobLevelChannelService extends IService<JobLevelChannel> {
     List<Map> jobLevelChannelList();
 
-    @Override
-    boolean saveOrUpdate(JobLevelChannel jobLevelChannel);
 }
