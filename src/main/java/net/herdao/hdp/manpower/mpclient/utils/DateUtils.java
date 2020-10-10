@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.utils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -684,7 +685,7 @@ public class DateUtils {
      * @return String，被格式化后的日期
      * @throws Exception
      */
-    public static String formatDate(Date date, String pattern) throws Exception {
+    public static String formatDate(Date date, String pattern)  {
         String returnDate = null;
 
         if (date == null) {
@@ -849,4 +850,85 @@ public class DateUtils {
         return now;
     }
 
+    /**
+     * 计算连个日期相差多少月+天
+     * @param stDate
+     * @param endDate
+     * @return
+     */
+    public static String getDayAndMonth(String stDate, String endDate) {
+        int month = 0, day = 0;
+        try {
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(stringToDate(endDate, "yyyy-MM-dd"));
+            int enDay = endCalendar.get(Calendar.DATE);
+
+            Calendar lastMonthCalendar = Calendar.getInstance();
+            lastMonthCalendar.setTime(stringToDate(endDate, "yyyy-MM-dd"));
+            lastMonthCalendar.set(Calendar.MONTH, endCalendar.get(Calendar.MONTH) - 1);
+            int dayOfMonth = lastMonthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+            Calendar stCalendar = Calendar.getInstance();
+            stCalendar.setTime(stringToDate(stDate, "yyyy-MM-dd"));
+
+            if (stCalendar.after(endCalendar)) {
+                return "起始日期大约结束日期";
+            }
+
+            int stDay = stCalendar.get(Calendar.DATE);
+            month = getMonthSpace(stDate, endDate);
+
+            if (enDay < stDay) {
+                day = dayOfMonth - stDay + enDay;
+                month = month - 1;
+            } else {
+                day = enDay - stDay;
+            }
+            return  month + "月" + day + "天";
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "计算失败";
+        }
+
+    }
+
+
+    /**
+     * 计算两个日期相差多少月
+     * @param stDate <String>
+     * @param endDate <String>
+     * @return int
+     */
+    public static int getMonthSpace(String stDate, String endDate) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            Calendar bef = Calendar.getInstance();
+            Calendar aft = Calendar.getInstance();
+            bef.setTime(sdf.parse(stDate));
+            aft.setTime(sdf.parse(endDate));
+            int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
+            int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
+            return Math.abs(month + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+    }
+
+
+    /**
+     * strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日
+     * strTime的时间格式必须要与formatType的时间格式相同
+     * @param strTime <String>
+     * @param formatType <String>
+     * @return int
+     */
+    public static Date stringToDate(String strTime, String formatType)
+            throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(formatType);
+        Date date = null;
+        date = formatter.parse(strTime);
+        return date;
+    }
  }

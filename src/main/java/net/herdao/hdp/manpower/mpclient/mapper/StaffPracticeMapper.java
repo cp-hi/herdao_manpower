@@ -15,29 +15,19 @@
  * Author: hdp
  */
 
-package net.herdao.hdp.manpower.mpclient.service;
+package net.herdao.hdp.manpower.mpclient.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-
-import java.util.Map;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 员工表
+ * 员工实习记录
  *
- * @author yangrr
- * @date 2020-09-23 18:10:29
+ * @author andy
+ * @date 2020-10-09 17:51:16
  */
-public interface StaffService extends IService<Staff> {
+@Mapper
+public interface StaffPracticeMapper extends BaseMapper<StaffPractice> {
 
-	/**
- 	 * 查询员工信息
- 	 * 
- 	 * @return
- 	 */
-	public R<?> selectStaffOrganizationComponent();
-
-	Map<String, Object> queryCount();
 }

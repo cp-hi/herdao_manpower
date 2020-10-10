@@ -22,12 +22,13 @@ public class StaffDto {
     @ApiModelProperty(value="工号")
     private String staffCode;
 
+    @ApiModelProperty(value="任职类型")
+    private String jobType;
+
     @ApiModelProperty(value="移动电话")
     private String mobile;
 
     @ApiModelProperty(value="最近更新人")
     private String modifierName;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date modifiedTime;
 }

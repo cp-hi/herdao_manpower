@@ -17,6 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -24,23 +26,23 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * 员工附件表
+ * 员工职称及职业资料
  *
  * @author andy
- * @date 2020-09-30 10:39:45
+ * @date 2020-10-09 10:53:38
  */
 @Data
-@TableName("mp_staff_file")
+@TableName("mp_staff_profession")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "员工附件表")
-public class StaffFile extends BaseEntity<StaffFile> {
+@ApiModel(value = "员工职称及职业资料")
+public class StaffProfession extends BaseModel<StaffProfession> {
 private static final long serialVersionUID = 1L;
 
     /**
@@ -50,81 +52,67 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="ID")
     private Long id;
     /**
-     * 附件名
+     * 职称
      */
-    @ApiModelProperty(value="附件名")
-    private String name;
+    @ApiModelProperty(value="职称")
+    private String proName;
     /**
-     * 员工外键
+     * 职业资格
      */
-    @ApiModelProperty(value="员工外键")
-    private Long staffId;
+    @ApiModelProperty(value="职业资格")
+    private String proCase;
     /**
-     * 租户ID
+     * 评定单位
      */
-    @ApiModelProperty(value="租户ID")
-    private Long tenantId;
+    @ApiModelProperty(value="评定单位")
+    private String evaluateUnit;
+    /**
+     * 职称证号
+     */
+    @ApiModelProperty(value="职称证号")
+    private String proNo;
+    /**
+     * 发证时间
+     */
+    @ApiModelProperty(value="发证时间")
+    private Date certificateTime;
+    /**
+     * 资质挂靠单位
+     */
+    @ApiModelProperty(value="资质挂靠单位")
+    private String depandUnit;
     /**
      * 新建用户
-
      */
     @ApiModelProperty(value="新建用户")
-    private Long creatorId;
+    private String creatorId;
     /**
      * 新建时间
-
      */
-    @ApiModelProperty(value="新建时间 ")
-    private Date createdTime;
+    @ApiModelProperty(value="新建时间")
+    private LocalDateTime createdTime;
     /**
      * 最后修改人
      */
     @ApiModelProperty(value="最后修改人")
-    private Long modifierId;
+    private String modifierId;
     /**
      * 最后修改时间
      */
     @ApiModelProperty(value="最后修改时间")
-    private Date modifiedTime;
+    private LocalDateTime modifiedTime;
     /**
-     * 预留字段1
+     * 人员外键
      */
-    @ApiModelProperty(value="预留字段1")
-    private String field1;
-    /**
-     * 预留字段2
-     */
-    @ApiModelProperty(value="预留字段2")
-    private String field2;
-    /**
-     * 预留字段3
-     */
-    @ApiModelProperty(value="预留字段3")
-    private String field3;
-    /**
-     * 预留字段4
-     */
-    @ApiModelProperty(value="预留字段4")
-    private String field4;
-    /**
-     * 预留字段5
-     */
-    @ApiModelProperty(value="预留字段5")
-    private String field5;
-    /**
-     * 是否删除
-     */
-    @ApiModelProperty(value="是否删除")
-    private Boolean delFlag;
-    /**
-     * 员工附件2级分类ID （关联员工二级分类表）
-     */
-    @ApiModelProperty(value="员工附件2级分类ID （关联员工二级分类表）")
-    private Long secondTypeId;
+    @ApiModelProperty(value="人员外键")
+    private String staffId;
 
     /**
-     * 上传ID(调用平台上传功能后返回的ID)
+     * 租户ID
      */
-    @ApiModelProperty(value="上传ID(调用平台上传功能后返回的ID)")
-    private String fileId;
+    @ExcelIgnore
+    @ApiModelProperty(value="租户ID")
+    @ExcelProperty("tenantId")
+    private Long tenantId;
+
 }

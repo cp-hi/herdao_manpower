@@ -17,12 +17,17 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +49,8 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -72,17 +79,73 @@ public class StaffController {
 
     private final UserpostService userpostService;
 
+    private final  StaffPracticeService staffPracticeService;
     /**
      * 分页查询
      * @param page 分页对象
      * @param staff 员工表
+     * @param tab 页签
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffPage(Page page, Staff staff) {
+    public R getStaffPage(Page page, Staff staff, String tab) {
+        if("1".equals(tab)){
+
+        }else if("2".equals(tab)){
+            staff.setJobType("1");
+        }else if("3".equals(tab)){
+            staff.setJobType("2");
+        }else if("4".equals(tab)){
+            staff.setJobType("3");
+        }
         return R.ok(staffService.page(page, Wrappers.query(staff)));
+    }
+
+    @ApiOperation(value = "导出员工信息", notes = "导出员工信息")
+    @GetMapping("/export" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab) {
+        if("1".equals(tab)){
+
+        }else if("2".equals(tab)){
+            staff.setJobType("1");
+        }else if("3".equals(tab)){
+            staff.setJobType("2");
+        }else if("4".equals(tab)){
+            staff.setJobType("3");
+        }
+        page.setCurrent(1);
+        page.setSize(50000);
+        IPage result = staffService.page(page, Wrappers.query(staff));
+        long total = result.getTotal();
+        if(total>50000){
+            return;
+        }
+        List<Staff> list = result.getRecords();
+        List<StaffDto> entityList = new ArrayList<>();
+        StaffDto entity;
+        for(int i=0;i<list.size();i++){
+            entity = DtoUtils.transferObject(list.get(i), StaffDto.class);
+            entityList.add(entity);
+        }
+        try {
+            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffDto.class,entityList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 花名册员工数量
+     */
+    @ApiOperation(value = "查询员工数量", notes = "查询员工数量")
+    @GetMapping("/count" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public R getStaffCount() {
+        return R.ok(staffService.queryCount());
     }
 
 
@@ -184,12 +247,17 @@ public class StaffController {
                 .eq("USER_ID", staff.getUserId())
                 .orderByDesc("MODIFIED_TIME")
         );
+        List<StaffPractice> practiceList = staffPracticeService.list(new QueryWrapper<StaffPractice>()
+                .eq("STAFF_ID", staff.getId())
+                .orderByDesc("MODIFIED_TIME")
+        );
 
         Map<String, Object> map = new HashMap<>();
         map.put("staff", staff);
         map.put("expList", expList);
         map.put("transactionList", transactionList);
         map.put("upList", upList);
+        map.put("practiceList", practiceList);
         return R.ok(map);
     }
 

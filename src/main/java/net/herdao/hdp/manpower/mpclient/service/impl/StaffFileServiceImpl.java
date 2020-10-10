@@ -29,10 +29,7 @@ public class StaffFileServiceImpl extends ServiceImpl<StaffFileMapper, StaffFile
     @Override
     @OperationEntity(operation = "保存或新增员工附件", clazz = StaffFile.class)
     public boolean saveOrUpdate(StaffFile entity) {
-        boolean status=false;
-        if (entity!=null){
-            super.saveOrUpdate(entity);
-        }
+        boolean status =  super.saveOrUpdate(entity);
         return status;
     }
 

@@ -16,10 +16,12 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -99,6 +101,30 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			}
 		}
 		return valSum;
+	}
+
+	@Override
+	public Map<String, Object> queryCount(){
+		int total = baseMapper.selectCount(new QueryWrapper<Staff>());
+		int jobType1 = baseMapper.selectCount(new QueryWrapper<Staff>()
+				.eq("JOB_TYPE", "1")
+		);
+		int jobType2 = baseMapper.selectCount(new QueryWrapper<Staff>()
+				.eq("JOB_TYPE", "2")
+		);
+		int jobType3 = baseMapper.selectCount(new QueryWrapper<Staff>()
+				.eq("JOB_TYPE", "3")
+		);
+		int toJoin = 0;
+		int toLeave = 0;
+		Map<String, Object> map = new HashMap<>();
+		map.put("total",total);
+		map.put("jobType1",jobType1);
+		map.put("jobType2",jobType2);
+		map.put("jobType3",jobType3);
+		map.put("toJoin",toJoin);
+		map.put("toLeave",toLeave);
+		return map;
 	}
 
 }

@@ -27,6 +27,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.FormDto;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
+import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -59,34 +60,38 @@ public class FormController {
 
         if (name!=null && name.equals("组织报表")){
             FormDto formDto1 = new FormDto();
+            formDto1.setId("1");
             formDto1.setName("组织架构表");
             Map<String,Object> operateMap1=new HashMap<>();
-            operateMap1.put("下载","/orgReport/exportOrg");
-            operateMap1.put("预览"," /orgReport/findOrgReportView");
+            operateMap1.put("download","/orgReport/exportOrg");
+            operateMap1.put("preview","/orgReport/findOrgReportView");
             formDto1.setOperateMap(operateMap1);
             formDtoList.add(formDto1);
 
             FormDto formDto2 = new FormDto();
+            formDto2.setId("2");
             formDto2.setName("组织编制情况表");
             Map<String,Object> operateMap2=new HashMap<>();
-            operateMap2.put("下载","");
-            operateMap2.put("预览","");
+            operateMap2.put("download","");
+            operateMap2.put("preview","");
             formDto2.setOperateMap(operateMap2);
             formDtoList.add(formDto2);
 
             FormDto formDto3 = new FormDto();
+            formDto3.setId("3");
             formDto3.setName("织职级统计表");
             Map<String,Object> operateMap3=new HashMap<>();
-            operateMap3.put("下载"," /orgReport/exportOrgJobLevel");
-            operateMap3.put("预览","/orgReport/fetchOrgJobLevelView");
+            operateMap3.put("download","/orgReport/exportOrgJobLevel");
+            operateMap3.put("preview","/orgReport/fetchOrgJobLevelView");
             formDto3.setOperateMap(operateMap3);
             formDtoList.add(formDto3);
 
             FormDto formDto4 = new FormDto();
+            formDto4.setId("4");
             formDto4.setName("组织明细信息表");
             Map<String,Object> operateMap4=new HashMap<>();
-            operateMap4.put("下载","/orgReport/exportDetailsOrg");
-            operateMap4.put("预览","/orgReport/findOrgReportView");
+            operateMap4.put("download","/orgReport/exportDetailsOrg");
+            operateMap4.put("preview","/orgReport/findOrgReportView");
             formDto4.setOperateMap(operateMap4);
             formDtoList.add(formDto4);
         }

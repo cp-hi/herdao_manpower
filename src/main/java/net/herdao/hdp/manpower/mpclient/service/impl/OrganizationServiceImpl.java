@@ -396,79 +396,83 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @return R
      */
     @SysLog("编辑更新组织")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     boolean updateOrg(@RequestBody Organization organization) {
+        boolean status =false;
         try {
             Organization oldOrg = super.getById(organization.getId());
 
-            OrgModifyRecord record=new OrgModifyRecord();
-            boolean operateFlag = false;
+            if (oldOrg!=null){
+                OrgModifyRecord record=new OrgModifyRecord();
+                boolean operateFlag = false;
 
-            //现组织名称 原组织名称
-            if (null != oldOrg.getOrgName()&& !oldOrg.getOrgName().equals(organization.getOrgName())){
-                record.setCurOrgName(organization.getOrgName());
-                record.setOldOrgName(oldOrg.getOrgName());
-                operateFlag = true;
-            }
+                //现组织名称 原组织名称
+                if (null != oldOrg.getOrgName()&& !oldOrg.getOrgName().equals(organization.getOrgName())){
+                    record.setCurOrgName(organization.getOrgName());
+                    record.setOldOrgName(oldOrg.getOrgName());
+                    operateFlag = true;
+                }
 
-            //现组织编码 原组织名称
-            if (null != oldOrg.getOrgCode()&& !oldOrg.getOrgCode().equals(organization.getOrgCode())){
-                record.setCurOrgCode(organization.getOrgCode());
-                record.setOldOrgName(oldOrg.getOrgCode());
-                operateFlag = true;
-            }
+                //现组织编码 原组织名称
+                if (null != oldOrg.getOrgCode()&& !oldOrg.getOrgCode().equals(organization.getOrgCode())){
+                    record.setCurOrgCode(organization.getOrgCode());
+                    record.setOldOrgName(oldOrg.getOrgCode());
+                    operateFlag = true;
+                }
 
-            if (null != oldOrg.getParentId() && !oldOrg.getParentId().equals(organization.getParentId())){
-                Organization oldParenOrg = super.getById(oldOrg.getParentId());
-                Organization curParenOrg = super.getById(organization.getParentId());
+                if (null != oldOrg.getParentId() && !oldOrg.getParentId().equals(organization.getParentId())){
+                    Organization oldParenOrg = super.getById(oldOrg.getParentId());
+                    Organization curParenOrg = super.getById(organization.getParentId());
 
-                record.setCurOrgParentId(organization.getParentId());
-                //现上级组织id
-                if (null != oldParenOrg){
-                    record.setOldOrgParentId(oldParenOrg.getId());
-                    record.setOldOrgParentName(oldParenOrg.getOrgName());
+                    record.setCurOrgParentId(organization.getParentId());
+                    //现上级组织id
+                    if (null != oldParenOrg){
+                        record.setOldOrgParentId(oldParenOrg.getId());
+                        record.setOldOrgParentName(oldParenOrg.getOrgName());
 
-                    //现组织层级 原组织层级
-                    if (null != oldOrg.getOrgTreeLevel()&& !oldOrg.getOrgCode().equals(organization.getOrgTreeLevel())){
-                        record.setCurOrgTreeLevel(organization.getOrgTreeLevel());
-                        record.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
-                        operateFlag = true;
+                        //现组织层级 原组织层级
+                        if (null != oldOrg.getOrgTreeLevel()&& !oldOrg.getOrgCode().equals(organization.getOrgTreeLevel())){
+                            record.setCurOrgTreeLevel(organization.getOrgTreeLevel());
+                            record.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
+                            operateFlag = true;
+                        }
                     }
+
+                    //现上级组织名称
+                    if (null != curParenOrg){
+                        record.setCurOrgName(curParenOrg.getOrgName());
+                    }
+
+                    operateFlag = true;
                 }
 
-                //现上级组织名称
-                if (null != curParenOrg){
-                    record.setCurOrgName(curParenOrg.getOrgName());
+                //生效时间
+                record.setEffectTime(new Date());
+                //操作时间
+                record.setOperatorTime(new Date());
+
+                UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+                if (null != userInfo){
+                    //操作人ID
+                    record.setOperatorId(userInfo.getSysUser().getUserId().toString());
+                    //操作人名称
+                    record.setOperatorName(userInfo.getSysUser().getUsername());
                 }
 
-                operateFlag = true;
+                //新增变更记录
+                if (operateFlag){
+                    record.setOperateDesc("修改组织架构");
+                    orgModifyRecordService.save(record);
+                }
+
+                status =super.updateById(organization);
             }
-
-            //生效时间
-            record.setEffectTime(new Date());
-            //操作时间
-            record.setOperatorTime(new Date());
-
-            UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-            if (null != userInfo){
-                //操作人ID
-                record.setOperatorId(userInfo.getSysUser().getUserId().toString());
-                //操作人名称
-                record.setOperatorName(userInfo.getSysUser().getUsername());
-            }
-
-            //新增变更记录
-            if (operateFlag){
-                record.setOperateDesc("修改组织架构");
-                orgModifyRecordService.save(record);
-            }
-
-            super.updateById(organization);
         }catch (Exception ex){
+            status=false;
             log.error("编辑更新组织组织失败",ex);
-            return true;
         }
-        return false;
+
+        return status;
     }
 
     @Override

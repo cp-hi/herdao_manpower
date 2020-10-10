@@ -18,26 +18,21 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-
-import java.util.Map;
+import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
+import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 
 /**
- * 员工表
- *
- * @author yangrr
- * @date 2020-09-23 18:10:29
+ * 员工实习记录
+ * @author andy
+ * @date 2020-10-09 17:51:16
  */
-public interface StaffService extends IService<Staff> {
+public interface StaffPracticeService extends IService<StaffPractice> {
+    /**
+     * 新增或修改员工实习记录
+     * @param practice
+     * @return
+     */
+    @Override
+    boolean saveOrUpdate(StaffPractice practice);
 
-	/**
- 	 * 查询员工信息
- 	 * 
- 	 * @return
- 	 */
-	public R<?> selectStaffOrganizationComponent();
-
-	Map<String, Object> queryCount();
 }

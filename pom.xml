@@ -14,6 +14,7 @@
 
 
     <dependencies>
+
         <!--必备: 微服务单元基础模块-->
         <dependency>
             <groupId>net.herdao</groupId>
@@ -25,6 +26,19 @@
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
             <version>2.2.6</version>
+        </dependency>
+
+        <!--文件系统-->
+        <dependency>
+            <groupId>net.herdao</groupId>
+            <artifactId>hdp-common-oss</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.herdao</groupId>
+            <artifactId>hdp-common-security</artifactId>
+            <version>3.9.0</version>
         </dependency>
     </dependencies>
 
@@ -50,7 +64,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>com.spotify</groupId>
+                <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
             </plugin>
         </plugins>
