@@ -22,9 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
 import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -49,7 +51,10 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -136,6 +141,19 @@ public class StaffController {
             e.printStackTrace();
         }
 
+    }
+
+    @ApiOperation("导入")
+    @SysLog("导入")
+    @PostMapping("/import")
+    public R importExcel(MultipartFile file){
+        try {
+            EasyExcel.read(file.getInputStream(), StaffDto.class,
+                    new StaffExcelListener<StaffDto, Staff>(staffService, Staff.class)).sheet().doRead();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return R.ok("导入成功");
     }
 
     /**
