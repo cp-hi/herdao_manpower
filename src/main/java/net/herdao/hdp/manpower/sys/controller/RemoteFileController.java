@@ -10,18 +10,20 @@ import net.herdao.hdp.common.security.service.HdpUser;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLDecoder;
 
 /**
  * <p>
@@ -53,7 +55,7 @@ public class RemoteFileController {
 		try {
 			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
 			HdpUser user = SecurityUtils.getUser();
-			R result = OssFileUtils.uploadFile(file, "hdp", user.getId(), uploadFileUrlDev);
+			R result = OssFileUtils.uploadFile(file,"hdc", "ftp"+File.separator+"hdp", user.getId(), uploadFileUrlDev);
 			if (result != null){
 				//保存附件上传记录
 				String fileId = result.getData().toString();
@@ -86,17 +88,49 @@ public class RemoteFileController {
 	 * @return
 	 */
 	@PostMapping("/downloadFile")
- 	public R downloadFile(HttpServletResponse response,String fileId)  {
+ 	public void downloadFile(HttpServletResponse response,String fileId)  {
 		try {
-			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
-			fileId="1619eae4-4fc7-45ae-9d04-8429a86671fb";
-			String fileName="（新）蓝凌LBPM集成服务接口规范";
-			OssFileUtils.downloadFile(response,fileId,fileName,uploadFileUrlDev);
+			String downFileUrlDev = env.getProperty("download.file.url.dev");
+			fileId="f083cae5-b049-4f1a-81c0-5ef326ba19d7";
+			String fileName="1111.jpg";
+
+
+			InputStream input = OssFileUtils.getFileInputStream(downFileUrlDev, fileId); // 得到输入流
+			// 获取输入流 end
+
+			fileName = fileName.replaceAll(" ", "");
+
+			String outFileName = URLDecoder.decode(fileName, "utf-8");
+
+			outFileName = new String(outFileName.getBytes("GB2312"), "ISO_8859_1");
+
+			response.setHeader("Content-Type", "application/octet-stream"); // 设置被下载而不是被打开
+			response.setHeader("Content-Disposition", "attachment;filename=" + outFileName); // 设置被第三方工具打开，设置下载的文件名
+			OutputStream output = null;
+			try {
+				output = response.getOutputStream();
+				byte[] bytes = new byte[1024];
+				int len = 0;
+				while ((len = input.read(bytes)) != -1) {
+					output.write(bytes, 0, len);
+				}
+				output.flush();
+			} catch (Exception e) {
+				log.error(e.getLocalizedMessage());
+			} finally {
+				try {
+					input.close();
+					output.close();
+				} catch (IOException e) {
+					log.error(e.getLocalizedMessage());
+				}
+			}
+
 		}catch (Exception ex){
 			log.error("文件下载失败。",ex);
-			return R.failed("文件下载失败。");
+
 		}
-		return R.failed("文件下载成功。");
+
 	}
 
 	/**
@@ -109,7 +143,7 @@ public class RemoteFileController {
  	public R previewPic(HttpServletResponse response)  {
 		try {
 			String downloadAddr = env.getProperty("download.file.url.dev");
-			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "6172dcff-fbaf-4818-84a4-cdad2abae74c");
+			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "f083cae5-b049-4f1a-81c0-5ef326ba19d7");
  			OutputStream os = response.getOutputStream();
 			byte[] b = new byte[1024];
 			while (fileInputStream.read(b) != -1) {
