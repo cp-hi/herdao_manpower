@@ -79,6 +79,7 @@ public class StaffController {
 
     private final UserpostService userpostService;
 
+    private final  StaffPracticeService staffPracticeService;
     /**
      * 分页查询
      * @param page 分页对象
@@ -246,12 +247,17 @@ public class StaffController {
                 .eq("USER_ID", staff.getUserId())
                 .orderByDesc("MODIFIED_TIME")
         );
+        List<StaffPractice> practiceList = staffPracticeService.list(new QueryWrapper<StaffPractice>()
+                .eq("STAFF_ID", staff.getId())
+                .orderByDesc("MODIFIED_TIME")
+        );
 
         Map<String, Object> map = new HashMap<>();
         map.put("staff", staff);
         map.put("expList", expList);
         map.put("transactionList", transactionList);
         map.put("upList", upList);
+        map.put("practiceList", practiceList);
         return R.ok(map);
     }
 
