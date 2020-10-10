@@ -51,11 +51,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         String jobLevelId = params.get("jobLevelId");
         String sectionId = params.get("sectionId");
         String pipelineId = params.get("pipelineId");
-//        List<String> sectionCodes = new ArrayList<>(), pipelineCodes = new ArrayList<>();
-//        if (StringUtils.isNotBlank(groupId)) {
-//            sectionCodes = sectionMapper.getSectionCodesByGroupId(Long.valueOf(groupId));
-//            pipelineCodes = pipelineMapper.getPipelineCodesByGroupId(Long.valueOf(groupId));
-//        }
 
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
         queryWrapper
@@ -63,8 +58,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 .eq(StringUtils.isNotBlank(jobLevelId), "JOB_LEVEL_ID", Long.valueOf(jobLevelId))
                 .eq(StringUtils.isNotBlank(sectionId), "SECTION_ID", Long.valueOf(sectionId))
                 .eq(StringUtils.isNotBlank(pipelineId), "PIPELINE_ID", Long.valueOf(pipelineId))
-//                .in(StringUtils.isBlank(sectionCode) && sectionCodes.size() > 0, "SECTION_CODE", sectionCodes)
-//                .in(StringUtils.isBlank(pipelineCode) && pipelineCodes.size() > 0, "SECTION_CODE", pipelineCodes)
                 .like(StringUtils.isNotBlank(searchText), "POST_NAME", searchText);
         Page p = this.page(page, queryWrapper);
         return p;
