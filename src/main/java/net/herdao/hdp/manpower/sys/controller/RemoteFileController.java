@@ -12,17 +12,11 @@ import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLDecoder;
 
 /**
@@ -94,37 +88,8 @@ public class RemoteFileController {
 			fileId="f083cae5-b049-4f1a-81c0-5ef326ba19d7";
 			String fileName="1111.jpg";
 
+			OssFileUtils.downloadFile(response,fileId,fileName,downFileUrlDev);
 
-			InputStream input = OssFileUtils.getFileInputStream(downFileUrlDev, fileId); // 得到输入流
-			// 获取输入流 end
-
-			fileName = fileName.replaceAll(" ", "");
-
-			String outFileName = URLDecoder.decode(fileName, "utf-8");
-
-			outFileName = new String(outFileName.getBytes("GB2312"), "ISO_8859_1");
-
-			response.setHeader("Content-Type", "application/octet-stream"); // 设置被下载而不是被打开
-			response.setHeader("Content-Disposition", "attachment;filename=" + outFileName); // 设置被第三方工具打开，设置下载的文件名
-			OutputStream output = null;
-			try {
-				output = response.getOutputStream();
-				byte[] bytes = new byte[1024];
-				int len = 0;
-				while ((len = input.read(bytes)) != -1) {
-					output.write(bytes, 0, len);
-				}
-				output.flush();
-			} catch (Exception e) {
-				log.error(e.getLocalizedMessage());
-			} finally {
-				try {
-					input.close();
-					output.close();
-				} catch (IOException e) {
-					log.error(e.getLocalizedMessage());
-				}
-			}
 
 		}catch (Exception ex){
 			log.error("文件下载失败。",ex);
@@ -139,16 +104,21 @@ public class RemoteFileController {
 	 * @author andy
 	 * @return
 	 */
-	@PostMapping("/previewPic")
- 	public R previewPic(HttpServletResponse response)  {
+	@GetMapping("/previewPic")
+ 	public void previewPic(HttpServletResponse response)  {
 		try {
 			String downloadAddr = env.getProperty("download.file.url.dev");
 			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "f083cae5-b049-4f1a-81c0-5ef326ba19d7");
  			OutputStream os = response.getOutputStream();
-			byte[] b = new byte[1024];
-			while (fileInputStream.read(b) != -1) {
-				os.write(b);
+
+			byte[] bytes = new byte[1024];
+			boolean var8 = false;
+
+			int len;
+			while((len = fileInputStream.read(bytes)) != -1) {
+				os.write(bytes, 0, len);
 			}
+
 			fileInputStream.close();
 			os.flush();
 			os.close();
@@ -158,7 +128,7 @@ public class RemoteFileController {
 			log.error("文件预览失败。",e);
 			//return R.failed("文件预览失败。");
 		}
-	 	return  null;
+
 	}
 
 }
