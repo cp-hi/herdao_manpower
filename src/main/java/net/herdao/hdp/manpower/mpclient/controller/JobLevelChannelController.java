@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @ClassName JobLevelController
@@ -76,18 +77,5 @@ public class JobLevelChannelController {
     }
 
 
-    @ApiOperation("导入")
-    @SysLog("导入")
-    @PostMapping("/import")
-    public R importData(@RequestParam(value = "file") MultipartFile file) {
-        try {
-            InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, JobLevelChannel.class, new ImportExcelListener(jobLevelChannelService)).sheet().doRead();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return R.ok(" easyexcel读取上传文件成功");
-    }
 
 }

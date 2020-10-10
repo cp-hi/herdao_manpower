@@ -1,16 +1,26 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.JobLevelDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
+import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
+import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.service.impl.GroupServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @ClassName JobLevelController
@@ -30,6 +40,8 @@ public class JobLevelController {
 
     private JobLevelService jobLevelService;
 
+    private GroupService groupService;
+
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
     public R page(Page page, JobLevel jobLevel) {
@@ -44,7 +56,7 @@ public class JobLevelController {
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list(Long groupId) {
-        return R.ok(jobLevelService.jobLevelList(  groupId));
+        return R.ok(jobLevelService.jobLevelList(groupId));
     }
 
     @GetMapping("/{id}")
@@ -54,7 +66,7 @@ public class JobLevelController {
     }
 
     @PostMapping
-    public R save(@RequestBody JobLevel jobLevel) throws Exception {
+    public R save(@RequestBody JobLevel jobLevel) {
         jobLevelService.saveOrUpdate(jobLevel);
         return R.ok(jobLevel);
     }
@@ -64,5 +76,19 @@ public class JobLevelController {
     @DeleteMapping("/{id}")
     public R removeById(@PathVariable Long id) {
         return R.ok(jobLevelService.removeById(id));
+    }
+
+    @ApiOperation("导入")
+    @SysLog("导入")
+    @PostMapping("/import")
+    public R importData(@RequestParam(value = "file") MultipartFile file) {
+        try {
+            InputStream inputStream = file.getInputStream();
+            EasyExcel.read(inputStream, JobLevelDTO.class, new ImportExcelListener(jobLevelService)).sheet().doRead();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return R.ok(" easyexcel读取上传文件成功");
     }
 }

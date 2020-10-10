@@ -36,6 +36,11 @@ public class JobLevelChannelServiceImpl extends ServiceImpl<JobLevelChannelMappe
     }
 
     @Override
+    public void importVerify(JobLevelChannel jobLevelChannel) {
+    }
+
+
+    @Override
     public boolean saveOrUpdate(JobLevelChannel jobLevelChannel) {
         this.saveVerify(jobLevelChannel);
         return super.saveOrUpdate(jobLevelChannel);
