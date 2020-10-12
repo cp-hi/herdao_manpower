@@ -1,9 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.JobLevelDTO;
+import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
@@ -14,12 +16,19 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.service.impl.GroupServiceImpl;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,14 +90,16 @@ public class JobLevelController {
     @ApiOperation("导入")
     @SysLog("导入")
     @PostMapping("/import")
-    public R importData(@RequestParam(value = "file") MultipartFile file) {
+    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file) throws Exception {
+        ImportExcelListener listener = new ImportExcelListener(response, jobLevelService);
         try {
             InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, JobLevelDTO.class, new ImportExcelListener(jobLevelService)).sheet().doRead();
+            EasyExcel.read(inputStream, JobLevelDTO.class, listener).sheet().doRead();
+            IOUtils.closeQuietly(inputStream);
+            return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ExcelUtils.export2Web(response, "职级导入错误信息", "职级导入错误信息", JobLevelDTO.class, listener.dataList);
+            return R.failed(ex.getMessage());
         }
-
-        return R.ok(" easyexcel读取上传文件成功");
     }
 }
