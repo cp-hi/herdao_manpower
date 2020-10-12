@@ -404,21 +404,18 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
             if (oldOrg!=null){
                 OrgModifyRecord record=new OrgModifyRecord();
-                boolean operateFlag = false;
 
                 //现组织名称 原组织名称
                 if (null != oldOrg.getOrgName()&& !oldOrg.getOrgName().equals(organization.getOrgName())){
                     record.setCurOrgName(organization.getOrgName());
                     record.setOldOrgName(oldOrg.getOrgName());
-                    operateFlag = true;
                 }
 
                 //现组织编码 原组织名称
                 if (null != oldOrg.getOrgCode()&& !oldOrg.getOrgCode().equals(organization.getOrgCode())){
                     record.setCurOrgCode(organization.getOrgCode());
                     record.setOldOrgName(oldOrg.getOrgCode());
-                    operateFlag = true;
-                }
+                 }
 
                 if (null != oldOrg.getParentId() && !oldOrg.getParentId().equals(organization.getParentId())){
                     Organization oldParenOrg = super.getById(oldOrg.getParentId());
@@ -434,17 +431,19 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                         if (null != oldOrg.getOrgTreeLevel()&& !oldOrg.getOrgCode().equals(organization.getOrgTreeLevel())){
                             record.setCurOrgTreeLevel(organization.getOrgTreeLevel());
                             record.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
-                            operateFlag = true;
-                        }
+                         }
                     }
 
                     //现上级组织名称
                     if (null != curParenOrg){
                         record.setCurOrgName(curParenOrg.getOrgName());
+                        //生成组织编码orgCode
+                        createOrgCode(organization, curParenOrg);
+                        //生成组织全称 orgFullName
+                        createOrgFullName(organization, curParenOrg);
                     }
 
-                    operateFlag = true;
-                }
+                 }
 
                 //生效时间
                 record.setEffectTime(new Date());
@@ -460,10 +459,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 }
 
                 //新增变更记录
-                if (operateFlag){
-                    record.setOperateDesc("修改组织架构");
-                    orgModifyRecordService.save(record);
-                }
+                record.setOperateDesc("修改组织架构");
+                orgModifyRecordService.save(record);
 
                 status =super.updateById(organization);
             }
