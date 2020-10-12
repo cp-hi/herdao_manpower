@@ -53,12 +53,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         String pipelineId = params.get("pipelineId");
 
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
-        queryWrapper
-                .eq(StringUtils.isNotBlank(groupId), "GROUP_ID",Long.valueOf(groupId))
-                .eq(StringUtils.isNotBlank(jobLevelId), "JOB_LEVEL_ID", Long.valueOf(jobLevelId))
-                .eq(StringUtils.isNotBlank(sectionId), "SECTION_ID", Long.valueOf(sectionId))
-                .eq(StringUtils.isNotBlank(pipelineId), "PIPELINE_ID", Long.valueOf(pipelineId))
-                .like(StringUtils.isNotBlank(searchText), "POST_NAME", searchText);
+        queryWrapper.like(StringUtils.isNotBlank(searchText), "POST_NAME", searchText);
+        if (StringUtils.isNotBlank(groupId)) queryWrapper.eq("GROUP_ID", Long.valueOf(groupId));
+        if (StringUtils.isNotBlank(jobLevelId)) queryWrapper.eq("JOB_LEVEL_ID", Long.valueOf(jobLevelId));
+        if (StringUtils.isNotBlank(sectionId)) queryWrapper.eq("SECTION_ID", Long.valueOf(sectionId));
+        if (StringUtils.isNotBlank(pipelineId)) queryWrapper.eq("PIPELINE_ID", Long.valueOf(pipelineId));
         Page p = this.page(page, queryWrapper);
         return p;
     }
