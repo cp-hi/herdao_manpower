@@ -98,7 +98,7 @@ public class StaffController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffPage(Page page, Staff staff, String tab) {
+    public R getStaffPage(Page page, Staff staff, String tab, String searchText) {
         if("1".equals(tab)){
 
         }else if("2".equals(tab)){
@@ -108,13 +108,13 @@ public class StaffController {
         }else if("4".equals(tab)){
             staff.setJobType("3");
         }
-        return R.ok(staffService.page(page, Wrappers.query(staff)));
+        return R.ok(staffService.staffPage(page, staff, searchText));
     }
 
     @ApiOperation(value = "导出员工信息", notes = "导出员工信息")
     @GetMapping("/export" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab) {
+    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab, String searchText) {
         if("1".equals(tab)){
 
         }else if("2".equals(tab)){

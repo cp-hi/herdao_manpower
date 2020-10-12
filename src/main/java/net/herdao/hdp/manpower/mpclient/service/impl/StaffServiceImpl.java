@@ -16,12 +16,19 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDto;
+import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -125,6 +132,24 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("toJoin",toJoin);
 		map.put("toLeave",toLeave);
 		return map;
+	}
+
+	@Override
+	public IPage staffPage(Page page, Staff staff, String searchText){
+		QueryWrapper<Staff> wrapper =  Wrappers.query(staff);
+		if(searchText!=null && !"".equals(searchText)){
+			wrapper.like("CONCAT(STAFF_NAME,STAFF_CODE)", searchText);
+		}
+		IPage result = this.page(page, wrapper);
+		List<Staff> list = result.getRecords();
+		List<StaffListDto> entityList = new ArrayList<>();
+		StaffListDto entity;
+		for(int i=0;i<list.size();i++){
+			entity = DtoUtils.transferObject(list.get(i), StaffListDto.class);
+			entityList.add(entity);
+		}
+		result.setRecords(entityList);
+		return result;
 	}
 
 }
