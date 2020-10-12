@@ -91,7 +91,7 @@ public class JobLevelController {
     @SysLog("导入")
     @PostMapping("/import")
     public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(response, jobLevelService);
+        ImportExcelListener listener = new ImportExcelListener( jobLevelService);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, JobLevelDTO.class, listener).sheet().doRead();

@@ -40,19 +40,15 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Setter
     EntityService<T> entityService;
 
-    @Setter
-    HttpServletResponse servletResponse;
-
     protected ImportExcelListener() {
     }
 
-    public ImportExcelListener(HttpServletResponse response, EntityService<T> service) {
-        this(response, service, 50);
+    public ImportExcelListener(EntityService<T> service) {
+        this(service, 50);
     }
 
-    public ImportExcelListener(HttpServletResponse response, EntityService<T> service, Integer batchCount) {
+    public ImportExcelListener(EntityService<T> service, Integer batchCount) {
         this.dataList = new ArrayList<>();
-        this.servletResponse = response;
         this.entityService = service;
         this.BATCH_COUNT = batchCount;
         this.hasError = false;
@@ -78,17 +74,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @SneakyThrows
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-//        if (this.hasError) {
-//            //TODO 完善错误说明
-//            for (T t : dataList) {
-//                Field[] fields = AnnotationUtils.getAllAnnotationFields(t, ExcelProperty.class);
-//                ExcelProperty fieldErrMsg = AnnotationUtils.getAnnotationByFieldName(fields, "errMsg", ExcelProperty.class);
-//                AnnotationUtils.setAnnotationInfo(fieldErrMsg, "index", fields.length);
-//                System.out.println(fieldErrMsg.index());
-//            }
-//            throw new Exception("导入出现错误，请查看导错误原因");
-//        }
-
+        //TODO 增加导出字段动态排序
         if (hasError) throw new Exception("导入出现错误，请查看导错误原因");
         this.entityService.saveList(dataList, BATCH_COUNT);
     }
