@@ -51,6 +51,6 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
      * @param staffCode
      * @return
      */
-    List<UserpostDTO> findUserPostHistory(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<UserpostDTO> findUserPostHistory(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode,@Param("staffId") String staffId);
 
 }

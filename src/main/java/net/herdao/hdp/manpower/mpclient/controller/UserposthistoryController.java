@@ -118,7 +118,7 @@ public class UserposthistoryController {
             @ApiImplicitParam(name="orgId",value="组织ID"),
             @ApiImplicitParam(name="staffName",value="员工姓名"),
             @ApiImplicitParam(name="staffCode",value="员工工号"),
-            @ApiImplicitParam(name="staffId",value="员工工号"),
+            @ApiImplicitParam(name="staffId",value="员工ID"),
      })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findUserPostHistoryPage(Page page, String orgId,String staffName, String staffCode,String staffId) {
@@ -135,13 +135,14 @@ public class UserposthistoryController {
     @SysLog("导出历史任职情况Excel" )
     @PostMapping("/exportStaffJobHis")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="staffName",value="员工姓名"),
+        @ApiImplicitParam(name="staffCode",value="员工工号"),
+        @ApiImplicitParam(name="staffId",value="员工ID")
     })
-    public R exportStaffJobHis(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+    public R exportStaffJobHis(HttpServletResponse response, String orgId, String staffName, String staffCode,String staffId) {
         try {
-            List<UserpostDTO> list = userposthistoryService.findUserPostHistory(orgId, staffName, staffCode);
+            List<UserpostDTO> list = userposthistoryService.findUserPostHistory(orgId, staffName, staffCode,staffId);
             ExcelUtils.export2Web(response, "历史任职情况", "历史任职情况", UserpostDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
