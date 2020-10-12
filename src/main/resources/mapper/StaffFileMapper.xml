@@ -19,6 +19,7 @@
              <result property="delFlag" column="DEL_FLAG"/>
              <result property="secondTypeId" column="SECOND_TYPE_ID"/>
              <result property="uploadId" column="UPLOAD_ID"/>
+             <result property="fileType" column="FILE_TYPE"/>
        </resultMap>
 
      <!-- 员工附件分页-->
@@ -26,7 +27,7 @@
             SELECT 	sc.id,
 				s.STAFF_CODE staffCode,
 				s.STAFF_NAME staffName,
-				f.`NAME` fileType,
+				f.file_type fileType,
 				sc.`NAME` fileName,
 			 ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
 				sc.MODIFIED_TIME modifyTime,
