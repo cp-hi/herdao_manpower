@@ -45,8 +45,8 @@ public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMappe
     private RemoteUserService remoteUserService;
 
     @Override
-    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page, orgId, staffName, staffCode);
+    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode,String staffId) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page, orgId, staffName, staffCode,staffId);
         return pageResult;
     }
 

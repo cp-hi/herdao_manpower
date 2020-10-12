@@ -17,6 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,7 @@ import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -95,7 +98,7 @@ public class StaffController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffPage(Page page, Staff staff, String tab) {
+    public R getStaffPage(Page page, Staff staff, String tab, String searchText) {
         if("1".equals(tab)){
 
         }else if("2".equals(tab)){
@@ -105,13 +108,13 @@ public class StaffController {
         }else if("4".equals(tab)){
             staff.setJobType("3");
         }
-        return R.ok(staffService.page(page, Wrappers.query(staff)));
+        return R.ok(staffService.staffPage(page, staff, searchText));
     }
 
     @ApiOperation(value = "导出员工信息", notes = "导出员工信息")
     @GetMapping("/export" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab) {
+    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab, String searchText) {
         if("1".equals(tab)){
 
         }else if("2".equals(tab)){
@@ -327,6 +330,47 @@ public class StaffController {
     @GetMapping("/selectStaffOrganizationComponent")
     public R<?> selectStaffOrganizationComponent() {
         return staffService.selectStaffOrganizationComponent();
+    }
+
+
+    /**
+     * 通过id查询员工工作年限
+     * @param id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工工作情况", notes = "通过id查询")
+    @GetMapping("/getStaffWorkLimit/{id}" )
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="员工ID")
+    })
+    public R getStaffWorkLimit(@PathVariable("id" ) Long id) {
+        Staff staff = staffService.getById(id);
+        if (staff!=null){
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            if (staff.getWorkDate()!=null){
+                Integer workSeniority = DateUtils.getYearByNowFloor(staff.getWorkDate().format(df));
+                staff.setWorkSeniority(new BigDecimal(workSeniority.toString()));
+            }
+
+            if (staff.getEntryTime()!=null){
+                Integer companySeniority = DateUtils.getYearByNowFloor(staff.getEntryTime().format(df));
+                staff.setCompanySeniority(new BigDecimal(companySeniority.toString()));
+            }
+
+            if (staff.getEntryThreeGroupsTime()!=null){
+                Integer threeGroupsSeniority = DateUtils.getYearByNowFloor(staff.getEntryThreeGroupsTime().format(df));
+                staff.setThreeGroupsSeniority(new BigDecimal(threeGroupsSeniority.toString()));
+            }
+
+            //实际工作工龄
+            if (staff.getWorkSeniority()!=null && staff.getNoWorkingSeniority()!=null){
+                BigDecimal realWorkAge = staff.getWorkSeniority().subtract(staff.getNoWorkingSeniority());
+                staff.setRealWorkAge(realWorkAge);
+            }
+        }
+
+        return R.ok(staff);
     }
 
 }

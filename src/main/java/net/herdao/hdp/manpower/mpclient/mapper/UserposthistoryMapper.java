@@ -42,7 +42,7 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
      * @param staffCode
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode,@Param("staffId") String staffId);
 
     /**
      * 历史任职情况分页

@@ -117,11 +117,12 @@ public class UserposthistoryController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="orgId",value="组织ID"),
             @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
-    })
+            @ApiImplicitParam(name="staffCode",value="员工工号"),
+            @ApiImplicitParam(name="staffId",value="员工工号"),
+     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findUserPostHistoryPage(Page page, String orgId,String staffName, String staffCode) {
-        Page pageResult = userposthistoryService.findUserPostHistoryPage(page, orgId, staffName, staffCode);
+    public R findUserPostHistoryPage(Page page, String orgId,String staffName, String staffCode,String staffId) {
+        Page pageResult = userposthistoryService.findUserPostHistoryPage(page, orgId, staffName, staffCode,staffId);
         return R.ok(pageResult);
     }
 

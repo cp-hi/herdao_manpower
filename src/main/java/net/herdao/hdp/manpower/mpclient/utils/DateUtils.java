@@ -152,7 +152,6 @@ public class DateUtils {
 
     /**
      * 获取日期所在季的第一天
-     *
      * @param date基准日期yyyy
      *      -MM-dd
      * @return String
@@ -851,6 +850,54 @@ public class DateUtils {
     }
 
     /**
+     * 计算起始日期和当前日期相差多少个月
+     * @param stDate
+     * @return
+     */
+    public static Integer getMonthByNow(String stDate) {
+        int month = 0, day = 0;
+        try {
+            LocalDateTime nowLocalDateTime = DateUtils.getNowLocalDateTime();
+            Calendar endCalendar = Calendar.getInstance();
+            String currentTime = getCurrentTime();
+            endCalendar.setTime(stringToDate(currentTime, "yyyy-MM-dd"));
+            int enDay = endCalendar.get(Calendar.DATE);
+
+            Calendar lastMonthCalendar = Calendar.getInstance();
+            lastMonthCalendar.setTime(stringToDate(currentTime, "yyyy-MM-dd"));
+            lastMonthCalendar.set(Calendar.MONTH, endCalendar.get(Calendar.MONTH) - 1);
+            int dayOfMonth = lastMonthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+            Calendar stCalendar = Calendar.getInstance();
+            stCalendar.setTime(stringToDate(stDate, "yyyy-MM-dd"));
+
+            month = getMonthSpace(stDate, currentTime);
+            return  month ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return month;
+    }
+
+    /**
+     * 计算起始日期和当前日期相差多少个年（向下取整，例如：18个月，不足两年算一年）
+     * @param stDate
+     * @return
+     */
+    public static Integer getYearByNowFloor(String stDate) {
+        Integer year=0;
+        Integer month = getMonthByNow(stDate);
+        if (month!=null){
+            Double totalYear = Math.floor(month / 12);
+            year = totalYear.intValue();
+        }
+
+        return year;
+    }
+
+
+    /**
      * 计算连个日期相差多少月+天
      * @param stDate
      * @param endDate
@@ -889,9 +936,7 @@ public class DateUtils {
             e.printStackTrace();
             return "计算失败";
         }
-
     }
-
 
     /**
      * 计算两个日期相差多少月
@@ -931,4 +976,16 @@ public class DateUtils {
         date = formatter.parse(strTime);
         return date;
     }
+
+    /**
+     * 获取当前时间
+     */
+    public static String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        String now = sdf.format(date);
+        return now;
+     }
+
  }

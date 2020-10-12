@@ -99,6 +99,9 @@ public class RemoteFileController {
 	 * @return
 	 */
 	@PostMapping("/downloadFile")
+	@ApiImplicitParams({
+	 	@ApiImplicitParam(name="fileId",value="文件ID")
+	})
  	public R downloadFile(HttpServletResponse response,String fileId)  {
 		try {
 			String downFileUrlDev = env.getProperty("download.file.url.dev");

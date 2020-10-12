@@ -46,7 +46,7 @@ public interface UserpostService extends IService<Userpost> {
      * @param staffCode
      * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,String orgId, String staffName, String staffCode,String staffId);
 
     /**
      * 现任职情况
@@ -55,7 +55,7 @@ public interface UserpostService extends IService<Userpost> {
      * @param staffCode
      * @return
      */
-    List<UserpostDTO> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<UserpostDTO> findUserPostNow( String orgId,  String staffName,  String staffCode,String staffId);
 
     /**
      * 新增现任职情况

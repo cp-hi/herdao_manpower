@@ -540,4 +540,10 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="中间停缴社保年份")
     private BigDecimal interruptYear;
+
+    /**
+     * 实际工作工龄
+     */
+    @ApiModelProperty(value="实际工作工龄")
+    private BigDecimal realWorkAge;
 }

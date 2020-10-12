@@ -17,6 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
@@ -40,4 +42,6 @@ public interface StaffService extends IService<Staff> {
 	public R<?> selectStaffOrganizationComponent();
 
 	Map<String, Object> queryCount();
+
+	IPage staffPage(Page page, Staff staff, String searchText);
 }
