@@ -1,25 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.alibaba.excel.enums.CellDataTypeEnum;
-import com.alibaba.excel.metadata.CellData;
-import com.alibaba.excel.metadata.GlobalConfiguration;
-import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.dto.JobLevelDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
+import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +25,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
-    GroupService groupService;
+    JobGradeService jobGradeService;
 
     @Override
     public List<Map> jobLevelList(Long groupId) {
@@ -49,18 +39,17 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void saveVerify( JobLevel jobLevel) {
-        if (baseMapper.chkCodeAndName(jobLevel))
-            throw new RuntimeException("请检查职级的名称和编码");
-        if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
-            throw new RuntimeException("职级编码重复了");
+    public void saveVerify(JobLevel jobLevel) {
+//        if (baseMapper.chkCodeAndName(jobLevel))
+//            throw new RuntimeException("请检查职级的名称和编码");
+//        if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
+//            throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobLevelName(jobLevel))
             throw new RuntimeException("职级名称重复了");
     }
 
     @Override
-    public void importVerify(@Valid JobLevel jobLevel) {
-        this.saveVerify(jobLevel);
+    public void importVerify(JobLevel jobLevel) {
 
         //TODO 添加校验方法
         JobLevelDTO dto = (JobLevelDTO) jobLevel;
@@ -68,20 +57,24 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         JobLevel tmp = this.getOne(new QueryWrapper<JobLevel>()
                 .eq("JOB_LEVEL_CODE", dto.getJobLevelCode())
                 .eq("JOB_LEVEL_NAME", dto.getJobLevelName()));
-        Group group = groupService.getOne(new QueryWrapper<Group>()
-                .eq("GROUP_NAME", dto.getGroup()));
 
-        if (null == group)
-            throw new RuntimeException("查不到此集团：" + dto.getGroup());
+        JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
+                .eq("JOB_GRADE_NAME", dto.getJobGrade()));
+
+        if (null == jobGrade)
+            throw new RuntimeException("查不到此职等：" + dto.getJobGrade());
 
         if (null != tmp) {
-            if (tmp.getGroupId().equals(group.getId()))
-                throw new RuntimeException("导入的集团与原先保存的集团不一致");
+            if (!tmp.getGroupId().equals(jobGrade.getGroupId()))
+                throw new RuntimeException("导入的职等中的集团与原先保存的集团不一致");
             jobLevel.setId(tmp.getId());
         }
-        dto.setGroupId(group.getId());
+        jobLevel.setJobGradeId(jobGrade.getId());
+        jobLevel.setGroupId(jobGrade.getGroupId());
         if (null == dto.getGroupId())
             throw new RuntimeException("集团ID为空");
-//        System.out.println(jobLevel);
+
+        //这个验证要放 最后，因为前面要给ID赋值
+        this.saveVerify(jobLevel);
     }
 }

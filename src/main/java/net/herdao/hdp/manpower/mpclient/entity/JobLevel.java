@@ -38,10 +38,15 @@ public class JobLevel extends BaseEntity<JobLevel> {
     @ExcelProperty("描述")
     @ApiModelProperty(value = "描述")
     private String description;
-    @ExcelProperty("职等ID")
-    @ApiModelProperty(value = "职等ID")
+    //    @ExcelProperty("职等ID")
+    @ApiModelProperty( "职等ID")
     private Long jobGradeId;
-    @ExcelProperty("集团ID")
+
+    //    @ExcelProperty("集团ID")
     @ApiModelProperty(value = "集团ID")
     private Long groupId;
+
+    @ExcelProperty("排序")
+    @ApiModelProperty("排序")
+    private Integer sortNo;
 }

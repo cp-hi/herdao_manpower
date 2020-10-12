@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.entity.base;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -18,6 +20,7 @@ import java.util.Date;
  * @Date 2020/9/11 9:13
  * @Version 1.0
  */
+@ExcelIgnoreUnannotated
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BaseEntity<T extends Model<?>> extends BaseModel<T> {

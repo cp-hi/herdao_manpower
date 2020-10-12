@@ -22,4 +22,5 @@ public class JobGrade extends BaseEntity<JobGrade> {
     private String jobGradeName;
     private String jobGradeCode;
     private String description;
+    private Long groupId;
 }
