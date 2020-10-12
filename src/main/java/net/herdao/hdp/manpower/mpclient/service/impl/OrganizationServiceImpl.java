@@ -534,6 +534,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
                     //生成组织编码orgCode
                     createOrgCode(organization, parentOrg);
+                    //生成组织全称 orgFullName
+                    createOrgFullName(organization, parentOrg);
                 }
                 status = super.saveOrUpdate(organization);
             }
@@ -578,6 +580,20 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
             String newOrgCode=org.getParentIdStr()+"001";
             org.setOrgCode(newOrgCode);
+        }
+    }
+
+    /**
+     * 生成组织全称 orgFullName （广州/天河/珠江新城/）
+     */
+    private void createOrgFullName(Organization org, Organization parentOrg) {
+        if (parentOrg!=null){
+            if(parentOrg.getOrgFullname()!=null && !parentOrg.getOrgFullname().isEmpty()){
+                String parentOrgFullname = parentOrg.getOrgFullname();
+                org.setOrgFullname(parentOrgFullname+"/"+org.getOrgFullname()+"/");
+            }
+        }else{//无父组织 不用挂靠
+            org.setOrgFullname(org.getOrgFullname()+"/");
         }
     }
 

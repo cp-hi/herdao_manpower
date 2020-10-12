@@ -127,4 +127,10 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="上传ID(调用平台上传功能后返回的ID)")
     private String fileId;
+
+    /**
+     * 文件类型
+     */
+    @ApiModelProperty(value="文件类型")
+    private String fileType;
 }

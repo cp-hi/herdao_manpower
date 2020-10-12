@@ -1,7 +1,10 @@
 
 package net.herdao.hdp.manpower.sys.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
@@ -17,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLDecoder;
 
 /**
  * <p>
@@ -45,8 +47,15 @@ public class RemoteFileController {
 	 */
 	@PostMapping("/uploadFile")
 	@Transactional(rollbackFor = Exception.class)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="file",value="文件")
+	})
  	public R uploadFile(@RequestParam(value = "file") MultipartFile file)  {
 		try {
+			if (file ==null || file.isEmpty()){
+				return R.failed("请选择上传文件！");
+			}
+
 			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
 			HdpUser user = SecurityUtils.getUser();
 			R result = OssFileUtils.uploadFile(file,"hdc", "ftp"+File.separator+"hdp", user.getId(), uploadFileUrlDev);
@@ -63,6 +72,14 @@ public class RemoteFileController {
 				}
 				//传一个员工id
 				entity.setStaffId(1L);
+
+				//获得文件后缀名 文件类型
+ 				int begin = file.getOriginalFilename().indexOf(".");
+				int last = file.getOriginalFilename().length();
+				String fileType = file.getOriginalFilename().substring(begin, last);
+				//保存文件后缀名 文件类型
+				entity.setFileType(fileType);
+
 				staffFileService.saveOrUpdate(entity);
 			}
  		}catch (Exception ex){
@@ -82,20 +99,22 @@ public class RemoteFileController {
 	 * @return
 	 */
 	@PostMapping("/downloadFile")
- 	public void downloadFile(HttpServletResponse response,String fileId)  {
+ 	public R downloadFile(HttpServletResponse response,String fileId)  {
 		try {
 			String downFileUrlDev = env.getProperty("download.file.url.dev");
-			fileId="1839edb3-c1f7-4a37-b4c8-da75f1f17711";
-			String fileName="（新）蓝凌LBPM集成服务接口规范.docx";
-
-			OssFileUtils.downloadFile(response,fileId,fileName,downFileUrlDev);
-
+			StaffFile staffFile = staffFileService.getOne(new QueryWrapper<StaffFile>().eq("file_id", fileId));
+			if (staffFile!=null){
+				OssFileUtils.downloadFile(response,fileId,staffFile.getName(),downFileUrlDev);
+			}else{
+				return R.failed("无对应的下载文件！");
+			}
 
 		}catch (Exception ex){
-			log.error("文件下载失败。",ex);
-
+			log.error("文件下载失败！",ex);
+			return R.failed("文件下载失败！");
 		}
 
+		return R.ok("文件下载成功。");
 	}
 
 	/**
@@ -105,10 +124,13 @@ public class RemoteFileController {
 	 * @return
 	 */
 	@GetMapping("/previewPic")
- 	public void previewPic(HttpServletResponse response)  {
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="fileId",value="文件ID")
+	})
+ 	public void previewPic(HttpServletResponse response,String fileId)  {
 		try {
 			String downloadAddr = env.getProperty("download.file.url.dev");
-			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, "f083cae5-b049-4f1a-81c0-5ef326ba19d7");
+			InputStream fileInputStream = OssFileUtils.getFileInputStream(downloadAddr, fileId);
  			OutputStream os = response.getOutputStream();
 
 			byte[] bytes = new byte[1024];
