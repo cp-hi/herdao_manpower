@@ -49,7 +49,7 @@ public interface UserposthistoryService extends IService<Userposthistory> {
      * @param staffCode
      * @return
      */
-    List<UserpostDTO> findUserPostHistory( @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<UserpostDTO> findUserPostHistory(String orgId, String staffName, String staffCode, String staffId);
 
 
 }

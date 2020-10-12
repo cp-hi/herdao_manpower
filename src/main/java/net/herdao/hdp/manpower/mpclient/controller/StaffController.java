@@ -149,7 +149,8 @@ public class StaffController {
     @ApiOperation("导入")
     @SysLog("导入")
     @PostMapping("/import")
-    public R importExcel(MultipartFile file){
+    public R importExcel(MultipartFile file, String editType){
+        System.out.println(editType);
         try {
             EasyExcel.read(file.getInputStream(), StaffDto.class,
                     new StaffExcelListener<StaffDto, Staff>(staffService, Staff.class)).sheet().doRead();

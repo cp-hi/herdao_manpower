@@ -26,7 +26,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDto;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import org.springframework.stereotype.Service;

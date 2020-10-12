@@ -46,7 +46,7 @@
                 p.POST_NAME postName,
                 jl.JOB_LEVEL_NAME jobLevelCode,
                 di.label customPost
-         FROM  mp_userposthistory u
+            FROM  mp_userposthistory u
                 INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
                 LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
                 LEFT JOIN mp_post p ON p.ID = u.POST_ID
@@ -56,15 +56,18 @@
                 LEFT JOIN mp_job_level jl ON jl.JOB_LEVEL_CODE = P.JOB_LEVEL_ID
                 WHERE
                 1 = 1
-             AND u.del_flag = 0
+                AND u.del_flag = 0
+            <if test="staffId != null">
+                and s.id = #{staffId}
+            </if>
             <if test="orgId != null">
                 and u.ORG_DEPT_ID = #{orgId}
             </if>
             <if test="staffName != null">
-                or s.staff_name LIKE concat(#{staffName},'%')
+                and s.staff_name LIKE concat(#{staffName},'%')
             </if>
             <if test="staffCode != null">
-                or s.staff_code LIKE concat(#{staffCode},'%')
+                and s.staff_code LIKE concat(#{staffCode},'%')
             </if>
     </select>
 
@@ -74,28 +77,33 @@
                 S.STAFF_CODE staffCode,
                 u.START_DATE startDate,
                 a.ORG_NAME orgName,
-                sec.SECTION_NAME  sectionName,
+                sec.SECTION_NAME sectionName,
                 pi.PIPELINE_NAME pipelineName,
                 p.POST_NAME postName,
-                p.JOB_LEVEL_CODE jobLevelCode,
+                jl.JOB_LEVEL_NAME jobLevelCode,
                 di.label customPost
-         FROM   mp_userposthistory u
-        LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID AND u.MAIN_POST = 1
-        LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
-        LEFT JOIN mp_post p on p.ID=u.POST_ID
-        LEFT JOIN mp_section sec on sec.id=p.SECTION_CODE
-        LEFT JOIN mp_pipeline pi on pi.id=p.PIPELINE_CODE
-        LEFT JOIN sys_dict_item  di on di.id= u.office_post_type
-        WHERE 1=1
-        and u.del_flag = 0
+        FROM  mp_userposthistory u
+        INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
+        LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
+        LEFT JOIN mp_post p ON p.ID = u.POST_ID
+        LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
+        LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
+        LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
+        LEFT JOIN mp_job_level jl ON jl.JOB_LEVEL_CODE = P.JOB_LEVEL_ID
+        WHERE
+        1 = 1
+        AND u.del_flag = 0
+        <if test="staffId != null">
+            and s.id = #{staffId}
+        </if>
         <if test="orgId != null">
             and u.ORG_DEPT_ID = #{orgId}
         </if>
         <if test="staffName != null">
-            or s.staff_name LIKE concat(#{staffName},'%')
+            and s.staff_name LIKE concat(#{staffName},'%')
         </if>
         <if test="staffCode != null">
-            or s.staff_code LIKE concat(#{staffCode},'%')
+            and s.staff_code LIKE concat(#{staffCode},'%')
         </if>
     </select>
 </mapper>

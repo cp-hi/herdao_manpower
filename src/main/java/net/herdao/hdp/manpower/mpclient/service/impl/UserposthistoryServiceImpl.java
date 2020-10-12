@@ -73,8 +73,8 @@ public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMappe
     }
 
     @Override
-    public List<UserpostDTO> findUserPostHistory(String orgId, String staffName, String staffCode) {
-        List<UserpostDTO> list = this.baseMapper.findUserPostHistory(orgId, staffName, staffCode);
+    public List<UserpostDTO> findUserPostHistory(String orgId, String staffName, String staffCode,String staffId) {
+        List<UserpostDTO> list = this.baseMapper.findUserPostHistory(orgId, staffName, staffCode,staffId);
         return list;
     }
 }
