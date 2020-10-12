@@ -41,12 +41,7 @@ public interface EntityService<T> extends IService<T> {
     default void saveList(List<T> dataList, Integer batchCount) {
         if (0 >= batchCount) batchCount = BATCH_COUNT;
         List<List<T>> batch = Lists.partition(dataList, batchCount);
-        for (List<T> tmp : batch) {
-            if (2 == ((JobLevelDTO) tmp.get(0)).getGroupId())
-                throw new RuntimeException("测试异常");
-
-            this.saveBatch(tmp);
-        }
+        for (List<T> tmp : batch)  this.saveBatch(tmp);
         dataList.clear();
     }
 }

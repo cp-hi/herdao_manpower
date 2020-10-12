@@ -14,9 +14,9 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
  */
 @Data
 public class JobLevelDTO  extends JobLevel implements ExcelDTO{
-    @ExcelProperty("职等")
+    @ExcelProperty(value = "职等",index = 1)
     private String jobGrade;
 
-    @ExcelProperty(value = "错误信息",index = 4)
+    @ExcelProperty(value = "错误信息",index =4)
     private String errMsg;
 }
