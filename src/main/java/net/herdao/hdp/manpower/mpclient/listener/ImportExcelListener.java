@@ -2,8 +2,12 @@ package net.herdao.hdp.manpower.mpclient.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.google.common.collect.Lists;
+import lombok.Setter;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import org.springframework.transaction.annotation.Transactional;
+import software.amazon.ion.Decimal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +23,19 @@ import java.util.List;
 public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     List<T> dataList = null;
 
+    Integer BATCH_COUNT = 50;
+
+    @Setter
     EntityService<T> entityService;
 
     public ImportExcelListener(EntityService<T> service) {
+        this(service, 50);
+    }
+
+    public ImportExcelListener(EntityService<T> service, Integer batchCount) {
         dataList = new ArrayList<>();
         this.entityService = service;
+        this.BATCH_COUNT = batchCount;
     }
 
     @Override
@@ -32,9 +44,17 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
         dataList.add(t);
     }
 
+    /**
+     * 分析完数据后整体保存
+     * @Author ljan
+     * @param analysisContext
+     */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        entityService.saveBatch(dataList);
+        //分批保存，每批50条
+        List<List<T>> batch = Lists.partition(dataList, BATCH_COUNT);
+        for (List<T> tmp : batch) entityService.saveBatch(tmp);
         dataList.clear();
     }
 }

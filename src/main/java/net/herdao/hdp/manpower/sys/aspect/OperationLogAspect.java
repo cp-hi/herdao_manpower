@@ -136,6 +136,7 @@ public class OperationLogAspect {
 
     @After("pointCutOperate()")
     public void afterOperate(JoinPoint point) {
+
         MethodSignature signature = (MethodSignature) point.getSignature();
         OperationEntity operation = getOperationEntity(point);
         SysUser sysUser = getSysUser();
