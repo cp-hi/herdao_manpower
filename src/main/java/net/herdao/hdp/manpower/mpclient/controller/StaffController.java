@@ -27,6 +27,7 @@ import java.util.Map;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDto;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -180,7 +181,7 @@ public class StaffController {
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(staffService.getById(id));
+        return R.ok(staffService.getStaffById(id));
     }
 
     /**
@@ -285,28 +286,28 @@ public class StaffController {
 
     /**
      * 新增员工表
-     * @param staff 员工表
+     * @param staffForm 员工信息
      * @return R
      */
     @ApiOperation(value = "新增员工表", notes = "新增员工表")
     @SysLog("新增员工表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
-    public R save(@RequestBody Staff staff) {
-        return R.ok(staffService.save(staff));
+    public R save(@RequestBody StaffFormDto staffForm) {
+        return R.ok(staffService.staffSave(staffForm));
     }
 
     /**
      * 修改员工表
-     * @param staff 员工表
+     * @param staffForm 员工表
      * @return R
      */
     @ApiOperation(value = "修改员工表", notes = "修改员工表")
     @SysLog("修改员工表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
-    public R updateById(@RequestBody Staff staff) {
-        return R.ok(staffService.updateById(staff));
+    public R updateById(@RequestBody StaffFormDto staffForm) {
+        return R.ok(staffService.staffUpdate(staffForm));
     }
 
     /**
