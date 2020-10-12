@@ -26,7 +26,7 @@ public interface UserposthistoryService extends IService<Userposthistory> {
      * @param staffCode
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode, String staffId);
 
     /**
      * 新增员工历史任职情况

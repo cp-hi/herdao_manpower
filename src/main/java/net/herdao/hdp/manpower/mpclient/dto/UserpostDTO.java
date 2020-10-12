@@ -46,7 +46,7 @@ public class UserpostDTO {
 
     @ExcelProperty(value = "职级")
     @ApiModelProperty(value="职级")
-    private String jobLevelCode;
+    private String jobLevelName;
 
     @ExcelProperty(value = "是否定制岗位")
     @ApiModelProperty(value="是否定制岗位")

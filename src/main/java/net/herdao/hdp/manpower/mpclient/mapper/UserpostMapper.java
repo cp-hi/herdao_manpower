@@ -35,7 +35,7 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      * @param staffCode
      * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode , @Param("staffId") String staffId);
 
     /**
      * 现任职情况
@@ -44,7 +44,6 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      * @param staffCode
      * @return
      */
-    List<UserpostDTO> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
-
+    List<UserpostDTO> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode, @Param("staffId") String staffId);
 
 }

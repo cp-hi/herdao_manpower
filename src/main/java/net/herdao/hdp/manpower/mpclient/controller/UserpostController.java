@@ -111,15 +111,16 @@ public class UserpostController {
      */
     @ApiOperation(value = "现任职情况分页", notes = "现任职情况分页")
     @GetMapping("/findUserPostNowPage")
-    @OperationEntity(operation = "员工异动情况分页" ,clazz = Stafftransaction.class )
+    @OperationEntity(operation = "现任职情况分页" ,clazz = Stafftransaction.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="orgId",value="组织ID"),
             @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+            @ApiImplicitParam(name="staffCode",value="员工工号"),
+            @ApiImplicitParam(name="staffId",value="员工id")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findUserPostNowPage(Page page, String orgId,String staffName, String staffCode) {
-        Page pageResult = userpostService.findUserPostNowPage(page, orgId, staffName, staffCode);
+    public R findUserPostNowPage(Page page, String orgId,String staffName, String staffCode ,String staffId) {
+        Page pageResult = userpostService.findUserPostNowPage(page, orgId, staffName, staffCode,staffId);
         return R.ok(pageResult);
     }
 
@@ -134,11 +135,12 @@ public class UserpostController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="orgId",value="组织ID"),
             @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+            @ApiImplicitParam(name="staffCode",value="员工工号"),
+            @ApiImplicitParam(name="staffId",value="员工id")
     })
-    public R exportStaffNowJob(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+    public R exportStaffNowJob(HttpServletResponse response, String orgId, String staffName, String staffCode ,String staffId) {
         try {
-            List<UserpostDTO> list = userpostService.findUserPostNow(orgId, staffName, staffCode);
+            List<UserpostDTO> list = userpostService.findUserPostNow(orgId, staffName, staffCode,staffId);
             ExcelUtils.export2Web(response, "现任职情况", "现任职情况表", UserpostDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();

@@ -49,14 +49,14 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
-    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page, orgId, staffName, staffCode);
+    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode ,String staffId) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page, orgId, staffName, staffCode,staffId);
         return pageResult;
     }
 
     @Override
-    public List<UserpostDTO> findUserPostNow(String orgId, String staffName, String staffCode) {
-        List<UserpostDTO> list = this.baseMapper.findUserPostNow(orgId, staffName, staffCode);
+    public List<UserpostDTO> findUserPostNow(String orgId, String staffName, String staffCode,String staffId) {
+        List<UserpostDTO> list = this.baseMapper.findUserPostNow(orgId, staffName, staffCode ,staffId);
         return list;
     }
 
