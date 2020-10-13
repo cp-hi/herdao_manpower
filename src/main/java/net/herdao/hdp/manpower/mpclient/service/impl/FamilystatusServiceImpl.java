@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Familystatus> implements FamilystatusService {
 
     @Override
-    public Page<Organization> findFamilyStatusPage(Page<Familystatus> page, String orgId, String staffName, String staffCode) {
-        Page<Organization> pageResult = this.baseMapper.findFamilyStatusPage(page, orgId,staffName,staffCode);
+    public Page<Familystatus> findFamilyStatusPage(Page<Familystatus> page, String orgId, String staffName, String staffCode) {
+        Page<Familystatus> pageResult = this.baseMapper.findFamilyStatusPage(page, orgId,staffName,staffCode);
         return pageResult;
     }
 }

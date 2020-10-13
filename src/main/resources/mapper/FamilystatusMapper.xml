@@ -34,7 +34,8 @@
 
       <!-- 员工家庭情况分页 -->
       <select id="findFamilyStatusPage" resultMap="familystatusMap">
-            SELECT    s.staff_name,
+            SELECT    f.id,
+                      s.staff_name,
                       s.staff_code,
                       f.NAME,
                       f.RELATIONS,
@@ -47,7 +48,7 @@
                   FROM
                       mp_familystatus f
                       LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                      LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
+                      LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
                       where 1=1
                       <if test="orgId != null">
                           and u.ORG_DEPT_ID = #{orgId}

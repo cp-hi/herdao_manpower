@@ -22,5 +22,5 @@ public interface FamilystatusMapper extends BaseMapper<Familystatus> {
      * @param orgId
      * @return
      */
-    Page<Organization> findFamilyStatusPage(Page<Familystatus> page, @Param("orgId")  String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<Familystatus> findFamilyStatusPage(Page<Familystatus> page, @Param("orgId")  String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 }

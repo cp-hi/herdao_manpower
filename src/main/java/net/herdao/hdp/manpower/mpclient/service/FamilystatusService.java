@@ -19,7 +19,9 @@ public interface FamilystatusService extends IService<Familystatus> {
      * 员工家庭情况分页
      * @param page 分页对象
      * @param orgId
+     * @param staffName
+     * @param staffCode
      * @return
      */
-    Page<Organization> findFamilyStatusPage(Page<Familystatus> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<Familystatus> findFamilyStatusPage(Page<Familystatus> page, String orgId,  String staffName,  String staffCode);
 }
