@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
@@ -18,10 +19,20 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 @TableName("MP_Post_Seq")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位序列")
-public class PostSeq  extends BaseEntity<PostSeq> {
+public class PostSeq extends BaseEntity<PostSeq> {
+
+    @ApiModelProperty(value = "岗位序列名称", required = true)
     private String postSeqName;
+
+    @ApiModelProperty(value = "岗位序列编码")
     private String postSeqCode;
+
+    @ApiModelProperty(value = "描述")
     private String description;
+
+    @ApiModelProperty(value = "集团ID")
     private Long groupId;
+
+    @ApiModelProperty(value = "父ID")
     private Long parentId;
 }

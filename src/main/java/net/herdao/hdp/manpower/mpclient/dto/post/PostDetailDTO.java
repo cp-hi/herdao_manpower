@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto;
+package net.herdao.hdp.manpower.mpclient.dto.post;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
