@@ -152,24 +152,15 @@ public class OperationLogAspect {
             log.setObjId(Long.valueOf(operation.objId()));
         } else if (StringUtils.isNotBlank(operation.key())
                 && StringUtils.isBlank(operation.objId())) {
-            //TODO 验证key 索引是否正确
-            int index = Arrays.binarySearch(signature.getParameterNames(), operation.key());
+            int index = Arrays.asList(signature.getParameterNames()).indexOf(operation.key());
             Object objId = point.getArgs()[index];
-            log.setObjId((Long) objId);
+            log.setObjId(Long.valueOf(objId.toString()));
         }
         log.setOperatedTime(new Date());
         operationLogService.save(log);
     }
 
     //endregion
-
-//    @Before("pointCutImport()")
-//    public void beforeImport(JoinPoint point){
-//        MethodSignature signature = (MethodSignature) point.getSignature();
-//        Method method = signature.getMethod();
-//        ImportField field = method.getAnnotation(ImportField.class);
-//        Object[] args = point.getArgs();
-//    }
 
     /**
      * 设置注解值
