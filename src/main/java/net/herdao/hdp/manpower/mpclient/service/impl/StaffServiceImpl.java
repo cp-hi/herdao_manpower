@@ -26,8 +26,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormBaseDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormJobDto;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDto;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -151,4 +155,29 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		return result;
 	}
 
+	@Override
+	public boolean staffSave(StaffFormDto staffForm){
+		Staff staff = new Staff();
+		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
+		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
+		return this.save(staff);
+	}
+
+    @Override
+    public boolean staffUpdate(StaffFormDto staffForm){
+        Staff staff = new Staff();
+        BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
+        BeanUtils.copyProperties(staffForm.getJobObj(), staff);
+        return this.updateById(staff);
+    }
+
+    public StaffFormDto getStaffById(Long id){
+	    Staff staff = this.getById(id);
+        StaffFormBaseDto base = new StaffFormBaseDto();
+        StaffFormJobDto job = new StaffFormJobDto();
+        BeanUtils.copyProperties(staff, base);
+        BeanUtils.copyProperties(staff, job);
+        StaffFormDto form = new StaffFormDto(base, job);
+        return form;
+    }
 }
