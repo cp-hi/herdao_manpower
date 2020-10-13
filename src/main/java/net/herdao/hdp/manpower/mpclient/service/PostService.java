@@ -2,12 +2,10 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 
-import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

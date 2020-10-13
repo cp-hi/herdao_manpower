@@ -2,8 +2,8 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
-import net.herdao.hdp.manpower.mpclient.dto.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -15,9 +15,6 @@ import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
