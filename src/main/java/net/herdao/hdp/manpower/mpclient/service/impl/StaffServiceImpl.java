@@ -171,6 +171,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
         return this.updateById(staff);
     }
 
+	@Override
     public StaffFormDto getStaffById(Long id){
 	    Staff staff = this.getById(id);
         StaffFormBaseDto base = new StaffFormBaseDto();

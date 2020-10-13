@@ -10,18 +10,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@ApiModel(value = "家庭情况分页Dto")
-public class familyStatusListDto {
-
+@ApiModel(value = "家庭情况新增Dto")
+public class FamilyStatusFormDto {
     /**
-     *
-     */
-    @TableId
-    @ApiModelProperty(value="主键ID")
-    private Long id;
-
-    /**
-     * 姓名
+     * 家庭成员姓名
      */
     @ApiModelProperty(value="家庭成员姓名")
     private String name;
@@ -46,37 +38,9 @@ public class familyStatusListDto {
     @ApiModelProperty(value="工作单位/就读学校")
     private String workUnit;
 
-
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="操作时间")
-    private LocalDateTime modifiedTime;
-
     /**
      * 所在地址
      */
     @ApiModelProperty(value="所在地址")
     private String address;
-
-    /**
-     * 修改人(操作人姓名)
-     */
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
-
-    /**
-     * 员工姓名
-     */
-    @ApiModelProperty(value="员工姓名")
-    @TableField(exist = false)
-    private String staffName;
-
-    /**
-     * 员工工号
-     */
-    @ApiModelProperty(value="员工工号")
-    @TableField(exist = false)
-    private String staffCode;
-
 }
