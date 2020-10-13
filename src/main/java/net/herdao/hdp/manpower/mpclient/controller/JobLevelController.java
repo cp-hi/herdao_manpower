@@ -1,13 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.JobLevelDTO;
-import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
@@ -17,22 +15,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.service.impl.GroupServiceImpl;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName JobLevelController
@@ -65,13 +56,6 @@ public class JobLevelController {
         return R.ok(jobLevelService.page(page, queryWrapper));
     }
 
-    @OperationEntity(operation = "查询",key = "id", clazz = JobLevel.class)
-    @GetMapping("/query")
-    @ApiOperation(value = "查询")
-    public R query(String id, String name, String code) {
-        return R.ok();
-    }
-
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list(Long groupId) {
@@ -102,18 +86,21 @@ public class JobLevelController {
     @PostMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "type", value = "操作类型，add:批量新增 update:批量修改"),
+            @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
     })
-    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, ImportExcelListener.ImportTypeEnum type) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(jobLevelService, type);
+    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
+        ImportExcelListener listener = null;
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = file.getInputStream();
+            inputStream = file.getInputStream();
+            listener = new ImportExcelListener(jobLevelService, importType);
             EasyExcel.read(inputStream, JobLevelDTO.class, listener).sheet().doRead();
-            IOUtils.closeQuietly(inputStream);
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "职级导入错误信息", "职级导入错误信息", JobLevelDTO.class, listener.dataList);
+            ExcelUtils.export2Web(response, "职级导入错误信息", "职级导入错误信息",JobLevelDTO.class, listener.getDataList());
             return R.failed(ex.getMessage());
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
     }
 }

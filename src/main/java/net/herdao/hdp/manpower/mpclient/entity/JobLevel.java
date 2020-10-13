@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 /**
  * @ClassName JobLevel
@@ -31,18 +30,16 @@ public class JobLevel extends BaseEntity<JobLevel> {
     @ExcelProperty(value = "职级名称",index = 0)
     @ApiModelProperty(value = "职级名称")
     private String jobLevelName;
-    //    @NotBlank(message = "职级编码不能为空")
-//    @ExcelProperty("职级编码")
+
     @ApiModelProperty(value = "职级编码")
     private String jobLevelCode;
     @ExcelProperty(value = "描述",index = 3)
     @ApiModelProperty(value = "描述")
     private String description;
-    //    @ExcelProperty("职等ID")
+
     @ApiModelProperty( "职等ID")
     private Long jobGradeId;
 
-    //    @ExcelProperty("集团ID")
     @ApiModelProperty(value = "集团ID")
     private Long groupId;
 

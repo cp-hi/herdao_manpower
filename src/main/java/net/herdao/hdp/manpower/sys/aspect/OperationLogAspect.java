@@ -20,14 +20,10 @@ import org.springframework.stereotype.Component;
 
 import org.aspectj.lang.reflect.MethodSignature;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Date;
 import java.lang.reflect.Field;
-import java.util.Map;
 
 
 /**
@@ -38,6 +34,7 @@ import java.util.Map;
  * @Date 2020/9/14 16:11
  * @Version 1.0
  */
+
 @Aspect
 @Component
 @AllArgsConstructor
@@ -61,11 +58,6 @@ public class OperationLogAspect {
         System.out.println("pointCutOperate");
     }
 
-//    @Pointcut("@annotation(net.herdao.hdp.manpower.sys.annotation.ImportField)")
-//    public void pointCutImport() {
-//        System.out.println("pointCutImport");
-//    }
-
     /**
      * 保存时设置操作人信息的切入点
      */
@@ -83,13 +75,14 @@ public class OperationLogAspect {
         if (0 == point.getArgs().length || null == operation)
             return;
         Class<?> service = method.getDeclaringClass();
-        //TODO 完善保存前验证 EntityService
+        //TODO 完善保存前验证 EntityService，并能阻止方法执行
 //        if(service instanceof EntityService){
 //
 //        }
         Object[] args = point.getArgs();
         SysUser sysUser = getSysUser();
         for (Object arg : args) {
+
             if (arg != null && arg instanceof BaseEntity) {
                 BaseEntity entity = (BaseEntity) arg;
                 ApiModel model = (ApiModel) operation.clazz().getAnnotation(ApiModel.class);
@@ -109,7 +102,6 @@ public class OperationLogAspect {
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "修改" + model.value());
                 }
-
             }
         }
     }
@@ -122,17 +114,13 @@ public class OperationLogAspect {
         Object[] args = point.getArgs();
         for (Object arg : args) {
             if (arg != null) {
-
-                Field[] fields = AnnotationUtils.getAllAnnotationFields(arg, TableId.class);
-
                 if (arg instanceof BaseEntity) {
                     BaseEntity entity = (BaseEntity) arg;
-                    //TODO 通过注解方式获取主键
                     if (null != entity.getId() && 0 != entity.getId())
                         AnnotationUtils.setAnnotationInfo(operation, "objId", entity.getId());
                 } else {
-
-//                    fields[0].get()
+                    // 通过注解方式获取主键
+                    Object objId = getTableId(arg);
                 }
             }
         }
@@ -189,4 +177,21 @@ public class OperationLogAspect {
         return operation;
     }
 
+    /**
+     * 通过注解获取对象主键
+     * @param arg
+     * @return
+     */
+    private Object getTableId(Object arg) {
+        Field objId = AnnotationUtils.getOneAnnotationFields(arg, TableId.class);
+        if (null == objId) return null;
+        objId.setAccessible(true);
+        Object val = null;
+        try {
+            val = objId.get(arg);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return val;
+    }
 }
