@@ -16,11 +16,22 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyFormDto;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyListDto;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.mapper.CompanyMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
+import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 注册公司
@@ -30,5 +41,45 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
+
+    @Override
+    public IPage companyPage(Page page, Company company, String searchText){
+        QueryWrapper<Company> wrapper =  Wrappers.query(company);
+        if(searchText!=null && !"".equals(searchText)){
+            wrapper.like("CONCAT(COMPANY_NAME,COMPANY_CODE)", searchText);
+        }
+        IPage result = this.page(page, wrapper);
+        List<Company> list = result.getRecords();
+        List<CompanyListDto> entityList = new ArrayList<>();
+        CompanyListDto entity;
+        for(int i=0;i<list.size();i++){
+            entity = DtoUtils.transferObject(list.get(i), CompanyListDto.class);
+            entityList.add(entity);
+        }
+        result.setRecords(entityList);
+        return result;
+    }
+
+    @Override
+    public boolean companySave(CompanyFormDto companyForm){
+        Company company = new Company();
+        BeanUtils.copyProperties(companyForm, company);
+        return this.save(company);
+    }
+
+    @Override
+    public boolean companyUpdate(CompanyFormDto companyForm){
+        Company company = new Company();
+        BeanUtils.copyProperties(companyForm, company);
+        return this.updateById(company);
+    }
+
+    @Override
+    public CompanyFormDto getCompanyById(Long id){
+        Company company = this.getById(id);
+        CompanyFormDto form = new CompanyFormDto();
+        BeanUtils.copyProperties(company, form);
+        return form;
+    }
 
 }
