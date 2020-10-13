@@ -42,6 +42,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
         }
     }
 
+
     public List<T> dataList = null;
 
     Integer BATCH_COUNT = 0;
@@ -89,7 +90,19 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         //TODO 增加导出字段动态排序
-        if (hasError) throw new Exception("导入出现错误，请查看导错误原因");
-        this.entityService.saveList(dataList, BATCH_COUNT);
+        if (hasError) {
+            throw new Exception("导入出现错误，请查看导错误原因");
+        }
+
+        //新增
+        if (importType!=null && importType.ordinal()==0){
+            this.entityService.saveList(dataList, BATCH_COUNT);
+        }
+
+        //编辑
+        if (importType!=null && importType.ordinal()==1){
+            this.entityService.updateList(dataList, BATCH_COUNT);
+        }
+
     }
 }
