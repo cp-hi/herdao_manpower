@@ -137,15 +137,15 @@ public class FamilystatusController {
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
             @ApiImplicitParam(name = "type", value = "操作类型，add:批量新增 update:批量修改"),
     })
-    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, ImportExcelListener.ImportTypeEnum type) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(familystatusService, type);
+    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file,Integer importType) throws Exception {
+        ImportExcelListener listener = new ImportExcelListener(familystatusService, importType);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, FamilyStatusListDto.class, listener).sheet().doRead();
             IOUtils.closeQuietly(inputStream);
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "家庭情况错误信息", "家庭情况错误信息", FamilyStatusListDto.class, listener.dataList);
+            ExcelUtils.export2Web(response, "家庭情况错误信息", "家庭情况错误信息", FamilyStatusListDto.class, listener.getDataList());
             return R.failed(ex.getMessage());
         }
     }
