@@ -17,10 +17,10 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyFormDto;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import io.swagger.annotations.Api;
@@ -52,8 +52,8 @@ public class CompanyController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_view')" )
-    public R getCompanyPage(Page page, Company company) {
-        return R.ok(companyService.page(page, Wrappers.query(company)));
+    public R getCompanyPage(Page page, Company company, String searchText) {
+        return R.ok(companyService.companyPage(page, company, searchText));
     }
 
 
@@ -66,33 +66,33 @@ public class CompanyController {
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_view')" )
     public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(companyService.getById(id));
+        return R.ok(companyService.getCompanyById(id));
     }
 
     /**
      * 新增注册公司
-     * @param company 注册公司
+     * @param companyForm 注册公司
      * @return R
      */
     @ApiOperation(value = "新增注册公司", notes = "新增注册公司")
     @SysLog("新增注册公司" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_add')" )
-    public R save(@RequestBody Company company) {
-        return R.ok(companyService.save(company));
+    public R save(@RequestBody CompanyFormDto companyForm) {
+        return R.ok(companyService.companySave(companyForm));
     }
 
     /**
      * 修改注册公司
-     * @param company 注册公司
+     * @param companyForm 注册公司
      * @return R
      */
     @ApiOperation(value = "修改注册公司", notes = "修改注册公司")
     @SysLog("修改注册公司" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_edit')" )
-    public R updateById(@RequestBody Company company) {
-        return R.ok(companyService.updateById(company));
+    public R updateById(@RequestBody CompanyFormDto companyForm) {
+        return R.ok(companyService.companyUpdate(companyForm));
     }
 
     /**
