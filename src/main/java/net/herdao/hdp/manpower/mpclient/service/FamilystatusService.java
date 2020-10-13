@@ -13,9 +13,8 @@ import org.apache.ibatis.annotations.Param;
  * @author andy
  * @date 2020-09-23 10:53:08
  */
-public interface FamilystatusService extends IService<Familystatus> {
-
-    /**
+public interface FamilystatusService extends EntityService<Familystatus> {
+     /**
      * 员工家庭情况分页
      * @param page 分页对象
      * @param orgId
