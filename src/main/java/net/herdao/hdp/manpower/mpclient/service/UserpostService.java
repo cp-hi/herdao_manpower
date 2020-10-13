@@ -71,4 +71,15 @@ public interface UserpostService extends IService<Userpost> {
      * @return
      */
     Boolean updateUserPostNow(Userpost entity);
+
+    /**
+     * 员工详情-工作情况-目前任职
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @param staffId
+     * @return
+     */
+    UserpostDTO findCurrentJob( String orgId, String staffName,String staffCode, String staffId);
+
 }

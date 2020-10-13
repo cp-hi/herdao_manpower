@@ -101,4 +101,41 @@
             </if>
     </select>
 
+    <!-- 员工详情-工作情况-目前任职 -->
+    <select id="findCurrentJob" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+        SELECT  u.START_DATE startDate,
+                u.END_DATE endDate,
+                '' groupName,
+                '' company,
+                a.ORG_NAME deptName ,
+                sec.SECTION_NAME  sectionName,
+                pi.PIPELINE_NAME pipelineName,
+                p.POST_NAME postName,
+                jl.JOB_LEVEL_NAME jobLevelName,
+                di.label customPost
+        FROM  mp_userpost u
+                INNER JOIN mp_staff st ON st.user_id = u.USER_ID AND u.MAIN_POST=1
+                LEFT JOIN mp_organization a ON a.id = u.ORG_DEPT_ID
+                LEFT JOIN mp_post p on p.ID=u.POST_ID
+                LEFT JOIN mp_section sec on sec.id=p.SECTION_ID
+                LEFT JOIN mp_pipeline pi on pi.id=p.PIPELINE_ID
+                LEFT JOIN sys_dict_item  di on di.id= u.office_post_type
+                LEFT JOIN mp_job_level jl on jl.JOB_LEVEL_CODE=P.JOB_LEVEL_ID
+         WHERE 1=1
+         <if test="orgId != null">
+            and u.ORG_DEPT_ID = #{orgId}
+        </if>
+        <if test="staffName != null">
+            and st.staff_name LIKE concat(#{staffName},'%')
+        </if>
+        <if test="staffCode != null">
+            and st.staff_code LIKE concat(#{staffCode},'%')
+        </if>
+        <if test="staffId != null">
+            and st.id = #{staffId}
+        </if>
+    </select>
+
+
+
 </mapper>

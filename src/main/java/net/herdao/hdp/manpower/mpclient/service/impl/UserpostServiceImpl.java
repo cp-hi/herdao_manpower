@@ -81,4 +81,10 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
         boolean status = super.updateById(entity);
         return status;
     }
+
+    @Override
+    public UserpostDTO findCurrentJob(String orgId, String staffName, String staffCode, String staffId) {
+        UserpostDTO result = this.baseMapper.findCurrentJob(orgId, staffName, staffCode, staffId);
+        return result;
+    }
 }
