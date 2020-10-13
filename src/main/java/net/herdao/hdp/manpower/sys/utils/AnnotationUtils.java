@@ -71,7 +71,7 @@ public class AnnotationUtils {
     }
 
     /**
-     * 获取当前类中包含某注解的字段
+     * 获取当前类中包含某注解的字段，注意，不包含父类的
      *
      * @param object
      * @return
@@ -83,7 +83,7 @@ public class AnnotationUtils {
     }
 
     /**
-     * 获取当前类中包含某注解的字段，包括父类
+     * 获取当前类中包含某注解的字段，包括父类，包括父类，包括父类
      *
      * @param object
      * @return
@@ -95,7 +95,7 @@ public class AnnotationUtils {
     }
 
     /**
-     * 获取当前类中包含某注解的字段，包括父类
+     * 获取当前类中包含某注解的字段，包括父类，包括父类，包括父类
      *
      * @return
      * @Author ljan

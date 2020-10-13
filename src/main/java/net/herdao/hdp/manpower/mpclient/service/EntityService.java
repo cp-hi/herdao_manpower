@@ -26,7 +26,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    void importVerify(T t);
+    void importVerify(T t,int type);
 
     /**
      * 批量保存列表

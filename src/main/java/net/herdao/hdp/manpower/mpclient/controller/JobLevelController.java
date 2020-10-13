@@ -4,6 +4,8 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.JobLevelDTO;
 import net.herdao.hdp.manpower.mpclient.dto.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
@@ -17,6 +19,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.service.impl.GroupServiceImpl;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +65,13 @@ public class JobLevelController {
         return R.ok(jobLevelService.page(page, queryWrapper));
     }
 
+    @OperationEntity(operation = "查询",key = "id", clazz = JobLevel.class)
+    @GetMapping("/query")
+    @ApiOperation(value = "查询")
+    public R query(String id, String name, String code) {
+        return R.ok();
+    }
+
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list(Long groupId) {
@@ -90,8 +100,12 @@ public class JobLevelController {
     @ApiOperation("导入")
     @SysLog("导入")
     @PostMapping("/import")
-    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener( jobLevelService);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "要导入的文件"),
+            @ApiImplicitParam(name = "type", value = "操作类型，add:批量新增 update:批量修改"),
+    })
+    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, ImportExcelListener.ImportTypeEnum type) throws Exception {
+        ImportExcelListener listener = new ImportExcelListener(jobLevelService, type);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, JobLevelDTO.class, listener).sheet().doRead();

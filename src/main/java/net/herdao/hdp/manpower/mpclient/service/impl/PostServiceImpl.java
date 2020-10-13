@@ -58,7 +58,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (StringUtils.isNotBlank(jobLevelId)) queryWrapper.eq("JOB_LEVEL_ID", Long.valueOf(jobLevelId));
         if (StringUtils.isNotBlank(sectionId)) queryWrapper.eq("SECTION_ID", Long.valueOf(sectionId));
         if (StringUtils.isNotBlank(pipelineId)) queryWrapper.eq("PIPELINE_ID", Long.valueOf(pipelineId));
-        Page p = this.page(page, queryWrapper);
+        Page p = super.page(page, queryWrapper);
         return p;
     }
 
