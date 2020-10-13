@@ -19,14 +19,16 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    void saveVerify(T t);
+    default void saveVerify(T t) {
+    }
 
     /**
      * 导入校验
      *
      * @param t
      */
-    void importVerify(T t,int type);
+    default void importVerify(T t, int type) {
+    }
 
     /**
      * 批量保存列表
@@ -41,7 +43,7 @@ public interface EntityService<T> extends IService<T> {
     default void saveList(List<T> dataList, Integer batchCount) {
         if (0 >= batchCount) batchCount = BATCH_COUNT;
         List<List<T>> batch = Lists.partition(dataList, batchCount);
-        for (List<T> tmp : batch)  this.saveBatch(tmp);
+        for (List<T> tmp : batch) this.saveBatch(tmp);
         dataList.clear();
     }
 }
