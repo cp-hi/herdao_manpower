@@ -17,8 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.GroupFormDto;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.common.core.util.R;
@@ -54,14 +54,15 @@ public class GroupController {
     /**
      * 分页查询
      * @param page 分页对象
-     * @param mpGroup 集团表
+     * @param group 集团表
+     * @param searchText 查询
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
-    public R getMpGroupPage(Page page, Group mpGroup) {
-        return R.ok(groupService.page(page, Wrappers.query(mpGroup)));
+    public R getMpGroupPage(Page page, Group group, String searchText) {
+        return R.ok(groupService.groupPage(page, group, searchText));
     }
 
 
@@ -74,33 +75,33 @@ public class GroupController {
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
     public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(groupService.getById(id));
+        return R.ok(groupService.getGroupById(id));
     }
 
     /**
      * 新增集团表
-     * @param mpGroup 集团表
+     * @param group 集团表
      * @return R
      */
     @ApiOperation(value = "新增集团表", notes = "新增集团表")
     @SysLog("新增集团表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_add')" )
-    public R save(@RequestBody Group mpGroup) {
-        return R.ok(groupService.save(mpGroup));
+    public R save(@RequestBody GroupFormDto group) {
+        return R.ok(groupService.groupSave(group));
     }
 
     /**
      * 修改集团表
-     * @param mpGroup 集团表
+     * @param group 集团表
      * @return R
      */
     @ApiOperation(value = "修改集团表", notes = "修改集团表")
     @SysLog("修改集团表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_edit')" )
-    public R updateById(@RequestBody Group mpGroup) {
-        return R.ok(groupService.updateById(mpGroup));
+    public R updateById(@RequestBody GroupFormDto group) {
+        return R.ok(groupService.groupUpdate(group));
     }
 
     /**

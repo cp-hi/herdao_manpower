@@ -83,6 +83,20 @@ public class AnnotationUtils {
     }
 
     /**
+     * 获取当前类中包含某注解的字段,通常用于获取主键，包括父类，包括父类，包括父类
+     *
+     * @param object
+     * @return
+     * @Author ljan
+     */
+    public static Field getOneAnnotationFields(Object object, Class<? extends Annotation> clazz) {
+        Field[] fields = getAllFields(object);
+        fields = getAllAnnotationFields(fields, clazz);
+        if (null != fields && fields.length > 0) return fields[0];
+        return null;
+    }
+
+    /**
      * 获取当前类中包含某注解的字段，包括父类，包括父类，包括父类
      *
      * @param object
@@ -135,7 +149,7 @@ public class AnnotationUtils {
     }
 
 
-    public static <T extends Annotation> T getAnnotationByFieldName(Field[] fields,  String fieldName, Class<? extends Annotation> clazz) {
+    public static <T extends Annotation> T getAnnotationByFieldName(Field[] fields, String fieldName, Class<? extends Annotation> clazz) {
         Field field = getFieldByAnnotationAndName(fields, fieldName, clazz);
         T t = (T) field.getAnnotation(clazz);
         return t;

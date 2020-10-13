@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         return baseMapper.jobLevelList(groupId);
     }
 
+    @OperationEntity(clazz = JobLevel.class)
     @Override
     public boolean saveOrUpdate(JobLevel jobLevel) {
         saveVerify(jobLevel);

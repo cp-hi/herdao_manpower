@@ -4,6 +4,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.dto.ExcelDTO;
@@ -31,19 +32,9 @@ import java.util.List;
  * @Version 1.0
  */
 public class ImportExcelListener<T> extends AnalysisEventListener<T> {
-    public enum ImportTypeEnum {
-        add("批量新增"),
-        update("批量修改");
 
-        private String title;
-
-        ImportTypeEnum(String title) {
-            this.title = title;
-        }
-    }
-
-
-    public List<T> dataList = null;
+    @Getter
+    List<T> dataList = null;
 
     Integer BATCH_COUNT = 0;
 
@@ -52,16 +43,20 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Setter
     EntityService<T> entityService;
 
-    ImportTypeEnum importType;
+    Integer importType = 0;
 
     protected ImportExcelListener() {
     }
 
-    public ImportExcelListener(EntityService<T> service, ImportTypeEnum importType) {
+    public ImportExcelListener(EntityService<T> service) {
+        this(service, 50, 0);
+    }
+
+    public ImportExcelListener(EntityService<T> service, Integer importType) {
         this(service, 50, importType);
     }
 
-    public ImportExcelListener(EntityService<T> service, Integer batchCount, ImportTypeEnum importType) {
+    public ImportExcelListener(EntityService<T> service, Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.entityService = service;
         this.BATCH_COUNT = batchCount;
@@ -72,7 +67,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void invoke(T t, AnalysisContext analysisContext) {
         try {
-            entityService.importVerify(t,importType.ordinal());
+            entityService.importVerify(t, importType);
         } catch (Exception ex) {
             this.hasError = true;
             ((ExcelDTO) t).setErrMsg(ex.getMessage());
@@ -95,12 +90,12 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
         }
 
         //新增
-        if (importType!=null && importType.ordinal()==0){
+        if (importType!=null && importType==0){
             this.entityService.saveList(dataList, BATCH_COUNT);
         }
 
         //编辑
-        if (importType!=null && importType.ordinal()==1){
+        if (importType!=null && importType==1){
             this.entityService.updateList(dataList, BATCH_COUNT);
         }
 
