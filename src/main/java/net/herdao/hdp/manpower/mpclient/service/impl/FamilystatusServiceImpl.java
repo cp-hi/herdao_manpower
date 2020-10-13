@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.FamilystatusMapper;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
+import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,13 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
         Page<Familystatus> pageResult = this.baseMapper.findFamilyStatusPage(page, orgId,staffName,staffCode);
         return pageResult;
     }
+
+    @Override
+    public List<FamilyStatusVO> findFamilyStatus(String orgId, String staffName, String staffCode) {
+        List<FamilyStatusVO> list= this.baseMapper.findFamilyStatus(orgId, staffName, staffCode);
+        return list;
+    }
+
 
     @Override
     public void saveVerify(Familystatus familystatus) {
