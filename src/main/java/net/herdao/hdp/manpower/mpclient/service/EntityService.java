@@ -37,7 +37,7 @@ public interface EntityService<T> extends IService<T> {
         this.saveList(dataList, BATCH_COUNT);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     default void saveList(List<T> dataList, Integer batchCount) {
         if (0 >= batchCount) batchCount = BATCH_COUNT;
         List<List<T>> batch = Lists.partition(dataList, batchCount);
