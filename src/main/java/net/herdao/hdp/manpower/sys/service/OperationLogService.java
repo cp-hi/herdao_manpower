@@ -9,8 +9,8 @@ public interface OperationLogService extends IService<OperationLog> {
     /**
      * 根据实体信息查询
      * @param objId
-     * @param clazz
+     * @param entityClass
      * @return
      */
-    List<OperationLog> findByEntity(Long objId,String clazz);
+    List<OperationLog> findByEntity(Long objId,String entityClass);
 }
