@@ -2,7 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
-import net.herdao.hdp.manpower.mpclient.dto.JobLevelDTO;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -10,57 +10,46 @@ import java.util.List;
 public interface EntityService<T> extends IService<T> {
 
     /**
-     * 批量导入一次导入条数
+     * 保存实体并自动添加日志
+     *
+     * @param t
+     * @return
      */
-    Integer BATCH_COUNT = 50;
+    @OperationEntity(clazz = Class.class)
+    default boolean saveEntity(T t) {
+        return this.saveOrUpdate(t);
+    }
 
     /**
      * 保存核验
      *
      * @param t
      */
-    void saveVerify(T t);
+    default void saveVerify(T t) {
+    }
 
     /**
      * 导入校验
      *
      * @param t
      */
-    void importVerify(T t,int type);
+    default void importVerify(T t, int type) {
+    }
+
+
+    //TODO 添加操作日志
 
     /**
-     * 批量保存列表
+     * 批量保存 可以新增/修改
      *
      * @param dataList
+     * @param batchCount
      */
-    default void saveList(List<T> dataList) {
-        this.saveList(dataList, BATCH_COUNT);
-    }
-
     @Transactional(rollbackFor = Exception.class)
     default void saveList(List<T> dataList, Integer batchCount) {
-        if (0 >= batchCount){
-            batchCount = BATCH_COUNT;
-        }
-
+        if (0 >= batchCount) batchCount = 50;
         List<List<T>> batch = Lists.partition(dataList, batchCount);
-        for (List<T> tmp : batch) {
-            this.saveBatch(tmp);
-        }
+        for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
-
-    @Transactional(rollbackFor = Exception.class)
-    default void updateList(List<T> dataList, Integer batchCount) {
-        if (0 >= batchCount){
-            batchCount = BATCH_COUNT;
-        }
-
-        List<List<T>> batch = Lists.partition(dataList, batchCount);
-        for (List<T> tmp : batch) {
-            this.updateBatchById(tmp);
-        }
-        dataList.clear();
-    }
-
 }

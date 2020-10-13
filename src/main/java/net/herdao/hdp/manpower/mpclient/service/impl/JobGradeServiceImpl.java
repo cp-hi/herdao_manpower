@@ -32,4 +32,5 @@ public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> i
         if (baseMapper.chkDuplicateJobGradeName(jobGrade))
             throw new RuntimeException("职级名称重复了");
     }
+
 }

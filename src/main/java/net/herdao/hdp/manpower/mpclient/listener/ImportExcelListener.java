@@ -85,19 +85,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         //TODO 增加导出字段动态排序
-        if (hasError) {
-            throw new Exception("导入出现错误，请查看导错误原因");
-        }
-
-        //新增
-        if (importType!=null && importType==0){
-            this.entityService.saveList(dataList, BATCH_COUNT);
-        }
-
-        //编辑
-        if (importType!=null && importType==1){
-            this.entityService.updateList(dataList, BATCH_COUNT);
-        }
-
+        if (hasError) throw new Exception("导入出现错误，请查看导错误原因");
+        this.entityService.saveList(dataList, BATCH_COUNT);
     }
 }
