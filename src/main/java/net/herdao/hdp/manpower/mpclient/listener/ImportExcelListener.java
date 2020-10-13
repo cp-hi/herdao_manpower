@@ -31,6 +31,17 @@ import java.util.List;
  * @Version 1.0
  */
 public class ImportExcelListener<T> extends AnalysisEventListener<T> {
+    public enum ImportTypeEnum {
+        add("批量新增"),
+        update("批量修改");
+
+        private String title;
+
+        ImportTypeEnum(String title) {
+            this.title = title;
+        }
+    }
+
     public List<T> dataList = null;
 
     Integer BATCH_COUNT = 0;
@@ -40,24 +51,27 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Setter
     EntityService<T> entityService;
 
+    ImportTypeEnum importType;
+
     protected ImportExcelListener() {
     }
 
-    public ImportExcelListener(EntityService<T> service) {
-        this(service, 50);
+    public ImportExcelListener(EntityService<T> service, ImportTypeEnum importType) {
+        this(service, 50, importType);
     }
 
-    public ImportExcelListener(EntityService<T> service, Integer batchCount) {
+    public ImportExcelListener(EntityService<T> service, Integer batchCount, ImportTypeEnum importType) {
         this.dataList = new ArrayList<>();
         this.entityService = service;
         this.BATCH_COUNT = batchCount;
+        this.importType = importType;
         this.hasError = false;
     }
 
     @Override
     public void invoke(T t, AnalysisContext analysisContext) {
         try {
-            entityService.importVerify(t);
+            entityService.importVerify(t,importType.ordinal());
         } catch (Exception ex) {
             this.hasError = true;
             ((ExcelDTO) t).setErrMsg(ex.getMessage());

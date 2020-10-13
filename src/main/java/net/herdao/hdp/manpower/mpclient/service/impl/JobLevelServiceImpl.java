@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 
@@ -49,20 +50,23 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void importVerify(JobLevel jobLevel) {
+    public void importVerify(JobLevel jobLevel, int type) {
+        boolean add = (type == 0);
 
         //TODO 添加校验方法
         JobLevelDTO dto = (JobLevelDTO) jobLevel;
-
-        JobLevel tmp = this.getOne(new QueryWrapper<JobLevel>()
-                .eq("JOB_LEVEL_CODE", dto.getJobLevelCode())
-                .eq("JOB_LEVEL_NAME", dto.getJobLevelName()));
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
                 .eq("JOB_GRADE_NAME", dto.getJobGrade()));
 
         if (null == jobGrade)
             throw new RuntimeException("查不到此职等：" + dto.getJobGrade());
+
+        JobLevel tmp = this.getOne(new QueryWrapper<JobLevel>()
+                .eq("JOB_LEVEL_CODE", dto.getJobLevelCode())
+                .eq("JOB_LEVEL_NAME", dto.getJobLevelName()));
+
+        //TODO 通过add区分新增修改的不同处理
 
         if (null != tmp) {
             if (!tmp.getGroupId().equals(jobGrade.getGroupId()))

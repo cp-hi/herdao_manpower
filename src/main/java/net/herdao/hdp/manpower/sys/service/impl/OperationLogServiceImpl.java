@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
+import net.herdao.hdp.manpower.sys.mapper.OperationLogMapper;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +22,9 @@ import java.util.List;
  * @Version 1.0
  */
 @Service
-public class OperationLogServiceImpl extends ServiceImpl<BaseMapper<OperationLog>, OperationLog> implements OperationLogService {
+public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements OperationLogService {
     @Override
     public List<OperationLog> findByEntity(Long objId, String entityClass) {
-        return this.baseMapper.selectList(new QueryWrapper<OperationLog>()
-                .eq("obj_Id", objId).eq("ENTITY_CLASS", entityClass));
+        return baseMapper.findByEntity(objId,entityClass);
     }
 }

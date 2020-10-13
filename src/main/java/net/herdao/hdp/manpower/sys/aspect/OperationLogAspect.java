@@ -93,8 +93,6 @@ public class OperationLogAspect {
             if (arg != null && arg instanceof BaseEntity) {
                 BaseEntity entity = (BaseEntity) arg;
                 ApiModel model = (ApiModel) operation.clazz().getAnnotation(ApiModel.class);
-
-
                 //TODO 通过注解方式获取主键
                 if (null == entity.getId() || 0 == entity.getId()) {
                     entity.setCreatedTime(new Date());
@@ -124,13 +122,16 @@ public class OperationLogAspect {
         Object[] args = point.getArgs();
         for (Object arg : args) {
             if (arg != null) {
+
+                Field[] fields = AnnotationUtils.getAllAnnotationFields(arg, TableId.class);
+
                 if (arg instanceof BaseEntity) {
                     BaseEntity entity = (BaseEntity) arg;
                     //TODO 通过注解方式获取主键
                     if (null != entity.getId() && 0 != entity.getId())
                         AnnotationUtils.setAnnotationInfo(operation, "objId", entity.getId());
                 } else {
-                    Field[] fields = AnnotationUtils.getAllAnnotationFields(arg, TableId.class);
+
 //                    fields[0].get()
                 }
             }
