@@ -45,7 +45,7 @@ public class AnnotationUtils {
                 field.setAccessible(true);
                 memberValues = (Map) field.get(h);
                 if (null != memberValues)
-                    memberValues.put(key, val.toString());
+                    memberValues.put(key, val);
             }
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();

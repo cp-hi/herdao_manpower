@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -61,7 +62,9 @@ public class OperationLogAspect {
     /**
      * 保存时设置操作人信息的切入点
      */
-    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))")
+    @Pointcut("execution(public * com.baomidou.mybatisplus.extension.service..*.saveOrUpdate(..))" +
+            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))" +
+            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveEntity(..))")
     public void pointCutSave() {
         System.out.println("point2");
     }
@@ -74,19 +77,21 @@ public class OperationLogAspect {
         OperationEntity operation = getOperationEntity(method);
         if (0 == point.getArgs().length || null == operation)
             return;
-        Class<?> service = method.getDeclaringClass();
-        //TODO 完善保存前验证 EntityService，并能阻止方法执行
-//        if(service instanceof EntityService){
-//
-//        }
+
+        //保存前先验证数据
+        Object target = point.getTarget();
+        if (target instanceof EntityService)
+            ((EntityService) target).saveVerify(point.getArgs()[0]);
+
         Object[] args = point.getArgs();
         SysUser sysUser = getSysUser();
         for (Object arg : args) {
 
             if (arg != null && arg instanceof BaseEntity) {
+                Class clazz = arg.getClass();
                 BaseEntity entity = (BaseEntity) arg;
-                ApiModel model = (ApiModel) operation.clazz().getAnnotation(ApiModel.class);
-                //TODO 通过注解方式获取主键
+                AnnotationUtils.setAnnotationInfo(operation, "clazz", clazz);
+                ApiModel model = (ApiModel) clazz.getAnnotation(ApiModel.class);
                 if (null == entity.getId() || 0 == entity.getId()) {
                     entity.setCreatedTime(new Date());
                     entity.setCreatorName(sysUser.getUsername());
@@ -114,14 +119,16 @@ public class OperationLogAspect {
         Object[] args = point.getArgs();
         for (Object arg : args) {
             if (arg != null) {
+                Object objId = null;
                 if (arg instanceof BaseEntity) {
                     BaseEntity entity = (BaseEntity) arg;
                     if (null != entity.getId() && 0 != entity.getId())
-                        AnnotationUtils.setAnnotationInfo(operation, "objId", entity.getId());
+                        objId = entity.getId();
                 } else {
-                    // 通过注解方式获取主键
-                    Object objId = getTableId(arg);
+                    objId = getTableIdValue(arg);
                 }
+                if (null != objId)
+                    AnnotationUtils.setAnnotationInfo(operation, "objId", objId.toString());
             }
         }
     }
@@ -132,32 +139,41 @@ public class OperationLogAspect {
 
     @After("pointCutOperate()")
     public void afterOperate(JoinPoint point) {
-
-        MethodSignature signature = (MethodSignature) point.getSignature();
+        //TODO 解决前面验证报错了，还会往下执行这个日志保存
         OperationEntity operation = getOperationEntity(point);
-        SysUser sysUser = getSysUser();
-        OperationLog log = new OperationLog();
-        log.setOperation(operation.operation());
-        log.setContent(operation.content());
-        log.setOperator(sysUser.getUsername());
-        log.setOperatorId(sysUser.getUserId().longValue());
-        if (null != operation.clazz())
-            log.setEntityClass(operation.clazz().getName());
+        if (StringUtils.isNotBlank(operation.exception()) ||
+                StringUtils.isBlank(operation.clazz().getName()) ||
+                Class.class.getName().equals(operation.clazz().getName()))
+            return;
 
+        OperationLog log = new OperationLog();
+        Long id = Long.valueOf(0);
+        id.toString();
         if (StringUtils.isNotBlank(operation.objId())) {
             log.setObjId(Long.valueOf(operation.objId()));
         } else if (StringUtils.isNotBlank(operation.key())
                 && StringUtils.isBlank(operation.objId())) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
             int index = Arrays.asList(signature.getParameterNames()).indexOf(operation.key());
             Object objId = point.getArgs()[index];
             log.setObjId(Long.valueOf(objId.toString()));
         }
-        log.setOperatedTime(new Date());
-        operationLogService.save(log);
+
+        if (null != log.getObjId()) {
+            SysUser sysUser = getSysUser();
+            log.setOperatedTime(new Date());
+            log.setContent(operation.content());
+            log.setOperator(sysUser.getUsername());
+            log.setOperation(operation.operation());
+            log.setEntityClass(operation.clazz().getName());
+            log.setOperatorId(sysUser.getUserId().longValue());
+            operationLogService.save(log);
+        }
     }
 
     //endregion
 
+    //region 公共方法
 
     private Method getJoinPointMethod(JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
@@ -178,11 +194,12 @@ public class OperationLogAspect {
     }
 
     /**
-     * 通过注解获取对象主键
+     * 通过注解获取对象主键值
+     *
      * @param arg
      * @return
      */
-    private Object getTableId(Object arg) {
+    private Object getTableIdValue(Object arg) {
         Field objId = AnnotationUtils.getOneAnnotationFields(arg, TableId.class);
         if (null == objId) return null;
         objId.setAccessible(true);
@@ -194,4 +211,6 @@ public class OperationLogAspect {
         }
         return val;
     }
+
+    //endregion
 }

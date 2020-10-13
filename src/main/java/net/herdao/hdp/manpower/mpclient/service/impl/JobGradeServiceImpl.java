@@ -26,11 +26,10 @@ public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> i
     }
 
     @Override
-    public boolean saveOrUpdate(JobGrade jobGrade) {
+    public void saveVerify(JobGrade jobGrade) {
         if (baseMapper.chkDuplicateJobGradeCode(jobGrade))
             throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobGradeName(jobGrade))
             throw new RuntimeException("职级名称重复了");
-        return super.saveOrUpdate(jobGrade);
     }
 }

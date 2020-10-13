@@ -10,8 +10,14 @@ import java.lang.annotation.*;
 @Documented
 public @interface OperationEntity {
     String operation() default "";
+
+    String exception() default "";
+
     String content() default "";
+
     String objId() default "";
+
     String key() default "";
-    Class clazz() ;
+
+    Class clazz();
 }

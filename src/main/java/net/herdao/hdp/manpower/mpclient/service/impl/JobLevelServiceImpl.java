@@ -34,13 +34,6 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         return baseMapper.jobLevelList(groupId);
     }
 
-    @OperationEntity(clazz = JobLevel.class)
-    @Override
-    public boolean saveOrUpdate(JobLevel jobLevel) {
-        saveVerify(jobLevel);
-        return super.saveOrUpdate(jobLevel);
-    }
-
     @Override
     public void saveVerify(JobLevel jobLevel) {
 //        if (baseMapper.chkCodeAndName(jobLevel))

@@ -70,7 +70,7 @@ public class JobLevelController {
 
     @PostMapping
     public R save(@RequestBody JobLevel jobLevel) {
-        jobLevelService.saveOrUpdate(jobLevel);
+        jobLevelService.saveEntity(jobLevel);
         return R.ok(jobLevel);
     }
 
