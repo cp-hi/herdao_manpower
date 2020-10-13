@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 @ApiModel(value = "现任职情况")
-@AllArgsConstructor
 public class UserpostDTO {
     @ExcelProperty(value = "员工姓名")
     @ApiModelProperty(value="员工姓名")
@@ -27,6 +26,9 @@ public class UserpostDTO {
     @ExcelProperty(value = "任职日期")
     @ApiModelProperty(value="任职日期")
     private String startDate;
+
+    @ApiModelProperty(value="免职日期")
+    private String endDate;
 
     @ExcelProperty(value = "所在组织")
     @ApiModelProperty(value="所在组织")
@@ -51,5 +53,14 @@ public class UserpostDTO {
     @ExcelProperty(value = "是否定制岗位")
     @ApiModelProperty(value="是否定制岗位")
     private String customPost;
+
+    @ApiModelProperty(value="任职集团")
+    private String groupName;
+
+    @ApiModelProperty(value="任职公司")
+    private String company;
+
+    @ApiModelProperty(value="任职部门")
+    private String deptName;
 
 }

@@ -150,4 +150,21 @@ public class UserpostController {
         return R.ok("导出成功");
     }
 
+    /**
+     * 员工详情-工作情况-目前任职
+     * @return R
+     */
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="staffName",value="员工姓名"),
+        @ApiImplicitParam(name="staffCode",value="员工工号"),
+        @ApiImplicitParam(name="staffId",value="员工id")
+    })
+    @ApiOperation(value = "员工详情-工作情况-目前任职", notes = "员工详情-工作情况-目前任职")
+    @GetMapping("/findCurrentJob" )
+    public R findCurrentJob( String orgId, String staffName, String staffCode ,String staffId) {
+        UserpostDTO result = userpostService.findCurrentJob(orgId, staffName, staffCode, staffId);
+        return R.ok(result);
+    }
+
 }

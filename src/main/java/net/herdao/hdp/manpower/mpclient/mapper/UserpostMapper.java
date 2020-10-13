@@ -46,4 +46,15 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      */
     List<UserpostDTO> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode, @Param("staffId") String staffId);
 
+    /**
+     * 员工详情-工作情况-目前任职
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @param staffId
+     * @return
+     */
+    UserpostDTO findCurrentJob(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode, @Param("staffId") String staffId);
+
+
 }
