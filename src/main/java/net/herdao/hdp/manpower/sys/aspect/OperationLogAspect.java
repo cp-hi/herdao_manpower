@@ -1,11 +1,10 @@
 package net.herdao.hdp.manpower.sys.aspect;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
-import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.sys.annotation.ImportField;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -13,6 +12,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -93,21 +93,23 @@ public class OperationLogAspect {
             if (arg != null && arg instanceof BaseEntity) {
                 BaseEntity entity = (BaseEntity) arg;
                 ApiModel model = (ApiModel) operation.clazz().getAnnotation(ApiModel.class);
+
+
                 //TODO 通过注解方式获取主键
                 if (null == entity.getId() || 0 == entity.getId()) {
                     entity.setCreatedTime(new Date());
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
-                    setAnnotationInfo(operation, "operation", "新增" + model.value());
+                    AnnotationUtils.setAnnotationInfo(operation, "operation", "新增" + model.value());
                     if (StringUtils.isBlank(operation.content()))
-                        setAnnotationInfo(operation, "content", "新增" + model.value());
+                        AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {
                     entity.setModifiedTime(new Date());
                     entity.setModifierName(sysUser.getUsername());
                     entity.setModifierId(Long.valueOf(sysUser.getUserId()));
-                    setAnnotationInfo(operation, "operation", "修改" + model.value());
+                    AnnotationUtils.setAnnotationInfo(operation, "operation", "修改" + model.value());
                     if (StringUtils.isBlank(operation.content()))
-                        setAnnotationInfo(operation, "content", "修改" + model.value());
+                        AnnotationUtils.setAnnotationInfo(operation, "content", "修改" + model.value());
                 }
 
             }
@@ -121,11 +123,16 @@ public class OperationLogAspect {
             return;
         Object[] args = point.getArgs();
         for (Object arg : args) {
-            if (arg != null && arg instanceof BaseEntity) {
-                BaseEntity entity = (BaseEntity) arg;
-                //TODO 通过注解方式获取主键
-                if (null != entity.getId() && 0 != entity.getId())
-                    setAnnotationInfo(operation, "objId", entity.getId());
+            if (arg != null) {
+                if (arg instanceof BaseEntity) {
+                    BaseEntity entity = (BaseEntity) arg;
+                    //TODO 通过注解方式获取主键
+                    if (null != entity.getId() && 0 != entity.getId())
+                        AnnotationUtils.setAnnotationInfo(operation, "objId", entity.getId());
+                } else {
+                    Field[] fields = AnnotationUtils.getAllAnnotationFields(arg, TableId.class);
+//                    fields[0].get()
+                }
             }
         }
     }
@@ -162,33 +169,6 @@ public class OperationLogAspect {
 
     //endregion
 
-    /**
-     * 设置注解值
-     *
-     * @param annotation
-     * @param key
-     * @param val
-     */
-    private void setAnnotationInfo(Annotation annotation, String key, Object val) {
-        InvocationHandler h;
-        Field field;
-        Map memberValues = null;
-        try {
-            if (null != annotation) {
-                //获取 foo 这个代理实例所持有的 InvocationHandler
-                h = Proxy.getInvocationHandler(annotation);
-                // 获取 AnnotationInvocationHandler 的 memberValues 字段
-                field = h.getClass().getDeclaredField("memberValues");
-                // 因为这个字段事 private final 修饰，所以要打开权限
-                field.setAccessible(true);
-                memberValues = (Map) field.get(h);
-                if (null != memberValues)
-                    memberValues.put(key, val.toString());
-            }
-        } catch (NoSuchFieldException | IllegalAccessException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     private Method getJoinPointMethod(JoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
