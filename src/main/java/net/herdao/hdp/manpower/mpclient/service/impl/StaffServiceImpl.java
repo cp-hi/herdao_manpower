@@ -26,10 +26,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormBaseDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormJobDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -181,4 +178,27 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
         StaffFormDto form = new StaffFormDto(base, job);
         return form;
     }
+
+	@Override
+    public Map<String, Object> getStaffDetail(Long id){
+		Staff staff = this.getById(id);
+		StaffInfoDTO info = new StaffInfoDTO();
+		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
+		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
+		StaffEmergencyDTO emergency = new StaffEmergencyDTO();
+		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		BeanUtils.copyProperties(staff, info);
+		BeanUtils.copyProperties(staff, jobInfo);
+		BeanUtils.copyProperties(staff, infoOther);
+		BeanUtils.copyProperties(staff, emergency);
+		BeanUtils.copyProperties(staff, educationLast);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("info", info);
+		map.put("jobInfo", jobInfo);
+		map.put("infoOther", infoOther);
+		map.put("emergency", emergency);
+		map.put("educationLast", educationLast);
+		return map;
+	}
 }

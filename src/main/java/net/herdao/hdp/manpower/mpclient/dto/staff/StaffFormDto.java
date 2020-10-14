@@ -10,6 +10,8 @@ import lombok.Data;
 @ApiModel(value = "新增/修改员工")
 public class StaffFormDto {
 
+    public StaffFormDto(){}
+
     @ApiModelProperty(value="基本信息")
     StaffFormBaseDto baseObj;
 

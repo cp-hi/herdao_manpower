@@ -52,4 +52,6 @@ public interface StaffService extends IService<Staff> {
 
 	StaffFormDto getStaffById(Long id);
 
+	Map<String, Object> getStaffDetail(Long id);
+
 }
