@@ -26,7 +26,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.dto.staff.*;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
+import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -48,8 +53,13 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
  * @date 2020-09-23 18:10:29
  */
 @Service
+@AllArgsConstructor
 public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements StaffService {
-	
+
+	private final FamilystatusService familystatusService;
+
+	private final StaffeducationService staffeducationService;
+
 	@Override
 	public R<?> selectStaffOrganizationComponent() {
 		
@@ -199,6 +209,32 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("infoOther", infoOther);
 		map.put("emergency", emergency);
 		map.put("educationLast", educationLast);
+
+		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("MODIFIED_TIME")
+		);
+		List<StaffFamilyDTO> familyDtoList = new ArrayList<>();
+		StaffFamilyDTO familyDto;
+		for(int i=0;i<familyList.size();i++){
+			familyDto = new StaffFamilyDTO();
+			BeanUtils.copyProperties(familyList.get(i), familyDto);
+			familyDtoList.add(familyDto);
+		}
+		map.put("familyList", familyDtoList);
+
+		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("END_DATE")
+		);
+		List<StaffEducationDTO> eduDtoList = new ArrayList<>();
+		StaffEducationDTO eduDto;
+		for(int i=0;i<familyList.size();i++){
+			eduDto = new StaffEducationDTO();
+			BeanUtils.copyProperties(eduList.get(i), eduDto);
+			eduDtoList.add(eduDto);
+		}
+		map.put("eduList", eduDtoList);
 		return map;
 	}
 }
