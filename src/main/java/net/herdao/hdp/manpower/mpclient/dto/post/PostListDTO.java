@@ -33,5 +33,12 @@ public class PostListDTO {
     @ApiModelProperty(value = "管线")
     private String pipelineName;
 
+    @ApiModelProperty(value = "职等名称")
+    private String jobGradeName;
+
+    @ApiModelProperty(value = "职级名称")
+    private String jobLevelName;
+
+
 
 }
