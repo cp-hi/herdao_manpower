@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "员工信息")
-public class StaffDto {
+public class StaffDTO {
 
     private Long id;
 

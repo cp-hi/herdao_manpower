@@ -41,7 +41,7 @@ public class DtoUtils {
     /*public static void main(String[] args) {
         Staff staff = new Staff();
         staff.setMobile("13800");
-        StaffDto dto = transferObject(staff, StaffDto.class);
+        StaffDTO dto = transferObject(staff, StaffDTO.class);
         System.out.println(dto.getMobile());
     }*/
 }

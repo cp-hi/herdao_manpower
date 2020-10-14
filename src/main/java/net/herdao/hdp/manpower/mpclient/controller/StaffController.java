@@ -26,8 +26,8 @@ import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import net.herdao.hdp.manpower.mpclient.dto.StaffDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -130,14 +130,14 @@ public class StaffController {
             return;
         }
         List<Staff> list = result.getRecords();
-        List<StaffDto> entityList = new ArrayList<>();
-        StaffDto entity;
+        List<StaffDTO> entityList = new ArrayList<>();
+        StaffDTO entity;
         for(int i=0;i<list.size();i++){
-            entity = DtoUtils.transferObject(list.get(i), StaffDto.class);
+            entity = DtoUtils.transferObject(list.get(i), StaffDTO.class);
             entityList.add(entity);
         }
         try {
-            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffDto.class,entityList);
+            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffDTO.class,entityList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,8 +150,8 @@ public class StaffController {
     public R importExcel(MultipartFile file, String editType){
         System.out.println(editType);
         try {
-            EasyExcel.read(file.getInputStream(), StaffDto.class,
-                    new StaffExcelListener<StaffDto, Staff>(staffService, Staff.class)).sheet().doRead();
+            EasyExcel.read(file.getInputStream(), StaffDTO.class,
+                    new StaffExcelListener<StaffDTO, Staff>(staffService, Staff.class)).sheet().doRead();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -290,7 +290,7 @@ public class StaffController {
     @SysLog("新增员工表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
-    public R save(@RequestBody StaffFormDto staffForm) {
+    public R save(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffSave(staffForm));
     }
 
@@ -303,7 +303,7 @@ public class StaffController {
     @SysLog("修改员工表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
-    public R updateById(@RequestBody StaffFormDto staffForm) {
+    public R updateById(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffUpdate(staffForm));
     }
 

@@ -26,10 +26,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormBaseDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormJobDto;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -145,10 +142,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		}
 		IPage result = this.page(page, wrapper);
 		List<Staff> list = result.getRecords();
-		List<StaffListDto> entityList = new ArrayList<>();
-		StaffListDto entity;
+		List<StaffListDTO> entityList = new ArrayList<>();
+		StaffListDTO entity;
 		for(int i=0;i<list.size();i++){
-			entity = DtoUtils.transferObject(list.get(i), StaffListDto.class);
+			entity = DtoUtils.transferObject(list.get(i), StaffListDTO.class);
 			entityList.add(entity);
 		}
 		result.setRecords(entityList);
@@ -156,7 +153,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public boolean staffSave(StaffFormDto staffForm){
+	public boolean staffSave(StaffDetailDTO staffForm){
 		Staff staff = new Staff();
 		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
 		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -164,7 +161,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
     @Override
-    public boolean staffUpdate(StaffFormDto staffForm){
+    public boolean staffUpdate(StaffDetailDTO staffForm){
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
         BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -172,13 +169,36 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
     }
 
 	@Override
-    public StaffFormDto getStaffById(Long id){
+    public StaffDetailDTO getStaffById(Long id){
 	    Staff staff = this.getById(id);
-        StaffFormBaseDto base = new StaffFormBaseDto();
-        StaffFormJobDto job = new StaffFormJobDto();
+        StaffDetailBaseDTO base = new StaffDetailBaseDTO();
+        StaffDetailJobDTO job = new StaffDetailJobDTO();
         BeanUtils.copyProperties(staff, base);
         BeanUtils.copyProperties(staff, job);
-        StaffFormDto form = new StaffFormDto(base, job);
+        StaffDetailDTO form = new StaffDetailDTO(base, job);
         return form;
     }
+
+	@Override
+    public Map<String, Object> getStaffDetail(Long id){
+		Staff staff = this.getById(id);
+		StaffInfoDTO info = new StaffInfoDTO();
+		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
+		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
+		StaffEmergencyDTO emergency = new StaffEmergencyDTO();
+		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		BeanUtils.copyProperties(staff, info);
+		BeanUtils.copyProperties(staff, jobInfo);
+		BeanUtils.copyProperties(staff, infoOther);
+		BeanUtils.copyProperties(staff, emergency);
+		BeanUtils.copyProperties(staff, educationLast);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("info", info);
+		map.put("jobInfo", jobInfo);
+		map.put("infoOther", infoOther);
+		map.put("emergency", emergency);
+		map.put("educationLast", educationLast);
+		return map;
+	}
 }

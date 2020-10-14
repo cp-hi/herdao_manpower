@@ -8,11 +8,13 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 @ApiModel(value = "新增/修改员工")
-public class StaffFormDto {
+public class StaffDetailDTO {
+
+    public StaffDetailDTO(){}
 
     @ApiModelProperty(value="基本信息")
-    StaffFormBaseDto baseObj;
+    StaffDetailBaseDTO baseObj;
 
     @ApiModelProperty(value="入职信息")
-    StaffFormJobDto jobObj;
+    StaffDetailJobDTO jobObj;
 }
