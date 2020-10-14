@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.GroupFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
@@ -66,23 +66,23 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public boolean groupSave(GroupFormDTO groupForm){
+    public boolean groupSave(GroupDetailDTO groupForm){
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         return this.save(group);
     }
 
     @Override
-    public boolean groupUpdate(GroupFormDTO groupForm){
+    public boolean groupUpdate(GroupDetailDTO groupForm){
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         return this.updateById(group);
     }
 
     @Override
-    public GroupFormDTO getGroupById(Long id){
+    public GroupDetailDTO getGroupById(Long id){
         Group group = this.getById(id);
-        GroupFormDTO form = new GroupFormDTO();
+        GroupDetailDTO form = new GroupDetailDTO();
         BeanUtils.copyProperties(group, form);
         return form;
     }

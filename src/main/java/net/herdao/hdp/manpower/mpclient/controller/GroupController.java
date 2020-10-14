@@ -18,7 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.GroupFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.common.core.util.R;
@@ -87,7 +87,7 @@ public class GroupController {
     @SysLog("新增集团表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_add')" )
-    public R save(@RequestBody GroupFormDTO group) {
+    public R save(@RequestBody GroupDetailDTO group) {
         return R.ok(groupService.groupSave(group));
     }
 
@@ -100,7 +100,7 @@ public class GroupController {
     @SysLog("修改集团表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_edit')" )
-    public R updateById(@RequestBody GroupFormDTO group) {
+    public R updateById(@RequestBody GroupDetailDTO group) {
         return R.ok(groupService.groupUpdate(group));
     }
 

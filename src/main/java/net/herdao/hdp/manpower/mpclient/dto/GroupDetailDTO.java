@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "集团表单")
-public class GroupFormDTO {
+public class GroupDetailDTO {
 
     private Long id;
 

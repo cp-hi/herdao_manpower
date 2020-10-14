@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.CompanyFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.mapper.CompanyMapper;
@@ -61,23 +61,23 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public boolean companySave(CompanyFormDTO companyForm){
+    public boolean companySave(CompanyDetailDTO companyForm){
         Company company = new Company();
         BeanUtils.copyProperties(companyForm, company);
         return this.save(company);
     }
 
     @Override
-    public boolean companyUpdate(CompanyFormDTO companyForm){
+    public boolean companyUpdate(CompanyDetailDTO companyForm){
         Company company = new Company();
         BeanUtils.copyProperties(companyForm, company);
         return this.updateById(company);
     }
 
     @Override
-    public CompanyFormDTO getCompanyById(Long id){
+    public CompanyDetailDTO getCompanyById(Long id){
         Company company = this.getById(id);
-        CompanyFormDTO form = new CompanyFormDTO();
+        CompanyDetailDTO form = new CompanyDetailDTO();
         BeanUtils.copyProperties(company, form);
         return form;
     }

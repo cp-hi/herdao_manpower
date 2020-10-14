@@ -27,7 +27,7 @@ import java.util.Map;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -290,7 +290,7 @@ public class StaffController {
     @SysLog("新增员工表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
-    public R save(@RequestBody StaffFormDTO staffForm) {
+    public R save(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffSave(staffForm));
     }
 
@@ -303,7 +303,7 @@ public class StaffController {
     @SysLog("修改员工表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
-    public R updateById(@RequestBody StaffFormDTO staffForm) {
+    public R updateById(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffUpdate(staffForm));
     }
 

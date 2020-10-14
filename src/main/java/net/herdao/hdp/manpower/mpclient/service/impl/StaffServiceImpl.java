@@ -153,7 +153,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public boolean staffSave(StaffFormDTO staffForm){
+	public boolean staffSave(StaffDetailDTO staffForm){
 		Staff staff = new Staff();
 		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
 		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -161,7 +161,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
     @Override
-    public boolean staffUpdate(StaffFormDTO staffForm){
+    public boolean staffUpdate(StaffDetailDTO staffForm){
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
         BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -169,13 +169,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
     }
 
 	@Override
-    public StaffFormDTO getStaffById(Long id){
+    public StaffDetailDTO getStaffById(Long id){
 	    Staff staff = this.getById(id);
-        StaffFormBaseDTO base = new StaffFormBaseDTO();
-        StaffFormJobDTO job = new StaffFormJobDTO();
+        StaffDetailBaseDTO base = new StaffDetailBaseDTO();
+        StaffDetailJobDTO job = new StaffDetailJobDTO();
         BeanUtils.copyProperties(staff, base);
         BeanUtils.copyProperties(staff, job);
-        StaffFormDTO form = new StaffFormDTO(base, job);
+        StaffDetailDTO form = new StaffDetailDTO(base, job);
         return form;
     }
 

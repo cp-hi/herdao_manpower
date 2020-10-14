@@ -20,7 +20,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.GroupFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 
 import java.util.List;
@@ -37,9 +37,9 @@ public interface GroupService extends IService<Group> {
 
     IPage groupPage(Page page, Group group, String searchText);
 
-    boolean groupSave(GroupFormDTO groupForm);
+    boolean groupSave(GroupDetailDTO groupForm);
 
-    boolean groupUpdate(GroupFormDTO groupForm);
+    boolean groupUpdate(GroupDetailDTO groupForm);
 
-    GroupFormDTO getGroupById(Long id);
+    GroupDetailDTO getGroupById(Long id);
 }
