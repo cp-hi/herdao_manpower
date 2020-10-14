@@ -481,6 +481,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @SysLog("新增或更新组织架构")
     @Override
     @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class)
+    @Transactional
     public boolean saveOrUpdate(@RequestBody Organization organization) {
         boolean status = false;
         if (null != organization){
@@ -587,7 +588,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         if (parentOrg!=null){
             if(parentOrg.getOrgFullname()!=null && !parentOrg.getOrgFullname().isEmpty()){
                 String parentOrgFullname = parentOrg.getOrgFullname();
-                org.setOrgFullname(parentOrgFullname+"/"+org.getOrgFullname()+"/");
+                org.setOrgFullname(parentOrgFullname+org.getOrgName()+"/");
             }
         }else{//无父组织 不用挂靠
             org.setOrgFullname(org.getOrgFullname()+"/");

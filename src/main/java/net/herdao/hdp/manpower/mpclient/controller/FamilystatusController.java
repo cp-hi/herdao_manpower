@@ -12,8 +12,12 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
+import net.herdao.hdp.manpower.mpclient.entity.StaffRp;
+import net.herdao.hdp.manpower.mpclient.listener.FamilystatusListener;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.List;
 
 
 /**
@@ -147,4 +152,30 @@ public class FamilystatusController {
             return R.failed(ex.getMessage());
         }
     }
+
+    /**
+     * 导出家庭情况Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "导出家庭情况Excel", notes = "导出家庭情况Excel")
+    @SysLog("导出家庭情况Excel")
+    @PostMapping("/exportFamily")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="orgId",value="组织ID"),
+            @ApiImplicitParam(name="staffName",value="员工姓名"),
+            @ApiImplicitParam(name="staffCode",value="员工工号")
+    })
+    public void exportFamily(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+        try {
+            List<FamilyStatusVO> list = familystatusService.findFamilyStatus(orgId, staffName, staffCode);
+            ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusVO.class,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            R.ok("导出失败");
+        }
+
+        R.ok("导出成功");
+    }
+
 }

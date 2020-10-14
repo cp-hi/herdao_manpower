@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 员工家庭成员
@@ -23,4 +26,12 @@ public interface FamilystatusService extends EntityService<Familystatus> {
      * @return
      */
     Page<Familystatus> findFamilyStatusPage(Page<Familystatus> page, String orgId,  String staffName,  String staffCode);
+
+    /**
+     * 员工家庭情况
+     * @param orgId
+     * @return
+     */
+    List<FamilyStatusVO> findFamilyStatus(String orgId, String staffName, String staffCode);
+
 }

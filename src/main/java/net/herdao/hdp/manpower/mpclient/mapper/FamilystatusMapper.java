@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 员工家庭成员
@@ -23,4 +26,14 @@ public interface FamilystatusMapper extends BaseMapper<Familystatus> {
      * @return
      */
     Page<Familystatus> findFamilyStatusPage(Page<Familystatus> page, @Param("orgId")  String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+
+    /**
+     * 员工家庭情况
+     * @param orgId
+     * @return
+     */
+    List<FamilyStatusVO> findFamilyStatus(@Param("orgId")  String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+
+
 }
