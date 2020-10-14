@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @ApiModel(value = "公司表单")
-public class CompanyFormDto {
+public class CompanyFormDTO {
 
     private Long id;
 

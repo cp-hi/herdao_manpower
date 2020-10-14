@@ -21,8 +21,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.CompanyFormDto;
-import net.herdao.hdp.manpower.mpclient.dto.CompanyListDto;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.mapper.CompanyMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
@@ -50,10 +50,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }
         IPage result = this.page(page, wrapper);
         List<Company> list = result.getRecords();
-        List<CompanyListDto> entityList = new ArrayList<>();
-        CompanyListDto entity;
+        List<CompanyListDTO> entityList = new ArrayList<>();
+        CompanyListDTO entity;
         for(int i=0;i<list.size();i++){
-            entity = DtoUtils.transferObject(list.get(i), CompanyListDto.class);
+            entity = DtoUtils.transferObject(list.get(i), CompanyListDTO.class);
             entityList.add(entity);
         }
         result.setRecords(entityList);
@@ -61,23 +61,23 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public boolean companySave(CompanyFormDto companyForm){
+    public boolean companySave(CompanyFormDTO companyForm){
         Company company = new Company();
         BeanUtils.copyProperties(companyForm, company);
         return this.save(company);
     }
 
     @Override
-    public boolean companyUpdate(CompanyFormDto companyForm){
+    public boolean companyUpdate(CompanyFormDTO companyForm){
         Company company = new Company();
         BeanUtils.copyProperties(companyForm, company);
         return this.updateById(company);
     }
 
     @Override
-    public CompanyFormDto getCompanyById(Long id){
+    public CompanyFormDTO getCompanyById(Long id){
         Company company = this.getById(id);
-        CompanyFormDto form = new CompanyFormDto();
+        CompanyFormDTO form = new CompanyFormDTO();
         BeanUtils.copyProperties(company, form);
         return form;
     }

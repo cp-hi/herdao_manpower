@@ -142,10 +142,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		}
 		IPage result = this.page(page, wrapper);
 		List<Staff> list = result.getRecords();
-		List<StaffListDto> entityList = new ArrayList<>();
-		StaffListDto entity;
+		List<StaffListDTO> entityList = new ArrayList<>();
+		StaffListDTO entity;
 		for(int i=0;i<list.size();i++){
-			entity = DtoUtils.transferObject(list.get(i), StaffListDto.class);
+			entity = DtoUtils.transferObject(list.get(i), StaffListDTO.class);
 			entityList.add(entity);
 		}
 		result.setRecords(entityList);
@@ -153,7 +153,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public boolean staffSave(StaffFormDto staffForm){
+	public boolean staffSave(StaffFormDTO staffForm){
 		Staff staff = new Staff();
 		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
 		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -161,7 +161,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
     @Override
-    public boolean staffUpdate(StaffFormDto staffForm){
+    public boolean staffUpdate(StaffFormDTO staffForm){
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
         BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -169,13 +169,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
     }
 
 	@Override
-    public StaffFormDto getStaffById(Long id){
+    public StaffFormDTO getStaffById(Long id){
 	    Staff staff = this.getById(id);
-        StaffFormBaseDto base = new StaffFormBaseDto();
-        StaffFormJobDto job = new StaffFormJobDto();
+        StaffFormBaseDTO base = new StaffFormBaseDTO();
+        StaffFormJobDTO job = new StaffFormJobDTO();
         BeanUtils.copyProperties(staff, base);
         BeanUtils.copyProperties(staff, job);
-        StaffFormDto form = new StaffFormDto(base, job);
+        StaffFormDTO form = new StaffFormDTO(base, job);
         return form;
     }
 

@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 
 import java.util.Map;
@@ -46,11 +46,11 @@ public interface StaffService extends IService<Staff> {
 
 	IPage staffPage(Page page, Staff staff, String searchText);
 
-	boolean staffSave(StaffFormDto staffForm);
+	boolean staffSave(StaffFormDTO staffForm);
 
-	boolean staffUpdate(StaffFormDto staffForm);
+	boolean staffUpdate(StaffFormDTO staffForm);
 
-	StaffFormDto getStaffById(Long id);
+	StaffFormDTO getStaffById(Long id);
 
 	Map<String, Object> getStaffDetail(Long id);
 

@@ -21,8 +21,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.GroupFormDto;
-import net.herdao.hdp.manpower.mpclient.dto.GroupListDto;
+import net.herdao.hdp.manpower.mpclient.dto.GroupFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
@@ -55,10 +55,10 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         }
         IPage result = this.page(page, wrapper);
         List<Group> list = result.getRecords();
-        List<GroupListDto> entityList = new ArrayList<>();
-        GroupListDto entity;
+        List<GroupListDTO> entityList = new ArrayList<>();
+        GroupListDTO entity;
         for(int i=0;i<list.size();i++){
-            entity = DtoUtils.transferObject(list.get(i), GroupListDto.class);
+            entity = DtoUtils.transferObject(list.get(i), GroupListDTO.class);
             entityList.add(entity);
         }
         result.setRecords(entityList);
@@ -66,23 +66,23 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public boolean groupSave(GroupFormDto groupForm){
+    public boolean groupSave(GroupFormDTO groupForm){
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         return this.save(group);
     }
 
     @Override
-    public boolean groupUpdate(GroupFormDto groupForm){
+    public boolean groupUpdate(GroupFormDTO groupForm){
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         return this.updateById(group);
     }
 
     @Override
-    public GroupFormDto getGroupById(Long id){
+    public GroupFormDTO getGroupById(Long id){
         Group group = this.getById(id);
-        GroupFormDto form = new GroupFormDto();
+        GroupFormDTO form = new GroupFormDTO();
         BeanUtils.copyProperties(group, form);
         return form;
     }
