@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 @Data
 @ApiModel(value = "部门/组织员工数")
-public class StaffTotalComponentVo {
+public class StaffTotalComponentVO {
 
 	@ApiModelProperty(value = "部门/组织编码")
 	private String orgCode;

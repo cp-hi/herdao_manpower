@@ -22,29 +22,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.dto.staff.*;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
-import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailBaseDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailJobDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEmergencyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoOtherDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
-import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo;
-import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
+import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
+import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 
 /**
  * 员工表
@@ -66,11 +76,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		// 待接入用户权限 TODO
 		String searchText = "";
 		
-		List<StaffOrganizationComponentVo> organizations = this.baseMapper.selectOrganizations(searchText);
+		List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizations(searchText);
 		
 		// 获取部门员工数
 		Map<String, Integer> taffTotalComponentMap = this.baseMapper.getStaffTotals().stream()
-				                                         .collect(Collectors.toMap(StaffTotalComponentVo::getOrgCode, StaffTotalComponentVo::getTotal));
+				                                         .collect(Collectors.toMap(StaffTotalComponentVO::getOrgCode, StaffTotalComponentVO::getTotal));
 		// 部门/组织员工数
 		organizations.forEach(organization -> {
 			Integer staffTotal = sumKeyLike(taffTotalComponentMap, organization.getOrgCode());
@@ -78,7 +88,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		});
 				
 		organizations.forEach(organization -> {
-			List<StaffOrganizationComponentVo> staffOrganizationComponents = organization.getStaffOrganizationComponents();
+			List<StaffOrganizationComponentVO> staffOrganizationComponents = organization.getStaffOrganizationComponents();
 			if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
 				recursionOrganization(staffOrganizationComponents, taffTotalComponentMap);
 			}
@@ -92,7 +102,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	 * @param staffOrganizationComponents
 	 * @param taffTotalComponentMap
 	 */
-	public void recursionOrganization(List<StaffOrganizationComponentVo> staffOrganizationComponents, Map<String, Integer> taffTotalComponentMap) {
+	public void recursionOrganization(List<StaffOrganizationComponentVO> staffOrganizationComponents, Map<String, Integer> taffTotalComponentMap) {
 		if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
 			staffOrganizationComponents.forEach(organizationChildren ->{
 				// 子部门/组织员工数
