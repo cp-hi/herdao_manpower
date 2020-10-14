@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -63,12 +64,13 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
  * @date 2020-09-23 18:10:29
  */
 @Service
-@AllArgsConstructor
 public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements StaffService {
 
-	private final FamilystatusService familystatusService;
+    @Autowired
+	private FamilystatusService familystatusService;
 
-	private final StaffeducationService staffeducationService;
+    @Autowired
+	private StaffeducationService staffeducationService;
 
 	@Override
 	public R<?> selectStaffOrganizationComponent() {
