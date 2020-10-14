@@ -411,17 +411,17 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     record.setOldOrgName(oldOrg.getOrgName());
                 }
 
-                //现组织编码 原组织名称
-                if (null != oldOrg.getOrgCode()&& !oldOrg.getOrgCode().equals(organization.getOrgCode())){
-                    record.setCurOrgCode(organization.getOrgCode());
-                    record.setOldOrgName(oldOrg.getOrgCode());
-                 }
+                if (null != oldOrg.getOrgCode()){
+                    record.setOldOrgCode(oldOrg.getOrgCode());
+                }
 
                 if (null != oldOrg.getParentId() && !oldOrg.getParentId().equals(organization.getParentId())){
                     Organization oldParenOrg = super.getById(oldOrg.getParentId());
                     Organization curParenOrg = super.getById(organization.getParentId());
 
-                    record.setCurOrgParentId(organization.getParentId());
+                    record.setCurOrgParentId(curParenOrg.getId());
+                    record.setCurOrgParentName(curParenOrg.getOrgName());
+
                     //现上级组织id
                     if (null != oldParenOrg){
                         record.setOldOrgParentId(oldParenOrg.getId());
@@ -429,20 +429,16 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
                         //现组织层级 原组织层级
                         if (null != oldOrg.getOrgTreeLevel()&& !oldOrg.getOrgCode().equals(organization.getOrgTreeLevel())){
-                            record.setCurOrgTreeLevel(organization.getOrgTreeLevel());
+                            record.setCurOrgTreeLevel(curParenOrg.getOrgTreeLevel()+1);
                             record.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
                          }
                     }
 
-                    //现上级组织名称
-                    if (null != curParenOrg){
-                        record.setCurOrgName(curParenOrg.getOrgName());
-                        //生成组织编码orgCode
-                        createOrgCode(organization, curParenOrg);
-                        //生成组织全称 orgFullName
-                        createOrgFullName(organization, curParenOrg);
-                    }
-
+                    //生成组织编码orgCode
+                    String currentOrgCode=createOrgCode(organization, curParenOrg);
+                    //生成组织全称 orgFullName
+                    createOrgFullName(organization, curParenOrg);
+                    record.setCurOrgCode(currentOrgCode);
                  }
 
                 //生效时间
@@ -460,6 +456,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
                 //新增变更记录
                 record.setOperateDesc("修改组织架构");
+                record.setCurOrgId(record.getId());
                 orgModifyRecordService.save(record);
 
                 status =super.updateById(organization);
@@ -505,7 +502,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @return R
      */
     private boolean saveOrg(@RequestBody Organization organization) {
-        Boolean status=false;
+        Boolean status = false;
         try {
             if (null != organization) {
                 //查询岗位负责人姓名 mp_post表
@@ -547,7 +544,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     /**
      * 生成组织编码 orgCode
      */
-    private void createOrgCode(Organization org, Organization parentOrg) {
+    private String createOrgCode(Organization org, Organization parentOrg) {
+        String newOrgCode="";
         Map<String,Object> childrenParams =new HashMap<>();
         childrenParams.put("parentId",parentOrg.getId());
         List<Organization> childOrgList = getOrgList(childrenParams);
@@ -572,13 +570,15 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             if (orgCodeTemp !=null && !orgCodeTemp.isEmpty()){
                 int orgLength = orgCodeTemp.length();
                 Long temp= Long.parseLong(orgCodeTemp)+1;
-                String newOrgCode= String.format("%0"+orgLength+"d", temp);
+                newOrgCode= String.format("%0"+orgLength+"d", temp);
                 org.setOrgCode(newOrgCode);
             }
         }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
-            String newOrgCode=org.getParentIdStr()+"001";
+            newOrgCode=org.getParentIdStr()+"001";
             org.setOrgCode(newOrgCode);
         }
+
+        return newOrgCode;
     }
 
     /**
