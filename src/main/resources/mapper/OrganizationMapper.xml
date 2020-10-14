@@ -188,13 +188,13 @@
     </resultMap>
     
     <!-- 部门信息 MAP -->
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo" id="organizationComponentMap">
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO" id="organizationComponentMap">
 		<result column="id" property="id" />
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />
 		<result column="parentOrgName" property="parent_org_name" />
 		<result column="parentOrgCode" property="parent_org_code" />
-		<collection column="{orgCode=org_code}" property="organizationComponents" ofType="OrganizationComponentVo" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
+		<collection column="{orgCode=org_code}" property="organizationComponents" ofType="OrganizationComponentVO" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
 	</resultMap>
 
     <!-- 查询类型是部门的组织架构树 -->

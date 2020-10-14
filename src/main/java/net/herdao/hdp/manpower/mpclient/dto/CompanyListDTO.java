@@ -8,22 +8,25 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "集团列表")
-public class GroupListDto {
+@ApiModel(value = "公司列表")
+public class CompanyListDTO {
 
     private Long id;
 
-    @ApiModelProperty(value="集团名称")
-    private String groupName;
+    @ApiModelProperty(value="公司名称")
+    private String companyName;
 
-    @ApiModelProperty(value="集团编码")
-    private String groupCode;
+    @ApiModelProperty(value="公司编码")
+    private String companyCode;
 
-    @ApiModelProperty(value="对应组织")
-    private String orgCode;
+    @ApiModelProperty(value="对应组织主键")
+    private Long orgId;
 
-    @ApiModelProperty(value="排序")
-    private Integer sortNo;
+    @ApiModelProperty(value="所在城市ID")
+    private Long cityId;
+
+    @ApiModelProperty(value="公积金标准ID")
+    private Long cityFundId;
 
     @ApiModelProperty(value = "修改人名称" )
     private String modifierName;
@@ -38,4 +41,5 @@ public class GroupListDto {
     @ApiModelProperty(value = "创建时间" )
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdTime;
+
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "花名册列表")
-public class StaffListDto {
+public class StaffListDTO {
 
     private Long id;
 

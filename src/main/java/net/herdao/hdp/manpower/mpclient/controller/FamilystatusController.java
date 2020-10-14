@@ -138,9 +138,9 @@ public class FamilystatusController {
     @PostMapping("/importFamilystatus")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "type", value = "操作类型，add:批量新增 update:批量修改"),
+            @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
-    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file,Integer importType) throws Exception {
+    public R importFamilystatus(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file,Integer importType) throws Exception {
         ImportExcelListener listener = new ImportExcelListener(familystatusService, importType);
         try {
             InputStream inputStream = file.getInputStream();

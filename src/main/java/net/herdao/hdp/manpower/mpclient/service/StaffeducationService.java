@@ -19,11 +19,14 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffeducationListDto;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * 员工教育经历
@@ -41,7 +44,7 @@ public interface StaffeducationService extends IService<Staffeducation> {
      * @param staffCode
      * @return
      */
-    Page<Organization> findStaffEducationPage(Page<Familystatus> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<Staffeducation> findStaffEducationPage(Page<Staffeducation> page, String orgId, String staffName, String staffCode);
 
     /**
      * 新增员工教育经历
@@ -56,4 +59,14 @@ public interface StaffeducationService extends IService<Staffeducation> {
      * @return
      */
      boolean updateEdu(@RequestBody Staffeducation staffeducation);
+
+
+    /**
+     * 员工教育经历
+     * @param orgId
+     * @param staffName
+     * @param staffCode
+     * @return
+     */
+    List<StaffeducationListDto> findStaffEducation(String orgId, String staffName, String staffCode);
 }

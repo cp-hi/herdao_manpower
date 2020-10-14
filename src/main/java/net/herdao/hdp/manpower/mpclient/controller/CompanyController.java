@@ -20,7 +20,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.CompanyFormDto;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import io.swagger.annotations.Api;
@@ -78,7 +78,7 @@ public class CompanyController {
     @SysLog("新增注册公司" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_add')" )
-    public R save(@RequestBody CompanyFormDto companyForm) {
+    public R save(@RequestBody CompanyDetailDTO companyForm) {
         return R.ok(companyService.companySave(companyForm));
     }
 
@@ -91,7 +91,7 @@ public class CompanyController {
     @SysLog("修改注册公司" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_edit')" )
-    public R updateById(@RequestBody CompanyFormDto companyForm) {
+    public R updateById(@RequestBody CompanyDetailDTO companyForm) {
         return R.ok(companyService.companyUpdate(companyForm));
     }
 

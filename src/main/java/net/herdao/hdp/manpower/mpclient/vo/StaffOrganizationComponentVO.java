@@ -31,7 +31,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "员工部门/组织组件")
-public class StaffOrganizationComponentVo {
+public class StaffOrganizationComponentVO {
 
 	@ApiModelProperty(value = "部门/组织id")
 	private Long id;
@@ -52,9 +52,9 @@ public class StaffOrganizationComponentVo {
 	private Integer staffTotal;
 	
 	@ApiModelProperty(value = "员工信息")
-	private List<StaffComponentVo> staffComponents;
+	private List<StaffComponentVO> staffComponents;
 	
 	@ApiModelProperty(value = "子部门/组织员工数")
-	private List<StaffOrganizationComponentVo> staffOrganizationComponents;
+	private List<StaffOrganizationComponentVO> staffOrganizationComponents;
 	
 }

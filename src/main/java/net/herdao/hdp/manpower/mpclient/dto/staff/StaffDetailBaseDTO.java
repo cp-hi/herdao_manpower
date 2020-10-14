@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "新增/修改员工")
-public class StaffFormBaseDto {
+public class StaffDetailBaseDTO {
 
     private Long id;
 

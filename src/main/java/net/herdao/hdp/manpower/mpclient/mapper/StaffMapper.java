@@ -25,8 +25,8 @@ import org.apache.ibatis.annotations.Param;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo;
-import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo;
+import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 
 /**
  * 员工表
@@ -43,7 +43,7 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param searchText 查询条件
 	 * @return
 	 */
-	public List<StaffOrganizationComponentVo> selectOrganizations(@Param("searchText") String searchText);
+	public List<StaffOrganizationComponentVO> selectOrganizations(@Param("searchText") String searchText);
 	
 	
 	/**
@@ -51,6 +51,6 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * 
 	 * @return
 	 */
-	public List<StaffTotalComponentVo> getStaffTotals();
+	public List<StaffTotalComponentVO> getStaffTotals();
 
 }
