@@ -1,20 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
-
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,7 +7,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffeducationListDto;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -137,14 +124,14 @@ public class StaffeducationController {
 
 
     /**
-     * 员工家庭情况分页
+     * 员工教育经历分页
      * @param page 分页对象
      * @param orgId
      * @return
      */
-    @ApiOperation(value = "员工家庭情况分页", notes = "员工家庭情况分页")
+    @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
     @GetMapping("/findStaffEducationPage")
-    @OperationEntity(operation = "员工家庭情况分页" ,clazz = Staffeducation.class )
+    @OperationEntity(operation = "员工教育经历分页" ,clazz = Staffeducation.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="orgId",value="组织ID"),
             @ApiImplicitParam(name="staffName",value="员工姓名"),
@@ -154,5 +141,30 @@ public class StaffeducationController {
     public R findStaffEducationPage(Page page, String orgId,String staffName, String staffCode) {
         Page pageResult = staffeducationService.findStaffEducationPage(page, orgId, staffName, staffCode);
         return R.ok(pageResult);
+    }
+
+    /**
+     * 导出员工教育经历Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "导出员工教育经历Excel", notes = "导出员工教育经历Excel")
+    @SysLog("导出员工教育经历Excel")
+    @PostMapping("/exportStaffEdu")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="orgId",value="组织ID"),
+            @ApiImplicitParam(name="staffName",value="员工姓名"),
+            @ApiImplicitParam(name="staffCode",value="员工工号")
+    })
+    public void exportStaffEdu(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+        try {
+            List<StaffeducationListDto> list = staffeducationService.findStaffEducation(orgId, staffName, staffCode);
+            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffeducationListDto.class,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            R.ok("导出失败");
+        }
+
+        R.ok("导出成功");
     }
 }
