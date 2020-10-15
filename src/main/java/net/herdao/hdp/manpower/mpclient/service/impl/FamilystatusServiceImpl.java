@@ -14,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +26,11 @@ import java.util.List;
  * @date 2020-09-23 10:53:08
  */
 @Service
-@AllArgsConstructor
 public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Familystatus> implements FamilystatusService {
+    @Autowired
     private StaffService staffService;
 
+    @Autowired
     private SysDictItemService itemService;
 
     @Override
