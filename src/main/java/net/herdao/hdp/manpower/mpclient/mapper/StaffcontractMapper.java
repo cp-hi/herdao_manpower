@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,8 +28,7 @@ import java.util.List;
 
 /**
  * 员工合同签订
- *
- * @author liang
+ * @author andy
  * @date 2020-09-27 09:15:28
  */
 @Mapper
@@ -36,19 +36,15 @@ public interface StaffcontractMapper extends BaseMapper<Staffcontract> {
     /**
      * 员工合同签订分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<Staffcontract> findStaffContractPage(Page<Staffcontract> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page, @Param("searchText") String searchText);
 
     /**
      * 员工合同签订分页
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<Staffcontract> findStaffContract(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<StaffcontractDTO> findStaffContract( @Param("searchText") String searchText);
 }

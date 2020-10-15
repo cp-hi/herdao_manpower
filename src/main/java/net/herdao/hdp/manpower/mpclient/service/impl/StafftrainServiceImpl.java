@@ -29,6 +29,7 @@ import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,8 +54,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         Integer userId = userInfo.getSysUser().getUserId().intValue();
         stafftrain.setCreatorCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        stafftrain.setCreatedTime(now);
+        stafftrain.setCreatedTime(new Date());
         boolean status = super.save(stafftrain);
         return status;
     }
@@ -64,8 +64,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         Integer userId = userInfo.getSysUser().getUserId().intValue();
         stafftrain.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        stafftrain.setModifiedTime(now);
+        stafftrain.setModifiedTime(new Date());
         boolean status = super.updateById(stafftrain);
         return status;
     }

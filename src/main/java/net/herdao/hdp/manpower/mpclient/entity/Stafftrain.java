@@ -21,14 +21,14 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
- import io.swagger.annotations.ApiModel;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+ 
+import java.util.Date;
 
 /**
  * 员工培训
@@ -63,7 +63,8 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="培训时间")
     @ExcelIgnore
-    private LocalDateTime trainingTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date trainingTime;
 
     /**
      * 培训内容
@@ -109,7 +110,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="新建时间")
     @ExcelIgnore
-    private LocalDateTime createdTime;
+    private Date createdTime;
 
     /**
      * 最后修改人
@@ -122,7 +123,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="最后修改时间")
     @ExcelIgnore
-    private LocalDateTime modifiedTime;
+    private Date modifiedTime;
 
     /**
      * 租户ID
@@ -178,7 +179,8 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="开始时间")
     @ExcelIgnore
-    private LocalDateTime beginTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date beginTime;
 
 
     /**
@@ -194,7 +196,8 @@ private static final long serialVersionUID = 1L;
      */
     @ExcelIgnore
     @ApiModelProperty(value="结束时间")
-    private LocalDateTime endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date endTime;
 
     /**
      * 开始时间
@@ -263,7 +266,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="操作时间")
     @ExcelIgnore
-    private LocalDateTime operatorTime;
+    private Date operatorTime;
 
     /**
      * 备注

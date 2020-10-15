@@ -23,6 +23,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffcontractMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * 员工合同签订
  *
- * @author liang
+ * @author andy
  * @date 2020-09-27 09:15:28
  */
 @Service
@@ -43,36 +44,16 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
     private RemoteUserService remoteUserService;
 
     @Override
-    public Page<Staffcontract> findStaffContractPage(Page<Staffcontract> page, String orgId, String staffName, String staffCode) {
-        Page<Staffcontract> list = this.baseMapper.findStaffContractPage(page, orgId, staffName, staffCode);
+    public Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page, String searchText) {
+        Page<StaffcontractDTO> list = this.baseMapper.findStaffContractPage(page, searchText);
         return list;
     }
 
     @Override
-    public List<Staffcontract> findStaffContract(String orgId, String staffName, String staffCode) {
-        List<Staffcontract> list = this.baseMapper.findStaffContract(orgId, staffName, staffCode);
+    public List<StaffcontractDTO> findStaffContract(String searchText) {
+        List<StaffcontractDTO> list = this.baseMapper.findStaffContract(searchText);
         return list;
     }
 
-    @Override
-    public Boolean saveContract(Staffcontract staffcontract) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        staffcontract.setCreatorCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        staffcontract.setCreatedTime(now);
-        boolean status = super.save(staffcontract);
-        return status;
-    }
 
-    @Override
-    public boolean UpateContract(Staffcontract staffcontract) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        staffcontract.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        staffcontract.setModifiedTime(now);
-        boolean status = super.updateById(staffcontract);
-        return status;
-    }
 }
