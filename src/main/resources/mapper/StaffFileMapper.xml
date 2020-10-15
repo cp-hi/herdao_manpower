@@ -25,14 +25,14 @@
      <!-- 员工附件分页-->
      <select id="findStaffFilePage" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffFileDto">
             SELECT 	sc.id,
-				s.STAFF_CODE staffCode,
-				s.STAFF_NAME staffName,
-				f.file_type fileType,
-				sc.`NAME` fileName,
-			 ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
-				sc.MODIFIED_TIME modifyTime,
-				( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.CREATOR_ID ) createName,
-				sc.CREATED_TIME createTime
+                    s.STAFF_CODE staffCode,
+                    s.STAFF_NAME staffName,
+                    sc.file_type fileType,
+                    sc.`NAME` fileName,
+                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
+                    sc.MODIFIED_TIME modifyTime,
+                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.CREATOR_ID ) createName,
+                    sc.CREATED_TIME createTime
 			FROM
 				mp_staff_file sc
 				LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
