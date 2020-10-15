@@ -188,7 +188,7 @@
     </resultMap>
     
     <!-- 部门信息 MAP -->
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo" id="organizationComponentMap">
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO" id="organizationComponentMap">
 		<result column="id" property="id" />
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />

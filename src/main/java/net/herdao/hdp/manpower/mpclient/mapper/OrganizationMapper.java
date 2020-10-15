@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVo;
+import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 
 /**
  * 
@@ -102,6 +102,6 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
  	 * @param searchText
  	 * @return
  	 */
-     List<OrganizationComponentVo> selectOrganizations(@Param("searchText") String searchText);
+     List<OrganizationComponentVO> selectOrganizations(@Param("searchText") String searchText);
  	
 }

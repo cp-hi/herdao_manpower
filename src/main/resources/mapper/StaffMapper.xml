@@ -123,7 +123,7 @@
    </resultMap>
 
     <!-- 部门信息 MAP -->
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVo" id="organizationComponentMap">
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO" id="organizationComponentMap">
 		<result column="id" property="id" />
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />
@@ -134,7 +134,7 @@
 	</resultMap>
 	
 	<!-- 人员信息组件MAP -->
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffComponentVo" id="staffComponentMap">
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO" id="staffComponentMap">
 		<result column="id" property="id"/>
 		<result column="staffName" property="staff_name"/>
 		<result column="staffCode" property="staff_code"/>
@@ -147,7 +147,7 @@
 	</resultMap>
 	
 	<!-- 统计部门/组织下的人员数（包括子部门/子组织人员） -->
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVo" id="staffTotalMap">
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO" id="staffTotalMap">
 		<result column="orgCode" property="org_code" />
 		<result column="total" property="total" />
 	</resultMap>

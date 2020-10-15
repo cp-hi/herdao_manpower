@@ -26,6 +26,7 @@
                         <result property="field4" column="FIELD4"/>
                         <result property="field5" column="FIELD5"/>
                         <result property="beginDate" column="BEGIN_DATE"/>
+                        <result property="educationQua" column="EDUCATION_QUA"/>
                         <result property="modifierName" column="modifier_name"/>
                         <result property="createName" column="modifier_name"/>
                         <result property="delFlag" column="DEL_FLAG"/>
@@ -43,6 +44,7 @@
                         e.PROFESSIONAL,
                         e.EDUCATION_DEGREE,
                         e.LEARN_FORM,
+                        e.EDUCATION_QUA,
                         ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
                         e.MODIFIED_TIME,
                         ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
@@ -64,19 +66,20 @@
       </select>
 
     <!-- 员工教育情况 -->
-    <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffeducationListDto">
+    <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO">
         SELECT      s.staff_name,
                     s.staff_code,
-                    e.BEGIN_DATE,
-                    e.END_DATE,
+                    e.BEGIN_DATE BEGIN_DATE,
+                    e.END_DATE END_DATE,
                     e.SCHOOL_NAME,
                     e.PROFESSIONAL,
                     e.EDUCATION_DEGREE,
                     e.LEARN_FORM,
+                    e.EDUCATION_QUA,
                     ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
-                    e.MODIFIED_TIME,
-                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name
-
+                    e.MODIFIED_TIME MODIFIED_TIME,
+                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
+                    e.CREATED_TIME CREATED_TIME
         FROM  mp_staffeducation e
                 LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
                 LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID

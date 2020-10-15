@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,19 +8,24 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffeducationListDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
+import net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -158,8 +164,8 @@ public class StaffeducationController {
     })
     public void exportStaffEdu(HttpServletResponse response, String orgId, String staffName, String staffCode) {
         try {
-            List<StaffeducationListDto> list = staffeducationService.findStaffEducation(orgId, staffName, staffCode);
-            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffeducationListDto.class,list);
+            List<StaffeducationVO> list = staffeducationService.findStaffEducation(orgId, staffName, staffCode);
+            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffeducationVO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");
@@ -167,4 +173,26 @@ public class StaffeducationController {
 
         R.ok("导出成功");
     }
+
+    @ApiOperation("导入员工教育经历")
+    @SysLog("导入员工教育经历")
+    @PostMapping("/importStaffEdu")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "要导入的文件"),
+            @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
+    })
+    public R importStaffEdu(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
+        ImportExcelListener listener = new ImportExcelListener(staffeducationService, importType);
+        try {
+            InputStream inputStream = file.getInputStream();
+            EasyExcel.read(inputStream, StaffeducationListDTO.class, listener).sheet().doRead();
+            IOUtils.closeQuietly(inputStream);
+            /*return R.ok(" easyexcel读取上传文件成功");*/
+        } catch (Exception ex) {
+            ExcelUtils.export2Web(response, "员工教育经历错误信息", "员工教育经历错误信息", StaffeducationListDTO.class, listener.getDataList());
+            /*return R.failed(ex.getMessage());*/
+        }
+        return null;
+    }
+
 }

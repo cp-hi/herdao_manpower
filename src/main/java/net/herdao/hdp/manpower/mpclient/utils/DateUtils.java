@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -988,4 +989,23 @@ public class DateUtils {
         return now;
      }
 
+
+    /**
+     * 判断日期格式是否正确  yyyy/mm/dd 或者 yyyy-mm-dd 或者  yyyy.mm.dd
+     * @param sDate
+     * @return
+     */
+    public static boolean isLegalDate(String sDate,String pattern) {
+        if (sDate == null) {
+            return false;
+        }
+
+        DateFormat formatter = new SimpleDateFormat(pattern);
+        try {
+            Date date = formatter.parse(sDate);
+            return sDate.equals(formatter.format(date));
+        } catch (Exception e) {
+            return false;
+        }
+    }
  }
