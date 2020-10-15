@@ -52,7 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/staffcontract" )
 @Api(value = "staffcontract", tags = "员工合同签订管理")
 @Slf4j
-public class StaffcontractController extends BaseController<Staffcontract> {
+public class StaffcontractController extends BaseController<Staffcontract,Staffcontract> {
     @Autowired
     private StaffcontractService staffcontractService;
 
