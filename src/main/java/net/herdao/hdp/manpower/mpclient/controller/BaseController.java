@@ -34,7 +34,7 @@ public class BaseController<T> {
     @ApiOperation(value = "获取实体类操作日志")
     @GetMapping("/operationLog/{objId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "objId", value = "岗位ID"),
+            @ApiImplicitParam(name = "objId", value = "ID"),
     })
     public R getOperationLogs(@PathVariable Long objId) {
         Class<T> clzz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
