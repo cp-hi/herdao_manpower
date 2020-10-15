@@ -1,19 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import java.util.ArrayList;
@@ -22,21 +6,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
+import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.staff.*;
-import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailBaseDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailJobDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEmergencyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoOtherDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -49,7 +49,13 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
  */
 @Service
 public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements StaffService {
-	
+
+    @Autowired
+	private FamilystatusService familystatusService;
+
+    @Autowired
+	private StaffeducationService staffeducationService;
+
 	@Override
 	public R<?> selectStaffOrganizationComponent() {
 		
@@ -199,6 +205,32 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("infoOther", infoOther);
 		map.put("emergency", emergency);
 		map.put("educationLast", educationLast);
+
+		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("MODIFIED_TIME")
+		);
+		List<StaffFamilyDTO> familyDtoList = new ArrayList<>();
+		StaffFamilyDTO familyDto;
+		for(int i=0;i<familyList.size();i++){
+			familyDto = new StaffFamilyDTO();
+			BeanUtils.copyProperties(familyList.get(i), familyDto);
+			familyDtoList.add(familyDto);
+		}
+		map.put("familyList", familyDtoList);
+
+		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("END_DATE")
+		);
+		List<StaffEducationDTO> eduDtoList = new ArrayList<>();
+		StaffEducationDTO eduDto;
+		for(int i=0;i<familyList.size();i++){
+			eduDto = new StaffEducationDTO();
+			BeanUtils.copyProperties(eduList.get(i), eduDto);
+			eduDtoList.add(eduDto);
+		}
+		map.put("eduList", eduDtoList);
 		return map;
 	}
 }

@@ -129,8 +129,8 @@
 		<result column="orgCode" property="org_code" />
 		<result column="parentOrgName" property="parent_org_name" />
 		<result column="parentOrgCode" property="parent_org_code" />
-		<collection column="{orgCode=org_code}" property="staffComponents" ofType="StaffComponentVo" javaType="java.util.ArrayList" select="selectStaffs"/>
-		<collection column="{orgCode=org_code}" property="staffOrganizationComponents" ofType="StaffOrganizationComponentVo" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
+		<collection column="{orgCode=org_code}" property="staffComponents" ofType="StaffComponentVO" javaType="java.util.ArrayList" select="selectStaffs"/>
+		<collection column="{orgCode=org_code}" property="staffOrganizationComponents" ofType="StaffOrganizationComponentVO" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
 	</resultMap>
 	
 	<!-- 人员信息组件MAP -->

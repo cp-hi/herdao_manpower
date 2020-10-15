@@ -216,13 +216,7 @@ public class StaffController {
     @GetMapping("/staffdetail/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getStaffDetail(@PathVariable("id" ) Long id) {
-        Staff staff = staffService.getById(id);
-        List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
-                .eq("STAFF_ID", staff.getId())
-                .orderByDesc("MODIFIED_TIME")
-        );
-        StaffHomePage entity = new StaffHomePage(staff, null,null, familyList);
-        return R.ok(entity);
+        return R.ok(staffService.getStaffDetail(id));
     }
 
     /**
