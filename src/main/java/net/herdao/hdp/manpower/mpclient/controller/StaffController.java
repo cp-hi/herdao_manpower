@@ -54,7 +54,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffHomePage;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 
@@ -74,10 +73,6 @@ public class StaffController {
     private final  StaffService staffService;
 
     private final WorkexperienceService workexperienceService;
-
-    private final FamilystatusService familystatusService;
-
-    private final UserposthistoryService userposthistoryService;
 
     private final StaffcontractService staffcontractService;
 
@@ -190,21 +185,7 @@ public class StaffController {
     @GetMapping("/staffhomepage/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getHomePage(@PathVariable("id" ) Long id) {
-        Staff staff = staffService.getById(id);
-        List<Userposthistory> uphList = userposthistoryService.list(new QueryWrapper<Userposthistory>()
-                .eq("USER_ID", staff.getUserId())
-                .orderByDesc("START_DATE")
-        );
-        List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
-                .eq("STAFF_ID", staff.getId())
-                .orderByDesc("BEGIN_DATE")
-        );
-        List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
-                .eq("STAFF_ID", staff.getId())
-                .orderByDesc("MODIFIED_TIME")
-        );
-        StaffHomePage entity = new StaffHomePage(staff, uphList, expList, familyList);
-        return R.ok(entity);
+        return R.ok(staffService.getHomePage(id));
     }
 
     /**
