@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * @ClassName PostDetailDTO
- * @Description PostDetailDTO
+ * @Description 岗位明细报表用
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/9/26 18:05

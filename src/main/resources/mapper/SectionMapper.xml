@@ -10,7 +10,7 @@
 
     <select id="query" resultMap="sectionMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_section where  section_code like #{likeTxt} or section_name like #{likeTxt}
+        select * from mp_section where section_code like #{likeTxt} or section_name like #{likeTxt}
     </select>
 
     <select id="getGroup" parameterType="int" resultType="group">

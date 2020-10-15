@@ -1,15 +1,20 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
-public interface PostService extends IService<Post> {
+public interface PostService extends EntityService<Post> {
+
+    IPage<PostDTO> page(Page<PostDTO> page, @Param("searchTxt") String searchTxt);
 
     /**
      * 岗位列表
@@ -27,14 +32,7 @@ public interface PostService extends IService<Post> {
      */
     Page page(Page page, Map<String, String> params);
 
-    /**
-     * 保存岗位
-     *
-     * @param post
-     * @return
-     */
-    @Override
-    boolean saveOrUpdate(Post post);
+
 
     /**
      * 岗位员工信息

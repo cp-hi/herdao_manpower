@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,4 +36,8 @@ public class PostSeq extends BaseEntity<PostSeq> {
 
     @ApiModelProperty(value = "父ID")
     private Long parentId;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "父序列")
+    private PostSeq parent;
 }

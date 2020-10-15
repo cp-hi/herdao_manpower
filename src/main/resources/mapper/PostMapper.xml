@@ -4,7 +4,63 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostMapper">
 
-    <select id="postList"    resultType="map">
+    <!--*************************以下为分页查询用到的函数***********************************-->
+
+    <resultMap id="postDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO" >
+        <association property="group" column="group_id" select="getGroup" javaType="group"/>
+        <association property="section" column="section_id" select="getSection" javaType="section"/>
+        <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
+        <association property="jobLevel1" column="job_Level_id1" select="getJobLevel" javaType="jobLevel"/>
+        <association property="jobLevel2" column="job_Level_id2" select="getJobLevel" javaType="jobLevel"/>
+        <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
+        <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
+        <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+    </resultMap>
+
+<!--    <resultMap id="postSeqMap" type="postSeq">-->
+<!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
+<!--    </resultMap>-->
+
+    <select id="page" resultMap="postDTO" parameterType="String">
+        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
+        select * from mp_post where post_code like #{likeTxt} or post_name like #{likeTxt}
+    </select>
+
+    <select id="getGroup" parameterType="long" resultType="group">
+        select * from  mp_group WHERE id=#{id}
+    </select>
+
+    <select id="getPipeline" parameterType="long" resultType="pipeline">
+        select * from  mp_pipeline WHERE id=#{id}
+    </select>
+
+    <select id="getSection" parameterType="long" resultType="section">
+        select * from  mp_section WHERE id=#{id}
+    </select>
+
+    <select id="getJobLevel" parameterType="long" resultType="jobLevel">
+        select * from  mp_job_level WHERE id=#{id}
+    </select>
+
+    <!--     TODO 实现父子查询 -->
+    <select id="getPostSeq" parameterType="long" resultType="postSeq">
+        select * from  mp_post_seq WHERE id=#{id}
+    </select>
+
+
+    <select id="getPostAuthorized" parameterType="long" resultType="int">
+        select 10
+    </select>
+
+    <select id="getOnJobStaffs" parameterType="long" resultType="int">
+        select count(*) from mp_post p, mp_userpost up , mp_staff s
+        where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
+        and s.STAFF_SCOPE = '1' and p.id =#{id}
+    </select>
+
+    <!--*************************以上为分页查询用到的函数***********************************-->
+
+    <select id="postList" resultType="map">
        	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post where group_id = #{groupId}
     </select>
 
@@ -12,17 +68,17 @@
          SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})  and  post_code = #{postCode}
     </select>
 
-    <select id="chkDuplicatePostName" parameterType="post" resultType="boolean" >
+    <select id="chkDuplicatePostName" parameterType="post" resultType="boolean">
         SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})   and  post_name = #{postName}
     </select>
 
-    <select id="getPostStaffCount" parameterType="string" resultType="int" >
+    <select id="getPostStaffCount" parameterType="string" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
         ${condition}
     </select>
 
-    <select id="getPostStaffAges" parameterType="long" resultType="map" >
+    <select id="getPostStaffAges" parameterType="long" resultType="map">
        with ages as  (
             select TIMESTAMPDIFF(YEAR ,BIRTHDAY, now()) AS years from mp_post p, mp_userpost up , mp_staff s
             where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
@@ -40,7 +96,7 @@
 
 
     <!-- 岗位名称、岗位编码、集团、板块、管线、职级、 创建时间  -->
-    <select id="getPostDetails"   resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO"  >
+    <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO">
         select
         p.POST_NAME ,
         p.POST_CODE ,
@@ -63,7 +119,7 @@
     </select>
 
     <!-- 任职岗位、员工姓名、工号、手机号码、所在部门 -->
-    <select id="getPostStaffs"  resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO">
+    <select id="getPostStaffs" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO">
         select
         p.POST_NAME,
         s.STAFF_NAME,

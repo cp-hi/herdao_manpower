@@ -20,7 +20,7 @@ import java.math.BigDecimal;
  */
 
 @Data
-@TableName("MP_Post")
+@TableName("mp_post")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位实体类")
 public class Post extends BaseEntity<Post> {
@@ -59,8 +59,10 @@ public class Post extends BaseEntity<Post> {
     private String postProperties;
     @ApiModelProperty(value = "绩效工资比例")
     private String perforSalaryRatio;
-    @ApiModelProperty(value = "职级")
-    private Long jobLevelId;
+    @ApiModelProperty(value = "职级1")
+    private Long jobLevelId1;
+    @ApiModelProperty(value = "职级2")
+    private Long jobLevelId2;
     @ApiModelProperty(value = "岗位序列")
     private Long postSeqId;
     @ApiModelProperty(value = "岗位族")
