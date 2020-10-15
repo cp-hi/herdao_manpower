@@ -88,7 +88,7 @@ public class StaffcontractController {
     @PostMapping("/saveStaffContract")
     //@PreAuthorize("@pms.hasPermission('mpclient_staffcontract_add')" )
     public R save(@RequestBody Staffcontract staffcontract) {
-        boolean status = staffcontractService.save(staffcontract);
+        boolean status = staffcontractService.saveContract(staffcontract);
         return R.ok(status);
     }
 
