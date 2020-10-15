@@ -54,4 +54,5 @@ public interface StaffService extends IService<Staff> {
 
 	Map<String, Object> getStaffDetail(Long id);
 
+	Map<String, Object> getHomePage(Long id);
 }

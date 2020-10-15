@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
+import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +21,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailJobDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEmergencyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoOtherDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
-import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 
@@ -55,6 +40,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
     @Autowired
 	private StaffeducationService staffeducationService;
+
+	@Autowired
+	private UserposthistoryService userposthistoryService;
+
+	@Autowired
+	private WorkexperienceService workexperienceService;
 
 	@Override
 	public R<?> selectStaffOrganizationComponent() {
@@ -231,6 +222,64 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			eduDtoList.add(eduDto);
 		}
 		map.put("eduList", eduDtoList);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getHomePage(Long id){
+		Staff staff = this.getById(id);
+		StaffArchiveDTO archive = new StaffArchiveDTO();
+		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		StaffWelfareDTO welfare = new StaffWelfareDTO();
+		StaffCarreraDTO carrera = new StaffCarreraDTO();
+		BeanUtils.copyProperties(staff, archive);
+		BeanUtils.copyProperties(staff, educationLast);
+		BeanUtils.copyProperties(staff, welfare);
+		BeanUtils.copyProperties(staff, carrera);
+		Map<String, Object> map = new HashMap<>();
+		map.put("archive", archive);
+		map.put("educationLast", educationLast);
+		map.put("welfare", welfare);
+		map.put("carrera", carrera);
+
+		List<Userposthistory> uphList = userposthistoryService.list(new QueryWrapper<Userposthistory>()
+				.eq("USER_ID", staff.getUserId())
+				.orderByDesc("START_DATE")
+		);
+		List<StaffJobTravelDTO> uphDtoList = new ArrayList<>();
+		StaffJobTravelDTO jobTravel;
+		for(int i=0;i<uphList.size();i++){
+			jobTravel = new StaffJobTravelDTO();
+			BeanUtils.copyProperties(uphList.get(i), jobTravel);
+			uphDtoList.add(jobTravel);
+		}
+		map.put("uphDtoList", uphDtoList);
+
+		List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("BEGIN_DATE")
+		);
+		List<StaffWorkExpDTO> expDtoList = new ArrayList<>();
+		StaffWorkExpDTO workExp;
+		for(int i=0;i<expList.size();i++){
+			workExp = new StaffWorkExpDTO();
+			BeanUtils.copyProperties(expList.get(i), workExp);
+			expDtoList.add(workExp);
+		}
+		map.put("expDtoList", expDtoList);
+
+		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("MODIFIED_TIME")
+		);
+		List<StaffFamilyDTO> familyDtoList = new ArrayList<>();
+		StaffFamilyDTO family;
+		for(int i=0;i<familyList.size();i++){
+			family = new StaffFamilyDTO();
+			BeanUtils.copyProperties(familyList.get(i), family);
+			familyDtoList.add(family);
+		}
+		map.put("familyDtoList", familyDtoList);
 		return map;
 	}
 }

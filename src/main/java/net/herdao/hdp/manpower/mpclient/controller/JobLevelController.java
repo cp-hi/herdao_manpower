@@ -15,9 +15,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,14 +37,17 @@ import java.io.InputStream;
 
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController {
+public class JobLevelController extends BaseController<JobLevel, JobLevelDTO> {
 
+    @Autowired
     private JobLevelService jobLevelService;
 
-    private GroupService groupService;
+    @Autowired
+    public void setEntityService(JobLevelService jobLevelService) {
+        super.entityService = jobLevelService;
+    }
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
@@ -61,45 +66,23 @@ public class JobLevelController {
         return R.ok(jobLevelService.jobLevelList(groupId));
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Long id) {
-        return R.ok(jobLevelService.getById(id));
-    }
+//    @GetMapping("/{id}")
+//    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+//    public R getById(@PathVariable("id") Long id) {
+//        return R.ok(jobLevelService.getById(id));
+//    }
+//
+//    @PostMapping
+//    public R save(@RequestBody JobLevel jobLevel) {
+//        jobLevelService.saveEntity(jobLevel);
+//        return R.ok(jobLevel);
+//    }
+//
+//    @ApiOperation(value = "通过id删除", notes = "通过id删除")
+//    @SysLog("通过id删除")
+//    @DeleteMapping("/{id}")
+//    public R removeById(@PathVariable Long id) {
+//        return R.ok(jobLevelService.removeById(id));
+//    }
 
-    @PostMapping
-    public R save(@RequestBody JobLevel jobLevel) {
-        jobLevelService.saveEntity(jobLevel);
-        return R.ok(jobLevel);
-    }
-
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除")
-    @DeleteMapping("/{id}")
-    public R removeById(@PathVariable Long id) {
-        return R.ok(jobLevelService.removeById(id));
-    }
-
-    @ApiOperation("导入")
-    @SysLog("导入")
-    @PostMapping("/import")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
-    })
-    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-        ImportExcelListener listener = null;
-        InputStream inputStream = null;
-        try {
-            inputStream = file.getInputStream();
-            listener = new ImportExcelListener(jobLevelService, importType);
-            EasyExcel.read(inputStream, JobLevelDTO.class, listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功");
-        } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "职级导入错误信息", "职级导入错误信息",JobLevelDTO.class, listener.getDataList());
-            return R.failed(ex.getMessage());
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-    }
 }
