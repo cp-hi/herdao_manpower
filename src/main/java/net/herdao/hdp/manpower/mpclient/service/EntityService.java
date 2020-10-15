@@ -4,9 +4,17 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 实体操作的基础Service
+ * @author ljan
+ * @Date
+ * @param <T>
+ */
 public interface EntityService<T> extends IService<T> {
 
     /**
@@ -18,6 +26,27 @@ public interface EntityService<T> extends IService<T> {
     @OperationEntity(clazz = Class.class)
     default boolean saveEntity(T t) {
         return this.saveOrUpdate(t);
+    }
+
+    /**
+     * 逻辑删除实体并自动添加日志
+     * @param id
+     * @return
+     */
+    @OperationEntity(clazz = Class.class)
+    default boolean deleteEntity(Serializable id){
+        return this.removeById(id);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @OperationEntity(clazz = Class.class)
+    default NotImplementedException stopEntity(Serializable id, boolean stop){
+        //TODO 停用实体
+        return new NotImplementedException();
     }
 
     /**

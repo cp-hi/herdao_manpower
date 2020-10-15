@@ -7,7 +7,7 @@
     <!--*************************以下为分页查询用到的函数***********************************-->
 
     <resultMap id="postDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO" >
-        <association property="group" column="group_id" select="getGroup" javaType="group"/>
+        <association property="group" column="group_id" select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" javaType="group"/>
         <association property="section" column="section_id" select="getSection" javaType="section"/>
         <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
         <association property="jobLevel1" column="job_Level_id1" select="getJobLevel" javaType="jobLevel"/>
@@ -48,6 +48,7 @@
     </select>
 
 
+    <!--     TODO 未实现编制统计 -->
     <select id="getPostAuthorized" parameterType="long" resultType="int">
         select 10
     </select>
@@ -80,7 +81,7 @@
 
     <select id="getPostStaffAges" parameterType="long" resultType="map">
        with ages as  (
-            select TIMESTAMPDIFF(YEAR ,BIRTHDAY, now()) AS years from mp_post p, mp_userpost up , mp_staff s
+            select TIMESTAMPDIFF(YEAR ,BIRTHDAY, now()) AS years,p.tenant_id from mp_post p, mp_userpost up , mp_staff s
             where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
             and s.STAFF_SCOPE = '1' and p.id =  #{postId}
         )

@@ -32,10 +32,9 @@ import java.util.Map;
  * @Version 1.0
  */
 @RestController
-//@AllArgsConstructor
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post> {
+public class PostController extends BaseController<Post,Post> {
 
     @Autowired
     private PostService entityService;
@@ -70,35 +69,6 @@ public class PostController extends BaseController<Post> {
     public R list(Long groupId) {
         return R.ok(entityService.postList(groupId));
     }
-//
-//    @GetMapping("/{id}")
-//    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-////    @ApiResponses({
-////            @ApiResponse()
-////    })
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "岗位ID"),
-//    })
-//    public R getById(@PathVariable("id") Long id) {
-//        return R.ok(postService.getById(id));
-//    }
-//
-//    @PostMapping
-//    public R save(@RequestBody Post post)  {
-//        postService.saveOrUpdate(post);
-//        return R.ok(post);
-//    }
-//
-//    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-//    @SysLog("通过id删除")
-//    @DeleteMapping("/{id}")
-//    @OperationEntity(operation = "删除岗位", clazz = Post.class)
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "岗位ID"),
-//    })
-//    public R removeById(@PathVariable Long id) {
-//        return R.ok(postService.removeById(id));
-//    }
 
 
     @ApiOperation(value = "获取岗位员工信息")

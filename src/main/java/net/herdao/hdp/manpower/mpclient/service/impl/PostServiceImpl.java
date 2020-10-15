@@ -37,7 +37,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public IPage<PostDTO> page(Page<PostDTO> page, String searchTxt) {
-        IPage<PostDTO> p = baseMapper.page(page,searchTxt);
+        IPage<PostDTO> p = baseMapper.page(page, searchTxt);
         return p;
     }
 
@@ -97,6 +97,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Integer partTimes = baseMapper.getPostStaffCount("and s.STAFF_SCOPE = '1' and s.JOB_TYPE = '2' and p.id = " + postId);
         Integer exchanges = baseMapper.getPostStaffCount("and s.STAFF_SCOPE = '1' and s.JOB_TYPE = '4' and p.id = " + postId);
 
+        //TODO 未实现以下3个统计
         Integer interns = 0; //实习
         Integer probation = 0;//试用
         Integer authorized = 0;//编制
