@@ -66,10 +66,9 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
 
     /**
      * 新增校检
-     * @param familystatus
+     * @param dto
      */
-    private void checkAdd(FamilyStatusListDto familystatus) {
-        FamilyStatusListDto dto = familystatus;
+    private void checkAdd(FamilyStatusListDto dto) {
         String errorMsg="";
 
         if (null == dto.getStaffName()){

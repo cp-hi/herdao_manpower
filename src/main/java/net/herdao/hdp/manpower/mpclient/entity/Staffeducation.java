@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 员工教育经历
@@ -24,7 +25,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工教育经历")
 public class Staffeducation extends BaseModel<Staffeducation> {
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
@@ -32,43 +33,36 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="id")
     private Long id;
-
     /**
-     * 
+     * oid
      */
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value="oid")
     private String oid;
-
     /**
      * 起止时间
      */
     @ApiModelProperty(value="起止时间")
     private String period;
-
     /**
-     * 学校名称
+     * 毕业院校
      */
-    @ApiModelProperty(value="学校名称")
+    @ApiModelProperty(value="毕业院校")
     private String schoolName;
-
     /**
      * 专业
      */
     @ApiModelProperty(value="专业")
     private String professional;
-
     /**
-     * 学历与学位
+     * 学位
      */
-    @ApiModelProperty(value="学历与学位")
+    @ApiModelProperty(value="学位")
     private String educationDegree;
-
     /**
      * 学习形式
      */
     @ApiModelProperty(value="学习形式")
     private String learnForm;
-
     /**
      * 新建用户
      */
@@ -78,7 +72,7 @@ private static final long serialVersionUID = 1L;
      * 新建时间
      */
     @ApiModelProperty(value="新建时间")
-    private LocalDateTime createdTime;
+    private Date createdTime;
     /**
      * 最后修改人
      */
@@ -88,19 +82,17 @@ private static final long serialVersionUID = 1L;
      * 最后修改时间
      */
     @ApiModelProperty(value="最后修改时间")
-    private LocalDateTime modifiedTime;
+    private Date modifiedTime;
     /**
      * 人员外键
      */
     @ApiModelProperty(value="人员外键")
     private String staffId;
-
     /**
-     * 结束时间
+     * 毕业日期
      */
-    @ApiModelProperty(value="结束时间")
-    private LocalDateTime endDate;
-
+    @ApiModelProperty(value="毕业日期")
+    private Date endDate;
     /**
      * 租户ID
      */
@@ -131,46 +123,20 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="预留字段5")
     private String field5;
-
     /**
-     * 结束时间
+     * 开始时间
      */
-    @ApiModelProperty(value="开始时间")
-    private LocalDateTime beginDate;
-
-    /**
-     * 最后修改人
-     */
-    @ApiModelProperty(value="最后修改人")
-    @TableField(exist = false)
-    private String modifierName;
-
-    /**
-     * 新建用户
-     */
-    @ApiModelProperty(value="新建用户")
-    @TableField(exist = false)
-    private String createName;
-
+    @ApiModelProperty(value="入学日期")
+    private Date beginDate;
     /**
      * 是否删除
      */
     @ApiModelProperty(value="是否删除")
     private Boolean delFlag;
-
-
     /**
-     * 员工姓名
+     * 学历
      */
-    @ApiModelProperty(value="员工姓名")
-    @TableField(exist = false)
-    private String staffName;
-
-    /**
-     * 员工姓名
-     */
-    @ApiModelProperty(value="员工姓名")
-    @TableField(exist = false)
-    private String staffCode;
+    @ApiModelProperty(value="学历")
+    private String educationQua;
 
 }

@@ -1,19 +1,13 @@
-package net.herdao.hdp.manpower.mpclient.dto.staffEdu;
+package net.herdao.hdp.manpower.mpclient.vo;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-
-import java.time.LocalDateTime;
-import java.util.Date;
+import net.herdao.hdp.manpower.mpclient.dto.ExcelDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 
 /**
  * 员工教育经历列表list
@@ -22,14 +16,14 @@ import java.util.Date;
  * @date 2020-09-23 17:59:39
  */
 @Data
-@ApiModel(value = "员工教育经历列表list")
-public class StaffeducationListDto {
+@ApiModel(value = "员工教育经历列表vo list")
+public class StaffeducationVO {
 
     /**
      * 学校名称
      */
-    @ApiModelProperty(value="学校名称")
-    @ExcelProperty(value = "学校名称")
+    @ApiModelProperty(value="毕业院校")
+    @ExcelProperty(value = "毕业院校")
     private String schoolName;
 
     /**
@@ -42,8 +36,8 @@ public class StaffeducationListDto {
     /**
      * 学历与学位
      */
-    @ApiModelProperty(value="学历与学位")
-    @ExcelProperty(value="学历与学位")
+    @ApiModelProperty(value="学位")
+    @ExcelProperty(value="学位")
     private String educationDegree;
 
     /**
@@ -58,7 +52,7 @@ public class StaffeducationListDto {
      */
     @ApiModelProperty(value="新建时间")
     @ExcelProperty(value="新建时间")
-    private String createdTime;
+    private String createdTimeView;
 
 
     /**
@@ -66,22 +60,22 @@ public class StaffeducationListDto {
      */
     @ApiModelProperty(value="最后修改时间")
     @ExcelProperty(value="最后修改时间")
-    private String modifiedTime;
+    private String modifiedTimeView;
 
 
     /**
      * 结束时间
      */
-    @ApiModelProperty(value="结束时间")
-    @ExcelProperty(value = "结束时间")
-    private String endDate;
+    @ApiModelProperty(value="毕业日期")
+    @ExcelProperty(value = "毕业日期")
+    private String endDateView;
 
     /**
      * 结束时间
      */
-    @ApiModelProperty(value="开始时间")
-    @ExcelProperty(value = "开始时间")
-    private String beginDate;
+    @ApiModelProperty(value="入学日期")
+    @ExcelProperty(value = "入学日期")
+    private String beginDateView;
 
     /**
      * 最后修改人
@@ -114,5 +108,13 @@ public class StaffeducationListDto {
     @ExcelProperty(value = "员工工号")
     @TableField(exist = false)
     private String staffCode;
+
+    /**
+     * 学历
+     */
+    @ApiModelProperty(value="学历")
+    @ExcelProperty(value = "学历")
+    private String educationQua;
+
 
 }

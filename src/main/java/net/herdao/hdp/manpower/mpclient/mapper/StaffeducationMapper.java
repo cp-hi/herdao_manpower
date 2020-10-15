@@ -19,10 +19,11 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffeducationListDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -51,5 +52,5 @@ public interface StaffeducationMapper extends BaseMapper<Staffeducation> {
      * @param staffCode
      * @return
      */
-    List<StaffeducationListDto> findStaffEducation(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<StaffeducationVO> findStaffEducation(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 }
