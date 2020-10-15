@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto;
+package net.herdao.hdp.manpower.mpclient.dto.staff;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "员工附件分类")
+@ApiModel(value = "员工附件二级分类")
 public class StaffFileTypeDto {
     @ApiModelProperty(value="主键ID")
     private Long id;

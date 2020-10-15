@@ -25,7 +25,7 @@
       </resultMap>
 
       <!-- 员工附件分类分页-->
-      <select id="findStaffFileTypePage" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffFileTypeDto">
+      <select id="findStaffFileTypePage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto">
             SELECT    sc.id,
                       s.STAFF_CODE staffCode,
                       s.STAFF_NAME staffName,

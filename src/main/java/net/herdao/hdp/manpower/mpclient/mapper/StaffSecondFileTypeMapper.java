@@ -4,8 +4,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.StaffFileTypeDto;
-import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
