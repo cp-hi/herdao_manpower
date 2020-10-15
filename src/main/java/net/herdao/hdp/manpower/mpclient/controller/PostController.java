@@ -71,8 +71,8 @@ public class PostController extends BaseController<Post,Post> {
     }
 
 
-    @ApiOperation(value = "获取岗位员工信息")
-    @SysLog("获取岗位员工信息")
+    @ApiOperation(value = "岗位概况")
+    @SysLog("岗位概况")
     @GetMapping("/postStaff/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "岗位ID"),
@@ -82,7 +82,7 @@ public class PostController extends BaseController<Post,Post> {
     }
 
     @ApiOperation(value = "获取岗位信息明细")
-    @GetMapping("/getPostDetails")
+    @GetMapping("/postDetails")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
@@ -102,7 +102,7 @@ public class PostController extends BaseController<Post,Post> {
     }
 
     @ApiOperation(value = "获取岗位员工信息")
-    @GetMapping("/getPostStaffs")
+    @GetMapping("/postStaffs")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
