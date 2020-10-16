@@ -76,6 +76,7 @@
          t.modifierName,
          t.modifyTime,
          t.STATUS,
+         t.SUPEER_ID superId,
          sum( CASE WHEN t.SECOND_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END ) file_count
          FROM (
          SELECT  sc.id,
