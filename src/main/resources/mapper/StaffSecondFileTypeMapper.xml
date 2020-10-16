@@ -26,43 +26,44 @@
 
       <!-- 员工附件分类分页-->
       <select id="findStaffFileTypePage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO">
-        SELECT t.id,
-               t.staffCode,
-			   t.staffName,
-			   t.type,
-			   t.superType,
-			   t.enableStatus,
-			   t.modifierName,
-			   t.modifyTime,
-			   t.STATUS,
-			   sum( CASE WHEN t.SECOND_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END ) file_count
-        FROM (
- 	        SELECT  sc.id,
-					s.STAFF_CODE staffCode,
-					s.STAFF_NAME staffName,
-					sc.`NAME` type,
-					i.label superType,
-					CASE  WHEN sc.STATUS = 0 THEN
-					'禁用'
-					WHEN sc.STATUS = 1 THEN
-					'启用'
-					END enableStatus,
-                    sc.STATUS,
-					( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
-					sc.MODIFIED_TIME modifyTime,
- 					sf.id fid ,
-					sc.SUPEER_ID,
-					sf.SECOND_TYPE_ID
-                FROM
-                    mp_staff_second_file_type sc
-                    LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
-                    LEFT JOIN sys_dict_item i ON i.id = sc.SUPEER_ID
-                    LEFT JOIN mp_staff_file sf on sf.SECOND_TYPE_ID=sc.id
-                  WHERE  1 = 1
-                  <if test="entity.superId != null">
-                      AND sc.SUPEER_ID= #{entity.superId}
-                  </if>
-             ) t GROUP BY t.SECOND_TYPE_ID,t.type
+          SELECT t.id,
+          t.staffCode,
+          t.staffName,
+          t.type,
+          t.superType,
+          t.enableStatus,
+          t.modifierName,
+          t.modifyTime,
+          t.STATUS,
+          t.SUPEER_ID superId,
+          sum( CASE WHEN t.SECOND_TYPE_ID IS NOT NULL THEN 1 ELSE 0 END ) file_count
+          FROM (
+          SELECT  sc.id,
+          s.STAFF_CODE staffCode,
+          s.STAFF_NAME staffName,
+          sc.`NAME` type,
+          i.label superType,
+          CASE  WHEN sc.STATUS = 0 THEN
+          '禁用'
+          WHEN sc.STATUS = 1 THEN
+          '启用'
+          END enableStatus,
+          sc.STATUS,
+          ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = sc.MODIFIER_ID ) modifierName,
+          sc.MODIFIED_TIME modifyTime,
+          sf.id fid ,
+          sc.SUPEER_ID,
+          sf.SECOND_TYPE_ID
+          FROM
+          mp_staff_second_file_type sc
+          LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
+          LEFT JOIN sys_dict_item i ON i.id = sc.SUPEER_ID
+          LEFT JOIN mp_staff_file sf on sf.SECOND_TYPE_ID=sc.id
+          WHERE  1 = 1
+          <if test="entity.superId != null">
+              AND sc.SUPEER_ID= #{entity.superId}
+          </if>
+          ) t GROUP BY t.SECOND_TYPE_ID,t.type
       </select>
 
      <!-- 员工附件分类分页-->
