@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-
+/**
+ * @author yangrr
+ */
 @Data
 @ApiModel(value = "职称及职业资格")
 public class StaffCarreraDTO {

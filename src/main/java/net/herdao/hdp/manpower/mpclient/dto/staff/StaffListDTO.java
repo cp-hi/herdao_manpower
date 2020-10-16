@@ -7,7 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+/**
+ * @author yangrr
+ */
 @Data
 @ApiModel(value = "花名册列表")
 public class StaffListDTO {
