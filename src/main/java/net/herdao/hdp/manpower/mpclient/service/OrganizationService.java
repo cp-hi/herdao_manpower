@@ -132,8 +132,9 @@ public interface OrganizationService extends IService<Organization> {
     /**
      * 查询组织下所有人员
      * @author yangrr
+     * @param page
      * @param orgCode
      * @return
      */
-    List<StaffOrgDTO> selectOrgStaffAll(String orgCode);
+    List<StaffOrgDTO> selectOrgStaffAll(Page page, String orgCode);
 }

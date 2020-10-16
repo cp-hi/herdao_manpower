@@ -618,8 +618,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	}
 
     @Override
-    public List<StaffOrgDTO> selectOrgStaffAll(String orgCode) {
-        return baseMapper.selectOrgStaffAll(orgCode);
+    public List<StaffOrgDTO> selectOrgStaffAll(Page page, String orgCode) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        map.put("orgCode", orgCode);
+        return baseMapper.selectOrgStaffAll(map);
     }
 	
 }
