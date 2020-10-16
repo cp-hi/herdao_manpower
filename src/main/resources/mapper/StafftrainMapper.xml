@@ -37,19 +37,23 @@
                   <result property="operator" column="operator"/>
                   <result property="operatorTime" column="operator_time"/>
                   <result property="remarks" column="remarks"/>
-       </resultMap>
+                  <result property="trainLearnScore" column="train_learn_score"/>
+        </resultMap>
 
       <!-- 员工培训分页-->
-      <select id="findStaffTrainPage" resultMap="stafftrainMap">
+      <select id="findStaffTrainPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO">
+          select * from (
             SELECT
+            f.id,
             s.staff_name,
             s.staff_code,
-            f.begin_time beginTimeStr,
-            f.end_time endTimeStr,
+            f.begin_time,
+            f.end_time,
             f.train_period,
             f.train_learn_period,
+            f.train_learn_score,
             f.score,
-            f.train_type,
+            ( SELECT s.label FROM sys_dict_item s WHERE s.id = f.train_type and s.type='TRAIN_TYPE' ) train_type,
             f.train_company,
             f.certificate_name,
             f.certificate_code,
@@ -63,30 +67,27 @@
             LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
             LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
             where 1=1
-             <if test="orgId != null">
-                  and u.ORG_DEPT_ID = #{orgId}
-            </if>
-            <if test="staffName != null">
-                  or s.staff_name LIKE concat(#{staffName},'%')
-            </if>
-            <if test="staffCode != null">
-                  or s.staff_code LIKE concat(#{staffCode},'%')
-            </if>
+          )t where 1=1
+          <if test="searchText != null">
+              and CONCAT( t.staff_name,  t.staff_code)  LIKE concat('%',#{searchText},'%')
+          </if>
       </select>
 
     <!-- 员工培训-->
-    <select id="findStaffTrain" resultMap="stafftrainMap">
+    <select id="findStaffTrain" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO">
+        select * from (
         SELECT
+        f.id,
         s.staff_name,
         s.staff_code,
         f.begin_time,
         f.end_time,
         f.train_period,
         f.train_learn_period,
+        f.train_learn_score,
         f.score,
-        f.train_type,
+        ( SELECT s.label FROM sys_dict_item s WHERE s.id = f.train_type and s.type='TRAIN_TYPE' ) train_type,
         f.train_company,
-        f.score,
         f.certificate_name,
         f.certificate_code,
         f.remarks,
@@ -99,14 +100,9 @@
         LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
         LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
         where 1=1
-        <if test="orgId != null">
-            and u.ORG_DEPT_ID = #{orgId}
-        </if>
-        <if test="staffName != null">
-            or s.staff_name LIKE concat(#{staffName},'%')
-        </if>
-        <if test="staffCode != null">
-            or s.staff_code LIKE concat(#{staffCode},'%')
+        )t where 1=1
+        <if test="searchText != null">
+            and CONCAT( t.staff_name,  t.staff_code)  LIKE concat('%',#{searchText},'%')
         </if>
     </select>
 </mapper>

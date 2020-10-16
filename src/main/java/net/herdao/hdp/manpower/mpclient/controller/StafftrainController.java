@@ -8,10 +8,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
+import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,12 +33,17 @@ import java.util.List;
  * @date 2020-09-25 09:49:45
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/stafftrain" )
 @Api(value = "stafftrain", tags = "员工培训管理")
-public class StafftrainController {
+public class StafftrainController extends BaseController<Stafftrain,Stafftrain> {
 
-    private final StafftrainService stafftrainService;
+    @Autowired
+    private StafftrainService stafftrainService;
+
+    @Autowired
+    public void setEntityService( StafftrainService stafftrainService) {
+        super.entityService = stafftrainService;
+    }
 
     /**
      * 分页查询
@@ -47,47 +56,6 @@ public class StafftrainController {
     @PreAuthorize("@pms.hasPermission('mpclient_stafftrain_view')" )
     public R getStafftrainPage(Page page, Stafftrain stafftrain) {
         return R.ok(stafftrainService.page(page, Wrappers.query(stafftrain)));
-    }
-
-
-    /**
-     * 通过id查询员工培训
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_stafftrain_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(stafftrainService.getById(id));
-    }
-
-    /**
-     * 新增员工培训
-     * @param stafftrain 员工培训
-     * @return R
-     */
-    @ApiOperation(value = "新增员工培训", notes = "新增员工培训")
-    @SysLog("新增员工培训" )
-    @PostMapping("/saveTrain")
-    //@PreAuthorize("@pms.hasPermission('mpclient_stafftrain_add')" )
-    public R saveTrain(@RequestBody Stafftrain stafftrain) {
-        boolean flag = stafftrainService.saveTrain(stafftrain);
-        return R.ok(flag);
-    }
-
-    /**
-     * 修改员工培训
-     * @param stafftrain 员工培训
-     * @return R
-     */
-    @ApiOperation(value = "修改员工培训", notes = "修改员工培训")
-    @SysLog("修改员工培训" )
-    @PutMapping("/updateTrain")
-    //@PreAuthorize("@pms.hasPermission('mpclient_stafftrain_edit')" )
-    public R updateById(@RequestBody Stafftrain stafftrain) {
-        boolean status = stafftrainService.updateTrain(stafftrain);
-        return R.ok(status);
     }
 
     /**
@@ -106,20 +74,18 @@ public class StafftrainController {
     /**
      * 员工培训分页
      * @param page 分页对象
-     * @param orgId
+     * @param searchText
      * @return
      */
     @ApiOperation(value = "员工培训分页", notes = "员工培训分页")
     @GetMapping("/findStaffTrainPage")
     @OperationEntity(operation = "员工培训分页" ,clazz = Stafftrain.class )
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+            @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffTrainPage(Page page, String orgId,String staffName, String staffCode) {
-        Page pageResult = stafftrainService.findStaffTrainPage(page, orgId, staffName, staffCode);
+    public R findStaffTrainPage(Page page, String searchText) {
+        Page pageResult = stafftrainService.findStaffTrainPage(page,searchText);
         return R.ok(pageResult);
     }
 
@@ -130,16 +96,14 @@ public class StafftrainController {
      */
     @ApiOperation(value = "导出员工培训Excel", notes = "导出员工培训Excel")
     @SysLog("导出员工培训Excel")
-    @PostMapping("/exportTrans")
+    @PostMapping("/exportTrain")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+            @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
-    public void exportTrans(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+    public void exportTrain(HttpServletResponse response,String searchText) {
         try {
-            List<Stafftrain> list = stafftrainService.findStaffTrain(orgId, staffName, staffCode);
-            ExcelUtils.export2Web(response, "员工培训表", "员工培训表", Stafftrain.class,list);
+            List<StafftrainDTO> list = stafftrainService.findStaffTrain(searchText);
+            ExcelUtils.export2Web(response, "员工培训表", "员工培训表", StafftrainDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");

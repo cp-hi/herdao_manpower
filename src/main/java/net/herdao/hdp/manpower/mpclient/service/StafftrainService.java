@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,39 +32,25 @@ import java.util.List;
  * @author andy
  * @date 2020-09-25 09:49:45
  */
-public interface StafftrainService extends IService<Stafftrain> {
+public interface StafftrainService extends EntityService<Stafftrain> {
 
     /**
      * 员工培训分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<Stafftrain> findStaffTrainPage(Page<Stafftrain> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page, String searchText);
 
-    /**
-     * 员工培训新增
-     * @param stafftrain
-     * @return
-     */
-    boolean saveTrain(@RequestBody Stafftrain stafftrain);
-
-
-    /**
-     * 员工培训更新
-     * @param stafftrain
-     * @return
-     */
-    boolean updateTrain(@RequestBody Stafftrain stafftrain);
 
     /**
      * 员工培训
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<Stafftrain> findStaffTrain(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<StafftrainDTO> findStaffTrain(String searchText);
+
+
+
+
 }

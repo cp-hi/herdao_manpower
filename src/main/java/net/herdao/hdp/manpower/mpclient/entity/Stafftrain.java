@@ -27,12 +27,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
- 
+
 import java.util.Date;
 
 /**
  * 员工培训
- *
  * @author andy
  * @date 2020-09-25 09:49:45
  */
@@ -41,28 +40,25 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工培训")
 public class Stafftrain extends BaseModel<Stafftrain> {
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 新平台新增
      */
     @TableId
     @ApiModelProperty(value="新平台新增")
-    @ExcelIgnore
     private Long id;
 
     /**
      * 旧平台主键
      */
     @ApiModelProperty(value="旧平台主键")
-    @ExcelIgnore
     private String staffTrainOid;
 
     /**
      * 培训时间
      */
     @ApiModelProperty(value="培训时间")
-    @ExcelIgnore
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date trainingTime;
 
@@ -88,14 +84,12 @@ private static final long serialVersionUID = 1L;
      * 员工外键(旧平台)
      */
     @ApiModelProperty(value="员工外键(旧平台)")
-    @ExcelIgnore
     private String staffFk;
 
     /**
      * 员工外键
      */
     @ApiModelProperty(value="员工外键")
-    @ExcelIgnore
     private Long staffId;
 
     /**
@@ -109,7 +103,6 @@ private static final long serialVersionUID = 1L;
      * 新建时间
      */
     @ApiModelProperty(value="新建时间")
-    @ExcelIgnore
     private Date createdTime;
 
     /**
@@ -122,20 +115,17 @@ private static final long serialVersionUID = 1L;
      * 最后修改时间
      */
     @ApiModelProperty(value="最后修改时间")
-    @ExcelIgnore
     private Date modifiedTime;
 
     /**
      * 租户ID
      */
     @ApiModelProperty(value="租户ID")
-    @ExcelIgnore
     private Long tenantId;
 
     /**
      * 预留字段1
      */
-    @ExcelIgnore
     @ApiModelProperty(value="预留字段1")
     private String field1;
 
@@ -143,116 +133,96 @@ private static final long serialVersionUID = 1L;
      * 预留字段2
      */
     @ApiModelProperty(value="预留字段2")
-    @ExcelIgnore
     private String field2;
 
     /**
      * 预留字段3
      */
     @ApiModelProperty(value="预留字段3")
-    @ExcelIgnore
     private String field3;
 
     /**
      * 预留字段4
      */
     @ApiModelProperty(value="预留字段4")
-    @ExcelIgnore
     private String field4;
 
     /**
      * 预留字段5
      */
     @ApiModelProperty(value="预留字段5")
-    @ExcelIgnore
     private String field5;
 
     /**
      * 是否删除
      */
     @ApiModelProperty(value="是否删除")
-    @ExcelIgnore
     private Boolean delFlag;
 
     /**
      * 开始时间
      */
     @ApiModelProperty(value="开始时间")
-    @ExcelIgnore
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date beginTime;
 
 
     /**
-     * 开始时间
-     */
-    @ApiModelProperty(value="开始时间excel字段")
-    @ExcelProperty(value = "开始时间", index = 0)
-    private String beginTimeStr;
-
-
-    /**
      * 结束时间
      */
-    @ExcelIgnore
     @ApiModelProperty(value="结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endTime;
 
-    /**
-     * 开始时间
-     */
-    @ApiModelProperty(value="结束时间excel字段")
-    @ExcelProperty(value = "结束时间", index = 1)
-    private String endTimeStr;
+
 
     /**
      * 培训时长
      */
     @ApiModelProperty(value="培训时长")
-    @ExcelProperty(value = "培训时长", index = 3)
     private String trainPeriod;
 
     /**
      * 培训总学时
      */
     @ApiModelProperty(value="培训总学时")
-    @ExcelProperty(value = "培训时长", index = 4)
     private String trainLearnPeriod;
+
+    /**
+     * 培训总学分
+     */
+    @ApiModelProperty(value="培训总学分")
+    private String trainLearnScore;
+
 
     /**
      * 培训类型 内部培训；外部培训 下拉选择
      */
     @ApiModelProperty(value="培训类型 内部培训；外部培训 下拉选择")
-    @ExcelProperty(value = "培训类型", index = 5)
     private String trainType;
 
     /**
      * 培训单位
      */
     @ApiModelProperty(value="培训单位")
-    @ExcelProperty(value = "培训单位", index = 6)
     private String trainCompany;
 
     /**
      * 培训成绩
      */
     @ApiModelProperty(value="培训成绩")
-    @ExcelProperty(value = "培训成绩", index = 7)
     private String score;
 
     /**
      * 证书名称
      */
     @ApiModelProperty(value="证书名称")
-    @ExcelProperty(value = "证书名称", index = 8)
     private String certificateName;
 
     /**
      * 证书编码
      */
     @ApiModelProperty(value="证书编码")
-    @ExcelProperty(value = "证书编码", index = 9)
     private String certificateCode;
 
     /**
@@ -265,7 +235,6 @@ private static final long serialVersionUID = 1L;
      * 操作时间
      */
     @ApiModelProperty(value="操作时间")
-    @ExcelIgnore
     private Date operatorTime;
 
     /**
