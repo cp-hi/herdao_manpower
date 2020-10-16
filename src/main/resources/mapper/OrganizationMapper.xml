@@ -275,9 +275,6 @@
          <if test="isStop != null">
              AND is_stop = #{isStop}
          </if>
-         <if test="tenantId != null">
-             AND TENANT_ID = #{tenantId}
-         </if>
       </select>
 
     <!-- 查询根组织架构 无限级递归 -->
@@ -297,9 +294,6 @@
 
         <if test="isStop != null">
             AND is_stop = #{isStop}
-        </if>
-        <if test="tenantId != null">
-            AND TENANT_ID = #{tenantId}
         </if>
     </select>
 
@@ -379,10 +373,6 @@
             AND is_stop = #{isStop}
         </if>
 
-        <if test="tenantId != null">
-            AND TENANT_ID = #{tenantId}
-        </if>
-
         order by SORT_NO
     </select>
 
@@ -421,9 +411,6 @@
         </if>
         <if test="isStop != null">
             AND is_stop = #{isStop}
-        </if>
-        <if test="tenantId != null">
-            AND TENANT_ID = #{tenantId}
         </if>
     </select>
 
