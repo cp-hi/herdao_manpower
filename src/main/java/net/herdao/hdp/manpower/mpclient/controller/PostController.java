@@ -1,11 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
@@ -16,6 +20,7 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +47,10 @@ public class PostController extends BaseController<Post, Post> {
     @Autowired
     private PostService entityService;
 
+
+    @Autowired
+    SysDictItemService sysDictItemService;
+
     @Autowired
     public void setEntityService(PostService postService) {
         super.entityService = postService;
@@ -58,13 +67,14 @@ public class PostController extends BaseController<Post, Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R page(Page<PostDTO> page, @RequestParam Map<String, String> params) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
-        IPage<PostDTO> p = entityService.page(page, "");
+    public R page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
+        DtoConverter.sysDictItemService = sysDictItemService;
+        IPage p = entityService.page(page, post);
+        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
+        List<PostDTO> records = p.getRecords();
         List<PostVO> vos = DtoConverter.convert(p.getRecords(), PostVO.class);
-//        p.setRecords();
+        p.setRecords(vos);
         return R.ok(p);
-//        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
-//        return R.ok(postService.page(page, params));
     }
 
     @GetMapping("/list")

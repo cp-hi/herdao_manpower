@@ -19,7 +19,6 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -151,7 +150,6 @@ public class OrgSetController {
 	@SysLog("批量修改字典项")
 	@PostMapping("/itemList")
 	public R updateBatch(@RequestBody List<SysDictItem> list) {
-//		List<SysDictItem> list= JSONObject.parseArray(jsonList,SysDictItem.class);
 		boolean isSuccess = false;
 		if(list!=null && list.size()!=0){
 			isSuccess = sysDictItemService.updateBatchById(list);

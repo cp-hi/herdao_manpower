@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -126,6 +127,13 @@ public interface OrganizationService extends IService<Organization> {
  	 * 
  	 * @return
  	 */
-   R<?> selectOrganizations();
+    R<?> selectOrganizations();
 
+    /**
+     * 查询组织下所有人员
+     * @author yangrr
+     * @param orgCode
+     * @return
+     */
+    List<StaffOrgDTO> selectOrgStaffAll(String orgCode);
 }

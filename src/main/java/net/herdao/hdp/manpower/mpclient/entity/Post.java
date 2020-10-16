@@ -37,7 +37,7 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "行政级别", required = true)
     private String administrativeLevel;
     @ApiModelProperty(value = "年终奖薪酬比例", required = true)
-    private BigDecimal yearPayRatio;
+    private String yearPayRatio;
     @ApiModelProperty(value = "是否销售岗位", required = true)
     private Boolean salesPosition;
     @ApiModelProperty(value = "是否销售管理岗位", required = true)

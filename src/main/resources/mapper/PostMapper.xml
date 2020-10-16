@@ -15,7 +15,7 @@
         <result property="jobLevelId1" column="job_Level_id1"/>
         <result property="postSeqId" column="post_seq_id"/>
 
-        <association property="group" column="group_id" select="getGroup" javaType="group"  />
+        <association property="group" column="group_id" select="getGroup" javaType="group"/>
         <association property="section" column="section_id" select="getSection" javaType="section"/>
         <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
         <association property="jobGrade" column="job_level_id1" select="getJobGrade" javaType="jobGrade"/>
@@ -24,36 +24,55 @@
         <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+        <association property="operationLog" column="id" select="getOperationLog" javaType="net.herdao.hdp.manpower.sys.entity.OperationLog"/>
     </resultMap>
 
     <!--    <resultMap id="postSeqMap" type="postSeq">-->
     <!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
     <!--    </resultMap>-->
 
-    <select id="page" resultMap="postDTOMap" parameterType="String">
-        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_post where concat(POST_CODE,POST_NAME) like #{likeTxt}
+    <select id="page" resultMap="postDTOMap" parameterType="post">
+        select * from mp_post where 1=1
+        <!--
+        <if test="postName != null">
+            <bind name="likeTxt" value="'%'+postName+'%'"/>
+          and   concat(POST_CODE,POST_NAME) like #{likeTxt}
+        </if>
+
+        <if test="groupId != null">
+            AND group_id = #{groupId}
+        </if>
+        <if test="sectionId != null">
+            AND section_id = #{sectionId}
+        </if>
+        <if test="pipelineId != null">
+            AND pipeline_id = #{pipelineId}
+        </if>
+        <if test="jobLevelId1 != null">
+            AND (job_level_id1 = #{jobLevelId1} or job_level_id2 = #{jobLevelId1})
+        </if>
+        -->
     </select>
 
     <select id="getGroup" parameterType="long" resultType="group">
-        select * from  mp_group WHERE id=#{id}
-    </select>
+   select * from  mp_group WHERE id=#{id}
+</select>
 
     <select id="getPipeline" parameterType="long" resultType="pipeline">
-        select * from  mp_pipeline WHERE id=#{id}
-    </select>
+   select * from  mp_pipeline WHERE id=#{id}
+</select>
 
     <select id="getSection" parameterType="long" resultType="section">
-        select * from  mp_section WHERE id=#{id}
-    </select>
+   select * from  mp_section WHERE id=#{id}
+</select>
 
     <select id="getJobGrade" parameterType="long" resultType="jobGrade">
-        select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
-    </select>
+   select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
+</select>
 
     <select id="getJobLevel" parameterType="long" resultType="jobLevel">
-        select * from  mp_job_level WHERE id=#{id}
-    </select>
+   select * from  mp_job_level WHERE id=#{id}
+</select>
 
     <!--     TODO 实现父子查询 -->
     <select id="getPostSeq" parameterType="long" resultType="postSeq">
@@ -71,6 +90,13 @@
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
         and s.STAFF_SCOPE = '1' and p.id =#{id}
     </select>
+
+    <select id="getOperationLog" parameterType="long" resultType="net.herdao.hdp.manpower.sys.entity.OperationLog">
+        <bind name="entityName" value="'net.herdao.hdp.manpower.mpclient.entity.Post'"/>
+        select * from sys_operation_log where OBJ_ID = #{id}
+        and ENTITY_CLASS = #{entityName} order by operated_time desc limit 1
+    </select>
+
 
     <!--*************************以上为分页查询用到的函数***********************************-->
 

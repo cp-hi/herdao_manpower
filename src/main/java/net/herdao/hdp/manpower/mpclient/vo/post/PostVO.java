@@ -15,13 +15,14 @@ import java.io.Serializable;
  * @Version 1.0
  */
 @Data
-public class PostVO  extends Object {
+public class PostVO extends Object {
 
     private Long id;
 
     private String postName;
 
     private String postCode;
+
 
     @DtoField(objField = "postSeq.postSeqName")
     private String postSeqName;
@@ -47,4 +48,16 @@ public class PostVO  extends Object {
     @ApiModelProperty(value = "岗位编制")
     private Integer onJobStaffs;
 
+    @DtoField(dictField = "XCJB.postLevel")
+    private String postLevel;
+
+    @DtoField(dictField = "XCBL.yearPayRatio")
+    private String yearPayRatio;
+
+    @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
+    private String perforSalaryRatio;
+
+    @ApiModelProperty("最近更新情况")
+//    @DtoField(objField = "YDJXGZBL.perforSalaryRatio")
+    private String lastUpdate;
 }
