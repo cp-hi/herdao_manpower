@@ -58,10 +58,12 @@ public class PostController extends BaseController<Post, Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R page(Page<PostDTO> page, @RequestParam Map<String, String> params) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public R page(Page<PostDTO> page, @RequestParam Map<String, String> params) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage<PostDTO> p = entityService.page(page, "");
-        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
+        List<PostVO> vos = DtoConverter.convert(p.getRecords(), PostVO.class);
+//        p.setRecords();
         return R.ok(p);
+//        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
 //        return R.ok(postService.page(page, params));
     }
 

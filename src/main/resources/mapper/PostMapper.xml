@@ -6,25 +6,33 @@
 
     <!--*************************以下为分页查询用到的函数***********************************-->
 
-    <resultMap id="postDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO" >
-        <association property="group" column="group_id" select="getGroup" javaType="group"/>
+    <resultMap id="postDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
+        <id column="id" property="id"/>
+        <result property="stop" column="IS_STOP"/>
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="sectionId" column="section_id"/>
+        <result property="pipelineId" column="pipeline_id"/>
+        <result property="jobLevelId1" column="job_Level_id1"/>
+        <result property="postSeqId" column="post_seq_id"/>
+
+        <association property="group" column="group_id" select="getGroup" javaType="group"  />
         <association property="section" column="section_id" select="getSection" javaType="section"/>
         <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
-<!--        <association property="jobGrade" column="job_Level_id1" select="getJobGrade" javaType="jobGrade"/>-->
-        <association property="jobLevel1" column="job_Level_id1" select="getJobLevel" javaType="jobLevel"/>
-        <association property="jobLevel2" column="job_Level_id2" select="getJobLevel" javaType="jobLevel"/>
+        <association property="jobGrade" column="job_level_id1" select="getJobGrade" javaType="jobGrade"/>
+        <association property="jobLevel1" column="job_level_id1" select="getJobLevel" javaType="jobLevel"/>
+        <association property="jobLevel2" column="job_level_id2" select="getJobLevel" javaType="jobLevel"/>
         <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
     </resultMap>
 
-<!--    <resultMap id="postSeqMap" type="postSeq">-->
-<!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
-<!--    </resultMap>-->
+    <!--    <resultMap id="postSeqMap" type="postSeq">-->
+    <!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
+    <!--    </resultMap>-->
 
-    <select id="page" resultMap="postDTO" parameterType="String">
+    <select id="page" resultMap="postDTOMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_post where  concat(POST_CODE,POST_NAME)  like #{likeTxt}
+        select * from mp_post where concat(POST_CODE,POST_NAME) like #{likeTxt}
     </select>
 
     <select id="getGroup" parameterType="long" resultType="group">
@@ -39,8 +47,8 @@
         select * from  mp_section WHERE id=#{id}
     </select>
 
-    <select id="getJobGrade" parameterType="long" resultType="jobLevel">
-        select * from mp_job_grade g where g.id = 3 --(select job_grade_id from mp_job_level l WHERE l.id=#{id})
+    <select id="getJobGrade" parameterType="long" resultType="jobGrade">
+        select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
     </select>
 
     <select id="getJobLevel" parameterType="long" resultType="jobLevel">

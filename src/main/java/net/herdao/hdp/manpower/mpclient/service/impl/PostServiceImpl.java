@@ -34,8 +34,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     final SectionMapper sectionMapper;
 
     @Override
-    public IPage<PostDTO> page(Page<PostDTO> page, String searchTxt) {
-        IPage<PostDTO> p = baseMapper.page(page, searchTxt);
+    public IPage<PostDTO > page(Page<PostDTO > page, String searchTxt) {
+        IPage<PostDTO > p = baseMapper.page(page, searchTxt);
         return p;
     }
 

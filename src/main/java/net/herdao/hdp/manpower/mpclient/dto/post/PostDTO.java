@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto.post;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,32 +47,40 @@ public class PostDTO extends Post {
 //    private String jobLevelName;
 
 
-
+    @TableField(exist = false)
     @ApiModelProperty(value = "板块")
     private Section section;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "管线")
     private Pipeline pipeline;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "职等")
     private JobGrade jobGrade;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "所属集团")
     private Group group;
 
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "职级1")
     private JobLevel jobLevel1;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "职级2")
     private JobLevel jobLevel2;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "在职员工数")
     private Integer postAuthorized;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "岗位编制")
     private Integer onJobStaffs;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "岗位序列")
     private  PostSeq  postSeq ;
 }
