@@ -43,7 +43,6 @@ import java.time.LocalDateTime;
 @TableName("mp_staff_rewards_pulishments")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工奖惩")
-@ContentRowHeight(30)
 public class StaffRewardsPulishments extends BaseModel<StaffRewardsPulishments> {
 private static final long serialVersionUID = 1L;
 
@@ -149,4 +148,10 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="是否删除")
     private Boolean delFlag;
+
+    /**
+     * 奖励/惩罚 0:奖励 1:惩罚
+     */
+    @ApiModelProperty(value="奖励/惩罚 0:奖励 1:惩罚")
+    private Boolean choice;
 }

@@ -20,8 +20,16 @@ public class StaffRpDTO {
      * ID
      */
     @ApiModelProperty(value="ID")
-    @ExcelProperty("ID")
+    @ExcelIgnore
     private Long id;
+
+
+    /**
+     * 奖励/惩罚 0:奖励 1:惩罚
+     */
+    @ExcelProperty(value = "奖励/惩罚")
+    @ApiModelProperty(value="奖励/惩罚 0:奖励 1:惩罚")
+    private String choice;
 
     /**
      * 奖惩类别 通报表扬；年度优秀员工奖；特殊贡献奖。下拉框选择

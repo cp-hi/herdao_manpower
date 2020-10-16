@@ -8,11 +8,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -100,7 +98,7 @@ public class StaffSecondFileTypeController {
          @ApiImplicitParam(name="superId",value="员工一级附件分类ID"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffFileTypePage(Page page, StaffFileTypeDto entity) {
+    public R findStaffFileTypePage(Page page, StaffFileTypeDTO entity) {
         Page pageResult = staffSecondFileTypeService.findStaffFileTypePage(page, entity);
         return R.ok(pageResult);
     }
@@ -116,8 +114,8 @@ public class StaffSecondFileTypeController {
         @ApiImplicitParam(name="superId",value="员工一级附件分类ID"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffFileType(StaffFileTypeDto entity) {
-        List<StaffFileTypeDto> list = staffSecondFileTypeService.findStaffFileType(entity);
+    public R findStaffFileType(StaffFileTypeDTO entity) {
+        List<StaffFileTypeDTO> list = staffSecondFileTypeService.findStaffFileType(entity);
         return R.ok(list);
     }
 }

@@ -25,7 +25,7 @@
       </resultMap>
 
       <!-- 员工附件分类分页-->
-      <select id="findStaffFileTypePage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto">
+      <select id="findStaffFileTypePage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO">
         SELECT t.id,
                t.staffCode,
 			   t.staffName,
@@ -66,7 +66,7 @@
       </select>
 
      <!-- 员工附件分类分页-->
-     <select id="findStaffFileType" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto">
+     <select id="findStaffFileType" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO">
          SELECT t.id,
          t.staffCode,
          t.staffName,

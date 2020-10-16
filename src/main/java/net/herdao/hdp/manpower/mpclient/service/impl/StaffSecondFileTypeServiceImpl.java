@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffSecondFileTypeMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
@@ -22,8 +22,8 @@ import java.util.List;
 public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileTypeMapper, StaffSecondFileType> implements StaffSecondFileTypeService {
 
     @Override
-    public Page<StaffFileTypeDto> findStaffFileTypePage(Page<StaffFileTypeDto> page, StaffFileTypeDto entity) {
-        Page<StaffFileTypeDto> pageResult = this.baseMapper.findStaffFileTypePage(page, entity);
+    public Page<StaffFileTypeDTO> findStaffFileTypePage(Page<StaffFileTypeDTO> page, StaffFileTypeDTO entity) {
+        Page<StaffFileTypeDTO> pageResult = this.baseMapper.findStaffFileTypePage(page, entity);
         return pageResult;
     }
 
@@ -35,8 +35,8 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
     }
 
     @Override
-    public List<StaffFileTypeDto> findStaffFileType(StaffFileTypeDto entity) {
-        List<StaffFileTypeDto> list = this.baseMapper.findStaffFileType(entity);
+    public List<StaffFileTypeDTO> findStaffFileType(StaffFileTypeDTO entity) {
+        List<StaffFileTypeDTO> list = this.baseMapper.findStaffFileType(entity);
         return list;
     }
 

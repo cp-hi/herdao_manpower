@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "员工附件二级分类")
-public class StaffFileTypeDto {
+public class StaffFileTypeDTO {
 
     @ApiModelProperty(value="主键ID")
     private Long id;
