@@ -29,7 +29,7 @@ public class PostVO  extends Object {
     @DtoField(objField = "group.groupName")
     private String groupName;
 
-    @DtoField(objField = "group.sectionName")
+    @DtoField(objField = "section.sectionName")
     private String sectionName;
 
     @DtoField(objField = "pipeline.pipelineName")
@@ -38,7 +38,7 @@ public class PostVO  extends Object {
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
-    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
+    @DtoField(objField = "jobLevel1.jobLevelName")
     private String jobLevelName;
 
     @ApiModelProperty(value = "在职员工数")
