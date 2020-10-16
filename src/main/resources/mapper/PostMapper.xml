@@ -98,24 +98,23 @@
 
     <!-- 岗位名称、岗位编码、集团、板块、管线、职级、 创建时间  -->
     <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO">
-        select
-        p.POST_NAME ,
-        p.POST_CODE ,
-        COALESCE(g1.GROUP_NAME,g2.GROUP_NAME) GROUP_NAME,
-        s.SECTION_NAME  ,
-        pp.PIPELINE_NAME  ,
-        j.JOB_LEVEL_NAME  ,
-        p.CREATED_TIME
-      --  jg.JOB_GRADE_NAME  ,
-      --  p.CREATOR_NAME 创建人,
-      --  DATE_FORMAT(p.CREATED_TIME,'%Y-%m-%d')  CREATED_TIME
-        from  mp_post p
-        left join mp_section s on p.SECTION_CODE = s.SECTION_CODE
-        left join mp_pipeline pp on p.PIPELINE_CODE = pp.PIPELINE_CODE
-        left join mp_job_level j on p.JOB_LEVEL_CODE = j.JOB_LEVEL_CODE
-        left join mp_job_grade jg on j.JOB_grade_CODE = jg.JOB_grade_CODE
-        left join mp_group g1 on s.GROUP_ID = g1.id
-        left join mp_group g2 on pp.GROUP_ID = g2.id
+        SELECT
+            p.POST_NAME,
+            p.POST_CODE,
+            COALESCE(g1.GROUP_NAME, g2.GROUP_NAME ) GROUP_NAME,
+            CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) JOB_LEVEL_NAME,
+            s.SECTION_NAME,
+            pp.PIPELINE_NAME,
+            p.CREATED_TIME
+        FROM
+            mp_post p
+            LEFT JOIN mp_section s ON p.SECTION_ID = s.ID
+            LEFT JOIN mp_pipeline pp ON p.PIPELINE_ID = pp.ID
+            left join mp_job_level j1 on p.JOB_LEVEL_ID1 = j1.ID
+            left join mp_job_level j2 on p.JOB_LEVEL_ID2 = j2.ID
+            LEFT JOIN mp_job_grade jg ON j1.JOB_grade_ID = jg.ID
+            LEFT JOIN mp_group g1 ON p.GROUP_ID = g1.id
+            LEFT JOIN mp_group g2 ON pp.GROUP_ID = g2.id
          where p.id = #{postId}  order by p.id  ${limit}
     </select>
 
