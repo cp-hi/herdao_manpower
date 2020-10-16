@@ -61,9 +61,6 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
     private StaffRewardsPulishmentsService staffRewardsPulishmentsService;
 
     @Autowired
-    private PostService entityService;
-
-    @Autowired
     public void setEntityService(StaffRewardsPulishmentsService staffRewardsPulishmentsService) {
         super.entityService = staffRewardsPulishmentsService;
     }
@@ -77,7 +74,7 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     @PreAuthorize("@pms.hasPermission('mpclient_staffrewardspulishments_view')" )
-    public R getStaffRewardsPulishmentsPage(Page page, StaffRewardsPulishments staffRewardsPulishments) {
+    public R page(Page page, StaffRewardsPulishments staffRewardsPulishments) {
         return R.ok(staffRewardsPulishmentsService.page(page, Wrappers.query(staffRewardsPulishments)));
     }
 
