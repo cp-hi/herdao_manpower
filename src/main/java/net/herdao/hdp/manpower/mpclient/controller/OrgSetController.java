@@ -150,8 +150,8 @@ public class OrgSetController {
 	@ApiOperation(value = "重排序", notes = "批量修改字典项")
 	@SysLog("批量修改字典项")
 	@PostMapping("/itemList")
-	public R updateBatch(String jsonList) {
-		List<SysDictItem> list= JSONObject.parseArray(jsonList,SysDictItem.class);
+	public R updateBatch(@RequestBody List<SysDictItem> list) {
+//		List<SysDictItem> list= JSONObject.parseArray(jsonList,SysDictItem.class);
 		boolean isSuccess = false;
 		if(list!=null && list.size()!=0){
 			isSuccess = sysDictItemService.updateBatchById(list);

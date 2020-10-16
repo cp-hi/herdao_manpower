@@ -74,8 +74,6 @@ public class StaffController {
 
     private final WorkexperienceService workexperienceService;
 
-    private final StaffcontractService staffcontractService;
-
     private final  StafftransactionService stafftransactionService;
 
     private final UserpostService userpostService;
