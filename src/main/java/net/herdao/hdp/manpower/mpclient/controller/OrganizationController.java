@@ -356,6 +356,18 @@ public class OrganizationController {
         return R.ok(operationLogService.findByEntity(objId, Organization.class.getName()));
     }
 
+    /**
+     * 查询组织下所有人员
+     * @author yangrr
+     * @param orgCode
+     * @return
+     */
+    @ApiOperation(value = "获取组织操作日志")
+    @GetMapping("/getOrgStaffAll")
+    public R selectOrgStaffAll(String orgCode) {
+        return R.ok(orgService.selectOrgStaffAll(orgCode));
+    }
+
 }
 
 
