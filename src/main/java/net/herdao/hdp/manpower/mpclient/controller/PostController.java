@@ -10,15 +10,18 @@ import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +37,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post,Post> {
+public class PostController extends BaseController<Post, Post> {
 
     @Autowired
     private PostService entityService;
@@ -55,8 +58,9 @@ public class PostController extends BaseController<Post,Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R page(Page<PostDTO> page, @RequestParam Map<String, String> params) {
+    public R page(Page<PostDTO> page, @RequestParam Map<String, String> params) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         IPage<PostDTO> p = entityService.page(page, "");
+        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
         return R.ok(p);
 //        return R.ok(postService.page(page, params));
     }
