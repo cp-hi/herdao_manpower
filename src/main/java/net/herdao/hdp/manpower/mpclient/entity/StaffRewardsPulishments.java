@@ -71,7 +71,7 @@ private static final long serialVersionUID = 1L;
     /**
      * 奖惩金额
      */
-    @ApiModelProperty(value="奖惩内容")
+    @ApiModelProperty(value="奖惩金额")
     @ExcelIgnore
     private String amount;
 

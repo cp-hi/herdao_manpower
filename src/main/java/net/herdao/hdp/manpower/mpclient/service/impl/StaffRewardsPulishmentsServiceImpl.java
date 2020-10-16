@@ -117,6 +117,12 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
                         .eq("del_flag", 0)
         );
 
+        boolean isNumber = RegexUtils.isNumber(dto.getAmount());
+        if (!isNumber){
+            errorMsg+="请填写整的奖金金额（奖金金额为正整数）:"+dto.getAmount();
+        }
+
+
         if (null==dictItem){
             errorMsg+="员工奖惩类别不存在或已停用:"+dto.getType();
         }else {
