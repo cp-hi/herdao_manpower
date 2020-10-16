@@ -30,31 +30,16 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
     /**
      * 现任职情况分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
-     * @return
+     * @param searchText
+      * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode , @Param("staffId") String staffId);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
 
     /**
      * 现任职情况
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<UserpostDTO> findUserPostNow(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode, @Param("staffId") String staffId);
-
-    /**
-     * 员工详情-工作情况-目前任职
-     * @param orgId
-     * @param staffName
-     * @param staffCode
-     * @param staffId
-     * @return
-     */
-    UserpostDTO findCurrentJob(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode, @Param("staffId") String staffId);
-
+    List<UserpostDTO> findUserPostNow(@Param("searchText") String searchText);
 
 }

@@ -62,7 +62,6 @@ public class BaseController<T, D extends T> {
     public R getById(@PathVariable("id") Long id) {
         return R.ok(entityService.getById(id));
     }
-
     @PostMapping
     public R save(@RequestBody T t) {
         entityService.saveEntity(t);

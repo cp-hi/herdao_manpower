@@ -28,6 +28,7 @@ public class UserpostDTO {
     private String startDate;
 
     @ApiModelProperty(value="免职日期")
+    @ExcelProperty(value = "免职日期")
     private String endDate;
 
     @ExcelProperty(value = "所在组织")
@@ -55,12 +56,15 @@ public class UserpostDTO {
     private String customPost;
 
     @ApiModelProperty(value="任职集团")
+    @ExcelProperty(value = "任职集团")
     private String groupName;
 
     @ApiModelProperty(value="任职公司")
+    @ExcelProperty(value = "任职公司")
     private String company;
 
-    @ApiModelProperty(value="任职部门")
+    @ApiModelProperty(value="任职公司")
+    @ExcelProperty(value = "任职公司")
     private String deptName;
 
 }

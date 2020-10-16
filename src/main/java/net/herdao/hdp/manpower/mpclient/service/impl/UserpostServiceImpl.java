@@ -49,42 +49,16 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
-    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode ,String staffId) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page, orgId, staffName, staffCode,staffId);
+    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, String searchText) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page, searchText);
         return pageResult;
     }
 
     @Override
-    public List<UserpostDTO> findUserPostNow(String orgId, String staffName, String staffCode,String staffId) {
-        List<UserpostDTO> list = this.baseMapper.findUserPostNow(orgId, staffName, staffCode ,staffId);
+    public List<UserpostDTO> findUserPostNow(String searchText) {
+        List<UserpostDTO> list = this.baseMapper.findUserPostNow(searchText);
         return list;
     }
 
-    @Override
-    public Boolean saveUserPostNow(Userpost entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setCreatorCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setCreatedTime(now);
-        boolean status = super.save(entity);
-        return status;
-    }
 
-    @Override
-    public Boolean updateUserPostNow(Userpost entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setModifiedTime(now);
-        boolean status = super.updateById(entity);
-        return status;
-    }
-
-    @Override
-    public UserpostDTO findCurrentJob(String orgId, String staffName, String staffCode, String staffId) {
-        UserpostDTO result = this.baseMapper.findCurrentJob(orgId, staffName, staffCode, staffId);
-        return result;
-    }
 }
