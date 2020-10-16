@@ -48,6 +48,6 @@ public class StaffFileTypeDto {
     private String fileCount;
 
     @ApiModelProperty(value="一级附件分类ID")
-    private String superId;
+    private Long superId;
 
 }

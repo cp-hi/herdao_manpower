@@ -70,5 +70,5 @@ public class StaffRpDTO {
      */
     @ExcelProperty(value = "操作时间")
     @ApiModelProperty(value="操作时间")
-    private LocalDateTime modifiedTime;
+    private String modifiedTime;
 }
