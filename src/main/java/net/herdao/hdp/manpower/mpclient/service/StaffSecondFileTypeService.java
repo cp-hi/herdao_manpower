@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 
+import java.util.List;
+
 /**
  * 员工附件二级分类
  *
@@ -31,7 +33,11 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
     boolean saveOrUpdate(StaffSecondFileType entity);
 
 
-
-
+    /**
+     * 员工附件分类
+     * @param entity
+     * @return
+     */
+    List<StaffFileTypeDto> findStaffFileType(StaffFileTypeDto entity);
 
 }

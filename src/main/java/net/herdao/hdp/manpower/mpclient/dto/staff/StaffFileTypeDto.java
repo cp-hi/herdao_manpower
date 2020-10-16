@@ -26,8 +26,11 @@ public class StaffFileTypeDto {
     @ApiModelProperty(value="附件一级分类")
     private String superType;
 
-    @ApiModelProperty(value="启用状态")
+    @ApiModelProperty(value="启用状态 名称")
     private String enableStatus;
+
+    @ApiModelProperty(value="启用状态 值")
+    private String status;
 
     @ApiModelProperty(value="修改人")
     private String modifierName;

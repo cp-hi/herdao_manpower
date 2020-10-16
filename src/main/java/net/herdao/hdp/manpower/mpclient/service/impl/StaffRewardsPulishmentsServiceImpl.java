@@ -23,6 +23,8 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRewardsPulishmentsMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
@@ -40,39 +42,16 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewardsPulishmentsMapper, StaffRewardsPulishments> implements StaffRewardsPulishmentsService {
-    private RemoteUserService remoteUserService;
 
     @Override
-    public Boolean saveStaffRp(StaffRewardsPulishments entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setCreatorCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setCreatedTime(now);
-        boolean status = super.save(entity);
-        return status;
-    }
-
-    @Override
-    public Boolean updateStaffRp(StaffRewardsPulishments entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setModifiedTime(now);
-        boolean status = super.updateById(entity);
-        return status;
-    }
-
-    @Override
-    public Page<StaffRewardsPulishments> findStaffRpPage(Page<StaffRewardsPulishments> page, String orgId, String staffName, String staffCode) {
-        Page<StaffRewardsPulishments> list = this.baseMapper.findStaffRpPage(page, orgId, staffName, staffCode);
+    public Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page, String searchText) {
+        Page<StaffRpDTO> list = this.baseMapper.findStaffRpPage(page, searchText);
         return list;
     }
 
     @Override
-    public List<StaffRewardsPulishments> findStaffRp(String orgId, String staffName, String staffCode) {
-        List<StaffRewardsPulishments> list = this.baseMapper.findStaffRp( orgId, staffName, staffCode);
+    public List<StaffRpDTO> findStaffRp(String searchText) {
+        List<StaffRpDTO> list = this.baseMapper.findStaffRp(searchText);
         return list;
     }
 }

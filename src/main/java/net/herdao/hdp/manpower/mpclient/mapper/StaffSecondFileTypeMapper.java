@@ -9,6 +9,8 @@ import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 员工附件二级分类
  *
@@ -24,4 +26,11 @@ public interface StaffSecondFileTypeMapper extends BaseMapper<StaffSecondFileTyp
      * @return
      */
     Page<StaffFileTypeDto> findStaffFileTypePage(Page<StaffFileTypeDto> page, @Param("entity") StaffFileTypeDto entity);
+
+    /**
+     * 员工附件分类
+     * @param entity
+     * @return
+     */
+    List<StaffFileTypeDto> findStaffFileType(@Param("entity") StaffFileTypeDto entity);
 }

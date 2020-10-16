@@ -10,6 +10,8 @@ import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 员工附件二级分类
  *
@@ -27,9 +29,15 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
 
     @Override
     @OperationEntity(operation = "保存员工附件二级分类", clazz = StaffSecondFileType.class)
-     public boolean saveOrUpdate(StaffSecondFileType entity) {
+    public boolean saveOrUpdate(StaffSecondFileType entity) {
         boolean status= super.saveOrUpdate(entity);
         return status;
+    }
+
+    @Override
+    public List<StaffFileTypeDto> findStaffFileType(StaffFileTypeDto entity) {
+        List<StaffFileTypeDto> list = this.baseMapper.findStaffFileType(entity);
+        return list;
     }
 
 
