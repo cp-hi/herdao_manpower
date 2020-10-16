@@ -1,20 +1,23 @@
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.vo;
+
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.dto.ExcelDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@ApiModel(value = "员工奖惩DTO")
-@ColumnWidth(20)
-public class StaffRpDTO  {
+@ApiModel(value = "家庭情况分页VO")
+public class StaffRpVO extends StaffRewardsPulishments implements ExcelDTO {
     /**
      * ID
      */
@@ -22,8 +25,8 @@ public class StaffRpDTO  {
     @ExcelIgnore
     private Long id;
 
-    @ExcelProperty(value = "员工姓名")
-    @ApiModelProperty(value="员工姓名")
+    @ExcelProperty(value = "奖励/惩罚")
+    @ApiModelProperty(value="奖励/惩罚")
     private String staffName;
 
     @ExcelProperty(value = "员工工号")
@@ -35,7 +38,7 @@ public class StaffRpDTO  {
      */
     @ExcelProperty(value = "奖励/惩罚")
     @ApiModelProperty(value="奖励/惩罚 0:奖励 1:惩罚")
-    private String choice;
+    private String choiceName;
 
     /**
      * 奖惩类别 通报表扬；年度优秀员工奖；特殊贡献奖。下拉框选择
@@ -72,17 +75,10 @@ public class StaffRpDTO  {
     @ApiModelProperty(value="备注")
     private String remarks;
 
-    /**
-     * 操作人
-     */
-    @ExcelProperty(value = "操作人")
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
 
-    /**
-     * 操作时间
-     */
-    @ExcelProperty(value = "操作时间")
-    @ApiModelProperty(value="操作时间")
-    private String modifiedTime;
+    @ExcelProperty(value = "错误信息")
+    @ColumnWidth(100)
+    private String errMsg;
+
+
 }

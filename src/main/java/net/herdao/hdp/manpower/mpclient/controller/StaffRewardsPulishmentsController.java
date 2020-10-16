@@ -17,26 +17,33 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.StaffRpVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -93,12 +100,12 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
     }
 
     /**
-     * 导出员工异动情况Excel
+     * 导出员工奖惩Excel
      * @param response
      * @return R
      */
-    @ApiOperation(value = "导出员工奖惩情况Excel", notes = "导出员工奖惩情况Excel")
-    @SysLog("导出员工奖惩情况Excel")
+    @ApiOperation(value = "导出员工奖惩Excel", notes = "导出员工奖惩Excel")
+    @SysLog("导出员工奖惩Excel")
     @PostMapping("/exportStaffRp")
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="搜索关键字")
@@ -115,4 +122,27 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
         R.ok("导出成功");
     }
 
+
+    @ApiOperation("导入员工奖惩")
+    @SysLog("导入员工奖惩")
+    @PostMapping("/importStaffRp")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "要导入的文件"),
+            @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
+    })
+    public R importStaffRp(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
+        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService, importType);
+        try {
+            InputStream inputStream = file.getInputStream();
+            EasyExcel.read(inputStream, StaffRpVO.class, listener).sheet().doRead();
+            IOUtils.closeQuietly(inputStream);
+
+           /* return R.ok(" easyexcel读取上传文件成功");*/
+        } catch (Exception ex) {
+            ExcelUtils.export2Web(response, "员工奖惩错误信息", "员工奖惩错误信息", StaffRpVO.class, listener.getDataList());
+            /*return R.failed(ex.getMessage());*/
+        }
+
+        return null;
+    }
 }

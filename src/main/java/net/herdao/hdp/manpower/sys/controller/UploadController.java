@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.entity.SysDict;
@@ -55,10 +57,15 @@ public class UploadController {
 	/**
 	 * 文件上传
 	 * @param file 文件
+	 * @param secondTypeId 二级附件分类ID
 	 * @return
 	 */
 	@PostMapping("/uploadFile")
- 	public R uploadFile(@RequestParam(value = "file") MultipartFile file)  {
+	@ApiImplicitParams({
+	    @ApiImplicitParam(name="file",value="上传文件"),
+	 	@ApiImplicitParam(name="secondTypeId",value="二级附件分类ID")
+	})
+ 	public R uploadFile(@RequestParam(value = "file") MultipartFile file,Long secondTypeId)  {
 		try {
 			if (file!=null && !file.isEmpty()){
 				//文件上传的地址
