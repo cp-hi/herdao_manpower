@@ -19,5 +19,7 @@ public @interface DtoField {
 
     String listField() default "";
 
+    String dictField() default "";
+
     String symbol() default "-";
 }

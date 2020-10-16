@@ -20,7 +20,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     List<Map> postList(Long groupId);
 
-    IPage<PostDTO > page(Page<PostDTO > page, @Param("searchTxt") String searchTxt);
+    IPage<PostDTO > page(Page<PostDTO > page,@Param("post") Post post);
 
     Boolean chkDuplicatePostName(Post post);
 
