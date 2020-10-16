@@ -42,7 +42,7 @@ import java.util.Map;
  * 字典表 前端控制器
  * </p>
  *
- * @author hdp
+ * @author yangrr
  * @since 2019-03-19
  */
 @RestController
@@ -75,9 +75,16 @@ public class OrgSetController {
 			}
 		}
 		String value = String.join("、", strList);
+		Integer dictId = null;
+		if(list!=null&&list.size()!=0){
+			dictId = list.get(0).getDictId();
+		}
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("value", value);
+		map.put("type", type);
+		map.put("dictId", dictId);
 		return R.ok(map);
 	}
 

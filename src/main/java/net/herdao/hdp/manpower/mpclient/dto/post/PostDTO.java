@@ -17,7 +17,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+//@EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "岗位列表DTO")
 public class PostDTO extends Post {
 
@@ -44,6 +44,8 @@ public class PostDTO extends Post {
 //
 //    @ApiModelProperty(value = "职级名称")
 //    private String jobLevelName;
+
+
 
     @ApiModelProperty(value = "板块")
     private Section section;

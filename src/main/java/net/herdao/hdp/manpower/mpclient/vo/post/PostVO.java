@@ -1,6 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.vo.post;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
+
+import java.io.Serializable;
 
 /**
  * @ClassName PostVO
@@ -11,24 +15,36 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
-public class PostVO {
+public class PostVO  extends Object {
+
     private Long id;
 
     private String postName;
 
     private String postCode;
 
-    private String postSeq;
+    @DtoField(objField = "postSeq.postSeqName")
+    private String postSeqName;
 
+    @DtoField(objField = "group.groupName")
     private String groupName;
 
+    @DtoField(objField = "group.sectionName")
     private String sectionName;
 
+    @DtoField(objField = "pipeline.pipelineName")
     private String pipelineName;
 
+    @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
-    private String jobLevel;
+    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
+    private String jobLevelName;
 
+    @ApiModelProperty(value = "在职员工数")
+    private Integer postAuthorized;
+
+    @ApiModelProperty(value = "岗位编制")
+    private Integer onJobStaffs;
 
 }

@@ -7,9 +7,10 @@
     <!--*************************以下为分页查询用到的函数***********************************-->
 
     <resultMap id="postDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO" >
-        <association property="group" column="group_id" select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" javaType="group"/>
+        <association property="group" column="group_id" select="getGroup" javaType="group"/>
         <association property="section" column="section_id" select="getSection" javaType="section"/>
         <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
+<!--        <association property="jobGrade" column="job_Level_id1" select="getJobGrade" javaType="jobGrade"/>-->
         <association property="jobLevel1" column="job_Level_id1" select="getJobLevel" javaType="jobLevel"/>
         <association property="jobLevel2" column="job_Level_id2" select="getJobLevel" javaType="jobLevel"/>
         <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
@@ -23,7 +24,7 @@
 
     <select id="page" resultMap="postDTO" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_post where post_code like #{likeTxt} or post_name like #{likeTxt}
+        select * from mp_post where  concat(POST_CODE,POST_NAME)  like #{likeTxt}
     </select>
 
     <select id="getGroup" parameterType="long" resultType="group">
@@ -36,6 +37,10 @@
 
     <select id="getSection" parameterType="long" resultType="section">
         select * from  mp_section WHERE id=#{id}
+    </select>
+
+    <select id="getJobGrade" parameterType="long" resultType="jobLevel">
+        select * from mp_job_grade g where g.id = 3 --(select job_grade_id from mp_job_level l WHERE l.id=#{id})
     </select>
 
     <select id="getJobLevel" parameterType="long" resultType="jobLevel">
