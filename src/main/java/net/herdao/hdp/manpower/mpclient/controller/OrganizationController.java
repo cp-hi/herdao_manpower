@@ -359,13 +359,15 @@ public class OrganizationController {
     /**
      * 查询组织下所有人员
      * @author yangrr
+     * @param page 分页对象
      * @param orgCode
      * @return
      */
-    @ApiOperation(value = "获取组织操作日志")
+    @ApiOperation(value = "查询组织下所有人员")
     @GetMapping("/getOrgStaffAll")
-    public R selectOrgStaffAll(String orgCode) {
-        return R.ok(orgService.selectOrgStaffAll(orgCode));
+    public R selectOrgStaffAll(Page page, String orgCode) {
+        page = page.setRecords(orgService.selectOrgStaffAll(page, orgCode));
+        return R.ok(page);
     }
 
 }

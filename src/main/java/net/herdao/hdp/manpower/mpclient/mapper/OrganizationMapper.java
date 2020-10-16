@@ -3,6 +3,7 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -108,9 +109,9 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     /**
      * 查询组织下所有人员
      *
-     * @param orgCode
+     * @param map
      * @return
      */
-     List<StaffOrgDTO> selectOrgStaffAll(String orgCode);
+     List<StaffOrgDTO> selectOrgStaffAll(Map<String, Object> map);
  	
 }
