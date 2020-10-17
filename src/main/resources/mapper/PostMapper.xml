@@ -38,7 +38,8 @@
     </resultMap>
 
     <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
-        <association property="parent" column="parent_id" select="getPostSeqParent" javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
+        <association property="parent" column="parent_id" select="getPostSeqParent"
+                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
@@ -69,11 +70,11 @@
     </select>
 
     <!--     TODO 实现父子查询 -->
-    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqMap">
+    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTOMap">
         select * from  mp_post_seq WHERE id=#{id}
     </select>
 
-    <select id="getPostSeq" parameterType="long" resultMap="postSeqMap">
+    <select id="getPostSeq" parameterType="long" resultMap="postSeqDTOMap">
        select * from mp_post_seq WHERE id= #{id}
     </select>
 
