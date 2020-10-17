@@ -53,11 +53,11 @@
             f.TRAN_REASON,
             f.OUT_UNIT_NAME,
             f.COME_UNIT_NAME,
-            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.modifier_code ) MODIFIEd_NAME,
+            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIED_CODE) MODIFIEd_NAME,
             f.MODIFIED_TIME
             FROM   mp_stafftransaction f
             LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
+            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
             where 1=1
             )t where 1=1
             <if test="searchText != null">
@@ -80,11 +80,11 @@
             f.TRAN_REASON,
             f.OUT_UNIT_NAME,
             f.COME_UNIT_NAME,
-            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.modifier_code ) MODIFIEd_NAME,
+            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIED_CODE) MODIFIEd_NAME,
             f.MODIFIED_TIME
             FROM   mp_stafftransaction f
             LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
+            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
             where 1=1
             )t where 1=1
             <if test="searchText != null">
