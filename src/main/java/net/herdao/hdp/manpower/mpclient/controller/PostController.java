@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post, Post> {
+public class PostController extends BaseController<Post> {
 
     @Autowired
     private PostService entityService;

@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/client/postSeq")
-public class PostSeqController extends BaseController<PostSeq, PostSeq> {
+public class PostSeqController extends BaseController<PostSeq> {
 
     @Autowired
     PostSeqService postSeqService;

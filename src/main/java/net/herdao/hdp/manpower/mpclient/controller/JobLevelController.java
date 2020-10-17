@@ -39,7 +39,7 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends BaseController<JobLevel,JobLevel> {
+public class JobLevelController extends BaseController<JobLevel> {
 
     @Autowired
     private JobLevelService jobLevelService;

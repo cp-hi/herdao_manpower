@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/client/pipeline")
-public class PipelineController extends BaseController<Pipeline, Pipeline> {
+public class PipelineController extends BaseController<Pipeline> {
 
     @Autowired
     private PipelineService pipelineService;

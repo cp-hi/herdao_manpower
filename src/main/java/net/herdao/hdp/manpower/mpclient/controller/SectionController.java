@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends BaseController<Section, Section> {
+public class SectionController extends BaseController<Section> {
 
     @Autowired
     private SectionService sectionService;

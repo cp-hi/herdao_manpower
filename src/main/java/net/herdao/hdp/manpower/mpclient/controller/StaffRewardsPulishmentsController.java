@@ -56,7 +56,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/staffrewardspulishments" )
 @Api(value = "staffrewardspulishments", tags = "员工奖惩管理")
-public class StaffRewardsPulishmentsController extends BaseController<StaffRewardsPulishments,StaffRewardsPulishments> {
+public class StaffRewardsPulishmentsController extends BaseController<StaffRewardsPulishments> {
     @Autowired
     private StaffRewardsPulishmentsService staffRewardsPulishmentsService;
 

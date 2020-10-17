@@ -35,7 +35,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/userposthistory" )
 @Api(value = "userposthistory", tags = "员工岗位历史表管理")
-public class UserposthistoryController extends BaseController<Userposthistory, Userposthistory> {
+public class UserposthistoryController extends BaseController<Userposthistory> {
     @Autowired
     private UserposthistoryService userposthistoryService;
 

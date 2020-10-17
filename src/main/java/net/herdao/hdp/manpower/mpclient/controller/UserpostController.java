@@ -33,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/userpost" )
 @Api(value = "userpost", tags = "用户岗位")
-public class UserpostController extends BaseController<Userpost, Userpost> {
+public class UserpostController extends BaseController<Userpost> {
     @Autowired
     private UserpostService userpostService;
 

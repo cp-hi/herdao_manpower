@@ -49,7 +49,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/stafftransaction" )
 @Api(value = "stafftransaction", tags = "异动情况")
-public class StafftransactionController extends BaseController<Stafftransaction, Stafftransaction>  {
+public class StafftransactionController extends BaseController<Stafftransaction>  {
     @Autowired
     private StafftransactionService stafftransactionService;
 

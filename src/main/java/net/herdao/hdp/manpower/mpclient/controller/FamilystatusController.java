@@ -44,7 +44,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/familystatus" )
 @Api(value = "familystatus", tags = "员工家庭成员管理")
-public class FamilystatusController extends BaseController<Familystatus,Familystatus> {
+public class FamilystatusController extends BaseController<Familystatus> {
 
     private final  FamilystatusService familystatusService;
 
