@@ -31,7 +31,7 @@ import java.lang.reflect.ParameterizedType;
  * @Version 1.0
  */
 //TODO 实现导出功能
-public class BaseController<T,B extends T> {
+public class BaseController<T> {
 
     EntityService entityService;
 
