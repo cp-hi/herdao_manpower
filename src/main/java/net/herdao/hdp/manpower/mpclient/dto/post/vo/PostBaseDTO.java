@@ -14,7 +14,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
  * @Version 1.0
  */
 @Data
-@ApiModel(value = "岗位基础信息")
+@ApiModel(value = "岗位管理-基础信息")
 public class PostBaseDTO {
 
     @ApiModelProperty("id")
