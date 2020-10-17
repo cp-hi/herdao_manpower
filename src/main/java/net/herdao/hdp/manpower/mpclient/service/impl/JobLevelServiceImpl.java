@@ -47,6 +47,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     public void importVerify(JobLevel jobLevel, int type) {
         boolean add = (type == 0);
 
+        /*
         //TODO 添加校验方法
         JobLevelImportVO dto = (JobLevelImportVO) jobLevel;
 
@@ -74,5 +75,6 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
 
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(jobLevel);
+        */
     }
 }
