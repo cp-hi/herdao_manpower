@@ -3,14 +3,10 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.vo.PipelineVO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +43,7 @@ public class PostSeqController extends BaseController<PostSeq> {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(Page<PostSeqDTO> page, String searchTxt) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         IPage p = postSeqService.page(page, searchTxt);
-        List<PostSeqVO> vos = DtoConverter.dto2vo(p.getRecords(), PostSeqVO.class);
+        List<PostSeqDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostSeqDTO.class);
         p.setRecords(vos);
         return R.ok(p);
     }

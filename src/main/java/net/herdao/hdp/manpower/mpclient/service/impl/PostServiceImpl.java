@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
@@ -89,7 +89,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public List<PostDetailVO> getPostDetails(Long postId, String operation, String size) {
+    public List<PostDetailDTO> getPostDetails(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size)) {
@@ -101,7 +101,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public List<PostStaffVO> getPostStaffs(Long postId, String operation, String size) {
+    public List<PostStaffDTO> getPostStaffs(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size)) {

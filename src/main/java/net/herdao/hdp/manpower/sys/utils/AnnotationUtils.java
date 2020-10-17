@@ -70,6 +70,15 @@ public class AnnotationUtils {
         return fields;
     }
 
+    public static Field getFieldByName(Object object,String fieldName){
+        Field[] fields = getAllFields(object);
+        for(Field field:fields) {
+            if (fieldName.equals(field.getName()))
+            return field;
+        }
+        return null;
+    }
+
     /**
      * 获取当前类中包含某注解的字段，注意，不包含父类的
      *

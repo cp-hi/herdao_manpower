@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostListVO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
@@ -52,11 +53,13 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R<IPage<PostDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
+    public R<IPage<PostListDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = entityService.page(page, post);
         List<PostDTO> records = p.getRecords();
+        PostSeqDTO dto = null;
+
 //        PostVO postVO = DtoConverter.dto2vo(p.getRecords().get(0), PostVO.class);
-        List<PostListVO> vos = DtoConverter.dto2vo(p.getRecords(), PostListVO.class);
+        List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
         p.setRecords(vos);
         return R.ok(p);
     }
@@ -89,10 +92,10 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
     })
     public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostDetailVO> data = entityService.getPostDetails(postId, operation, size);
+        List<PostDetailDTO> data = entityService.getPostDetails(postId, operation, size);
         if ("download".equals(operation)) {
             try {
-                ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailVO.class, data);
+                ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailDTO.class, data);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -109,10 +112,10 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
     })
     public R getPostStaffs(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostStaffVO> data = entityService.getPostStaffs(postId, operation, size);
+        List<PostStaffDTO> data = entityService.getPostStaffs(postId, operation, size);
         if ("download".equals(operation)) {
             try {
-                ExcelUtils.export2Web(response, "岗位员工信息细表", "岗位员工信息细表", PostStaffVO.class, data);
+                ExcelUtils.export2Web(response, "岗位员工信息细表", "岗位员工信息细表", PostStaffDTO.class, data);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -76,7 +76,8 @@ public class DtoConverter {
                 currObj.setAccessible(true);
                 Object seq = currObj.get(source);
                 if (null != seq) {
-                    Field val = seq.getClass().getDeclaredField(path[1]);
+                    Field val =  AnnotationUtils.getFieldByName(seq,path[1]);
+//                    Field val = seq.getClass().getDeclaredField(path[1]);
                     val.setAccessible(true);
                     field.set(t, val.get(seq));
                 }

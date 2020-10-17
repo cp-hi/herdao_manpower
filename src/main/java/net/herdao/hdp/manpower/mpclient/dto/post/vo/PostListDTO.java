@@ -1,21 +1,21 @@
-package net.herdao.hdp.manpower.mpclient.vo.post;
+package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
+
+
 /**
- * @ClassName PostBaseVO
- * @Description PostBaseVO
+ * @ClassName PostVO
+ * @Description PostVO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/17 15:23
+ * @Date 2020/10/15 20:06
  * @Version 1.0
  */
 @Data
-@ApiModel(value = "岗位基础信息")
-public class PostBaseVO {
+public class PostListDTO {
 
     @ApiModelProperty("id")
     private Long id;
@@ -27,7 +27,7 @@ public class PostBaseVO {
     private String postCode;
 
     @ApiModelProperty("岗位序列")
-    @DtoField(objField = "postSeq.postSeqName")
+    @DtoField(objField = "postSeqDTO.postSeqName")
     private String postSeqName;
 
     @ApiModelProperty("所属集团")
@@ -46,7 +46,7 @@ public class PostBaseVO {
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
-    @ApiModelProperty("职级")
+    @ApiModelProperty("管线")
     @DtoField(objField = "jobLevel1.jobLevelName")
     private String jobLevelName;
 
@@ -72,8 +72,7 @@ public class PostBaseVO {
     @DtoField(dictField = "GWZZLX.orgType")
     private String orgType;
 
-    @ApiModelProperty(value = "岗位职责", required = true)
-    private String postDescr;
-    @ApiModelProperty(value = "备注")
-    private String remark;
+    @ApiModelProperty("最近更新情况")
+    private String lastUpdated;
+
 }

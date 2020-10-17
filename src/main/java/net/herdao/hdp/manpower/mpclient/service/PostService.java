@@ -3,8 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 
 import java.util.List;
@@ -35,13 +35,13 @@ public interface PostService extends EntityService<Post> {
      *
      * @return
      */
-    List<PostDetailVO> getPostDetails(Long postId, String operation, String size);
+    List<PostDetailDTO> getPostDetails(Long postId, String operation, String size);
 
     /**
      * 岗位员工
      *
      * @return
      */
-    List<PostStaffVO> getPostStaffs(Long postId, String operation, String size);
+    List<PostStaffDTO> getPostStaffs(Long postId, String operation, String size);
 
 }

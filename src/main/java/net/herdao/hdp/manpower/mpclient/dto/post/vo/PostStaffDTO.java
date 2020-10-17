@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo.post;
+package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "岗位员工信息")
-public class PostStaffVO {
+public class PostStaffDTO {
 
     //任职岗位、员工姓名、工号、手机号码、所在部门
 
