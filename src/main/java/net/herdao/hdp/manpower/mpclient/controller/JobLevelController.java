@@ -1,30 +1,16 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelImportVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
-import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 
 /**
  * @ClassName JobLevelController
@@ -51,7 +37,7 @@ public class JobLevelController extends BaseController<JobLevel> {
 
     @Override
     protected Class getImportClass() {
-        return JobLevelDTO.class;
+        return JobLevelImportVO.class;
     }
 
     @GetMapping("/page")

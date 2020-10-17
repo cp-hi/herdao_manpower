@@ -30,6 +30,4 @@ public class Section extends BaseEntity<Section> {
     @TableField("IS_STOP")
     private Boolean stop;
 
-    @TableField(exist = false)
-    private Group group;
 }

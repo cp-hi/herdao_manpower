@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelImportVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
@@ -48,7 +48,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         boolean add = (type == 0);
 
         //TODO 添加校验方法
-        JobLevelDTO dto = (JobLevelDTO) jobLevel;
+        JobLevelImportVO dto = (JobLevelImportVO) jobLevel;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
                 .eq("JOB_GRADE_NAME", dto.getJobGrade()));

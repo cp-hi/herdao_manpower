@@ -9,14 +9,14 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.dto.ExcelDTO;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 
 import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "家庭情况分页Dto")
-public class FamilyStatusListDTO extends Familystatus implements ExcelDTO {
+public class FamilyStatusListDTO extends Familystatus implements ExcelVO {
 
     /**
      *
