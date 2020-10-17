@@ -2,12 +2,9 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
+import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public interface FamilystatusService extends EntityService<Familystatus> {
      * @param searchText
      * @return
      */
-    Page<FamilyStatusListDto> findFamilyStatusPage(Page<FamilyStatusListDto> page, String searchText);
+    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, String searchText);
 
 
     /**

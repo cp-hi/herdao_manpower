@@ -33,7 +33,7 @@
       </resultMap>
 
       <!-- 员工家庭情况分页 -->
-      <select id="findFamilyStatusPage" resultType="net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto">
+      <select id="findFamilyStatusPage" resultType="net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO">
          select  * from (
             SELECT    f.id,
                       s.staff_name,

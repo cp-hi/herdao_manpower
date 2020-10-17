@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "员工职称及职业资料")
-public class StaffProDto {
+public class StaffProDTO {
     @ApiModelProperty(value="id")
     private Long id;
 

@@ -4,9 +4,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
+import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.FamilystatusMapper;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
@@ -34,8 +33,8 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     private SysDictItemService itemService;
 
     @Override
-    public Page<FamilyStatusListDto> findFamilyStatusPage(Page<FamilyStatusListDto> page, String searchText) {
-        Page<FamilyStatusListDto> pageResult = this.baseMapper.findFamilyStatusPage(page, searchText);
+    public Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, String searchText) {
+        Page<FamilyStatusListDTO> pageResult = this.baseMapper.findFamilyStatusPage(page, searchText);
         return pageResult;
     }
 
@@ -55,12 +54,12 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     public void importVerify(Familystatus familystatus, int type) {
         //新增校检
         if (type == 0){
-            checkAdd((FamilyStatusListDto) familystatus);
+            checkAdd((FamilyStatusListDTO) familystatus);
         }
 
         //编辑校检
         if (type == 1){
-            checkUpdate((FamilyStatusListDto) familystatus);
+            checkUpdate((FamilyStatusListDTO) familystatus);
         }
     }
 
@@ -68,7 +67,7 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
      * 新增校检
      * @param dto
      */
-    private void checkAdd(FamilyStatusListDto dto) {
+    private void checkAdd(FamilyStatusListDTO dto) {
         String errorMsg="";
 
         if (null == dto.getStaffName()){
@@ -127,8 +126,8 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
      * 编辑校检
      * @param familystatus
      */
-    private void checkUpdate(FamilyStatusListDto familystatus) {
-        FamilyStatusListDto dto = familystatus;
+    private void checkUpdate(FamilyStatusListDTO familystatus) {
+        FamilyStatusListDTO dto = familystatus;
         String errorMsg="";
 
         if (null == dto.getStaffName()){

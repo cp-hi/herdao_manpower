@@ -64,7 +64,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	private StaffcontractService staffcontractService;
 
 	@Override
-	public R<?> selectStaffOrganizationComponent() {
+	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
 		
 		// 待接入用户权限 TODO
 		String searchText = "";

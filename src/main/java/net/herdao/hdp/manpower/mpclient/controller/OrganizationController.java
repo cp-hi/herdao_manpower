@@ -94,8 +94,7 @@ public class OrganizationController {
     @PostMapping("/saveOrUpdate")
     //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
     public R saveOrUpdate(@RequestBody Organization organization) {
-        Boolean status = orgService.saveOrUpdate(organization);
-        return  R.ok(status);
+        return  R.ok(orgService.organizationSave(organization));
     }
 
 
@@ -308,11 +307,12 @@ public class OrganizationController {
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
             @ApiImplicitParam(name="orgCode",value="组织编码"),
             @ApiImplicitParam(name="treeLevel",value="树形层级"),
+            @ApiImplicitParam(name="stop",value="传值：0 查询停用组织信息 ，传值： 1 查询启用信息， 不传或者传值： 3 查询启用信息"),
+            @ApiImplicitParam(name="searchText",value="模糊查询内容")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findOrgPage(Page page, String orgCode,Long treeLevel) {
-        Page pageResult = orgService.findOrgPage(page, orgCode , treeLevel);
-        return R.ok(pageResult);
+    public R<Page<Organization>> findOrgPage(Page page, String orgCode, Integer stop, String searchText) {
+        return R.ok(orgService.findOrgPage(page, orgCode, stop, searchText));
     }
 
     /**

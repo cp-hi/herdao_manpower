@@ -19,7 +19,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.StaffProDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffProDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,6 +40,6 @@ public interface StaffProfessionMapper extends BaseMapper<StaffProfession> {
      * @param staffCode
      * @return
      */
-    Page<StaffProDto> findStaffProPage(Page<StaffProDto> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StaffProDTO> findStaffProPage(Page<StaffProDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
 }
