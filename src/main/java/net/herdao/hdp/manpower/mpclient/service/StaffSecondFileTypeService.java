@@ -4,8 +4,10 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
+
+import java.util.List;
 
 /**
  * 员工附件二级分类
@@ -20,7 +22,7 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
      * @param entity
      * @return
      */
-    Page<StaffFileTypeDto> findStaffFileTypePage(Page<StaffFileTypeDto> page, StaffFileTypeDto entity);
+    Page<StaffFileTypeDTO> findStaffFileTypePage(Page<StaffFileTypeDTO> page, StaffFileTypeDTO entity);
 
     /**
      * 新增员工附件分类
@@ -31,7 +33,11 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
     boolean saveOrUpdate(StaffSecondFileType entity);
 
 
-
-
+    /**
+     * 员工附件分类
+     * @param entity
+     * @return
+     */
+    List<StaffFileTypeDTO> findStaffFileType(StaffFileTypeDTO entity);
 
 }

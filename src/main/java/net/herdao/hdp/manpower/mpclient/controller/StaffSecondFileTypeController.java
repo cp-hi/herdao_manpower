@@ -8,16 +8,16 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -92,17 +92,30 @@ public class StaffSecondFileTypeController {
      * @param page entity
      * @return
      */
-    @ApiOperation(value = "员工附件分类分页", notes = "员工附件分类分页")
+    @ApiOperation(value = "员工附件二级分类分页", notes = "员工附件二级分类分页")
     @GetMapping("/findStaffFileTypePage")
-    @OperationEntity(operation = "员工附件分类分页" ,clazz = Staffeducation.class )
     @ApiImplicitParams({
-        @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="staffName",value="员工姓名"),
-        @ApiImplicitParam(name="staffCode",value="员工工号")
+         @ApiImplicitParam(name="superId",value="员工一级附件分类ID"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffFileTypePage(Page page, StaffFileTypeDto entity) {
+    public R findStaffFileTypePage(Page page, StaffFileTypeDTO entity) {
         Page pageResult = staffSecondFileTypeService.findStaffFileTypePage(page, entity);
         return R.ok(pageResult);
+    }
+
+    /**
+     * 员工附件分类
+     * @param entity
+     * @return
+     */
+    @ApiOperation(value = "员工附件二级分类", notes = "员工附件二级分类")
+    @GetMapping("/findStaffFileType")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="superId",value="员工一级附件分类ID"),
+    })
+    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
+    public R findStaffFileType(StaffFileTypeDTO entity) {
+        List<StaffFileTypeDTO> list = staffSecondFileTypeService.findStaffFileType(entity);
+        return R.ok(list);
     }
 }

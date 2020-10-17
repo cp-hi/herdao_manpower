@@ -6,7 +6,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
+/**
+ * @author yangrr
+ */
 @Data
 @ApiModel(value = "劳资情况")
 public class StaffWelfareDTO {

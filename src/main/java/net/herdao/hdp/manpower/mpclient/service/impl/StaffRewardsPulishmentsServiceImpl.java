@@ -16,16 +16,27 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRewardsPulishmentsMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
+import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
+import net.herdao.hdp.manpower.mpclient.vo.StaffRpVO;
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,41 +49,134 @@ import java.util.List;
  * @date 2020-09-25 16:26:20
  */
 @Service
-@AllArgsConstructor
 public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewardsPulishmentsMapper, StaffRewardsPulishments> implements StaffRewardsPulishmentsService {
-    private RemoteUserService remoteUserService;
+    @Autowired
+    private SysDictItemService itemService;
 
     @Override
-    public Boolean saveStaffRp(StaffRewardsPulishments entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setCreatorCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setCreatedTime(now);
-        boolean status = super.save(entity);
-        return status;
-    }
-
-    @Override
-    public Boolean updateStaffRp(StaffRewardsPulishments entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setModifiedTime(now);
-        boolean status = super.updateById(entity);
-        return status;
-    }
-
-    @Override
-    public Page<StaffRewardsPulishments> findStaffRpPage(Page<StaffRewardsPulishments> page, String orgId, String staffName, String staffCode) {
-        Page<StaffRewardsPulishments> list = this.baseMapper.findStaffRpPage(page, orgId, staffName, staffCode);
+    public Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page, String searchText) {
+        Page<StaffRpDTO> list = this.baseMapper.findStaffRpPage(page, searchText);
         return list;
     }
 
     @Override
-    public List<StaffRewardsPulishments> findStaffRp(String orgId, String staffName, String staffCode) {
-        List<StaffRewardsPulishments> list = this.baseMapper.findStaffRp( orgId, staffName, staffCode);
+    public List<StaffRpDTO> findStaffRp(String searchText) {
+        List<StaffRpDTO> list = this.baseMapper.findStaffRp(searchText);
         return list;
+    }
+
+    @Override
+    public void saveVerify(StaffRewardsPulishments rewardsPulishments) {
+
+    }
+
+    @Override
+    public void importVerify(StaffRewardsPulishments rewardsPulishments, int type) {
+        //新增校检
+        if (type == 0){
+            checkAdd((StaffRpVO) rewardsPulishments);
+        }
+
+        //编辑校检
+        if (type == 1){
+             checkUpdate((StaffRpVO) rewardsPulishments);
+        }
+    }
+
+    /**
+     * 新增校检
+     * @param dto
+     */
+    private void checkAdd(StaffRpVO dto) {
+        String errorMsg="";
+
+        if (null == dto.getStaffCode()){
+            errorMsg+="员工工号不能为空，";
+        }
+
+        if (null == dto.getChoiceName()){
+            errorMsg+="奖励/惩罚不能为空，";
+        }else{
+            if (!dto.getChoiceName().equals("奖励") && !dto.getChoiceName().equals("惩罚") ){
+                errorMsg+="奖励/惩罚字段只能填写：奖励 或者 惩罚”，";
+            }
+
+            //奖励/惩罚 0:奖励 1:惩罚
+            if (!dto.getChoiceName().equals("奖励")  ){
+                dto.setChoice(false);
+            }
+            if (!dto.getChoiceName().equals("惩罚")  ){
+                dto.setChoice(true);
+            }
+        }
+
+        SysDictItem dictItem = itemService.getOne(
+                new QueryWrapper<SysDictItem>()
+                        .eq("type", "YGJCLB")
+                        .eq("label", dto.getType())
+                        .eq("del_flag", 0)
+        );
+
+        boolean isNumber = RegexUtils.isNumber(dto.getAmount());
+        if (!isNumber){
+            errorMsg+="请填写整的奖金金额（奖金金额为正整数）:"+dto.getAmount();
+        }
+
+
+        if (null==dictItem){
+            errorMsg+="员工奖惩类别不存在或已停用:"+dto.getType();
+        }else {
+            dto.setType(dictItem.getValue());
+        }
+
+        if (!errorMsg.isEmpty()){
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
+
+    /**
+     * 新增校检
+     * @param dto
+     */
+    private void checkUpdate(StaffRpVO dto) {
+        String errorMsg="";
+
+        if (null == dto.getStaffCode()){
+            errorMsg+="员工工号不能为空，";
+        }
+
+        if (null == dto.getChoiceName()){
+            errorMsg+="奖励/惩罚不能为空，";
+        }else{
+            if (!dto.getChoiceName().equals("奖励") && !dto.getChoiceName().equals("惩罚") ){
+                errorMsg+="奖励/惩罚字段只能填写：奖励 或者 惩罚”，";
+            }
+
+            //奖励/惩罚 0:奖励 1:惩罚
+            if (!dto.getChoiceName().equals("奖励")  ){
+                dto.setChoice(false);
+            }
+            if (!dto.getChoiceName().equals("惩罚")  ){
+                dto.setChoice(true);
+            }
+        }
+
+        SysDictItem dictItem = itemService.getOne(
+                new QueryWrapper<SysDictItem>()
+                        .eq("type", "YGJCLB")
+                        .eq("label", dto.getType())
+                        .eq("del_flag", 0)
+        );
+
+        if (null==dictItem){
+            errorMsg+="员工奖惩类别不存在或已停用:"+dto.getType();
+        }else {
+            dto.setType(dictItem.getValue());
+        }
+
+        if (!errorMsg.isEmpty()){
+            throw new RuntimeException(errorMsg);
+        }
     }
 }

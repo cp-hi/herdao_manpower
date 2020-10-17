@@ -13,14 +13,15 @@ import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
-import net.herdao.hdp.manpower.mpclient.entity.StaffRp;
-import net.herdao.hdp.manpower.mpclient.listener.FamilystatusListener;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
+import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,9 +44,14 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/familystatus" )
 @Api(value = "familystatus", tags = "员工家庭成员管理")
-public class FamilystatusController {
+public class FamilystatusController extends BaseController<Familystatus,Familystatus> {
 
     private final  FamilystatusService familystatusService;
+
+    @Autowired
+    public void setEntityService(FamilystatusService familystatusService) {
+        super.entityService = familystatusService;
+    }
 
     /**
      * 分页查询
@@ -56,80 +62,25 @@ public class FamilystatusController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     @PreAuthorize("@pms.hasPermission('mpclient_familystatus_view')" )
-    public R getFamilystatusPage(Page page, Familystatus familystatus) {
+    public R page(Page page, Familystatus familystatus) {
         return R.ok(familystatusService.page(page, Wrappers.query(familystatus)));
-    }
-
-
-    /**
-     * 通过id查询员工家庭成员
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_familystatus_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(familystatusService.getById(id));
-    }
-
-    /**
-     * 新增员工家庭成员
-     * @param familystatus 员工家庭成员
-     * @return R
-     */
-    @ApiOperation(value = "新增员工家庭成员", notes = "新增员工家庭成员")
-    @SysLog("新增员工家庭成员" )
-    @PostMapping("/saveFamily")
-   // @PreAuthorize("@pms.hasPermission('mpclient_familystatus_add')" )
-    public R saveFamily(@RequestBody Familystatus familystatus) {
-        return R.ok(familystatusService.save(familystatus));
-    }
-
-    /**
-     * 修改员工家庭成员
-     * @param familystatus 员工家庭成员
-     * @return R
-     */
-    @ApiOperation(value = "修改员工家庭成员", notes = "修改员工家庭成员")
-    @SysLog("修改员工家庭成员" )
-    @PutMapping("/updateFamily")
-    // @PreAuthorize("@pms.hasPermission('mpclient_familystatus_edit')" )
-    public R updateById(@RequestBody Familystatus familystatus) {
-        return R.ok(familystatusService.updateById(familystatus));
-    }
-
-    /**
-     * 通过id删除员工家庭成员
-     * @param id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除员工家庭成员", notes = "通过id删除员工家庭成员")
-    @SysLog("通过id删除员工家庭成员" )
-    @DeleteMapping("/del/{id}" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_familystatus_del')" )
-    public R removeById(@PathVariable Long id) {
-        Boolean b =  familystatusService.removeById(id);
-        return R.ok(b);
     }
 
     /**
      * 员工家庭情况分页
      * @param page 分页对象
-     * @param orgId
+     * @param searchText 关键字搜索
      * @return
      */
     @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
     @PostMapping("/findFamilyStatusPage")
     @OperationEntity(operation = "员工教育经历分页" ,clazz = Organization.class )
     @ApiImplicitParams({
-          @ApiImplicitParam(name="orgId",value="组织ID"),
-          @ApiImplicitParam(name="staffName",value="员工姓名"),
-          @ApiImplicitParam(name="staffCode",value="员工工号")
+         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findFamilyStatusPage(Page page, String orgId,String staffName, String staffCode) {
-        Page pageResult = familystatusService.findFamilyStatusPage(page, orgId, staffName, staffCode);
+    public R findFamilyStatusPage(Page page, String searchText) {
+        Page pageResult = familystatusService.findFamilyStatusPage(page, searchText);
         return R.ok(pageResult);
     }
 
@@ -156,19 +107,18 @@ public class FamilystatusController {
     /**
      * 导出家庭情况Excel
      * @param response
+     * @param searchText 关键字搜索
      * @return R
      */
     @ApiOperation(value = "导出家庭情况Excel", notes = "导出家庭情况Excel")
     @SysLog("导出家庭情况Excel")
     @PostMapping("/exportFamily")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+        @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
-    public void exportFamily(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+    public void exportFamily(HttpServletResponse response, String searchText) {
         try {
-            List<FamilyStatusVO> list = familystatusService.findFamilyStatus(orgId, staffName, staffCode);
+            List<FamilyStatusVO> list = familystatusService.findFamilyStatus(searchText);
             ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusVO.class,list);
         } catch (Exception e) {
             e.printStackTrace();

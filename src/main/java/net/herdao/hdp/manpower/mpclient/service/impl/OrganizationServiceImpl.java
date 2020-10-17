@@ -14,6 +14,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 
@@ -615,5 +616,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		String searchText = "";
 		return R.ok(this.baseMapper.selectOrganizations(searchText));
 	}
+
+    @Override
+    public List<StaffOrgDTO> selectOrgStaffAll(Page page, String orgCode) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        map.put("orgCode", orgCode);
+        return baseMapper.selectOrgStaffAll(map);
+    }
 	
 }

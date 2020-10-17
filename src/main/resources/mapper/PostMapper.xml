@@ -6,41 +6,73 @@
 
     <!--*************************以下为分页查询用到的函数***********************************-->
 
-    <resultMap id="postDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO" >
-        <association property="group" column="group_id" select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" javaType="group"/>
+    <resultMap id="postDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
+        <id column="id" property="id"/>
+        <result property="stop" column="IS_STOP"/>
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="sectionId" column="section_id"/>
+        <result property="pipelineId" column="pipeline_id"/>
+        <result property="jobLevelId1" column="job_Level_id1"/>
+        <result property="postSeqId" column="post_seq_id"/>
+
+        <association property="group" column="group_id" select="getGroup" javaType="group"/>
         <association property="section" column="section_id" select="getSection" javaType="section"/>
         <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
-        <association property="jobLevel1" column="job_Level_id1" select="getJobLevel" javaType="jobLevel"/>
-        <association property="jobLevel2" column="job_Level_id2" select="getJobLevel" javaType="jobLevel"/>
+        <association property="jobGrade" column="job_level_id1" select="getJobGrade" javaType="jobGrade"/>
+        <association property="jobLevel1" column="job_level_id1" select="getJobLevel" javaType="jobLevel"/>
+        <association property="jobLevel2" column="job_level_id2" select="getJobLevel" javaType="jobLevel"/>
         <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+        <association property="operationLog" column="id" select="getOperationLog" javaType="net.herdao.hdp.manpower.sys.entity.OperationLog"/>
     </resultMap>
 
-<!--    <resultMap id="postSeqMap" type="postSeq">-->
-<!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
-<!--    </resultMap>-->
+    <!--    <resultMap id="postSeqMap" type="postSeq">-->
+    <!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
+    <!--    </resultMap>-->
 
-    <select id="page" resultMap="postDTO" parameterType="String">
-        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_post where post_code like #{likeTxt} or post_name like #{likeTxt}
+    <select id="page" resultMap="postDTOMap" parameterType="post">
+        select * from mp_post where 1=1
+        <!--
+        <if test="postName != null">
+            <bind name="likeTxt" value="'%'+postName+'%'"/>
+          and   concat(POST_CODE,POST_NAME) like #{likeTxt}
+        </if>
+
+        <if test="groupId != null">
+            AND group_id = #{groupId}
+        </if>
+        <if test="sectionId != null">
+            AND section_id = #{sectionId}
+        </if>
+        <if test="pipelineId != null">
+            AND pipeline_id = #{pipelineId}
+        </if>
+        <if test="jobLevelId1 != null">
+            AND (job_level_id1 = #{jobLevelId1} or job_level_id2 = #{jobLevelId1})
+        </if>
+        -->
     </select>
 
     <select id="getGroup" parameterType="long" resultType="group">
-        select * from  mp_group WHERE id=#{id}
-    </select>
+   select * from  mp_group WHERE id=#{id}
+</select>
 
     <select id="getPipeline" parameterType="long" resultType="pipeline">
-        select * from  mp_pipeline WHERE id=#{id}
-    </select>
+   select * from  mp_pipeline WHERE id=#{id}
+</select>
 
     <select id="getSection" parameterType="long" resultType="section">
-        select * from  mp_section WHERE id=#{id}
-    </select>
+   select * from  mp_section WHERE id=#{id}
+</select>
+
+    <select id="getJobGrade" parameterType="long" resultType="jobGrade">
+   select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
+</select>
 
     <select id="getJobLevel" parameterType="long" resultType="jobLevel">
-        select * from  mp_job_level WHERE id=#{id}
-    </select>
+   select * from  mp_job_level WHERE id=#{id}
+</select>
 
     <!--     TODO 实现父子查询 -->
     <select id="getPostSeq" parameterType="long" resultType="postSeq">
@@ -58,6 +90,13 @@
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
         and s.STAFF_SCOPE = '1' and p.id =#{id}
     </select>
+
+    <select id="getOperationLog" parameterType="long" resultType="net.herdao.hdp.manpower.sys.entity.OperationLog">
+        <bind name="entityName" value="'net.herdao.hdp.manpower.mpclient.entity.Post'"/>
+        select * from sys_operation_log where OBJ_ID = #{id}
+        and ENTITY_CLASS = #{entityName} order by operated_time desc limit 1
+    </select>
+
 
     <!--*************************以上为分页查询用到的函数***********************************-->
 
@@ -98,24 +137,23 @@
 
     <!-- 岗位名称、岗位编码、集团、板块、管线、职级、 创建时间  -->
     <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO">
-        select
-        p.POST_NAME ,
-        p.POST_CODE ,
-        COALESCE(g1.GROUP_NAME,g2.GROUP_NAME) GROUP_NAME,
-        s.SECTION_NAME  ,
-        pp.PIPELINE_NAME  ,
-        j.JOB_LEVEL_NAME  ,
-        p.CREATED_TIME
-      --  jg.JOB_GRADE_NAME  ,
-      --  p.CREATOR_NAME 创建人,
-      --  DATE_FORMAT(p.CREATED_TIME,'%Y-%m-%d')  CREATED_TIME
-        from  mp_post p
-        left join mp_section s on p.SECTION_CODE = s.SECTION_CODE
-        left join mp_pipeline pp on p.PIPELINE_CODE = pp.PIPELINE_CODE
-        left join mp_job_level j on p.JOB_LEVEL_CODE = j.JOB_LEVEL_CODE
-        left join mp_job_grade jg on j.JOB_grade_CODE = jg.JOB_grade_CODE
-        left join mp_group g1 on s.GROUP_ID = g1.id
-        left join mp_group g2 on pp.GROUP_ID = g2.id
+        SELECT
+            p.POST_NAME,
+            p.POST_CODE,
+            COALESCE(g1.GROUP_NAME, g2.GROUP_NAME ) GROUP_NAME,
+            CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) JOB_LEVEL_NAME,
+            s.SECTION_NAME,
+            pp.PIPELINE_NAME,
+            p.CREATED_TIME
+        FROM
+            mp_post p
+            LEFT JOIN mp_section s ON p.SECTION_ID = s.ID
+            LEFT JOIN mp_pipeline pp ON p.PIPELINE_ID = pp.ID
+            left join mp_job_level j1 on p.JOB_LEVEL_ID1 = j1.ID
+            left join mp_job_level j2 on p.JOB_LEVEL_ID2 = j2.ID
+            LEFT JOIN mp_job_grade jg ON j1.JOB_grade_ID = jg.ID
+            LEFT JOIN mp_group g1 ON p.GROUP_ID = g1.id
+            LEFT JOIN mp_group g2 ON pp.GROUP_ID = g2.id
          where p.id = #{postId}  order by p.id  ${limit}
     </select>
 

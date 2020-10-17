@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "员工附件二级分类")
-public class StaffFileTypeDto {
+public class StaffFileTypeDTO {
 
     @ApiModelProperty(value="主键ID")
     private Long id;
@@ -26,8 +26,11 @@ public class StaffFileTypeDto {
     @ApiModelProperty(value="附件一级分类")
     private String superType;
 
-    @ApiModelProperty(value="启用状态")
+    @ApiModelProperty(value="启用状态 名称")
     private String enableStatus;
+
+    @ApiModelProperty(value="启用状态 值")
+    private String status;
 
     @ApiModelProperty(value="修改人")
     private String modifierName;
@@ -45,6 +48,6 @@ public class StaffFileTypeDto {
     private String fileCount;
 
     @ApiModelProperty(value="一级附件分类ID")
-    private String superId;
+    private Long superId;
 
 }

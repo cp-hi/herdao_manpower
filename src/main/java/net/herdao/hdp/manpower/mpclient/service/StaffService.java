@@ -57,4 +57,7 @@ public interface StaffService extends IService<Staff> {
 	Map<String, Object> getHomePage(Long id);
 
 	Map<String, Object> getStaffWork(Long id);
+
+	Map<String, Object> getStaffWelfare(Long id);
+
 }

@@ -25,13 +25,14 @@ import java.lang.reflect.ParameterizedType;
 
 /**
  * @ClassName BaseController
- * @Description BaseController
+ * @Description <p>基础Controller类
+ * 实现了 保存 删除 启用/停用 导入/导出 查询操作记录  等基础操作
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/10/15 12:42
  * @Version 1.0
  */
-
+//TODO 实现导出功能
 public class BaseController<T, D extends T> {
 
     EntityService entityService;
@@ -50,18 +51,17 @@ public class BaseController<T, D extends T> {
     }
 
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
 //    @ApiResponses({
 //            @ApiResponse()
 //    })
+    @GetMapping("/{id}")
+    @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R getById(@PathVariable("id") Long id) {
         return R.ok(entityService.getById(id));
     }
-
     @PostMapping
     public R save(@RequestBody T t) {
         entityService.saveEntity(t);

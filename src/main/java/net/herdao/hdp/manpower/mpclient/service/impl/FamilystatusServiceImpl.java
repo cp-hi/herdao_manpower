@@ -34,14 +34,14 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     private SysDictItemService itemService;
 
     @Override
-    public Page<Familystatus> findFamilyStatusPage(Page<Familystatus> page, String orgId, String staffName, String staffCode) {
-        Page<Familystatus> pageResult = this.baseMapper.findFamilyStatusPage(page, orgId,staffName,staffCode);
+    public Page<FamilyStatusListDto> findFamilyStatusPage(Page<FamilyStatusListDto> page, String searchText) {
+        Page<FamilyStatusListDto> pageResult = this.baseMapper.findFamilyStatusPage(page, searchText);
         return pageResult;
     }
 
     @Override
-    public List<FamilyStatusVO> findFamilyStatus(String orgId, String staffName, String staffCode) {
-        List<FamilyStatusVO> list= this.baseMapper.findFamilyStatus(orgId, staffName, staffCode);
+    public List<FamilyStatusVO> findFamilyStatus(String searchText) {
+        List<FamilyStatusVO> list = this.baseMapper.findFamilyStatus(searchText);
         return list;
     }
 
@@ -194,4 +194,6 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
             throw new RuntimeException(errorMsg);
         }
     }
+
+
 }

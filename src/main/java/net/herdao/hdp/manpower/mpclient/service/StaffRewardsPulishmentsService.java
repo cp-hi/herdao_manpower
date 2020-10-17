@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
@@ -34,40 +35,22 @@ import java.util.List;
  * @author andy
  * @date 2020-09-25 16:26:20
  */
-public interface StaffRewardsPulishmentsService extends IService<StaffRewardsPulishments> {
-    /**
-     * 新增员工奖惩
-     * @param entity
-     * @return
-     */
-    Boolean saveStaffRp(@RequestBody StaffRewardsPulishments entity);
-
-    /**
-     * 更新员工奖惩
-     * @param entity
-     * @return
-     */
-    Boolean updateStaffRp(@RequestBody StaffRewardsPulishments entity);
-
+public interface StaffRewardsPulishmentsService extends EntityService<StaffRewardsPulishments> {
 
     /**
      * 员工奖惩分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<StaffRewardsPulishments> findStaffRpPage(Page<StaffRewardsPulishments> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page, String searchText);
 
     /**
      * 员工奖惩
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<StaffRewardsPulishments> findStaffRp(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<StaffRpDTO> findStaffRp(String searchText);
 
 
 }

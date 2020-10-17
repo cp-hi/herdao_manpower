@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface PostService extends EntityService<Post> {
 
-    IPage<PostDTO> page(Page<PostDTO> page, @Param("searchTxt") String searchTxt);
+    IPage<PostDTO > page(Page<PostDTO > page, Post post);
 
     /**
      * 岗位列表
@@ -22,16 +22,6 @@ public interface PostService extends EntityService<Post> {
      * @return
      */
     List<Map> postList(Long groupId);
-
-    /**
-     * 分页数据
-     *
-     * @param page
-     * @param params
-     * @return
-     */
-    Page page(Page page, Map<String, String> params);
-
 
 
     /**

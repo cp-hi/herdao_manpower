@@ -275,9 +275,6 @@
          <if test="isStop != null">
              AND is_stop = #{isStop}
          </if>
-         <if test="tenantId != null">
-             AND TENANT_ID = #{tenantId}
-         </if>
       </select>
 
     <!-- 查询根组织架构 无限级递归 -->
@@ -297,9 +294,6 @@
 
         <if test="isStop != null">
             AND is_stop = #{isStop}
-        </if>
-        <if test="tenantId != null">
-            AND TENANT_ID = #{tenantId}
         </if>
     </select>
 
@@ -379,10 +373,6 @@
             AND is_stop = #{isStop}
         </if>
 
-        <if test="tenantId != null">
-            AND TENANT_ID = #{tenantId}
-        </if>
-
         order by SORT_NO
     </select>
 
@@ -421,9 +411,6 @@
         </if>
         <if test="isStop != null">
             AND is_stop = #{isStop}
-        </if>
-        <if test="tenantId != null">
-            AND TENANT_ID = #{tenantId}
         </if>
     </select>
 
@@ -564,4 +551,33 @@
 			AND orgp.org_code = #{orgCode}
 		</where>
 	</select>
+
+    <!-- 查询组织下所有人员 -->
+    <select id="selectOrgStaffAll" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO">
+        SELECT
+            f.ID,
+            f.STAFF_NAME,
+            f.STAFF_CODE,
+            o.ORG_NAME,
+            p.POST_NAME,
+            p.JOB_LEVEL_ID1,
+            f.JOB_TYPE,
+            f.MOBILE,
+            f.EMAIL
+        FROM
+            mp_user u
+        LEFT JOIN mp_userpost up ON u.ID = up.USER_ID
+        LEFT JOIN mp_post p ON p.ID = up.POST_ID
+        LEFT JOIN mp_organization o ON o.ID = u.ORG_DEPT_ID
+        LEFT JOIN mp_staff f ON f.user_id = u.ID
+        WHERE
+            u.ORG_DEPT_ID IN (
+                SELECT
+                    o.ID
+                FROM
+                    mp_organization o
+                WHERE
+                    o.ORG_CODE LIKE CONCAT(#{orgCode},'%')
+            )
+    </select>
 </mapper>

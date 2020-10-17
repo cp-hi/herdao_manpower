@@ -48,9 +48,10 @@ public class RemoteFileController {
 	@PostMapping("/uploadFile")
 	@Transactional(rollbackFor = Exception.class)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="file",value="文件")
+		@ApiImplicitParam(name="file",value="文件"),
+	    @ApiImplicitParam(name="secondTypeId",value="二级附件分类ID")
 	})
- 	public R uploadFile(@RequestParam(value = "file") MultipartFile file)  {
+ 	public R uploadFile(@RequestParam(value = "file") MultipartFile file,Long secondTypeId)  {
 		try {
 			if (file ==null || file.isEmpty()){
 				return R.failed("请选择上传文件！");
@@ -72,6 +73,9 @@ public class RemoteFileController {
 				}
 				//传一个员工id
 				entity.setStaffId(1L);
+
+				//二级附件分类ID
+				entity.setSecondTypeId(secondTypeId);
 
 				//获得文件后缀名 文件类型
  				int begin = file.getOriginalFilename().indexOf(".");

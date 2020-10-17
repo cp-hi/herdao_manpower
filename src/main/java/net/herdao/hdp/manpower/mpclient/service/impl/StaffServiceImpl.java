@@ -60,6 +60,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private StaffProTitleService staffProTitleService;
 
+	@Autowired
+	private StaffcontractService staffcontractService;
+
 	@Override
 	public R<?> selectStaffOrganizationComponent() {
 		
@@ -311,7 +314,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		Map<String, Object> map = new HashMap<>();
 		
 		/*-------------目前任职 star-----------------*/
-		UserpostDTO userpostDto = userpostService.findCurrentJob(null,null,null,id.toString());
+		UserpostDTO userpostDto = userpostService.findCurrentJob(id);
 		map.put("userpostDto", userpostDto);
 		/*-------------目前任职 end-----------------*/
 		
@@ -364,5 +367,34 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		/*-------------职称及职业资格 end-----------------*/
 		
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> getStaffWelfare(Long id){
+		Staff staff = this.getById(id);
+		StaffSecurityDTO security = new StaffSecurityDTO();
+		StaffFundDTO fund = new StaffFundDTO();
+		StaffSalaryDTO salary = new StaffSalaryDTO();
+		BeanUtils.copyProperties(staff, security);
+		BeanUtils.copyProperties(staff, fund);
+		BeanUtils.copyProperties(staff, salary);
+		Map<String, Object> map = new HashMap<>();
+		map.put("security", security);
+		map.put("fund", fund);
+		map.put("salary", salary);
+
+		List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
+				.eq("SATFF_ID", staff.getId())
+				.orderByDesc("START_DATE")
+		);
+		List<StaffcontractDTO> contractDtoList = new ArrayList<>();
+		StaffcontractDTO contractDto;
+		for(int i=0;i<contractList.size();i++){
+			contractDto = new StaffcontractDTO();
+			BeanUtils.copyProperties(contractList.get(i), contractDto);
+			contractDtoList.add(contractDto);
+		}
+		map.put("contractDtoList", contractDtoList);
+		return  map;
 	}
 }

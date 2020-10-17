@@ -19,7 +19,6 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +41,7 @@ import java.util.Map;
  * 字典表 前端控制器
  * </p>
  *
- * @author hdp
+ * @author yangrr
  * @since 2019-03-19
  */
 @RestController
@@ -75,9 +74,16 @@ public class OrgSetController {
 			}
 		}
 		String value = String.join("、", strList);
+		Integer dictId = null;
+		if(list!=null&&list.size()!=0){
+			dictId = list.get(0).getDictId();
+		}
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("value", value);
+		map.put("type", type);
+		map.put("dictId", dictId);
 		return R.ok(map);
 	}
 
@@ -143,8 +149,7 @@ public class OrgSetController {
 	@ApiOperation(value = "重排序", notes = "批量修改字典项")
 	@SysLog("批量修改字典项")
 	@PostMapping("/itemList")
-	public R updateBatch(String jsonList) {
-		List<SysDictItem> list= JSONObject.parseArray(jsonList,SysDictItem.class);
+	public R updateBatch(@RequestBody List<SysDictItem> list) {
 		boolean isSuccess = false;
 		if(list!=null && list.size()!=0){
 			isSuccess = sysDictItemService.updateBatchById(list);

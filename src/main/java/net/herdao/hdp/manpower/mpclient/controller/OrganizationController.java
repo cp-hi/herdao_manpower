@@ -164,13 +164,11 @@ public class OrganizationController {
     @OperationEntity(operation = "查询根组织架构树，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)" ,clazz = Organization.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="tenantId",value="租户ID"),
             @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
             @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
     })
-     public R findAllOrganizations(Long tenantId,Integer isStop,Boolean isRoot) {
+     public R findAllOrganizations(Integer isStop,Boolean isRoot) {
         Organization organization=new Organization();
-        organization.setTenantId(tenantId);
         organization.setIsStop(isStop);
         organization.setIsRoot(isRoot);
         List<Organization> list = orgService.findAllOrganizations(organization);
@@ -236,7 +234,6 @@ public class OrganizationController {
     @PostMapping("/findOrganization2LevelByCondition")
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="组织架构主键ID"),
-        @ApiImplicitParam(name="tenantId",value="租户ID"),
         @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
         @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
     })
@@ -269,7 +266,6 @@ public class OrganizationController {
     @PostMapping("/getRecursionOrgByLevel")
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="tenantId",value="租户ID"),
             @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
             @ApiImplicitParam(name="orgTreeLevel",value="组织结构数层级(默认2级) （可选参数）"),
     })
@@ -358,6 +354,20 @@ public class OrganizationController {
     @GetMapping("/getOrgLog/{objId}")
     public R getOrgLog(@PathVariable Long objId) {
         return R.ok(operationLogService.findByEntity(objId, Organization.class.getName()));
+    }
+
+    /**
+     * 查询组织下所有人员
+     * @author yangrr
+     * @param page 分页对象
+     * @param orgCode
+     * @return
+     */
+    @ApiOperation(value = "查询组织下所有人员")
+    @GetMapping("/getOrgStaffAll")
+    public R selectOrgStaffAll(Page page, String orgCode) {
+        page = page.setRecords(orgService.selectOrgStaffAll(page, orgCode));
+        return R.ok(page);
     }
 
 }

@@ -23,6 +23,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.mapper.StafftrainMapper;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
@@ -41,37 +42,16 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftrain> implements StafftrainService {
-    private RemoteUserService remoteUserService;
 
     @Override
-    public Page<Stafftrain> findStaffTrainPage(Page<Stafftrain> page, String orgId, String staffName, String staffCode) {
-        Page<Stafftrain> list = this.baseMapper.findStaffTrainPage(page, orgId, staffName, staffCode);
+    public Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page, String searchText) {
+        Page<StafftrainDTO> list = this.baseMapper.findStaffTrainPage(page, searchText);
         return list;
     }
 
     @Override
-    public boolean saveTrain(Stafftrain stafftrain) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        stafftrain.setCreatorCode(userId.toString());
-        stafftrain.setCreatedTime(new Date());
-        boolean status = super.save(stafftrain);
-        return status;
-    }
-
-    @Override
-    public boolean updateTrain(Stafftrain stafftrain) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        stafftrain.setModifierCode(userId.toString());
-        stafftrain.setModifiedTime(new Date());
-        boolean status = super.updateById(stafftrain);
-        return status;
-    }
-
-    @Override
-    public List<Stafftrain> findStaffTrain(String orgId, String staffName, String staffCode) {
-        List<Stafftrain> list = this.baseMapper.findStaffTrain(orgId, staffName, staffCode);
+    public List<StafftrainDTO> findStaffTrain(String searchText) {
+        List<StafftrainDTO> list = this.baseMapper.findStaffTrain(searchText);
         return list;
     }
 }

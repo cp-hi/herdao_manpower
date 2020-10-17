@@ -74,8 +74,6 @@ public class StaffController {
 
     private final WorkexperienceService workexperienceService;
 
-    private final StaffcontractService staffcontractService;
-
     private final  StafftransactionService stafftransactionService;
 
     private final UserpostService userpostService;
@@ -209,15 +207,7 @@ public class StaffController {
     @GetMapping("/staffwelfare/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getStaffWelfare(@PathVariable("id" ) Long id) {
-        Staff staff = staffService.getById(id);
-        List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
-                .eq("SATFF_ID", staff.getId())
-                .orderByDesc("MODIFIED_TIME")
-        );
-        Map<String, Object> map = new HashMap<>();
-        map.put("staff", staff);
-        map.put("contractList", contractList);
-        return R.ok(map);
+        return R.ok(staffService.getStaffWelfare(id));
     }
 
     /**

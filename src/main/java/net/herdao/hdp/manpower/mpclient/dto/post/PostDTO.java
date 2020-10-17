@@ -1,10 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.dto.post;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
 
 import java.util.List;
 
@@ -17,34 +19,9 @@ import java.util.List;
  * @Version 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+//@EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "岗位列表DTO")
 public class PostDTO extends Post {
-
-//    @ApiModelProperty(value = "岗位名称", required = true)
-//    private String postName;
-//
-//    @ApiModelProperty(value = "岗位编码", required = true)
-//    private String postCode;
-//
-//    @ApiModelProperty(value = "岗位序列", required = true)
-//    private String postSeqName;
-//
-//    @ApiModelProperty(value = "所属集团")
-//    private String groupName;
-//
-//    @ApiModelProperty(value = "板块")
-//    private String sectionName;
-//
-//    @ApiModelProperty(value = "管线")
-//    private String pipelineName;
-//
-//    @ApiModelProperty(value = "职等名称")
-//    private String jobGradeName;
-//
-//    @ApiModelProperty(value = "职级名称")
-//    private String jobLevelName;
-
     @ApiModelProperty(value = "板块")
     private Section section;
 
@@ -56,7 +33,6 @@ public class PostDTO extends Post {
 
     @ApiModelProperty(value = "所属集团")
     private Group group;
-
 
     @ApiModelProperty(value = "职级1")
     private JobLevel jobLevel1;
@@ -72,4 +48,7 @@ public class PostDTO extends Post {
 
     @ApiModelProperty(value = "岗位序列")
     private  PostSeq  postSeq ;
+
+    @ApiModelProperty(value = "操作记录")
+    private OperationLog operationLog;
 }

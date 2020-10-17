@@ -18,6 +18,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 员工附件表
@@ -40,7 +42,7 @@ public class StaffFileController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('mpclient_stafffile_view')" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_stafffile_view')" )
     public R getStaffFilePage(Page page, StaffFile staffFile) {
         return R.ok(staffFileService.page(page, Wrappers.query(staffFile)));
     }
@@ -52,7 +54,7 @@ public class StaffFileController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_stafffile_view')" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_stafffile_view')" )
     public R getById(@PathVariable("id" ) Long id) {
         return R.ok(staffFileService.getById(id));
     }
@@ -78,7 +80,7 @@ public class StaffFileController {
     @ApiOperation(value = "修改员工附件表", notes = "修改员工附件表")
     @SysLog("修改员工附件表" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_stafffile_edit')" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_stafffile_edit')" )
     public R updateById(@RequestBody StaffFile staffFile) {
         return R.ok(staffFileService.updateById(staffFile));
     }
@@ -91,7 +93,7 @@ public class StaffFileController {
     @ApiOperation(value = "通过id删除员工附件表", notes = "通过id删除员工附件表")
     @SysLog("通过id删除员工附件表" )
     @DeleteMapping("/del/{id}" )
-    @OperationEntity(operation = "删除员工附件", key ="id" ,clazz = StaffFile.class)
+    //@OperationEntity(operation = "删除员工附件", key ="id" ,clazz = StaffFile.class)
     public R removeById(@PathVariable Long id) {
         return R.ok(staffFileService.removeById(id));
     }
@@ -113,5 +115,19 @@ public class StaffFileController {
     public R findStaffFilePage(Page page, StaffFileDto entity) {
         Page pageResult = staffFileService.findStaffFilePage(page, entity);
         return R.ok(pageResult);
+    }
+
+
+    /**
+     * 查询员工上传附件
+     * @param staffFile 员工附件表
+     * @return
+     */
+    @ApiOperation(value = "查询员工上传附件", notes = "查询员工上传附件")
+    @GetMapping("/findStaffFile" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_stafffile_view')" )
+    public R findStaffFile(StaffFile staffFile) {
+        List<StaffFile> list = staffFileService.list(Wrappers.query(staffFile));
+        return R.ok(list);
     }
 }

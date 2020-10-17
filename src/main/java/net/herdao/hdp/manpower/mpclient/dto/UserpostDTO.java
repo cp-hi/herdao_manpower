@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,6 +16,10 @@ import java.util.List;
 @Data
 @ApiModel(value = "现任职情况")
 public class UserpostDTO {
+    @ExcelIgnore
+    @ApiModelProperty(value="id")
+    private String id;
+
     @ExcelProperty(value = "员工姓名")
     @ApiModelProperty(value="员工姓名")
     private String staffName;
@@ -28,6 +33,7 @@ public class UserpostDTO {
     private String startDate;
 
     @ApiModelProperty(value="免职日期")
+    @ExcelProperty(value = "免职日期")
     private String endDate;
 
     @ExcelProperty(value = "所在组织")
@@ -55,12 +61,15 @@ public class UserpostDTO {
     private String customPost;
 
     @ApiModelProperty(value="任职集团")
+    @ExcelProperty(value = "任职集团")
     private String groupName;
 
     @ApiModelProperty(value="任职公司")
+    @ExcelProperty(value = "任职公司")
     private String company;
 
-    @ApiModelProperty(value="任职部门")
+    @ApiModelProperty(value="任职公司")
+    @ExcelProperty(value = "任职公司")
     private String deptName;
 
 }

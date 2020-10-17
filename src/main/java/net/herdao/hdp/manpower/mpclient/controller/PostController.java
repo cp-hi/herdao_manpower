@@ -1,24 +1,32 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +42,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post,Post> {
+public class PostController extends BaseController<Post, Post> {
 
     @Autowired
     private PostService entityService;
+
+
+    @Autowired
+    SysDictItemService sysDictItemService;
 
     @Autowired
     public void setEntityService(PostService postService) {
@@ -55,10 +67,14 @@ public class PostController extends BaseController<Post,Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R page(Page<PostDTO> page, @RequestParam Map<String, String> params) {
-        IPage<PostDTO> p = entityService.page(page, "");
+    public R page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
+        DtoConverter.sysDictItemService = sysDictItemService;
+        IPage p = entityService.page(page, post);
+        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
+        List<PostDTO> records = p.getRecords();
+        List<PostVO> vos = DtoConverter.convert(p.getRecords(), PostVO.class);
+        p.setRecords(vos);
         return R.ok(p);
-//        return R.ok(postService.page(page, params));
     }
 
     @GetMapping("/list")
@@ -71,8 +87,8 @@ public class PostController extends BaseController<Post,Post> {
     }
 
 
-    @ApiOperation(value = "获取岗位员工信息")
-    @SysLog("获取岗位员工信息")
+    @ApiOperation(value = "岗位概况")
+    @SysLog("岗位概况")
     @GetMapping("/postStaff/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "岗位ID"),
@@ -82,7 +98,7 @@ public class PostController extends BaseController<Post,Post> {
     }
 
     @ApiOperation(value = "获取岗位信息明细")
-    @GetMapping("/getPostDetails")
+    @GetMapping("/postDetails")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
@@ -102,7 +118,7 @@ public class PostController extends BaseController<Post,Post> {
     }
 
     @ApiOperation(value = "获取岗位员工信息")
-    @GetMapping("/getPostStaffs")
+    @GetMapping("/postStaffs")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),

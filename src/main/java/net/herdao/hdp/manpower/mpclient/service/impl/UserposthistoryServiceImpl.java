@@ -42,39 +42,16 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMapper, Userposthistory> implements UserposthistoryService {
-    private RemoteUserService remoteUserService;
 
     @Override
-    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode,String staffId) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page, orgId, staffName, staffCode,staffId);
+    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String searchText) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page, searchText);
         return pageResult;
     }
 
     @Override
-    public Boolean saveHistory(Userposthistory entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setCreatorCode(userId.toString());
-
-        entity.setCreatedTime(new Date());
-        boolean status = super.save(entity);
-        return status;
-    }
-
-    @Override
-    public Boolean updateHistory(Userposthistory entity) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        entity.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        entity.setModifiedTime(new Date());
-        boolean status = super.updateById(entity);
-        return status;
-    }
-
-    @Override
-    public List<UserpostDTO> findUserPostHistory(String orgId, String staffName, String staffCode,String staffId) {
-        List<UserpostDTO> list = this.baseMapper.findUserPostHistory(orgId, staffName, staffCode,staffId);
-        return list;
+    public List<UserpostDTO> findUserPostHistory(String searchText) {
+        List<UserpostDTO> pageResult = this.baseMapper.findUserPostHistory(searchText);
+        return pageResult;
     }
 }
