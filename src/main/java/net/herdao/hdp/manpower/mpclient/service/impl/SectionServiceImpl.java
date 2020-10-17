@@ -30,17 +30,17 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
         return baseMapper.sectionList(  groupId);
     }
 
+    @Override
     public IPage<Section> page(Page<Section> page, String searchTxt) {
         if (StringUtils.isBlank(searchTxt)) searchTxt = "";
         return baseMapper.query(page, searchTxt);
     }
 
     @Override
-    public boolean saveOrUpdate(Section section) {
+    public void saveVerify(Section section) {
         if (baseMapper.chkDuplicateSectionCode(section))
             throw new RuntimeException("板块编码重复了");
         if (baseMapper.chkDuplicateSectionName(section))
             throw new RuntimeException("板块名称重复了");
-        return super.saveOrUpdate(section);
     }
 }

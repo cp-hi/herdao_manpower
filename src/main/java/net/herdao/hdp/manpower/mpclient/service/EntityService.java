@@ -1,19 +1,24 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiModelProperty;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
 
 /**
  * 实体操作的基础Service
+ *
+ * @param <T>
  * @author ljan
  * @Date
- * @param <T>
  */
 public interface EntityService<T> extends IService<T> {
 
@@ -30,23 +35,39 @@ public interface EntityService<T> extends IService<T> {
 
     /**
      * 逻辑删除实体并自动添加日志
-     * @param id
-     * @return
-     */
-    @OperationEntity(clazz = Class.class)
-    default boolean deleteEntity(Serializable id){
-        return this.removeById(id);
-    }
-
-    /**
      *
      * @param id
      * @return
      */
     @OperationEntity(clazz = Class.class)
-    default NotImplementedException stopEntity(Serializable id, boolean stop){
-        //TODO 停用实体
-        return new NotImplementedException();
+    default boolean delEntity(Serializable id) {
+        return this.removeById(id);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    @OperationEntity(operation = "", clazz = Class.class)
+    default boolean stopEntity(Serializable id, boolean isStop) throws NoSuchFieldException, IllegalAccessException {
+        // 停用实体
+        T t = this.getById(id);
+        Field stop = t.getClass().getDeclaredField("stop");
+        Field modifierId = t.getClass().getDeclaredField("modifierId");
+        Field modifierName = t.getClass().getDeclaredField("modifierName");
+        Field modifiedTime = t.getClass().getDeclaredField("modifiedTime");
+
+        stop.setAccessible(true);
+        modifierId.setAccessible(true);
+        modifierName.setAccessible(true);
+        modifiedTime.setAccessible(true);
+
+        //TODO 获取用户并保存，在切面中实现
+        stop.set(t, isStop);
+        modifierId.set(t, Long.valueOf(1));
+        modifierName.set(t, "admin");
+        modifiedTime.set(t, new Date());
+        return this.updateById(t);
     }
 
     /**
