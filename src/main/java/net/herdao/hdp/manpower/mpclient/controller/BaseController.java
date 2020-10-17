@@ -102,7 +102,6 @@ public class BaseController<T> {
             @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
     })
     public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-//        Class<D> clazz = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         ImportExcelListener listener = null;
         InputStream inputStream = null;
         try {

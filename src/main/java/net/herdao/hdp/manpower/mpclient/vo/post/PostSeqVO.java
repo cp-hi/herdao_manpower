@@ -9,4 +9,6 @@ package net.herdao.hdp.manpower.mpclient.vo.post;
  * @Version 1.0
  */
 public class PostSeqVO {
+
+
 }
