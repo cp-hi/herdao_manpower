@@ -181,7 +181,7 @@ public class StaffeducationController {
             @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
     public R importStaffEdu(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(staffeducationService, importType);
+        ImportExcelListener listener = new ImportExcelListener(staffeducationService,Staffeducation.class, importType);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, StaffeducationListDTO.class, listener).sheet().doRead();

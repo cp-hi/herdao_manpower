@@ -33,7 +33,7 @@
 
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
-        <association property="postSeqDTO" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
+        <association property="postSeqDTO" column="post_seq_id" select="getPostSeq" javaType="postSeqDTO"/>
     </resultMap>
 
     <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">

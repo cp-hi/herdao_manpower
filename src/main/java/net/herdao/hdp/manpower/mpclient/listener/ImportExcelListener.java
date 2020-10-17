@@ -52,10 +52,23 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
         this(service, clazz, 50, 0);
     }
 
+    /**
+     *
+     * @param service 服务类
+     * @param clazz 要保存的实体类
+     * @param importType 导入类型 0: 新增 1: 保存
+     */
     public ImportExcelListener(EntityService<T> service, Class clazz, Integer importType) {
         this(service, clazz, 50, importType);
     }
 
+    /**
+     *
+     * @param service
+     * @param clazz
+     * @param batchCount 批量导入条数
+     * @param importType
+     */
     public ImportExcelListener(EntityService<T> service, Class clazz, Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.entityService = service;
