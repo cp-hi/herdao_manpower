@@ -442,45 +442,49 @@
                 t.charge_org,
                 t.staff,
                 t.emp_in_service,
-                CONCAT(t.create_user_name,' 于 ',t.CREATED_TIME ,'创建') create_desc,
-                CONCAT(t.update_user_name,' 于 ',t.update_user_name ,'更新') update_desc
+                t.create_desc,
+                t.update_desc
         from
         (
-        SELECT
-        org.id,
-        org.ORG_NAME,
-        org.ORG_CODE,
-        ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
-        ( SELECT u.USER_NAME FROM mp_user u WHERE u.ID = org.org_charge_work_no ) org_charge_name,
-        ( SELECT p.POST_NAME FROM mp_post p WHERE p.ID = org.charge_org ) charge_org,
-        0  staff ,
-        (
-        SELECT
-        sum( CASE WHEN s.JOB_TYPE = '全职' AND s.STAFF_SCOPE = '在职人员' THEN 1 ELSE 0 END )
+	        SELECT
+	        org.id,
+	        org.ORG_NAME,
+	        org.ORG_CODE,
+	        ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
+	        ( SELECT u.USER_NAME FROM mp_user u WHERE u.ID = org.org_charge_work_no ) org_charge_name,
+	        ( SELECT p.POST_NAME FROM mp_post p WHERE p.ID = org.charge_org ) charge_org,
+	        0  staff ,
+	        ( SELECT
+		        sum( CASE WHEN s.JOB_TYPE = '全职' AND s.STAFF_SCOPE = '在职人员' THEN 1 ELSE 0 END )
+		      FROM
+		        mp_userpost u ,mp_staff s
+		      WHERE u.ORG_DEPT_ID = org.ID
+				        AND u.MAIN_POST = 1
+				        AND u.USER_ID = s.USER_ID
+	        ) emp_in_service,
+	        CONCAT( ( SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.CREATOR_ID ), ' 于 ', org.CREATED_TIME ,'创建') create_desc,
+	        CONCAT( ( SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.MODIFIER_ID ),' 于 ', org.MODIFIED_TIME ,'更新') update_desc
         FROM
-        mp_userpost u ,mp_staff s
-        where u.ORG_DEPT_ID = org.ID
-        AND u.MAIN_POST = 1
-        AND u.USER_ID = s.USER_ID
-        ) emp_in_service,
-        (
-        SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.CREATOR_ID
-        ) create_user_name,
-        (
-        SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.MODIFIER_ID
-        ) update_user_name,
-        org.CREATED_TIME,
-        org.MODIFIED_TIME
-        FROM
-        mp_organization org
-        WHERE 1=1
-            <if test="orgCode != null">
+        	mp_organization org
+        <where>
+         	<if test="orgCode != null">
                 AND  org.ORG_CODE LIKE concat(#{orgCode},'%')
             </if>
             <if test="treeLevel != null">
                 AND  org.org_tree_level  &lt;= #{treeLevel}
             </if>
-        ) t
+            <if test="stop != null and stop != 3">
+            	AND org.is_stop = #{stop}
+            </if>
+        </where>
+           
+        ) t 
+        
+        <where>
+        	<if test="searchText != null and searchText != 3">
+        		AND CONCAT(t.org_name, t.org_charge_name, IFNULL(t.create_desc,''), IFNULL(t.update_desc,'')) LIKE CONCAT('%',#{searchText},'%')
+        	</if>
+        </where>
 
     </select>
 
