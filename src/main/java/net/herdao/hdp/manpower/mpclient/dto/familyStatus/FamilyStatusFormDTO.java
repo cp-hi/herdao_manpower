@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "家庭情况新增Dto")
-public class FamilyStatusFormDto {
+public class FamilyStatusFormDTO {
     /**
      * 家庭成员姓名
      */

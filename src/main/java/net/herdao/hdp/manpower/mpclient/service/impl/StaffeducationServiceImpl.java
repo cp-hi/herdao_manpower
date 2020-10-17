@@ -11,21 +11,15 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffeducationMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -90,7 +84,7 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
 
         //编辑校检
         /*if (type == 1){
-            checkUpdate((FamilyStatusListDto) familystatus);
+            checkUpdate((FamilyStatusListDTO) familystatus);
         }*/
     }
 
