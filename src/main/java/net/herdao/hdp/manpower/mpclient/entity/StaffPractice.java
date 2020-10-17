@@ -166,7 +166,7 @@ private static final long serialVersionUID = 1L;
      * 人员外键
     */
     @ApiModelProperty(value="人员外键")
-    private String staffId;
+    private Long staffId;
     /**
      * 预留字段1
     */

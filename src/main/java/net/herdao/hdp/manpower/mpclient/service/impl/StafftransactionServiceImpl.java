@@ -52,7 +52,7 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     public Boolean saveTrans(Stafftransaction stafftransaction) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         Integer userId = userInfo.getSysUser().getUserId().intValue();
-        stafftransaction.setCreatorCode(userId.toString());
+        stafftransaction.setCreatedCode(userId.toString());
         LocalDateTime now = LocalDateTime.now();
         stafftransaction.setCreatedTime(now);
         boolean status = super.save(stafftransaction);
@@ -63,7 +63,7 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     public Boolean updateTrans(Stafftransaction stafftransaction) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         Integer userId = userInfo.getSysUser().getUserId().intValue();
-        stafftransaction.setModifierCode(userId.toString());
+        stafftransaction.setModifiedCode(userId.toString());
         LocalDateTime now = LocalDateTime.now();
         stafftransaction.setModifiedTime(now);
         boolean status = super.updateById(stafftransaction);
@@ -73,6 +73,12 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     @Override
     public List<Stafftransaction> findStaffTrans(String orgId, String staffName, String staffCode) {
         List<Stafftransaction> list = this.baseMapper.findStaffTrans(orgId, staffName, staffCode);
+        return list;
+    }
+    
+    @Override
+    public List<Stafftransaction> findStaffTransByUserDetail(String orgId, String staffName, Long staffid) {
+        List<Stafftransaction> list = this.baseMapper.findStaffTransByUserDetail(orgId, staffName, staffid);
         return list;
     }
 }
