@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -89,10 +89,10 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
     })
     public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostDetailDTO> data = entityService.getPostDetails(postId, operation, size);
+        List<PostDetailVO> data = entityService.getPostDetails(postId, operation, size);
         if ("download".equals(operation)) {
             try {
-                ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailDTO.class, data);
+                ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailVO.class, data);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -109,10 +109,10 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
     })
     public R getPostStaffs(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostStaffDTO> data = entityService.getPostStaffs(postId, operation, size);
+        List<PostStaffVO> data = entityService.getPostStaffs(postId, operation, size);
         if ("download".equals(operation)) {
             try {
-                ExcelUtils.export2Web(response, "岗位员工信息细表", "岗位员工信息细表", PostStaffDTO.class, data);
+                ExcelUtils.export2Web(response, "岗位员工信息细表", "岗位员工信息细表", PostStaffVO.class, data);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
