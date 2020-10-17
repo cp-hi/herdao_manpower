@@ -24,7 +24,6 @@ import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import net.herdao.hdpbase.template.entity.Template;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
