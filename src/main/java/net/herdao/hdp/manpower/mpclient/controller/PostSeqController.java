@@ -47,7 +47,7 @@ public class PostSeqController extends BaseController<PostSeq, PostSeq> {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(Page<PostSeqDTO> page, String searchTxt) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         IPage p = postSeqService.page(page, searchTxt);
-        List<PostSeqVO> vos = DtoConverter.convert(p.getRecords(), PostSeqVO.class);
+        List<PostSeqVO> vos = DtoConverter.dto2vo(p.getRecords(), PostSeqVO.class);
         p.setRecords(vos);
         return R.ok(p);
     }

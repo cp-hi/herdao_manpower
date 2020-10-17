@@ -9,7 +9,7 @@ import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostListVO;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
@@ -55,8 +55,8 @@ public class PostController extends BaseController<Post, Post> {
     public R<IPage<PostDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = entityService.page(page, post);
         List<PostDTO> records = p.getRecords();
-//        PostVO postVO = DtoConverter.convert(p.getRecords().get(0), PostVO.class);
-        List<PostVO> vos = DtoConverter.convert(p.getRecords(), PostVO.class);
+//        PostVO postVO = DtoConverter.dto2vo(p.getRecords().get(0), PostVO.class);
+        List<PostListVO> vos = DtoConverter.dto2vo(p.getRecords(), PostListVO.class);
         p.setRecords(vos);
         return R.ok(p);
     }

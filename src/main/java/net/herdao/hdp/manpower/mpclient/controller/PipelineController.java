@@ -44,7 +44,7 @@ public class PipelineController extends BaseController<Pipeline, Pipeline> {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(Page<Pipeline> page, String searchTxt) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         IPage p = pipelineService.page(page, searchTxt);
-        List<PipelineVO> vos = DtoConverter.convert(p.getRecords(), PipelineVO.class);
+        List<PipelineVO> vos = DtoConverter.dto2vo(p.getRecords(), PipelineVO.class);
         p.setRecords(vos);
         return R.ok(p);
     }

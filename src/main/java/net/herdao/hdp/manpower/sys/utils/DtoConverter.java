@@ -7,6 +7,7 @@ import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.service.SysDictService;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @ClassName DtoConverter
- * @Description DtoConverter
+ * @Description DTO VO ENTITY之间的转换类
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/10/16 8:31
@@ -35,11 +34,11 @@ public class DtoConverter {
     private static SysDictItemService sysDictItemService;
 
     @Autowired
-    public void setSysDictItemService(SysDictItemService dictItemService){
+    public void setSysDictItemService(SysDictItemService dictItemService) {
         DtoConverter.sysDictItemService = dictItemService;
     }
 
-    public static <T> T convert(Object source, Class clzz)
+    public static <T> T dto2vo(Object source, Class clzz)
             throws IllegalAccessException, InstantiationException,
             ClassNotFoundException, NoSuchFieldException {
 
@@ -78,8 +77,8 @@ public class DtoConverter {
                 Object val = currObj.get(source);
                 SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
                         Wrappers.<SysDictItem>query().lambda()
-                        .eq(SysDictItem::getType, dictInfo[0])
-                        .eq(SysDictItem::getValue, (String) val));
+                                .eq(SysDictItem::getType, dictInfo[0])
+                                .eq(SysDictItem::getValue, (String) val));
 
                 if (null != dictItem) field.set(t, dictItem.getLabel());
 
@@ -90,15 +89,22 @@ public class DtoConverter {
         return (T) t;
     }
 
-    public static <T> List<T> convert(List source, Class clzz)
+    public static <T> List<T> dto2vo(List source, Class clzz)
             throws ClassNotFoundException, NoSuchFieldException,
             InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         for (Object o : source) {
-            T t = convert(o, clzz);
+            T t = dto2vo(o, clzz);
             list.add(t);
         }
         return list;
     }
 
+    public static <T> T vo2dto(Object source, Class clzz) {
+        throw new NotImplementedException("未实现此方法");
+    }
+
+    public static <T> List<T> vo2dto(List source, Class clzz) {
+        throw new NotImplementedException("未实现此方法");
+    }
 }

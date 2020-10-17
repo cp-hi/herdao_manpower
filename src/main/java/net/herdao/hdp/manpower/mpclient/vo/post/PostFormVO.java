@@ -2,22 +2,19 @@ package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 import java.util.Date;
 
-
 /**
- * @ClassName PostVO
- * @Description PostVO
+ * @ClassName PostFormVO
+ * @Description PostFormVO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/15 20:06
+ * @Date 2020/10/17 14:40
  * @Version 1.0
  */
-@Data
-public class PostVO {
+public class PostFormVO {
 
     @ApiModelProperty("id")
     private Long id;
@@ -86,5 +83,4 @@ public class PostVO {
     @ApiModelProperty(value = "修改时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date modifiedTime;
-
 }
