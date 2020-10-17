@@ -19,7 +19,12 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -52,4 +57,12 @@ public interface WorkexperienceService extends IService<Workexperience> {
      * @return
      */
     boolean updateWork(@RequestBody Workexperience workexperience);
+    
+    /**
+     * author lift
+     * 获取员工工作经历
+     * @param workexperience
+     * @return
+     */
+    List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid);
 }

@@ -111,7 +111,8 @@
                 pi.PIPELINE_NAME pipelineName,
                 p.POST_NAME postName,
                 jl.JOB_LEVEL_NAME jobLevelName,
-                di.label customPost
+                di.label customPost,
+                pt.label officePostTypeName
         FROM  mp_userpost u
                 INNER JOIN mp_staff st ON st.user_id = u.USER_ID AND u.MAIN_POST=1
                 LEFT JOIN mp_organization a ON a.id = u.ORG_DEPT_ID
@@ -120,6 +121,7 @@
                 LEFT JOIN mp_pipeline pi on pi.id=p.PIPELINE_ID
                 LEFT JOIN sys_dict_item  di on di.id= u.office_post_type
                 LEFT JOIN mp_job_level jl on jl.JOB_LEVEL_CODE=P.JOB_LEVEL_ID1
+				LEFT JOIN sys_dict_item pt on pt.type='OFFICE_POST_TYPE' and pt.value=u.OFFICE_POST_TYPE
          WHERE 1=1
         <if test="staffId != null">
             and st.id = #{staffId}

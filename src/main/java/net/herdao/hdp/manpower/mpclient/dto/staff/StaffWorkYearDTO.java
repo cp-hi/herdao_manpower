@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@ApiModel(value = "工作经历")
+@ApiModel(value = "工作年限")
 public class StaffWorkYearDTO {
 	/**
      * 参加工作日期

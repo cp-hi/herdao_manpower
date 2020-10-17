@@ -23,12 +23,14 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 员工工作经历
@@ -67,5 +69,11 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         workexperience.setModifiedTime(now);
         boolean status = super.updateById(workexperience);
         return status;
+    }
+    
+    @Override
+    public List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid){
+    	List<WorkexperienceDTO> workexperienceDTOList = this.baseMapper.findWorkexperienceDTO(staffid);
+    	return workexperienceDTOList;
     }
 }

@@ -70,7 +70,7 @@
                   f.BACKGROUND_CHECKS,
                   f.modifier_name,
                   f.MODIFIED_TIME,
-                  f.create_name,
+                  f.CREATOR_NAME,
                   f.CREATED_TIME
             FROM
             mp_workexperience f
@@ -85,6 +85,34 @@
             </if>
             <if test="staffCode != null">
                   or s.staff_code LIKE concat(#{staffCode},'%')
+            </if>
+
+      </select>
+      
+      
+      <!-- 工作情况-员工工作经历-->
+      <select id="findWorkexperienceDTO" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO">
+          SELECT  f.id,
+                  f.BEGIN_DATE,
+                  f.END_DATE,
+                  f.COMPANY_NAME,
+                  f.ORG_NAME,
+                  f.POST,
+                  f.MAIN_PERFORMANCE,
+                  f.ROLE,
+                  f.SUBORDINATES,
+                  f.modifier_name,
+                  f.MODIFIED_TIME,
+                  f.FIELD1,
+                  f.FIELD2,
+				  f.FIELD3,
+				  f.FIELD4,
+				  f.FIELD5
+            FROM
+            mp_workexperience f
+            where 1=1
+            <if test="staffid != null">
+            and f.STAFF_ID = #{staffid}
             </if>
 
       </select>

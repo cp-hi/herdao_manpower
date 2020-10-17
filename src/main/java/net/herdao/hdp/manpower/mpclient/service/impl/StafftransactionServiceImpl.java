@@ -23,6 +23,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.mapper.StafftransactionMapper;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
@@ -79,6 +80,12 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     @Override
     public List<Stafftransaction> findStaffTransByUserDetail(String orgId, String staffName, Long staffid) {
         List<Stafftransaction> list = this.baseMapper.findStaffTransByUserDetail(orgId, staffName, staffid);
+        return list;
+    }
+    
+    @Override
+    public List<StafftransactionDTO> findStafftransactionDto(Long staffid){
+    	List<StafftransactionDTO> list = this.baseMapper.findStafftransactionDto(staffid);
         return list;
     }
 }

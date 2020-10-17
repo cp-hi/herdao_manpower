@@ -19,6 +19,8 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -60,5 +62,13 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
      * @return
      */
     List<Stafftransaction> findStaffTransByUserDetail(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffid") Long staffid);
+
+    /**
+     * @author lift
+     * 员工详情-员工异动情况
+     * @param staffid
+     * @return
+     */
+    List<StafftransactionDTO> findStafftransactionDto(Long staffid);
 
 }

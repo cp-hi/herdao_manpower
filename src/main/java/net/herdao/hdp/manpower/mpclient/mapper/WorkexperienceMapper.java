@@ -19,7 +19,12 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,4 +60,12 @@ public interface WorkexperienceMapper extends BaseMapper<Workexperience> {
      * @return
      */
     boolean updateWork(@RequestBody Workexperience workexperience);
+    
+    /**
+     * author
+     * 获取员工工作经历
+     * @param staffid
+     * @return
+     */
+    List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid);
 }

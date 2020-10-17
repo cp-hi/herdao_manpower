@@ -51,6 +51,4 @@ public interface StafftrainService extends EntityService<Stafftrain> {
     List<StafftrainDTO> findStaffTrain(String searchText);
 
 
-
-
 }
