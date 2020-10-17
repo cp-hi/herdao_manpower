@@ -105,7 +105,7 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="排序")
     private String sortNo;
     /**
-     * 是否停用
+     * 是否停用(0 停用 ，1启用（默认），不传或者传3 查询全部)
      */
     @ApiModelProperty(value="是否停用")
     private Integer isStop;

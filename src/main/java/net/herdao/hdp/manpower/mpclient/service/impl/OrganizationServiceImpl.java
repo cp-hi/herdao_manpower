@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
@@ -23,6 +24,8 @@ import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdpbase.template.entity.Template;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -379,14 +382,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public Page<Organization> findOrgPage(Page<Organization> page, String orgCode,Long treeLevel) {
-        if (treeLevel != null){
-            treeLevel++;
-        }else{
-            treeLevel=1L;
-        }
-        Page<Organization> result = this.baseMapper.findOrgPage(page, orgCode,treeLevel);
-        return result;
+    public Page<Organization> findOrgPage(Page<Organization> page, String orgCode, Integer stop, String searchText) {
+        Organization organization = this.getOne(new QueryWrapper<Organization>().lambda()
+        								.eq(Organization::getOrgCode, orgCode));
+        return this.baseMapper.findOrgPage(page, orgCode, organization.getOrgTreeLevel() + 1, stop, searchText);
     }
 
 
@@ -398,8 +397,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      */
     @SysLog("编辑更新组织")
     @Transactional(rollbackFor = Exception.class)
-    boolean updateOrg(@RequestBody Organization organization) {
-        boolean status =false;
+    Organization updateOrg(@RequestBody Organization organization) {
         try {
             Organization oldOrg = super.getById(organization.getId());
 
@@ -460,14 +458,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 record.setCurOrgId(record.getId());
                 orgModifyRecordService.save(record);
 
-                status =super.updateById(organization);
+                super.updateById(organization);
             }
         }catch (Exception ex){
-            status=false;
             log.error("编辑更新组织组织失败",ex);
         }
 
-        return status;
+        return organization;
     }
 
     @Override
@@ -480,21 +477,15 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class)
     @Transactional
-    public boolean saveOrUpdate(@RequestBody Organization organization) {
-        boolean status = false;
-        if (null != organization){
-            //更新
-            if ( null != organization.getId()){
-                status = updateOrg(organization);
-            }
-
-            //新增
-            if ( null == organization.getId()){
-                status = saveOrg(organization);
-            }
+    public Organization organizationSave(Organization organization) {
+    	//更新
+        if (null != organization.getId()){
+            updateOrg(organization);
+        }else {
+        	//新增
+        	saveOrg(organization);
         }
-
-        return status;
+        return organization;
     }
 
     /**
@@ -502,45 +493,40 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @param organization
      * @return R
      */
-    private boolean saveOrg(@RequestBody Organization organization) {
-        Boolean status = false;
-        try {
-            if (null != organization) {
-                //查询岗位负责人姓名 mp_post表
-                Post post = postService.getById(organization.getChargeOrg());
-                if (null != post) {
-                    organization.setPostName(post.getPostName());
-                }
+	private Organization saveOrg(Organization organization) {
+		// 查询岗位负责人姓名 mp_post表
+		String chargeOrg = organization.getChargeOrg();
 
-                //查询组织负责人
-                User user = userService.getById(organization.getOrgChargeWorkNo());
-                if (null != user) {
-                    organization.setUserName(user.getUserName());
-                }
+		if (StrUtil.isNotBlank(chargeOrg)) {
 
-                QueryWrapper<Organization> wrapper = Wrappers.query();
-                wrapper.eq("id",organization.getParentId());
-                //获取父组织
-                Organization parentOrg = super.getOne(wrapper);
-                if (null != parentOrg){
-                    if (null != parentOrg.getOrgTreeLevel()){
-                        //当前新增组织的组织树层级数+1
-                        organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel()+1);
-                    }
+			Post post = postService.getById(chargeOrg);
+			if (null != post) {
+				organization.setPostName(post.getPostName());
+			}
 
-                    //生成组织编码orgCode
-                    createOrgCode(organization, parentOrg);
-                    //生成组织全称 orgFullName
-                    createOrgFullName(organization, parentOrg);
-                }
-                status = super.saveOrUpdate(organization);
-            }
-          }catch (Exception ex){
-            log.error("编辑更新组织组织失败",ex);
-        }
+			// 查询组织负责人
+			User user = userService.getOne(new QueryWrapper<User>().lambda().eq(User::getLoginCode, organization.getOrgChargeWorkNo()));
+			if (null != user) {
+				organization.setUserName(user.getUserName());
+			}
 
-        return status;
-    }
+			Long parentId = organization.getParentId();
+			if (parentId != null) {
+				// 获取父组织
+				Organization parentOrg = super.getById(parentId);
+				// 当前新增组织的组织树层级数 + 1
+				organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel() + 1);
+				// 生成组织编码orgCode
+				createOrgCode(organization, parentOrg);
+				// 生成组织全称 orgFullName
+				createOrgFullName(organization, parentOrg);
+			} else {
+
+			}
+		}
+		super.saveOrUpdate(organization);
+		return organization;
+	}
 
     /**
      * 生成组织编码 orgCode
