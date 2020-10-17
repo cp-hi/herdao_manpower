@@ -23,6 +23,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.mapper.StafftransactionMapper;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
@@ -40,45 +41,15 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMapper, Stafftransaction> implements StafftransactionService {
-    private RemoteUserService remoteUserService;
-
     @Override
-    public Page<Stafftransaction> findStaffTransPage(Page<Stafftransaction> page, String orgId, String staffName, String staffCode) {
-        Page<Stafftransaction> pageResult = this.baseMapper.findStaffTransPage(page, orgId, staffName, staffCode);
+    public Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, String searchText) {
+        Page<StafftransDTO> pageResult = this.baseMapper.findStaffTransPage(page, searchText);
         return pageResult;
     }
 
     @Override
-    public Boolean saveTrans(Stafftransaction stafftransaction) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        stafftransaction.setCreatedCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        stafftransaction.setCreatedTime(now);
-        boolean status = super.save(stafftransaction);
-        return status;
-    }
-
-    @Override
-    public Boolean updateTrans(Stafftransaction stafftransaction) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        stafftransaction.setModifiedCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        stafftransaction.setModifiedTime(now);
-        boolean status = super.updateById(stafftransaction);
-        return status;
-    }
-
-    @Override
-    public List<Stafftransaction> findStaffTrans(String orgId, String staffName, String staffCode) {
-        List<Stafftransaction> list = this.baseMapper.findStaffTrans(orgId, staffName, staffCode);
-        return list;
-    }
-    
-    @Override
-    public List<Stafftransaction> findStaffTransByUserDetail(String orgId, String staffName, Long staffid) {
-        List<Stafftransaction> list = this.baseMapper.findStaffTransByUserDetail(orgId, staffName, staffid);
+    public List<StafftransDTO> findStaffTrans(String searchText) {
+        List<StafftransDTO> list = this.baseMapper.findStaffTrans(searchText);
         return list;
     }
 }

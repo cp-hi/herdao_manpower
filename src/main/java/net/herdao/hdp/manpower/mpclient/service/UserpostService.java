@@ -55,7 +55,7 @@ public interface UserpostService extends EntityService<Userpost> {
 
     /**
      * @author lift
-     * 员工详情-工作情况-目前任职 
+     * 员工详情-工作情况-目前任职
      * @param staffid
      * @return
      */

@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,21 +37,17 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
     /**
      * 员工异动情况分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<Stafftransaction> findStaffTransPage(Page<Stafftransaction> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, @Param("searchText") String searchText);
 
     /**
      * 员工异动情况
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<Stafftransaction> findStaffTrans(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<StafftransDTO> findStaffTrans(@Param("searchText") String searchText);
 
     /**
      * 员工详情-员工异动情况

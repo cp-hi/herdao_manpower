@@ -23,12 +23,10 @@
             <result property="outCenterName" column="OUT_CENTER_NAME"/>
             <result property="comeCenterName" column="COME_CENTER_NAME"/>
             <result property="newest" column="NEWEST"/>
-            <result property="createdCode" column="CREATED_CODE"/>
+            <result property="creatorCode" column="creator_code"/>
             <result property="createdTime" column="CREATED_TIME"/>
-            <result property="createdName" column="CREATED_NAME"/>
-            <result property="modifiedCode" column="MODIFIED_CODE"/>
+            <result property="modifierCode" column="modifier_code"/>
             <result property="modifiedTime" column="MODIFIED_TIME"/>
-            <result property="modifiedName" column="MODIFIED_NAME"/>
             <result property="orgDeptOid" column="ORG_DEPT_OID"/>
             <result property="postOid" column="POST_OID"/>
             <result property="staffOid" column="STAFF_OID"/>
@@ -45,80 +43,57 @@
       </resultMap>
 
       <!-- 员工异动情况分页-->
-      <select id="findStaffTransPage" resultMap="stafftransactionMap">
-            SELECT s.staff_name,
-                   s.staff_code,
-                   f.TRAN_TIME,
-                   f.TRAN_TYPE,
-                   f.TRAN_REASON,
-                   f.OUT_UNIT_NAME,
-                   f.COME_UNIT_NAME,
-                   ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.CREATOR_CODE ) create_name,
-                   f.CREATED_TIME
-            FROM   mp_stafftransaction f
-            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
-            where 1=1
-            <if test="orgId != null">
-                  and u.ORG_DEPT_ID = #{orgId}
-            </if>
-            <if test="staffName != null">
-                  or s.staff_name LIKE concat(#{staffName},'%')
-            </if>
-            <if test="staffCode != null">
-                  or s.staff_code LIKE concat(#{staffCode},'%')
-            </if>
-       </select>
-
-
-      <!-- 员工异动情况-->
-      <select id="findStaffTrans" resultMap="stafftransactionMap">            SELECT s.staff_name,
+      <select id="findStaffTransPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO">
+            select * from (
+            SELECT f.id,
+            s.staff_name,
             s.staff_code,
             f.TRAN_TIME,
             f.TRAN_TYPE,
             f.TRAN_REASON,
             f.OUT_UNIT_NAME,
             f.COME_UNIT_NAME,
-            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.CREATOR_CODE ) create_name,
-            f.CREATED_TIME
+            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.modifier_code ) MODIFIEd_NAME,
+            f.MODIFIED_TIME
             FROM   mp_stafftransaction f
             LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
             LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
             where 1=1
-            <if test="orgId != null">
-                  and u.ORG_DEPT_ID = #{orgId}
+            )t where 1=1
+            <if test="searchText != null">
+                  and CONCAT(
+                  t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
+                  t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
+                  t.create_name,t.CREATED_TIME
+                  ) LIKE concat('%',#{searchText},'%')
             </if>
-            <if test="staffName != null">
-                  or s.staff_name LIKE concat(#{staffName},'%')
-            </if>
-            <if test="staffCode != null">
-                  or s.staff_code LIKE concat(#{staffCode},'%')
-            </if>
-      </select>
-      
-      
-      <!-- 员工详情-员工异动情况-->
-      <select id="findStaffTransByUserDetail" resultMap="stafftransactionMap">            
-      SELECT 
+       </select>
+
+      <!-- 员工异动情况-->
+      <select id="findStaffTrans" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO">
+            select * from (
+            SELECT f.id,
+            s.staff_name,
+            s.staff_code,
             f.TRAN_TIME,
             f.TRAN_TYPE,
             f.TRAN_REASON,
             f.OUT_UNIT_NAME,
             f.COME_UNIT_NAME,
-            f.CREATED_NAME,
-            f.CREATED_TIME
+            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.modifier_code ) MODIFIEd_NAME,
+            f.MODIFIED_TIME
             FROM   mp_stafftransaction f
             LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
             LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
-            where 1=1 and f.DEL_FLAG=0
-            <if test="orgId != null">
-                  and u.ORG_DEPT_ID = #{orgId}
-            </if>
-            <if test="staffName != null">
-                  or s.staff_name LIKE concat(#{staffName},'%')
-            </if>
-            <if test="staffid != null">
-                  or s.STAFF_ID = #{staffid}
+            where 1=1
+            )t where 1=1
+            <if test="searchText != null">
+                  and CONCAT(
+                  t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
+                  t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
+                  t.create_name,t.CREATED_TIME
+                  ) LIKE concat('%',#{searchText},'%')
             </if>
       </select>
+
 </mapper>
