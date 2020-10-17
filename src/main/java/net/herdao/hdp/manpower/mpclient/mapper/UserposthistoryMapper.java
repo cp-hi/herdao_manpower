@@ -1,19 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
 
 package net.herdao.hdp.manpower.mpclient.mapper;
 
@@ -37,20 +21,16 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
     /**
      * 历史任职情况分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode,@Param("staffId") String staffId);
+    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
 
     /**
      * 历史任职情况分页
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<UserpostDTO> findUserPostHistory(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode,@Param("staffId") String staffId);
+    List<UserpostDTO> findUserPostHistory(@Param("searchText") String searchText);
 
 }

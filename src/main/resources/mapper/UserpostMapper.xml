@@ -43,7 +43,7 @@
                       jl.JOB_LEVEL_NAME jobLevelName,
                       di.label customPost
                       FROM  mp_userpost u
-                      INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
+                      LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
                       LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
                       LEFT JOIN mp_post p ON p.ID = u.POST_ID
                       LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
@@ -77,7 +77,7 @@
         jl.JOB_LEVEL_NAME jobLevelName,
         di.label customPost
         FROM  mp_userpost u
-        INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
+        LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
         LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
         LEFT JOIN mp_post p ON p.ID = u.POST_ID
         LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID

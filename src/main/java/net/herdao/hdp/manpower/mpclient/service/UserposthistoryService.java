@@ -17,39 +17,21 @@ import java.util.List;
  * @author yangrr
  * @date 2020-09-25 17:24:25
  */
-public interface UserposthistoryService extends IService<Userposthistory> {
+public interface UserposthistoryService extends EntityService<Userposthistory> {
     /**
      * 历史任职情况分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String orgId, String staffName, String staffCode, String staffId);
-
-    /**
-     * 新增员工历史任职情况
-     * @param entity
-     * @return
-     */
-    Boolean saveHistory(Userposthistory entity);
-
-    /**
-     * 更新员工历史任职情况
-     * @param entity
-     * @return
-     */
-    Boolean updateHistory(Userposthistory entity);
+    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
 
     /**
      * 历史任职情况分页
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<UserpostDTO> findUserPostHistory(String orgId, String staffName, String staffCode, String staffId);
+    List<UserpostDTO> findUserPostHistory(@Param("searchText") String searchText);
 
 
 }

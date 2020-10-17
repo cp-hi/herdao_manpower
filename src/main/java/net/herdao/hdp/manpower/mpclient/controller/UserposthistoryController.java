@@ -10,10 +10,13 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
+import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,17 +29,20 @@ import java.util.List;
 
 /**
  * 员工岗位历史表
- *
  * @author yangrr
  * @date 2020-09-25 17:24:25
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/userposthistory" )
 @Api(value = "userposthistory", tags = "员工岗位历史表管理")
-public class UserposthistoryController {
+public class UserposthistoryController  extends BaseController<Userposthistory, Userposthistory> {
+    @Autowired
+    private  UserposthistoryService userposthistoryService;
 
-    private final  UserposthistoryService userposthistoryService;
+    @Autowired
+    public void setEntityService(UserposthistoryService userposthistoryService) {
+        super.entityService = userposthistoryService;
+    }
 
     /**
      * 分页查询
@@ -46,83 +52,27 @@ public class UserposthistoryController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_userposthistory_view')" )
-    public R getUserposthistoryPage(Page page, Userposthistory userposthistory) {
+    //@PreAuthorize("@pms.hasPermission('mpclient_userposthistory_view')" )
+    public R page(Page page, Userposthistory userposthistory) {
         return R.ok(userposthistoryService.page(page, Wrappers.query(userposthistory)));
-    }
-
-
-    /**
-     * 通过id查询员工岗位历史表
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_userposthistory_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(userposthistoryService.getById(id));
-    }
-
-    /**
-     * 新增员工岗位历史表
-     * @param userposthistory 员工岗位历史表
-     * @return R
-     */
-    @ApiOperation(value = "新增员工岗位历史表", notes = "新增员工岗位历史表")
-    @SysLog("新增员工岗位历史表" )
-    @PostMapping("/saveUserpostHis")
-//    @PreAuthorize("@pms.hasPermission('mpclient_userposthistory_add')" )
-    public R save(@RequestBody Userposthistory userposthistory) {
-        boolean status = userposthistoryService.saveHistory(userposthistory);
-        return R.ok(status);
-    }
-
-    /**
-     * 修改员工岗位历史表
-     * @param userposthistory 员工岗位历史表
-     * @return R
-     */
-    @ApiOperation(value = "修改员工岗位历史表", notes = "修改员工岗位历史表")
-    @SysLog("修改员工岗位历史表" )
-    @PutMapping("/updateHis")
-    //@PreAuthorize("@pms.hasPermission('mpclient_userposthistory_edit')" )
-    public R updateById(@RequestBody Userposthistory userposthistory) {
-        return R.ok(userposthistoryService.updateHistory(userposthistory));
-    }
-
-    /**
-     * 通过id删除员工岗位历史表
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除员工岗位历史表", notes = "通过id删除员工岗位历史表")
-    @SysLog("通过id删除员工岗位历史表" )
-    @DeleteMapping("/del/{id}" )
-    // @PreAuthorize("@pms.hasPermission('mpclient_userposthistory_del')" )
-    public R removeById(@PathVariable Long id) {
-        return R.ok(userposthistoryService.removeById(id));
     }
 
 
     /**
      * 历史职情况分页
      * @param page 分页对象
-     * @param orgId
+     * @param searchText 关键字搜索
      * @return
      */
     @ApiOperation(value = "历史职情况分页", notes = "历史职情况分页")
     @GetMapping("/findUserPostHistoryPage")
     @OperationEntity(operation = "历史职情况分页" ,clazz = Stafftransaction.class )
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号"),
-            @ApiImplicitParam(name="staffId",value="员工ID"),
-     })
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findUserPostHistoryPage(Page page, String orgId,String staffName, String staffCode,String staffId) {
-        Page pageResult = userposthistoryService.findUserPostHistoryPage(page, orgId, staffName, staffCode,staffId);
+    public R findUserPostHistoryPage(Page page, String searchText) {
+        Page pageResult = userposthistoryService.findUserPostHistoryPage(page, searchText);
         return R.ok(pageResult);
     }
 
@@ -135,14 +85,11 @@ public class UserposthistoryController {
     @SysLog("导出历史任职情况Excel" )
     @PostMapping("/exportStaffJobHis")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="staffName",value="员工姓名"),
-        @ApiImplicitParam(name="staffCode",value="员工工号"),
-        @ApiImplicitParam(name="staffId",value="员工ID")
+         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    public R exportStaffJobHis(HttpServletResponse response, String orgId, String staffName, String staffCode,String staffId) {
+    public R exportStaffJobHis(HttpServletResponse response, String searchText) {
         try {
-            List<UserpostDTO> list = userposthistoryService.findUserPostHistory(orgId, staffName, staffCode,staffId);
+            List<UserpostDTO> list = userposthistoryService.findUserPostHistory(searchText);
             ExcelUtils.export2Web(response, "历史任职情况", "历史任职情况", UserpostDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
