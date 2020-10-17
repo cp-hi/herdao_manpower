@@ -86,6 +86,13 @@ public interface EntityService<T> extends IService<T> {
     default void importVerify(T t, int type) {
     }
 
+    /**
+     * 导入校验
+     *
+     * @param t
+     */
+    default void importVerify(Object excelObj,T t, int type) {
+    }
 
     //TODO 添加操作日志
 

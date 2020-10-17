@@ -40,6 +40,7 @@ public class BaseController<T> {
 
     /**
      * 批量导入、修改所用的类
+     *
      * @return
      * @Author ljan
      */
@@ -57,7 +58,7 @@ public class BaseController<T> {
         return R.ok(operationLogService.findByEntity(objId, clazz.getName()));
     }
 
-//    @ApiResponses({
+    //    @ApiResponses({
 //            @ApiResponse()
 //    })
     @GetMapping("/{id}")
@@ -102,11 +103,12 @@ public class BaseController<T> {
             @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
     })
     public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         ImportExcelListener listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(entityService, importType);
+            listener = new ImportExcelListener(entityService, clazz, importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {

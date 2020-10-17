@@ -207,11 +207,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staff, educationLast);
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("info", info);
-		map.put("jobInfo", jobInfo);
-		map.put("infoOther", infoOther);
-		map.put("emergency", emergency);
-		map.put("educationLast", educationLast);
+		map.put("staffInfoDTO", info);
+		map.put("staffJobInfoDTO", jobInfo);
+		map.put("staffInfoOtherDTO", infoOther);
+		map.put("staffEmergencyDTO", emergency);
+		map.put("staffEducationLastDTO", educationLast);
 
 		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
 				.eq("STAFF_ID", staff.getId())
@@ -224,7 +224,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(familyList.get(i), familyDto);
 			familyDtoList.add(familyDto);
 		}
-		map.put("familyList", familyDtoList);
+		map.put("staffFamilyDTOList", familyDtoList);
 
 		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
 				.eq("STAFF_ID", staff.getId())
@@ -237,7 +237,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(eduList.get(i), eduDto);
 			eduDtoList.add(eduDto);
 		}
-		map.put("eduList", eduDtoList);
+		map.put("staffEducationDTOList", eduDtoList);
 		return map;
 	}
 
@@ -253,10 +253,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staff, welfare);
 		BeanUtils.copyProperties(staff, carrera);
 		Map<String, Object> map = new HashMap<>();
-		map.put("archive", archive);
-		map.put("educationLast", educationLast);
-		map.put("welfare", welfare);
-		map.put("carrera", carrera);
+		map.put("staffArchiveDTO", archive);
+		map.put("staffEducationLastDTO", educationLast);
+		map.put("staffWelfareDTO", welfare);
+		map.put("staffCarreraDTO", carrera);
 
 		List<Userposthistory> uphList = userposthistoryService.list(new QueryWrapper<Userposthistory>()
 				.eq("USER_ID", staff.getUserId())
@@ -269,7 +269,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(uphList.get(i), jobTravel);
 			uphDtoList.add(jobTravel);
 		}
-		map.put("uphDtoList", uphDtoList);
+		map.put("staffJobTravelDTOList", uphDtoList);
 
 		List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
 				.eq("STAFF_ID", staff.getId())
@@ -282,7 +282,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(expList.get(i), workExp);
 			expDtoList.add(workExp);
 		}
-		map.put("expDtoList", expDtoList);
+		map.put("staffWorkExpDTOList", expDtoList);
 
 		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
 				.eq("STAFF_ID", staff.getId())
@@ -295,7 +295,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(familyList.get(i), family);
 			familyDtoList.add(family);
 		}
-		map.put("familyDtoList", familyDtoList);
+		map.put("staffFamilyDTOList", familyDtoList);
 		return map;
 	}
 	
@@ -379,9 +379,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staff, fund);
 		BeanUtils.copyProperties(staff, salary);
 		Map<String, Object> map = new HashMap<>();
-		map.put("security", security);
-		map.put("fund", fund);
-		map.put("salary", salary);
+		map.put("staffSecurityDTO", security);
+		map.put("staffFundDTO", fund);
+		map.put("staffSalaryDTO", salary);
 
 		List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
 				.eq("SATFF_ID", staff.getId())
@@ -394,7 +394,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(contractList.get(i), contractDto);
 			contractDtoList.add(contractDto);
 		}
-		map.put("contractDtoList", contractDtoList);
+		map.put("staffcontractDTOList", contractDtoList);
 		return  map;
 	}
 }
