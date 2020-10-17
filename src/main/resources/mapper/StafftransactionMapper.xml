@@ -64,7 +64,7 @@
                   and CONCAT(
                   t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
                   t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
-                  t.create_name,t.CREATED_TIME
+                  t.MODIFIEd_NAME,t.MODIFIED_TIME
                   ) LIKE concat('%',#{searchText},'%')
             </if>
        </select>
@@ -91,7 +91,7 @@
                   and CONCAT(
                   t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
                   t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
-                  t.create_name,t.CREATED_TIME
+                  t.MODIFIEd_NAME,t.MODIFIED_TIME
                   ) LIKE concat('%',#{searchText},'%')
             </if>
       </select>
