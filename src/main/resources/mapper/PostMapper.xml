@@ -31,13 +31,13 @@
         <association property="jobLevel2" column="job_level_id2" javaType="jobLevel"
                      select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectById"/>
 
-        <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+        <association property="postSeqDTO" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
     </resultMap>
 
-    <resultMap id="postSeqMap" type="postSeq">
-        <association property="parent" column="parent_id" select="getPostSeqParent" javaType="postSeq"/>
+    <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
+        <association property="parent" column="parent_id" select="getPostSeqParent" javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
@@ -58,7 +58,8 @@
             AND pipeline_id = #{post.pipelineId}
         </if>
         <if test="post.jobLevelId1 != null">
-            AND (job_level_id1 = #{post.jobLevelId1} or job_level_id2 = #{post.jobLevelId1})
+            AND (job_level_id1 = #{post.jobLevelId1}
+            or job_level_id2 = #{post.jobLevelId1})
         </if>
     </select>
 

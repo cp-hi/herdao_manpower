@@ -44,37 +44,38 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void importVerify(JobLevel jobLevel, int type) {
+    public void importVerify(Object excelObj, JobLevel jobLevel, int type) {
         boolean add = (type == 0);
 
-        /*
         //TODO 添加校验方法
-        JobLevelImportVO dto = (JobLevelImportVO) jobLevel;
+        JobLevelImportVO excel = (JobLevelImportVO) excelObj;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
-                .eq("JOB_GRADE_NAME", dto.getJobGrade()));
+                .eq("JOB_GRADE_NAME", excel.getJobGrade()));
 
         if (null == jobGrade)
-            throw new RuntimeException("查不到此职等：" + dto.getJobGrade());
+            throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
 
-        JobLevel tmp = this.getOne(new QueryWrapper<JobLevel>()
-                .eq("JOB_LEVEL_CODE", dto.getJobLevelCode())
-                .eq("JOB_LEVEL_NAME", dto.getJobLevelName()));
+        List<JobLevel> tmp = this.baseMapper.selectList(new QueryWrapper<JobLevel>()
+                .eq("GROUP_ID", jobGrade.getGroupId())
+                .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
 
         //TODO 通过add区分新增修改的不同处理
 
         if (null != tmp) {
-            if (!tmp.getGroupId().equals(jobGrade.getGroupId()))
+            if (!tmp.get(0).getGroupId().equals(jobGrade.getGroupId()))
                 throw new RuntimeException("导入的职等中的集团与原先保存的集团不一致");
-            jobLevel.setId(tmp.getId());
+            jobLevel.setId(tmp.get(0).getId());
         }
+
+        if (null == jobGrade.getGroupId())
+            throw new RuntimeException("集团ID为空");
+
+        jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(jobGrade.getGroupId());
-        if (null == dto.getGroupId())
-            throw new RuntimeException("集团ID为空");
 
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(jobLevel);
-        */
     }
 }

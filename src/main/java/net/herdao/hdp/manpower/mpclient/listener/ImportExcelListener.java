@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,34 +34,47 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
 
     Integer importType = 0;
 
+    /**
+     * 要保存的实体类型
+     *
+     * @Author ljan
+     */
+    private Class entityClass;
+
     protected ImportExcelListener() {
     }
 
     public ImportExcelListener(EntityService<T> service) {
-        this(service, 50, 0);
+        this(service, null, 50, 0);
     }
 
-    public ImportExcelListener(EntityService<T> service, Integer importType) {
-        this(service, 50, importType);
+    public ImportExcelListener(EntityService<T> service, Class clazz) {
+        this(service, clazz, 50, 0);
     }
 
-    public ImportExcelListener(EntityService<T> service, Integer batchCount, Integer importType) {
+    public ImportExcelListener(EntityService<T> service, Class clazz, Integer importType) {
+        this(service, clazz, 50, importType);
+    }
+
+    public ImportExcelListener(EntityService<T> service, Class clazz, Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.entityService = service;
+        this.entityClass = clazz;
         this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
     }
 
     @Override
-    public void invoke(T t, AnalysisContext analysisContext) {
+    public void invoke(T excel, AnalysisContext analysisContext) {
         try {
-            entityService.importVerify(t, importType);
+            Class entity = Class.forName(this.entityClass.getName());
+            entityService.importVerify(entity, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
-            ((ExcelVO) t).setErrMsg(ex.getMessage());
+            ((ExcelVO) excel).setErrMsg(ex.getMessage());
         }
-        dataList.add(t);
+        dataList.add(excel);
     }
 
     /**

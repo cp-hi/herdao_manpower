@@ -49,5 +49,5 @@ public class PostDTO extends Post {
     private Integer onJobStaffs;
 
     @ApiModelProperty(value = "岗位序列")
-    private PostSeq postSeq;
+    private PostSeqDTO postSeqDTO;
 }
