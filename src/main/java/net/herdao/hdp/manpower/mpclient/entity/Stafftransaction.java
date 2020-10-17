@@ -162,22 +162,29 @@ private static final long serialVersionUID = 1L;
      * 新建用户 操作人
      */
     @ExcelProperty(value = "操作人", index = 5)
-    @ApiModelProperty(value="新建用户 操作人")
-    private String creatorCode;
+    @ApiModelProperty(value="新建人工号")
+    private String createdCode;
 
     /**
      * 新建时间 操作时间
      */
     @ExcelProperty(value = "操作时间", index = 6,converter = LocalDateTimeConverter.class)
-    @ApiModelProperty(value="新建时间 操作时间")
+    @ApiModelProperty(value="新建时间")
     private LocalDateTime createdTime;
+
+    /**
+     * 新建时间 操作时间
+     */
+    @ExcelProperty(value = "新建人", index = 6,converter = LocalDateTimeConverter.class)
+    @ApiModelProperty(value="新建人")
+    private String createdName;
 
     /**
      * 最后修改人
      */
     @ExcelIgnore
     @ApiModelProperty(value="最后修改人")
-    private String modifierCode;
+    private String modifiedCode;
 
     /**
      * 最后修改时间
@@ -186,6 +193,13 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="最后修改时间")
     private LocalDateTime modifiedTime;
 
+    /**
+     * 修改人
+     */
+    @ExcelIgnore
+    @ApiModelProperty(value="修改人")
+    private String modifiedName;
+    
     /**
      * 所属部门外键
      */

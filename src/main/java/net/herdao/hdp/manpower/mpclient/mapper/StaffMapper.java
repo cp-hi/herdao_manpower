@@ -24,6 +24,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -52,5 +53,11 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @return
 	 */
 	public List<StaffTotalComponentVO> getStaffTotals();
-
+	
+	/**
+	 * 查询员工工龄信息
+	 * 
+	 * @return
+	 */
+	public StaffWorkYearDTO getStaffWorkYear(Long staffid);
 }

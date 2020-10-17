@@ -28,7 +28,8 @@
     <!-- 员工奖惩情况分页 -->
     <select id="findStaffRpPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO">
         select * from (
-             SELECT     s.staff_name,
+             SELECT     f.id,
+                        s.staff_name,
                         s.staff_code,
                         ( SELECT s.label FROM sys_dict_item s WHERE s.id = f.type and s.type='YGJCLB' ) type,
                         f.content,

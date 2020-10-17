@@ -33,7 +33,8 @@
       </resultMap>
 
       <!-- 员工家庭情况分页 -->
-      <select id="findFamilyStatusPage" resultMap="familystatusMap">
+      <select id="findFamilyStatusPage" resultType="net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto">
+         select  * from (
             SELECT    f.id,
                       s.staff_name,
                       s.staff_code,
@@ -50,44 +51,43 @@
                       LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
                       LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
                       where 1=1
-                      <if test="orgId != null">
-                          and u.ORG_DEPT_ID = #{orgId}
-                      </if>
-                      <if test="staffName != null">
-                          or s.staff_name LIKE concat(#{staffName},'%')
-                      </if>
-                      <if test="staffCode != null">
-                          or s.staff_code LIKE concat(#{staffCode},'%')
-                      </if>
+            ) t  where 1=1
+          <if test="searchText != null">
+              and CONCAT(
+                  t.staff_name, t.staff_code,t.NAME,t.RELATIONS,
+                  t.age,t.PROFESSIONAL,t.WORK_UNIT,t.address,
+                  t.modifier_name,t.MODIFIED_TIME
+              ) LIKE concat('%',#{searchText},'%')
+          </if>
       </select>
 
     <!-- 员工家庭情况 -->
     <select id="findFamilyStatus" resultType="net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO">
-         SELECT     f.id,
-                    s.staff_name,
-                    s.staff_code,
-                    f.NAME,
-                    f.RELATIONS,
-                    f.age,
-                    f.PROFESSIONAL,
-                    f.WORK_UNIT,
-                    f.address,
-                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIER_CODE ) modifier_name,
-                    f.MODIFIED_TIME
-                    FROM
-                    mp_familystatus f
-                    LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                    LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
-                    where 1=1
-                    <if test="orgId != null">
-                        and u.ORG_DEPT_ID = #{orgId}
-                    </if>
-                    <if test="staffName != null">
-                        or s.staff_name LIKE concat(#{staffName},'%')
-                    </if>
-                    <if test="staffCode != null">
-                        or s.staff_code LIKE concat(#{staffCode},'%')
-                    </if>
+        select  * from (
+                SELECT    f.id,
+                s.staff_name,
+                s.staff_code,
+                f.NAME,
+                f.RELATIONS,
+                f.age,
+                f.PROFESSIONAL,
+                f.WORK_UNIT,
+                f.address,
+                ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIER_CODE ) modifier_name,
+                f.MODIFIED_TIME
+                FROM
+                mp_familystatus f
+                LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+                LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
+                where 1=1
+        ) t  where 1=1
+        <if test="searchText != null">
+            and CONCAT(
+            t.staff_name, t.staff_code,t.NAME,t.RELATIONS,
+            t.age,t.PROFESSIONAL,t.WORK_UNIT,t.address,
+            t.modifier_name,t.MODIFIED_TIME
+            ) LIKE concat('%',#{searchText},'%')
+        </if>
     </select>
 
 </mapper>

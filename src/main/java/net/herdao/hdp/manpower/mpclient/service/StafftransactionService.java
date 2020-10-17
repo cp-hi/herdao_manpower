@@ -65,5 +65,14 @@ public interface StafftransactionService extends IService<Stafftransaction> {
      */
     List<Stafftransaction> findStaffTrans(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
 
+    /**
+     * 员工详情-员工异动情况
+     * @param orgId
+     * @param staffName
+     * @param staffid
+     * @return
+     */
+    List<Stafftransaction> findStaffTransByUserDetail(String orgId, String staffName, Long staffid);
+
 
 }

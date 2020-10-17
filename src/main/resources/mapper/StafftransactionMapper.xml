@@ -23,10 +23,12 @@
             <result property="outCenterName" column="OUT_CENTER_NAME"/>
             <result property="comeCenterName" column="COME_CENTER_NAME"/>
             <result property="newest" column="NEWEST"/>
-            <result property="creatorCode" column="CREATOR_CODE"/>
+            <result property="createdCode" column="CREATED_CODE"/>
             <result property="createdTime" column="CREATED_TIME"/>
-            <result property="modifierCode" column="MODIFIER_CODE"/>
+            <result property="createdName" column="CREATED_NAME"/>
+            <result property="modifiedCode" column="MODIFIED_CODE"/>
             <result property="modifiedTime" column="MODIFIED_TIME"/>
+            <result property="modifiedName" column="MODIFIED_NAME"/>
             <result property="orgDeptOid" column="ORG_DEPT_OID"/>
             <result property="postOid" column="POST_OID"/>
             <result property="staffOid" column="STAFF_OID"/>
@@ -91,6 +93,32 @@
             </if>
             <if test="staffCode != null">
                   or s.staff_code LIKE concat(#{staffCode},'%')
+            </if>
+      </select>
+      
+      
+      <!-- 员工详情-员工异动情况-->
+      <select id="findStaffTransByUserDetail" resultMap="stafftransactionMap">            
+      SELECT 
+            f.TRAN_TIME,
+            f.TRAN_TYPE,
+            f.TRAN_REASON,
+            f.OUT_UNIT_NAME,
+            f.COME_UNIT_NAME,
+            f.CREATED_NAME,
+            f.CREATED_TIME
+            FROM   mp_stafftransaction f
+            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
+            where 1=1 and f.DEL_FLAG=0
+            <if test="orgId != null">
+                  and u.ORG_DEPT_ID = #{orgId}
+            </if>
+            <if test="staffName != null">
+                  or s.staff_name LIKE concat(#{staffName},'%')
+            </if>
+            <if test="staffid != null">
+                  or s.STAFF_ID = #{staffid}
             </if>
       </select>
 </mapper>

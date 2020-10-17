@@ -29,7 +29,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-15 08:57:53
  */
-public interface UserpostService extends IService<Userpost> {
+public interface UserpostService extends EntityService<Userpost> {
 
     /**
      * 查询用户岗位
@@ -41,45 +41,23 @@ public interface UserpostService extends IService<Userpost> {
     /**
      * 现任职情况分页
      * @param page 分页对象
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,String orgId, String staffName, String staffCode,String staffId);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
 
     /**
      * 现任职情况
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText
      * @return
      */
-    List<UserpostDTO> findUserPostNow( String orgId,  String staffName,  String staffCode,String staffId);
+    List<UserpostDTO> findUserPostNow(@Param("searchText") String searchText);
 
     /**
-     * 新增现任职情况
-     * @param entity
+     * @author lift
+     * 员工详情-工作情况-目前任职 
+     * @param staffid
      * @return
      */
-    Boolean saveUserPostNow(Userpost entity);
-
-
-    /**
-     * 更新现任职情况
-     * @param entity
-     * @return
-     */
-    Boolean updateUserPostNow(Userpost entity);
-
-    /**
-     * 员工详情-工作情况-目前任职
-     * @param orgId
-     * @param staffName
-     * @param staffCode
-     * @param staffId
-     * @return
-     */
-    UserpostDTO findCurrentJob( String orgId, String staffName,String staffCode, String staffId);
-
+    UserpostDTO findCurrentJob(Long staffid);
 }
