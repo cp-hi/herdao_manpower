@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.dto.post;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModelProperty;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 
 /**
@@ -12,4 +14,7 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
  */
 public class PostSeqDTO  extends PostSeq {
     private Integer postCount;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "父序列")
+    private PostSeq parent;
 }

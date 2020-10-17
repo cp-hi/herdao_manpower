@@ -1,10 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.vo.post;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
-import java.util.Date;
 
 /**
  * @ClassName PostFormVO
@@ -14,6 +14,8 @@ import java.util.Date;
  * @Date 2020/10/17 14:40
  * @Version 1.0
  */
+@Data
+@ApiModel(value = "岗位编辑")
 public class PostFormVO {
 
     @ApiModelProperty("id")
@@ -22,65 +24,45 @@ public class PostFormVO {
     @ApiModelProperty("岗位名称")
     private String postName;
 
-    @ApiModelProperty("岗位编码")
-    private String postCode;
-
     @ApiModelProperty("岗位序列")
-    @DtoField(objField = "postSeq.postSeqName")
-    private String postSeqName;
+    private Long postSeqId;
 
     @ApiModelProperty("所属集团")
-    @DtoField(objField = "group.groupName")
-    private String groupName;
+    private Long groupId;
 
     @ApiModelProperty("版块")
-    @DtoField(objField = "section.sectionName")
-    private String sectionName;
+    private Long sectionId;
 
     @ApiModelProperty("管线")
-    @DtoField(objField = "pipeline.pipelineName")
-    private String pipelineName;
+    private Long pipelineId;
 
-    @ApiModelProperty("职等")
-    @DtoField(objField = "jobGrade.jobGradeName")
-    private String jobGradeName;
+    @ApiModelProperty("职级1")
+    private String jobLevelId1;
 
-    @ApiModelProperty("管线")
-    @DtoField(objField = "jobLevel1.jobLevelName")
-    private String jobLevelName;
+    @ApiModelProperty("职级2")
+    private String jobLevelId2;
 
-    @ApiModelProperty(value = "在职员工数")
-    private Integer postAuthorized;
-
-    @ApiModelProperty(value = "岗位编制")
-    private Integer onJobStaffs;
-
-    @ApiModelProperty("岗位薪酬级别")
-    @DtoField(dictField = "XCJB.postLevel")
-    private String postLevel;
-
-    @ApiModelProperty("年终奖薪酬比例")
-    @DtoField(dictField = "XCBL.yearPayRatio")
-    private String yearPayRatio;
-
-    @ApiModelProperty("岗位组织级别")
-    @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
-    private String perforSalaryRatio;
+    @ApiModelProperty(value = "是否单职级")
+    private Boolean singleJobLevle;
 
     @ApiModelProperty("岗位组织级别")
     @DtoField(dictField = "GWZZLX.orgType")
     private String orgType;
 
-    @ApiModelProperty(value = "创建人名称")
-    private String creatorName;
-    @ApiModelProperty(value = "创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date createdTime;
-    @ApiModelProperty(value = "修改ID")
-    private Long modifierId;
-    @ApiModelProperty(value = "修改人名称")
-    private String modifierName;
-    @ApiModelProperty(value = "修改时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date modifiedTime;
+    @ApiModelProperty("年终奖比例")
+    @DtoField(dictField = "XCBL.yearPayRatio")
+    private String yearPayRatio;
+
+    @ApiModelProperty(value = "绩效工资比例")
+    private String perforSalaryRatio;
+
+    @ApiModelProperty("岗位薪酬级别")
+    @DtoField(dictField = "XCJB.postLevel")
+    private String postLevel;
+
+    @ApiModelProperty(value = "岗位职责", required = true)
+    private String postDescr;
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
 }

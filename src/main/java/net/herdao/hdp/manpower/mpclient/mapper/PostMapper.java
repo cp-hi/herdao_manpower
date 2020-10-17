@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.entity.Section;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,8 +29,8 @@ public interface PostMapper extends BaseMapper<Post> {
 
     List<Map<String, BigDecimal>> getPostStaffAges(Long postId);
 
-    List<PostDetailDTO> getPostDetails(@Param("postId") Long postId, @Param("limit") String limit);
+    List<PostDetailVO> getPostDetails(@Param("postId") Long postId, @Param("limit") String limit);
 
-    List<PostStaffDTO> getPostStaffs(@Param("postId") Long postId, @Param("limit") String limit);
+    List<PostStaffVO> getPostStaffs(@Param("postId") Long postId, @Param("limit") String limit);
 
 }

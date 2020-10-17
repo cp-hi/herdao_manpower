@@ -89,7 +89,7 @@ public class FamilystatusController extends BaseController<Familystatus> {
             @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
     public R importFamilystatus(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file,Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(familystatusService, importType);
+        ImportExcelListener listener = new ImportExcelListener(familystatusService,Familystatus.class, importType);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, FamilyStatusListDTO.class, listener).sheet().doRead();

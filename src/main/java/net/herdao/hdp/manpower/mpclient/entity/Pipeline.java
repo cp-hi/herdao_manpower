@@ -32,6 +32,4 @@ public class Pipeline extends BaseEntity<Pipeline> {
     private Boolean stop;
     private String pipelineStdCode;
 
-    @TableField(exist = false)
-    private Group group;
 }

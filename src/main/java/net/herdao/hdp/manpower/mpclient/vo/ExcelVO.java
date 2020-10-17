@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto;
+package net.herdao.hdp.manpower.mpclient.vo;
 
 /**
  * @ClassName ExcelDTO
@@ -8,7 +8,7 @@ package net.herdao.hdp.manpower.mpclient.dto;
  * @Date 2020/10/12 15:20
  * @Version 1.0
  */
-public interface ExcelDTO {
+public interface ExcelVO {
 
     void setErrMsg(String errMsg);
 }

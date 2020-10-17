@@ -1,13 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.dto.ExcelDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 
 /**
  * 员工教育经历列表list

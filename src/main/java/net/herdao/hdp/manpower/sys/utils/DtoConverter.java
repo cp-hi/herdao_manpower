@@ -38,6 +38,17 @@ public class DtoConverter {
         DtoConverter.sysDictItemService = dictItemService;
     }
 
+    /**
+     *
+     * @param source  dto类
+     * @param clzz vo 类
+     * @param <T> vo 类
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     */
     public static <T> T dto2vo(Object source, Class clzz)
             throws IllegalAccessException, InstantiationException,
             ClassNotFoundException, NoSuchFieldException {
@@ -89,6 +100,17 @@ public class DtoConverter {
         return (T) t;
     }
 
+    /**
+     *
+     * @param source  dto list
+     * @param clzz vo 类
+     * @param <T> vo 类
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public static <T> List<T> dto2vo(List source, Class clzz)
             throws ClassNotFoundException, NoSuchFieldException,
             InstantiationException, IllegalAccessException {

@@ -15,6 +15,7 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
@@ -24,7 +25,6 @@ import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import net.herdao.hdpbase.template.entity.Template;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -610,5 +610,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         map.put("orgCode", orgCode);
         return baseMapper.selectOrgStaffAll(map);
     }
-	
+
+    @Override
+    public OrgChartDTO selectOrgChartRoot(Long id){
+        return baseMapper.selectOrgChartRoot(id);
+    }
+
+    @Override
+    public List<OrgChartDTO> selectOrgChartChild(Long id){
+        return baseMapper.selectOrgChartChild(id);
+    }
 }

@@ -584,4 +584,36 @@
                     o.ORG_CODE LIKE CONCAT(#{orgCode},'%')
             )
     </select>
+
+    <!-- 查询组织架构图根节点 -->
+    <select id="selectOrgChartRoot" resultType="net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO">
+        SELECT
+            o.ID,
+            o.ORG_CODE,
+            o.ORG_NAME,
+            o.org_charge_name,
+            o.org_charge_work_no,
+            f.MOBILE
+        FROM
+            mp_organization o
+        LEFT JOIN mp_staff f ON o.org_charge_work_no = f.STAFF_CODE
+        WHERE
+            o.ID = #{id}
+    </select>
+
+    <!-- 查询组织架构图子节点 -->
+    <select id="selectOrgChartChild" resultType="net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO">
+        SELECT
+            o.ID,
+            o.ORG_CODE,
+            o.ORG_NAME,
+            o.org_charge_name,
+            o.org_charge_work_no,
+            f.MOBILE
+        FROM
+            mp_organization o
+        LEFT JOIN mp_staff f ON o.org_charge_work_no = f.STAFF_CODE
+        WHERE
+            o.PARENT_ID = #{id}
+    </select>
 </mapper>

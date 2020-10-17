@@ -1,8 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.dto.jobLevel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.dto.ExcelDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 
 /**
@@ -10,14 +7,8 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
  * @Description JobLevelDTO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/9 14:42
+ * @Date 2020/10/17 16:11
  * @Version 1.0
  */
-@Data
-public class JobLevelDTO  extends JobLevel implements ExcelDTO {
-    @ExcelProperty(value = "职等",index = 1)
-    private String jobGrade;
-
-    @ExcelProperty(value = "错误信息",index =4)
-    private String errMsg;
+public class JobLevelDTO  extends JobLevel {
 }

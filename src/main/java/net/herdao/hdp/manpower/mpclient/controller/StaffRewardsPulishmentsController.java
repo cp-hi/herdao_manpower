@@ -104,16 +104,16 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="搜索关键字")
     })
-    public void exportStaffRp(HttpServletResponse response,String searchText) {
+    public R exportStaffRp(HttpServletResponse response,String searchText) {
         try {
             List<StaffRpDTO> list = staffRewardsPulishmentsService.findStaffRp(searchText);
             ExcelUtils.export2Web(response, "员工奖惩情况表", "员工奖惩情况表", StaffRpDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
-            R.ok("导出失败");
+            return R.ok("导出失败");
         }
 
-        R.ok("导出成功");
+        return R.ok("导出成功");
     }
 
 
@@ -125,7 +125,7 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
             @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
     public R importStaffRp(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService, importType);
+        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService,StaffRewardsPulishments.class, importType);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, StaffRpVO.class, listener).sheet().doRead();

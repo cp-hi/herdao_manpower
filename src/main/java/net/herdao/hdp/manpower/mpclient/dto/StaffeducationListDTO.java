@@ -7,8 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-
-import java.util.Date;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 
 /**
  * 员工教育经历列表DTO list
@@ -18,7 +17,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "员工教育经历列表DTO list")
-public class StaffeducationListDTO extends Staffeducation implements ExcelDTO {
+public class StaffeducationListDTO extends Staffeducation implements ExcelVO {
 
     /**
      * 学校名称
