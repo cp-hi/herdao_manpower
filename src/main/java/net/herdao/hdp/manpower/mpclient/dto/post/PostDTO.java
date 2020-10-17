@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Data
 //@EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "岗位列表DTO")
+@ApiModel(value = "岗位DTO")
 public class PostDTO extends Post {
     @ApiModelProperty(value = "板块")
     private Section section;
