@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.sys.service.SysDictService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
@@ -28,9 +29,15 @@ import java.util.List;
  * @Version 1.0
  */
 
+@Component
 public class DtoConverter {
 
-    public static SysDictItemService sysDictItemService;
+    private static SysDictItemService sysDictItemService;
+
+    @Autowired
+    public void setSysDictItemService(SysDictItemService dictItemService){
+        DtoConverter.sysDictItemService = dictItemService;
+    }
 
     public static <T> T convert(Object source, Class clzz)
             throws IllegalAccessException, InstantiationException,
@@ -69,7 +76,8 @@ public class DtoConverter {
                 if (null == currObj) continue;
                 currObj.setAccessible(true);
                 Object val = currObj.get(source);
-                SysDictItem dictItem = sysDictItemService.getOne(Wrappers.<SysDictItem>query().lambda()
+                SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
+                        Wrappers.<SysDictItem>query().lambda()
                         .eq(SysDictItem::getType, dictInfo[0])
                         .eq(SysDictItem::getValue, (String) val));
 
@@ -82,7 +90,9 @@ public class DtoConverter {
         return (T) t;
     }
 
-    public static <T> List<T> convert(List source, Class clzz) throws ClassNotFoundException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+    public static <T> List<T> convert(List source, Class clzz)
+            throws ClassNotFoundException, NoSuchFieldException,
+            InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         for (Object o : source) {
             T t = convert(o, clzz);

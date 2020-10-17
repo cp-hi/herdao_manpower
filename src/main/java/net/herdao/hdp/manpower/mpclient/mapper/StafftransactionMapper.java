@@ -49,4 +49,13 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
      */
     List<StafftransDTO> findStaffTrans(@Param("searchText") String searchText);
 
+    /**
+     * 员工详情-员工异动情况
+     * @param orgId
+     * @param staffName
+     * @param staffid
+     * @return
+     */
+    List<Stafftransaction> findStaffTransByUserDetail(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffid") Long staffid);
+
 }

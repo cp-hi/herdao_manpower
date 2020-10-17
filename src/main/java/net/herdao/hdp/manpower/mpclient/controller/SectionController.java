@@ -1,12 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
+import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,16 +21,22 @@ import org.springframework.web.bind.annotation.*;
  * @Version 1.0
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/client/section")
-public class SectionController {
+@Api(tags = "板块管理")
+public class SectionController extends BaseController<Section, Section> {
 
-    private final SectionService sectionService;
+    @Autowired
+    private SectionService sectionService;
+
+    @Autowired
+    public void setEntityService(SectionService sectionService) {
+        super.entityService = sectionService;
+    }
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list(Long groupId) {
-        return R.ok(sectionService.sectionList(  groupId));
+        return R.ok(sectionService.sectionList(groupId));
     }
 
     @GetMapping("/page")
@@ -36,22 +45,5 @@ public class SectionController {
         return R.ok(sectionService.page(page, searchTxt));
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Long id) {
-        return R.ok(sectionService.getById(id));
-    }
 
-    @PostMapping
-    public R save(@RequestBody Section section) throws Exception {
-        sectionService.saveOrUpdate(section);
-        return R.ok(section);
-    }
-
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除")
-    @DeleteMapping("/{id}")
-    public R removeById(@PathVariable Long id) {
-        return R.ok(sectionService.removeById(id));
-    }
 }

@@ -60,5 +60,9 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
         return list;
     }
 
-
+    @Override
+    public UserpostDTO findCurrentJob(Long staffid){
+    	UserpostDTO userpostDTO = this.baseMapper.findCurrentJob(staffid);
+    	return userpostDTO;
+    }
 }

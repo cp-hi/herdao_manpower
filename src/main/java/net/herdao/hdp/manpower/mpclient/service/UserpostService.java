@@ -53,5 +53,11 @@ public interface UserpostService extends EntityService<Userpost> {
      */
     List<UserpostDTO> findUserPostNow(@Param("searchText") String searchText);
 
-     
+    /**
+     * @author lift
+     * 员工详情-工作情况-目前任职 
+     * @param staffid
+     * @return
+     */
+    UserpostDTO findCurrentJob(Long staffid);
 }

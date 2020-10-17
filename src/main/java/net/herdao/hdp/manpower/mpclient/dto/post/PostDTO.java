@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.dto.post;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,8 +49,5 @@ public class PostDTO extends Post {
     private Integer onJobStaffs;
 
     @ApiModelProperty(value = "岗位序列")
-    private  PostSeq  postSeq ;
-
-    @ApiModelProperty(value = "操作记录")
-    private OperationLog operationLog;
+    private PostSeq postSeq;
 }

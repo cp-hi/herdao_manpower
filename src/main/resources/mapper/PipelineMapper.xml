@@ -5,16 +5,14 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper">
 
     <resultMap id="pipelineMap" type="pipeline">
-        <association property="group" column="group_id" select="getGroup" javaType="group"/>
+        <result property="stop" column="IS_STOP"/>
+        <association property="group" column="group_id" javaType="group"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
     </resultMap>
 
     <select id="query" resultMap="pipelineMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
         select * from mp_pipeline where pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
-    </select>
-
-    <select id="getGroup" parameterType="int" resultType="group">
-        select * from  mp_group WHERE id=#{id}
     </select>
 
     <select id="pipelineList"  resultType="map">

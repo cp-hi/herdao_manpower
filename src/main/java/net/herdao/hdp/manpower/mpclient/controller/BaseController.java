@@ -7,12 +7,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class BaseController<T, D extends T> {
     @Autowired
     OperationLogService operationLogService;
 
-    @ApiOperation(value = "获取实体类操作日志")
+    @ApiOperation(value = "获取操作记录")
     @GetMapping("/operationLog/{objId}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "objId", value = "ID"),
@@ -74,7 +71,7 @@ public class BaseController<T, D extends T> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R delete(@PathVariable Long id) {
-        return R.ok(entityService.deleteEntity(id));
+        return R.ok(entityService.delEntity(id));
     }
 
     @ApiOperation(value = "启用/停用")
@@ -83,7 +80,7 @@ public class BaseController<T, D extends T> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
-    public R stop(@PathVariable Long id, @PathVariable boolean stop) {
+    public R stop(@PathVariable Long id, @PathVariable boolean stop) throws NoSuchFieldException, IllegalAccessException {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
