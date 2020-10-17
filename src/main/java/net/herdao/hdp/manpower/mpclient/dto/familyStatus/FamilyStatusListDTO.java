@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "家庭情况分页Dto")
-public class FamilyStatusListDto extends Familystatus implements ExcelDTO {
+public class FamilyStatusListDTO extends Familystatus implements ExcelDTO {
 
     /**
      *

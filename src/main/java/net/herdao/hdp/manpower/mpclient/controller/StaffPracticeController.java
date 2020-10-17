@@ -21,19 +21,16 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
-import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 
 /**
@@ -137,7 +134,7 @@ public class StaffPracticeController {
     @ApiOperation(value = "查询员工实习记录", notes = "查询员工实习记录")
     @GetMapping("/findStaffPractice" )
     public R findStaffPractice(String staffId) {
-        StaffPracticeDto result = staffPracticeService.findStaffPractice(staffId);
+        StaffPracticeDTO result = staffPracticeService.findStaffPractice(staffId);
         return R.ok(result);
     }
 

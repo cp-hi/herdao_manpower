@@ -39,7 +39,7 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends BaseController<JobLevel, JobLevelDTO> {
+public class JobLevelController extends BaseController<JobLevel> {
 
     @Autowired
     private JobLevelService jobLevelService;
@@ -47,6 +47,11 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelDTO> {
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
         super.entityService = jobLevelService;
+    }
+
+    @Override
+    protected Class getImportClass() {
+        return JobLevelDTO.class;
     }
 
     @GetMapping("/page")

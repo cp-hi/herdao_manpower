@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "员工实习记录")
-public class StaffPracticeDto {
+public class StaffPracticeDTO {
     /**
      * ID
      */

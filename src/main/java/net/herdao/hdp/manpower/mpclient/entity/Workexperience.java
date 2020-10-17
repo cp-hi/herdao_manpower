@@ -76,15 +76,20 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="下属人数")
     private Integer subordinates;
     /**
-     * 新建用户
+     * 新建人工号
      */
-    @ApiModelProperty(value="新建用户")
+    @ApiModelProperty(value="新建人工号")
     private String creatorCode;
     /**
      * 新建时间
      */
     @ApiModelProperty(value="新建时间")
     private LocalDateTime createdTime;
+    /**
+     * 新建人
+     */
+    @ApiModelProperty(value="新建人")
+    private String creatorName;
     /**
      * 人员外键
      */
@@ -163,9 +168,9 @@ private static final long serialVersionUID = 1L;
 
 
     /**
-     * 最后修改人
+     * 修改人工号
      */
-    @ApiModelProperty(value="最后修改人")
+    @ApiModelProperty(value="修改人工号")
     private String modifierCode;
 
     /**
@@ -175,9 +180,9 @@ private static final long serialVersionUID = 1L;
     private LocalDateTime modifiedTime;
 
     /**
-     * modifierName
+     * 修改人
      */
-    @ApiModelProperty(value="最后修改人")
+    @ApiModelProperty(value="修改人")
     @TableField(exist = false)
     private String modifierName;
 }

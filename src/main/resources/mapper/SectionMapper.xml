@@ -5,16 +5,14 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper">
 
     <resultMap id="sectionMap" type="section">
-        <association property="group" column="group_id" select="getGroup" javaType="group"/>
+        <result property="stop" column="IS_STOP"/>
+        <association property="group" column="group_id" javaType="group"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
     </resultMap>
 
     <select id="query" resultMap="sectionMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
         select * from mp_section where section_code like #{likeTxt} or section_name like #{likeTxt}
-    </select>
-
-    <select id="getGroup" parameterType="int" resultType="group">
-        select * from  mp_group WHERE id=#{id}
     </select>
 
     <select id="sectionList"  resultType="map">

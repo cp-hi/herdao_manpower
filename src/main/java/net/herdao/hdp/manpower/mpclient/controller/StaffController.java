@@ -222,29 +222,7 @@ public class StaffController {
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getStaffWork(@PathVariable("id" ) Long id) {
         Staff staff = staffService.getById(id);
-        List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
-                .eq("STAFF_ID", staff.getId())
-                .orderByDesc("BEGIN_DATE")
-        );
-        List<Stafftransaction> transactionList = stafftransactionService.list(new QueryWrapper<Stafftransaction>()
-                .eq("STAFF_ID", staff.getId())
-                .orderByDesc("TRAN_TIME")
-        );
-        List<Userpost> upList = userpostService.list(new QueryWrapper<Userpost>()
-                .eq("USER_ID", staff.getUserId())
-                .orderByDesc("MODIFIED_TIME")
-        );
-        List<StaffPractice> practiceList = staffPracticeService.list(new QueryWrapper<StaffPractice>()
-                .eq("STAFF_ID", staff.getId())
-                .orderByDesc("MODIFIED_TIME")
-        );
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("staff", staff);
-        map.put("expList", expList);
-        map.put("transactionList", transactionList);
-        map.put("upList", upList);
-        map.put("practiceList", practiceList);
+        Map<String, Object> map = staffService.getStaffWork(id);
         return R.ok(map);
     }
 

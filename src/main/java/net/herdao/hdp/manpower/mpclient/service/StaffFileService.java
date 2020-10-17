@@ -19,11 +19,9 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.StaffFileDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
-import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 员工附件表
@@ -38,7 +36,7 @@ public interface StaffFileService extends IService<StaffFile> {
      * @param entity
      * @return
      */
-    Page<StaffFileDto> findStaffFilePage(Page<StaffFileDto> page, @Param("entity") StaffFileDto entity);
+    Page<StaffFileDTO> findStaffFilePage(Page<StaffFileDTO> page, @Param("entity") StaffFileDTO entity);
 
     /**
      * 新增或修改员工附件分类

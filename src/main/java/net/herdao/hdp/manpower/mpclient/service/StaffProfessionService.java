@@ -19,11 +19,8 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.StaffProDto;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.dto.StaffProDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
-import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * 员工职称及职业资料
@@ -40,7 +37,7 @@ public interface StaffProfessionService extends IService<StaffProfession> {
      * @param staffCode
      * @return
      */
-    Page<StaffProDto> findStaffProPage(Page<StaffProDto> page, String orgId,String staffName,String staffCode);
+    Page<StaffProDTO> findStaffProPage(Page<StaffProDTO> page, String orgId, String staffName, String staffCode);
 
     /**
      * 新增或修改员工职称及职业资料

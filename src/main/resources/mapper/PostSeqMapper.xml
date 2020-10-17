@@ -9,7 +9,11 @@
        	 group_id as groupId ,parent_id as parentId from mp_post_seq where group_id = #{groupId}
     </select>
 
-    <select id="query" resultType="postSeq" parameterType="String">
+    <resultMap id="postSeqMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
+        <association property="postCount" column="id" select="getPostCount" javaType="int"/>
+    </resultMap>
+
+    <select id="page" resultType="postSeq" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
         select * from mp_post_seq where post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt}
     </select>

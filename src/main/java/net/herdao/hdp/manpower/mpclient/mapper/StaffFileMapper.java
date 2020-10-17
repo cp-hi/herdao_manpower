@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.StaffFileDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,5 +22,5 @@ public interface StaffFileMapper extends BaseMapper<StaffFile> {
      * @param entity
      * @return
      */
-    Page<StaffFileDto> findStaffFilePage(Page<StaffFileDto> page, @Param("entity") StaffFileDto entity);
+    Page<StaffFileDTO> findStaffFilePage(Page<StaffFileDTO> page, @Param("entity") StaffFileDTO entity);
 }

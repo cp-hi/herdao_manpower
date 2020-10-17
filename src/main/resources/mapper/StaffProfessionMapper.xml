@@ -30,7 +30,7 @@
         </resultMap>
 
         <!-- 员工职称及职业资料分页 -->
-        <select id="findStaffProPage" resultMap="staffProfessionMap" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffProDto">
+        <select id="findStaffProPage" resultMap="staffProfessionMap" resultType="net.herdao.hdp.manpower.mpclient.dto.StaffProDTO">
              SELECT p.id,
                     p.pro_name,
                     p.pro_case,

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -46,6 +47,18 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Autowired
 	private WorkexperienceService workexperienceService;
+	
+	@Autowired
+	private UserpostService userpostService;
+	
+	@Autowired
+	private StafftransactionService stafftransactionService;
+	
+	@Autowired
+	private StaffPracticeService staffPracticeService;
+	
+	@Autowired
+	private StaffProTitleService staffProTitleService;
 
 	@Autowired
 	private StaffcontractService staffcontractService;
@@ -283,6 +296,76 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			familyDtoList.add(family);
 		}
 		map.put("familyDtoList", familyDtoList);
+		return map;
+	}
+	
+
+	/**
+	 * 工作情况
+	 * 
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-15 21:09:29
+	 * @return
+	 */
+	@Override
+	public Map<String, Object> getStaffWork(Long id){
+		Staff staff = this.getById(id);
+		Map<String, Object> map = new HashMap<>();
+		
+		/*-------------目前任职 star-----------------*/
+		UserpostDTO userpostDto = userpostService.findCurrentJob(id);
+		map.put("userpostDto", userpostDto);
+		/*-------------目前任职 end-----------------*/
+		
+		//更多任职
+		
+		/*-------------异动情况 star-----------------*/
+		List<Stafftransaction> stafftransactionList = stafftransactionService.list(new QueryWrapper<Stafftransaction>()
+				.eq("STAFF_ID", id)
+				.orderByDesc("TRAN_TIME")
+		);
+		map.put("stafftransactionList", stafftransactionList);
+		/*-------------异动情况 end-----------------*/
+		
+		
+		/*-------------工作年限 star-----------------*/
+		StaffWorkYearDTO staffWorkYearDTO = baseMapper.getStaffWorkYear(id);
+		map.put("staffWorkYearDTO", staffWorkYearDTO);
+		/*-------------工作年限 end-----------------*/
+		
+		/*-------------工作经历 star-----------------*/
+		List<Workexperience> workexperienceList = workexperienceService.list(new QueryWrapper<Workexperience>()
+				.eq("STAFF_ID", id)
+				.orderByDesc("BEGIN_DATE")
+		);
+		map.put("workexperienceList", workexperienceList);
+		/*-------------工作经历 end-----------------*/
+		
+		/*-------------实习记录 star-----------------*/
+		List<StaffPractice> staffPracticeList = staffPracticeService.list(new QueryWrapper<StaffPractice>()
+				.eq("STAFF_ID", id)
+				.orderByDesc("CREATED_TIME")
+		);
+		StaffPractice staffPractice;
+		if (staffPracticeList.size()>0)
+		{
+			staffPractice = staffPracticeList.get(0);
+		}
+		else{
+			staffPractice = new StaffPractice();
+		}
+		map.put("staffPractice", staffPractice);
+		/*-------------实习记录 end-----------------*/
+		
+		/*-------------职称及职业资格 star-----------------*/
+		List<StaffProTitle> staffProTitleList = staffProTitleService.list(new QueryWrapper<StaffProTitle>()
+				.eq("STAFF_ID", id)
+				.orderByDesc("certificate_time")
+		);
+		map.put("staffProTitleList", staffProTitleList);
+		/*-------------职称及职业资格 end-----------------*/
+		
 		return map;
 	}
 

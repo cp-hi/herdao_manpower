@@ -8,10 +8,8 @@ import net.herdao.hdp.manpower.mpclient.entity.Section;
 import java.util.List;
 import java.util.Map;
 
-public interface SectionService extends IService<Section> {
+public interface SectionService extends EntityService<Section> {
     IPage<Section> page(Page<Section> page, String searchTxt);
 
     List<Map> sectionList(Long groupId);
-@Override
-    boolean saveOrUpdate(Section section);
 }

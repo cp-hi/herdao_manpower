@@ -18,13 +18,9 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
-import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * 员工实习记录
@@ -40,7 +36,7 @@ public interface StaffPracticeMapper extends BaseMapper<StaffPractice> {
      * @param staffId
      * @return
      */
-    StaffPracticeDto findStaffPractice(String staffId);
+    StaffPracticeDTO findStaffPractice(String staffId);
 
 
 

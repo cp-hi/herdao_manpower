@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.lang.reflect.Field;
@@ -66,7 +68,17 @@ public class OperationLogAspect {
             "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))" +
             "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveEntity(..))")
     public void pointCutSave() {
-        System.out.println("point2");
+        System.out.println("pointCutSave");
+    }
+
+    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.stopEntity(..))")
+    public void pointCutStop() {
+        System.out.println("pointCutStop");
+    }
+
+    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.delEntity(..))")
+    public void pointDelete() {
+        System.out.println("pointDelete");
     }
 
     //region 保存实体 设置操作人信息以及实体主键
@@ -133,6 +145,15 @@ public class OperationLogAspect {
         }
     }
 
+    @Before("pointCutStop()")
+    public void beforeStop(JoinPoint point){
+
+    }
+
+    @Before("pointDelete()")
+    public void beforeDelete(JoinPoint point){
+
+    }
     //endregion
 
     //region 操作记录
@@ -147,8 +168,6 @@ public class OperationLogAspect {
             return;
 
         OperationLog log = new OperationLog();
-        Long id = Long.valueOf(0);
-        id.toString();
         if (StringUtils.isNotBlank(operation.objId())) {
             log.setObjId(Long.valueOf(operation.objId()));
         } else if (StringUtils.isNotBlank(operation.key())

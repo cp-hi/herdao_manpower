@@ -35,7 +35,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/stafftrain" )
 @Api(value = "stafftrain", tags = "员工培训管理")
-public class StafftrainController extends BaseController<Stafftrain,Stafftrain> {
+public class StafftrainController extends BaseController<Stafftrain> {
 
     @Autowired
     private StafftrainService stafftrainService;
