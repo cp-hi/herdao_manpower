@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,6 +16,10 @@ import java.util.List;
 @Data
 @ApiModel(value = "现任职情况")
 public class UserpostDTO {
+    @ExcelIgnore
+    @ApiModelProperty(value="id")
+    private String id;
+
     @ExcelProperty(value = "员工姓名")
     @ApiModelProperty(value="员工姓名")
     private String staffName;
