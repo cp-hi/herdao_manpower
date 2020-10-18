@@ -34,6 +34,8 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -270,7 +272,7 @@ public class StaffController {
      * @return
      */
     @GetMapping("/selectStaffOrganizationComponent")
-    public R<?> selectStaffOrganizationComponent() {
+    public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
         return staffService.selectStaffOrganizationComponent();
     }
 

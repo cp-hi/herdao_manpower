@@ -2,8 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
-import org.apache.ibatis.annotations.Param;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 
 /**
@@ -92,11 +92,14 @@ public interface OrganizationService extends IService<Organization> {
 
     /**
      * 分页查询组织架构
-     * @param page 分页对象
+     * 
+     * @param page
      * @param orgCode
+     * @param stop
+     * @param searchText
      * @return
      */
-    Page<Organization> findOrgPage(Page<Organization> page, @Param("orgCode") String orgCode,@Param("treeLevel") Long treeLevel);
+    Page<Organization> findOrgPage(Page<Organization> page, String orgCode, Integer stop, String searchText);
 
 
     /**
@@ -111,9 +114,8 @@ public interface OrganizationService extends IService<Organization> {
      * @param organization
      * @return
      */
-     @Override
      @SysLog("新增组织架构")
-     boolean saveOrUpdate(@RequestBody Organization organization);
+     Organization organizationSave(Organization organization);
 
     /**
      * 查询组织架构详情
@@ -137,4 +139,20 @@ public interface OrganizationService extends IService<Organization> {
      * @return
      */
     List<StaffOrgDTO> selectOrgStaffAll(Page page, String orgCode);
+
+    /**
+     * 查询组织架构图根节点
+     *
+     * @param id
+     * @return
+     */
+    OrgChartDTO selectOrgChartRoot(Long id);
+
+    /**
+     * 查询组织架构图子节点
+     *
+     * @param id
+     * @return
+     */
+    List<OrgChartDTO> selectOrgChartChild(Long id);
 }

@@ -18,8 +18,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.StaffProDto;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.dto.StaffProDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffProfessionMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffProfessionService;
@@ -36,8 +35,8 @@ import org.springframework.stereotype.Service;
 public class StaffProfessionServiceImpl extends ServiceImpl<StaffProfessionMapper, StaffProfession> implements StaffProfessionService {
 
     @Override
-    public Page<StaffProDto> findStaffProPage(Page<StaffProDto> page, String orgId, String staffName, String staffCode) {
-        Page<StaffProDto> pageResult = this.baseMapper.findStaffProPage(page, orgId, staffName, staffCode);
+    public Page<StaffProDTO> findStaffProPage(Page<StaffProDTO> page, String orgId, String staffName, String staffCode) {
+        Page<StaffProDTO> pageResult = this.baseMapper.findStaffProPage(page, orgId, staffName, staffCode);
         return pageResult;
     }
 

@@ -5,6 +5,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import java.util.List;
 import java.util.Map;
 
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -80,11 +81,14 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
 
     /**
      * 分页查询组织架构
-     * @param page 分页对象
+     * @param page
      * @param orgCode
+     * @param treeLevel
+     * @param stop
+     * @param searchText
      * @return
      */
-    Page<Organization> findOrgPage(Page<Organization> page, @Param("orgCode") String orgCode, @Param("treeLevel") Long treeLevel);
+    Page<Organization> findOrgPage(Page<Organization> page, @Param("orgCode") String orgCode, @Param("treeLevel") Long treeLevel, @Param("stop")  Integer stop, @Param("searchText") String searchText);
 
     /**
      * 查询部门结构树
@@ -113,5 +117,20 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
      List<StaffOrgDTO> selectOrgStaffAll(Map<String, Object> map);
- 	
+
+    /**
+     * 查询组织架构图根节点
+     *
+     * @param id
+     * @return
+     */
+    OrgChartDTO selectOrgChartRoot(Long id);
+
+    /**
+     * 查询组织架构图子节点
+     *
+     * @param id
+     * @return
+     */
+    List<OrgChartDTO> selectOrgChartChild(Long id);
 }

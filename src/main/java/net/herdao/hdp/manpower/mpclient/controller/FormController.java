@@ -17,17 +17,11 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.FormDto;
-import net.herdao.hdp.manpower.mpclient.entity.Company;
-import net.herdao.hdp.manpower.mpclient.service.CompanyService;
-import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
+import net.herdao.hdp.manpower.mpclient.dto.FormDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -56,47 +50,47 @@ public class FormController {
     @GetMapping("/getForm" )
     //@PreAuthorize("@pms.hasPermission('mpclient_mpcompany_view')" )
     public R getForm(String name) {
-        List<FormDto> formDtoList=new ArrayList<>();
+        List<FormDTO> formDTOList =new ArrayList<>();
 
         if (name!=null && name.equals("组织报表")){
-            FormDto formDto1 = new FormDto();
-            formDto1.setId("1");
-            formDto1.setName("组织架构表");
+            FormDTO formDTO1 = new FormDTO();
+            formDTO1.setId("1");
+            formDTO1.setName("组织架构表");
             Map<String,Object> operateMap1=new HashMap<>();
             operateMap1.put("download","/orgReport/exportOrg");
             operateMap1.put("preview","/orgReport/findOrgReportView");
-            formDto1.setOperateMap(operateMap1);
-            formDtoList.add(formDto1);
+            formDTO1.setOperateMap(operateMap1);
+            formDTOList.add(formDTO1);
 
-            FormDto formDto2 = new FormDto();
-            formDto2.setId("2");
-            formDto2.setName("组织编制情况表");
+            FormDTO formDTO2 = new FormDTO();
+            formDTO2.setId("2");
+            formDTO2.setName("组织编制情况表");
             Map<String,Object> operateMap2=new HashMap<>();
             operateMap2.put("download","");
             operateMap2.put("preview","");
-            formDto2.setOperateMap(operateMap2);
-            formDtoList.add(formDto2);
+            formDTO2.setOperateMap(operateMap2);
+            formDTOList.add(formDTO2);
 
-            FormDto formDto3 = new FormDto();
-            formDto3.setId("3");
-            formDto3.setName("织职级统计表");
+            FormDTO formDTO3 = new FormDTO();
+            formDTO3.setId("3");
+            formDTO3.setName("织职级统计表");
             Map<String,Object> operateMap3=new HashMap<>();
             operateMap3.put("download","/orgReport/exportOrgJobLevel");
             operateMap3.put("preview","/orgReport/fetchOrgJobLevelView");
-            formDto3.setOperateMap(operateMap3);
-            formDtoList.add(formDto3);
+            formDTO3.setOperateMap(operateMap3);
+            formDTOList.add(formDTO3);
 
-            FormDto formDto4 = new FormDto();
-            formDto4.setId("4");
-            formDto4.setName("组织明细信息表");
+            FormDTO formDTO4 = new FormDTO();
+            formDTO4.setId("4");
+            formDTO4.setName("组织明细信息表");
             Map<String,Object> operateMap4=new HashMap<>();
             operateMap4.put("download","/orgReport/exportDetailsOrg");
             operateMap4.put("preview","/orgReport/findOrgReportView");
-            formDto4.setOperateMap(operateMap4);
-            formDtoList.add(formDto4);
+            formDTO4.setOperateMap(operateMap4);
+            formDTOList.add(formDTO4);
         }
 
-        return R.ok(formDtoList);
+        return R.ok(formDTOList);
     }
 
 

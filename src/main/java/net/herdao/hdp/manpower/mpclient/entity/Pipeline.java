@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 /**
@@ -22,9 +23,7 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 @TableName("MP_Pipeline")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "管线")
-public class Pipeline extends BaseModel<Pipeline> {
-    @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
+public class Pipeline extends BaseEntity<Pipeline> {
     private String pipelineCode;
     private String pipelineName;
     private Integer groupId;
@@ -33,6 +32,4 @@ public class Pipeline extends BaseModel<Pipeline> {
     private Boolean stop;
     private String pipelineStdCode;
 
-    @TableField(exist = false)
-    private Group group;
 }

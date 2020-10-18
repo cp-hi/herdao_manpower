@@ -9,94 +9,86 @@
     <resultMap id="postDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
         <id column="id" property="id"/>
         <result property="stop" column="IS_STOP"/>
-        <result property="groupId" column="GROUP_ID"/>
-        <result property="sectionId" column="section_id"/>
-        <result property="pipelineId" column="pipeline_id"/>
-        <result property="jobLevelId1" column="job_Level_id1"/>
+        <!--        <result property="groupId" column="GROUP_ID"/>-->
+        <!--        <result property="sectionId" column="section_id"/>-->
+        <!--        <result property="pipelineId" column="pipeline_id"/>-->
+        <!--        <result property="jobLevelId1" column="job_Level_id1"/>-->
         <result property="postSeqId" column="post_seq_id"/>
 
-        <association property="group" column="group_id" select="getGroup" javaType="group"/>
-        <association property="section" column="section_id" select="getSection" javaType="section"/>
-        <association property="pipeline" column="pipeline_id" select="getPipeline" javaType="pipeline"/>
+        <association property="group" column="group_id" javaType="group"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById"/>
+
+        <association property="section" column="section_id" javaType="section"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectById"/>
+
+        <association property="pipeline" column="pipeline_id" javaType="pipeline"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectById"/>
+
         <association property="jobGrade" column="job_level_id1" select="getJobGrade" javaType="jobGrade"/>
-        <association property="jobLevel1" column="job_level_id1" select="getJobLevel" javaType="jobLevel"/>
-        <association property="jobLevel2" column="job_level_id2" select="getJobLevel" javaType="jobLevel"/>
-        <association property="postSeq" column="post_seq_id" select="getPostSeq" javaType="postSeq"/>
+
+        <association property="jobLevel1" column="job_level_id1" javaType="jobLevel"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectById"/>
+        <association property="jobLevel2" column="job_level_id2" javaType="jobLevel"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectById"/>
+
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
-        <association property="operationLog" column="id" select="getOperationLog" javaType="net.herdao.hdp.manpower.sys.entity.OperationLog"/>
+        <association property="postSeqDTO" column="post_seq_id" select="getPostSeq"
+                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
 
-    <!--    <resultMap id="postSeqMap" type="postSeq">-->
-    <!--        <association property="parent" column="parent_id"  select="getPostSeq" javaType="postSeq"/>-->
-    <!--    </resultMap>-->
+    <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
+        <association property="parent" column="parent_id" select="getPostSeqParent"
+                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
+    </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where 1=1
-        <!--
-        <if test="postName != null">
-            <bind name="likeTxt" value="'%'+postName+'%'"/>
-          and   concat(POST_CODE,POST_NAME) like #{likeTxt}
+
+        <if test="post.postName != null">
+            <bind name="likeTxt" value="'%'+post.postName+'%'"/>
+            and concat(POST_CODE,POST_NAME) like #{likeTxt}
         </if>
 
-        <if test="groupId != null">
-            AND group_id = #{groupId}
+        <if test="post.groupId != null">
+            AND group_id = #{post.groupId}
         </if>
-        <if test="sectionId != null">
-            AND section_id = #{sectionId}
+        <if test="post.sectionId != null">
+            AND section_id = #{post.sectionId}
         </if>
-        <if test="pipelineId != null">
-            AND pipeline_id = #{pipelineId}
+        <if test="post.pipelineId != null">
+            AND pipeline_id = #{post.pipelineId}
         </if>
-        <if test="jobLevelId1 != null">
-            AND (job_level_id1 = #{jobLevelId1} or job_level_id2 = #{jobLevelId1})
+        <if test="post.jobLevelId1 != null">
+            AND (job_level_id1 = #{post.jobLevelId1}
+            or job_level_id2 = #{post.jobLevelId1})
         </if>
-        -->
     </select>
 
-    <select id="getGroup" parameterType="long" resultType="group">
-   select * from  mp_group WHERE id=#{id}
-</select>
-
-    <select id="getPipeline" parameterType="long" resultType="pipeline">
-   select * from  mp_pipeline WHERE id=#{id}
-</select>
-
-    <select id="getSection" parameterType="long" resultType="section">
-   select * from  mp_section WHERE id=#{id}
-</select>
-
     <select id="getJobGrade" parameterType="long" resultType="jobGrade">
-   select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
-</select>
-
-    <select id="getJobLevel" parameterType="long" resultType="jobLevel">
-   select * from  mp_job_level WHERE id=#{id}
-</select>
+       select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
+    </select>
 
     <!--     TODO 实现父子查询 -->
-    <select id="getPostSeq" parameterType="long" resultType="postSeq">
+    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTOMap">
         select * from  mp_post_seq WHERE id=#{id}
     </select>
 
+    <select id="getPostSeq" parameterType="long" resultMap="postSeqDTOMap">
+       select * from mp_post_seq WHERE id= #{id}
+    </select>
 
     <!--     TODO 未实现编制统计 -->
     <select id="getPostAuthorized" parameterType="long" resultType="int">
         select 10
     </select>
 
+    <!--    在职员工人数  -->
     <select id="getOnJobStaffs" parameterType="long" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
         and s.STAFF_SCOPE = '1' and p.id =#{id}
     </select>
-
-    <select id="getOperationLog" parameterType="long" resultType="net.herdao.hdp.manpower.sys.entity.OperationLog">
-        <bind name="entityName" value="'net.herdao.hdp.manpower.mpclient.entity.Post'"/>
-        select * from sys_operation_log where OBJ_ID = #{id}
-        and ENTITY_CLASS = #{entityName} order by operated_time desc limit 1
-    </select>
-
 
     <!--*************************以上为分页查询用到的函数***********************************-->
 
@@ -136,7 +128,7 @@
 
 
     <!-- 岗位名称、岗位编码、集团、板块、管线、职级、 创建时间  -->
-    <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO">
+    <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO">
         SELECT
             p.POST_NAME,
             p.POST_CODE,
@@ -158,7 +150,7 @@
     </select>
 
     <!-- 任职岗位、员工姓名、工号、手机号码、所在部门 -->
-    <select id="getPostStaffs" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO">
+    <select id="getPostStaffs" resultType="net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO">
         select
         p.POST_NAME,
         s.STAFF_NAME,

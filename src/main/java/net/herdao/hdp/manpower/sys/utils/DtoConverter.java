@@ -7,32 +7,49 @@ import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.service.SysDictService;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @ClassName DtoConverter
- * @Description DtoConverter
+ * @Description DTO VO ENTITY之间的转换类
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/10/16 8:31
  * @Version 1.0
  */
 
+@Component
 public class DtoConverter {
 
-    public static SysDictItemService sysDictItemService;
+    private static SysDictItemService sysDictItemService;
 
-    public static <T> T convert(Object source, Class clzz)
+    @Autowired
+    public void setSysDictItemService(SysDictItemService dictItemService) {
+        DtoConverter.sysDictItemService = dictItemService;
+    }
+
+    /**
+     *
+     * @param source  dto类
+     * @param clzz vo 类
+     * @param <T> vo 类
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     */
+    public static <T> T dto2vo(Object source, Class clzz)
             throws IllegalAccessException, InstantiationException,
             ClassNotFoundException, NoSuchFieldException {
 
@@ -59,7 +76,8 @@ public class DtoConverter {
                 currObj.setAccessible(true);
                 Object seq = currObj.get(source);
                 if (null != seq) {
-                    Field val = seq.getClass().getDeclaredField(path[1]);
+                    Field val =  AnnotationUtils.getFieldByName(seq,path[1]);
+//                    Field val = seq.getClass().getDeclaredField(path[1]);
                     val.setAccessible(true);
                     field.set(t, val.get(seq));
                 }
@@ -69,9 +87,10 @@ public class DtoConverter {
                 if (null == currObj) continue;
                 currObj.setAccessible(true);
                 Object val = currObj.get(source);
-                SysDictItem dictItem = sysDictItemService.getOne(Wrappers.<SysDictItem>query().lambda()
-                        .eq(SysDictItem::getType, dictInfo[0])
-                        .eq(SysDictItem::getValue, (String) val));
+                SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
+                        Wrappers.<SysDictItem>query().lambda()
+                                .eq(SysDictItem::getType, dictInfo[0])
+                                .eq(SysDictItem::getValue, (String) val));
 
                 if (null != dictItem) field.set(t, dictItem.getLabel());
 
@@ -82,13 +101,33 @@ public class DtoConverter {
         return (T) t;
     }
 
-    public static <T> List<T> convert(List source, Class clzz) throws ClassNotFoundException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+    /**
+     *
+     * @param source  dto list
+     * @param clzz vo 类
+     * @param <T> vo 类
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchFieldException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public static <T> List<T> dto2vo(List source, Class clzz)
+            throws ClassNotFoundException, NoSuchFieldException,
+            InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         for (Object o : source) {
-            T t = convert(o, clzz);
+            T t = dto2vo(o, clzz);
             list.add(t);
         }
         return list;
     }
 
+    public static <T> T vo2dto(Object source, Class clzz) {
+        throw new NotImplementedException("未实现此方法");
+    }
+
+    public static <T> List<T> vo2dto(List source, Class clzz) {
+        throw new NotImplementedException("未实现此方法");
+    }
 }

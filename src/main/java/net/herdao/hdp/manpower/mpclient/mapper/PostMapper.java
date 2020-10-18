@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.entity.Section;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -44,7 +44,7 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
 
     /**
      * 现任职情况
-     * @param searchText
+     * @param staffid
      * @return
      */
     UserpostDTO findCurrentJob(Long staffid);

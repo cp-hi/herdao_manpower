@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Data
 @ApiModel(value = "页面DTO")
-public class FormDto {
+public class FormDTO {
     @ApiModelProperty(value="id")
     private String id;
 

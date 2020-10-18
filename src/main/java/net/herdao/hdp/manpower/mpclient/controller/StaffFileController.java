@@ -8,11 +8,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffFileDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -112,7 +110,7 @@ public class StaffFileController {
             @ApiImplicitParam(name="staffName",value="员工姓名"),
             @ApiImplicitParam(name="staffCode",value="员工工号")
     })
-    public R findStaffFilePage(Page page, StaffFileDto entity) {
+    public R findStaffFilePage(Page page, StaffFileDTO entity) {
         Page pageResult = staffFileService.findStaffFilePage(page, entity);
         return R.ok(pageResult);
     }

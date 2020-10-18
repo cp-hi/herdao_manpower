@@ -3,8 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.StaffFileDto;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
@@ -21,8 +20,8 @@ import org.springframework.stereotype.Service;
 public class StaffFileServiceImpl extends ServiceImpl<StaffFileMapper, StaffFile> implements StaffFileService {
 
     @Override
-    public Page<StaffFileDto> findStaffFilePage(Page<StaffFileDto> page, StaffFileDto entity) {
-        Page<StaffFileDto> pageResult = this.baseMapper.findStaffFilePage(page, entity);
+    public Page<StaffFileDTO> findStaffFilePage(Page<StaffFileDTO> page, StaffFileDTO entity) {
+        Page<StaffFileDTO> pageResult = this.baseMapper.findStaffFilePage(page, entity);
         return pageResult;
     }
 

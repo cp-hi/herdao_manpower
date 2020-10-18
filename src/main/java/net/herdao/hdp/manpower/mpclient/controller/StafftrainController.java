@@ -28,14 +28,13 @@ import java.util.List;
 
 /**
  * 员工培训
- *
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @RestController
 @RequestMapping("/stafftrain" )
 @Api(value = "stafftrain", tags = "员工培训管理")
-public class StafftrainController extends BaseController<Stafftrain,Stafftrain> {
+public class StafftrainController extends BaseController<Stafftrain> {
 
     @Autowired
     private StafftrainService stafftrainService;

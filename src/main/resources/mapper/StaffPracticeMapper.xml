@@ -40,7 +40,7 @@
             </resultMap>
 
       <!-- 员工职称及职业资料分页 -->
-      <select id="findStaffPractice"  resultType="net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto">
+      <select id="findStaffPractice"  resultType="net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO">
               SELECT  p.id,
                       p.begin_date,
                       p.end_date,

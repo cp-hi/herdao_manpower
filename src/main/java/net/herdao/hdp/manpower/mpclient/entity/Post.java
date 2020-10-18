@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 @Data
 @TableName("mp_post")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "岗位实体类")
+@ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "岗位编码")
     private String postCode;
@@ -36,7 +36,7 @@ public class Post extends BaseEntity<Post> {
     private String welfareLevel;
     @ApiModelProperty(value = "行政级别", required = true)
     private String administrativeLevel;
-    @ApiModelProperty(value = "年终奖薪酬比例", required = true)
+    @ApiModelProperty(value = "年终奖比例", required = true)
     private String yearPayRatio;
     @ApiModelProperty(value = "是否销售岗位", required = true)
     private Boolean salesPosition;
@@ -71,4 +71,7 @@ public class Post extends BaseEntity<Post> {
     private String gradeName;
     @ApiModelProperty(value = "集团ID")
     private Long groupId;
+
+    @ApiModelProperty(value = "是否单职级")
+    private Boolean singleJobLevle;
 }

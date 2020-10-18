@@ -9,13 +9,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
+import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -44,7 +41,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/familystatus" )
 @Api(value = "familystatus", tags = "员工家庭成员管理")
-public class FamilystatusController extends BaseController<Familystatus,Familystatus> {
+public class FamilystatusController extends BaseController<Familystatus> {
 
     private final  FamilystatusService familystatusService;
 
@@ -92,14 +89,14 @@ public class FamilystatusController extends BaseController<Familystatus,Familyst
             @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
     public R importFamilystatus(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file,Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(familystatusService, importType);
+        ImportExcelListener listener = new ImportExcelListener(familystatusService,Familystatus.class, importType);
         try {
             InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, FamilyStatusListDto.class, listener).sheet().doRead();
+            EasyExcel.read(inputStream, FamilyStatusListDTO.class, listener).sheet().doRead();
             IOUtils.closeQuietly(inputStream);
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "家庭情况错误信息", "家庭情况错误信息", FamilyStatusListDto.class, listener.getDataList());
+            ExcelUtils.export2Web(response, "家庭情况错误信息", "家庭情况错误信息", FamilyStatusListDTO.class, listener.getDataList());
             return R.failed(ex.getMessage());
         }
     }

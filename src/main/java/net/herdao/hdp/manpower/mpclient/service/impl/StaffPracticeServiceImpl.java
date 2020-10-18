@@ -17,17 +17,13 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDto;
+import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
-import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPracticeMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * 员工实习记录
@@ -51,8 +47,8 @@ public class StaffPracticeServiceImpl extends ServiceImpl<StaffPracticeMapper, S
     }
 
     @Override
-    public StaffPracticeDto findStaffPractice(String staffId) {
-        StaffPracticeDto result = this.baseMapper.findStaffPractice(staffId);
+    public StaffPracticeDTO findStaffPractice(String staffId) {
+        StaffPracticeDTO result = this.baseMapper.findStaffPractice(staffId);
         return result;
     }
 }

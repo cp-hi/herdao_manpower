@@ -24,11 +24,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDto;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffRpVO;
@@ -38,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,7 +53,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/staffrewardspulishments" )
 @Api(value = "staffrewardspulishments", tags = "员工奖惩管理")
-public class StaffRewardsPulishmentsController extends BaseController<StaffRewardsPulishments,StaffRewardsPulishments> {
+public class StaffRewardsPulishmentsController extends BaseController<StaffRewardsPulishments> {
     @Autowired
     private StaffRewardsPulishmentsService staffRewardsPulishmentsService;
 
@@ -107,16 +104,16 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="搜索关键字")
     })
-    public void exportStaffRp(HttpServletResponse response,String searchText) {
+    public R exportStaffRp(HttpServletResponse response,String searchText) {
         try {
             List<StaffRpDTO> list = staffRewardsPulishmentsService.findStaffRp(searchText);
             ExcelUtils.export2Web(response, "员工奖惩情况表", "员工奖惩情况表", StaffRpDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
-            R.ok("导出失败");
+            return R.ok("导出失败");
         }
 
-        R.ok("导出成功");
+        return R.ok("导出成功");
     }
 
 
@@ -128,7 +125,7 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
             @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
     public R importStaffRp(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService, importType);
+        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService,StaffRewardsPulishments.class, importType);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, StaffRpVO.class, listener).sheet().doRead();

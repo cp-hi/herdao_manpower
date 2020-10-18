@@ -24,7 +24,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +42,7 @@ public interface StaffService extends IService<Staff> {
  	 * 
  	 * @return
  	 */
-	public R<?> selectStaffOrganizationComponent();
+	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent();
 
 	Map<String, Object> queryCount();
 
