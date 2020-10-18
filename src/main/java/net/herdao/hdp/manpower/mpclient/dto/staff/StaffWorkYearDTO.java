@@ -50,4 +50,10 @@ public class StaffWorkYearDTO {
      */
     @ApiModelProperty(value="实际工作工龄")
     private BigDecimal realityWorkingSeniority;
+
+    /**
+     * 员工信息id
+     */
+    @ApiModelProperty(value="员工信息id")
+    private BigDecimal staffid;
 }

@@ -389,4 +389,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("staffcontractDTOList", contractDtoList);
 		return  map;
 	}
+	
+	@Override
+	public boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO){
+		Staff staff = this.getById(staffWorkYearDTO.getStaffid());
+		BeanUtils.copyProperties(staffWorkYearDTO, staff);
+		return this.updateById(staff);
+	}
 }

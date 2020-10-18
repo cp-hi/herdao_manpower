@@ -228,7 +228,8 @@
 			sf.entry_three_groups_time,
 			FLOOR(datediff(now(),sf.ENTRY_THREE_GROUPS_TIME)/365) three_groups_seniority,
 			sf.no_working_seniority,
-			FLOOR(datediff(now(),sf.work_Date)/365-sf.NO_WORKING_SENIORITY) reality_working_seniority
+			FLOOR(datediff(now(),sf.work_Date)/365-sf.NO_WORKING_SENIORITY) reality_working_seniority,
+			sf.ID staffid
  		FROM mp_staff sf
  		where 1=1
  		<if test="staffid != null">

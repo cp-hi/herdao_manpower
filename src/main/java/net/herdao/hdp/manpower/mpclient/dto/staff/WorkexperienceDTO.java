@@ -98,4 +98,9 @@ public class WorkexperienceDTO {
     @ApiModelProperty(value="预留字段5")
     private String field5;
 
+    /**
+     * 员工信息id
+     */
+    @ApiModelProperty(value="员工信息id")
+    private BigDecimal staffid;
 }
