@@ -4,8 +4,6 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import java.io.InputStream;
 import java.util.List;
 
-import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +35,9 @@ import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 
 
@@ -83,34 +83,34 @@ public class OrganizationController {
         Organization result = orgService.findOrgDetails(condition);
         return R.ok(result);
     }
-
+    
+    
+    
     /**
-     * 新增或更新组织架构
-     * @param organization
-     * @return R
+     * 新增组织
+     * @author  shuling
+	 * @date    2020-10-18 10:37:22
+	 * @version 1.0
      */
-    @ApiOperation(value = "新增或更新组织架构", notes = "新增或更新组织架构")
-    @SysLog("新增或更新组织架构")
-    @PostMapping("/saveOrUpdate")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_add')" )
-    public R saveOrUpdate(@RequestBody Organization organization) {
-        return  R.ok(orgService.organizationSave(organization));
-    }
+	@ApiOperation(value = "组织信息", notes = "新增组织信息")
+	@SysLog("新增组织信息")
+	@PostMapping
+	public R<Organization> save(@RequestBody OrganizationVO organizationVO) {
+		return orgService.saveOrUpdateOrganization(organizationVO);
+	}
 
-
-    /**
-     * 修改
-     *
-     * @param organization
-     * @return R
+	 /**
+     * 修改组织
+     * @author  shuling
+	 * @date    2020-10-18 10:47:32
+	 * @version 1.0
      */
-    @ApiOperation(value = "修改", notes = "修改")
-    @SysLog("修改")
-    @PutMapping
-    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R updateById(@RequestBody Organization organization) {
-        return R.ok(orgService.updateById(organization));
-    }
+	@ApiOperation(value = "组织信息", notes = "修改组织信息")
+	@SysLog("修改组织信息")
+	@PutMapping
+	public R<Organization> updateById(@RequestBody OrganizationVO organizationVO) {
+		return orgService.saveOrUpdateOrganization(organizationVO);
+	}
 
     /**
      * 通过id删除

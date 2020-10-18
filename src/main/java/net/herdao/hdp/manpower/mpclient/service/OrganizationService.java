@@ -2,7 +2,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
-import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -10,9 +9,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 
 /**
  * 
@@ -102,21 +102,14 @@ public interface OrganizationService extends IService<Organization> {
      */
     Page<Organization> findOrgPage(Page<Organization> page, String orgCode, Integer stop, String searchText);
 
-
     /**
-     * 编辑更新组织
-     * @param organization
-     * @return R
-     */
-
-
-    /**
-     * 新增组织架构
-     * @param organization
+     * @description 新增、修改组织信息
+     * @author      shuling
+     * @date        2020-10-18 12:37:26
+     * @param organization 组织信息
      * @return
      */
-     @SysLog("新增组织架构")
-     Organization organizationSave(Organization organization);
+    R<Organization> saveOrUpdateOrganization(OrganizationVO organizationVO);
 
     /**
      * 查询组织架构详情
