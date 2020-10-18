@@ -32,6 +32,13 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
     @Override
     boolean saveOrUpdate(StaffSecondFileType entity);
 
+    /**
+     * 删除员工附件分类
+     * @param entity
+     * @return
+     */
+    boolean delEntity(StaffSecondFileType entity);
+
 
     /**
      * 员工附件分类

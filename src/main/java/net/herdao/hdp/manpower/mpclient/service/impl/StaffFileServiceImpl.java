@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
+import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -29,6 +30,13 @@ public class StaffFileServiceImpl extends ServiceImpl<StaffFileMapper, StaffFile
     @OperationEntity(operation = "保存或新增员工附件", clazz = StaffFile.class)
     public boolean saveOrUpdate(StaffFile entity) {
         boolean status =  super.saveOrUpdate(entity);
+        return status;
+    }
+
+    @Override
+    @OperationEntity(operation = "删除员工附件", clazz = StaffSecondFileType.class)
+    public boolean delEntity(StaffFile entity) {
+        boolean status =  super.removeById(entity);
         return status;
     }
 

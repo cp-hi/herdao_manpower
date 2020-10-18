@@ -10,10 +10,12 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
+import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -92,8 +94,18 @@ public class StaffFileController {
     @SysLog("通过id删除员工附件表" )
     @DeleteMapping("/del/{id}" )
     //@OperationEntity(operation = "删除员工附件", key ="id" ,clazz = StaffFile.class)
-    public R removeById(@PathVariable Long id) {
-        return R.ok(staffFileService.removeById(id));
+    public R removeById(@PathVariable Long id,String extraKey,String module) {
+        StaffFile entity=new StaffFile();
+        entity.setId(id);
+        if (StringUtils.isNotBlank(extraKey)){
+            entity.setExtraKey(extraKey);
+        }
+        if (StringUtils.isNotBlank(module)){
+            entity.setModule(module);
+        }
+
+        boolean status = staffFileService.delEntity(entity);
+        return R.ok(status);
     }
 
 
@@ -128,4 +140,6 @@ public class StaffFileController {
         List<StaffFile> list = staffFileService.list(Wrappers.query(staffFile));
         return R.ok(list);
     }
+
+
 }

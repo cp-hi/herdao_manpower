@@ -41,4 +41,11 @@ public class OperationLog {
     private String entityClass;
     @ApiModelProperty(value="被操作的实体类主键")
     private Long objId;
+
+    @ApiModelProperty(value="额外信息")
+    private String extraKey;
+
+    @ApiModelProperty(value="模块名")
+    private String module;
+
 }

@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
+import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -45,4 +46,11 @@ public interface StaffFileService extends IService<StaffFile> {
      */
      @Override
      boolean saveOrUpdate(StaffFile entity);
+
+    /**
+     * 删除员工附件
+     * @param entity
+     * @return
+     */
+    boolean delEntity(StaffFile entity);
 }
