@@ -10,7 +10,7 @@ import java.util.Map;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 public interface PipelineService extends EntityService<Pipeline> {
-    IPage<Pipeline> page(Page<Pipeline> page,String searchTxt);
+    IPage<Pipeline> page(Page<Pipeline> page,Pipeline pipeline);
 
     List<Map> pipelineList(Long groupId);
 @Override

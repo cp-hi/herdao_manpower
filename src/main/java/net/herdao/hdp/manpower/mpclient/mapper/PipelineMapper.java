@@ -14,7 +14,7 @@ import java.util.List;
 public interface PipelineMapper extends BaseMapper<Pipeline> {
     List<Map> pipelineList(Long groupId);
 
-    IPage<Pipeline> query(Page<Pipeline> page,@Param("searchTxt") String searchTxt);
+    IPage page(Page page, @Param("pipeline") Pipeline pipeline);
 
     Boolean chkDuplicatePipelineName(Pipeline pipeline);
 

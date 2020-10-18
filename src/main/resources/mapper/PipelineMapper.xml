@@ -4,15 +4,22 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper">
 
-    <resultMap id="pipelineMap" type="pipeline">
+    <resultMap id="pipelineDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineDTO">
         <result property="stop" column="IS_STOP"/>
+        <result property="groupId" column="GROUP_ID"/>
         <association property="group" column="group_id" javaType="group"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
+                     select="groupMapper.selectById" />
     </resultMap>
 
-    <select id="query" resultMap="pipelineMap" parameterType="String">
-        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_pipeline where pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
+    <select id="page" resultMap="pipelineDTOMap" parameterType="pipeline">
+        select * from mp_pipeline where 1=1
+        <if test="pipeline.id != null">
+            and id = #{pipeline.id}
+        </if>
+        <if test="pipeline.pipelineName != null">
+            <bind name="likeTxt" value="'%'+pipeline.pipelineName+'%'"/>
+            pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
+        </if>
     </select>
 
     <select id="pipelineList"  resultType="map">
