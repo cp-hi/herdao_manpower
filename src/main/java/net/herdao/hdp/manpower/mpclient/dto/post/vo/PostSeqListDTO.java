@@ -21,7 +21,7 @@ public class PostSeqListDTO {
     private Long id;
 
     @ApiModelProperty(value = "是否最末节点")
-    private Boolean isLeaf;
+    private Integer isLeaf;
 
     @ApiModelProperty("岗位序列名称")
     private String postSeqName;
