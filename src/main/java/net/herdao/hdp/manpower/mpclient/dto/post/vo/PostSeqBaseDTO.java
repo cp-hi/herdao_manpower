@@ -2,19 +2,17 @@ package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
- * @ClassName PostSeqListDTO
- * @Description PostSeqListDTO
+ * @ClassName PostSeqBaseDTO
+ * @Description PostSeqBaseDTO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/17 18:17
+ * @Date 2020/10/17 18:44
  * @Version 1.0
  */
-@Data
-@ApiModel(value = "岗位序列管理-列表")
-public class PostSeqListDTO {
+@ApiModel(value = "岗位序列管理-基础信息")
+public class PostSeqBaseDTO  {
 
     @ApiModelProperty("id")
     private Long id;
@@ -36,4 +34,6 @@ public class PostSeqListDTO {
 
     @ApiModelProperty(value = "最近更新情况")
     private String lastUpdateInfo;
+
+
 }
