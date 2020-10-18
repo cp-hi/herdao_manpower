@@ -17,7 +17,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPracticeMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
@@ -47,7 +47,7 @@ public class StaffPracticeServiceImpl extends ServiceImpl<StaffPracticeMapper, S
     }
 
     @Override
-    public StaffPracticeDTO findStaffPractice(String staffId) {
+    public StaffPracticeDTO findStaffPractice(Long staffId) {
         StaffPracticeDTO result = this.baseMapper.findStaffPractice(staffId);
         return result;
     }

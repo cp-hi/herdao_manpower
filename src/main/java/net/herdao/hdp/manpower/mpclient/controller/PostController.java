@@ -5,12 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
@@ -35,7 +33,7 @@ import java.util.List;
 public class PostController extends BaseController<Post> {
 
     @Autowired
-    private PostService entityService;
+    private PostService postService;
 
     @Autowired
     public void setEntityService(PostService postService) {
@@ -54,13 +52,43 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
     public R<IPage<PostListDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
-        IPage p = entityService.page(page, post);
+        IPage p = postService.page(page, post);
         List<PostDTO> records = p.getRecords();
 
-//        PostVO postVO = DtoConverter.dto2vo(p.getRecords().get(0), PostVO.class);
+//        PostListDTO postListDTO = DtoConverter.dto2vo(p.getRecords().get(0), PostListDTO.class);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
         p.setRecords(vos);
         return R.ok(p);
+    }
+
+    @GetMapping("/baseInfo/{id}")
+    @ApiOperation(value = "基础信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id"),
+    })
+    public R<PostBaseDTO> getBaseInfo(@PathVariable Long id)
+            throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, NoSuchFieldException {
+        IPage p = postService.page(new Page(), new Post(id));
+        PostBaseDTO data = null;
+        if (p.getRecords().size() > 0)
+            data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseDTO.class);
+        return R.ok(data);
+    }
+
+    @GetMapping("/formInfo/{id}")
+    @ApiOperation(value = "表单信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id"),
+    })
+    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
+            throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, NoSuchFieldException {
+        IPage p = postService.page(new Page(), new Post(id));
+        PostFormDTO data = null;
+        if (p.getRecords().size() > 0)
+            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
+        return R.ok(data);
     }
 
     @GetMapping("/list")
@@ -69,7 +97,7 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
     public R list(Long groupId) {
-        return R.ok(entityService.postList(groupId));
+        return R.ok(postService.postList(groupId));
     }
 
 
@@ -80,7 +108,7 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "id", value = "岗位ID"),
     })
     public R getPostStaffInfo(@PathVariable Long id) {
-        return R.ok(entityService.getPostStaffInfo(id));
+        return R.ok(postService.getPostStaffInfo(id));
     }
 
     @ApiOperation(value = "岗位报表-获取岗位信息明细")
@@ -88,10 +116,10 @@ public class PostController extends BaseController<Post> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
-            @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
+            @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条，download则返回所有"),
     })
     public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostDetailDTO> data = entityService.getPostDetails(postId, operation, size);
+        List<PostDetailDTO> data = postService.getPostDetails(postId, operation, size);
         if ("download".equals(operation)) {
             try {
                 ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailDTO.class, data);
@@ -108,10 +136,10 @@ public class PostController extends BaseController<Post> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postId", value = "岗位ID，必填"),
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
-            @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条"),
+            @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条，download则返回所有"),
     })
     public R getPostStaffs(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostStaffDTO> data = entityService.getPostStaffs(postId, operation, size);
+        List<PostStaffDTO> data = postService.getPostStaffs(postId, operation, size);
         if ("download".equals(operation)) {
             try {
                 ExcelUtils.export2Web(response, "岗位员工信息细表", "岗位员工信息细表", PostStaffDTO.class, data);

@@ -19,9 +19,14 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +52,11 @@ public interface StaffProTitleMapper extends BaseMapper<StaffProTitle> {
      * @return
      */
      boolean saveOrUpdate(StaffProTitle entity);
+     
+     /**
+      * 获取员工职业及职称
+      * @param staffid
+      * @return
+      */
+     List<StaffProTitleDTO> findStaffProTitleDTO(Long staffid);
 }

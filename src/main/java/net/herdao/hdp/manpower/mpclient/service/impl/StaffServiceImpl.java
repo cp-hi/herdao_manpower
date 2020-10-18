@@ -337,34 +337,21 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		
 		/*-------------工作经历 star-----------------*/
 		List<WorkexperienceDTO> workexperienceDTOList = workexperienceService.findWorkexperienceDTO(id);
-//				workexperienceService.list(new QueryWrapper<Workexperience>()
-//				.eq("STAFF_ID", id)
-//				.orderByDesc("BEGIN_DATE")
-//		);
 		map.put("workexperienceDTOList", workexperienceDTOList);
 		/*-------------工作经历 end-----------------*/
 		
 		/*-------------实习记录 star-----------------*/
-		List<StaffPractice> staffPracticeList = staffPracticeService.list(new QueryWrapper<StaffPractice>()
-				.eq("STAFF_ID", id)
-				.orderByDesc("CREATED_TIME")
-		);
-		StaffPractice staffPractice;
-		if (staffPracticeList.size()>0)
+		StaffPracticeDTO staffPracticeDTO = staffPracticeService.findStaffPractice(id);
+		if (staffPracticeDTO == null)
 		{
-			staffPractice = staffPracticeList.get(0);
+			staffPracticeDTO = new StaffPracticeDTO();
+			staffPracticeDTO.setStaffId(id);
 		}
-		else{
-			staffPractice = new StaffPractice();
-		}
-		map.put("staffPractice", staffPractice);
+		map.put("staffPracticeDTO", staffPracticeDTO);
 		/*-------------实习记录 end-----------------*/
 		
 		/*-------------职称及职业资格 star-----------------*/
-		List<StaffProTitle> staffProTitleList = staffProTitleService.list(new QueryWrapper<StaffProTitle>()
-				.eq("STAFF_ID", id)
-				.orderByDesc("certificate_time")
-		);
+		List<StaffProTitleDTO> staffProTitleList = staffProTitleService.findStaffProTitleDTO(id);
 		map.put("staffProTitleList", staffProTitleList);
 		/*-------------职称及职业资格 end-----------------*/
 		

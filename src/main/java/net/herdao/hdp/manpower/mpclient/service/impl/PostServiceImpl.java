@@ -68,13 +68,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Integer probation = 0;//试用
         Integer authorized = 0;//编制
 
-        map.put("在职", onJobs);//在职
-        map.put("实习", interns);//实习
-        map.put("全职", fullTimes);//全职
-        map.put("兼职", partTimes);//兼职
-        map.put("交流", exchanges);//交流
-        map.put("试用", probation);//试用
-        map.put("编制", authorized);//编制
+        map.put("onJobs", new HashMap() {{  put("name", "在职");   put("value", onJobs);  }});//在职
+        map.put("interns", new HashMap() {{  put("name", "实习");   put("value", interns);  }});//实习
+        map.put("fullTimes", new HashMap() {{  put("name", "全职");   put("value", fullTimes);  }});//全职
+        map.put("partTimes", new HashMap() {{  put("name", "兼职");   put("value", partTimes);  }});//兼职
+        map.put("exchanges", new HashMap() {{  put("name", "交流");   put("value", exchanges);  }});//交流
+        map.put("probation", new HashMap() {{  put("name", "试用");   put("value", probation);  }});//试用
+        map.put("authorized", new HashMap() {{  put("name", "编制");   put("value", authorized);  }});//编制
 
         //年龄分布
         List<Map<String, BigDecimal>> ages = baseMapper.getPostStaffAges(postId);

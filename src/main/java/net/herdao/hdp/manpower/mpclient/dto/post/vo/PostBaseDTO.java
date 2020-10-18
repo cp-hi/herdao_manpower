@@ -27,7 +27,7 @@ public class PostBaseDTO {
     private String postCode;
 
     @ApiModelProperty("岗位序列")
-    @DtoField(objField = "postSeq.postSeqName")
+    @DtoField(objField = "postSeqDTO.postSeqName")
     private String postSeqName;
 
     @ApiModelProperty("所属集团")

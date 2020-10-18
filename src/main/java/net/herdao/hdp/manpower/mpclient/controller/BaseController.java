@@ -10,6 +10,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 /**
  * @ClassName BaseController
@@ -63,7 +65,7 @@ public class BaseController<T> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "objId", value = "ID"),
     })
-    public R getOperationLogs(@PathVariable Long objId) {
+    public R<List<OperationLog>> getOperationLogs(@PathVariable Long objId) {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return R.ok(operationLogService.findByEntity(objId, clazz.getName()));
     }

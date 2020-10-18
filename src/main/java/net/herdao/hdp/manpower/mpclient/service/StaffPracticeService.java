@@ -18,7 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
 
 /**
@@ -40,6 +40,6 @@ public interface StaffPracticeService extends IService<StaffPractice> {
      * @param staffId
      * @return
      */
-    StaffPracticeDTO findStaffPractice(String staffId);
+    StaffPracticeDTO findStaffPractice(Long staffId);
 
 }
