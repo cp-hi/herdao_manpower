@@ -19,5 +19,9 @@ public @interface OperationEntity {
 
     String key() default "";
 
+    String extraKey() default "";
+
+    String module() default "";
+
     Class clazz();
 }

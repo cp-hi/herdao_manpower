@@ -35,10 +35,19 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
     }
 
     @Override
+    @OperationEntity(operation = "删除员工附件二级分类", clazz = StaffSecondFileType.class)
+    public boolean delEntity(StaffSecondFileType entity) {
+        boolean status= super.removeById(entity);
+        return status;
+    }
+
+    @Override
     public List<StaffFileTypeDTO> findStaffFileType(StaffFileTypeDTO entity) {
         List<StaffFileTypeDTO> list = this.baseMapper.findStaffFileType(entity);
         return list;
     }
+
+
 
 
 }

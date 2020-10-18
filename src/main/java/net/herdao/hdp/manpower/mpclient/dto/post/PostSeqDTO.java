@@ -23,5 +23,5 @@ public class PostSeqDTO extends PostSeq {
     private PostSeq parent;
 
     @ApiModelProperty(value = "是否最末节点")
-    private Boolean isLeaf;
+    private Integer isLeaf;
 }

@@ -1,24 +1,11 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
+
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
@@ -28,6 +15,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -59,7 +48,7 @@ public class OrgModifyRecordController {
 
     /**
      * 通过id查询
-     * @param id id
+     * @param id
      * @return R
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
@@ -107,5 +96,22 @@ public class OrgModifyRecordController {
     public R removeById(@PathVariable Long id) {
         return R.ok(orgModifyRecordService.removeById(id));
     }
+
+    /**
+     * 组织变更记录
+     * @param entity
+     * @return
+     */
+    @ApiOperation(value = "组织变更记录查询", notes = "组织变更记录查询")
+    @GetMapping("/getOrgChangeRecord" )
+    @ApiImplicitParams({
+         @ApiImplicitParam(name="operatorId",value="操作人ID(当前登录用户ID)")
+    })
+    //@PreAuthorize("@pms.hasPermission('mpclient_orgmodifyrecord_view')" )
+    public R getOrgChangeRecord(OrgModifyRecord entity) {
+        List<OrgModifyRecord> list = orgModifyRecordService.list(Wrappers.query(entity));
+        return R.ok(list);
+    }
+
 
 }

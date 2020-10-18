@@ -5,12 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
@@ -56,12 +54,41 @@ public class PostController extends BaseController<Post> {
     public R<IPage<PostListDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = entityService.page(page, post);
         List<PostDTO> records = p.getRecords();
-        PostSeqDTO dto = null;
 
-//        PostVO postVO = DtoConverter.dto2vo(p.getRecords().get(0), PostVO.class);
+//        PostListDTO postListDTO = DtoConverter.dto2vo(p.getRecords().get(0), PostListDTO.class);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
         p.setRecords(vos);
         return R.ok(p);
+    }
+
+    @GetMapping("/baseInfo/{id}")
+    @ApiOperation(value = "基础信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位id"),
+    })
+    public R<PostBaseDTO> getBaseInfo(@PathVariable Long id)
+            throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, NoSuchFieldException {
+        IPage p = entityService.page(new Page(), new Post(id));
+        PostBaseDTO data = null;
+        if (p.getRecords().size() > 0)
+            data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseDTO.class);
+        return R.ok(data);
+    }
+
+    @GetMapping("/formInfo/{id}")
+    @ApiOperation(value = "表单信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位id"),
+    })
+    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
+            throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, NoSuchFieldException {
+        IPage p = entityService.page(new Page(), new Post(id));
+        PostFormDTO data = null;
+        if (p.getRecords().size() > 0)
+            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
+        return R.ok(data);
     }
 
     @GetMapping("/list")

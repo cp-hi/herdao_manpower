@@ -15,7 +15,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
  * @Version 1.0
  */
 @Data
-@ApiModel(value = "岗位管理-列表")
+@ApiModel(value = "岗位管理-列表，用于列表展示")
 public class PostListDTO {
 
     @ApiModelProperty("id")
@@ -74,7 +74,7 @@ public class PostListDTO {
     private String orgType;
 
     @ApiModelProperty("最近更新情况")
-    @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "更新")
+    @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdated;
 
 }

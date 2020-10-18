@@ -195,11 +195,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
     public Map<String, Object> getStaffDetail(Long id){
 		Staff staff = this.getById(id);
+		StaffBaseDTO base = new StaffBaseDTO();
 		StaffInfoDTO info = new StaffInfoDTO();
 		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
 		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
 		StaffEmergencyDTO emergency = new StaffEmergencyDTO();
 		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, info);
 		BeanUtils.copyProperties(staff, jobInfo);
 		BeanUtils.copyProperties(staff, infoOther);
@@ -207,6 +209,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staff, educationLast);
 
 		Map<String, Object> map = new HashMap<>();
+		map.put("staffBaseDTO", base);
 		map.put("staffInfoDTO", info);
 		map.put("staffJobInfoDTO", jobInfo);
 		map.put("staffInfoOtherDTO", infoOther);
@@ -244,15 +247,18 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public Map<String, Object> getHomePage(Long id){
 		Staff staff = this.getById(id);
+		StaffBaseDTO base = new StaffBaseDTO();
 		StaffArchiveDTO archive = new StaffArchiveDTO();
 		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
 		StaffWelfareDTO welfare = new StaffWelfareDTO();
 		StaffCarreraDTO carrera = new StaffCarreraDTO();
+		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, archive);
 		BeanUtils.copyProperties(staff, educationLast);
 		BeanUtils.copyProperties(staff, welfare);
 		BeanUtils.copyProperties(staff, carrera);
 		Map<String, Object> map = new HashMap<>();
+		map.put("staffBaseDTO", base);
 		map.put("staffArchiveDTO", archive);
 		map.put("staffEducationLastDTO", educationLast);
 		map.put("staffWelfareDTO", welfare);
@@ -355,13 +361,16 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public Map<String, Object> getStaffWelfare(Long id){
 		Staff staff = this.getById(id);
+		StaffBaseDTO base = new StaffBaseDTO();
 		StaffSecurityDTO security = new StaffSecurityDTO();
 		StaffFundDTO fund = new StaffFundDTO();
 		StaffSalaryDTO salary = new StaffSalaryDTO();
+		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, security);
 		BeanUtils.copyProperties(staff, fund);
 		BeanUtils.copyProperties(staff, salary);
 		Map<String, Object> map = new HashMap<>();
+		map.put("staffBaseDTO", base);
 		map.put("staffSecurityDTO", security);
 		map.put("staffFundDTO", fund);
 		map.put("staffSalaryDTO", salary);

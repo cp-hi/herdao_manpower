@@ -11,6 +11,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -82,8 +83,18 @@ public class StaffSecondFileTypeController {
     @SysLog("通过id删除员工附件二级分类" )
     @DeleteMapping("/del/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_staffsecondfiletype_del')" )
-    public R removeById(@PathVariable Long id) {
-        return R.ok(staffSecondFileTypeService.removeById(id));
+    public R removeById(@PathVariable Long id,String extraKey,String module) {
+        StaffSecondFileType entity=new StaffSecondFileType();
+        entity.setId(id);
+        if (StringUtils.isNotBlank(extraKey)){
+            entity.setExtraKey(extraKey);
+        }
+        if (StringUtils.isNotBlank(module)){
+            entity.setModule(module);
+        }
+
+        boolean status = staffSecondFileTypeService.delEntity(entity);
+        return R.ok(status);
     }
 
     /**

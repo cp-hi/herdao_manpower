@@ -48,6 +48,16 @@ public class BaseController<T> {
         throw new NotImplementedException("如果需要使用批量导入功能，请继承此方法");
     }
 
+//    protected Class getPageClass() {
+//        throw new NotImplementedException("如果需要使用分页功能，请继承此方法");
+//    }
+//
+//    protected Class getFormClass() {
+//        throw new NotImplementedException("如果需要使用编辑功能，请继承此方法");
+//    }
+
+
+
     @ApiOperation(value = "获取操作记录")
     @GetMapping("/operationLog/{objId}")
     @ApiImplicitParams({

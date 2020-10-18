@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * @ClassName PostSeqBaseDTO
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @Date 2020/10/17 18:44
  * @Version 1.0
  */
+@Data
 @ApiModel(value = "岗位序列管理-基础信息")
 public class PostSeqBaseDTO  {
 

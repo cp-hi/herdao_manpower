@@ -44,7 +44,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工奖惩")
 public class StaffRewardsPulishments extends BaseModel<StaffRewardsPulishments> {
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -169,7 +169,7 @@ private static final long serialVersionUID = 1L;
     /**
      * 奖励/惩罚 0:奖励 1:惩罚
      */
-    @ApiModelProperty(value="奖励/惩罚 0:奖励 1:惩罚")
+    @ApiModelProperty(value="奖励/惩罚 1:奖励 2:惩罚")
     @ExcelIgnore
     private Boolean choice;
 }

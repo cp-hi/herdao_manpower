@@ -9,10 +9,11 @@
     <resultMap id="postDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
         <id column="id" property="id"/>
         <result property="stop" column="IS_STOP"/>
-        <!--        <result property="groupId" column="GROUP_ID"/>-->
-        <!--        <result property="sectionId" column="section_id"/>-->
-        <!--        <result property="pipelineId" column="pipeline_id"/>-->
-        <!--        <result property="jobLevelId1" column="job_Level_id1"/>-->
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="sectionId" column="section_id"/>
+        <result property="pipelineId" column="pipeline_id"/>
+        <result property="jobLevelId1" column="job_Level_id1"/>
+        <result property="jobLevelId2" column="job_Level_id2"/>
         <result property="postSeqId" column="post_seq_id"/>
 
         <association property="group" column="group_id" javaType="group"
@@ -44,6 +45,10 @@
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where 1=1
+
+        <if test="post.id != null">
+            and id = #{post.id}
+        </if>
 
         <if test="post.postName != null">
             <bind name="likeTxt" value="'%'+post.postName+'%'"/>

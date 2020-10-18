@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.entity.base;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -41,4 +42,12 @@ public class BaseEntity<T extends Model<?>> extends BaseModel<T> {
     @ApiModelProperty(value = "修改时间" )
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date modifiedTime;
+
+    @ApiModelProperty(value = "额外信息 对应日志表的extraKey" )
+    @TableField(exist = false)
+    private String extraKey;
+
+    @ApiModelProperty(value = "模块名" )
+    @TableField(exist = false)
+    private String module;
 }

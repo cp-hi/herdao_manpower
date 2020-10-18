@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.math.BigDecimal;
@@ -21,9 +23,14 @@ import java.math.BigDecimal;
 
 @Data
 @TableName("mp_post")
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
+    public Post(Long id){
+       this.setId(id);
+    }
+
     @ApiModelProperty(value = "岗位编码")
     private String postCode;
     @ApiModelProperty(value = "岗位名称", required = true)

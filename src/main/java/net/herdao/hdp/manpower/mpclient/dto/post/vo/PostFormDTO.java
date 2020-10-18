@@ -3,7 +3,6 @@ package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 
 /**
@@ -15,7 +14,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
  * @Version 1.0
  */
 @Data
-@ApiModel(value = "岗位管理-表单信息")
+@ApiModel(value = "岗位管理-表单信息，用于新增和编辑")
 public class PostFormDTO {
 
     @ApiModelProperty("id")
@@ -46,22 +45,20 @@ public class PostFormDTO {
     private Boolean singleJobLevle;
 
     @ApiModelProperty("岗位组织级别")
-    @DtoField(dictField = "GWZZLX.orgType")
     private String orgType;
 
     @ApiModelProperty("年终奖比例")
-    @DtoField(dictField = "XCBL.yearPayRatio")
     private String yearPayRatio;
 
     @ApiModelProperty(value = "绩效工资比例")
     private String perforSalaryRatio;
 
     @ApiModelProperty("岗位薪酬级别")
-    @DtoField(dictField = "XCJB.postLevel")
     private String postLevel;
 
     @ApiModelProperty(value = "岗位职责", required = true)
     private String postDescr;
+
     @ApiModelProperty(value = "备注")
     private String remark;
 

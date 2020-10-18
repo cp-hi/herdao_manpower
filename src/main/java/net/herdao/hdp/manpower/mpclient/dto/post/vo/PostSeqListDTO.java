@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
  * @ClassName PostSeqListDTO
@@ -19,6 +20,9 @@ public class PostSeqListDTO {
     @ApiModelProperty("id")
     private Long id;
 
+    @ApiModelProperty(value = "是否最末节点")
+    private Integer isLeaf;
+
     @ApiModelProperty("岗位序列名称")
     private String postSeqName;
 
@@ -32,8 +36,10 @@ public class PostSeqListDTO {
     private Integer postCount;
 
     @ApiModelProperty(value = "创建情况")
+    @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "创建")
     private String createdInfo;
 
     @ApiModelProperty(value = "最近更新情况")
+    @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdateInfo;
 }
