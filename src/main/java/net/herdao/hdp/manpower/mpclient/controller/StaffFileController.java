@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
+import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
@@ -148,13 +150,16 @@ public class StaffFileController {
     }
 
     @ApiOperation(value = "获取员工附件操作日志")
-    @GetMapping("/getOperateLog")
+    @GetMapping("/getOperateLogPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="extraKey",value="额外信息"),
-         @ApiImplicitParam(name="module",value="模块名")
+         @ApiImplicitParam(name="module",value="模块名"),
+         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    public R getOperateLog(OperationLog operationLog) {
-        List<OperationLog> list = operationLogService.findOperationLog(operationLog);
-        return R.ok(list);
+    public R getOperateLogPage(Page page,OperationLog log,String searchText) {
+        Page<OperationLog> pageResult = operationLogService.findOperationLog(page,log,searchText);
+        return R.ok(pageResult);
     }
+
+
 }

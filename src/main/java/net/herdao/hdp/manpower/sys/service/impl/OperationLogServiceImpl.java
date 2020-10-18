@@ -3,10 +3,12 @@ package net.herdao.hdp.manpower.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.mapper.OperationLogMapper;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -29,9 +31,19 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
         return baseMapper.findByEntity(objId,entityClass);
     }
     @Override
-    public List<OperationLog> findOperationLog(OperationLog log) {
-        List<OperationLog> list = super.list(Wrappers.query(log));
-        return list;
+    public Page<OperationLog> findOperationLog(Page page,OperationLog log,String searchText) {
+        QueryWrapper<OperationLog> wrapper = Wrappers.query(log);
+        if (StringUtils.isNotBlank(log.getModule())){
+            wrapper.eq("module",log.getModule());
+        }
+        if (StringUtils.isNotBlank(log.getExtraKey())){
+            wrapper.eq("extra_key",log.getExtraKey());
+        }
+        if (StringUtils.isNotBlank(searchText)){
+            wrapper.like("CONCAT(operated_time,operation,operator,content)", searchText);
+        }
+        Page<OperationLog> pageResult = super.page(page,wrapper);
+        return pageResult;
     }
 
 }
