@@ -13,7 +13,7 @@
     <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
         <id column="id" property="id"/>
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
-        <association property="isLeaf" column="id" select="chkIsLeaf" javaType="int"/>
+        <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
     </resultMap>
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
@@ -21,7 +21,7 @@
         <if test="postSeq.id != null">
             and id = #{postSeq.id}
         </if>
-        <if test="post.postName != null">
+        <if test="postSeq.postSeqName != null">
             <bind name="likeTxt" value="'%'+postSeq.postSeqName+'%'"/>
             post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt}
         </if>
@@ -31,7 +31,7 @@
          SELECT count(*) from mp_post   where post_seq_id = #{id}
     </select>
 
-    <select id="chkIsLeaf" parameterType="long" resultType="int">
+    <select id="chkIsLeaf" parameterType="long" resultType="boolean">
         select count(*) from  mp_post_seq where parent_id =  #{id}
     </select>
 

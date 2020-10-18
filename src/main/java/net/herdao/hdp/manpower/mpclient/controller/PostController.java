@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -149,5 +150,14 @@ public class PostController extends BaseController<Post> {
             return null;
         }
         return R.ok(data);
+    }
+
+    @PostMapping
+    @ApiOperation(value = "保存", notes = "保存")
+    public R<PostFormDTO> save(@RequestBody PostFormDTO postFormDTO) {
+        Post post = new Post();
+        BeanUtils.copyProperties(postFormDTO,post);
+        entityService.saveEntity(post);
+        return R.ok(postFormDTO);
     }
 }

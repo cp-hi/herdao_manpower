@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -23,17 +24,24 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @TableName("MP_JOB_LEVEL")
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "职级实体类")
 public class JobLevel extends BaseEntity<JobLevel> {
+
+    public JobLevel(Long id) {
+        this.setId(id);
+    }
+
     @NotBlank(message = "职级名称不能为空")
-    @ExcelProperty(value = "职级名称",index = 0)
+    @ExcelProperty(value = "职级名称" )
     @ApiModelProperty(value = "职级名称")
     private String jobLevelName;
 
     @ApiModelProperty(value = "职级编码")
     private String jobLevelCode;
-    @ExcelProperty(value = "描述",index = 3)
+
+    @ExcelProperty(value = "描述" )
     @ApiModelProperty(value = "描述")
     private String description;
 
@@ -43,7 +51,7 @@ public class JobLevel extends BaseEntity<JobLevel> {
     @ApiModelProperty(value = "集团ID")
     private Long groupId;
 
-    @ExcelProperty(value = "排序",index = 2)
+    @ExcelProperty(value = "排序" )
     @ApiModelProperty(  "排序")
     private Integer sortNo;
 }
