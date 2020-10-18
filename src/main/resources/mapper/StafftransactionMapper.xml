@@ -96,4 +96,28 @@
             </if>
       </select>
 
+      <!-- 员工详情-员工异动情况DTO lift-->
+      <select id="findStafftransactionDto" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO">
+      SELECT 
+			f.id,
+            f.TRAN_TIME,
+			dic.label TRAN_TYPE,
+            f.TRAN_REASON,
+            f.OUT_UNIT_NAME,
+            f.COME_UNIT_NAME,
+            CONCAT(f.MODIFIED_NAME,'(',f.MODIFIED_CODE,')') MODIFIED_NAME,
+            f.MODIFIED_TIME,
+						f.FIELD1,
+						f.FIELD2,
+						f.FIELD3,
+						f.FIELD4,
+						f.FIELD5
+            FROM   mp_stafftransaction f
+						left join sys_dict_item dic on f.TRAN_TYPE=dic.value and dic.type='YDLX'
+            where 1=1 and f.DEL_FLAG=0
+            <if test="staffid != null">
+            and f.STAFF_ID = #{staffid}
+            </if>
+      </select>
+
 </mapper>

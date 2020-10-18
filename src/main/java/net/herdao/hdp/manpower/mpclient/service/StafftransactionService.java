@@ -19,6 +19,8 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import org.apache.ibatis.annotations.Param;
@@ -40,10 +42,14 @@ public interface StafftransactionService extends EntityService<Stafftransaction>
      */
     Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, String searchText);
 
+
     /**
-     * 员工异动情况
-     * @param searchText
+     * @author lift
+     * 员工详情-员工异动情况DTO
+     * @param staffid
      * @return
      */
+    List<StafftransactionDTO> findStafftransactionDto(Long staffid);
+    
     List<StafftransDTO> findStaffTrans(String searchText);
 }

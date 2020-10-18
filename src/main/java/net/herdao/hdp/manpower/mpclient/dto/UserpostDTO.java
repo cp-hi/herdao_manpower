@@ -82,4 +82,6 @@ public class UserpostDTO {
     @ExcelProperty(value = "操作时间")
     private String modifiedTime;
 
+    @ApiModelProperty(value = "是否定编岗位" )
+    private String officePostTypeName;
 }

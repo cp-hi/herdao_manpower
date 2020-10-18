@@ -221,14 +221,14 @@
 	<!-- 查询员工工龄信息 -->
  	<select id="getStaffWorkYear" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO">
  		SELECT
- 			sf.work_Date,
-			FLOOR(datediff(now(),sf.work_Date)/365) work_Seniority,
-			sf.ENTRY_TIME,
-			FLOOR(datediff(now(),sf.ENTRY_TIME)/365) COMPANY_SENIORITY,
-			sf.ENTRY_THREE_GROUPS_TIME,
-			FLOOR(datediff(now(),sf.ENTRY_THREE_GROUPS_TIME)/365) THREE_GROUPS_SENIORITY,
-			sf.NO_WORKING_SENIORITY,
-			FLOOR(datediff(now(),sf.work_Date)/365-sf.NO_WORKING_SENIORITY) reality_Working_Seniority
+ 			sf.work_date,
+			FLOOR(datediff(now(),sf.work_Date)/365) work_seniority,
+			sf.entry_time,
+			FLOOR(datediff(now(),sf.ENTRY_TIME)/365) company_seniority,
+			sf.entry_three_groups_time,
+			FLOOR(datediff(now(),sf.ENTRY_THREE_GROUPS_TIME)/365) three_groups_seniority,
+			sf.no_working_seniority,
+			FLOOR(datediff(now(),sf.work_Date)/365-sf.NO_WORKING_SENIORITY) reality_working_seniority
  		FROM mp_staff sf
  		where 1=1
  		<if test="staffid != null">

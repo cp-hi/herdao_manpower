@@ -317,15 +317,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		UserpostDTO userpostDto = userpostService.findCurrentJob(id);
 		map.put("userpostDto", userpostDto);
 		/*-------------目前任职 end-----------------*/
-		
-		//更多任职
-		
+				
 		/*-------------异动情况 star-----------------*/
-		List<Stafftransaction> stafftransactionList = stafftransactionService.list(new QueryWrapper<Stafftransaction>()
-				.eq("STAFF_ID", id)
-				.orderByDesc("TRAN_TIME")
-		);
-		map.put("stafftransactionList", stafftransactionList);
+		List<StafftransactionDTO> stafftransactionDTOList = stafftransactionService.findStafftransactionDto(id);
+		map.put("stafftransactionDTOList", stafftransactionDTOList);
 		/*-------------异动情况 end-----------------*/
 		
 		
@@ -335,11 +330,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		/*-------------工作年限 end-----------------*/
 		
 		/*-------------工作经历 star-----------------*/
-		List<Workexperience> workexperienceList = workexperienceService.list(new QueryWrapper<Workexperience>()
-				.eq("STAFF_ID", id)
-				.orderByDesc("BEGIN_DATE")
-		);
-		map.put("workexperienceList", workexperienceList);
+		List<WorkexperienceDTO> workexperienceDTOList = workexperienceService.findWorkexperienceDTO(id);
+//				workexperienceService.list(new QueryWrapper<Workexperience>()
+//				.eq("STAFF_ID", id)
+//				.orderByDesc("BEGIN_DATE")
+//		);
+		map.put("workexperienceDTOList", workexperienceDTOList);
 		/*-------------工作经历 end-----------------*/
 		
 		/*-------------实习记录 star-----------------*/
