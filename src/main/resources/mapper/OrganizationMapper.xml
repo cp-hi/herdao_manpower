@@ -616,4 +616,14 @@
         WHERE
             o.PARENT_ID = #{id}
     </select>
+    
+    <!-- 获取组织编码 -->
+    <select id="getMaxOrgCode" resultType="java.lang.String">
+        SELECT 
+        	CONCAT( MAX(org.org_code) )
+        FROM mp_organization org
+        <if test="parentId != null">
+        	AND org.parent_id = #{parentId}
+        </if>
+    </select>
 </mapper>
