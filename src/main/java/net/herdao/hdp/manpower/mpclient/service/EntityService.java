@@ -39,7 +39,7 @@ public interface EntityService<T> extends IService<T> {
      * @param id
      * @return
      */
-    @OperationEntity(clazz = Class.class)
+    @OperationEntity(operation = "删除",clazz = Class.class)
     default boolean delEntity(Serializable id) {
         return this.removeById(id);
     }

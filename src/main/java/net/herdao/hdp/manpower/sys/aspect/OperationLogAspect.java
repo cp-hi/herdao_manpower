@@ -162,7 +162,7 @@ public class OperationLogAspect {
     public void beforeDelete(JoinPoint point) {
         Method method = getJoinPointMethod(point);
         OperationEntity operation = getOperationEntity(method);
-        if (0 == point.getArgs().length || null == operation){
+        if (0 == point.getArgs().length || null == operation) {
             return;
         }
 
@@ -228,21 +228,11 @@ public class OperationLogAspect {
     public void afterOperate(JoinPoint point) {
         //TODO 解决前面验证报错了，还会往下执行这个日志保存
         OperationEntity operation = getOperationEntity(point);
-        if (StringUtils.isNotBlank(operation.exception()) ||
-                StringUtils.isBlank(operation.clazz().getName()) ||
-                Class.class.getName().equals(operation.clazz().getName()))
+        if (StringUtils.isNotBlank(operation.exception()))
             return;
 
         OperationLog log = new OperationLog();
-        if (StringUtils.isNotBlank(operation.objId())) {
-            log.setObjId(Long.valueOf(operation.objId()));
-        } else if (StringUtils.isNotBlank(operation.key())
-                && StringUtils.isBlank(operation.objId())) {
-            MethodSignature signature = (MethodSignature) point.getSignature();
-            int index = Arrays.asList(signature.getParameterNames()).indexOf(operation.key());
-            Object objId = point.getArgs()[index];
-            log.setObjId(Long.valueOf(objId.toString()));
-        }
+
 
         if (StringUtils.isNotBlank(operation.extraKey())) {
             log.setExtraKey(operation.extraKey());
@@ -252,13 +242,20 @@ public class OperationLogAspect {
             log.setModule(operation.module());
         }
 
-        if (null != log.getObjId()) {
+        Class entityClass = null;
+        Object target = point.getTarget();
+        if (target instanceof EntityService)
+            entityClass = (Class) ((ParameterizedType) target.getClass()
+                    .getGenericSuperclass()).getActualTypeArguments()[1];
+
+        if (null != log.getObjId() && null !=entityClass) {
             SysUser sysUser = SysUserUtils.getSysUser();
+            log.setObjId(Long.valueOf((String) point.getArgs()[0]));
             log.setOperatedTime(new Date());
             log.setContent(operation.content());
             log.setOperator(sysUser.getUsername());
             log.setOperation(operation.operation());
-            log.setEntityClass(operation.clazz().getName());
+            log.setEntityClass(entityClass.getName());
             log.setOperatorId(sysUser.getUserId().longValue());
             operationLogService.save(log);
         }
