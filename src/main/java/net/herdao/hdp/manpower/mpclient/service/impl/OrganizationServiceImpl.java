@@ -27,7 +27,6 @@ import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import net.herdao.hdpbase.template.contant.TemplateContants;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -454,7 +453,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     * @description 获取组织编码 
     * @author      shuling
     * @date        2020-10-18 10:37:22
-    * @param organization 组织信息
+    * @param    parentId
     * @return
     */
 	String getOrgCode(Long parentId) {
