@@ -10,6 +10,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -58,6 +59,7 @@ public class OrgChartController {
      * @return R
      */
     @ApiOperation(value = "快速新增", notes = "新增组织架构图")
+    @SysLog("新增组织架构图" )
     @PostMapping("/save")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R saveOrgChart(@RequestBody OrgChartFormDTO form) {
@@ -71,10 +73,27 @@ public class OrgChartController {
      * @return R
      */
     @ApiOperation(value = "快速编辑", notes = "修改组织架构图")
+    @SysLog("修改组织架构图" )
     @PutMapping("/edit")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R editOrgChart(@RequestBody OrgChartFormDTO form) {
         return R.ok(organizationService.editOrgChart(form));
+    }
+
+    /**
+     * 根据id获取编辑数据
+     *
+     * @param id
+     * @return R
+     */
+    @ApiOperation(value = "根据id获取编辑数据", notes = "根据id获取编辑数据")
+    @GetMapping("/editQuery/{id}")
+    //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
+    public R getById(@PathVariable("id" ) Long id) {
+        Organization entity = organizationService.getById(id);
+        OrgChartFormDTO form = new OrgChartFormDTO();
+        BeanUtils.copyProperties(entity, form);
+        return R.ok(form);
     }
 
 }
