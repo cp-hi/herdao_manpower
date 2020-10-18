@@ -9,12 +9,15 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,9 @@ import java.util.List;
 public class StaffFileController {
 
     private final  StaffFileService staffFileService;
+
+    private final OperationLogService operationLogService;
+
 
     /**
      * 分页查询
@@ -141,5 +147,14 @@ public class StaffFileController {
         return R.ok(list);
     }
 
-
+    @ApiOperation(value = "获取员工附件操作日志")
+    @GetMapping("/getOperateLog")
+    @ApiImplicitParams({
+         @ApiImplicitParam(name="extraKey",value="额外信息"),
+         @ApiImplicitParam(name="module",value="模块名")
+    })
+    public R getOperateLog(OperationLog operationLog) {
+        List<OperationLog> list = operationLogService.findOperationLog(operationLog);
+        return R.ok(list);
+    }
 }
