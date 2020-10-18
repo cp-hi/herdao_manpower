@@ -30,7 +30,7 @@ public class Section extends BaseEntity<Section> {
     }
     private String sectionCode;
     private String sectionName;
-    private Integer groupId;
+    private Long groupId;
     private Integer sortNo;
     @TableField("IS_STOP")
     private Boolean stop;

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface SectionService extends EntityService<Section> {
-    IPage<SectionDTO> page(Page<SectionDTO> page, String searchTxt);
+    IPage<SectionDTO> page(Page<SectionDTO> page, Section section);
 
     List<Map> sectionList(Long groupId);
 }

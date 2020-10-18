@@ -14,7 +14,7 @@ import java.util.Map;
 @Mapper
 public interface SectionMapper extends BaseMapper<Section> {
     List<Map> sectionList(Long groupId);
-    IPage<SectionDTO> query(Page<SectionDTO> page, @Param("searchTxt") String searchTxt);
+    IPage<SectionDTO> query(Page<SectionDTO> page, @Param("section") Section section);
 
     Boolean chkDuplicateSectionCode(Section section);
     Boolean chkDuplicateSectionName(Section section);

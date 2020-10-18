@@ -6,13 +6,20 @@
 
     <resultMap id="sectionDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.section.SectionDTO">
         <result property="stop" column="IS_STOP"/>
+        <result property="groupId" column="GROUP_ID"/>
         <association property="group" column="group_id" javaType="group"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
     </resultMap>
 
-    <select id="query" resultMap="sectionDTOMap" parameterType="String">
-        <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
-        select * from mp_section where section_code like #{likeTxt} or section_name like #{likeTxt}
+    <select id="query" resultMap="sectionDTOMap" parameterType="section">
+        select * from mp_section where 1=1
+        <if test="section.id != null">
+            and id = #{section.id}
+        </if>
+        <if test="section.sectionName != null">
+            <bind name="likeTxt" value="'%'+section.sectionName+'%'"/>
+            section_code like #{likeTxt} or section_name like #{likeTxt}
+        </if>
     </select>
 
     <select id="sectionList"  resultType="map">
