@@ -4,13 +4,13 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper">
 
-    <resultMap id="sectionMap" type="section">
+    <resultMap id="sectionDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.section.SectionDTO">
         <result property="stop" column="IS_STOP"/>
         <association property="group" column="group_id" javaType="group"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
     </resultMap>
 
-    <select id="query" resultMap="sectionMap" parameterType="String">
+    <select id="query" resultMap="sectionDTOMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
         select * from mp_section where section_code like #{likeTxt} or section_name like #{likeTxt}
     </select>
@@ -20,7 +20,7 @@
     </select>
 
     <select id="chkDuplicateSectionCode" parameterType="section" resultType="boolean" >
-         SELECT count(*) from mp_section  where  (#{id} is null or  id != #{id})  and  section_code = #{sectionCode}
+        SELECT count(*) from mp_section  where  (#{id} is null or  id != #{id})  and  section_code = #{sectionCode}
     </select>
 
     <select id="chkDuplicateSectionName" parameterType="section" resultType="boolean">

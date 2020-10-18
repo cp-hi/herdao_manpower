@@ -56,7 +56,6 @@ public class PostController extends BaseController<Post> {
     public R<IPage<PostListDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = entityService.page(page, post);
         List<PostDTO> records = p.getRecords();
-        PostSeqDTO dto = null;
 
 //        PostVO postVO = DtoConverter.dto2vo(p.getRecords().get(0), PostVO.class);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
