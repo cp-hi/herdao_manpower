@@ -2,10 +2,14 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
@@ -42,13 +46,32 @@ public class PostSeqController extends BaseController<PostSeq> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<PostSeqListDTO>> page(Page  page, String searchTxt)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postSeqName", value = "postSeqName"),
+    })
+    public R<IPage<PostSeqListDTO>> page(Page  page, PostSeq seq)
             throws ClassNotFoundException, InstantiationException,
             IllegalAccessException, NoSuchFieldException {
-        IPage p = postSeqService.page(page, searchTxt);
+        IPage p = postSeqService.page(page, seq);
         List<PostSeqListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostSeqListDTO.class);
         p.setRecords(vos);
         return R.ok(p);
+    }
+
+
+    @GetMapping("/formInfo/{id}")
+    @ApiOperation(value = "表单信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id"),
+    })
+    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
+            throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, NoSuchFieldException {
+        IPage p = postSeqService.page(new Page(), new PostSeq(id));
+        PostFormDTO data = null;
+        if (p.getRecords().size() > 0)
+            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
+        return R.ok(data);
     }
 
 }

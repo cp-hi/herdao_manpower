@@ -16,7 +16,7 @@ public interface PostSeqMapper extends BaseMapper<PostSeq> {
 
     List<Map> postSeqList(Long groupId);
 
-    IPage<PostSeqDTO> page(Page<PostSeqDTO> page, @Param("searchTxt") String searchTxt);
+    IPage<PostSeqDTO> page(Page<PostSeqDTO> page, @Param("postSeq")PostSeq postSeq);
 
     Boolean chkDuplicatePostSeqName(PostSeq postSeq);
 

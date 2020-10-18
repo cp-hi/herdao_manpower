@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 /**
@@ -18,9 +19,13 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
  */
 @Data
 @TableName("MP_Post_Seq")
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位序列")
 public class PostSeq extends BaseEntity<PostSeq> {
+    public PostSeq(Long id) {
+        this.setId(id);
+    }
 
     @ApiModelProperty(value = "岗位序列名称", required = true)
     private String postSeqName;

@@ -29,9 +29,8 @@ public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> impl
     }
 
     @Override
-    public IPage<PostSeqDTO> page(Page<PostSeqDTO> page, String searchTxt) {
-        if (StringUtils.isBlank(searchTxt)) searchTxt = "";
-        return baseMapper.page(page, searchTxt);
+    public IPage<PostSeqDTO> page(Page<PostSeqDTO> page,   PostSeq postSeq) {
+        return baseMapper.page(page, postSeq);
     }
 
     @Override
