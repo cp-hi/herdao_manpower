@@ -133,4 +133,12 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * @return
      */
     List<OrgChartDTO> selectOrgChartChild(Long id);
+    
+    /**
+     * 获取组织编码
+     * 
+     * @param parentId
+     * @return
+     */
+    String getMaxOrgCode(@Param("parentId") Long parentId);
 }

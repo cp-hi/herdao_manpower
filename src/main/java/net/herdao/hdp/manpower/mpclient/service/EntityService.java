@@ -1,12 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import io.swagger.annotations.ApiModelProperty;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -49,23 +49,23 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
     @OperationEntity(operation = "", clazz = Class.class)
-    default boolean stopEntity(Serializable id, boolean isStop) throws NoSuchFieldException, IllegalAccessException {
+    default boolean stopEntity(Serializable id, boolean isStop) throws IllegalAccessException {
         // 停用实体
         T t = this.getById(id);
-        Field stop = t.getClass().getDeclaredField("stop");
-        Field modifierId = t.getClass().getDeclaredField("modifierId");
-        Field modifierName = t.getClass().getDeclaredField("modifierName");
-        Field modifiedTime = t.getClass().getDeclaredField("modifiedTime");
-
+        Field stop = AnnotationUtils.getFieldByName(t, "stop");
+        Field modifierId = AnnotationUtils.getFieldByName(t, "modifierId");
+        Field modifierName = AnnotationUtils.getFieldByName(t, "modifierName");
+        Field modifiedTime = AnnotationUtils.getFieldByName(t, "modifiedTime");
         stop.setAccessible(true);
         modifierId.setAccessible(true);
         modifierName.setAccessible(true);
         modifiedTime.setAccessible(true);
 
-        //TODO 获取用户并保存，在切面中实现
+        // 获取用户并保存，在切面中实现
+        SysUser user = SysUserUtils.getSysUser();
         stop.set(t, isStop);
-        modifierId.set(t, Long.valueOf(1));
-        modifierName.set(t, "admin");
+        modifierId.set(t, user.getUserId());
+        modifierName.set(t, user.getUsername());
         modifiedTime.set(t, new Date());
         return this.updateById(t);
     }
@@ -91,7 +91,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    default void importVerify(Object excelObj,T t, int type) {
+    default void importVerify(Object excelObj, T t, int type) {
     }
 
     //TODO 添加操作日志

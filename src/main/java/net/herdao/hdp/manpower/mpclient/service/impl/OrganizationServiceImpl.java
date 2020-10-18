@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -16,16 +17,19 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdpbase.template.contant.TemplateContants;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -116,19 +120,17 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             // 是否停用 ： 0 停用 ，1启用（默认），3全部
             //如果是启用操作，则直接启用当前组织。
             if (null != condition && condition.getIsStop() == 1){
-                //更新该组织的启用日期 设为启用
-                condition.setStartOrgOperateDate(new Date());
                 this.baseMapper.updateById(condition);
 
                 record.setOperateDesc("启用组织");
-                record.setEffectTime(DateUtils.parseDate(condition.getStartDate(),"yyyy-MM-dd HH:mm:ss"));
+                record.setEffectTime(condition.getStartDate());
                 return R.ok("组织的启用成功");
             }
 
             //如果是停用操作
             if (null != condition && condition.getIsStop() == 0){
                 record.setOperateDesc("停用组织");
-                 record.setEffectTime(DateUtils.parseDate(condition.getStopDate(),"yyyy-MM-dd HH:mm:ss"));
+                 record.setEffectTime(condition.getStopDate());
 
                 List<Map<String, Long>> orgIds = new ArrayList<>();
                 //递归获取组织架构parentId
@@ -166,7 +168,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                                     Organization updateCondition=new Organization();
                                     updateCondition.setId(orgId);
                                     updateCondition.setIsStop(0);
-                                    updateCondition.setStartOrgOperateDate(new Date());
                                     if(null != condition.getStopDate()){
                                         updateCondition.setStopDate(condition.getStopDate());
                                     }
@@ -389,214 +390,107 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
 
-
-    /**
-     * 编辑更新组织
-     * @param organization
-     * @return R
-     */
-    @SysLog("编辑更新组织")
-    @Transactional(rollbackFor = Exception.class)
-    Organization updateOrg(@RequestBody Organization organization) {
-        try {
-            Organization oldOrg = super.getById(organization.getId());
-
-            if (oldOrg!=null){
-                OrgModifyRecord record=new OrgModifyRecord();
-
-                //现组织名称 原组织名称
-                if (null != oldOrg.getOrgName()&& !oldOrg.getOrgName().equals(organization.getOrgName())){
-                    record.setCurOrgName(organization.getOrgName());
-                    record.setOldOrgName(oldOrg.getOrgName());
-                }
-
-                if (null != oldOrg.getOrgCode()){
-                    record.setOldOrgCode(oldOrg.getOrgCode());
-                }
-
-                if (null != oldOrg.getParentId() && !oldOrg.getParentId().equals(organization.getParentId())){
-                    Organization oldParenOrg = super.getById(oldOrg.getParentId());
-                    Organization curParenOrg = super.getById(organization.getParentId());
-
-                    record.setCurOrgParentId(curParenOrg.getId());
-                    record.setCurOrgParentName(curParenOrg.getOrgName());
-
-                    //现上级组织id
-                    if (null != oldParenOrg){
-                        record.setOldOrgParentId(oldParenOrg.getId());
-                        record.setOldOrgParentName(oldParenOrg.getOrgName());
-
-                        //现组织层级 原组织层级
-                        if (null != oldOrg.getOrgTreeLevel()&& !oldOrg.getOrgCode().equals(organization.getOrgTreeLevel())){
-                            record.setCurOrgTreeLevel(curParenOrg.getOrgTreeLevel()+1);
-                            record.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
-                         }
-                    }
-
-                    //生成组织编码orgCode
-                    String currentOrgCode=createOrgCode(organization, curParenOrg);
-                    //生成组织全称 orgFullName
-                    createOrgFullName(organization, curParenOrg);
-                    record.setCurOrgCode(currentOrgCode);
-                 }
-
-                //生效时间
-                record.setEffectTime(new Date());
-                //操作时间
-                record.setOperatorTime(new Date());
-
-                UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-                if (null != userInfo){
-                    //操作人ID
-                    record.setOperatorId(userInfo.getSysUser().getUserId().toString());
-                    //操作人名称
-                    record.setOperatorName(userInfo.getSysUser().getUsername());
-                }
-
-                //新增变更记录
-                record.setOperateDesc("修改组织架构");
-                record.setCurOrgId(record.getId());
-                orgModifyRecordService.save(record);
-
-                super.updateById(organization);
-            }
-        }catch (Exception ex){
-            log.error("编辑更新组织组织失败",ex);
-        }
-
-        return organization;
-    }
-
     @Override
     public Organization findOrgDetails(Organization condition) {
         Organization organization = this.baseMapper.findOrgDetails(condition);
         return organization;
     }
 
-    @SysLog("新增或更新组织架构")
     @Override
-    @OperationEntity(operation = "新增组织架构" ,clazz = Organization.class)
-    @Transactional
-    public Organization organizationSave(Organization organization) {
-    	//更新
-        if (null != organization.getId()){
-            updateOrg(organization);
-        }else {
-        	//新增
-        	saveOrg(organization);
-        }
-        return organization;
+    @SysLog("新增、修改组织信息")
+    @OperationEntity(operation = "新增、修改组织信息", clazz = Organization.class)
+    @Transactional(rollbackFor = Exception.class)
+    public R<Organization> saveOrUpdateOrganization(OrganizationVO organizationVO) {
+    	
+    	Organization organization = new Organization();
+    	
+    	BeanUtils.copyProperties(organizationVO, organization);
+
+    	Long id = organizationVO.getId();
+    	
+    	// 父组织id
+    	Long parentId = organizationVO.getParentId();
+    	
+    	Organization parentOrganization = ObjectUtil.isNull(parentId) ? null : this.getById(parentId);
+
+    	if(StrUtil.isBlank(organization.getOrgCode())) {
+    		
+    		// 设置组织编码
+        	organization.setOrgCode(getOrgCode(organization.getParentId()));
+        	
+        	// 设置 组织编码、组织名称全路径
+        	setOrgFullCodeAndOrgFullName(organization, parentOrganization);
+    	}
+    	
+    	// 组织组织树层级
+    	if(ObjectUtil.isNull(parentOrganization)) {
+    		
+    		// root 组织级别值：1
+    		organization.setOrgTreeLevel(1L);
+    	}else {
+    		
+    		// 组织组织树层级
+    		organization.setOrgTreeLevel(parentOrganization.getOrgTreeLevel() + 1L);
+    	}
+    	
+    	// 设置启用日期（默认为创建组织当日，可以编辑为其他日期）
+    	
+    	if(ObjectUtil.isNull(id) && ObjectUtil.isNull(organization.getStartDate())) {
+    		organization.setStartDate(DateUtil.date());
+    	}
+    	
+    	// 操作日志信息 TODO 需求待定
+    	OrgModifyRecord orgModifyRecord = new OrgModifyRecord();
+    	
+    	orgModifyRecordService.save(orgModifyRecord);
+    	
+    	this.saveOrUpdate(organization);
+    	
+    	return R.ok(organization);
     }
+    
+    
+   /**
+    * @description 获取组织编码 
+    * @author      shuling
+    * @date        2020-10-18 10:37:22
+    * @param organization 组织信息
+    * @return
+    */
+	String getOrgCode(Long parentId) {
 
-    /**
-     * 新增组织
-     * @param organization
-     * @return R
-     */
-	private Organization saveOrg(Organization organization) {
-		// 查询岗位负责人姓名 mp_post表
-		String chargeOrg = organization.getChargeOrg();
+		// 数据库最大组织编码
+		String maxOrgCode = this.baseMapper.getMaxOrgCode(parentId);
+		
+		// 首次新增 默认 001
+		maxOrgCode = StrUtil.isBlank(maxOrgCode) ? "001" : maxOrgCode;
 
-		if (StrUtil.isNotBlank(chargeOrg)) {
+		return String.format("%0" + maxOrgCode.length() + "d", Long.parseLong(maxOrgCode) + 1);
 
-			Post post = postService.getById(chargeOrg);
-			if (null != post) {
-				organization.setPostName(post.getPostName());
-			}
-
-			// 查询组织负责人
-			User user = userService.getOne(new QueryWrapper<User>().lambda().eq(User::getLoginCode, organization.getOrgChargeWorkNo()));
-			if (null != user) {
-				organization.setUserName(user.getUserName());
-			}
-
-			Long parentId = organization.getParentId();
-			if (parentId != null) {
-				// 获取父组织
-				Organization parentOrg = super.getById(parentId);
-				// 当前新增组织的组织树层级数 + 1
-				organization.setOrgTreeLevel(parentOrg.getOrgTreeLevel() + 1);
-				// 生成组织编码orgCode
-				createOrgCode(organization, parentOrg);
-				// 生成组织全称 orgFullName
-				createOrgFullName(organization, parentOrg);
-			} else {
-
-			}
-		}
-		super.saveOrUpdate(organization);
-		return organization;
 	}
-
-    /**
-     * 生成组织编码 orgCode
-     */
-    private String createOrgCode(Organization org, Organization parentOrg) {
-        String newOrgCode="";
-        Map<String,Object> childrenParams =new HashMap<>();
-        childrenParams.put("parentId",parentOrg.getId());
-        List<Organization> childOrgList = getOrgList(childrenParams);
-        //挂靠父组织 父组织下有多个子组织 拿子组织中最大的组织编码
-        if (childOrgList !=null && !childOrgList.isEmpty()){
-            String orgCodeTemp ="";
-            Long maxOrgCode=null;
-            for (Organization organization : childOrgList) {
-                if (null == maxOrgCode){
-                    maxOrgCode = Long.parseLong(organization.getOrgCode());
-                    orgCodeTemp = organization.getOrgCode();
-                }
-                if (Long.parseLong(organization.getOrgCode())>maxOrgCode){
-                    maxOrgCode = Long.parseLong(organization.getOrgCode());
-                    orgCodeTemp = organization.getOrgCode();
-                }
-
-                org.setOrgCode(orgCodeTemp);
-            }
-
-            //组装组织编码
-            if (orgCodeTemp !=null && !orgCodeTemp.isEmpty()){
-                int orgLength = orgCodeTemp.length();
-                Long temp= Long.parseLong(orgCodeTemp)+1;
-                newOrgCode= String.format("%0"+orgLength+"d", temp);
-                org.setOrgCode(newOrgCode);
-            }
-        }else { // 挂靠父组织 父组织下没有子组织 则父组织是最大的组织编码
-            newOrgCode=org.getParentIdStr()+"001";
-            org.setOrgCode(newOrgCode);
-        }
-
-        return newOrgCode;
+	
+	/**
+	 * @description 设置 组织编码、组织名称全路径 例如：orgFullname /广东省/广州市/天河区
+	 * @author      shuling
+	 * @date        2020-10-18 10:42:29
+	 * @param organization
+	 * @param parentOrganization
+	 */
+    void setOrgFullCodeAndOrgFullName(Organization organization, Organization parentOrganization) {
+    	
+    	String pathSeparator = "/";
+    	
+    	if(ObjectUtil.isNull(parentOrganization)) {
+    		// 取当前组织信息
+    		organization.setOrgFullname(pathSeparator + organization.getOrgName());
+    		organization.setOrgFullCode(pathSeparator + organization.getOrgCode());
+    	}else {
+    		// 父orgFull + org
+    		organization.setOrgFullname(parentOrganization.getOrgName() + pathSeparator + organization.getOrgName());
+    		organization.setOrgFullCode(parentOrganization.getOrgCode() + pathSeparator + organization.getOrgCode());
+    	}
     }
-
-    /**
-     * 生成组织全称 orgFullName （广州/天河/珠江新城/）
-     */
-    private void createOrgFullName(Organization org, Organization parentOrg) {
-        if (parentOrg!=null){
-            if(parentOrg.getOrgFullname()!=null && !parentOrg.getOrgFullname().isEmpty()){
-                String parentOrgFullname = parentOrg.getOrgFullname();
-                org.setOrgFullname(parentOrgFullname+org.getOrgName()+"/");
-            }
-        }else{//无父组织 不用挂靠
-            org.setOrgFullname(org.getOrgFullname()+"/");
-        }
-    }
-
-    /**
-     * 获取组织集合
-     */
-    private List<Organization> getOrgList(Map<String,Object> params){
-        QueryWrapper<Organization> wrapper = Wrappers.query();
-        if ( null!=params && !params.isEmpty()){
-            if (params.get("parentId")!=null){
-                wrapper.eq("parent_id",params.get("parentId"));
-            }
-        }
-
-        List<Organization> list = super.list(wrapper);
-        return list;
-    }
-
+    
 	@Override
 	public R<?> selectOrganizations() {
 		String searchText = "";
@@ -619,5 +513,19 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public List<OrgChartDTO> selectOrgChartChild(Long id){
         return baseMapper.selectOrgChartChild(id);
+    }
+
+    @Override
+    public boolean saveOrgChart(OrgChartFormDTO form){
+        Organization entity = new Organization();
+        BeanUtils.copyProperties(form, entity);
+        return this.save(entity);
+    }
+
+    @Override
+    public boolean editOrgChart(OrgChartFormDTO form){
+        Organization entity = new Organization();
+        BeanUtils.copyProperties(form, entity);
+        return this.updateById(entity);
     }
 }
