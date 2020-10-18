@@ -15,14 +15,17 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -40,18 +43,10 @@ import java.lang.reflect.Field;
 //TODO 记得添加删除和停用的日志记录
 @Aspect
 @Component
-@AllArgsConstructor
 public class OperationLogAspect {
+    @Autowired
+    private OperationLogService operationLogService;
 
-    private final OperationLogService operationLogService;
-    private final RemoteUserService remoteUserService;
-
-    private SysUser getSysUser() {
-        UserInfo userInfo = remoteUserService.info(
-                SecurityUtils.getUser().getUsername(),
-                SecurityConstants.FROM_IN).getData();
-        return userInfo.getSysUser();
-    }
 
     /**
      * 记录操作的切入点
@@ -96,7 +91,7 @@ public class OperationLogAspect {
             ((EntityService) target).saveVerify(point.getArgs()[0]);
 
         Object[] args = point.getArgs();
-        SysUser sysUser = getSysUser();
+        SysUser sysUser = SysUserUtils.getSysUser();
         for (Object arg : args) {
 
             if (arg != null && arg instanceof BaseEntity) {
@@ -132,29 +127,29 @@ public class OperationLogAspect {
         for (Object arg : args) {
             if (arg != null) {
                 Object objId = null;
-                Object extraKey=null;
-                Object module=null;
+                Object extraKey = null;
+                Object module = null;
                 if (arg instanceof BaseEntity) {
                     BaseEntity entity = (BaseEntity) arg;
-                    if (null != entity.getId() && 0 != entity.getId()){
+                    if (null != entity.getId() && 0 != entity.getId()) {
                         objId = entity.getId();
                     }
-                    if (null != entity.getExtraKey()){
+                    if (null != entity.getExtraKey()) {
                         extraKey = entity.getExtraKey();
                     }
-                    if (null != entity.getExtraKey()){
+                    if (null != entity.getExtraKey()) {
                         module = entity.getModule();
                     }
                 } else {
                     objId = getTableIdValue(arg);
                 }
-                if (null != objId){
+                if (null != objId) {
                     AnnotationUtils.setAnnotationInfo(operation, "objId", objId.toString());
                 }
-                if (null != extraKey){
+                if (null != extraKey) {
                     AnnotationUtils.setAnnotationInfo(operation, "extraKey", extraKey.toString());
                 }
-                if (null != module){
+                if (null != module) {
                     AnnotationUtils.setAnnotationInfo(operation, "module", module.toString());
                 }
 
@@ -162,15 +157,9 @@ public class OperationLogAspect {
         }
     }
 
-    @Before("pointCutStop()")
-    public void beforeStop(JoinPoint point){
-
-    }
-
-
 
     @Before("pointDelete()")
-    public void beforeDelete(JoinPoint point){
+    public void beforeDelete(JoinPoint point) {
         Method method = getJoinPointMethod(point);
         OperationEntity operation = getOperationEntity(method);
         if (0 == point.getArgs().length || null == operation)
@@ -182,13 +171,13 @@ public class OperationLogAspect {
             ((EntityService) target).saveVerify(point.getArgs()[0]);
 
         Object[] args = point.getArgs();
-         for (Object arg : args) {
+        for (Object arg : args) {
             if (arg != null && arg instanceof BaseEntity) {
                 Class clazz = arg.getClass();
                 AnnotationUtils.setAnnotationInfo(operation, "clazz", clazz);
                 ApiModel model = (ApiModel) clazz.getAnnotation(ApiModel.class);
-                AnnotationUtils.setAnnotationInfo(operation, "operation", "删除" + model.value());
-                if (StringUtils.isBlank(operation.content())){
+//                AnnotationUtils.setAnnotationInfo(operation, "operation", "删除" + model.value());
+                if (StringUtils.isBlank(operation.content())) {
                     AnnotationUtils.setAnnotationInfo(operation, "content", "删除" + model.value());
                 }
             }
@@ -205,29 +194,29 @@ public class OperationLogAspect {
         for (Object arg : args) {
             if (arg != null) {
                 Object objId = null;
-                Object extraKey=null;
-                Object module=null;
+                Object extraKey = null;
+                Object module = null;
                 if (arg instanceof BaseEntity) {
                     BaseEntity entity = (BaseEntity) arg;
-                    if (null != entity.getId() && 0 != entity.getId()){
+                    if (null != entity.getId() && 0 != entity.getId()) {
                         objId = entity.getId();
                     }
-                    if (null != entity.getExtraKey()){
+                    if (null != entity.getExtraKey()) {
                         extraKey = entity.getExtraKey();
                     }
-                    if (null != entity.getExtraKey()){
+                    if (null != entity.getExtraKey()) {
                         module = entity.getModule();
                     }
                 } else {
                     objId = getTableIdValue(arg);
                 }
-                if (null != objId){
+                if (null != objId) {
                     AnnotationUtils.setAnnotationInfo(operation, "objId", objId.toString());
                 }
-                if (null != extraKey){
+                if (null != extraKey) {
                     AnnotationUtils.setAnnotationInfo(operation, "extraKey", extraKey.toString());
                 }
-                if (null != module){
+                if (null != module) {
                     AnnotationUtils.setAnnotationInfo(operation, "module", module.toString());
                 }
 
@@ -259,16 +248,16 @@ public class OperationLogAspect {
             log.setObjId(Long.valueOf(objId.toString()));
         }
 
-        if (StringUtils.isNotBlank(operation.extraKey())){
+        if (StringUtils.isNotBlank(operation.extraKey())) {
             log.setExtraKey(operation.extraKey());
         }
 
-        if (StringUtils.isNotBlank(operation.module())){
+        if (StringUtils.isNotBlank(operation.module())) {
             log.setModule(operation.module());
         }
 
         if (null != log.getObjId()) {
-            SysUser sysUser = getSysUser();
+            SysUser sysUser = SysUserUtils.getSysUser();
             log.setOperatedTime(new Date());
             log.setContent(operation.content());
             log.setOperator(sysUser.getUsername());
@@ -277,6 +266,34 @@ public class OperationLogAspect {
             log.setOperatorId(sysUser.getUserId().longValue());
             operationLogService.save(log);
         }
+    }
+
+
+    @After("pointCutStop()")
+    public void afterStop(JoinPoint point) {
+        Object target = point.getTarget();
+        Class entityClass = null;
+        if (target instanceof EntityService)
+            entityClass = (Class) ((ParameterizedType) target.getClass()
+                    .getGenericSuperclass()).getActualTypeArguments()[1];
+
+        if (null == entityClass) return;
+
+        Object id = point.getArgs()[0];
+        Boolean stop = (Boolean) point.getArgs()[1];
+        String operation = stop ? "停用" : "启用";
+        ApiModel model = (ApiModel) entityClass.getAnnotation(ApiModel.class);
+
+        OperationLog log = new OperationLog();
+        SysUser sysUser = SysUserUtils.getSysUser();
+        log.setObjId(Long.valueOf(id.toString()));
+        log.setOperation(operation);
+        log.setOperatedTime(new Date());
+        log.setContent(operation + " " + model.value());
+        log.setOperator(sysUser.getUsername());
+        log.setEntityClass(entityClass.getName());
+        log.setOperatorId(sysUser.getUserId().longValue());
+        operationLogService.save(log);
     }
 
     //endregion
