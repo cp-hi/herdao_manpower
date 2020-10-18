@@ -107,7 +107,8 @@
                   f.FIELD2,
 				  f.FIELD3,
 				  f.FIELD4,
-				  f.FIELD5
+				  f.FIELD5,
+				  f.STAFF_ID staffid
             FROM
             mp_workexperience f
             where 1=1

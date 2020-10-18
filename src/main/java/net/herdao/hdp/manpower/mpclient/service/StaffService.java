@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
@@ -62,4 +63,5 @@ public interface StaffService extends IService<Staff> {
 
 	Map<String, Object> getStaffWelfare(Long id);
 
+	boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO);
 }

@@ -49,6 +49,13 @@ public interface WorkexperienceService extends IService<Workexperience> {
      * @return
      */
     boolean saveWork(@RequestBody Workexperience workexperience);
+    
+    /**
+     * 新增员工工作经历DTO
+     * @param workexperienceDTO
+     * @return
+     */
+    boolean saveWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO);
 
 
     /**
@@ -57,6 +64,13 @@ public interface WorkexperienceService extends IService<Workexperience> {
      * @return
      */
     boolean updateWork(@RequestBody Workexperience workexperience);
+
+    /**
+     * 更新员工工作经历DTO
+     * @param workexperienceDTO
+     * @return
+     */
+    boolean updateWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO);
     
     /**
      * author lift

@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -81,9 +82,20 @@ public class WorkexperienceController {
     @ApiOperation(value = "新增员工工作经历", notes = "新增员工工作经历")
     @SysLog("新增员工工作经历" )
     @PostMapping("/saveWork")
-    //@PreAuthorize("@pms.hasPermission('mpclient_workexperience_add')" )
     public R saveWork(@RequestBody Workexperience workexperience) {
         boolean flag = workexperienceService.saveWork(workexperience);
+        return R.ok(flag);
+    }
+    /**
+     * 新增员工工作经历
+     * @param workexperienceDTO 员工工作经历
+     * @return R
+     */
+    @ApiOperation(value = "新增员工工作经历", notes = "新增员工工作经历")
+    @SysLog("新增员工工作经历" )
+    @PostMapping("/saveWorkDTO")
+    public R saveWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO) {
+        boolean flag = workexperienceService.saveWorkDTO(workexperienceDTO);
         return R.ok(flag);
     }
 
@@ -95,9 +107,21 @@ public class WorkexperienceController {
     @ApiOperation(value = "修改员工工作经历", notes = "修改员工工作经历")
     @SysLog("修改员工工作经历" )
     @PutMapping("/updateWork")
-    //@PreAuthorize("@pms.hasPermission('mpclient_workexperience_edit')" )
     public R updateWork(@RequestBody Workexperience workexperience) {
         boolean flag = workexperienceService.updateWork(workexperience);
+        return R.ok(flag);
+    }
+    
+    /**
+     * 修改员工工作经历
+     * @param workexperience 员工工作经历
+     * @return R
+     */
+    @ApiOperation(value = "修改员工工作经历", notes = "修改员工工作经历")
+    @SysLog("修改员工工作经历" )
+    @PutMapping("/updateWorkDTO")
+    public R updateWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO) {
+        boolean flag = workexperienceService.updateWorkDTO(workexperienceDTO);
         return R.ok(flag);
     }
 

@@ -24,10 +24,16 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,9 +45,12 @@ import java.util.List;
  * @date 2020-09-24 10:24:09
  */
 @Service
-@AllArgsConstructor
 public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper, Workexperience> implements WorkexperienceService {
+    @Autowired
     private RemoteUserService remoteUserService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Page<Workexperience> findStaffWorkPage(Page<Workexperience> page, String orgId, String staffName, String staffCode) {
@@ -59,6 +68,27 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         boolean flag = super.save(workexperience);
         return flag;
     }
+    
+    @Override
+    public boolean saveWorkDTO(WorkexperienceDTO workexperienceDTO){
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        Integer userId = userInfo.getSysUser().getUserId().intValue();
+        String userName=userInfo.getSysUser().getUsername();
+        String loginCode=userInfo.getSysUser().getUsername();
+        
+        Workexperience workexperience = new Workexperience();
+        BeanUtils.copyProperties(workexperienceDTO, workexperience);
+        //创建人工号、姓名、时间；修改人工号、姓名、时间
+        LocalDateTime now = LocalDateTime.now();
+        workexperience.setCreatorCode(loginCode); 
+        workexperience.setCreatorName(userName);
+        workexperience.setCreatedTime(now);
+        workexperience.setModifierCode(loginCode); 
+        workexperience.setModifierName(userName);
+        workexperience.setModifiedTime(now);        
+        boolean flag = super.save(workexperience);
+        return flag;
+    }
 
     @Override
     public boolean updateWork(Workexperience workexperience) {
@@ -66,6 +96,24 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         Integer userId = userInfo.getSysUser().getUserId().intValue();
         workexperience.setModifierCode(userId.toString());
         LocalDateTime now = LocalDateTime.now();
+        workexperience.setModifiedTime(now);
+        boolean status = super.updateById(workexperience);
+        return status;
+    }
+    
+    @Override
+    public boolean updateWorkDTO(WorkexperienceDTO workexperienceDTO) {
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        Integer userId = userInfo.getSysUser().getUserId().intValue();
+        String userName=userInfo.getSysUser().getUsername();
+        String loginCode=userInfo.getSysUser().getUsername();
+        
+        Workexperience workexperience = this.getById(workexperienceDTO.getId());
+        BeanUtils.copyProperties(workexperienceDTO, workexperience);
+        //修改人工号、姓名、时间
+        LocalDateTime now = LocalDateTime.now();
+        workexperience.setModifierCode(loginCode);
+        workexperience.setModifierName(userName);
         workexperience.setModifiedTime(now);
         boolean status = super.updateById(workexperience);
         return status;

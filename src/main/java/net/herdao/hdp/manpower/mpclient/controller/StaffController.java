@@ -28,6 +28,7 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -224,6 +225,19 @@ public class StaffController {
         Staff staff = staffService.getById(id);
         Map<String, Object> map = staffService.getStaffWork(id);
         return R.ok(map);
+    }
+
+    /**
+     * Author lift
+     * 修改员工工作年限
+     * @param staffWorkYearDTO 工作年限
+     * @return R
+     */
+    @ApiOperation(value = "修改员工工作年限", notes = "修改员工工作年限")
+    @SysLog("修改员工工作年限" )
+    @PostMapping("/updateStaffWorkYear" )
+    public R updateStaffWorkYear(@RequestBody StaffWorkYearDTO staffWorkYearDTO) {
+        return R.ok(staffService.updateStaffWorkYear(staffWorkYearDTO));
     }
 
     /**
