@@ -2,13 +2,17 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffFileDTO;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
+import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.StaffFile;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
@@ -16,11 +20,13 @@ import net.herdao.hdp.manpower.mpclient.service.StaffFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -32,6 +38,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/stafffile" )
+@Slf4j
 @Api(value = "stafffile", tags = "员工附件表管理")
 public class StaffFileController {
 
@@ -148,13 +155,42 @@ public class StaffFileController {
     }
 
     @ApiOperation(value = "获取员工附件操作日志")
-    @GetMapping("/getOperateLog")
+    @GetMapping("/getOperateLogPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="extraKey",value="额外信息"),
-         @ApiImplicitParam(name="module",value="模块名")
+         @ApiImplicitParam(name="module",value="模块名"),
+         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    public R getOperateLog(OperationLog operationLog) {
-        List<OperationLog> list = operationLogService.findOperationLog(operationLog);
-        return R.ok(list);
+    public R getOperateLogPage(Page page,OperationLog operationLog,String searchText) {
+        Page<OperationLog> pageResult = operationLogService.findOperationLog(page,operationLog,searchText);
+        return R.ok(pageResult);
     }
+
+
+    /**
+     * 导出现任职情况Excel
+     * @param  response
+     * @param searchText
+     * @return R
+     */
+    @ApiOperation(value = "导出员工附件操作日志Excel", notes = "导出员工附件操作日志Excel")
+    @SysLog("导出员工附件操作日志Excel" )
+    @PostMapping("/exportOperationLog")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="extraKey",value="额外信息"),
+        @ApiImplicitParam(name="module",value="模块名"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    public R exportOperationLog(HttpServletResponse response,OperationLog operationLog,String searchText) {
+        try {
+            List<OperationLog> list = operationLogService.findOperationLog(operationLog,searchText);;
+            ExcelUtils.export2Web(response, "员工附件操作日志", "员工附件操作日表", OperationLog.class,list);
+        } catch (Exception e) {
+            log.error("导出失败",e.toString());
+            return R.failed("导出失败");
+        }
+
+        return R.ok("导出成功");
+    }
+
 }
