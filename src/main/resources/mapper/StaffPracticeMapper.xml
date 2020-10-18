@@ -39,37 +39,43 @@
                   <result property="delFlag" column="DEL_FLAG"/>
             </resultMap>
 
-      <!-- 员工职称及职业资料分页 -->
-      <select id="findStaffPractice"  resultType="net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO">
+      <!-- 员工职称及职业资料 -->
+      <select id="findStaffPractice"  resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO">
               SELECT  p.id,
-                      p.begin_date,
-                      p.end_date,
-                      p.period,
-                      p.group_name,
-                      p.corporation_name,
-                      (
-                          SELECT org.ORG_NAME FROM mp_organization org WHERE org.id=p.depart_id
-                      ) depart_name,
-                      (
-                          SELECT SECTION_NAME FROM mp_section sec WHERE sec.id= p.plate_id
-                      ) plate_name,
-                    (
-                          SELECT pp.PIPELINE_NAME FROM mp_pipeline pp WHERE pp.id= p.pipe_id
-                      ) pipe_name,
-                      (
-                          SELECT mp.POST_NAME from mp_post mp where mp.id=p.post_id
-                      ) post_name,
-                      (
-                          SELECT j.JOB_LEVEL_NAME from  mp_job_level j WHERE j.id=p.job_level
-                      ) job_level_name,
-                      p.score,
-                      p.evaluate,
-                      p.evaluate_name,
-                      p.evaluate_time
-                  FROM
-                      mp_staff_practice p
-                       WHERE 1=1
-                      and p.DEL_FLAG=0
-                      and p.STAFF_ID=#{staffId}
+            p.begin_date,
+            p.end_date,
+            p.period,
+            p.group_name,
+            p.corporation_name,
+					  p.depart_name,
+					  p.depart_id,
+					  p.plate_id sectionId,
+					  s.SECTION_NAME,
+					  p.pipe_id,
+					  pip.PIPELINE_NAME,
+					  p.post_id,
+					  po.POST_NAME,
+					  p.job_level,
+					  jl.JOB_LEVEL_NAME,											
+            p.score,
+            p.evaluate_id,
+            p.evaluate_name,
+            p.evaluate_time,
+					  p.STAFF_ID,
+					  p.field1,
+					  p.field2,
+					  p.field3,
+					  p.field4,
+					  p.field5
+		FROM mp_staff_practice p
+		left join mp_section s on p.plate_id=s.id
+		left join mp_pipeline pip on pip.id=p.pipe_id
+		left join mp_post po on po.id=p.post_id
+		left join mp_job_level jl on jl.id=p.job_level
+		WHERE 1=1
+		and p.DEL_FLAG=0
+        <if test="staffid != null">
+            and p.STAFF_ID = #{staffid}
+        </if>
         </select>
 </mapper>

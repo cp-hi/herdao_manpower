@@ -19,9 +19,14 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -48,4 +53,10 @@ public interface StaffProTitleService extends IService<StaffProTitle> {
     @Override
     boolean saveOrUpdate(StaffProTitle entity);
 
+    /**
+     * 获取员工职业及职称
+     * @param staffid
+     * @return
+     */
+    List<StaffProTitleDTO> findStaffProTitleDTO(Long staffid);
 }

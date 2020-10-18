@@ -21,9 +21,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
-import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -120,7 +119,7 @@ public class StaffPracticeController {
     @ApiOperation(value = "通过id删除员工实习记录", notes = "通过id删除员工实习记录")
     @SysLog("通过id删除员工实习记录" )
     @DeleteMapping("/del/{id}" )
-    @OperationEntity(operation = "删除员工实习记录", clazz = StaffProfession.class)
+    @OperationEntity(operation = "删除员工实习记录", clazz = StaffPractice.class)
     public R removeById(@PathVariable Long id) {
         return R.ok(staffPracticeService.removeById(id));
     }
@@ -133,7 +132,7 @@ public class StaffPracticeController {
      */
     @ApiOperation(value = "查询员工实习记录", notes = "查询员工实习记录")
     @GetMapping("/findStaffPractice" )
-    public R findStaffPractice(String staffId) {
+    public R findStaffPractice(Long staffId) {
         StaffPracticeDTO result = staffPracticeService.findStaffPractice(staffId);
         return R.ok(result);
     }

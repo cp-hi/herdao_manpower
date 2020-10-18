@@ -42,4 +42,29 @@
                 and p.STAFF_ID=1
       </select>
 
+      <!-- 员工职称分页 -->
+      <select id="findStaffProTitleDTO" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO">
+        SELECT  p.id,
+                p.title_name,
+                p.assessment_unit,
+                p.professional_qualifications,
+                p.title_code,
+                p.qualitification_unit,
+                p.certificate_time,
+								p.MODIFIER_NAME,
+								p.MODIFIED_TIME,
+								p.STAFF_ID,
+								p.FIELD1,
+								p.FIELD2,
+								p.FIELD3,
+								p.FIELD4,
+								p.FIELD5
+            FROM
+                mp_staff_pro_title p
+            WHERE
+                p.DEL_FLAG = 0
+            <if test="staffid != null">
+            and p.STAFF_ID = #{staffid}
+            </if>
+      </select>
 </mapper>

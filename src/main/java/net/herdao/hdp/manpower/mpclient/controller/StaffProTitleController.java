@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
-import net.herdao.hdp.manpower.mpclient.entity.StaffProfession;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -110,7 +109,7 @@ public class StaffProTitleController {
     @SysLog("通过id删除员工职称" )
     @DeleteMapping("/del/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_del')" )
-    @OperationEntity(operation = "删除员工职称", clazz = StaffProfession.class)
+    @OperationEntity(operation = "删除员工职称", clazz = StaffProTitle.class)
     public R removeById(@PathVariable Integer id) {
         return R.ok(staffProTitleService.removeById(id));
     }
