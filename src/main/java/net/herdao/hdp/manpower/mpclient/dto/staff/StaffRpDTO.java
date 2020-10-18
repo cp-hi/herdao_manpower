@@ -34,7 +34,7 @@ public class StaffRpDTO  {
      * 奖励/惩罚 0:奖励 1:惩罚
      */
     @ExcelProperty(value = "奖励/惩罚")
-    @ApiModelProperty(value="奖励/惩罚 0:奖励 1:惩罚")
+    @ApiModelProperty(value="奖励/惩罚 1:奖励 2:惩罚")
     private String choice;
 
     /**
