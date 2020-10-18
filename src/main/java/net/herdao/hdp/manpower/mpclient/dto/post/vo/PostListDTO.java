@@ -6,7 +6,6 @@ import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 
-
 /**
  * @ClassName PostVO
  * @Description PostVO
@@ -75,6 +74,7 @@ public class PostListDTO {
     private String orgType;
 
     @ApiModelProperty("最近更新情况")
+    @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "更新")
     private String lastUpdated;
 
 }

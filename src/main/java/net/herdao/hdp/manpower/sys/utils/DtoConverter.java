@@ -1,22 +1,19 @@
 package net.herdao.hdp.manpower.sys.utils;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import lombok.AllArgsConstructor;
-import lombok.Setter;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
-import net.herdao.hdp.manpower.sys.service.SysDictService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,10 +36,9 @@ public class DtoConverter {
     }
 
     /**
-     *
-     * @param source  dto类
-     * @param clzz vo 类
-     * @param <T> vo 类
+     * @param source dto类
+     * @param clzz   vo 类
+     * @param <T>    vo 类
      * @return
      * @throws IllegalAccessException
      * @throws InstantiationException
@@ -54,32 +50,55 @@ public class DtoConverter {
             ClassNotFoundException, NoSuchFieldException {
 
         Class clazz = Class.forName(clzz.getName());
-        Object t = clazz.newInstance();
-        BeanUtils.copyProperties(source, t);
-        Field[] fields = AnnotationUtils.getAllAnnotationFields(t, DtoField.class);
+        Object target = clazz.newInstance();
+        BeanUtils.copyProperties(source, target);
+        Field[] fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
         for (Field field : fields) {
             if (null == field) continue;
 
             field.setAccessible(true);
             //根据 DtoField中的信息获取source中对象数据
             DtoField dtoField = field.getAnnotation(DtoField.class);
-            int total = 0;
-            if (StringUtils.isNotBlank(dtoField.objField())) total++;
-            if (StringUtils.isNotBlank(dtoField.listField())) total++;
-            if (StringUtils.isNotBlank(dtoField.dictField())) total++;
-            if (1 != total) throw new RuntimeException("不能设置对象字段同时设置列表字段");
 
-            if (StringUtils.isNotBlank(dtoField.objField())) {
+//            int total = 0;
+//            if (dtoField.joinFields().length > 0) total++;
+//            if (StringUtils.isNotBlank(dtoField.objField())) total++;
+//            if (StringUtils.isNotBlank(dtoField.listField())) total++;
+//            if (StringUtils.isNotBlank(dtoField.dictField())) total++;
+//            if (1 != total) throw new RuntimeException("不能设置对象字段同时设置列表字段");
+
+            if (dtoField.joinFields().length > 0 &&
+                    StringUtils.isNotBlank(dtoField.joinFields()[0])) {
+                String value = "";
+                for (String fieldName : dtoField.joinFields()) {
+                    Field currObj = AnnotationUtils.getFieldByName(source, fieldName);
+                    if (null == currObj) continue;
+                    currObj.setAccessible(true);
+                    Object val = currObj.get(source);
+                    if (null == val) continue;
+                    if (java.util.Date.class == val.getClass()) {
+                        String date = DateUtils.formatDate((Date) val, "yyyy-MM-dd hh:mm:ss");
+                        value += dtoField.symbol() + date;
+                    } else {
+                        value += dtoField.symbol() + val;
+                    }
+                }
+                value = value.replaceFirst(dtoField.symbol(), "");
+                if (StringUtils.isNotBlank(value) &&
+                        StringUtils.isNotBlank(dtoField.suffix()))
+                    value += dtoField.symbol() + dtoField.suffix();
+                field.set(target, value);
+            } else if (StringUtils.isNotBlank(dtoField.objField())) {
                 String[] path = dtoField.objField().split("\\.");
                 Field currObj = source.getClass().getDeclaredField(path[0]);
                 if (null == currObj) continue;
                 currObj.setAccessible(true);
                 Object seq = currObj.get(source);
                 if (null != seq) {
-                    Field val =  AnnotationUtils.getFieldByName(seq,path[1]);
+                    Field val = AnnotationUtils.getFieldByName(seq, path[1]);
 //                    Field val = seq.getClass().getDeclaredField(path[1]);
                     val.setAccessible(true);
-                    field.set(t, val.get(seq));
+                    field.set(target, val.get(seq));
                 }
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 String[] dictInfo = dtoField.dictField().split("\\.");
@@ -92,20 +111,19 @@ public class DtoConverter {
                                 .eq(SysDictItem::getType, dictInfo[0])
                                 .eq(SysDictItem::getValue, (String) val));
 
-                if (null != dictItem) field.set(t, dictItem.getLabel());
+                if (null != dictItem) field.set(target, dictItem.getLabel());
 
             } else if (StringUtils.isNotBlank(dtoField.listField())) {
 
             }
         }
-        return (T) t;
+        return (T) target;
     }
 
     /**
-     *
-     * @param source  dto list
-     * @param clzz vo 类
-     * @param <T> vo 类
+     * @param source dto list
+     * @param clzz   vo 类
+     * @param <T>    vo 类
      * @return
      * @throws ClassNotFoundException
      * @throws NoSuchFieldException

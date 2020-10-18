@@ -15,6 +15,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DtoField {
+
+    String[] joinFields() default "";
+
     String objField() default "";
 
     String listField() default "";
@@ -22,4 +25,6 @@ public @interface DtoField {
     String dictField() default "";
 
     String symbol() default "-";
+
+    String suffix() default "";
 }
