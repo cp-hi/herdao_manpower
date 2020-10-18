@@ -46,4 +46,20 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
         return pageResult;
     }
 
+    @Override
+    public List<OperationLog> findOperationLog(OperationLog log, String searchText) {
+        QueryWrapper<OperationLog> wrapper = Wrappers.query(log);
+        if (StringUtils.isNotBlank(log.getModule())){
+            wrapper.eq("module",log.getModule());
+        }
+        if (StringUtils.isNotBlank(log.getExtraKey())){
+            wrapper.eq("extra_key",log.getExtraKey());
+        }
+        if (StringUtils.isNotBlank(searchText)){
+            wrapper.like("CONCAT(operated_time,operation,operator,content)", searchText);
+        }
+        List<OperationLog> list = super.list(wrapper);
+        return list;
+    }
+
 }
