@@ -9,7 +9,6 @@
        	 group_id as groupId ,parent_id as parentId from mp_post_seq where group_id = #{groupId}
     </select>
 
-
     <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
         <id column="id" property="id"/>
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
@@ -32,7 +31,8 @@
     </select>
 
     <select id="chkIsLeaf" parameterType="long" resultType="boolean">
-        select count(*) from  mp_post_seq where parent_id =  #{id}
+         select  (case when  exists (select * from  mp_post_seq
+         where parent_id = #{id} ) then 0 else 1 end) as isLeaf
     </select>
 
     <select id="chkDuplicatePostSeqCode" parameterType="postSeq" resultType="boolean">
