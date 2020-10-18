@@ -214,22 +214,10 @@ public class OperationLogAspect {
         Boolean stop = (Boolean) point.getArgs()[1];
         String msg = stop ? "停用" : "启用";
         ApiModel model = (ApiModel) entityClass.getAnnotation(ApiModel.class);
-        AnnotationUtils.setAnnotationInfo(operation, "objId", id.toString());
+        AnnotationUtils.setAnnotationInfo(operation, "operation", msg);
         AnnotationUtils.setAnnotationInfo(operation, "objId", id.toString());
         AnnotationUtils.setAnnotationInfo(operation, "clazz", entityClass);
-        AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
-
-//        OperationLog log = new OperationLog();
-//        SysUser sysUser = SysUserUtils.getSysUser();
-//
-//        log.setObjId(Long.valueOf(id.toString()));
-//        log.setOperation(operation);
-//        log.setOperatedTime(new Date());
-//        log.setContent(operation + " " + model.value());
-//        log.setOperator(sysUser.getUsername());
-//        log.setEntityClass(entityClass.getName());
-//        log.setOperatorId(sysUser.getUserId().longValue());
-//        operationLogService.save(log);
+        AnnotationUtils.setAnnotationInfo(operation, "content", msg + " " + model.value());
     }
 
 
@@ -274,7 +262,6 @@ public class OperationLogAspect {
             operationLogService.save(log);
         }
     }
-
 
 
     //endregion
