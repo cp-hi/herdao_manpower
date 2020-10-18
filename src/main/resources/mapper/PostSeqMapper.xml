@@ -4,25 +4,35 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper">
 
-    <select id="postSeqList"  resultType="map">
+    <select id="postSeqList" resultType="map">
        	select id,POST_SEQ_CODE AS code,POST_SEQ_NAME AS name,
        	 group_id as groupId ,parent_id as parentId from mp_post_seq where group_id = #{groupId}
     </select>
 
-    <resultMap id="postSeqMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
+
+    <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
+        <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
     </resultMap>
 
-    <select id="page" resultType="postSeq" parameterType="String">
+    <select id="page" resultMap="postSeqDTOMap" parameterType="String">
         <bind name="likeTxt" value="'%'+searchTxt+'%'"/>
         select * from mp_post_seq where post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt}
+    </select>
+
+    <select id="getPostCount" parameterType="long" resultType="int">
+         SELECT count(*) from mp_post   where post_seq_id = #{id}
+    </select>
+
+    <select id="chkIsLeaf" parameterType="long" resultType="int">
+        select count(*) from  mp_post_seq parent_id =  #{id}
     </select>
 
     <select id="chkDuplicatePostSeqCode" parameterType="postSeq" resultType="boolean">
          SELECT count(*) from mp_post_seq  where (#{id} is null or id != #{id}) and post_seq_code = #{postSeqCode}
     </select>
 
-    <select id="chkDuplicatePostSeqName" parameterType="postSeq" resultType="boolean" >
+    <select id="chkDuplicatePostSeqName" parameterType="postSeq" resultType="boolean">
         SELECT count(*) from mp_post_seq  where  (#{id} is null or id != #{id}) and post_seq_name = #{postSeqName}
     </select>
 

@@ -21,7 +21,6 @@ import java.util.List;
  * @Version 1.0
  */
 @Data
-//@EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "岗位DTO")
 public class PostDTO extends Post {
     @ApiModelProperty(value = "板块")
