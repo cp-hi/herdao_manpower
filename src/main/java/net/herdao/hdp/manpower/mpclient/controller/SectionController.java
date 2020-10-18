@@ -1,16 +1,18 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
-import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @ClassName SectionController
@@ -41,8 +43,11 @@ public class SectionController extends BaseController<Section> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, String searchTxt) {
-        return R.ok(sectionService.page(page, searchTxt));
+    public R<IPage<PostListDTO>> page(Page  page, String searchTxt) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        IPage p = sectionService.page(page, searchTxt);
+        List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
+        p.setRecords(vos);
+        return R.ok(p);
     }
 
 
