@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -148,4 +149,20 @@ public interface OrganizationService extends IService<Organization> {
      * @return
      */
     List<OrgChartDTO> selectOrgChartChild(Long id);
+
+    /**
+     * 新增组织架构图
+     *
+     * @param form
+     * @return boolean
+     */
+    boolean saveOrgChart(OrgChartFormDTO form);
+
+    /**
+     * 修改组织架构图
+     *
+     * @param form
+     * @return boolean
+     */
+    boolean editOrgChart(OrgChartFormDTO form);
 }

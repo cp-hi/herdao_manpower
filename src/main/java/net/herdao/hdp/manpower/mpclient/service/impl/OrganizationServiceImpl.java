@@ -17,6 +17,7 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
@@ -512,5 +513,19 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public List<OrgChartDTO> selectOrgChartChild(Long id){
         return baseMapper.selectOrgChartChild(id);
+    }
+
+    @Override
+    public boolean saveOrgChart(OrgChartFormDTO form){
+        Organization entity = new Organization();
+        BeanUtils.copyProperties(form, entity);
+        return this.save(entity);
+    }
+
+    @Override
+    public boolean editOrgChart(OrgChartFormDTO form){
+        Organization entity = new Organization();
+        BeanUtils.copyProperties(form, entity);
+        return this.updateById(entity);
     }
 }
