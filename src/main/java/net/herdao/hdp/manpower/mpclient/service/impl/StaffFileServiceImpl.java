@@ -27,14 +27,14 @@ public class StaffFileServiceImpl extends ServiceImpl<StaffFileMapper, StaffFile
     }
 
     @Override
-    @OperationEntity(operation = "保存或新增员工附件", clazz = StaffFile.class)
+    @OperationEntity(operation = "保存或新增", clazz = StaffFile.class)
     public boolean saveOrUpdate(StaffFile entity) {
         boolean status =  super.saveOrUpdate(entity);
         return status;
     }
 
     @Override
-    @OperationEntity(operation = "删除员工附件", clazz = StaffSecondFileType.class)
+    @OperationEntity(operation = "删除", clazz = StaffSecondFileType.class)
     public boolean delEntity(StaffFile entity) {
         boolean status =  super.removeById(entity);
         return status;

@@ -28,14 +28,14 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
     }
 
     @Override
-    @OperationEntity(operation = "保存员工附件二级分类", clazz = StaffSecondFileType.class)
+    @OperationEntity(operation = "保存或修改", clazz = StaffSecondFileType.class)
     public boolean saveOrUpdate(StaffSecondFileType entity) {
         boolean status= super.saveOrUpdate(entity);
         return status;
     }
 
     @Override
-    @OperationEntity(operation = "删除员工附件二级分类", clazz = StaffSecondFileType.class)
+    @OperationEntity(operation = "删除", clazz = StaffSecondFileType.class)
     public boolean delEntity(StaffSecondFileType entity) {
         boolean status= super.removeById(entity);
         return status;
