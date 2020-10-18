@@ -132,15 +132,32 @@ public class OperationLogAspect {
         for (Object arg : args) {
             if (arg != null) {
                 Object objId = null;
+                Object extraKey=null;
+                Object module=null;
                 if (arg instanceof BaseEntity) {
                     BaseEntity entity = (BaseEntity) arg;
-                    if (null != entity.getId() && 0 != entity.getId())
+                    if (null != entity.getId() && 0 != entity.getId()){
                         objId = entity.getId();
+                    }
+                    if (null != entity.getExtraKey()){
+                        extraKey = entity.getExtraKey();
+                    }
+                    if (null != entity.getExtraKey()){
+                        module = entity.getModule();
+                    }
                 } else {
                     objId = getTableIdValue(arg);
                 }
-                if (null != objId)
+                if (null != objId){
                     AnnotationUtils.setAnnotationInfo(operation, "objId", objId.toString());
+                }
+                if (null != extraKey){
+                    AnnotationUtils.setAnnotationInfo(operation, "extraKey", extraKey.toString());
+                }
+                if (null != module){
+                    AnnotationUtils.setAnnotationInfo(operation, "module", module.toString());
+                }
+
             }
         }
     }
@@ -150,10 +167,74 @@ public class OperationLogAspect {
 
     }
 
+
+
     @Before("pointDelete()")
     public void beforeDelete(JoinPoint point){
+        Method method = getJoinPointMethod(point);
+        OperationEntity operation = getOperationEntity(method);
+        if (0 == point.getArgs().length || null == operation)
+            return;
 
+        //保存前先验证数据
+        Object target = point.getTarget();
+        if (target instanceof EntityService)
+            ((EntityService) target).saveVerify(point.getArgs()[0]);
+
+        Object[] args = point.getArgs();
+         for (Object arg : args) {
+            if (arg != null && arg instanceof BaseEntity) {
+                Class clazz = arg.getClass();
+                AnnotationUtils.setAnnotationInfo(operation, "clazz", clazz);
+                ApiModel model = (ApiModel) clazz.getAnnotation(ApiModel.class);
+                AnnotationUtils.setAnnotationInfo(operation, "operation", "删除" + model.value());
+                if (StringUtils.isBlank(operation.content())){
+                    AnnotationUtils.setAnnotationInfo(operation, "content", "删除" + model.value());
+                }
+            }
+        }
     }
+
+
+    @After("pointDelete()")
+    public void afterDelete(JoinPoint point) {
+        OperationEntity operation = getOperationEntity(point);
+        if (null == operation || 0 == point.getArgs().length)
+            return;
+        Object[] args = point.getArgs();
+        for (Object arg : args) {
+            if (arg != null) {
+                Object objId = null;
+                Object extraKey=null;
+                Object module=null;
+                if (arg instanceof BaseEntity) {
+                    BaseEntity entity = (BaseEntity) arg;
+                    if (null != entity.getId() && 0 != entity.getId()){
+                        objId = entity.getId();
+                    }
+                    if (null != entity.getExtraKey()){
+                        extraKey = entity.getExtraKey();
+                    }
+                    if (null != entity.getExtraKey()){
+                        module = entity.getModule();
+                    }
+                } else {
+                    objId = getTableIdValue(arg);
+                }
+                if (null != objId){
+                    AnnotationUtils.setAnnotationInfo(operation, "objId", objId.toString());
+                }
+                if (null != extraKey){
+                    AnnotationUtils.setAnnotationInfo(operation, "extraKey", extraKey.toString());
+                }
+                if (null != module){
+                    AnnotationUtils.setAnnotationInfo(operation, "module", module.toString());
+                }
+
+            }
+        }
+    }
+
     //endregion
 
     //region 操作记录
@@ -176,6 +257,14 @@ public class OperationLogAspect {
             int index = Arrays.asList(signature.getParameterNames()).indexOf(operation.key());
             Object objId = point.getArgs()[index];
             log.setObjId(Long.valueOf(objId.toString()));
+        }
+
+        if (StringUtils.isNotBlank(operation.extraKey())){
+            log.setExtraKey(operation.extraKey());
+        }
+
+        if (StringUtils.isNotBlank(operation.module())){
+            log.setModule(operation.module());
         }
 
         if (null != log.getObjId()) {
