@@ -48,7 +48,14 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
     }
 
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "分页查询")
+    @ApiOperation(value = "分页查询", notes = "" +
+            /**
+             *             *pipelineName       字符串搜索
+             *             *current         当前页
+             *             *size           每页条数
+             *             typt 0 或空则查询  1 为下载
+             **/
+            "")
     public R page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
         return super.page(response, page, pipeline, type);
     }
