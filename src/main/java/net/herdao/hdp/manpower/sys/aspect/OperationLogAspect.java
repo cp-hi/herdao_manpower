@@ -265,7 +265,7 @@ public class OperationLogAspect {
         //重设注解属性值，避免带到下一个切面
         AnnotationUtils.setAnnotationInfo(operation, "operation", "");
         AnnotationUtils.setAnnotationInfo(operation, "objId", "");
-        AnnotationUtils.setAnnotationInfo(operation, "clazz", null);
+        /*AnnotationUtils.setAnnotationInfo(operation, "clazz", null);*/
         AnnotationUtils.setAnnotationInfo(operation, "content", "");
     }
 
