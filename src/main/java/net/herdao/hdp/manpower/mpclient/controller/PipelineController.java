@@ -47,6 +47,7 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
         return R.ok(pipelineService.pipelineList(groupId));
     }
 
+    @Override
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "" +
             /**
