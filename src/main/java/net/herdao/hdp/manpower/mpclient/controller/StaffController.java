@@ -26,8 +26,13 @@ import java.util.Map;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -72,7 +77,7 @@ import javax.servlet.http.HttpServletResponse;
 public class StaffController {
 
     private final  StaffService staffService;
-
+    
     /**
      * 分页查询
      * @param page 分页对象
@@ -205,6 +210,7 @@ public class StaffController {
     }
 
     /**
+     * author lift
      * 通过id查询员工工作情况
      * @param id id
      * @return R
@@ -217,9 +223,88 @@ public class StaffController {
         Map<String, Object> map = staffService.getStaffWork(id);
         return R.ok(map);
     }
+    
+    /**
+     * author lift
+     * 通过id查询工作情况-目前任职
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询工作情况-目前任职", notes = "通过id查询工作情况-目前任职")
+    @GetMapping("/getStaffWorkCurrentJob/{id}" )
+    public R<UserpostDTO> getStaffWorkCurrentJob(@PathVariable("id" ) Long id) {
+        Staff staff = staffService.getById(id);
+        UserpostDTO userpostDTO = staffService.getStaffWorkCurrentJob(id);
+        return R.ok(userpostDTO);
+    }
 
     /**
-     * Author lift
+     * author lift
+     * 通过id查询工作情况-异动情况
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询工作情况-异动情况", notes = "通过id查询工作情况-异动情况")
+    @GetMapping("/getStafftransaction/{id}" )
+    public R<List<StafftransactionDTO>> getStafftransaction(@PathVariable("id" ) Long id) {
+        List<StafftransactionDTO> stafftransactionDTOList = staffService.getStafftransaction(id);
+        return R.ok(stafftransactionDTOList);
+    }
+    
+    /**
+     * author lift
+     * 通过id查询工作情况-工作年限
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询工作情况-工作年限", notes = "通过id查询工作情况-工作年限")
+    @GetMapping("/getStaffWorkYear/{id}" )
+    public R<StaffWorkYearDTO> getStaffWorkYear(@PathVariable("id" ) Long id) {
+    	StaffWorkYearDTO staffWorkYearDTO = staffService.getStaffWorkYear(id);
+        return R.ok(staffWorkYearDTO);
+    }
+
+    /**
+     * author lift
+     * 通过id查询工作情况-工作经历
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询工作情况-工作经历", notes = "通过id查询工作情况-工作经历")
+    @GetMapping("/getStaffWorkexperience/{id}" )
+    public R<List<WorkexperienceDTO>> getWorkexperience(@PathVariable("id" ) Long id) {
+    	List<WorkexperienceDTO> workexperienceDTOList = staffService.getWorkexperienceDTO(id);
+        return R.ok(workexperienceDTOList);
+    }
+
+    /**
+     * author lift
+     * 通过id查询工作情况-实习记录
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询工作情况-实习记录", notes = "通过id查询工作情况-实习记录")
+    @GetMapping("/getStaffPractice/{id}" )
+    public R<StaffPracticeDTO> getStaffPractice(@PathVariable("id" ) Long id) {
+    	StaffPracticeDTO staffPracticeDTO = staffService.getStaffPractice(id);
+        return R.ok(staffPracticeDTO);
+    }
+
+    /**
+     * author lift
+     * 通过id查询工作情况-职称及职业资格
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询工作情况-职称及职业资格", notes = "通过id查询工作情况-职称及职业资格")
+    @GetMapping("/getStaffProTitle/{id}" )
+    public R<List<StaffProTitleDTO>> getStaffProTitle(@PathVariable("id" ) Long id) {
+    	List<StaffProTitleDTO> staffProTitleList = staffService.getStaffProTitle(id);
+        return R.ok(staffProTitleList);
+    }
+    
+    /**
+     * author lift
      * 修改员工工作年限
      * @param staffWorkYearDTO 工作年限
      * @return R
