@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,24 +35,24 @@ public class JobLevel extends BaseEntity<JobLevel> {
     }
 
     @NotBlank(message = "职级名称不能为空")
-    @ExcelProperty(value = "职级名称" )
+    @ExcelProperty(value = "职级名称")
     @ApiModelProperty(value = "职级名称")
     private String jobLevelName;
 
     @ApiModelProperty(value = "职级编码")
     private String jobLevelCode;
 
-    @ExcelProperty(value = "描述" )
+    @ExcelProperty(value = "描述")
     @ApiModelProperty(value = "描述")
     private String description;
 
-    @ApiModelProperty( "职等ID")
+    @ApiModelProperty("职等ID")
     private Long jobGradeId;
 
     @ApiModelProperty(value = "集团ID")
     private Long groupId;
 
-    @ExcelProperty(value = "排序" )
-    @ApiModelProperty(  "排序")
+    @ExcelProperty(value = "排序")
+    @ApiModelProperty("排序")
     private Integer sortNo;
 }

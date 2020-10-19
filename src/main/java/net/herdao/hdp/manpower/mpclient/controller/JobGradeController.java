@@ -51,11 +51,13 @@ public class JobGradeController extends BaseController<JobGrade> {
     }
 
     @GetMapping("/list")
-    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
-    public R list() {
-        return R.ok(jobGradeService.jobGradeList());
+    @ApiOperation(value = "职等列表", notes = "用于下拉列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "groupId", value = "集团id"),
+    })
+    public R list(Long groupId) {
+        return R.ok(jobGradeService.jobGradeList(  groupId));
     }
-
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")

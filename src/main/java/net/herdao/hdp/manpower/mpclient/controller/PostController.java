@@ -55,8 +55,6 @@ public class PostController extends BaseController<Post> {
     })
     public R page(Page page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = postService.page(page, post);
-//        List<PostDTO> records = p.getRecords();
-//        PostListDTO postListDTO = DtoConverter.dto2vo(p.getRecords().get(0), PostListDTO.class);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
         p.setRecords(vos);
         return R.ok(p);

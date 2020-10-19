@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.dto.jobLevel;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 
