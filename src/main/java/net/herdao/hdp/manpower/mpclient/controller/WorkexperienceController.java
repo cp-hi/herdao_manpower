@@ -110,10 +110,11 @@ public class WorkexperienceController extends BaseController<Workexperience> {
     @OperationEntity(operation = "员工工作经历分页" ,clazz = Workexperience.class )
     @ApiImplicitParams({
           @ApiImplicitParam(name="searchText",value="关键字搜索"),
+          @ApiImplicitParam(name="staffId",value="员工工号")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffWorkPage(Page page, String searchText) {
-        Page pageResult = workexperienceService.findStaffWorkPage(page, searchText);
+    public R findStaffWorkPage(Page page, String searchText,String staffId) {
+        Page pageResult = workexperienceService.findStaffWorkPage(page, searchText,staffId);
         return R.ok(pageResult);
     }
 
@@ -142,5 +143,31 @@ public class WorkexperienceController extends BaseController<Workexperience> {
         boolean flag = workexperienceService.updateWork(workexperience);
         return R.ok(flag);
     }
+
+    /**
+     * 导出员工工作经历Excel
+     * @param  response
+     * @param searchText
+     * @return R
+     */
+    @ApiOperation(value = "导出员工工作经历Excel", notes = "导出员工工作经历Excel")
+    @SysLog("导出员工工作经历" )
+    @PostMapping("/exportStaffWork")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="searchText",value="搜索关键字"),
+        @ApiImplicitParam(name="staffId",value="员工工号")
+    })
+    public R exportStaffWork(HttpServletResponse response, String searchText,String staffId) {
+        try {
+            List<WorkexperienceDTO> list = workexperienceService.findStaffWork(searchText,staffId);
+            ExcelUtils.export2Web(response, "员工工作经历", "员工工作经历表", WorkexperienceDTO.class,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ok("导出失败");
+        }
+
+        return R.ok("导出成功");
+    }
+
 
 }

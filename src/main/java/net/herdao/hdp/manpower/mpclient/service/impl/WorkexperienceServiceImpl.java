@@ -36,14 +36,14 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
 
 
     @Override
-    public Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, String searchText) {
-        Page<WorkexperienceDTO> pageResult = this.baseMapper.findStaffWorkPage(page, searchText);
+    public Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, String searchText, String staffId) {
+        Page<WorkexperienceDTO> pageResult = this.baseMapper.findStaffWorkPage(page, searchText,staffId);
         return pageResult;
     }
 
     @Override
-    public List<WorkexperienceDTO> findStaffWork(String searchText) {
-        List<WorkexperienceDTO> list = this.baseMapper.findStaffWork(searchText);
+    public List<WorkexperienceDTO> findStaffWork(String searchText,String staffId) {
+        List<WorkexperienceDTO> list = this.baseMapper.findStaffWork(searchText,staffId);
         return list;
     }
 

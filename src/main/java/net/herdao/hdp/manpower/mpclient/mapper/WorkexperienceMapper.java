@@ -42,16 +42,18 @@ public interface WorkexperienceMapper extends BaseMapper<Workexperience> {
      * 员工工作经历分页
      * @param page 分页对象
      * @param searchText 关键字搜索
+     * @param staffId 员工ID
      * @return
      */
-    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, @Param("searchText") String searchText);
+    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, @Param("searchText") String searchText,@Param("staffId") String staffId);
 
     /**
      * 员工工作经历
      * @param searchText 关键字搜索
+     * @param staffId 员工ID
      * @return
      */
-    List<WorkexperienceDTO> findStaffWork(@Param("searchText") String searchText);
+    List<WorkexperienceDTO> findStaffWork(@Param("searchText") String searchText,@Param("staffId") String staffId);
 
     /**
      * author

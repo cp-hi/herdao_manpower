@@ -5,34 +5,34 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper">
 
       <resultMap id="workexperienceMap" type="net.herdao.hdp.manpower.mpclient.entity.Workexperience">
-                  <id property="id" column="ID"/>
-                  <result property="oid" column="OID"/>
-                  <result property="period" column="PERIOD"/>
-                  <result property="companyName" column="COMPANY_NAME"/>
-                  <result property="post" column="POST"/>
-                  <result property="unitNature" column="UNIT_NATURE"/>
-                  <result property="subordinates" column="SUBORDINATES"/>
-                  <result property="creatorCode" column="CREATOR_CODE"/>
-                  <result property="createdTime" column="CREATED_TIME"/>
-                  <result property="creatorName" column="CREATOR_NAME"/>
-                  <result property="staffOid" column="STAFF_OID"/>
-                  <result property="staffId" column="STAFF_ID"/>
-                  <result property="mainPerformance" column="MAIN_PERFORMANCE"/>
-                  <result property="role" column="ROLE"/>
-                  <result property="backgroundChecks" column="BACKGROUND_CHECKS"/>
-                  <result property="orgName" column="ORG_NAME"/>
-                  <result property="endDate" column="END_DATE"/>
-                  <result property="beginDate" column="BEGIN_DATE"/>
-                  <result property="tenantId" column="TENANT_ID"/>
-                  <result property="field1" column="FIELD1"/>
-                  <result property="field2" column="FIELD2"/>
-                  <result property="field3" column="FIELD3"/>
-                  <result property="field4" column="FIELD4"/>
-                  <result property="field5" column="FIELD5"/>
-                  <result property="delFlag" column="DEL_FLAG"/>
-                  <result property="modifierCode" column="MODIFIER_CODE"/>
-                  <result property="modifiedTime" column="MODIFIED_TIME"/>
-                  <result property="modifierName" column="modifier_name"/>
+              <id property="id" column="ID"/>
+              <result property="oid" column="OID"/>
+              <result property="period" column="PERIOD"/>
+              <result property="companyName" column="COMPANY_NAME"/>
+              <result property="post" column="POST"/>
+              <result property="unitNature" column="UNIT_NATURE"/>
+              <result property="subordinates" column="SUBORDINATES"/>
+              <result property="creatorCode" column="CREATOR_CODE"/>
+              <result property="createdTime" column="CREATED_TIME"/>
+              <result property="creatorName" column="CREATOR_NAME"/>
+              <result property="staffOid" column="STAFF_OID"/>
+              <result property="staffId" column="STAFF_ID"/>
+              <result property="mainPerformance" column="MAIN_PERFORMANCE"/>
+              <result property="role" column="ROLE"/>
+              <result property="backgroundChecks" column="BACKGROUND_CHECKS"/>
+              <result property="orgName" column="ORG_NAME"/>
+              <result property="endDate" column="END_DATE"/>
+              <result property="beginDate" column="BEGIN_DATE"/>
+              <result property="tenantId" column="TENANT_ID"/>
+              <result property="field1" column="FIELD1"/>
+              <result property="field2" column="FIELD2"/>
+              <result property="field3" column="FIELD3"/>
+              <result property="field4" column="FIELD4"/>
+              <result property="field5" column="FIELD5"/>
+              <result property="delFlag" column="DEL_FLAG"/>
+              <result property="modifierCode" column="MODIFIER_CODE"/>
+              <result property="modifiedTime" column="MODIFIED_TIME"/>
+              <result property="modifierName" column="modifier_name"/>
       </resultMap>
 
 
@@ -55,46 +55,52 @@
                       f.MODIFIED_TIME,
                       f.CREATOR_NAME,
                       f.CREATED_TIME
-                      FROM  mp_workexperience f
+                 FROM  mp_workexperience f
                       LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
                       LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
                       where 1=1
                       and f.DEL_FLAG = 0
+                  <if test="staffId != null">
+                      and f.staff_id = #{staffId}
+                  </if>
               )t where 1=1
               <if test="searchText != null">
-              and CONCAT(
-                  t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
-                  t.COMPANY_NAME,t.ORG_NAME,t.POST,t.MAIN_PERFORMANCE,
-                  t.ROLE,t.SUBORDINATES,t.BACKGROUND_CHECKS,t.modifier_name,
-                  t.MODIFIED_TIME,t.CREATOR_NAME,t.CREATED_TIME
-              ) LIKE concat('%',#{searchText},'%')
-          </if>
+                  and CONCAT(
+                      t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
+                      t.COMPANY_NAME,t.ORG_NAME,t.POST,t.MAIN_PERFORMANCE,
+                      t.ROLE,t.SUBORDINATES,t.BACKGROUND_CHECKS,t.modifier_name,
+                      t.MODIFIED_TIME,t.CREATOR_NAME,t.CREATED_TIME
+                  ) LIKE concat('%',#{searchText},'%')
+              </if>
       </select>
 
     <!-- 员工工作经历-->
     <select id="findStaffWork" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO">
         select * from (
-        SELECT  f.id,
-            s.staff_name,
-            s.staff_code,
-            f.BEGIN_DATE,
-            f.END_DATE,
-            f.COMPANY_NAME,
-            f.ORG_NAME,
-            f.POST,
-            f.MAIN_PERFORMANCE,
-            f.ROLE,
-            f.SUBORDINATES,
-            f.BACKGROUND_CHECKS,
-            f.modifier_name,
-            f.MODIFIED_TIME,
-            f.CREATOR_NAME,
-            f.CREATED_TIME
-            FROM  mp_workexperience f
-            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
-            where 1=1
-            and f.DEL_FLAG = 0
+            SELECT  f.id,
+                    s.staff_name,
+                    s.staff_code,
+                    f.BEGIN_DATE,
+                    f.END_DATE,
+                    f.COMPANY_NAME,
+                    f.ORG_NAME,
+                    f.POST,
+                    f.MAIN_PERFORMANCE,
+                    f.ROLE,
+                    f.SUBORDINATES,
+                    f.BACKGROUND_CHECKS,
+                    f.modifier_name,
+                    f.MODIFIED_TIME,
+                    f.CREATOR_NAME,
+                    f.CREATED_TIME
+                FROM  mp_workexperience f
+                LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+                LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
+                where 1=1
+                and f.DEL_FLAG = 0
+                <if test="staffId != null">
+                    and f.staff_id = #{staffId}
+                </if>
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
