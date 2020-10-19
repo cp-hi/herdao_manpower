@@ -20,7 +20,7 @@
             and id = #{jobLevel.id}
         </if>
         <if test="jobLevel.jobGradeId != null">
-            and id = #{jobLevel.jobGradeId}
+            and job_grade_id = #{jobLevel.jobGradeId}
         </if>
         <if test="jobLevel.jobLevelName != null">
             <bind name="likeTxt" value="'%'+jobLevel.jobLevelName+'%'"/>
