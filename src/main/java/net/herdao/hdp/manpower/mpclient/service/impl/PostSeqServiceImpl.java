@@ -30,7 +30,7 @@ public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> impl
     }
 
     @Override
-    public IPage<PostSeqListDTO> page(Page<PostSeqListDTO> page, PostSeq postSeq) {
+    public IPage page(Page page, PostSeq postSeq) {
         return baseMapper.page(page, postSeq);
     }
 

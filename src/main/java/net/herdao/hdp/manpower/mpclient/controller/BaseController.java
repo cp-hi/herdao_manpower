@@ -33,6 +33,7 @@ import java.util.List;
  * @Version 1.0
  */
 //TODO 实现导出功能
+@Deprecated
 public class BaseController<T> {
 
     EntityService entityService;
@@ -129,7 +130,7 @@ public class BaseController<T> {
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "职级导入错误信息", "职级导入错误信息", getImportClass(), listener.getDataList());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getDataList());
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);

@@ -29,13 +29,12 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
 
     @Override
     public List<Map> sectionList(Long groupId) {
-        return baseMapper.sectionList(  groupId);
+        return baseMapper.sectionList(groupId);
     }
 
     @Override
-    public IPage<SectionListDTO> page(Page<SectionListDTO> page, Section Section) {
-
-        return baseMapper.query(page,   Section);
+    public IPage page(Page page, Section Section) {
+        return baseMapper.query(page, Section);
     }
 
     @Override

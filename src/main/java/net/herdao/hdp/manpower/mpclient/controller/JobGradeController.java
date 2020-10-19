@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -38,13 +39,13 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
-public class JobGradeController extends BaseController<JobGrade> {
+public class JobGradeController extends NewBaseController<JobGrade,JobGradeListDTO,JobGradeFormDTO> {
 
     private JobGradeService jobGradeService;
 
     @Autowired
     public void setEntityService(JobGradeService jobGradeService) {
-        super.entityService = jobGradeService;
+        super.newEntityService = jobGradeService;
     }
 
     @GetMapping("/list")
@@ -56,30 +57,15 @@ public class JobGradeController extends BaseController<JobGrade> {
         return R.ok(jobGradeService.jobGradeList(  groupId));
     }
 
+    @Override
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
-    public R page(Page page, JobGrade jobGrade) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        IPage p = jobGradeService.page(page, jobGrade);
-        List<JobGradeDTO> records = p.getRecords();
-        List<JobGradeListDTO> vos = DtoConverter.dto2vo(p.getRecords(), JobGradeListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
+    public R page(HttpServletResponse response, Page page, JobGrade jobGrade, Integer type)
+            throws Exception {
+        return super.page(response,page,jobGrade,type);
     }
 
-    @GetMapping("/formInfo/{id}")
-    @ApiOperation(value = "表单信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id"),
-    })
-    public R getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, NoSuchFieldException {
-        IPage p = jobGradeService.page(new Page(), new JobGrade(id));
-        JobGradeFormDTO data = null;
-        if (p.getRecords().size() > 0)
-            data = DtoConverter.dto2vo(p.getRecords().get(0), JobGradeFormDTO.class);
-        return R.ok(data);
-    }
+
 
 
 }

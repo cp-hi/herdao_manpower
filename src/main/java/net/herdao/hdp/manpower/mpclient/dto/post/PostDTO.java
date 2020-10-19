@@ -23,30 +23,30 @@ import java.util.List;
 @Data
 @ApiModel(value = "岗位DTO")
 public class PostDTO extends Post {
-    @ApiModelProperty(value = "板块")
+    @ApiModelProperty("板块")
     private Section section;
 
-    @ApiModelProperty(value = "管线")
+    @ApiModelProperty("管线")
     private Pipeline pipeline;
 
-    @ApiModelProperty(value = "职等")
+    @ApiModelProperty("职等")
     private JobGrade jobGrade;
 
-    @ApiModelProperty(value = "所属集团")
+    @ApiModelProperty("所属集团")
     private Group group;
 
-    @ApiModelProperty(value = "职级1")
+    @ApiModelProperty("职级1")
     private JobLevel jobLevel1;
 
-    @ApiModelProperty(value = "职级2")
+    @ApiModelProperty("职级2")
     private JobLevel jobLevel2;
 
-    @ApiModelProperty(value = "在职员工数")
+    @ApiModelProperty("在职员工数")
     private Integer postAuthorized;
 
-    @ApiModelProperty(value = "岗位编制")
+    @ApiModelProperty("岗位编制")
     private Integer onJobStaffs;
 
-    @ApiModelProperty(value = "岗位序列")
+    @ApiModelProperty("岗位序列")
     private PostSeqDTO postSeqDTO;
 }

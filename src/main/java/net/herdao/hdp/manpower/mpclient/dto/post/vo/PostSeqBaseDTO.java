@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "岗位序列管理-基础信息")
-public class PostSeqBaseDTO  {
+public class PostSeqBaseDTO {
 
     @ApiModelProperty("id")
     private Long id;
@@ -25,16 +25,16 @@ public class PostSeqBaseDTO  {
     @ApiModelProperty("岗位序列编码")
     private String postSeqCode;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 
-    @ApiModelProperty(value = "岗位数")
+    @ApiModelProperty("岗位数")
     private Integer postCount;
 
-    @ApiModelProperty(value = "创建情况")
+    @ApiModelProperty("创建情况")
     private String createdInfo;
 
-    @ApiModelProperty(value = "最近更新情况")
+    @ApiModelProperty("最近更新情况")
     private String lastUpdateInfo;
 
 

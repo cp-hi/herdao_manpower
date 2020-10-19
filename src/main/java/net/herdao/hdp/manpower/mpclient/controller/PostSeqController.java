@@ -27,14 +27,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/client/postSeq")
-public class PostSeqController extends BaseController<PostSeq> {
+public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,PostSeqFormDTO> {
 
     @Autowired
     PostSeqService postSeqService;
 
     @Autowired
     public void setEntityService(PostSeqService postSeqService) {
-        super.entityService = postSeqService;
+        super.newEntityService = postSeqService;
     }
 
     @GetMapping("/list")
@@ -58,29 +58,29 @@ public class PostSeqController extends BaseController<PostSeq> {
     }
 
 
-    @GetMapping("/formInfo/{id}")
-    @ApiOperation(value = "表单信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id"),
-    })
-    public R<PostSeqFormDTO> getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, NoSuchFieldException {
-        IPage p = postSeqService.page(new Page(), new PostSeq(id));
-        PostSeqFormDTO data = null;
-        if (p.getRecords().size() > 0)
-            data = DtoConverter.dto2vo(p.getRecords().get(0), PostSeqFormDTO.class);
-        return R.ok(data);
-    }
+//    @GetMapping("/formInfo/{id}")
+//    @ApiOperation(value = "表单信息")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "id"),
+//    })
+//    public R<PostSeqFormDTO> getFormInfo(@PathVariable Long id)
+//            throws InstantiationException, IllegalAccessException,
+//            ClassNotFoundException, NoSuchFieldException {
+//        IPage p = postSeqService.page(new Page(), new PostSeq(id));
+//        PostSeqFormDTO data = null;
+//        if (p.getRecords().size() > 0)
+//            data = DtoConverter.dto2vo(p.getRecords().get(0), PostSeqFormDTO.class);
+//        return R.ok(data);
+//    }
 
 
-    @PostMapping("savePostSeq")
-    @ApiOperation(value = "新增/修改岗位序列")
-    public R<PostSeqFormDTO> savePostSeq(@RequestBody PostSeqFormDTO postSeqFormDTO) {
-        PostSeq postSeq = new PostSeq();
-        BeanUtils.copyProperties(postSeqFormDTO, postSeq);
-        entityService.saveEntity(postSeq);
-        return R.ok(postSeqFormDTO);
-    }
+//    @PostMapping("savePostSeq")
+//    @ApiOperation(value = "新增/修改岗位序列")
+//    public R<PostSeqFormDTO> savePostSeq(@RequestBody PostSeqFormDTO postSeqFormDTO) {
+//        PostSeq postSeq = new PostSeq();
+//        BeanUtils.copyProperties(postSeqFormDTO, postSeq);
+//        entityService.saveEntity(postSeq);
+//        return R.ok(postSeqFormDTO);
+//    }
 
 }

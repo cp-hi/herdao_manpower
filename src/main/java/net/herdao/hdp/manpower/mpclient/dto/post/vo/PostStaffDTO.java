@@ -18,14 +18,14 @@ public class PostStaffDTO {
 
     //任职岗位、员工姓名、工号、手机号码、所在部门
 
-    @ExcelProperty(value = "任职岗位")
+    @ExcelProperty("任职岗位")
     private String postName;
-    @ExcelProperty(value = "员工姓名")
+    @ExcelProperty("员工姓名")
     private String staffName;
-    @ExcelProperty(value = "工号")
+    @ExcelProperty("工号")
     private String staffCode;
-    @ExcelProperty(value = "手机号码")
+    @ExcelProperty("手机号码")
     private String mobile;
-    @ExcelProperty(value = "所在部门")
+    @ExcelProperty("所在部门")
     private String orgName;
 }

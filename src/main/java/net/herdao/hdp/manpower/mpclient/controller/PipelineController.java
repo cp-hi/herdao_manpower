@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -27,15 +29,16 @@ import java.util.List;
  * @Version 1.0
  */
 @RestController
+@Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
-public class PipelineController extends BaseController<Pipeline> {
+public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO> {
 
     @Autowired
     private PipelineService pipelineService;
 
     @Autowired
     public void setEntityService(PipelineService pipelineService) {
-        super.entityService = pipelineService;
+        super.newEntityService = pipelineService;
     }
 
     @GetMapping("/list")
@@ -44,21 +47,17 @@ public class PipelineController extends BaseController<Pipeline> {
         return R.ok(pipelineService.pipelineList(groupId));
     }
 
+    @Override
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, Pipeline pipeline) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        IPage p = pipelineService.page(page, pipeline);
-        List<PipelineListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PipelineListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
-    }
-
-    @PostMapping("savePipeline")
-    @ApiOperation(value = "新增管线")
-    public R<PipelineFormDTO> savePipeline(@RequestBody PipelineFormDTO pipelineFormDTO) {
-        Pipeline pipeline = new Pipeline();
-        BeanUtils.copyProperties(pipelineFormDTO, pipeline);
-        entityService.saveEntity(pipeline);
-        return R.ok(pipelineFormDTO);
+    @ApiOperation(value = "分页查询", notes = "" +
+            /**
+             *             *pipelineName       字符串搜索
+             *             *current         当前页
+             *             *size           每页条数
+             *             typt 0 或空则查询  1 为下载
+             **/
+            "")
+    public R page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
+        return super.page(response, page, pipeline, type);
     }
 }

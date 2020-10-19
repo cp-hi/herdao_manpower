@@ -22,29 +22,29 @@ import java.util.Date;
 @ApiModel(value = "岗位明细")
 public class PostDetailDTO {
     //岗位名称、岗位编码、集团、板块、管线、职级、组织层级、创建时间
-    @ExcelProperty(value = "岗位名称")
+    @ExcelProperty("岗位名称")
     private String postName;
 
-    @ExcelProperty(value = "岗位编码")
+    @ExcelProperty("岗位编码")
     private String postCode;
 
-    @ExcelProperty(value = "集团")
+    @ExcelProperty("集团")
     private String groupName;
 
-    @ExcelProperty(value = "板块")
+    @ExcelProperty("板块")
     private String sectionName;
 
-    @ExcelProperty(value = "管线")
+    @ExcelProperty("管线")
     private String pipelineName;
 
-    @ExcelProperty(value = "职级")
+    @ExcelProperty("职级")
     private String jobLevelName;
 
     @ExcelIgnore
-    @ExcelProperty(value = "职等")
+    @ExcelProperty("职等")
     private String jobGradeName;
 
-    @ExcelProperty(value = "创建时间")
+    @ExcelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat("yyyy-MM-dd")
     private Date createdTime;

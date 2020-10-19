@@ -2,19 +2,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.google.common.collect.Lists;
-import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
-import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @ClassName NewEntityService

@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,32 +16,39 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
  * @Version 1.0
  */
 @Data
+@ExcelIgnoreUnannotated
 @ApiModel(value = "岗位序列管理-列表")
 public class PostSeqListDTO {
 
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "是否最末节点")
+    @ApiModelProperty("是否最末节点")
     private Boolean isLeaf;
 
+    @ExcelProperty("岗位序列名称")
     @ApiModelProperty("岗位序列名称")
     private String postSeqName;
 
+    @ExcelProperty("岗位序列编码")
     @ApiModelProperty("岗位序列编码")
     private String postSeqCode;
 
-    @ApiModelProperty(value = "描述")
+    @ExcelProperty("描述")
+    @ApiModelProperty("描述")
     private String description;
 
-    @ApiModelProperty(value = "岗位数")
+    @ExcelProperty("岗位数")
+    @ApiModelProperty("岗位数")
     private Integer postCount;
 
-    @ApiModelProperty(value = "创建情况")
+    @ExcelProperty("创建情况")
+    @ApiModelProperty("创建情况")
     @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "创建")
     private String createdInfo;
 
-    @ApiModelProperty(value = "最近更新情况")
+    @ExcelProperty("最近更新情况")
+    @ApiModelProperty("最近更新情况")
     @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdateInfo;
 }
