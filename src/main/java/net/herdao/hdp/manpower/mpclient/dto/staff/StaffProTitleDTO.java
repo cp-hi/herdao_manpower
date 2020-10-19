@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -90,4 +91,10 @@ public class StaffProTitleDTO {
      */
     @ApiModelProperty(value="预留字段5")
     private String field5;
+
+    /**
+     * 员工信息id
+     */
+    @ApiModelProperty(value="员工信息id")
+    private Long staffId;
 }
