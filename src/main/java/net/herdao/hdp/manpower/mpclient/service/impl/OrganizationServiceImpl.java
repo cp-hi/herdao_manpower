@@ -4,8 +4,10 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -25,12 +27,12 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
@@ -114,7 +116,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 		this.saveOrUpdate(organization);
 
-		return R.ok(null, "停用成功！");
+		return R.ok(null, ManpowerContants.DISABLE_SUCCESS);
 	}
     
     
@@ -134,7 +136,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		if (ObjectUtil.isNotEmpty(organizations)) {
 			organizations.forEach(organization -> {
 				// 当前组织下在职员工数
-				Integer countUser = userService.getCountUser(organization.getOrgCode());
+				Integer countUser = userService.getCountUser(organization.getOrgCode(), 0);
 
 				// 组织没有在职用户
 				if (countUser == 0) {
@@ -145,7 +147,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				}
 			});
 		}
-		return R.ok(null, "停用成功！");
+		return R.ok(null, ManpowerContants.DISABLE_SUCCESS);
 	}
     
     
@@ -172,7 +174,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		
 		this.saveOrUpdate(organization);
 		
-		return R.ok(null, "启用成功！");
+		return R.ok(null, ManpowerContants.ENABLE_SUCCESS);
 	}
     
     /**
@@ -199,7 +201,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 			});
 		}
 
-		return R.ok(null, "启用成功！");
+		return R.ok(null, ManpowerContants.ENABLE_SUCCESS);
 	}
 
 
@@ -308,53 +310,58 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R removeOrg(@RequestBody Organization condition) {
-        try {
-            List<Map<String, Long>> orgIds = new ArrayList<>();
-            //递归获取组织架构parentId
-            getRecursionParentIds(condition.getId(), orgIds,"removeOrg");
-
-            if (!orgIds.isEmpty()) {
-                List<Long> orgIdList = new ArrayList<>();
-                //删除标志
-                boolean delFlag = false;
-                for (Map<String, Long> maps : orgIds) {
-                    for (Long orgId : maps.values()) {
-                        orgIdList.add(orgId);
-                    }
-                }
-                Userpost userpost = new Userpost();
-                userpost.setOrgDeptIds(orgIdList);
-                //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
-                List<Userpost> userPostList = userpostService.findUserPost(userpost);
-                if (!userPostList.isEmpty()) {
-                    delFlag = true;
-                    log.error("删除组织失败,该组织及其下属组织有挂靠员工！");
-                    R.failed("删除组织失败,该组织及其下属组织有挂靠员工！");
-                }
-
-                //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
-                if (delFlag == true) {
-                    //遍历循环组织架构id
-                    for (Map<String, Long> maps : orgIds) {
-                        //停用组织及其下层组织
-                        for (Long orgId : maps.values()) {
-                            this.baseMapper.stopOrganById(orgId);
-                        }
-
-                        //组织需停用后才能删除 停用选中组织的所有下层组织
-                        for (Long orgId : maps.values()) {
-                            super.removeById(orgId);
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            log.error("删除组织失败,事务回滚！");
-            R.failed("删除组织失败,事务回滚！");
+    public R removeOrg(String ids) {
+    	
+    	StringBuffer message = new StringBuffer();
+    	
+    	if(StrUtil.isBlank(ids)) {
+    		return R.failed("请先选择要删除的组织！");
+    	}
+    	
+        String [] idAy = ids.split(ManpowerContants.EN_SEPARATOR);
+        
+        // 组织orgCode集合
+        List<String> orgCodes = new ArrayList<String>();
+        
+        for(int i=0; i<idAy.length; i++) {
+        	
+        	Long id = Long.parseLong(idAy[i]);
+        	
+        	Organization organization = this.getById(id);
+        	
+        	String orgCode = organization.getOrgCode();
+        	
+        	int countUser = userService.getCountUser(orgCode, null);
+        	
+        	if(countUser > 0) {
+        		String orgMsg = "组织：" + organization.getOrgName() + "， 用户数：" + countUser;
+        		message.append(message.length() > 0 ? (ManpowerContants.CH_SEPARATOR + orgMsg) : orgMsg);
+        	}
+        	
+        	orgCodes.add(orgCode);
         }
-
-        return R.ok("删除组织成功");
+        
+        if(message.length() > 0) {
+        	return R.failed("删除失败，包括离职人员、派遣员等， 以下组织存在人员信息：" + message);
+        }
+        
+        // 删除组织 TOTO 待使用脚本删除方式
+        Set<Organization> organizationSet = new HashSet<Organization>();
+        
+        for(int i=0; i<orgCodes.size(); i++) {
+        	List<Organization> organizations =  this.baseMapper.selectOrganizationByOrgCode(orgCodes.get(i));
+        	if(ObjectUtil.isNotEmpty(organizations)) {
+        		organizations.forEach(organization ->{
+        			organization.setDelFlag(true);
+        			organizationSet.add(organization);
+        		});
+        	}
+        }
+        // 批量逻辑删除
+        this.updateBatchById(organizationSet);
+        
+        return R.ok(null, ManpowerContants.DELETE_SUCCESS);
+        
     }
 
      /**

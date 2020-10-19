@@ -30,6 +30,11 @@
 		COUNT(us.id)
 	   FROM mp_user us 
 	   LEFT JOIN mp_organization org ON us.org_id = org.id
-	   WHERE us.is_stop = 0 AND org.org_code LIKE CONCAT(#{orgCode},'%')
+	   <where>
+	  		 AND org.org_code LIKE CONCAT(#{orgCode},'%')
+	  		 <if test="isStop != null">
+	  		 	AND us.is_stop = #{isStop}
+	  		 </if>
+	   </where>
     </select>
 </mapper>

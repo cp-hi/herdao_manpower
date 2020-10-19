@@ -72,10 +72,11 @@ public interface OrganizationService extends IService<Organization> {
 
     /**
      * 删除组织
-     * @param condition
-     * @return R
+     * 
+     * @param ids
+     * @return
      */
-     R removeOrg(@RequestBody Organization condition);
+    R removeOrg(String ids);
 
      
      /**

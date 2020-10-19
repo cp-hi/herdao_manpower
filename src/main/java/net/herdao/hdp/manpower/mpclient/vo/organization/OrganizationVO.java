@@ -86,7 +86,7 @@ public class OrganizationVO {
 	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
 	 */
 	@ApiModelProperty(value = "是否停用")
-	private Integer isStop;
+	private Boolean isStop;
 
 	/**
 	 * 是否虚拟组织（取值待确认）

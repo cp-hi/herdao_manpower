@@ -37,6 +37,6 @@ public interface UserMapper extends BaseMapper<User> {
 	 * @param orgCode
 	 * @return
 	 */
-	Integer getCountUser(@Param("orgCode") String orgCode);
+	Integer getCountUser(@Param("orgCode") String orgCode, @Param("isStop") Integer isStop);
 
 }

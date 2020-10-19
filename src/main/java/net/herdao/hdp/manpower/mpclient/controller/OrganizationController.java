@@ -161,7 +161,7 @@ public class OrganizationController {
     @OperationEntity(operation = "查询根组织架构树，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)" ,clazz = Organization.class )
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
+            @ApiImplicitParam(name="isStop",value="是否停用 值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部"),
             @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
     })
      public R findAllOrganizations(Integer isStop,Boolean isRoot) {
@@ -231,7 +231,7 @@ public class OrganizationController {
     @PostMapping("/findOrganization2LevelByCondition")
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="组织架构主键ID"),
-        @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
+        @ApiImplicitParam(name="isStop",value="是否停用  值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部 "),
         @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
     })
     public R findOrganization2LevelByCondition(@RequestBody Organization condition) {
@@ -239,18 +239,19 @@ public class OrganizationController {
     }
 
     /**
-     *
-     * 删除组织
-     * @param condition
-     * @return R
+     * @description  删除组织
+     * @modify      shuling
+     * @date        2020-10-19 16:26:45
+     * @param ids
+     * @return
      */
-    @ApiOperation(value = "删除组织", notes = "删除组织")
-    @SysLog("删除组织")
-    @PostMapping("/removeOrg")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
-    public R removeOrg(@RequestBody Organization condition) {
-        return orgService.removeOrg(condition);
-    }
+	@ApiOperation(value = "删除组织", notes = "删除组织")
+	@ApiImplicitParam(name = "ids", value = "组织id集合 例如： 1,2,3,4")
+	@SysLog("删除组织")
+	@PostMapping("/removeOrg")
+	public R removeOrg(String ids) {
+		return orgService.removeOrg(ids);
+	}
 
     /**
      * 点击展开组织架构树（默认两级） 分页查询
@@ -262,7 +263,7 @@ public class OrganizationController {
     @PostMapping("/getRecursionOrgByLevel")
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="isStop",value="是否停用 ： 0 停用，1启用（默认），3全部"),
+            @ApiImplicitParam(name="isStop",value="是否停用 ：值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部"),
             @ApiImplicitParam(name="orgTreeLevel",value="组织结构数层级(默认2级) （可选参数）"),
     })
     @OperationEntity(operation = "点击展开组织架构树（默认两级）" ,clazz = Organization.class )
@@ -296,7 +297,6 @@ public class OrganizationController {
     
     /**
 	 * @description 启用组织
-	 * 
      * @modify      shuling
      * @date        2020-10-18 10:26:45
      * @param       id

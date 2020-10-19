@@ -32,9 +32,10 @@ public interface UserService extends IService<User> {
 	/**
 	 * 统计组织员工数
 	 * 
-	 * @param orgCode
+	 * @param orgCode 组织code
+	 * @param isStop 是否停用 值：1 停用， 值：0 启用
 	 * @return
 	 */
-	public Integer getCountUser(String orgCode);
+	public Integer getCountUser(String orgCode, Integer isStop);
 
 }
