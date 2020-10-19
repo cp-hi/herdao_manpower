@@ -31,4 +31,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
+	@Override
+	public Integer getCountUser(String orgCode) {
+		return this.baseMapper.getCountUser(orgCode);
+	}
+
 }

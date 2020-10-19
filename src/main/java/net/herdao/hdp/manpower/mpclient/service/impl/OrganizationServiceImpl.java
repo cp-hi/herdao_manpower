@@ -1,38 +1,45 @@
 
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
-import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
+import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
+import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.util.*;
 
 /**
  * @author Andy
@@ -87,116 +94,113 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         List<Organization> list = this.baseMapper.selectOrganByCurrentOrgOid(id);
         return list;
     }
-
-
+    
     /**
-     * 组织启用/停用
-     * @param condition
-     * @return R
+     * 预停用组织 
      */
-    @ApiOperation(value = "组织启用/停用", notes = "组织启用/停用")
-    @SysLog("组织启用/停用")
+    @ApiOperation(value = "停用组织", notes = "停用组织")
+    @SysLog("预停用组织")
     @Override
-    @Transactional
-    public R startOrStopOrg(@RequestBody Organization condition) {
-        try {
-            //更新组织变更记录表
-            OrgModifyRecord record=new OrgModifyRecord();
-            record.setCurOrgId(condition.getId());
-            record.setCurOrgName(condition.getOrgName());
-            record.setCurOrgCode(condition.getOrgCode());
-            record.setCurOrgParentId(condition.getParentId());
-            record.setCurOrgTreeLevel(condition.getOrgTreeLevel());
-            record.setOperatorTime(new Date());
-            UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-            if (null != userInfo){
-                //操作人ID
-                record.setOperatorId(userInfo.getSysUser().getUserId().toString());
-                //操作人名称
-                record.setOperatorName(userInfo.getSysUser().getUsername());
-            }
-
-            // 是否停用 ： 0 停用 ，1启用（默认），3全部
-            //如果是启用操作，则直接启用当前组织。
-            if (null != condition && condition.getIsStop() == 1){
-                this.baseMapper.updateById(condition);
-
-                record.setOperateDesc("启用组织");
-                record.setEffectTime(condition.getStartDate());
-                return R.ok("组织的启用成功");
-            }
-
-            //如果是停用操作
-            if (null != condition && condition.getIsStop() == 0){
-                record.setOperateDesc("停用组织");
-                 record.setEffectTime(condition.getStopDate());
-
-                List<Map<String, Long>> orgIds = new ArrayList<>();
-                //递归获取组织架构parentId
-                getRecursionParentIds(condition.getId(), orgIds,"stopOrg");
-
-                if (!orgIds.isEmpty()) {
-                    List<Long> orgIdList = new ArrayList<>();
-                    //操作标志
-                    boolean operFlag = false;
-                    for (Map<String, Long> maps : orgIds) {
-                        for (Long orgId : maps.values()) {
-                            orgIdList.add(orgId);
-                        }
-                    }
-                    Userpost userpost = new Userpost();
-                    userpost.setOrgDeptIds(orgIdList);
-                    //查询该组织及其所有下层组织中任一个是否有挂靠的在职员工
-                    List<Userpost> userPostList = userpostService.findUserPost(userpost);
-                    if (!userPostList.isEmpty()) {
-                        log.error("停用组织失败,该组织及其下属组织有挂靠员工！");
-                        R.failed("停用组织失败,该组织及其下属组织有挂靠员工！");
-                        return R.ok("停用组织失败,该组织及其下属组织有挂靠员工！");
-                    }else{
-                        operFlag = true;
-                    }
-
-                    //如果该组织及其所有下层组织中任一个有挂靠的在职员工 则不能停用 更不能删除
-                    if (operFlag) {
-                        try {
-                            //遍历循环组织架构id
-                            for (Map<String, Long> maps : orgIds) {
-                                //停用组织及其下层组织
-                                for (Long orgId : maps.values()) {
-                                    //更新该组织的停用日期 设置为停用状态
-                                    Organization updateCondition=new Organization();
-                                    updateCondition.setId(orgId);
-                                    updateCondition.setIsStop(0);
-                                    if(null != condition.getStopDate()){
-                                        updateCondition.setStopDate(condition.getStopDate());
-                                    }
-
-                                    this.baseMapper.updateById(updateCondition);
-                                }
-                            }
-
-                            //更新组织变更记录表
-                            orgModifyRecordService.update();
-
-                        }catch (Exception ex){
-                            log.error("组织的停用失败");
-                            return R.failed("组织的停用失败");
-                        }
-
-                        return R.ok("组织的停用成功");
-                    }
-                }
-            }
-
-            //更新组织变更记录表
-            orgModifyRecordService.save(record);
-        }catch (Exception ex){
-            log.error("组织启用/停用失败",ex);
-            return R.failed("组织启用/停用失败");
-        }
-
-        return R.ok("组织的停用成功");
+    @Transactional(rollbackFor = Exception.class)
+    public R expectedDisable(Long id, String stopDateStr) {
+    	
+       Organization organization = this.getById(id);
+       
+       // 设置停用日期
+       organization.setStopDate(DateUtil.parseDate(stopDateStr));
+       // 设置为停用 TOTO 后期关联定时任务
+       organization.setIsStop(0);
+       
+       this.saveOrUpdate(organization);
+       
+       return R.ok(null, "停用成功！");
     }
+    
+    
+    /**
+     * 停用组织 
+     */
+    @ApiOperation(value = "停用组织", notes = "停用组织")
+    @SysLog("停用组织")
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+	public R disable() {
+    	// 停用状态
+    	Integer status = 0;
+		// 查询待停用的组织信息
+		List<Organization> organizations = this.lambdaQuery().le(Organization::getStopDate, DateUtil.parseDate(DateUtil.formatDate(new Date())))
+											   .ne(Organization::getIsStop, status).list();
+		if (ObjectUtil.isNotEmpty(organizations)) {
+			organizations.forEach(organization -> {
+				// 当前组织下在职员工数
+				Integer countUser = userService.getCountUser(organization.getOrgCode());
+
+				// 组织没有在职用户
+				if (countUser == 0) {
+					// 设置为停用 TOTO 后期关联定时任务
+					organization.setIsStop(status);
+
+					this.saveOrUpdate(organization);
+				}
+			});
+		}
+		return R.ok(null, "停用成功！");
+	}
+    
+    
+    /**
+     * 预启用组织
+     */
+    @ApiOperation(value = "启用组织", notes = "启用组织")
+    @SysLog("预启用组织")
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+	public R expectedEnable(Long id, String startDateStr) {
+    	// 启用状态
+    	Integer status = 1;
+    	
+		Organization organization = this.getById(id);
+
+		// 设置停用日期
+		organization.setStopDate(null);
+
+		// 设置启用
+		organization.setStopDate(DateUtil.parseDate(startDateStr));
+		// 设置为启用 TOTO 后期关联定时任务
+		organization.setIsStop(status);
+		
+		this.saveOrUpdate(organization);
+		
+		return R.ok(null, "启用成功！");
+	}
+    
+    /**
+     * 启用组织
+     */
+    @ApiOperation(value = "启用组织", notes = "启用组织")
+    @SysLog("启用组织")
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+	public R enable() {
+    	
+    	// 启用状态
+    	Integer status = 1;
+    	
+    	// 查询待启用的组织信息
+    	List<Organization> organizations = this.lambdaQuery().le(Organization::getStartDate, DateUtil.parseDate(DateUtil.formatDate(new Date())))
+    												   .ne(Organization::getIsStop, status).list();
+    	
+    	if (ObjectUtil.isNotEmpty(organizations)) {
+			organizations.forEach(organization -> {
+				// 设置为停用 TOTO 后期关联定时任务
+				organization.setIsStop(status);
+
+				this.saveOrUpdate(organization);
+			});
+		}
+
+		return R.ok(null, "启用成功！");
+	}
 
 
     @SysLog("递归获取组织架构parentId")
@@ -411,7 +415,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	Long parentId = organizationVO.getParentId();
     	
     	Organization parentOrganization = ObjectUtil.isNull(parentId) ? null : this.getById(parentId);
-
+    	
     	if(StrUtil.isBlank(organization.getOrgCode())) {
     		
     		// 设置组织编码
@@ -438,6 +442,31 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		organization.setStartDate(DateUtil.date());
     	}
     	
+    	if(ObjectUtil.isNotNull(id) && ObjectUtil.isNotNull(parentId)) {
+    		
+    		Organization tpOrganization = this.getById(id);
+    		// 更新了父组织
+    		if(!organization.getParentId().equals(tpOrganization.getParentId())) {
+    			List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(tpOrganization.getOrgCode());
+    			if(ObjectUtil.isNotEmpty(organizations)) {
+    				
+    				// 更新组织orgCode、orgFullname
+    				organizations.forEach(org ->{
+    					// 校验是否存在父组织
+    					if(ObjectUtil.isNull(parentOrganization)) {
+    						org.setOrgCode(org.getOrgCode().replaceFirst(tpOrganization.getOrgCode(), organization.getOrgCode()));
+        					org.setOrgFullname(org.getOrgFullname().replaceFirst(tpOrganization.getOrgFullname(), organization.getOrgFullname()));
+    					}else {
+    						org.setOrgCode(org.getOrgCode().replaceFirst(tpOrganization.getOrgCode(), parentOrganization.getOrgCode()));
+        					org.setOrgFullname(org.getOrgFullname().replaceFirst(tpOrganization.getOrgFullname(), parentOrganization.getOrgFullname()));
+    					}
+    				});
+    				
+    				this.updateBatchById(organizations);
+    			}
+    		}
+    	}
+    	
     	// 操作日志信息 TODO 需求待定
     	OrgModifyRecord orgModifyRecord = new OrgModifyRecord();
     	
@@ -448,17 +477,16 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	return R.ok(organization);
     }
     
-    
    /**
     * @description 获取组织编码 
     * @author      shuling
     * @date        2020-10-18 10:37:22
-    * @param    parentId
+    * @param       parentId
     * @return
     */
 	String getOrgCode(Long parentId) {
 
-		// 数据库最大组织编码
+		// 最大组织编码
 		String maxOrgCode = this.baseMapper.getMaxOrgCode(parentId);
 		
 		// 首次新增 默认 001
@@ -472,26 +500,26 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * @description 设置 组织编码、组织名称全路径 例如：orgFullname /广东省/广州市/天河区
 	 * @author      shuling
 	 * @date        2020-10-18 10:42:29
-	 * @param organization
-	 * @param parentOrganization
+	 * @param       organization
+	 * @param       parentOrganization
 	 */
     void setOrgFullCodeAndOrgFullName(Organization organization, Organization parentOrganization) {
     	
     	String pathSeparator = "/";
     	
     	if(ObjectUtil.isNull(parentOrganization)) {
+    		
     		// 取当前组织信息
     		organization.setOrgFullname(pathSeparator + organization.getOrgName());
-    		organization.setOrgFullCode(pathSeparator + organization.getOrgCode());
     	}else {
+    		
     		// 父orgFull + org
     		organization.setOrgFullname(parentOrganization.getOrgName() + pathSeparator + organization.getOrgName());
-    		organization.setOrgFullCode(parentOrganization.getOrgCode() + pathSeparator + organization.getOrgCode());
     	}
     }
     
 	@Override
-	public R<?> selectOrganizations() {
+	public R<List<OrganizationComponentVO>> selectOrganizations() {
 		String searchText = "";
 		return R.ok(this.baseMapper.selectOrganizations(searchText));
 	}
