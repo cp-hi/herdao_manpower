@@ -6,14 +6,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +71,16 @@ public class PostSeqController extends BaseController<PostSeq> {
         if (p.getRecords().size() > 0)
             data = DtoConverter.dto2vo(p.getRecords().get(0), PostSeqFormDTO.class);
         return R.ok(data);
+    }
+
+
+    @PostMapping("savePostSeq")
+    @ApiOperation(value = "新增/修改岗位序列")
+    public R<PostSeqFormDTO> savePostSeq(@RequestBody PostSeqFormDTO postSeqFormDTO) {
+        PostSeq postSeq = new PostSeq();
+        BeanUtils.copyProperties(postSeqFormDTO, postSeq);
+        entityService.saveEntity(postSeq);
+        return R.ok(postSeqFormDTO);
     }
 
 }

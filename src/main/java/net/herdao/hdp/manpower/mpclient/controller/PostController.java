@@ -166,11 +166,12 @@ public class PostController extends BaseController<Post> {
     }
 
     @PostMapping("savePost")
-    @ApiOperation(value = "保存", notes = "保存")
+    @ApiOperation(value = "新增/修改岗位")
     public R<PostFormDTO> savePost(@RequestBody PostFormDTO postFormDTO) {
         Post post = new Post();
         BeanUtils.copyProperties(postFormDTO, post);
         entityService.saveEntity(post);
         return R.ok(postFormDTO);
     }
+
 }

@@ -112,8 +112,8 @@ public class BaseController<T> {
         return R.ok(entityService.getStatus(id));
     }
 
-    @ApiOperation("导入")
-    @SysLog("导入")
+    @ApiOperation("批量新增/修改")
+    @SysLog("批量新增/修改")
     @PostMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),

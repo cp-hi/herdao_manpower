@@ -2,13 +2,17 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,11 +46,19 @@ public class PipelineController extends BaseController<Pipeline> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, @RequestBody Pipeline pipeline) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public R page(Page page, Pipeline pipeline) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         IPage p = pipelineService.page(page, pipeline);
         List<PipelineListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PipelineListDTO.class);
         p.setRecords(vos);
         return R.ok(p);
     }
 
+    @PostMapping("savePipeline")
+    @ApiOperation(value = "新增管线")
+    public R<PipelineFormDTO> savePipeline(@RequestBody PipelineFormDTO pipelineFormDTO) {
+        Pipeline pipeline = new Pipeline();
+        BeanUtils.copyProperties(pipelineFormDTO, pipeline);
+        entityService.saveEntity(pipeline);
+        return R.ok(pipelineFormDTO);
+    }
 }
