@@ -605,7 +605,21 @@
             o.ORG_NAME,
             o.org_charge_name,
             o.org_charge_work_no,
-            f.MOBILE
+            f.MOBILE,
+            	CASE (
+                        SELECT
+                            count(1)
+                        FROM
+                            mp_organization o1
+                        WHERE
+                            o1.PARENT_ID = o.ID
+                    )
+                WHEN 0 THEN
+                    FALSE
+                ELSE
+                    TRUE
+                END
+            as has_child
         FROM
             mp_organization o
         LEFT JOIN mp_staff f ON o.org_charge_work_no = f.STAFF_CODE

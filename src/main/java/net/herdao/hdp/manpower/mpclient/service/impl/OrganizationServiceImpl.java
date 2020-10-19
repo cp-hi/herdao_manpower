@@ -305,7 +305,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     /**
      * 删除组织
-     * @param condition
+     * @param ids
      * @return R
      */
     @Override

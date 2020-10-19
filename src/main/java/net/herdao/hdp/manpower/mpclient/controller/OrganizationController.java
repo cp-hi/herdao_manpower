@@ -384,7 +384,7 @@ public class OrganizationController {
      */
     @ApiOperation(value = "查询组织下所有人员")
     @GetMapping("/getOrgStaffAll")
-    public R selectOrgStaffAll(Page page, String orgCode) {
+    public R<Page> selectOrgStaffAll(Page page, String orgCode) {
         page = page.setRecords(orgService.selectOrgStaffAll(page, orgCode));
         return R.ok(page);
     }
