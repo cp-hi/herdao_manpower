@@ -83,7 +83,7 @@ public class OrganizationVO {
 	private String sortNo;
 
 	/**
-	 * 是否停用（值：0 停用 、值：1 启用 、值：3 或者 NULL 查询全部）
+	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
 	 */
 	@ApiModelProperty(value = "是否停用")
 	private Integer isStop;

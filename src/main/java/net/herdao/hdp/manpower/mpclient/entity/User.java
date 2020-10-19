@@ -84,7 +84,7 @@ private static final long serialVersionUID = 1L;
     @ExcelIgnore
     private Long orgDeptId;
     /**
-     * 是否停用
+     * 是否停用 值：1 停用， 值：0 启用
      */
     @ApiModelProperty(value="是否停用")
     @ExcelIgnore

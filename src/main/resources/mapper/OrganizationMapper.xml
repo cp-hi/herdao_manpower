@@ -411,7 +411,7 @@
 
     <update id="stopOrganById" >
           UPDATE mp_organization m
-            SET m.IS_STOP = 0
+            SET m.IS_STOP = 1
             WHERE 1=1
             <if test="id != null">
                 AND  id = #{id}
@@ -420,7 +420,7 @@
 
     <update id="startOrganById" >
         UPDATE mp_organization m
-        SET m.IS_STOP = 1
+        SET m.IS_STOP = 0
         WHERE 1=1
         <if test="id != null">
             AND  id = #{id}
@@ -507,9 +507,9 @@
                     org.start_date,  -- 启用日期
                     org.stop_date,  -- 停用日期
                     CASE
-                        WHEN org.IS_STOP = 0 THEN
-                        '否'
                         WHEN org.IS_STOP = 1 THEN
+                        '否'
+                        WHEN org.IS_STOP = 0 THEN
                         '是'
                     END enableStatus
                     FROM

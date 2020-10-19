@@ -84,8 +84,6 @@ public class OrganizationController {
         return R.ok(result);
     }
     
-    
-    
     /**
      * 新增组织
      * @author  shuling
@@ -250,7 +248,6 @@ public class OrganizationController {
     @SysLog("删除组织")
     @PostMapping("/removeOrg")
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
-    @Transactional
     public R removeOrg(@RequestBody Organization condition) {
         return orgService.removeOrg(condition);
     }
@@ -274,26 +271,49 @@ public class OrganizationController {
     }
 
     /**
-     * 组织启用/停用
-     * @param condition
-     * @return R
+     * 
+     * @description 停用组织，当组织下无在职员工，方能停用组织，组织停用后，员工入职、转正、调职将不能使用该组织<br>
+     *              组织停用后，才能操作删除组织，但组织变更记录不能删除
+     *              组织停用后，将变更停用日期为当前时间
+     *              组织启用后，将变更启用日期为当前时间
+     * @modify      shuling
+     * @date        2020-10-18 10:26:45
+     * @param       id
+     * @param       stopDateStr
+     * @return
      */
-    @ApiOperation(value = "组织启用/停用", notes = "组织启用/停用")
-    @SysLog("组织启用/停用")
-    @PostMapping("/startOrStopOrg")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
-    @Transactional
-    public R startOrStopOrg(@RequestBody Organization condition) {
-        /*组织启用/停用
-        当组织下无在职员工，方能停用组织，组织停用后，员工入职、转正、调职将不能使用该组织
-        组织停用后，才能操作删除组织，但组织变更记录不能删除
-        组织停用后，将变更停用日期为当前时间
-        组织启用后，将变更启用日期为当前时间*/
-        R result = orgService.startOrStopOrg(condition);
-        return result;
+    @ApiOperation(value = "停用组织", notes = "停用组织")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="组织id"),
+        @ApiImplicitParam(name="stopDateStr",value="停用日期 例如： 2020-10-19")
+    })
+    @SysLog("停用组织")
+    @PutMapping("/disable")
+    public R disable(Long id, String stopDateStr) {
+        return orgService.expectedDisable(id, stopDateStr);
     }
-
-
+    
+    
+    /**
+	 * @description 启用组织
+	 * 
+     * @modify      shuling
+     * @date        2020-10-18 10:26:45
+     * @param       id
+     * @param       startDateStr
+     * @return
+     */
+    @ApiOperation(value = "启用组织", notes = "启用组织")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="组织id"),
+        @ApiImplicitParam(name="startDateStr",value="启用日期 例如： 2020-10-19")
+    })
+    @SysLog("启用组织")
+    @PutMapping("/enable")
+    public R enable(Long id, String startDateStr) {
+        return orgService.expectedEnable(id, startDateStr);
+    }
+    
     /**
      * 分页查询组织架构
      * @param page 分页对象
@@ -323,7 +343,6 @@ public class OrganizationController {
     @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
     @PostMapping("/batchImportOrg")
     @ResponseBody
-    @Transactional
     public R batchImportOrg(@RequestParam(value = "file") MultipartFile file){
         try {
             //生成导出批次ID

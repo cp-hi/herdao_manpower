@@ -115,13 +115,12 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, StaffRpVO.class, listener).sheet().doRead();
             IOUtils.closeQuietly(inputStream);
-
-
         } catch (Exception ex) {
             ExcelUtils.export2Web(response, "员工奖惩错误信息", "员工奖惩错误信息", StaffRpVO.class, listener.getDataList());
-            return R.failed(ex.getMessage());
+           /* return R.failed(ex.getMessage());*/
         }
 
-        return R.ok("easyexcel读取上传文件成功");
+        /*return R.ok("easyexcel读取上传文件成功");*/
+        return null;
      }
 }
