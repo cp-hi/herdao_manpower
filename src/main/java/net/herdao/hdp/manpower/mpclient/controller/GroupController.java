@@ -74,7 +74,7 @@ public class GroupController {
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
+    public R<GroupDetailDTO> getById(@PathVariable("id" ) Long id) {
         return R.ok(groupService.getGroupById(id));
     }
 
@@ -87,7 +87,7 @@ public class GroupController {
     @SysLog("新增集团表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_add')" )
-    public R save(@RequestBody GroupDetailDTO group) {
+    public R<Boolean> save(@RequestBody GroupDetailDTO group) {
         return R.ok(groupService.groupSave(group));
     }
 
@@ -100,7 +100,7 @@ public class GroupController {
     @SysLog("修改集团表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_edit')" )
-    public R updateById(@RequestBody GroupDetailDTO group) {
+    public R<Boolean> updateById(@RequestBody GroupDetailDTO group) {
         return R.ok(groupService.groupUpdate(group));
     }
 
@@ -113,7 +113,7 @@ public class GroupController {
     @SysLog("通过id删除集团表" )
     @DeleteMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_del')" )
-    public R removeById(@PathVariable Long id) {
+    public R<Boolean> removeById(@PathVariable Long id) {
         return R.ok(groupService.removeById(id));
     }
 

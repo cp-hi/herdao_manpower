@@ -20,7 +20,6 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +45,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -75,13 +73,6 @@ public class StaffController {
 
     private final  StaffService staffService;
 
-    private final WorkexperienceService workexperienceService;
-
-    private final  StafftransactionService stafftransactionService;
-
-    private final UserpostService userpostService;
-
-    private final  StaffPracticeService staffPracticeService;
     /**
      * 分页查询
      * @param page 分页对象
@@ -143,7 +134,7 @@ public class StaffController {
     @ApiOperation("导入")
     @SysLog("导入")
     @PostMapping("/import")
-    public R importExcel(MultipartFile file, String editType){
+    public R<String> importExcel(MultipartFile file, String editType){
         System.out.println(editType);
         try {
             EasyExcel.read(file.getInputStream(), StaffDTO.class,
@@ -173,7 +164,7 @@ public class StaffController {
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
+    public R<StaffDetailDTO> getById(@PathVariable("id" ) Long id) {
         return R.ok(staffService.getStaffById(id));
     }
 
@@ -262,7 +253,7 @@ public class StaffController {
     @SysLog("修改员工表" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
-    public R updateById(@RequestBody StaffDetailDTO staffForm) {
+    public R<Boolean> updateById(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffUpdate(staffForm));
     }
 
@@ -275,7 +266,7 @@ public class StaffController {
     @SysLog("通过id删除员工表" )
     @DeleteMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_del')" )
-    public R removeById(@PathVariable Long id) {
+    public R<Boolean> removeById(@PathVariable Long id) {
         return R.ok(staffService.removeById(id));
     }
     
