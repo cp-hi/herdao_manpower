@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface PostService extends NewEntityService<Post> {
 
-    IPage<PostListDTO> page(Page<PostListDTO> page, Post post);
+    IPage  page(Page page, Post post);
 
     /**
      * 岗位列表
