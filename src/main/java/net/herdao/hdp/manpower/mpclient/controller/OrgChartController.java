@@ -7,11 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author yangrr
@@ -35,7 +38,7 @@ public class OrgChartController {
     @ApiOperation(value = "根据id获取根节点", notes = "根据id获取根节点")
     @GetMapping("/root/{id}")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R selectOrgChartRoot(@PathVariable("id" ) Long id) {
+    public R<OrgChartDTO> selectOrgChartRoot(@PathVariable("id" ) Long id) {
         return R.ok(organizationService.selectOrgChartRoot(id));
     }
 
@@ -48,7 +51,7 @@ public class OrgChartController {
     @ApiOperation(value = "根据id获取子节点", notes = "根据id获取子节点")
     @GetMapping("/child/{id}")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R selectOrgChartChild(@PathVariable("id" ) Long id) {
+    public R<List<OrgChartDTO>> selectOrgChartChild(@PathVariable("id" ) Long id) {
         return R.ok(organizationService.selectOrgChartChild(id));
     }
 
@@ -62,7 +65,7 @@ public class OrgChartController {
     @SysLog("新增组织架构图" )
     @PostMapping("/save")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R saveOrgChart(@RequestBody OrgChartFormDTO form) {
+    public R<Boolean> saveOrgChart(@RequestBody OrgChartFormDTO form) {
         return R.ok(organizationService.saveOrgChart(form));
     }
 
@@ -76,7 +79,7 @@ public class OrgChartController {
     @SysLog("修改组织架构图" )
     @PutMapping("/edit")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R editOrgChart(@RequestBody OrgChartFormDTO form) {
+    public R<Boolean> editOrgChart(@RequestBody OrgChartFormDTO form) {
         return R.ok(organizationService.editOrgChart(form));
     }
 
@@ -89,7 +92,7 @@ public class OrgChartController {
     @ApiOperation(value = "根据id获取编辑数据", notes = "根据id获取编辑数据")
     @GetMapping("/editQuery/{id}")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
-    public R getById(@PathVariable("id" ) Long id) {
+    public R<OrgChartFormDTO> getById(@PathVariable("id" ) Long id) {
         Organization entity = organizationService.getById(id);
         OrgChartFormDTO form = new OrgChartFormDTO();
         BeanUtils.copyProperties(entity, form);

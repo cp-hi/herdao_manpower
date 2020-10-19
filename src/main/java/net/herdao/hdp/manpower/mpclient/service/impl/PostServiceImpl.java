@@ -68,14 +68,25 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Integer probation = 0;//试用
         Integer authorized = 0;//编制
 
-        map.put("onJobs", new HashMap() {{  put("name", "在职");   put("value", onJobs);  }});//在职
-        map.put("interns", new HashMap() {{  put("name", "实习");   put("value", interns);  }});//实习
-        map.put("fullTimes", new HashMap() {{  put("name", "全职");   put("value", fullTimes);  }});//全职
-        map.put("partTimes", new HashMap() {{  put("name", "兼职");   put("value", partTimes);  }});//兼职
-        map.put("exchanges", new HashMap() {{  put("name", "交流");   put("value", exchanges);  }});//交流
-        map.put("probation", new HashMap() {{  put("name", "试用");   put("value", probation);  }});//试用
-        map.put("authorized", new HashMap() {{  put("name", "编制");   put("value", authorized);  }});//编制
+//        map.put("onJobs", new HashMap() {{  put("name", "在职");   put("value", onJobs);  }});//在职
+//        map.put("interns", new HashMap() {{  put("name", "实习");   put("value", interns);  }});//实习
+//        map.put("fullTimes", new HashMap() {{  put("name", "全职");   put("value", fullTimes);  }});//全职
+//        map.put("partTimes", new HashMap() {{  put("name", "兼职");   put("value", partTimes);  }});//兼职
+//        map.put("exchanges", new HashMap() {{  put("name", "交流");   put("value", exchanges);  }});//交流
+//        map.put("probation", new HashMap() {{  put("name", "试用");   put("value", probation);  }});//试用
+//        map.put("authorized", new HashMap() {{  put("name", "编制");   put("value", authorized);  }});//编制
 
+        List<Map> staffInfo = new ArrayList<>();
+        staffInfo.add(new HashMap() {{  put("name", "在职");   put("value", onJobs);  }});
+        staffInfo.add(new HashMap() {{  put("name", "实习");   put("value", interns);  }});
+        staffInfo.add(new HashMap() {{  put("name", "全职");   put("value", fullTimes);  }});
+        staffInfo.add(new HashMap() {{  put("name", "兼职");   put("value", partTimes);  }});
+        staffInfo.add(new HashMap() {{  put("name", "交流");   put("value", exchanges);  }});
+        staffInfo.add(new HashMap() {{  put("name", "试用");   put("value", probation);  }});
+        staffInfo.add(new HashMap() {{  put("name", "编制");   put("value", authorized);  }});
+
+        map.put("staffInfo",staffInfo);
+        
         //年龄分布
         List<Map<String, BigDecimal>> ages = baseMapper.getPostStaffAges(postId);
         map.put("age1", ages.size() > 0 ? ages.get(0).get("age1") : 0);
