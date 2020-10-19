@@ -97,6 +97,12 @@ public class BaseController<T> {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
+    @PostMapping
+    public R save(@RequestBody T t) {
+        entityService.saveEntity(t);
+        return R.ok(t);
+    }
+
     @ApiOperation(value = "查看是否停用")
     @PostMapping("/status/{id}/{stop}")
     @ApiImplicitParams({
@@ -129,4 +135,6 @@ public class BaseController<T> {
             IOUtils.closeQuietly(inputStream);
         }
     }
+
+
 }
