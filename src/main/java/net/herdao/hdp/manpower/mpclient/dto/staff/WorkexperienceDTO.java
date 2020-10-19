@@ -64,43 +64,17 @@ public class WorkexperienceDTO {
      * 操作人
      */
     @ApiModelProperty(value="操作人")
-    @TableField(exist = false)
     private String modifierName;
     /**
      * 操作时间
      */
     @ApiModelProperty(value="操作时间")
     private LocalDateTime modifiedTime;
-    
-    /**
-     * 预留字段1
-     */
-    @ApiModelProperty(value="预留字段1")
-    private String field1;
-    /**
-     * 预留字段2
-     */
-    @ApiModelProperty(value="预留字段2")
-    private String field2;
-    /**
-     * 预留字段3
-     */
-    @ApiModelProperty(value="预留字段3")
-    private String field3;
-    /**
-     * 预留字段4
-     */
-    @ApiModelProperty(value="预留字段4")
-    private String field4;
-    /**
-     * 预留字段5
-     */
-    @ApiModelProperty(value="预留字段5")
-    private String field5;
 
     /**
-     * 员工信息id
+     * 员工姓名
      */
-    @ApiModelProperty(value="员工信息id")
-    private Long staffid;
+    @ApiModelProperty(value="承担角色")
+    private String staffName;
+    
 }

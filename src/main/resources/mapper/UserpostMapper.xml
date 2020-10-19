@@ -31,7 +31,7 @@
 
       <!-- 现任职情况 -->
       <select id="findUserPostNowPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
-          select * from (
+            select * from (
                   SELECT  U.ID,
                           S.STAFF_NAME staffName,
                           S.STAFF_CODE staffCode,
@@ -55,13 +55,13 @@
                   WHERE  1 = 1
                   AND u.del_flag = 0
           )t where 1=1
-              <if test="searchText != null">
-                  and CONCAT(
-                      t.staffName, t.staffCode,t.startDate,t.orgName,
-                      t.sectionName,t.pipelineName,t.postName,t.jobLevelName,
-                      t.customPost,t.modifier_name,t.MODIFIED_TIME
-                  ) LIKE concat('%',#{searchText},'%')
-              </if>
+          <if test="searchText != null">
+              and CONCAT(
+                  t.staffName, t.staffCode,t.startDate,t.orgName,
+                  t.sectionName,t.pipelineName,t.postName,t.jobLevelName,
+                  t.customPost,t.modifier_name,t.MODIFIED_TIME
+              ) LIKE concat('%',#{searchText},'%')
+          </if>
       </select>
 
     <!-- 现任职情况 -->

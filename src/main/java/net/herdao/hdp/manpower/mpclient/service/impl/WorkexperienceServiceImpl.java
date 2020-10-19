@@ -1,19 +1,4 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
+
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -49,30 +34,22 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     @Autowired
     private RemoteUserService remoteUserService;
 
-    @Autowired
-    private UserService userService;
 
     @Override
-    public Page<Workexperience> findStaffWorkPage(Page<Workexperience> page, String orgId, String staffName, String staffCode) {
-        Page<Workexperience> resultPage = this.baseMapper.findStaffWorkPage(page, orgId, staffName, staffCode);
-        return resultPage;
+    public Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, String searchText) {
+        Page<WorkexperienceDTO> pageResult = this.baseMapper.findStaffWorkPage(page, searchText);
+        return pageResult;
     }
 
     @Override
-    public boolean saveWork(Workexperience workexperience) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        workexperience.setCreatorCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        workexperience.setCreatedTime(now);
-        boolean flag = super.save(workexperience);
-        return flag;
+    public List<WorkexperienceDTO> findStaffWork(String searchText) {
+        List<WorkexperienceDTO> list = this.baseMapper.findStaffWork(searchText);
+        return list;
     }
-    
+
     @Override
     public boolean saveWorkDTO(WorkexperienceDTO workexperienceDTO){
     	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
         String userName=userInfo.getSysUser().getUsername();
         String loginCode=userInfo.getSysUser().getUsername();
         
@@ -85,26 +62,14 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         workexperience.setCreatedTime(now);
         workexperience.setModifierCode(loginCode); 
         workexperience.setModifierName(userName);
-        workexperience.setModifiedTime(now);        
+        workexperience.setModifiedTime(now);
         boolean flag = super.save(workexperience);
         return flag;
     }
 
     @Override
-    public boolean updateWork(Workexperience workexperience) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        workexperience.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
-        workexperience.setModifiedTime(now);
-        boolean status = super.updateById(workexperience);
-        return status;
-    }
-    
-    @Override
     public boolean updateWorkDTO(WorkexperienceDTO workexperienceDTO) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
         String userName=userInfo.getSysUser().getUsername();
         String loginCode=userInfo.getSysUser().getUsername();
         
@@ -123,5 +88,36 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     public List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid){
     	List<WorkexperienceDTO> workexperienceDTOList = this.baseMapper.findWorkexperienceDTO(staffid);
     	return workexperienceDTOList;
+    }
+
+    @Override
+    public boolean saveWork(Workexperience workexperience) {
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getUsername();
+        String loginCode=userInfo.getSysUser().getUsername();
+        LocalDateTime now = LocalDateTime.now();
+        workexperience.setCreatorCode(loginCode);
+        workexperience.setCreatorName(userName);
+        workexperience.setCreatedTime(now);
+        workexperience.setModifierCode(loginCode);
+        workexperience.setModifierName(userName);
+        workexperience.setModifiedTime(now);
+        boolean flag = super.save(workexperience);
+        return flag;
+     }
+
+    @Override
+    public boolean updateWork(Workexperience orkexperience) {
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getUsername();
+        String loginCode=userInfo.getSysUser().getUsername();
+
+        //修改人工号、姓名、时间
+        LocalDateTime now = LocalDateTime.now();
+        orkexperience.setModifierCode(loginCode);
+        orkexperience.setModifierName(userName);
+        orkexperience.setModifiedTime(now);
+        boolean status = super.updateById(orkexperience);
+        return status;
     }
 }

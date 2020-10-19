@@ -34,22 +34,23 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author andy
  * @date 2020-09-24 10:24:09
  */
-public interface WorkexperienceService extends IService<Workexperience> {
+public interface WorkexperienceService extends EntityService<Workexperience> {
     /**
      * 员工工作经历分页
      * @param page 分页对象
-     * @param orgId
+     * @param searchText 关键字搜索
      * @return
      */
-    Page<Workexperience> findStaffWorkPage(Page<Workexperience> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, @Param("searchText") String searchText);
 
     /**
-     * 新增员工工作经历
-     * @param workexperience
+     * 员工工作经历
+     * @param searchText 关键字搜索
      * @return
      */
-    boolean saveWork(@RequestBody Workexperience workexperience);
-    
+    List<WorkexperienceDTO> findStaffWork(@Param("searchText") String searchText);
+
+
     /**
      * 新增员工工作经历DTO
      * @param workexperienceDTO
@@ -57,13 +58,6 @@ public interface WorkexperienceService extends IService<Workexperience> {
      */
     boolean saveWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO);
 
-
-    /**
-     * 更新员工工作经历
-     * @param workexperience
-     * @return
-     */
-    boolean updateWork(@RequestBody Workexperience workexperience);
 
     /**
      * 更新员工工作经历DTO
@@ -75,8 +69,24 @@ public interface WorkexperienceService extends IService<Workexperience> {
     /**
      * author lift
      * 获取员工工作经历
-     * @param workexperience
+     * @param staffid
      * @return
      */
     List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid);
+
+
+    /**
+     * 新增员工工作经历
+     * @param orkexperience
+     * @return
+     */
+    boolean saveWork(Workexperience orkexperience);
+
+    /**
+     * 更新员工工作经历
+     * @param orkexperience
+     * @return
+     */
+    boolean updateWork(Workexperience orkexperience);
+
 }
