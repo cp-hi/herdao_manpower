@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper;
@@ -19,6 +21,12 @@ import java.util.Map;
  */
 @Service
 public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> implements JobGradeService {
+
+
+    @Override
+    public IPage page(Page page, JobGrade jobGrade) {
+        return baseMapper.page(page,jobGrade);
+    }
 
     @Override
     public List<Map> jobGradeList() {

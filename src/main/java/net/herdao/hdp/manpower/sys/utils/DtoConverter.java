@@ -45,7 +45,7 @@ public class DtoConverter {
      * @throws ClassNotFoundException
      * @throws NoSuchFieldException
      */
-    public static <T> T dto2vo(Object source, Class clzz)
+    public static <T> T dto2vo(Object source, Class<? extends T> clzz)
             throws IllegalAccessException, InstantiationException,
             ClassNotFoundException, NoSuchFieldException {
 
@@ -136,7 +136,7 @@ public class DtoConverter {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static <T> List<T> dto2vo(List source, Class clzz)
+    public static <T> List<T> dto2vo(List source, Class<? extends T> clzz)
             throws ClassNotFoundException, NoSuchFieldException,
             InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
