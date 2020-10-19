@@ -85,4 +85,11 @@ public class StaffRpDTO  {
     @ExcelProperty(value = "操作时间")
     @ApiModelProperty(value="操作时间")
     private String modifiedTime;
+
+    /**
+     * 奖惩时间
+     */
+    @ExcelProperty(value = "奖惩时间")
+    @ApiModelProperty(value="奖惩时间")
+    private String executeDate;
 }
