@@ -19,6 +19,9 @@
         <if test="jobLevel.id != null">
             and id = #{jobLevel.id}
         </if>
+        <if test="jobLevel.jobGradeId != null">
+            and job_grade_id = #{jobLevel.jobGradeId}
+        </if>
         <if test="jobLevel.jobLevelName != null">
             <bind name="likeTxt" value="'%'+jobLevel.jobLevelName+'%'"/>
             job_level_code like #{likeTxt} or job_level_name like #{likeTxt}

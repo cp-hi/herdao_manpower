@@ -27,12 +27,7 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
 import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.*;
@@ -41,6 +36,7 @@ import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -160,17 +156,34 @@ public class StaffController {
         return R.ok(staffService.queryCount());
     }
 
-
     /**
-     * 通过id查询员工表
+     * 通过id查询快速编辑员工
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
+    @ApiOperation(value = "通过id查询快速编辑员工", notes = "通过id查询快速编辑员工")
+    @GetMapping("/quickedit/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R<StaffDetailDTO> getById(@PathVariable("id" ) Long id) {
-        return R.ok(staffService.getStaffById(id));
+    public R<StaffQuickEditDTO> getQuickById(@PathVariable("id" ) Long id) {
+        Staff staff = staffService.getById(id);
+        StaffQuickEditDTO entity = new StaffQuickEditDTO();
+        BeanUtils.copyProperties(staff, entity);
+        return R.ok(entity);
+    }
+
+    /**
+     * 修改员工表
+     * @param quickEdit 员工表
+     * @return R
+     */
+    @ApiOperation(value = "花名册快速编辑员工", notes = "快速编辑员工")
+    @SysLog("快速编辑员工" )
+    @PutMapping("/quickedit" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
+    public R<Boolean> updateById(@RequestBody StaffQuickEditDTO quickEdit) {
+        Staff staff = new Staff();
+        BeanUtils.copyProperties(quickEdit, staff);
+        return R.ok(staffService.updateById(staff));
     }
 
     /**
@@ -327,6 +340,18 @@ public class StaffController {
     @PostMapping("/updateStaffWorkYear" )
     public R updateStaffWorkYear(@RequestBody StaffWorkYearDTO staffWorkYearDTO) {
         return R.ok(staffService.updateStaffWorkYear(staffWorkYearDTO));
+    }
+
+    /**
+     * 通过id查询员工表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @GetMapping("/{id}" )
+//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    public R<StaffDetailDTO> getById(@PathVariable("id" ) Long id) {
+        return R.ok(staffService.getStaffById(id));
     }
 
     /**
