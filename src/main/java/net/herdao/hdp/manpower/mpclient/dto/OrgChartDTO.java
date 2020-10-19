@@ -26,4 +26,7 @@ public class OrgChartDTO {
 
     @ApiModelProperty(value="移动电话")
     private String mobile;
+
+    @ApiModelProperty(value="是否有子节点")
+    private Boolean hasChild;
 }
