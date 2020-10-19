@@ -599,6 +599,7 @@
         LEFT JOIN mp_staff f ON o.org_charge_work_no = f.STAFF_CODE
         WHERE
             o.ID = #{id}
+        LIMIT 1
     </select>
 
     <!-- 查询组织架构图子节点 -->
