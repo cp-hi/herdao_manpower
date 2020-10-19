@@ -22,8 +22,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
@@ -60,6 +65,18 @@ public interface StaffService extends IService<Staff> {
 	Map<String, Object> getHomePage(Long id);
 
 	Map<String, Object> getStaffWork(Long id);
+	
+	UserpostDTO getStaffWorkCurrentJob(Long id);
+	
+	List<StafftransactionDTO> getStafftransaction(Long id);
+	
+	StaffWorkYearDTO getStaffWorkYear(Long id);
+	
+	List<WorkexperienceDTO> getWorkexperienceDTO(Long id);
+	
+	StaffPracticeDTO getStaffPractice(Long id);
+	
+	List<StaffProTitleDTO> getStaffProTitle(Long id);
 
 	Map<String, Object> getStaffWelfare(Long id);
 
