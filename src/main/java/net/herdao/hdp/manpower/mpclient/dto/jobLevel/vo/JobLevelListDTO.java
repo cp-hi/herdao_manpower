@@ -30,6 +30,7 @@ public class JobLevelListDTO {
     private Integer onJobStaffs;
 
     @ApiModelProperty(value = "职等名称")
+    @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
     @ApiModelProperty(value = "排序")
