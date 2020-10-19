@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
@@ -42,4 +43,8 @@ public class PostShortDTO {
     @ApiModelProperty("职等")
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
+
+    @ApiModelProperty("职等")
+    @DtoField(objField = "postSeqDTO.postSeqName")
+    private String postSeqName;
 }

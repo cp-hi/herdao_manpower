@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
@@ -54,7 +55,7 @@ public class PostController extends BaseController<Post> {
     })
     public R page(Page page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = postService.page(page, post);
-        List<PostDTO> records = p.getRecords();
+//        List<PostDTO> records = p.getRecords();
 //        PostListDTO postListDTO = DtoConverter.dto2vo(p.getRecords().get(0), PostListDTO.class);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
         p.setRecords(vos);

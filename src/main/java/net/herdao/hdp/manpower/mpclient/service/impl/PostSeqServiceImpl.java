@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
@@ -29,7 +30,7 @@ public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> impl
     }
 
     @Override
-    public IPage<PostSeqDTO> page(Page<PostSeqDTO> page,   PostSeq postSeq) {
+    public IPage<PostSeqListDTO> page(Page<PostSeqListDTO> page, PostSeq postSeq) {
         return baseMapper.page(page, postSeq);
     }
 
