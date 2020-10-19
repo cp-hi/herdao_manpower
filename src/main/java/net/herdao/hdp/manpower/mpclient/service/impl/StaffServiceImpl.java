@@ -308,7 +308,6 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	/**
 	 * 工作情况
-	 * 
 	 * @param id 用户id
 	 * @author lift
 	 * @date 2020-10-15 21:09:29
@@ -358,6 +357,89 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		return map;
 	}
 
+	/**
+	 * 工作情况-目前任职
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public UserpostDTO getStaffWorkCurrentJob(Long id){
+		UserpostDTO userpostDto = userpostService.findCurrentJob(id);
+		return userpostDto;
+	}
+
+	/**
+	 * 工作情况-异动情况
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public List<StafftransactionDTO> getStafftransaction(Long id){
+		List<StafftransactionDTO> stafftransactionDTOList = stafftransactionService.findStafftransactionDto(id);
+		return stafftransactionDTOList;
+	}
+
+	/**
+	 * 工作情况-工作年限
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public StaffWorkYearDTO getStaffWorkYear(Long id){
+		StaffWorkYearDTO staffWorkYearDTO = baseMapper.getStaffWorkYear(id);
+		return staffWorkYearDTO;
+	}
+
+	/**
+	 * 工作情况-工作经历
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public List<WorkexperienceDTO> getWorkexperienceDTO(Long id){
+		List<WorkexperienceDTO> workexperienceDTOList = workexperienceService.findWorkexperienceDTO(id);
+		return workexperienceDTOList;
+	}
+	
+	/**
+	 * 工作情况-实习记录
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public StaffPracticeDTO getStaffPractice(Long id){
+		StaffPracticeDTO staffPracticeDTO = staffPracticeService.findStaffPractice(id);
+		if (staffPracticeDTO == null)
+		{
+			staffPracticeDTO = new StaffPracticeDTO();
+			staffPracticeDTO.setStaffId(id);
+		}
+		return staffPracticeDTO;
+	}
+
+	/**
+	 * 工作情况-职称及职业资格
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public List<StaffProTitleDTO> getStaffProTitle(Long id){
+		List<StaffProTitleDTO> staffProTitleList = staffProTitleService.findStaffProTitleDTO(id);
+		return staffProTitleList;
+	}
+	
 	@Override
 	public Map<String, Object> getStaffWelfare(Long id){
 		Staff staff = this.getById(id);

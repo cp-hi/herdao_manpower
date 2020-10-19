@@ -50,7 +50,7 @@ public class PostSeqController extends BaseController<PostSeq> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postSeqName", value = "postSeqName"),
     })
-    public R<IPage<PostSeqListDTO>> page(Page  page, PostSeq seq)
+    public R  page(Page  page, PostSeq seq)
             throws ClassNotFoundException, InstantiationException,
             IllegalAccessException, NoSuchFieldException {
         IPage p = postSeqService.page(page, seq);

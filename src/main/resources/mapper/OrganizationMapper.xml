@@ -23,7 +23,6 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
-        <result property="tenantId" column="TENANT_ID"/>
         <result property="orgDesc" column="org_desc"/>
         <result property="orgChargeName" column="org_charge_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
@@ -60,7 +59,6 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
-        <result property="tenantId" column="TENANT_ID"/>
         <result property="orgDesc" column="org_desc"/>
         <result property="orgChargeName" column="org_charge_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
@@ -96,7 +94,6 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
-        <result property="tenantId" column="TENANT_ID"/>
         <result property="orgDesc" column="org_desc"/>
         <result property="orgChargeName" column="org_charge_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
@@ -133,7 +130,6 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
-        <result property="tenantId" column="TENANT_ID"/>
         <result property="orgDesc" column="org_desc"/>
         <result property="orgChargeName" column="org_charge_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
@@ -171,7 +167,6 @@
         <result property="modifiedTime" column="MODIFIED_TIME"/>
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
-        <result property="tenantId" column="TENANT_ID"/>
         <result property="orgDesc" column="org_desc"/>
         <result property="orgChargeName" column="org_charge_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
@@ -416,7 +411,7 @@
 
     <update id="stopOrganById" >
           UPDATE mp_organization m
-            SET m.IS_STOP = 0
+            SET m.IS_STOP = 1
             WHERE 1=1
             <if test="id != null">
                 AND  id = #{id}
@@ -425,7 +420,7 @@
 
     <update id="startOrganById" >
         UPDATE mp_organization m
-        SET m.IS_STOP = 1
+        SET m.IS_STOP = 0
         WHERE 1=1
         <if test="id != null">
             AND  id = #{id}
@@ -512,9 +507,9 @@
                     org.start_date,  -- 启用日期
                     org.stop_date,  -- 停用日期
                     CASE
-                        WHEN org.IS_STOP = 0 THEN
-                        '否'
                         WHEN org.IS_STOP = 1 THEN
+                        '否'
+                        WHEN org.IS_STOP = 0 THEN
                         '是'
                     END enableStatus
                     FROM
@@ -626,5 +621,13 @@
         <if test="parentId != null">
         	AND org.parent_id = #{parentId}
         </if>
+    </select>
+    
+    <!-- 查询子组织信息  -->
+    <select id="selectOrganizationByOrgCode" resultMap="organizationMap">
+    	SELECT
+    		 org.* 
+    	FROM mp_organization org 
+		WHERE org.org_code LIKE CONCAT(#{orgCode},'%')
     </select>
 </mapper>

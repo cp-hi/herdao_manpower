@@ -77,13 +77,39 @@ public interface OrganizationService extends IService<Organization> {
      */
      R removeOrg(@RequestBody Organization condition);
 
-    /**
-     * 组织启用/停用
-     * @param condition
-     * @return R
-     */
-     R startOrStopOrg(@RequestBody Organization condition);
-
+     
+     /**
+      * 预停用组织
+      * 
+      * @param id 主键
+      * @param stopDateStr 停用日期 例如： 2020-10-19
+      * @return
+      */
+     R expectedDisable(Long id, String stopDateStr);
+     
+     /**
+      * 停用组织
+      * 
+      * @return
+      */
+     R disable();
+     
+     /**
+      * 预停用组织
+      * 
+      * @param id 主键
+      * @param startDateStr 停用日期 例如： 2020-10-19
+      * @return
+      */
+     R expectedEnable(Long id, String startDateStr);
+     
+     /**
+      * 停用组织
+      * 
+      * @return
+      */
+     R enable();
+     
     /**
      * 默认加载展示2级组织架构
      * @param condition

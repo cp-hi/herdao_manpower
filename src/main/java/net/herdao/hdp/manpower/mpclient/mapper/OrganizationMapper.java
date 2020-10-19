@@ -135,10 +135,20 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     List<OrgChartDTO> selectOrgChartChild(Long id);
     
     /**
-     * 获取组织编码
-     * 
-     * @param parentId
+     * @description 获取组织编码
+     * @author      shuling
+     * @date        2020-10-18 10:37:22
+     * @param 		parentId
      * @return
      */
     String getMaxOrgCode(@Param("parentId") Long parentId);
+    
+    /**
+     * @description 更新组织编码
+     * @author      shuling
+     * @date        2020-10-18 12:31:28
+     * @param 		orgCode
+     * @return
+     */
+    List<Organization> selectOrganizationByOrgCode(@Param("orgCode") String orgCode);
 }

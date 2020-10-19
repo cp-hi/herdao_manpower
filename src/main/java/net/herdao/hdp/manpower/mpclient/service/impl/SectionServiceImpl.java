@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.section.SectionDTO;
+import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
@@ -32,7 +33,7 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
     }
 
     @Override
-    public IPage<SectionDTO> page(Page<SectionDTO> page, Section Section) {
+    public IPage<SectionListDTO> page(Page<SectionListDTO> page, Section Section) {
 
         return baseMapper.query(page,   Section);
     }

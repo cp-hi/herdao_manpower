@@ -54,12 +54,6 @@ public class Organization extends BaseEntity<Organization> {
 	private String orgFullname;
 	
 	/**
-	 * 组织全编码
-	 */
-	@ApiModelProperty(value = "组织全编码")
-	private String orgFullCode;
-	
-	/**
 	 * 组织编码
 	 */
 	@ApiModelProperty(value = "组织编码")

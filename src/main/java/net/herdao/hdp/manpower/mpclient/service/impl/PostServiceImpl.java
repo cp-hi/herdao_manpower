@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
@@ -34,8 +35,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     final SectionMapper sectionMapper;
 
     @Override
-    public IPage<PostDTO> page(Page<PostDTO> page, Post post) {
-        IPage<PostDTO> p = baseMapper.page(page, post);
+    public IPage<PostListDTO> page(Page<PostListDTO> page, Post post) {
+        IPage<PostListDTO> p = baseMapper.page(page, post);
         return p;
     }
 
@@ -47,12 +48,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public void saveVerify(Post post) {
-        if (baseMapper.chkDuplicatePostCode(post)) {
+        if (baseMapper.chkDuplicatePostCode(post))
             throw new RuntimeException("岗位编码重复了");
-        }
-        if (baseMapper.chkDuplicatePostName(post)) {
+        if (baseMapper.chkDuplicatePostName(post))
             throw new RuntimeException("岗位名称重复了");
-        }
     }
 
     @Override
