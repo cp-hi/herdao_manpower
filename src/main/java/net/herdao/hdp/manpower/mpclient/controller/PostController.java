@@ -96,9 +96,13 @@ public class PostController extends BaseController<Post> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
-    public R list(Long groupId) {
-
-        return R.ok(postService.postList(groupId));
+    public R list(Long groupId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        Post post = new Post();
+        post.setGroupId(groupId);
+        IPage p = postService.page(new Page(), post);
+        List<PostShortDTO> records = DtoConverter.dto2vo(p.getRecords(),PostShortDTO.class);
+        p.setRecords(records);
+        return R.ok(p);
     }
 
 
