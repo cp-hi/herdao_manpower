@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -59,45 +60,16 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
         return R.ok(jobLevelService.jobLevelList(groupId));
     }
 
-
-//    @GetMapping("/page")
-//    @ApiOperation(value = "分页查询")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
-//            @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
-//    })
-//    public R page(Page page, JobLevel jobLevel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-//        IPage p = jobLevelService.page(page, jobLevel);
-//        List<JobLevelListDTO> vos = DtoConverter.dto2vo(p.getRecords(), JobLevelListDTO.class);
-//        p.setRecords(vos);
-//        return R.ok(p);
-//    }
-
     @Override
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
+            @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
-    public R page(Page page, JobLevel jobLevel)
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, NoSuchFieldException {
-        return super.page(page,jobLevel);
+    public R page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
+            throws Exception {
+        return super.page(response,page,jobLevel,type);
     }
-
-//    @GetMapping("/formInfo/{id}")
-//    @ApiOperation(value = "表单信息")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "id"),
-//    })
-//    public R getFormInfo(@PathVariable Long id)
-//            throws InstantiationException, IllegalAccessException,
-//            ClassNotFoundException, NoSuchFieldException {
-//        IPage p = jobLevelService.page(new Page(), new JobLevel(id));
-//        JobLevelFormDTO data = null;
-//        if (p.getRecords().size() > 0)
-//            data = DtoConverter.dto2vo(p.getRecords().get(0), JobLevelFormDTO.class);
-//        return R.ok(data);
-//    }
 }

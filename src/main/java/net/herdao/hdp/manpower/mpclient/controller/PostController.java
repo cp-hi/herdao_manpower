@@ -32,18 +32,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post> {
+public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO> {
 
     @Autowired
     private PostService postService;
 
     @Autowired
     public void setEntityService(PostService postService) {
-        super.entityService = postService;
+        super.newEntityService = postService;
     }
 
+    @Override
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询",notes = "" +
+    @ApiOperation(value = "分页查询", notes = "" +
             /**
              *             *postName       字符串搜索
              *             *groupId        集团ID
@@ -53,7 +54,7 @@ public class PostController extends BaseController<Post> {
              *             *current         当前页
              *             *size           每页条数
              **/
-"")
+            "")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
 //            @ApiImplicitParam(name = "groupId", value = "集团ID"),
@@ -63,11 +64,8 @@ public class PostController extends BaseController<Post> {
 //            @ApiImplicitParam(name = "current", value = "当前页"),
 //            @ApiImplicitParam(name = "size", value = "每页条数"),
 //    })
-    public R page(Page page, Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
-        IPage p = postService.page(page, post);
-        List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
+    public R page(HttpServletResponse response, Page page, Post post, Integer type) throws Exception {
+        return super.page(response, page, post, type);
     }
 
     @GetMapping("/baseInfo/{id}")
@@ -85,20 +83,20 @@ public class PostController extends BaseController<Post> {
         return R.ok(data);
     }
 
-    @GetMapping("/formInfo/{id}")
-    @ApiOperation(value = "表单信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id"),
-    })
-    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, NoSuchFieldException {
-        IPage p = postService.page(new Page(), new Post(id));
-        PostFormDTO data = null;
-        if (p.getRecords().size() > 0)
-            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
-        return R.ok(data);
-    }
+//    @GetMapping("/formInfo/{id}")
+//    @ApiOperation(value = "表单信息")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "id"),
+//    })
+//    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
+//            throws InstantiationException, IllegalAccessException,
+//            ClassNotFoundException, NoSuchFieldException {
+//        IPage p = postService.page(new Page(), new Post(id));
+//        PostFormDTO data = null;
+//        if (p.getRecords().size() > 0)
+//            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
+//        return R.ok(data);
+//    }
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
@@ -113,7 +111,6 @@ public class PostController extends BaseController<Post> {
         p.setRecords(records);
         return R.ok(p);
     }
-
 
     @ApiOperation(value = "岗位概况")
     @SysLog("岗位概况")
@@ -163,15 +160,6 @@ public class PostController extends BaseController<Post> {
             return null;
         }
         return R.ok(data);
-    }
-
-    @PostMapping("savePost")
-    @ApiOperation(value = "新增/修改岗位")
-    public R<PostFormDTO> savePost(@RequestBody PostFormDTO postFormDTO) {
-        Post post = new Post();
-        BeanUtils.copyProperties(postFormDTO, post);
-        entityService.saveEntity(post);
-        return R.ok(postFormDTO);
     }
 
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -28,14 +29,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/client/pipeline")
-public class PipelineController extends BaseController<Pipeline> {
+public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO> {
 
     @Autowired
     private PipelineService pipelineService;
 
     @Autowired
     public void setEntityService(PipelineService pipelineService) {
-        super.entityService = pipelineService;
+        super.newEntityService = pipelineService;
     }
 
     @GetMapping("/list")
@@ -46,19 +47,7 @@ public class PipelineController extends BaseController<Pipeline> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, Pipeline pipeline) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        IPage p = pipelineService.page(page, pipeline);
-        List<PipelineListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PipelineListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
-    }
-
-    @PostMapping("savePipeline")
-    @ApiOperation(value = "新增管线")
-    public R<PipelineFormDTO> savePipeline(@RequestBody PipelineFormDTO pipelineFormDTO) {
-        Pipeline pipeline = new Pipeline();
-        BeanUtils.copyProperties(pipelineFormDTO, pipeline);
-        entityService.saveEntity(pipeline);
-        return R.ok(pipelineFormDTO);
+    public R page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
+        return super.page(response, page, pipeline, type);
     }
 }

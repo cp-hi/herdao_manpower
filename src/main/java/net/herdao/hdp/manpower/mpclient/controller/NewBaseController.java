@@ -13,7 +13,6 @@ import net.herdao.hdp.manpower.mpclient.service.NewEntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
-import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -45,6 +43,8 @@ public class NewBaseController<E, D, F> {
 
     @Autowired
     OperationLogService operationLogService;
+
+    //region 各种Class
 
     /**
      * 实体类型
@@ -97,6 +97,8 @@ public class NewBaseController<E, D, F> {
 //        throw new NotImplementedException("如果需要使用编辑功能，请继承此方法:getFormClass");
 //    }
 
+    //endregion
+
     @ApiOperation(value = "获取操作记录")
     @GetMapping("/operationLog/{objId}")
     @ApiImplicitParams({
@@ -106,14 +108,13 @@ public class NewBaseController<E, D, F> {
         return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
     }
 
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(Page page, E e)
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, NoSuchFieldException {
+    public R page(HttpServletResponse response, Page page, E e, Integer type)
+            throws Exception {
         IPage p = newEntityService.page(page, e);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
         p.setRecords(vos);
+        if (null != type && 1 == type)
+            ExcelUtils.export2Web(response, "列表下载", "列表下载", getDTOClass(), vos);
         return R.ok(p);
     }
 
@@ -137,7 +138,7 @@ public class NewBaseController<E, D, F> {
     }
 
     @ApiOperation(value = "查看是否停用")
-    @PostMapping("/status/{id}/{stop}")
+    @PostMapping("/status/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
@@ -155,25 +156,15 @@ public class NewBaseController<E, D, F> {
     }
 
     @GetMapping("/form/{id}")
-    @ApiOperation(value = "表单信息")
+    @ApiOperation(value = "获取表单信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id"),
     })
     public R<F> getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, NoSuchFieldException {
-//        E e = getEntityClass().newInstance();
-//        Field idField = AnnotationUtils.getFieldByName(e,"id");
-//        idField.setAccessible(true);
-//        idField.set(e,id);
-//        IPage p = newEntityService.page(new Page(), e);
-//        F data = null;
-//        if (p.getRecords().size() > 0)
-//            data = DtoConverter.dto2vo(p.getRecords().get(0), getFormClass());
-//        return R.ok(data);
+            throws InstantiationException, IllegalAccessException {
         E e = (E) newEntityService.getById(id);
         F f = getFormClass().newInstance();
-        BeanUtils.copyProperties(e,f);
+        BeanUtils.copyProperties(e, f);
         return R.ok(f);
     }
 
@@ -184,16 +175,18 @@ public class NewBaseController<E, D, F> {
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
             @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
     })
-    public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
+    public R importData(HttpServletResponse response,
+                        @RequestParam(value = "file") MultipartFile file,
+                        Integer importType) throws Exception {
         ImportExcelListener listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
             listener = new ImportExcelListener(newEntityService, getImportClass(), importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功");
+            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getDataList().size() + "条数据");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "职级导入错误信息", "职级导入错误信息", getImportClass(), listener.getDataList());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getDataList());
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
