@@ -86,7 +86,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         staffInfo.add(new HashMap() {{  put("name", "编制");   put("value", authorized);  }});
 
         map.put("staffInfo",staffInfo);
-        
+
         //年龄分布
         List<Map<String, BigDecimal>> ages = baseMapper.getPostStaffAges(postId);
         map.put("age1", ages.size() > 0 ? ages.get(0).get("age1") : 0);
