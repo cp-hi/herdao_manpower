@@ -1,6 +1,8 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelImportVO;
@@ -27,6 +29,11 @@ import java.util.Map;
 public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
     JobGradeService jobGradeService;
+
+    @Override
+    public IPage page(Page page, JobLevel jobLevel) {
+        return baseMapper.page(page,jobLevel);
+    }
 
     @Override
     public List<Map> jobLevelList(Long groupId) {

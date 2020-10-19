@@ -4,15 +4,44 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper">
 
+
+    <resultMap id="jobLevelDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO">
+        <id column="id" property="id"/>
+        <result property="jobGradeId" column="job_grade_id"/>
+        <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+
+        <association property="jobGrade" column="job_grade_id" javaType="jobGrade"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.selectById"/>
+    </resultMap>
+
+    <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
+        select * from mp_job_level where 1=1
+        <if test="jobLevel.id != null">
+            and id = #{jobLevel.id}
+        </if>
+        <if test="jobLevel.jobLevelName != null">
+            <bind name="likeTxt" value="'%'+jobLevel.jobLevelName+'%'"/>
+            job_level_code like #{likeTxt} or job_level_name like #{likeTxt}
+        </if>
+    </select>
+
+    <select id="getOnJobStaffs" parameterType="long" resultType="int">
+        select count(*) from mp_post p, mp_userpost up , mp_staff s
+        where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
+        and s.STAFF_SCOPE = '1' and p.id  in (select id from mp_post where JOB_LEVEL_ID1 = #{id} or JOB_LEVEL_ID2 = #{id})
+    </select>
+
     <select id="jobLevelList" resultType="map">
        	select id,job_level_code AS code,job_level_name AS name from mp_job_level where group_id = #{groupId}
     </select>
+
 
     <select id="chkCodeAndName" parameterType="jobLevel" resultType="boolean">
         SELECT count(*) from mp_job_level  where
         ( JOB_LEVEL_NAME = #{jobLevelName} AND JOB_LEVEL_CODE != #{jobLevelCode} ) OR
         ( JOB_LEVEL_NAME != #{jobLevelName} AND JOB_LEVEL_CODE = #{jobLevelCode} )
     </select>
+
 
     <select id="chkDuplicateJobLevelCode" parameterType="jobLevel" resultType="boolean">
          SELECT count(*) from mp_job_level  where  (#{id} is null or  id != #{id})  and  job_level_code = #{jobLevelCode}

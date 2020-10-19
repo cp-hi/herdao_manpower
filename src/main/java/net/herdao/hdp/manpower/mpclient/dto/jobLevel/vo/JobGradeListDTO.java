@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post.vo;
+package net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,34 +6,30 @@ import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
- * @ClassName PostSeqListDTO
- * @Description PostSeqListDTO
+ * @ClassName JobGradeListDTO
+ * @Description JobGradeListDTO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/17 18:17
+ * @Date 2020/10/18 21:47
  * @Version 1.0
  */
 @Data
-@ApiModel(value = "岗位序列管理-列表")
-public class PostSeqListDTO {
-
-    @ApiModelProperty("id")
+@ApiModel(value = "职等管理-列表")
+public class JobGradeListDTO {
+    @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "是否最末节点")
-    private Boolean isLeaf;
+    @ApiModelProperty(value = "职等名称")
+    private String jobGradeName;
 
-    @ApiModelProperty("岗位序列名称")
-    private String postSeqName;
+    @ApiModelProperty(value = "在职员工数")
+    private Integer onJobStaffs;
 
-    @ApiModelProperty("岗位序列编码")
-    private String postSeqCode;
+    @ApiModelProperty(value = "职级数")
+    private Integer jobLevels;
 
     @ApiModelProperty(value = "描述")
     private String description;
-
-    @ApiModelProperty(value = "岗位数")
-    private Integer postCount;
 
     @ApiModelProperty(value = "创建情况")
     @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "创建")

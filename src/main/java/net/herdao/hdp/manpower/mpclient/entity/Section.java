@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
@@ -20,12 +21,16 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
  */
 @Data
 @TableName("MP_Section")
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "板块")
 public class Section extends BaseEntity<Section> {
+    public Section(Long id) {
+        this.setId(id);
+    }
     private String sectionCode;
     private String sectionName;
-    private Integer groupId;
+    private Long groupId;
     private Integer sortNo;
     @TableField("IS_STOP")
     private Boolean stop;

@@ -18,6 +18,8 @@ public @interface DtoField {
 
     String[] joinFields() default "";
 
+    String  boolField() default "";
+
     String objField() default "";
 
     String listField() default "";

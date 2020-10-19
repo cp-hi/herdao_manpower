@@ -65,7 +65,7 @@ public class CompanyController {
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
+    public R<CompanyDetailDTO> getById(@PathVariable("id" ) Long id) {
         return R.ok(companyService.getCompanyById(id));
     }
 
@@ -78,7 +78,7 @@ public class CompanyController {
     @SysLog("新增注册公司" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_add')" )
-    public R save(@RequestBody CompanyDetailDTO companyForm) {
+    public R<Boolean> save(@RequestBody CompanyDetailDTO companyForm) {
         return R.ok(companyService.companySave(companyForm));
     }
 
@@ -91,7 +91,7 @@ public class CompanyController {
     @SysLog("修改注册公司" )
     @PutMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_edit')" )
-    public R updateById(@RequestBody CompanyDetailDTO companyForm) {
+    public R<Boolean> updateById(@RequestBody CompanyDetailDTO companyForm) {
         return R.ok(companyService.companyUpdate(companyForm));
     }
 
@@ -104,7 +104,7 @@ public class CompanyController {
     @SysLog("通过id删除注册公司" )
     @DeleteMapping("/{id}" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_del')" )
-    public R removeById(@PathVariable Long id) {
+    public R<Boolean> removeById(@PathVariable Long id) {
         return R.ok(companyService.removeById(id));
     }
 

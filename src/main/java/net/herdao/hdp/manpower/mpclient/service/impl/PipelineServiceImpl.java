@@ -25,13 +25,12 @@ import java.util.Map;
 public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
     @Override
     public List<Map> pipelineList(Long groupId) {
-        return baseMapper.pipelineList(  groupId);
+        return baseMapper.pipelineList(groupId);
     }
 
     @Override
-    public IPage<Pipeline> page(Page<Pipeline> page, String searchTxt) {
-        if (StringUtils.isBlank(searchTxt)) searchTxt = "";
-        return baseMapper.query(page, searchTxt);
+    public IPage page(Page page, Pipeline pipeline) {
+        return baseMapper.page(page, pipeline);
     }
 
     @Override

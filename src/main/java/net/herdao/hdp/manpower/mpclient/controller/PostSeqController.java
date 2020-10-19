@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
@@ -64,13 +65,13 @@ public class PostSeqController extends BaseController<PostSeq> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id"),
     })
-    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
+    public R<PostSeqFormDTO> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException,
             ClassNotFoundException, NoSuchFieldException {
         IPage p = postSeqService.page(new Page(), new PostSeq(id));
-        PostFormDTO data = null;
+        PostSeqFormDTO data = null;
         if (p.getRecords().size() > 0)
-            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
+            data = DtoConverter.dto2vo(p.getRecords().get(0), PostSeqFormDTO.class);
         return R.ok(data);
     }
 

@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.dto.post;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 
 /**
@@ -13,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
  * @Date 2020/10/16 21:26
  * @Version 1.0
  */
+@Data
 @ApiModel(value = "岗位序列DTO")
 public class PostSeqDTO extends PostSeq {
 
@@ -23,5 +25,5 @@ public class PostSeqDTO extends PostSeq {
     private PostSeq parent;
 
     @ApiModelProperty(value = "是否最末节点")
-    private Integer isLeaf;
+    private Boolean isLeaf;
 }

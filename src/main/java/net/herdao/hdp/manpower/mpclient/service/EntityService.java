@@ -39,7 +39,7 @@ public interface EntityService<T> extends IService<T> {
      * @param id
      * @return
      */
-    @OperationEntity(operation = "删除",clazz = Class.class)
+    @OperationEntity(operation = "删除", clazz = Class.class)
     default boolean delEntity(Serializable id) {
         return this.removeById(id);
     }
@@ -48,7 +48,7 @@ public interface EntityService<T> extends IService<T> {
      * @param id
      * @return
      */
-    @OperationEntity(operation = "", clazz = Class.class)
+    @OperationEntity(clazz = Class.class)
     default boolean stopEntity(Serializable id, boolean isStop) throws IllegalAccessException {
         // 停用实体
         T t = this.getById(id);
@@ -68,6 +68,13 @@ public interface EntityService<T> extends IService<T> {
         modifierName.set(t, user.getUsername());
         modifiedTime.set(t, new Date());
         return this.updateById(t);
+    }
+
+    default boolean getStatus(Serializable id) throws IllegalAccessException {
+        T t = this.getById(id);
+        Field stop = AnnotationUtils.getFieldByName(t, "stop");
+        stop.setAccessible(true);
+        return (Boolean) stop.get(t);
     }
 
     /**
@@ -109,4 +116,6 @@ public interface EntityService<T> extends IService<T> {
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
+
+
 }

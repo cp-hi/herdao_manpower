@@ -1,16 +1,31 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobGradeFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobGradeListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
+import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @ClassName JobGradeController
@@ -26,19 +41,13 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
-public class JobGradeController {
+public class JobGradeController extends BaseController<JobGrade> {
 
     private JobGradeService jobGradeService;
 
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询")
-    public R page(Page page, JobGrade jobGrade) {
-        QueryWrapper<JobGrade> queryWrapper = new QueryWrapper<>();
-        queryWrapper
-                .like(StringUtils.isNotBlank(jobGrade.getJobGradeCode()), "JOB_GRADE_CODE", jobGrade.getJobGradeCode())
-                .or()
-                .like(StringUtils.isNotBlank(jobGrade.getJobGradeName()), "JOB_GRADE_NAME", jobGrade.getJobGradeName());
-        return R.ok(jobGradeService.page(page, queryWrapper));
+    @Autowired
+    public void setEntityService(JobGradeService jobGradeService) {
+        super.entityService = jobGradeService;
     }
 
     @GetMapping("/list")
@@ -47,22 +56,31 @@ public class JobGradeController {
         return R.ok(jobGradeService.jobGradeList());
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    public R getById(@PathVariable("id") Long id) {
-        return R.ok(jobGradeService.getById(id));
+
+    @GetMapping("/page")
+    @ApiOperation(value = "分页查询")
+    public R page(Page page, JobGrade jobGrade) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        IPage p = jobGradeService.page(page, jobGrade);
+        List<JobGradeDTO> records = p.getRecords();
+        List<JobGradeListDTO> vos = DtoConverter.dto2vo(p.getRecords(), JobGradeListDTO.class);
+        p.setRecords(vos);
+        return R.ok(p);
     }
 
-    @PostMapping
-    public R save(@RequestBody JobGrade jobGrade) throws Exception {
-        jobGradeService.saveOrUpdate(jobGrade);
-        return R.ok(jobGrade);
+    @GetMapping("/formInfo/{id}")
+    @ApiOperation(value = "表单信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id"),
+    })
+    public R getFormInfo(@PathVariable Long id)
+            throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException, NoSuchFieldException {
+        IPage p = jobGradeService.page(new Page(), new JobGrade(id));
+        JobGradeFormDTO data = null;
+        if (p.getRecords().size() > 0)
+            data = DtoConverter.dto2vo(p.getRecords().get(0), JobGradeFormDTO.class);
+        return R.ok(data);
     }
 
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除")
-    @DeleteMapping("/{id}")
-    public R removeById(@PathVariable Long id) {
-        return R.ok(jobGradeService.removeById(id));
-    }
+
 }

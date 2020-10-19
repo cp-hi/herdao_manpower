@@ -22,6 +22,9 @@ public class PostSeqFormDTO {
     @ApiModelProperty("岗位序列名称")
     private String postSeqName;
 
+    @ApiModelProperty("岗位序列编码")
+    private String postSeqCode;
+
     @ApiModelProperty("集团ID")
     private Long groupId;
 

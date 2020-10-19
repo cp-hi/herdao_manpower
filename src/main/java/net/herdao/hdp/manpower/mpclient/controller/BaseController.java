@@ -47,17 +47,16 @@ public class BaseController<T> {
      * @Author ljan
      */
     protected Class getImportClass() {
-        throw new NotImplementedException("如果需要使用批量导入功能，请继承此方法");
+        throw new NotImplementedException("如果需要使用批量导入功能，请继承此方法:getImportClass");
     }
 
 //    protected Class getPageClass() {
-//        throw new NotImplementedException("如果需要使用分页功能，请继承此方法");
-//    }
-//
-//    protected Class getFormClass() {
-//        throw new NotImplementedException("如果需要使用编辑功能，请继承此方法");
+//        throw new NotImplementedException("如果需要使用分页功能，请继承此方法:getPageClass");
 //    }
 
+    protected Class getFormClass() {
+        throw new NotImplementedException("如果需要使用编辑功能，请继承此方法:getFormClass");
+    }
 
 
     @ApiOperation(value = "获取操作记录")
@@ -70,9 +69,6 @@ public class BaseController<T> {
         return R.ok(operationLogService.findByEntity(objId, clazz.getName()));
     }
 
-    //    @ApiResponses({
-//            @ApiResponse()
-//    })
     @GetMapping("/{id}")
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @ApiImplicitParams({
@@ -80,12 +76,6 @@ public class BaseController<T> {
     })
     public R getById(@PathVariable("id") Long id) {
         return R.ok(entityService.getById(id));
-    }
-
-    @PostMapping
-    public R save(@RequestBody T t) {
-        entityService.saveEntity(t);
-        return R.ok(t);
     }
 
     @ApiOperation(value = "通过id删除")
@@ -105,6 +95,15 @@ public class BaseController<T> {
     })
     public R stop(@PathVariable Long id, @PathVariable boolean stop) throws NoSuchFieldException, IllegalAccessException {
         return R.ok(entityService.stopEntity(id, stop));
+    }
+
+    @ApiOperation(value = "查看是否停用")
+    @PostMapping("/status/{id}/{stop}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "实体ID"),
+    })
+    public R getStatus(@PathVariable Long id) throws IllegalAccessException {
+        return R.ok(entityService.getStatus(id));
     }
 
     @ApiOperation("导入")

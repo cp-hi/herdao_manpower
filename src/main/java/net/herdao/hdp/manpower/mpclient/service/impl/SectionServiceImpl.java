@@ -32,9 +32,9 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
     }
 
     @Override
-    public IPage<SectionDTO> page(Page<SectionDTO> page, String searchTxt) {
-        if (StringUtils.isBlank(searchTxt)) searchTxt = "";
-        return baseMapper.query(page, searchTxt);
+    public IPage<SectionDTO> page(Page<SectionDTO> page, Section Section) {
+
+        return baseMapper.query(page,   Section);
     }
 
     @Override

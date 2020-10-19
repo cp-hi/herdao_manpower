@@ -23,6 +23,9 @@
             <result property="delFlag" column="DEL_FLAG"/>
             <result property="staffId" column="STAFF_ID"/>
             <result property="choice" column="choice"/>
+           <result property="executeDate" column="execute_date"/>
+
+
     </resultMap>
 
     <!-- 员工奖惩情况分页 -->
@@ -43,7 +46,8 @@
                         '奖励'
                         WHEN f.choice =2 THEN
                         '惩罚'
-                        END choice
+                        END choice,
+                        f.execute_date
                 FROM   mp_staff_rewards_pulishments f
                 LEFT JOIN mp_staff s ON s.ID = f.SATFF_ID
                 LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
@@ -75,7 +79,8 @@
                     '奖励'
                     WHEN f.choice =2 THEN
                     '惩罚'
-                    END choice
+                    END choice,
+                    f.execute_date
                     FROM   mp_staff_rewards_pulishments f
                     LEFT JOIN mp_staff s ON s.ID = f.SATFF_ID
                     LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1

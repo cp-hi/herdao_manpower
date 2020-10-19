@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,10 +52,9 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R<IPage<PostListDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
+    public R page(Page page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = postService.page(page, post);
         List<PostDTO> records = p.getRecords();
-
 //        PostListDTO postListDTO = DtoConverter.dto2vo(p.getRecords().get(0), PostListDTO.class);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
         p.setRecords(vos);
@@ -96,8 +96,13 @@ public class PostController extends BaseController<Post> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
-    public R list(Long groupId) {
-        return R.ok(postService.postList(groupId));
+    public R<IPage<PostShortDTO>> list(Long groupId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        Post post = new Post();
+        post.setGroupId(groupId);
+        IPage p = postService.page(new Page(), post);
+        List<PostShortDTO> records = DtoConverter.dto2vo(p.getRecords(), PostShortDTO.class);
+        p.setRecords(records);
+        return R.ok(p);
     }
 
 
@@ -149,5 +154,14 @@ public class PostController extends BaseController<Post> {
             return null;
         }
         return R.ok(data);
+    }
+
+    @PostMapping
+    @ApiOperation(value = "保存", notes = "保存")
+    public R<PostFormDTO> save(@RequestBody PostFormDTO postFormDTO) {
+        Post post = new Post();
+        BeanUtils.copyProperties(postFormDTO, post);
+        entityService.saveEntity(post);
+        return R.ok(postFormDTO);
     }
 }
