@@ -52,7 +52,7 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R<IPage<PostListDTO>> page(Page<PostDTO> page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
+    public R  page(Page  page, @RequestBody Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = postService.page(page, post);
         List<PostDTO> records = p.getRecords();
 //        PostListDTO postListDTO = DtoConverter.dto2vo(p.getRecords().get(0), PostListDTO.class);
@@ -97,6 +97,7 @@ public class PostController extends BaseController<Post> {
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
     public R list(Long groupId) {
+
         return R.ok(postService.postList(groupId));
     }
 

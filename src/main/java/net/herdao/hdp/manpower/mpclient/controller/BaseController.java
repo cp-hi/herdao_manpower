@@ -97,6 +97,15 @@ public class BaseController<T> {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
+    @ApiOperation(value = "查看是否停用")
+    @PostMapping("/status/{id}/{stop}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "实体ID"),
+    })
+    public R getStatus(@PathVariable Long id) throws IllegalAccessException {
+        return R.ok(entityService.getStatus(id));
+    }
+
     @ApiOperation("导入")
     @SysLog("导入")
     @PostMapping("/import")
