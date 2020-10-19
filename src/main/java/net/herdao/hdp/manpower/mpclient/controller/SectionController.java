@@ -33,14 +33,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends BaseController<Section> {
+public class SectionController extends NewBaseController<Section,SectionListDTO,SectionFormDTO> {
 
     @Autowired
     private SectionService sectionService;
 
     @Autowired
     public void setEntityService(SectionService sectionService) {
-        super.entityService = sectionService;
+        super.newEntityService = sectionService;
     }
 
     @GetMapping("/list")
@@ -57,25 +57,5 @@ public class SectionController extends BaseController<Section> {
         p.setRecords(vos);
         return R.ok(p);
     }
-
-    @GetMapping("/formInfo/{id}")
-    @ApiOperation(value = "表单信息")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "id"),
-    })
-    public R<SectionFormDTO> getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, NoSuchFieldException {
-        IPage p = sectionService.page(new Page(), new Section(id));
-        SectionFormDTO data = null;
-        if (p.getRecords().size() > 0)
-            data = DtoConverter.dto2vo(p.getRecords().get(0), SectionFormDTO.class);
-        return R.ok(data);
-    }
-
-
-
-
-
 
 }
