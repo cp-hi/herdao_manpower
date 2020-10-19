@@ -18,12 +18,12 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 @ApiModel(value = "岗位序列DTO")
 public class PostSeqDTO extends PostSeq {
 
-    @ApiModelProperty(value = "岗位数")
+    @ApiModelProperty("岗位数")
     private Integer postCount;
 
-    @ApiModelProperty(value = "父序列")
+    @ApiModelProperty("父序列")
     private PostSeq parent;
 
-    @ApiModelProperty(value = "是否最末节点")
+    @ApiModelProperty("是否最末节点")
     private Boolean isLeaf;
 }

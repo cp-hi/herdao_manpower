@@ -16,18 +16,18 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
 @Data
 @ApiModel(value = "职级管理-新增修改表单")
 public class JobLevelFormDTO {
-    @ApiModelProperty(value = "id")
+    @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "职级名称")
+    @ApiModelProperty("职级名称")
     private String jobLevelName;
 
-    @ApiModelProperty(value = "职等ID")
+    @ApiModelProperty("职等ID")
     private Long jobGradeName;
 
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty("排序")
     private Integer sortNo;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 }

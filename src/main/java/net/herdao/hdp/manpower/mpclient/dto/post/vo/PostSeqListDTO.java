@@ -23,7 +23,7 @@ public class PostSeqListDTO {
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "是否最末节点")
+    @ApiModelProperty("是否最末节点")
     private Boolean isLeaf;
 
     @ExcelProperty("岗位序列名称")
@@ -35,20 +35,20 @@ public class PostSeqListDTO {
     private String postSeqCode;
 
     @ExcelProperty("描述")
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 
     @ExcelProperty("岗位数")
-    @ApiModelProperty(value = "岗位数")
+    @ApiModelProperty("岗位数")
     private Integer postCount;
 
     @ExcelProperty("创建情况")
-    @ApiModelProperty(value = "创建情况")
+    @ApiModelProperty("创建情况")
     @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "创建")
     private String createdInfo;
 
     @ExcelProperty("最近更新情况")
-    @ApiModelProperty(value = "最近更新情况")
+    @ApiModelProperty("最近更新情况")
     @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdateInfo;
 }

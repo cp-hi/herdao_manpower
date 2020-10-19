@@ -50,7 +50,7 @@ public class PipelineListDTO {
     private String createdInfo;
 
     @ExcelProperty("最近更新情况")
-    @ApiModelProperty(value = "最近更新情况")
+    @ApiModelProperty( "最近更新情况")
     @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdateInfo;
 

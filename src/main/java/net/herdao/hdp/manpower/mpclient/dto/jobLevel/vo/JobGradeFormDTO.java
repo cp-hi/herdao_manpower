@@ -15,16 +15,16 @@ import lombok.Data;
 @Data
 @ApiModel(value = "职等管理-表单，用于新增修改")
 public class JobGradeFormDTO {
-    @ApiModelProperty(value = "id")
+    @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "职等名称")
+    @ApiModelProperty("职等名称")
     private String jobGradeName;
 
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty("排序")
     private Integer sortNo;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 
 }

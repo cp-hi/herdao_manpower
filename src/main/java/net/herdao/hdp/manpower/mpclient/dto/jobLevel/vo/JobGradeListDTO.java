@@ -19,32 +19,32 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
 @ExcelIgnoreUnannotated
 @ApiModel(value = "职等管理-列表")
 public class JobGradeListDTO {
-    @ApiModelProperty(value = "id")
+    @ApiModelProperty("id")
     private Long id;
 
     @ExcelProperty("职等名称")
-    @ApiModelProperty(value = "职等名称")
+    @ApiModelProperty("职等名称")
     private String jobGradeName;
 
     @ExcelProperty("在职员工数")
-    @ApiModelProperty(value = "在职员工数")
+    @ApiModelProperty("在职员工数")
     private Integer onJobStaffs;
 
     @ExcelProperty("职级数")
-    @ApiModelProperty(value = "职级数")
+    @ApiModelProperty("职级数")
     private Integer jobLevels;
 
     @ExcelProperty("描述")
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 
     @ExcelProperty("创建情况")
-    @ApiModelProperty(value = "创建情况")
+    @ApiModelProperty("创建情况")
     @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "创建")
     private String createdInfo;
 
     @ExcelProperty("最近更新情况")
-    @ApiModelProperty(value = "最近更新情况")
+    @ApiModelProperty("最近更新情况")
     @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdateInfo;
 }

@@ -45,12 +45,12 @@ public class SectionListDTO {
     private Integer sortNo;
 
     @ExcelProperty("创建情况")
-    @ApiModelProperty(value = "创建情况")
+    @ApiModelProperty( "创建情况")
     @DtoField(joinFields = {"creatorName", "createdTime"}, symbol = " ", suffix = "创建")
     private String createdInfo;
 
     @ExcelProperty("最近更新情况")
-    @ApiModelProperty(value = "最近更新情况")
+    @ApiModelProperty( "最近更新情况")
     @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", suffix = "更新")
     private String lastUpdateInfo;
 }

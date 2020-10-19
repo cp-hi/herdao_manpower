@@ -72,8 +72,9 @@ public class PostBaseDTO {
     @DtoField(dictField = "GWZZLX.orgType")
     private String orgType;
 
-    @ApiModelProperty(value = "岗位职责", required = true)
+    @ApiModelProperty("岗位职责")
     private String postDescr;
-    @ApiModelProperty(value = "备注")
+
+    @ApiModelProperty("备注")
     private String remark;
 }

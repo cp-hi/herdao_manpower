@@ -41,7 +41,7 @@ public class PostFormDTO {
     @ApiModelProperty("职级2")
     private String jobLevelId2;
 
-    @ApiModelProperty(value = "是否单职级")
+    @ApiModelProperty("是否单职级")
     private Boolean singleJobLevle;
 
     @ApiModelProperty("岗位组织级别")
@@ -50,16 +50,16 @@ public class PostFormDTO {
     @ApiModelProperty("年终奖比例")
     private String yearPayRatio;
 
-    @ApiModelProperty(value = "绩效工资比例")
+    @ApiModelProperty("绩效工资比例")
     private String perforSalaryRatio;
 
     @ApiModelProperty("岗位薪酬级别")
     private String postLevel;
 
-    @ApiModelProperty(value = "岗位职责", required = true)
+    @ApiModelProperty("岗位职责")
     private String postDescr;
 
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty("备注")
     private String remark;
 
 }

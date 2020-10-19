@@ -31,6 +31,6 @@ public class PostSeqFormDTO {
     @ApiModelProperty("父ID")
     private Long parentId;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty( "描述")
     private String description;
 }
