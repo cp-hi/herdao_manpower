@@ -28,8 +28,10 @@ public class JobLevelListDTO {
 
     @ApiModelProperty(value = "在职员工数")
     private Integer onJobStaffs;
+
     @ApiModelProperty(value = "职等名称")
     private String jobGradeName;
+
     @ApiModelProperty(value = "排序")
     private Integer sortNo;
 

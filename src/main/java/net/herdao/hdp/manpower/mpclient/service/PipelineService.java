@@ -13,6 +13,4 @@ public interface PipelineService extends EntityService<Pipeline> {
     IPage<Pipeline> page(Page<Pipeline> page,Pipeline pipeline);
 
     List<Map> pipelineList(Long groupId);
-@Override
-    boolean saveOrUpdate(Pipeline pipeline);
 }
