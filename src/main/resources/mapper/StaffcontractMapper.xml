@@ -64,7 +64,14 @@
                            where f.del_flag = 0
         )t where 1=1
          <if test="searchText != null">
-             and CONCAT( t.staff_name,  t.staff_code)  LIKE concat('%',#{searchText},'%')
+             and CONCAT(
+                t.staff_name,  t.staff_code,t.START_DATE,
+                t.END_DATE,t.company,
+                t.enableStatus,t.CONTRACT_TYPE,t.CONTRACT_PEIOD,
+                t.PROBATION_MONTH,
+                t.modifier_name,t.MODIFIED_TIME,
+                t.create_name,t.CREATED_TIME
+              )  LIKE concat('%',#{searchText},'%')
          </if>
      </select>
 
@@ -96,7 +103,14 @@
                 where f.del_flag = 0
         )t where 1=1
         <if test="searchText != null">
-            and CONCAT( t.staff_name,  t.staff_code)  LIKE concat('%',#{searchText},'%')
+            and CONCAT(
+                t.staff_name,  t.staff_code,t.START_DATE,
+                t.END_DATE,t.company,
+                t.enableStatus,t.CONTRACT_TYPE,t.CONTRACT_PEIOD,
+                t.PROBATION_MONTH,
+                t.modifier_name,t.MODIFIED_TIME,
+                t.create_name,t.CREATED_TIME
+            )  LIKE concat('%',#{searchText},'%')
         </if>
     </select>
 </mapper>
