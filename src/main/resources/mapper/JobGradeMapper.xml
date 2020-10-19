@@ -30,13 +30,13 @@
         JOB_LEVEL_ID2 in (select id from mp_job_level g where g.job_grade_id = #{id}) )
     </select>
 
-
     <select id="getJobLevels" parameterType="long" resultType="int">
         select count(*) from mp_job_level g where g.job_grade_id = #{id}
     </select>
 
-    <select id="jobGradeList"   resultType="map">
-       	select id,job_Grade_code AS code,job_Grade_name AS name from mp_job_Grade
+    <select id="jobGradeList" parameterType="long"
+            resultType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobGradeShortDTO">
+       	select * from mp_job_grade where group_id = #{groupId}
     </select>
 
     <select id="chkDuplicateJobGradeCode" parameterType="jobGrade" resultType="boolean">

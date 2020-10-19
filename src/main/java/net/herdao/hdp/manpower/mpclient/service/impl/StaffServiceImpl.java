@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -63,6 +68,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private StaffcontractService staffcontractService;
 
+    @Autowired
+    private RemoteUserService remoteUserService;
+    
 	@Override
 	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
 		
@@ -425,6 +433,38 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			staffPracticeDTO.setStaffId(id);
 		}
 		return staffPracticeDTO;
+	}
+	
+	/**
+	 * 修改实习记录
+	 * @param id 用户id
+	 * @author lift
+	 * @date 2020-10-19
+	 * @return
+	 */
+	@Override
+	public boolean updateStaffPractice(StaffPracticeDTO staffPracticeDTO){
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        Integer userId = userInfo.getSysUser().getUserId().intValue();
+        String userName=userInfo.getSysUser().getUsername();
+        String loginCode=userInfo.getSysUser().getUsername();
+        LocalDateTime now = LocalDateTime.now();
+        boolean status=false;
+//		StaffPractice staffPractice = new StaffPractice();
+//		BeanUtils.copyProperties(staffPracticeDTO, staffPractice);
+//		if(staffPracticeDTO.getId()!=null){
+//			staffPractice.setModifierId(userId.toString());
+//			staffPractice.setModifiedTime(now);
+//			status=this.updateById(staffPractice);
+//		}
+//		else{
+//			staffPractice.setCreatorId(userId.toString());
+//			staffPractice.setCreatedTime(now);
+//			staffPractice.setModifierId(userId.toString());
+//			staffPractice.setModifiedTime(now);
+//			
+//		}
+		return status;
 	}
 
 	/**

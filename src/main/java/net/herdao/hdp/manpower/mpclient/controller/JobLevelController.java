@@ -62,10 +62,13 @@ public class JobLevelController extends BaseController<JobLevel> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")
-    public R page(Page page, @RequestBody JobLevel jobLevel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
+            @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
+    })
+    public R page(Page page, JobLevel jobLevel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         IPage p = jobLevelService.page(page, jobLevel);
-        List<JobLevelDTO> records = p.getRecords();
-        List<JobLevelListDTO> vos = DtoConverter.dto2vo(p.getRecords(),JobLevelListDTO.class);
+        List<JobLevelListDTO> vos = DtoConverter.dto2vo(p.getRecords(), JobLevelListDTO.class);
         p.setRecords(vos);
         return R.ok(p);
     }
@@ -75,7 +78,7 @@ public class JobLevelController extends BaseController<JobLevel> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id"),
     })
-    public R  getFormInfo(@PathVariable Long id)
+    public R getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException,
             ClassNotFoundException, NoSuchFieldException {
         IPage p = jobLevelService.page(new Page(), new JobLevel(id));

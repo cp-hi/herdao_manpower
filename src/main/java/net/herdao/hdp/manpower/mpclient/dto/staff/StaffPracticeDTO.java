@@ -67,7 +67,7 @@ public class StaffPracticeDTO {
      * 板块名称
      */
     @ApiModelProperty(value="板块名称")
-    private Long sectionName;
+    private String sectionName;
     /**
      * 管线ID
      */
@@ -77,7 +77,7 @@ public class StaffPracticeDTO {
      * 管线名称
      */
     @ApiModelProperty(value="管线名称")
-    private Long pipelineName;
+    private String pipelineName;
     /**
      * 岗位ID
      */
@@ -87,7 +87,7 @@ public class StaffPracticeDTO {
      * 岗位名称
      */
     @ApiModelProperty(value="岗位名称")
-    private Long postName;
+    private String postName;
     /**
      * 职级
      */

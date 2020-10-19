@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
@@ -143,5 +144,17 @@ public class StaffProTitleController {
     //@PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_add')" )
     public R saveOrUpdate(@RequestBody StaffProTitle staffProTitle) {
         return R.ok(staffProTitleService.saveOrUpdate(staffProTitle));
+    }
+    /**
+     * 新增或修改职称及职业资格
+     * @param staffProTitle 员工职称
+     * @return R
+     */
+    @ApiOperation(value = "新增或修改职称及职业资格", notes = "新增或修改职称及职业资格")
+    @SysLog("新增或修改职称及职业资格" )
+    @PostMapping("/saveOrUpdateDTO")
+    //@PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_add')" )
+    public R saveOrUpdate(@RequestBody StaffProTitleDTO staffProTitleDTO) {
+        return R.ok(staffProTitleService.saveOrUpdateDTO(staffProTitleDTO));
     }
 }

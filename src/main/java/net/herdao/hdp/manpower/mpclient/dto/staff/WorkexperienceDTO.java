@@ -102,5 +102,5 @@ public class WorkexperienceDTO {
      * 员工信息id
      */
     @ApiModelProperty(value="员工信息id")
-    private BigDecimal staffid;
+    private Long staffid;
 }

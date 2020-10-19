@@ -174,11 +174,15 @@ public class StaffRewardsPulishments extends BaseModel<StaffRewardsPulishments> 
     @ExcelIgnore
     private Boolean choice;
 
-
     /**
      * 奖惩时间
      */
     @ApiModelProperty(value="奖惩时间")
+    @ExcelIgnore
     private Date executeDate;
+
+    @ApiModelProperty(value="人员外键")
+    @ExcelIgnore
+    private Long staffId;
 
 }

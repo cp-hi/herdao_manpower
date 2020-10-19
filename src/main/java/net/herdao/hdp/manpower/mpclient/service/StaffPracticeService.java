@@ -32,8 +32,7 @@ public interface StaffPracticeService extends IService<StaffPractice> {
      * @param practice
      * @return
      */
-    @Override
-    boolean saveOrUpdate(StaffPractice practice);
+    boolean saveOrUpdate(StaffPracticeDTO practiceDTO);
 
     /**
      * 员工实习记录

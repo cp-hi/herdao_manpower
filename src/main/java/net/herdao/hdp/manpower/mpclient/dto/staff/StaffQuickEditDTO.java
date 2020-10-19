@@ -3,12 +3,15 @@ package net.herdao.hdp.manpower.mpclient.dto.staff;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+
 /**
  * @author yangrr
  */
 @Data
-@ApiModel(value = "新增/修改员工")
-public class StaffDetailBaseDTO {
+@ApiModel(value = "花名册快速编辑")
+public class StaffQuickEditDTO {
 
     private Long id;
 
@@ -24,10 +27,6 @@ public class StaffDetailBaseDTO {
     @ApiModelProperty(value="身份证号码")
     private String idNumber;
 
-    @ApiModelProperty(value="性别")
-    private String sex;
-
-    @ApiModelProperty(value="E-mail")
-    private String email;
-
+    @ApiModelProperty(value="入职本公司日期")
+    private LocalDateTime entryTime;
 }

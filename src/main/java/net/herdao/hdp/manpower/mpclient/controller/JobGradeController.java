@@ -12,10 +12,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobGradeFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobGradeListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
@@ -51,11 +48,13 @@ public class JobGradeController extends BaseController<JobGrade> {
     }
 
     @GetMapping("/list")
-    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
-    public R list() {
-        return R.ok(jobGradeService.jobGradeList());
+    @ApiOperation(value = "职等列表", notes = "用于下拉列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "groupId", value = "集团id"),
+    })
+    public R<List<JobGradeShortDTO>> list(Long groupId) {
+        return R.ok(jobGradeService.jobGradeList(  groupId));
     }
-
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询")

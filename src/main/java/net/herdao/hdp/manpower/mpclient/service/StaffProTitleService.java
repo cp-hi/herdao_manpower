@@ -52,6 +52,13 @@ public interface StaffProTitleService extends IService<StaffProTitle> {
      */
     @Override
     boolean saveOrUpdate(StaffProTitle entity);
+    
+    /**
+     * 新增或修改职称及职业资格
+     * @param staffProTitleDTO
+     * @return
+     */
+    boolean saveOrUpdateDTO(StaffProTitleDTO staffProTitleDTO);
 
     /**
      * 获取员工职业及职称
