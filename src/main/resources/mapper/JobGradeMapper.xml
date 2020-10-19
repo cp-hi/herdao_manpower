@@ -4,6 +4,37 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper">
 
+    <resultMap id="jobGradeDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeDTO">
+        <id column="id" property="id"/>
+        <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+        <association property="jobLevels" column="id" select="getJobLevels" javaType="int"/>
+    </resultMap>
+
+    <select id="page" resultMap="jobGradeDTOMap" parameterType="jobGrade">
+        select * from mp_job_grade where 1=1
+        <if test="jobGrade.id != null">
+            and id = #{jobGrade.id}
+        </if>
+        <if test="jobGrade.jobGradeName != null">
+            <bind name="likeTxt" value="'%'+jobGrade.jobGradeName +'%'"/>
+            job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt}
+        </if>
+    </select>
+
+
+    <select id="getOnJobStaffs" parameterType="long" resultType="int">
+        select count(*) from mp_post p, mp_userpost up , mp_staff s
+        where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
+        and s.STAFF_SCOPE = '1' and p.id  in (select id from mp_post where
+        JOB_LEVEL_ID1 in (select id from mp_job_level g where g.job_grade_id = #{id}) or
+        JOB_LEVEL_ID2 in (select id from mp_job_level g where g.job_grade_id = #{id}) )
+    </select>
+
+
+    <select id="getJobLevels" parameterType="long" resultType="int">
+        select count(*) from mp_job_level g where g.job_grade_id = #{id}
+    </select>
+
     <select id="jobGradeList"   resultType="map">
        	select id,job_Grade_code AS code,job_Grade_name AS name from mp_job_Grade
     </select>
