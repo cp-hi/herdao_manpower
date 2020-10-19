@@ -61,9 +61,9 @@ public class JobLevelController extends BaseController<JobLevel> {
 
 
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询",notes = "" +
-            "jobGradeId:职等ID" +
-            "jobLevelName:搜索字符串" +
+    @ApiOperation(value = "分页查询", notes = "" +
+            "jobGradeId:        职等ID <br>" +
+            "jobLevelName:      搜索字符串 <br>" +
             "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
