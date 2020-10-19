@@ -69,17 +69,14 @@ public class BaseController<T> {
         return R.ok(operationLogService.findByEntity(objId, clazz.getName()));
     }
 
-    //    @ApiResponses({
-//            @ApiResponse()
-//    })
-//    @GetMapping("/{id}")
-//    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "实体ID"),
-//    })
-//    public R getById(@PathVariable("id") Long id) {
-//        return R.ok(entityService.getById(id));
-//    }
+    @GetMapping("/{id}")
+    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "实体ID"),
+    })
+    public R getById(@PathVariable("id") Long id) {
+        return R.ok(entityService.getById(id));
+    }
 
     @ApiOperation(value = "通过id删除")
     @DeleteMapping("/{id}")
