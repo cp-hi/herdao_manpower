@@ -248,7 +248,6 @@ public class OrganizationController {
     @SysLog("删除组织")
     @PostMapping("/removeOrg")
     //@PreAuthorize("@pms.hasPermission('oa_organization_del')" )
-    @Transactional
     public R removeOrg(@RequestBody Organization condition) {
         return orgService.removeOrg(condition);
     }
@@ -344,7 +343,6 @@ public class OrganizationController {
     @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
     @PostMapping("/batchImportOrg")
     @ResponseBody
-    @Transactional
     public R batchImportOrg(@RequestParam(value = "file") MultipartFile file){
         try {
             //生成导出批次ID

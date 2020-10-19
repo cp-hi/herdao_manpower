@@ -102,19 +102,20 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @SysLog("预停用组织")
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R expectedDisable(Long id, String stopDateStr) {
-    	
-       Organization organization = this.getById(id);
-       
-       // 设置停用日期
-       organization.setStopDate(DateUtil.parseDate(stopDateStr));
-       // 设置为停用 TOTO 后期关联定时任务
-       organization.setIsStop(0);
-       
-       this.saveOrUpdate(organization);
-       
-       return R.ok(null, "停用成功！");
-    }
+	public R expectedDisable(Long id, String stopDateStr) {
+		// 停用状态
+		Integer status = 1;
+		Organization organization = this.getById(id);
+
+		// 设置停用日期
+		organization.setStopDate(DateUtil.parseDate(stopDateStr));
+		// 设置为停用 TOTO 后期关联定时任务
+		organization.setIsStop(status);
+
+		this.saveOrUpdate(organization);
+
+		return R.ok(null, "停用成功！");
+	}
     
     
     /**
@@ -126,7 +127,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Transactional(rollbackFor = Exception.class)
 	public R disable() {
     	// 停用状态
-    	Integer status = 0;
+    	Integer status = 1;
 		// 查询待停用的组织信息
 		List<Organization> organizations = this.lambdaQuery().le(Organization::getStopDate, DateUtil.parseDate(DateUtil.formatDate(new Date())))
 											   .ne(Organization::getIsStop, status).list();
@@ -157,7 +158,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Transactional(rollbackFor = Exception.class)
 	public R expectedEnable(Long id, String startDateStr) {
     	// 启用状态
-    	Integer status = 1;
+    	Integer status = 0;
     	
 		Organization organization = this.getById(id);
 
@@ -184,8 +185,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	public R enable() {
     	
     	// 启用状态
-    	Integer status = 1;
-    	
+    	Integer status = 0;
     	// 查询待启用的组织信息
     	List<Organization> organizations = this.lambdaQuery().le(Organization::getStartDate, DateUtil.parseDate(DateUtil.formatDate(new Date())))
     												   .ne(Organization::getIsStop, status).list();
@@ -307,6 +307,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @return R
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public R removeOrg(@RequestBody Organization condition) {
         try {
             List<Map<String, Long>> orgIds = new ArrayList<>();
@@ -364,8 +365,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public  R findOrganization2Level(@RequestBody Organization condition) {
         if (null != condition) {
-            //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
-            condition.setIsStop(1);
+            //默认加载启用状态的组织架构（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
+            condition.setIsStop(0);
         }
         List<Organization> rootOrgans = this.baseMapper.findRootOrganizations(condition);
 
@@ -373,8 +374,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             for (Organization rootOrgan : rootOrgans) {
                 Organization childrenCondition = new Organization();
                 childrenCondition.setParentId(rootOrgan.getId());
-                //默认加载启用状态的组织架构(0 停用 ，1启用，3全部)
-                childrenCondition.setIsStop(1);
+                //默认加载启用状态的组织架构
+                childrenCondition.setIsStop(0);
 
                 List<Organization> childrenOrgans = this.baseMapper.findOrganizationByCondition(childrenCondition);
                 rootOrgan.setChildren(childrenOrgans);
