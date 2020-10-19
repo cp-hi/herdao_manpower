@@ -32,6 +32,7 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 员工奖惩
@@ -172,4 +173,12 @@ public class StaffRewardsPulishments extends BaseModel<StaffRewardsPulishments> 
     @ApiModelProperty(value="奖励/惩罚 1:奖励 2:惩罚")
     @ExcelIgnore
     private Boolean choice;
+
+
+    /**
+     * 奖惩时间
+     */
+    @ApiModelProperty(value="奖惩时间")
+    private Date executeDate;
+
 }
