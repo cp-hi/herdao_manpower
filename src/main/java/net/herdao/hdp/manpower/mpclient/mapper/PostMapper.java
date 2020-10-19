@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,7 +20,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     List<Map> postList(Long groupId);
 
-    IPage<PostDTO > page(Page<PostDTO > page,@Param("post") Post post);
+    IPage<PostListDTO> page(Page<PostListDTO> page, @Param("post") Post post);
 
     Boolean chkDuplicatePostName(Post post);
 

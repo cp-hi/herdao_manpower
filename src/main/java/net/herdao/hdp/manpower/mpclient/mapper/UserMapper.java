@@ -20,6 +20,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -29,5 +30,13 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
+	
+	/**
+	 * 统计组织员工数
+	 * 
+	 * @param orgCode
+	 * @return
+	 */
+	Integer getCountUser(@Param("orgCode") String orgCode);
 
 }

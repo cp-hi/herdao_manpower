@@ -50,7 +50,7 @@ public class SectionController extends BaseController<Section> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<SectionListDTO>> page(Page<SectionDTO> page, @RequestBody Section section) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public R  page(Page  page, @RequestBody Section section) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         IPage p = sectionService.page(page, section);
         List<SectionListDTO> vos = DtoConverter.dto2vo(p.getRecords(), SectionListDTO.class);
         p.setRecords(vos);

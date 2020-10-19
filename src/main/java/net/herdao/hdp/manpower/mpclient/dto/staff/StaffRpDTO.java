@@ -54,8 +54,8 @@ public class StaffRpDTO  {
     /**
      * 奖惩金额
      */
-    @ExcelProperty(value = "奖惩内容")
-    @ApiModelProperty(value="奖惩内容")
+    @ExcelProperty(value = "奖惩金额")
+    @ApiModelProperty(value="奖惩金额")
     private String amount;
 
     /**
@@ -85,11 +85,4 @@ public class StaffRpDTO  {
     @ExcelProperty(value = "操作时间")
     @ApiModelProperty(value="操作时间")
     private String modifiedTime;
-
-    /**
-     * 奖惩时间
-     */
-    @ExcelProperty(value = "奖惩时间")
-    @ApiModelProperty(value="奖惩时间")
-    private String executeDate;
 }

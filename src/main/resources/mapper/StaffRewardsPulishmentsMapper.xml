@@ -23,9 +23,7 @@
             <result property="delFlag" column="DEL_FLAG"/>
             <result property="staffId" column="STAFF_ID"/>
             <result property="choice" column="choice"/>
-           <result property="executeDate" column="execute_date"/>
-
-
+            <result property="executeDate" column="execute_date"/>
     </resultMap>
 
     <!-- 员工奖惩情况分页 -->
@@ -87,9 +85,9 @@
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
-            t.staff_name, t.staff_code,t.type,t.content,
-            t.amount,t.reason,t.remarks,t.modifier_name,
-            t.MODIFIED_TIME,t.choice
+                t.staff_name, t.staff_code,t.type,t.content,
+                t.amount,t.reason,t.remarks,t.modifier_name,
+                t.MODIFIED_TIME,t.choice
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>

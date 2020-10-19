@@ -18,6 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+
 import net.herdao.hdp.manpower.mpclient.entity.User;
 
 /**
@@ -27,5 +28,13 @@ import net.herdao.hdp.manpower.mpclient.entity.User;
  * @date 2020-09-15 17:59:33
  */
 public interface UserService extends IService<User> {
+	
+	/**
+	 * 统计组织员工数
+	 * 
+	 * @param orgCode
+	 * @return
+	 */
+	public Integer getCountUser(String orgCode);
 
 }

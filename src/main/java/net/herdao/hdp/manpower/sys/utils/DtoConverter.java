@@ -77,7 +77,7 @@ public class DtoConverter {
                     Object val = currObj.get(source);
                     if (null == val) continue;
                     if (java.util.Date.class == val.getClass()) {
-                        String date = DateUtils.formatDate((Date) val, "yyyy-MM-dd hh:mm:ss");
+                        String date = DateUtils.formatDate((Date) val, "yyyy.MM.dd hh:mm");
                         value += dtoField.symbol() + date;
                     } else {
                         value += dtoField.symbol() + val;

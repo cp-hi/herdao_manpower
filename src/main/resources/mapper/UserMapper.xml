@@ -7,20 +7,29 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.UserMapper">
 
   <resultMap id="userMap" type="net.herdao.hdp.manpower.mpclient.entity.User">
-                  <id property="id" column="ID"/>
-                        <result property="oid" column="OID"/>
-                        <result property="userName" column="USER_NAME"/>
-                        <result property="loginCode" column="LOGIN_CODE"/>
-                        <result property="password" column="PASSWORD"/>
-                        <result property="password2" column="PASSWORD2"/>
-                        <result property="orgOid" column="ORG_OID"/>
-                        <result property="orgId" column="ORG_ID"/>
-                        <result property="orgDeptOid" column="ORG_DEPT_OID"/>
-                        <result property="orgDeptId" column="ORG_DEPT_ID"/>
-                        <result property="isStop" column="IS_STOP"/>
-                        <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
-                        <result property="remark" column="REMARK"/>
-                        <result property="leaveTime" column="LEAVE_TIME"/>
-                        <result property="tenantId" column="TENANT_ID"/>
-            </resultMap>
+         <id property="id" column="ID"/>
+               <result property="oid" column="OID"/>
+               <result property="userName" column="USER_NAME"/>
+               <result property="loginCode" column="LOGIN_CODE"/>
+               <result property="password" column="PASSWORD"/>
+               <result property="password2" column="PASSWORD2"/>
+               <result property="orgOid" column="ORG_OID"/>
+               <result property="orgId" column="ORG_ID"/>
+               <result property="orgDeptOid" column="ORG_DEPT_OID"/>
+               <result property="orgDeptId" column="ORG_DEPT_ID"/>
+               <result property="isStop" column="IS_STOP"/>
+               <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
+               <result property="remark" column="REMARK"/>
+               <result property="leaveTime" column="LEAVE_TIME"/>
+               <result property="tenantId" column="TENANT_ID"/>
+   </resultMap>
+   
+    <!-- 统计组织下 在职员工数 -->
+    <select id="getCountUser" resultType="java.lang.Integer">
+       SELECT  
+		COUNT(us.id)
+	   FROM mp_user us 
+	   LEFT JOIN mp_organization org ON us.org_id = org.id
+	   WHERE us.is_stop = 0 AND org.org_code LIKE CONCAT(#{orgCode},'%')
+    </select>
 </mapper>

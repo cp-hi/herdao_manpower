@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public interface PostService extends EntityService<Post> {
 
-    IPage<PostDTO > page(Page<PostDTO > page, Post post);
+    IPage<PostListDTO> page(Page<PostListDTO> page, Post post);
 
     /**
      * 岗位列表
