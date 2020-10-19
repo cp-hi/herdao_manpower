@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
@@ -28,6 +29,7 @@ import java.util.List;
  * @Version 1.0
  */
 @RestController
+@Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
 public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO> {
 
