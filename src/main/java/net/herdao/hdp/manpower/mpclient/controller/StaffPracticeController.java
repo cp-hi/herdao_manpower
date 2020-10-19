@@ -92,9 +92,8 @@ public class StaffPracticeController {
     @ApiOperation(value = "新增或修改员工实习记录", notes = "新增或修改员工实习记录")
     @SysLog("新增或修改员工实习记录" )
     @PostMapping("/saveOrUpdate")
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffpractice_add')" )
-    public R saveOrUpdate(@RequestBody StaffPractice staffPractice) {
-        boolean status = staffPracticeService.saveOrUpdate(staffPractice);
+    public R saveOrUpdate(@RequestBody StaffPracticeDTO staffPracticeDTO) {
+        boolean status = staffPracticeService.saveOrUpdate(staffPracticeDTO);
         return R.ok(status);
     }
 

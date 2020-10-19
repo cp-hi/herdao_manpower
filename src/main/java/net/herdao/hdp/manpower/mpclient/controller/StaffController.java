@@ -289,6 +289,19 @@ public class StaffController {
     	StaffPracticeDTO staffPracticeDTO = staffService.getStaffPractice(id);
         return R.ok(staffPracticeDTO);
     }
+    
+    /**
+     * author lift
+     * 修改实习记录
+     * @param staffPracticeDTO 实习记录
+     * @return R
+     */
+    @ApiOperation(value = "修改实习记录", notes = "修改实习记录")
+    @SysLog("修改实习记录" )
+    @PostMapping("/updateStaffPractice" )
+    public R updateStaffPractice(@RequestBody StaffPracticeDTO staffPracticeDTO) {
+        return R.ok(staffService.updateStaffPractice(staffPracticeDTO));
+    }
 
     /**
      * author lift

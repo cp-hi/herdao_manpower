@@ -17,12 +17,22 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPracticeMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,16 +43,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class StaffPracticeServiceImpl extends ServiceImpl<StaffPracticeMapper, StaffPractice> implements StaffPracticeService {
 
+    @Autowired
+    private RemoteUserService remoteUserService;
+    
     @Override
-    @OperationEntity(operation = "保存或修改员工职称及职业资料", clazz = StaffPractice.class)
-    public boolean saveOrUpdate(StaffPractice practice) {
-        if (null != practice ){
-            if (null != practice.getBeginDate() && null !=  practice.getEndDate()){
-                String dayAndMonth = DateUtils.getDayAndMonth(DateUtils.formatDate(practice.getBeginDate(),"yyyy-MM-dd"), DateUtils.formatDate( practice.getEndDate(),"yyyy-MM-dd")  );
-                practice.setPeriod(dayAndMonth);
-            }
+    @OperationEntity(operation = "新增或修改员工实习记录", clazz = StaffPractice.class)
+    public boolean saveOrUpdate(StaffPracticeDTO staffPracticeDTO) {
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        Integer userId = userInfo.getSysUser().getUserId().intValue();
+        LocalDateTime now = LocalDateTime.now();
+        StaffPractice staffPractice;
+        
+        //设置实习期
+        if (null != staffPracticeDTO.getBeginDate() && null !=  staffPracticeDTO.getEndDate()){
+            String dayAndMonth = DateUtils.getDayAndMonth(DateUtils.formatDate(staffPracticeDTO.getBeginDate(),"yyyy-MM-dd"), DateUtils.formatDate( staffPracticeDTO.getEndDate(),"yyyy-MM-dd")  );
+            staffPracticeDTO.setPeriod(dayAndMonth);
         }
-        boolean status = super.saveOrUpdate(practice);
+
+        //如果id为null，新增数据
+        if(staffPracticeDTO.getId()==null){
+        	staffPractice = new StaffPractice();
+        	BeanUtils.copyProperties(staffPracticeDTO, staffPractice);
+        	
+        	staffPractice.setCreatorId(userId.toString());
+        	staffPractice.setCreatedTime(now);
+        	staffPractice.setModifierId(userId.toString());
+        	staffPractice.setModifiedTime(now);
+        }
+        else{
+        	staffPractice = this.getById(staffPracticeDTO.getId());
+        	BeanUtils.copyProperties(staffPracticeDTO, staffPractice);
+        	staffPractice.setModifierId(userId.toString());
+        	staffPractice.setModifiedTime(now);
+        }
+        
+        boolean status = super.saveOrUpdate(staffPractice);
         return status;
     }
 

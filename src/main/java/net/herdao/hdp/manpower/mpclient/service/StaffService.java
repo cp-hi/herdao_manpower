@@ -76,6 +76,8 @@ public interface StaffService extends IService<Staff> {
 	
 	StaffPracticeDTO getStaffPractice(Long id);
 	
+	boolean updateStaffPractice(StaffPracticeDTO staffPracticeDTO);
+	
 	List<StaffProTitleDTO> getStaffProTitle(Long id);
 
 	Map<String, Object> getStaffWelfare(Long id);
