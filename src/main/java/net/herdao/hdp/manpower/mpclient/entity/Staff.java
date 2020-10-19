@@ -25,6 +25,7 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -174,7 +175,7 @@ private static final long serialVersionUID = 1L;
      * 入职本公司日期
      */
     @ApiModelProperty(value="入职本公司日期")
-    private LocalDateTime entryTime;
+    private LocalDate entryTime;
     /**
      * 本公司工龄
      */

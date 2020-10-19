@@ -103,14 +103,14 @@ public class OperationLogAspect {
                     entity.setCreatedTime(new Date());
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
-                    AnnotationUtils.setAnnotationInfo(operation, "operation", "新增" + model.value());
+                    AnnotationUtils.setAnnotationInfo(operation, "operation", "新增" );
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {
                     entity.setModifiedTime(new Date());
                     entity.setModifierName(sysUser.getUsername());
                     entity.setModifierId(Long.valueOf(sysUser.getUserId()));
-                    AnnotationUtils.setAnnotationInfo(operation, "operation", "修改" + model.value());
+                    AnnotationUtils.setAnnotationInfo(operation, "operation", "修改" );
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "修改" + model.value());
                 }
@@ -261,6 +261,12 @@ public class OperationLogAspect {
             log.setOperatorId(sysUser.getUserId().longValue());
             operationLogService.save(log);
         }
+
+        //重设注解属性值，避免带到下一个切面
+        AnnotationUtils.setAnnotationInfo(operation, "operation", "");
+        AnnotationUtils.setAnnotationInfo(operation, "objId", "");
+        AnnotationUtils.setAnnotationInfo(operation, "clazz", null);
+        AnnotationUtils.setAnnotationInfo(operation, "content", "");
     }
 
 

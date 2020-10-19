@@ -43,16 +43,26 @@ public class PostController extends BaseController<Post> {
     }
 
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
-            @ApiImplicitParam(name = "groupId", value = "集团ID"),
-            @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
-            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
-            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
-            @ApiImplicitParam(name = "current", value = "当前页"),
-            @ApiImplicitParam(name = "size", value = "每页条数"),
-    })
+    @ApiOperation(value = "分页查询",notes = "" +
+            /**
+             *             *postName       字符串搜索
+             *             *groupId        集团ID
+             *             *jobLevelId1    职级ID
+             *             *sectionId      板块ID
+             *             *pipelineId     管线ID
+             *             *current         当前页
+             *             *size           每页条数
+             **/
+"")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
+//            @ApiImplicitParam(name = "groupId", value = "集团ID"),
+//            @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
+//            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
+//            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
+//            @ApiImplicitParam(name = "current", value = "当前页"),
+//            @ApiImplicitParam(name = "size", value = "每页条数"),
+//    })
     public R page(Page page, Post post) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchFieldException {
         IPage p = postService.page(page, post);
         List<PostListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostListDTO.class);
@@ -156,11 +166,12 @@ public class PostController extends BaseController<Post> {
     }
 
     @PostMapping("savePost")
-    @ApiOperation(value = "保存", notes = "保存")
+    @ApiOperation(value = "新增/修改岗位")
     public R<PostFormDTO> savePost(@RequestBody PostFormDTO postFormDTO) {
         Post post = new Post();
         BeanUtils.copyProperties(postFormDTO, post);
         entityService.saveEntity(post);
         return R.ok(postFormDTO);
     }
+
 }

@@ -16,6 +16,7 @@ import net.herdao.hdp.manpower.mpclient.service.SectionService;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +58,6 @@ public class SectionController extends BaseController<Section> {
         return R.ok(p);
     }
 
-
     @GetMapping("/formInfo/{id}")
     @ApiOperation(value = "表单信息")
     @ApiImplicitParams({
@@ -72,4 +72,10 @@ public class SectionController extends BaseController<Section> {
             data = DtoConverter.dto2vo(p.getRecords().get(0), SectionFormDTO.class);
         return R.ok(data);
     }
+
+
+
+
+
+
 }

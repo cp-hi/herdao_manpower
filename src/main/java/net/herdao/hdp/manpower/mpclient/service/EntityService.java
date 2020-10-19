@@ -22,6 +22,8 @@ import java.util.List;
  */
 public interface EntityService<T> extends IService<T> {
 
+
+
     /**
      * 保存实体并自动添加日志
      *
