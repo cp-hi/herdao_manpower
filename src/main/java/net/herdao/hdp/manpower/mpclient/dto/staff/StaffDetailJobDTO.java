@@ -17,6 +17,9 @@ public class StaffDetailJobDTO {
     @ApiModelProperty(value="入职本公司日期")
     private LocalDateTime entryTime;
 
+    @ApiModelProperty(value="试用期")
+    private Long probPeriod;
+
     @ApiModelProperty(value="任职类型")
     private String jobType;
 

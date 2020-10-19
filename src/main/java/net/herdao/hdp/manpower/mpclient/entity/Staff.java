@@ -546,4 +546,13 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="实际工作工龄")
     private BigDecimal realWorkAge;
+
+    @ApiModelProperty(value="转正日期")
+    private LocalDateTime regularTime;
+
+    @ApiModelProperty(value="证件类型")
+    private String idType;
+
+    @ApiModelProperty(value="试用期")
+    private Long probPeriod;
 }
