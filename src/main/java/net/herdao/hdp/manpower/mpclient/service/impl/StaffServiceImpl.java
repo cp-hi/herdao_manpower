@@ -220,7 +220,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
     public Map<String, Object> getStaffDetail(Long id){
 		Staff staff = this.getById(id);
-		StaffBaseDTO base = new StaffBaseDTO();
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffInfoDTO info = new StaffInfoDTO();
 		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
 		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
@@ -272,7 +272,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public Map<String, Object> getHomePage(Long id){
 		Staff staff = this.getById(id);
-		StaffBaseDTO base = new StaffBaseDTO();
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffArchiveDTO archive = new StaffArchiveDTO();
 		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
 		StaffWelfareDTO welfare = new StaffWelfareDTO();
@@ -500,7 +500,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public Map<String, Object> getStaffWelfare(Long id){
 		Staff staff = this.getById(id);
-		StaffBaseDTO base = new StaffBaseDTO();
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffSecurityDTO security = new StaffSecurityDTO();
 		StaffFundDTO fund = new StaffFundDTO();
 		StaffSalaryDTO salary = new StaffSalaryDTO();
@@ -535,4 +535,5 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staffWorkYearDTO, staff);
 		return this.updateById(staff);
 	}
+
 }
