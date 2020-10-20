@@ -42,7 +42,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-个人信息", notes = "个人信息")
     @SysLog("个人信息" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/staffinfo" )
     public R<Boolean> updateById(@RequestBody StaffInfoDTO staffInfo) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffInfo, staff);
@@ -51,7 +51,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-在职信息", notes = "在职信息")
     @SysLog("在职信息" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/staffjobinfo" )
     public R<Boolean> updateById(@RequestBody StaffJobInfoDTO staffJobInfo) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffJobInfo, staff);
@@ -60,7 +60,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-其他个人信息", notes = "其他个人信息")
     @SysLog("其他个人信息" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/staffinfoother" )
     public R<Boolean> updateById(@RequestBody StaffInfoOtherDTO staffInfoOther) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffInfoOther, staff);
@@ -69,7 +69,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-紧急联系人", notes = "紧急联系人")
     @SysLog("紧急联系人" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/staffemergency" )
     public R<Boolean> updateById(@RequestBody StaffEmergencyDTO staffEmergency) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffEmergency, staff);
@@ -78,7 +78,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-社保信息", notes = "社保信息")
     @SysLog("社保信息" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/staffsecurity" )
     public R<Boolean> updateById(@RequestBody StaffSecurityDTO staffSecurity) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffSecurity, staff);
@@ -87,7 +87,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-公积金信息", notes = "公积金信息")
     @SysLog("公积金信息" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/stafffund" )
     public R<Boolean> updateById(@RequestBody StaffFundDTO staffFund) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffFund, staff);
@@ -96,7 +96,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-薪资信息", notes = "薪资信息")
     @SysLog("薪资信息" )
-    @PutMapping("/quickedit" )
+    @PutMapping("/staffsalary" )
     public R<Boolean> updateById(@RequestBody StaffSalaryDTO staffSalary) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffSalary, staff);
