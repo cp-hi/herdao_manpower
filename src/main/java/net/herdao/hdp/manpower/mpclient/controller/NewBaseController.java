@@ -153,7 +153,8 @@ public class NewBaseController<T, D, F, E> {
     public R save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
         Object t = Class.forName(getEntityClass().getName()).newInstance();
         BeanUtils.copyProperties(f, (T) t);
-        entityService.saveEntity(t);
+        entityService.saveVerify((T) t);
+        entityService.saveEntity((T) t);
         BeanUtils.copyProperties((T) t, f);
         return R.ok(f);
     }
