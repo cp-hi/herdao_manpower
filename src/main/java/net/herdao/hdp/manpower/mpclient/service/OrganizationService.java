@@ -2,7 +2,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
-import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,8 +9,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 
 /**
@@ -30,10 +31,12 @@ public interface OrganizationService extends IService<Organization> {
      List<Organization> selectOrganizationListByParentOid(String parentId);
 
     /**
-     * 查询根组织架构
+     * 查询组织树
+     * 
+     * @param searchText
      * @return
      */
-    List<Organization> findAllOrganizations(Organization condition);
+    List<OrganizationTreeVO> findAllOrganizations(String searchText);
 
     /**
      * 查询部门结构树
