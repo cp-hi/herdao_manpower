@@ -49,7 +49,9 @@
         <if test="post.id != null">
             and id = #{post.id}
         </if>
-
+        <if test="post.groupId != null">
+            and group_id = #{post.groupId}
+        </if>
         <if test="post.postName != null">
             <bind name="likeTxt" value="'%'+post.postName+'%'"/>
             and concat(POST_CODE,POST_NAME) like #{likeTxt}
