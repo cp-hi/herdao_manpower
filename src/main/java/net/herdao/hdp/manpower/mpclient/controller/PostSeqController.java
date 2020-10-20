@@ -50,6 +50,8 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
     @Override
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postSeqName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     public R page(HttpServletResponse response, Page  page, PostSeq seq, Integer type)

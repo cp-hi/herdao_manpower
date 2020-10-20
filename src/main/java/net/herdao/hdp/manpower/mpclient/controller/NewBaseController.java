@@ -107,11 +107,6 @@ public class NewBaseController<T, D, F, E> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "current", value = "当前页"),
-            @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
-    })
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
         IPage p = entityService.page(page, t);
