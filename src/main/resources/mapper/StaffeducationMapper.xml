@@ -46,7 +46,7 @@
                           e.staff_id,
                           e.SCHOOL_NAME,
                           e.PROFESSIONAL,
-                           ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_DEGREE_TYPE' AND d.`value` = e.EDUCATION_DEGREE ) EDUCATION_DEGREE,
+                          ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_DEGREE_TYPE' AND d.`value` = e.EDUCATION_DEGREE ) EDUCATION_DEGREE,
                           ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_QUA_TYPE' AND d.`value` = e.EDUCATION_QUA ) EDUCATION_QUA,
                           e.LEARN_FORM,
                           ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
@@ -106,10 +106,10 @@
         </if>
         <if test="searchText != null">
             and CONCAT(
-            t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
-            t.SCHOOL_NAME,t.PROFESSIONAL,t.EDUCATION_DEGREE,t.LEARN_FORM,
-            t.EDUCATION_QUA,t.modifier_name,t.modifier_name,
-            t.MODIFIED_TIME, t.create_name,t.CREATED_TIME
+                t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
+                t.SCHOOL_NAME,t.PROFESSIONAL,t.EDUCATION_DEGREE,t.LEARN_FORM,
+                t.EDUCATION_QUA,t.modifier_name,t.modifier_name,
+                t.MODIFIED_TIME, t.create_name,t.CREATED_TIME
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
