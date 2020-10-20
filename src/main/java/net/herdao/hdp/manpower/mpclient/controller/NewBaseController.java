@@ -151,9 +151,10 @@ public class NewBaseController<T, D, F, E> {
     @PostMapping
     @ApiOperation(value = "新增/修改")
     public R save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
-        Object t =  Class.forName(getEntityClass().getName()).newInstance();
+        Object t = Class.forName(getEntityClass().getName()).newInstance();
+        BeanUtils.copyProperties(f, (T) t);
         entityService.saveEntity(t);
-        BeanUtils.copyProperties( f,(T)t);
+        BeanUtils.copyProperties((T) t, f);
         return R.ok(f);
     }
 
@@ -165,6 +166,8 @@ public class NewBaseController<T, D, F, E> {
     public R<F> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException {
         T t = (T) entityService.getById(id);
+        if (null == t)
+            throw new RuntimeException("对象不存在，或已被删除");
         F f = getFormClass().newInstance();
         BeanUtils.copyProperties(t, f);
         return R.ok(f);
