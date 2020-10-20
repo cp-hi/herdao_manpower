@@ -100,7 +100,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    default void importVerify(Object excelObj, T t, int type) {
+    default void importVerify( T t,Object excelObj, int type) {
     }
 
     //TODO 添加操作日志

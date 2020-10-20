@@ -68,7 +68,7 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
     }
 
     @Override
-    public void importVerify(Object excelObj, StaffRewardsPulishments rewardsPulishments, int type) {
+    public void importVerify( StaffRewardsPulishments rewardsPulishments,Object excelObj, int type) {
         //新增校检
         if (type == 0){
             checkAdd((StaffRpVO) rewardsPulishments);

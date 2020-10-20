@@ -82,7 +82,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     public void invoke(T excel, AnalysisContext analysisContext) {
         try {
             Class entity = Class.forName(this.entityClass.getName());
-            entityService.importVerify(entity, excel, importType);
+//            entityService.importVerify(entity, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
             ((ExcelVO) excel).setErrMsg(ex.getMessage());
