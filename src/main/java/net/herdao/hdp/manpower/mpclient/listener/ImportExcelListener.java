@@ -39,40 +39,24 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
      *
      * @Author ljan
      */
-    private Class entityClass;
-
+//    private Class entityClass;
     protected ImportExcelListener() {
     }
 
     public ImportExcelListener(EntityService<T> service) {
-        this(service, null, 50, 0);
+        this(service, 50, 0);
     }
 
-    public ImportExcelListener(EntityService<T> service, Class clazz) {
-        this(service, clazz, 50, 0);
-    }
 
     /**
-     *
-     * @param service 服务类
-     * @param clazz 要保存的实体类
-     * @param importType 导入类型 0: 新增 1: 保存
-     */
-    public ImportExcelListener(EntityService<T> service, Class clazz, Integer importType) {
-        this(service, clazz, 50, importType);
-    }
-
-    /**
-     *
      * @param service
-     * @param clazz
      * @param batchCount 批量导入条数
      * @param importType
      */
-    public ImportExcelListener(EntityService<T> service, Class clazz, Integer batchCount, Integer importType) {
+    public ImportExcelListener(EntityService<T> service, Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.entityService = service;
-        this.entityClass = clazz;
+//        this.entityClass = clazz;
         this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
@@ -81,8 +65,8 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void invoke(T excel, AnalysisContext analysisContext) {
         try {
-            Class entity = Class.forName(this.entityClass.getName());
-//            entityService.importVerify(entity, excel, importType);
+//            Class entity = Class.forName(this.entityClass.getName());
+            entityService.importVerify(excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
             ((ExcelVO) excel).setErrMsg(ex.getMessage());

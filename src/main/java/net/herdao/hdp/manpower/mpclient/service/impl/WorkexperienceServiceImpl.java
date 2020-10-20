@@ -99,9 +99,6 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         workexperience.setCreatorCode(loginCode);
         workexperience.setCreatorName(userName);
         workexperience.setCreatedTime(now);
-        workexperience.setModifierCode(loginCode);
-        workexperience.setModifierName(userName);
-        workexperience.setModifiedTime(now);
         boolean flag = super.save(workexperience);
         return flag;
      }

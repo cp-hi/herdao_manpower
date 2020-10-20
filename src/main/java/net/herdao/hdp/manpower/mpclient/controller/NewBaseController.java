@@ -108,10 +108,11 @@ public class NewBaseController<T, D, F, E> {
         IPage p = newEntityService.page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
         p.setRecords(vos);
-        if (null != type && 1 == type)
+        if (null != type && Integer.valueOf(1).equals(type))
             ExcelUtils.export2Web(response, "列表下载", "列表下载", getDTOClass(), vos);
         return R.ok(p);
     }
+
 
     @ApiOperation(value = "通过id删除")
     @DeleteMapping("/{id}")
@@ -173,15 +174,15 @@ public class NewBaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType) throws Exception {
-        NewImportExcelListener listener = null;
+        ImportExcelListener listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new NewImportExcelListener<T,E>(newEntityService, importType);
+            listener = new ImportExcelListener(newEntityService,  importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
+            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getDataList().size() + "条数据");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getExcelList());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getDataList());
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
