@@ -33,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO,Class> {
+public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, Class> {
 
     @Autowired
     private PostService postService;
@@ -56,16 +56,16 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
              *             *size           每页条数
              **/
             "")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
-//            @ApiImplicitParam(name = "groupId", value = "集团ID"),
-//            @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
-//            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
-//            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
-//            @ApiImplicitParam(name = "current", value = "当前页"),
-//            @ApiImplicitParam(name = "size", value = "每页条数"),
-//    })
-    public R page(HttpServletResponse response, Page page, @ApiIgnore Post post, Integer type) throws Exception {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "groupId", value = "集团ID"),
+            @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
+            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
+            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
+    })
+    public R page(HttpServletResponse response, Page page, Post post, Integer type) throws Exception {
         return super.page(response, page, post, type);
     }
 

@@ -22,17 +22,22 @@ import java.io.Serializable;
 @ToString
 public class BaseModel<T extends Model<?>> extends Model<T> {
     @ExcelIgnore
+    @ApiModelProperty( hidden = true)
     private String field1;
 
     @ExcelIgnore
+    @ApiModelProperty( hidden = true)
     private String field2;
 
     @ExcelIgnore
+    @ApiModelProperty( hidden = true)
     private String field3;
 
+    @ApiModelProperty( hidden = true)
     @ExcelIgnore
     private String field4;
 
+    @ApiModelProperty( hidden = true)
     @ExcelIgnore
     private String field5;
 
