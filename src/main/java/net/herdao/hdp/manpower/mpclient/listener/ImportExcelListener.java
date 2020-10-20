@@ -43,8 +43,8 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     protected ImportExcelListener() {
     }
 
-    public ImportExcelListener(EntityService<T> service) {
-        this(service, 50, 0);
+    public ImportExcelListener(EntityService<T> service,Integer importType) {
+        this(service, 50,importType);
     }
 
 

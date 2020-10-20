@@ -125,7 +125,7 @@ public class BaseController<T> {
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(entityService, clazz, importType);
+            listener = new ImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
