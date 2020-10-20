@@ -45,8 +45,6 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
     }
 
     @Override
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postName", value = "字符串搜索"),
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
@@ -57,14 +55,14 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
-    public R page(HttpServletResponse response,Page page, Post post, Integer type) throws Exception {
+    public R page(HttpServletResponse response,@ApiIgnore Page page, Post post, Integer type) throws Exception {
         return super.page(response, page, post, type);
     }
 
     @GetMapping("/baseInfo/{id}")
     @ApiOperation(value = "基础信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id"),
+            @ApiImplicitParam(name = "id", value = "主键"),
     })
     public R<PostBaseDTO> getBaseInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException,
