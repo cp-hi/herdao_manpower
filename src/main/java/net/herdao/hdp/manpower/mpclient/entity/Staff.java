@@ -345,7 +345,7 @@ private static final long serialVersionUID = 1L;
      * 加入或迁移公司集体户时间
      */
     @ApiModelProperty(value="加入或迁移公司集体户时间")
-    private LocalDateTime collectiveHouseholdsTime;
+    private LocalDate collectiveHouseholdsTime;
     /**
      * 档案挂靠情况
      */
@@ -445,12 +445,12 @@ private static final long serialVersionUID = 1L;
      * 社保封存时间
      */
     @ApiModelProperty(value="社保封存时间")
-    private LocalDateTime securityArchiveTime;
+    private LocalDate securityArchiveTime;
     /**
      * 公积金封存时间
      */
     @ApiModelProperty(value="公积金封存时间")
-    private LocalDateTime fundArchiveTime;
+    private LocalDate fundArchiveTime;
     /**
      * 个人社保号（省）
      */

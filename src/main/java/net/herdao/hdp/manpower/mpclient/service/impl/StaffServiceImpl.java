@@ -235,7 +235,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(familyList.get(i), familyDto);
 			familyDtoList.add(familyDto);
 		}
-		map.put("staffFamilyDTOList", familyDtoList);
+		map.put("staffFamilyDTO", familyDtoList);
 
 		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
 				.eq("STAFF_ID", staff.getId())
@@ -248,7 +248,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(eduList.get(i), eduDto);
 			eduDtoList.add(eduDto);
 		}
-		map.put("staffEducationDTOList", eduDtoList);
+		map.put("staffEducationDTO", eduDtoList);
 		return map;
 	}
 
@@ -283,7 +283,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(uphList.get(i), jobTravel);
 			uphDtoList.add(jobTravel);
 		}
-		map.put("staffJobTravelDTOList", uphDtoList);
+		map.put("staffJobTravelDTO", uphDtoList);
 
 		List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()
 				.eq("STAFF_ID", staff.getId())
@@ -296,7 +296,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(expList.get(i), workExp);
 			expDtoList.add(workExp);
 		}
-		map.put("staffWorkExpDTOList", expDtoList);
+		map.put("staffWorkExpDTO", expDtoList);
 
 		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
 				.eq("STAFF_ID", staff.getId())
@@ -309,7 +309,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(familyList.get(i), family);
 			familyDtoList.add(family);
 		}
-		map.put("staffFamilyDTOList", familyDtoList);
+		map.put("staffFamilyDTO", familyDtoList);
 		return map;
 	}
 	
@@ -508,7 +508,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(contractList.get(i), contractDto);
 			contractDtoList.add(contractDto);
 		}
-		map.put("staffcontractDTOList", contractDtoList);
+		map.put("staffcontractDTO", contractDtoList);
 		return  map;
 	}
 	
