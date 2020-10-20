@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
+import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.NewEntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
@@ -27,9 +28,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
- * @param <E> 实体类Entity类型
- * @param <D> 分页类DTO
- * @param <F> 表单页Form类型
+ * @param <T> 实体类Entity类型
+ * @param <D> 分页类DTO，用于列表展示及列表导出
+ * @param <F> 表单页Form类型，用于新增修改
+ * @param <E> excel导入类
  * @ClassName NewBaseController
  * @Description NewBaseController
  * @Author ljan
@@ -37,7 +39,7 @@ import java.util.List;
  * @Date 2020/10/19 18:10
  * @Version 1.0
  */
-public class NewBaseController<E, D, F> {
+public class NewBaseController<T, D, F, E> {
 
     NewEntityService newEntityService;
 
@@ -51,8 +53,8 @@ public class NewBaseController<E, D, F> {
      *
      * @return
      */
-    protected Class<E> getEntityClass() {
-        Class<E> clazz = (Class<E>) ((ParameterizedType) getClass()
+    protected Class<T> getEntityClass() {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         return clazz;
     }
@@ -86,17 +88,10 @@ public class NewBaseController<E, D, F> {
      * @Author ljan
      */
     protected Class getImportClass() {
-        throw new NotImplementedException("如果需要使用批量导入功能，请继承此方法:getImportClass");
+        Class<E> clazz = (Class<E>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[3];
+        return clazz;
     }
-
-//    protected Class getPageClass() {
-//        throw new NotImplementedException("如果需要使用分页功能，请继承此方法:getPageClass");
-//    }
-
-//    protected Class getFormClass() {
-//        throw new NotImplementedException("如果需要使用编辑功能，请继承此方法:getFormClass");
-//    }
-
     //endregion
 
     @ApiOperation(value = "获取操作记录")
@@ -108,9 +103,9 @@ public class NewBaseController<E, D, F> {
         return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
     }
 
-    public R page(HttpServletResponse response, Page page, E e, Integer type)
+    public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
-        IPage p = newEntityService.page(page, e);
+        IPage p = newEntityService.page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
         p.setRecords(vos);
         if (null != type && 1 == type)
@@ -162,9 +157,9 @@ public class NewBaseController<E, D, F> {
     })
     public R<F> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException {
-        E e = (E) newEntityService.getById(id);
+        T t = (T) newEntityService.getById(id);
         F f = getFormClass().newInstance();
-        BeanUtils.copyProperties(e, f);
+        BeanUtils.copyProperties(t, f);
         return R.ok(f);
     }
 
@@ -178,15 +173,15 @@ public class NewBaseController<E, D, F> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType) throws Exception {
-        ImportExcelListener listener = null;
+        NewImportExcelListener listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(newEntityService, getImportClass(), importType);
+            listener = new NewImportExcelListener<T,E>(newEntityService, importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getDataList().size() + "条数据");
+            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getDataList());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getExcelList());
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);

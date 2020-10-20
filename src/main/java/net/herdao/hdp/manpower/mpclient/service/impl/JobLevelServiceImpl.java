@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelImportVO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelImportDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
@@ -50,39 +50,39 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
             throw new RuntimeException("职级名称重复了");
     }
 
-//    @Override
-//    public void importVerify(JobLevel jobLevel, Object excelObj, int type) {
-//        boolean add = (type == 0);
-//
-//        //TODO 添加校验方法
-//        JobLevelImportVO excel = (JobLevelImportVO) excelObj;
-//
-//        JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
-//                .eq("JOB_GRADE_NAME", excel.getJobGrade()));
-//
-//        if (null == jobGrade)
-//            throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
-//
-//        List<JobLevel> tmp = this.baseMapper.selectList(new QueryWrapper<JobLevel>()
-//                .eq("GROUP_ID", jobGrade.getGroupId())
-//                .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
-//
-//        //TODO 通过add区分新增修改的不同处理
-//
-//        if (null != tmp) {
-//            if (!tmp.get(0).getGroupId().equals(jobGrade.getGroupId()))
-//                throw new RuntimeException("导入的职等中的集团与原先保存的集团不一致");
-//            jobLevel.setId(tmp.get(0).getId());
-//        }
-//
-//        if (null == jobGrade.getGroupId())
-//            throw new RuntimeException("集团ID为空");
-//
-//        jobLevel.setJobLevelName(excel.getJobLevelName());
-//        jobLevel.setJobGradeId(jobGrade.getId());
-//        jobLevel.setGroupId(jobGrade.getGroupId());
-//
-//        //这个验证要放 最后，因为前面要给ID赋值
-//        this.saveVerify(jobLevel);
-//    }
+    @Override
+    public void importVerify(JobLevel jobLevel, Object excelObj, int type) {
+        boolean add = (0 == type);
+
+        //TODO 添加校验方法
+        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
+
+        JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
+                .eq("JOB_GRADE_NAME", excel.getJobGrade()));
+
+        if (null == jobGrade)
+            throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
+
+        List<JobLevel> tmp = this.baseMapper.selectList(new QueryWrapper<JobLevel>()
+                .eq("GROUP_ID", jobGrade.getGroupId())
+                .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
+
+        //TODO 通过add区分新增修改的不同处理
+
+        if (null != tmp) {
+            if (!tmp.get(0).getGroupId().equals(jobGrade.getGroupId()))
+                throw new RuntimeException("导入的职等中的集团与原先保存的集团不一致");
+            jobLevel.setId(tmp.get(0).getId());
+        }
+
+        if (null == jobGrade.getGroupId())
+            throw new RuntimeException("集团ID为空");
+
+        jobLevel.setJobLevelName(excel.getJobLevelName());
+        jobLevel.setJobGradeId(jobGrade.getId());
+        jobLevel.setGroupId(jobGrade.getGroupId());
+
+        //这个验证要放 最后，因为前面要给ID赋值
+        this.saveVerify(jobLevel);
+    }
 }

@@ -165,7 +165,7 @@ private static final long serialVersionUID = 1L;
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
-    private LocalDateTime workDate;
+    private LocalDate workDate;
     /**
      * 参加工作工龄
      */
@@ -185,7 +185,7 @@ private static final long serialVersionUID = 1L;
      * 入职三大集团日期
      */
     @ApiModelProperty(value="入职三大集团日期")
-    private LocalDateTime entryThreeGroupsTime;
+    private LocalDate entryThreeGroupsTime;
     /**
      * 三大集团工龄
      */

@@ -39,7 +39,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
-public class JobGradeController extends NewBaseController<JobGrade,JobGradeListDTO,JobGradeFormDTO> {
+public class JobGradeController extends NewBaseController<JobGrade,JobGradeListDTO,JobGradeFormDTO,Class> {
 
     private JobGradeService jobGradeService;
 

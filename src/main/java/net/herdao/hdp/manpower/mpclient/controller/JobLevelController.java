@@ -1,30 +1,20 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelImportVO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelImportDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @ClassName JobLevelController
@@ -39,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends NewBaseController<JobLevel,JobLevelListDTO,JobLevelFormDTO> {
+public class JobLevelController extends NewBaseController<JobLevel,JobLevelListDTO,JobLevelFormDTO,JobLevelImportDTO> {
 
     @Autowired
     private JobLevelService jobLevelService;
@@ -51,7 +41,7 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
 
     @Override
     protected Class getImportClass() {
-        return JobLevelImportVO.class;
+        return JobLevelImportDTO.class;
     }
 
     @GetMapping("/list")

@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
-public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO> {
+public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO,Class> {
 
     @Autowired
     private PipelineService pipelineService;
