@@ -56,6 +56,4 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
         p.setRecords(vos);
         return R.ok(p);
     }
-
-
 }

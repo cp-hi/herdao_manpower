@@ -196,6 +196,7 @@ public class OperationLogAspect {
 
                 if (point.getTarget() instanceof EntityService) {
                     Object obj = ((EntityService) point.getTarget()).getById((Serializable)arg);
+                    if(null == obj)return;
                     AnnotationUtils.setAnnotationInfo(operation, "clazz", obj.getClass());
                     AnnotationUtils.setAnnotationInfo(operation, "objId", arg.toString());
                 }
