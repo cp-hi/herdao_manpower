@@ -16,6 +16,9 @@
         <if test="pipeline.id != null">
             and id = #{pipeline.id}
         </if>
+        <if test="pipeline.groupId != null">
+            and group_id = #{pipeline.groupId}
+        </if>
         <if test="pipeline.pipelineName != null">
             <bind name="likeTxt" value="'%'+pipeline.pipelineName+'%'"/>
             pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}

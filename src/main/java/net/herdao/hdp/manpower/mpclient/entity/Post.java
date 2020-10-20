@@ -47,7 +47,7 @@ public class Post extends BaseEntity<Post> {
     private Boolean salesPosition;
     @ApiModelProperty(value = "是否销售管理岗位",hidden = true)
     private Boolean salesManager;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序",hidden = true)
     private Integer sortNo;
     @ApiModelProperty(value = "是否停用",hidden = true)
     @TableField("IS_STOP")

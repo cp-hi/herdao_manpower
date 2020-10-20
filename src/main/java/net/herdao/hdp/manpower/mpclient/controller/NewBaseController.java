@@ -107,11 +107,6 @@ public class NewBaseController<T, D, F, E> {
 
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "current", value = "当前页"),
-            @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
-    })
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
         IPage p = entityService.page(page, t);
@@ -135,7 +130,7 @@ public class NewBaseController<T, D, F, E> {
     @ApiOperation(value = "启用/停用")
     @PostMapping("/stop/{id}/{stop}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "实体ID"),
+            @ApiImplicitParam(name = "id", value = "主键"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
     public R stop(@PathVariable Long id, @PathVariable boolean stop) throws IllegalAccessException {
@@ -145,7 +140,7 @@ public class NewBaseController<T, D, F, E> {
     @ApiOperation(value = "查看是否停用")
     @PostMapping("/status/{id}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "实体ID"),
+            @ApiImplicitParam(name = "id", value = "主键"),
     })
     public R getStatus(@PathVariable Long id) throws IllegalAccessException {
         return R.ok(entityService.getStatus(id));
