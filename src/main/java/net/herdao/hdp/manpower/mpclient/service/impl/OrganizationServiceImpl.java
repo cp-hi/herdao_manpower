@@ -580,6 +580,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public boolean saveOrgChart(OrgChartFormDTO form){
         Organization entity = new Organization();
         BeanUtils.copyProperties(form, entity);
+        long parentId = entity.getParentId();
+        String orgCode = getOrgCode(parentId);
+        entity.setOrgCode(orgCode);
         return this.save(entity);
     }
 
