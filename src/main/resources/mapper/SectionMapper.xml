@@ -19,9 +19,6 @@
         <if test="section.groupId != null">
             and group_id = #{section.groupId}
         </if>
-        <if test="section.jobGradeId != null">
-            and job_grade_id = #{section.jobGradeId}
-        </if>
         <if test="section.sectionName != null">
             <bind name="likeTxt" value="'%'+section.sectionName+'%'"/>
             section_code like #{likeTxt} or section_name like #{likeTxt}
