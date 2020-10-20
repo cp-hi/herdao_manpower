@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 
 @Data
 @TableName("mp_post")
-@Builder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
