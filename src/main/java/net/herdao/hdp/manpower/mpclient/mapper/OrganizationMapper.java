@@ -15,6 +15,7 @@ import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 
 /**
@@ -33,10 +34,12 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     List<Organization> selectOrganizationListByParentOid(String parentOid);
 
     /**
-     * 查询根组织架构
+     * 查询组织树
+     * 
+     * @param searchText
      * @return
      */
-    List<Organization> findAllOrganizations(Organization condition);
+    List<OrganizationTreeVO> findAllOrganizations(@Param("searchText") String searchText);
 
     /**
      * 高级查询根组织架构
@@ -136,6 +139,7 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     
     /**
      * @description 获取组织编码
+     * 
      * @author      shuling
      * @date        2020-10-18 10:37:22
      * @param 		parentId
@@ -145,6 +149,7 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     
     /**
      * @description 更新组织编码
+     * 
      * @author      shuling
      * @date        2020-10-18 12:31:28
      * @param 		orgCode

@@ -253,24 +253,29 @@
     </select>
 
     <!-- 查询根组织架构 -->
-     <select id="findAllOrganizations" resultMap="organizationChildrenMap">
+    <select id="findAllOrganizations" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO">
         SELECT
-            *
-        FROM
-            mp_organization
-        WHERE 1=1
-         <if test="isRoot == true">
-             AND PARENT_ID IS NULL
-         </if>
-
-         <if test="id != null">
-             AND id = #{id}
-         </if>
-
-         <if test="isStop != null">
-             AND is_stop = #{isStop}
-         </if>
-      </select>
+            org.id,
+            org.org_name,
+            org.org_code,
+            CASE nbs
+		        WHEN 0 THEN 1
+		        ELSE 1
+		    END leaf_node
+        FROM mp_organization org 
+        LEFT JOIN (SELECT COUNT(1) nbs, orgd.parent_id FROM mp_organization orgd GROUP BY orgd.parent_id) corg ON corg.parent_id = org.id 
+        <where>
+        	 <choose>
+                <when test="searchText == null">
+                     <!-- 模糊查询条件为空，默认查询两级组织树  -->
+	            	 AND org.org_tree_level &lt;= 2
+                </when>
+                <otherwise>
+                    AND org.org_name LIKE CONCAT('%',#{searchText},'%')
+                </otherwise>
+            </choose>
+        </where>
+     </select>
 
     <!-- 查询根组织架构 无限级递归 -->
     <select id="findAllOrg" resultMap="orgAllChildMap">

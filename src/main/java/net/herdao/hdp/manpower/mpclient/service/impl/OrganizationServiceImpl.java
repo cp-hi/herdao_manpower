@@ -40,6 +40,7 @@ import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 
@@ -68,9 +69,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<Organization> findAllOrganizations(Organization condition) {
-        List<Organization> list = this.baseMapper.findAllOrganizations(condition);
-        return list;
+    public List<OrganizationTreeVO> findAllOrganizations(String searchText) {
+       return this.baseMapper.findAllOrganizations(searchText);
     }
 
     @Override
@@ -219,34 +219,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 		return R.ok(null, ManpowerContants.ENABLE_SUCCESS);
 	}
-
-
-    @SysLog("递归获取组织架构parentId")
-    public void getRecursionParentIds(Long id, List<Map<String, Long>> orgIds,String operate) {
-        Organization condition = new Organization();
-        condition.setId(id);
-        List<Organization> list=new ArrayList<>();
-        if (null != operate && operate=="stopOrg"){
-            list = this.baseMapper.findAllOrg(condition);
-        }else{
-            list = this.baseMapper.findAllOrganizations(condition);
-        }
-
-        if (!list.isEmpty()) {
-            for (Organization entity : list) {
-                if (null != entity) {
-                    Map<String, Long> map = new HashMap<>();
-                    map.put(entity.getOrgName(), entity.getId());
-                    orgIds.add(map);
-
-                    if (null !=entity.getChildren() && !entity.getChildren().isEmpty()) {
-                        getChildren(entity, orgIds);
-                    }
-                }
-
-            }
-        }
-    }
 
     @SysLog("递归获取组织架构parentId")
     public void getChildren(Organization entity, List<Map<String, Long>> orgIds) {
