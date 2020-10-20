@@ -535,7 +535,7 @@ private static final long serialVersionUID = 1L;
      * 参保日期
      */
     @ApiModelProperty(value="参保日期")
-    private LocalDateTime insuredTime;
+    private LocalDate insuredTime;
     /**
      * 中间停缴社保年份
      */

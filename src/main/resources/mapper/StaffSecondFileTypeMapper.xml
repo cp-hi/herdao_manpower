@@ -58,7 +58,7 @@
           mp_staff_second_file_type sc
           LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
           LEFT JOIN sys_dict_item i ON i.id = sc.SUPEER_ID
-          LEFT JOIN mp_staff_file sf on sf.SECOND_TYPE_ID=sc.id
+          LEFT JOIN mp_staff_file sf on sf.SECOND_TYPE_ID=sc.id and sf.del_flag=0
           WHERE  1 = 1
           and sc.del_flag=0
           <if test="entity.superId != null">
@@ -101,9 +101,9 @@
          mp_staff_second_file_type sc
          LEFT JOIN mp_staff s ON sc.STAFF_ID = s.ID
          LEFT JOIN sys_dict_item i ON i.id = sc.SUPEER_ID
-         LEFT JOIN mp_staff_file sf on sf.SECOND_TYPE_ID=sc.id
+         LEFT JOIN mp_staff_file sf on sf.SECOND_TYPE_ID=sc.id and sf.del_flag=0
          WHERE  1 = 1
-             and sc.del_flag=0
+         and sc.del_flag=0
          <if test="entity.superId != null">
              AND sc.SUPEER_ID= #{entity.superId}
          </if>
