@@ -439,7 +439,7 @@
                 orgList.workforce_total,
                 orgList.create_desc,
                 orgList.update_desc
-        from (
+        FROM (
 		        SELECT
 			        org.id,
 			        org.org_name,
@@ -617,9 +617,11 @@
         SELECT 
         	CONCAT( MAX(org.org_code) )
         FROM mp_organization org
-        <if test="parentId != null">
-        	AND org.parent_id = #{parentId}
-        </if>
+        <where>
+	        <if test="parentId != null">
+	        	AND org.parent_id = #{parentId}
+	        </if>
+        </where>
     </select>
     
     <!-- 查询子组织信息  -->
