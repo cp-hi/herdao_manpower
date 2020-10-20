@@ -92,7 +92,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    @Deprecated
+//    @Deprecated
     default void importVerify(T t, int type) {
     }
 
