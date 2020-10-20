@@ -38,7 +38,7 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
 
     @Autowired
     public void setEntityService(PipelineService pipelineService) {
-        super.newEntityService = pipelineService;
+        super.entityService = pipelineService;
     }
 
     @GetMapping("/list")

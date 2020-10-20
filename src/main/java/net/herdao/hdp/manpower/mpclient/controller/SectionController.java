@@ -41,7 +41,7 @@ public class SectionController extends NewBaseController<Section, SectionListDTO
 
     @Autowired
     public void setEntityService(SectionService sectionService) {
-        super.newEntityService = sectionService;
+        super.entityService = sectionService;
     }
 
     @GetMapping("/list")

@@ -10,7 +10,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.NewEntityService;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -41,7 +41,7 @@ import java.util.List;
  */
 public class NewBaseController<T, D, F, E> {
 
-    NewEntityService newEntityService;
+    EntityService entityService;
 
     @Autowired
     OperationLogService operationLogService;
@@ -105,7 +105,7 @@ public class NewBaseController<T, D, F, E> {
 
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
-        IPage p = newEntityService.page(page, t);
+        IPage p = entityService.page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
         p.setRecords(vos);
         if (null != type && Integer.valueOf(1).equals(type))
@@ -120,7 +120,7 @@ public class NewBaseController<T, D, F, E> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R delete(@PathVariable Long id) {
-        return R.ok(newEntityService.delEntity(id));
+        return R.ok(entityService.delEntity(id));
     }
 
     @ApiOperation(value = "启用/停用")
@@ -130,7 +130,7 @@ public class NewBaseController<T, D, F, E> {
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
     public R stop(@PathVariable Long id, @PathVariable boolean stop) throws IllegalAccessException {
-        return R.ok(newEntityService.stopEntity(id, stop));
+        return R.ok(entityService.stopEntity(id, stop));
     }
 
     @ApiOperation(value = "查看是否停用")
@@ -139,7 +139,7 @@ public class NewBaseController<T, D, F, E> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R getStatus(@PathVariable Long id) throws IllegalAccessException {
-        return R.ok(newEntityService.getStatus(id));
+        return R.ok(entityService.getStatus(id));
     }
 
     @PostMapping
@@ -147,7 +147,7 @@ public class NewBaseController<T, D, F, E> {
     public R<F> save(@RequestBody F f) throws ClassNotFoundException {
         Class<E> e = (Class<E>) Class.forName(getEntityClass().getName());
         BeanUtils.copyProperties(f, e);
-        newEntityService.saveEntity(e);
+        entityService.saveEntity(e);
         return R.ok(f);
     }
 
@@ -158,7 +158,7 @@ public class NewBaseController<T, D, F, E> {
     })
     public R<F> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException {
-        T t = (T) newEntityService.getById(id);
+        T t = (T) entityService.getById(id);
         F f = getFormClass().newInstance();
         BeanUtils.copyProperties(t, f);
         return R.ok(f);
@@ -178,7 +178,7 @@ public class NewBaseController<T, D, F, E> {
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(newEntityService,  importType);
+            listener = new ImportExcelListener(entityService,  importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getDataList().size() + "条数据");
         } catch (Exception ex) {

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.mpclient.service.NewEntityService;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 import org.springframework.beans.BeanUtils;
 
@@ -46,7 +45,7 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
     boolean hasError = false;
 
     @Setter
-    NewEntityService<T> newEntityService;
+    EntityService<T> entityService;
 
     Integer importType = 0;
 
@@ -55,7 +54,7 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
      * @param service    服务类
      * @param importType 导入类型 0: 新增 1: 保存
      */
-    public NewImportExcelListener(NewEntityService<T> service, Integer importType) {
+    public NewImportExcelListener(EntityService<T> service, Integer importType) {
         this(service, 50, null == importType ? 0 : importType);
     }
 
@@ -65,16 +64,16 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
      * @param batchCount 批量导入条数
      * @param importType
      */
-    public NewImportExcelListener(NewEntityService<T> service,
+    public NewImportExcelListener(EntityService<T> service,
                                   Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
-        this.newEntityService = service;
+        this.entityService = service;
         this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
 
-        Class clazz = newEntityService.getClass();
+        Class clazz = entityService.getClass();
 //
 //        Type type = newEntityService.getClass().getGenericSuperclass();
 //
@@ -102,7 +101,7 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
         try {
             t = (Class<? extends T>) Class.forName(entityClass.getName());
             BeanUtils.copyProperties(excel, t);
-            newEntityService.importVerify((T)t, excel, importType);
+            entityService.importVerify((T) t, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
             ((ExcelVO) excel).setErrMsg(ex.getMessage());
@@ -116,6 +115,6 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         if (hasError)
             throw new Exception("导入出现错误，请查看导错误原因");
-        this.newEntityService.saveList(dataList, BATCH_COUNT);
+        this.entityService.saveList(dataList, BATCH_COUNT);
     }
 }

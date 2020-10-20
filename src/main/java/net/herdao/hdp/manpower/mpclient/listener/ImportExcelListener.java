@@ -39,12 +39,11 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
      *
      * @Author ljan
      */
-//    private Class entityClass;
     protected ImportExcelListener() {
     }
 
-    public ImportExcelListener(EntityService<T> service,Integer importType) {
-        this(service, 50,importType);
+    public ImportExcelListener(EntityService<T> service, Integer importType) {
+        this(service, 50, importType);
     }
 
 
@@ -56,7 +55,6 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     public ImportExcelListener(EntityService<T> service, Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.entityService = service;
-//        this.entityClass = clazz;
         this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
@@ -65,7 +63,6 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void invoke(T excel, AnalysisContext analysisContext) {
         try {
-//            Class entity = Class.forName(this.entityClass.getName());
             entityService.importVerify(excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
