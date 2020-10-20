@@ -50,7 +50,6 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
     }
 
     @Override
-    @GetMapping("/page")
     @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pipelineName", value = "字符串搜索"),

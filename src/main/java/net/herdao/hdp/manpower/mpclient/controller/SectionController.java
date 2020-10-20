@@ -43,8 +43,6 @@ public class SectionController extends NewBaseController<Section, SectionListDTO
     }
 
     @Override
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sectionName", value = "字符串搜索"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
