@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/client/postSeq")
+@Api(tags = "岗位序列管理")
 public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,PostSeqFormDTO,Class> {
 
     @Autowired
@@ -49,7 +51,8 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "postSeqName", value = "postSeqName"),
+            @ApiImplicitParam(name = "postSeqName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     public R  page(HttpServletResponse response, Page  page, PostSeq seq, Integer type)
             throws Exception {

@@ -2,6 +2,8 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
@@ -43,6 +45,10 @@ public class SectionController extends NewBaseController<Section, SectionListDTO
     @Override
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sectionName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+    })
     public R page(HttpServletResponse response,Page page, Section section, Integer type) throws Exception {
         return super.page(response, page, section, type);
     }

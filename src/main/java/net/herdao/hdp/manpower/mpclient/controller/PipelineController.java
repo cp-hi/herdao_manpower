@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
@@ -49,14 +51,11 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
 
     @Override
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "" +
-            /**
-             *             *pipelineName       字符串搜索
-             *             *current         当前页
-             *             *size           每页条数
-             *             typt 0 或空则查询  1 为下载
-             **/
-            "")
+    @ApiOperation(value = "分页查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pipelineName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+    })
     public R page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
         return super.page(response, page, pipeline, type);
     }
