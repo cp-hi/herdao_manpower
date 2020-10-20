@@ -71,7 +71,7 @@ public class StaffeducationController {
 
     /**
      * 通过员工id查询员工教育经历
-     * @param id id
+     * @param id
      * @return R
      */
     @ApiOperation(value = "通过staff_id查询", notes = "通过staff_id查询")
@@ -185,12 +185,12 @@ public class StaffeducationController {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, StaffeducationListDTO.class, listener).sheet().doRead();
             IOUtils.closeQuietly(inputStream);
-            /*return R.ok(" easyexcel读取上传文件成功");*/
+
         } catch (Exception ex) {
             ExcelUtils.export2Web(response, "员工教育经历错误信息", "员工教育经历错误信息", StaffeducationListDTO.class, listener.getDataList());
-            /*return R.failed(ex.getMessage());*/
+            return R.failed("导入员工教育经历失败",ex.getMessage());
         }
-        return null;
+        return R.ok("导入员工教育经历成功");
     }
 
 }

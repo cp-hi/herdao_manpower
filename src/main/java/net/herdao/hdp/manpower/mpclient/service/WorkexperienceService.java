@@ -59,7 +59,7 @@ public interface WorkexperienceService extends EntityService<Workexperience> {
      * @param workexperienceDTO
      * @return
      */
-    boolean saveWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO);
+    boolean saveWorkDTO(WorkexperienceDTO workexperienceDTO);
 
 
     /**
@@ -67,7 +67,7 @@ public interface WorkexperienceService extends EntityService<Workexperience> {
      * @param workexperienceDTO
      * @return
      */
-    boolean updateWorkDTO(@RequestBody WorkexperienceDTO workexperienceDTO);
+    boolean updateWorkDTO(WorkexperienceDTO workexperienceDTO);
     
     /**
      * author lift
