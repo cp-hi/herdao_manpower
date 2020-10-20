@@ -95,7 +95,7 @@ private static final long serialVersionUID = 1L;
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     /**
      * 国籍
      */
@@ -160,7 +160,7 @@ private static final long serialVersionUID = 1L;
      * 毕业时间
      */
     @ApiModelProperty(value="毕业时间")
-    private LocalDateTime graduatedTime;
+    private LocalDate graduatedTime;
     /**
      * 参加工作日期
      */
