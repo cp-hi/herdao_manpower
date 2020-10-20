@@ -119,15 +119,14 @@ public interface OrganizationService extends IService<Organization> {
     R findOrganization2Level(@RequestBody Organization condition);
 
     /**
-     * 分页查询组织架构
+     * 组织列表分页查询
      * 
      * @param page
-     * @param orgCode
      * @param stop
      * @param searchText
      * @return
      */
-    Page<Organization> findOrgPage(Page<Organization> page, String orgCode, Integer stop, String searchText);
+    Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, Integer stop, String searchText);
 
     /**
      * @description 新增、修改组织信息

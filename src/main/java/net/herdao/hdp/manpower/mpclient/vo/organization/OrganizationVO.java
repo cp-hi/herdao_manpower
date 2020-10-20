@@ -141,6 +141,12 @@ public class OrganizationVO {
 	 */
 	@ApiModelProperty(value = "负责岗位id")
 	private Long postId;
+	
+	/**
+	 * 负责岗位
+	 */
+	@ApiModelProperty(value = "负责岗位")
+	private Long postName; 
 
 	/**
 	 * 组织描述
@@ -149,15 +155,15 @@ public class OrganizationVO {
 	private String orgDesc;
 
 	/**
-	 * 人员编制 组织编制
+	 * 人员编制（编制人员数）
 	 */
-	@ApiModelProperty(value = "人员编制 组织编制")
-	private String staff;
+	@ApiModelProperty(value = "人员编制")
+	private Integer staffTotal;
 	/**
 	 * 在职员工数
 	 */
 	@ApiModelProperty(value = "在职员工数")
-	private String empInService;
+	private Integer workforceTotal;
 
 	/**
 	 * 启用日期
@@ -170,4 +176,16 @@ public class OrganizationVO {
 	 */
 	@ApiModelProperty(value = "停用日期")
 	private Date stopDate;
+	
+	/**
+	 * 创建情况
+	 */
+	@ApiModelProperty(value = "创建情况")
+	private String createDesc;
+
+	/**
+	 * 最近更新情况
+	 */
+	@ApiModelProperty(value = "最近更新情况")
+	private String updateDesc;
 }
