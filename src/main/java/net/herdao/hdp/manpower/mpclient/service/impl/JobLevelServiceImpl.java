@@ -51,17 +51,17 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void importVerify(JobLevel jobLevel, int type) {
+    public void importVerify(JobLevel jobLevel,Object excelObj, int type) {
         boolean add = (0 == type);
-        if (add) addJobLevel(jobLevel);
-        else updateJobLevel(jobLevel);
+        if (add) addJobLevel(jobLevel,excelObj);
+        else updateJobLevel(jobLevel,excelObj);
 
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(jobLevel);
     }
 
-    private void addJobLevel(JobLevel jobLevel) {
-        JobLevelImportDTO excel = (JobLevelImportDTO) jobLevel;
+    private void addJobLevel(JobLevel jobLevel,Object excelObj) {
+        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
                 .eq("JOB_GRADE_NAME", excel.getJobGrade()));
@@ -84,8 +84,8 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         jobLevel.setGroupId(jobGrade.getGroupId());
     }
 
-    private void updateJobLevel(JobLevel jobLevel) {
-        JobLevelImportDTO excel = (JobLevelImportDTO) jobLevel;
+    private void updateJobLevel(JobLevel jobLevel,Object excelObj) {
+        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
                 .eq("JOB_GRADE_NAME", excel.getJobGrade()));
@@ -107,5 +107,6 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(jobGrade.getGroupId());
+        jobLevel.setId(tmp.getId());
     }
 }

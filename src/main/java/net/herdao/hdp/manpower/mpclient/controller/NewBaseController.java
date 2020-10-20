@@ -152,8 +152,8 @@ public class NewBaseController<T, D, F, E> {
     @ApiOperation(value = "新增/修改")
     public R save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
         Object t =  Class.forName(getEntityClass().getName()).newInstance();
-        BeanUtils.copyProperties( f,(T)t);
         entityService.saveEntity(t);
+        BeanUtils.copyProperties( f,(T)t);
         return R.ok(f);
     }
 
