@@ -52,19 +52,19 @@ public class StaffeducationController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_view')" )
-    public R getStaffeducationPage(Page page, Staffeducation staffeducation) {
+    public R page(Page page, Staffeducation staffeducation) {
         return R.ok(staffeducationService.page(page, Wrappers.query(staffeducation)));
     }
 
 
     /**
      * 通过id查询员工教育经历
-     * @param id id
+     * @param id
      * @return R
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_view')" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_staffeducation_view')" )
     public R getById(@PathVariable("id" ) Long id) {
         return R.ok(staffeducationService.getById(id));
     }
@@ -115,7 +115,7 @@ public class StaffeducationController {
 
     /**
      * 通过id删除员工教育经历
-     * @param id id
+     * @param id
      * @return R
      */
     @ApiOperation(value = "通过id删除员工教育经历", notes = "通过id删除员工教育经历")
