@@ -23,7 +23,7 @@ public class JobLevelFormDTO {
     private String jobLevelName;
 
     @ApiModelProperty("职等ID")
-    private Long jobGradeName;
+    private Long jobGradeId;
 
     @ApiModelProperty("排序")
     private Integer sortNo;
