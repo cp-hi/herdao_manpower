@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.admin.api.feign.RemoteFileService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.oss.util.OssFileUtils;
 import net.herdao.hdp.common.security.service.HdpUser;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * <p>
@@ -38,6 +40,8 @@ public class RemoteFileController {
 	private Environment env;
 
 	private StaffFileService staffFileService;
+
+	private RemoteFileService remoteFileService;
 
 	/**
 	 * 文件上传
@@ -59,7 +63,8 @@ public class RemoteFileController {
 
 			String uploadFileUrlDev = env.getProperty("upload.file.url.dev");
 			HdpUser user = SecurityUtils.getUser();
-			R result = OssFileUtils.uploadFile(file,"hdc", "ftp"+File.separator+"hdp", user.getId(), uploadFileUrlDev);
+			//R result = OssFileUtils.uploadFile(file,ossProperties, "ftp"+File.separator+"hdp", user.getId(), uploadFileUrlDev);
+			R result = remoteFileService.uploadFile(file, "hdp", 1);
 			if (result != null){
 				//保存附件上传记录
 				String fileId = result.getData().toString();
