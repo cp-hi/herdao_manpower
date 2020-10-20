@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -98,8 +99,6 @@ public class StaffeducationController {
         return R.ok(status);
     }
 
-
-
     /**
      * 修改员工教育经历
      * @param staffeducation 员工教育经历
@@ -127,29 +126,30 @@ public class StaffeducationController {
         return R.ok(staffeducationService.removeById(id));
     }
 
-
     /**
      * 员工教育经历分页
      * @param page 分页对象
-     * @param orgId
+     * @param searchText 关键字搜索
+     * @param staffId 员工工号
      * @return
      */
     @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
     @GetMapping("/findStaffEducationPage")
     @OperationEntity(operation = "员工教育经历分页" ,clazz = Staffeducation.class )
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+            @ApiImplicitParam(name="searchText",value="关键字搜索"),
+            @ApiImplicitParam(name="staffId",value="员工工号")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffEducationPage(Page page, String orgId,String staffName, String staffCode) {
-        Page pageResult = staffeducationService.findStaffEducationPage(page, orgId, staffName, staffCode);
+    public R findStaffEducationPage(Page page, String searchText,String staffId) {
+        Page pageResult = staffeducationService.findStaffEducationPage(page, searchText, staffId);
         return R.ok(pageResult);
     }
 
     /**
      * 导出员工教育经历Excel
+     * @param searchText 关键字搜索
+     * @param staffId 员工工号
      * @param response
      * @return R
      */
@@ -157,14 +157,13 @@ public class StaffeducationController {
     @SysLog("导出员工教育经历Excel")
     @PostMapping("/exportStaffEdu")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="staffName",value="员工姓名"),
-            @ApiImplicitParam(name="staffCode",value="员工工号")
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+        @ApiImplicitParam(name="staffId",value="员工工号")
     })
-    public void exportStaffEdu(HttpServletResponse response, String orgId, String staffName, String staffCode) {
+    public void exportStaffEdu(HttpServletResponse response, String searchText,String staffId) {
         try {
-            List<StaffeducationVO> list = staffeducationService.findStaffEducation(orgId, staffName, staffCode);
-            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffeducationVO.class,list);
+            List<StaffEducationDTO> list = staffeducationService.findStaffEducation(searchText,staffId);
+            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffEducationDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");
