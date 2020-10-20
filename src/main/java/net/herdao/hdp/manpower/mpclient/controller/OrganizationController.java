@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -164,7 +165,12 @@ public class OrganizationController {
     @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class )
     @ApiImplicitParam(name="searchText",value="模糊查询内容（点击组织树请传组织编码：orgCode 做为查询条件）")
     public R<List<OrganizationTreeVO>> findAllOrganizations(String searchText) {
-    	return R.ok(orgService.findAllOrganizations(searchText));
+    	// 默认查询组织层级二级
+    	if(StrUtil.isBlank(searchText)) {
+    		return R.ok(orgService.selectOrganizationTree());
+    	}
+    	return R.ok(orgService.organizationTreeList(searchText));
+    			
     }
 
 

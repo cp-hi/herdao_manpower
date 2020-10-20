@@ -34,12 +34,20 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     List<Organization> selectOrganizationListByParentOid(String parentOid);
 
     /**
-     * 查询组织树
+     * 递归查询组织树
+     * @return
+     */
+    List<OrganizationTreeVO> selectOrganizationTree();
+    
+    /**
+     * 模糊查询组织树
      * 
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> findAllOrganizations(@Param("searchText") String searchText);
+    List<OrganizationTreeVO> organizationTreeList(@Param("searchText") String searchText);
+    
+    
 
     /**
      * 高级查询根组织架构

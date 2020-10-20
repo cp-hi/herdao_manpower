@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,12 +32,19 @@ public interface OrganizationService extends IService<Organization> {
      List<Organization> selectOrganizationListByParentOid(String parentId);
 
     /**
-     * 查询组织树
+     * 递归查询组织树
+     * 
+     * @return
+     */
+    List<OrganizationTreeVO> selectOrganizationTree();
+    
+    /**
+     * 模糊查询组织树
      * 
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> findAllOrganizations(String searchText);
+    List<OrganizationTreeVO> organizationTreeList(@Param("searchText") String searchText);
 
     /**
      * 查询部门结构树
