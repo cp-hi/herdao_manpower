@@ -4,10 +4,17 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 导入工具类
+ *
+ * @author yangrr
+ * @date 2020-10-20 18:10:29
+ */
 public class StaffExcelListener<T, V> extends AnalysisEventListener<T> {
     /**
      * 每隔500条存储数据库，然后清理list ，方便内存回收
