@@ -81,11 +81,12 @@ public class StafftransactionController extends BaseController<Stafftransaction>
     @GetMapping("/findStaffTransPage")
     @OperationEntity(operation = "员工异动情况分页" ,clazz = Stafftransaction.class )
     @ApiImplicitParams({
-        @ApiImplicitParam(name="searchText",value="搜索关键字")
+        @ApiImplicitParam(name="searchText",value="搜索关键字"),
+        @ApiImplicitParam(name="staffId",value="员工ID")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffTransPage(Page page, String searchText) {
-        Page pageResult = stafftransactionService.findStaffTransPage(page, searchText);
+    public R findStaffTransPage(Page page, String searchText,String staffId) {
+        Page pageResult = stafftransactionService.findStaffTransPage(page, searchText,staffId);
         return R.ok(pageResult);
     }
 
@@ -98,11 +99,12 @@ public class StafftransactionController extends BaseController<Stafftransaction>
     @SysLog("导出员工异动情况Excel")
     @PostMapping("/exportTrans")
     @ApiImplicitParams({
-          @ApiImplicitParam(name="searchText",value="搜索关键字")
+        @ApiImplicitParam(name="searchText",value="搜索关键字"),
+        @ApiImplicitParam(name="staffId",value="员工ID")
     })
-    public void exportTrans(HttpServletResponse response, String searchText) {
+    public void exportTrans(HttpServletResponse response, String searchText,String staffId) {
         try {
-            List<StafftransDTO> list = stafftransactionService.findStaffTrans(searchText);
+            List<StafftransDTO> list = stafftransactionService.findStaffTrans(searchText,staffId);
             ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", StafftransDTO.class,list);
         } catch (Exception e) {
             e.printStackTrace();
