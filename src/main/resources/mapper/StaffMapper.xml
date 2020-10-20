@@ -236,4 +236,17 @@
 			and sf.ID = #{staffid}
 		</if>
  	</select>
+
+    <!-- 查询员工基本信息 -->
+    <select id="getStaffBase" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO">
+        SELECT
+            f.ID,
+            u.IS_STOP
+        FROM
+            mp_staff f
+        LEFT JOIN mp_user u ON f.user_id = u.ID
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
 </mapper>

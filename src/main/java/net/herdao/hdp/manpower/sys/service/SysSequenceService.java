@@ -28,6 +28,11 @@ import net.herdao.hdp.manpower.sys.entity.SysSequence;
  */
 public interface SysSequenceService extends IService<SysSequence> {
 
+    /**
+     * 根据序列标识返回下一个可用编码
+     * @param seqCode
+     * @return Long
+     */
     Long getNext(String seqCode);
 
 }
