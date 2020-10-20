@@ -25,15 +25,23 @@ import java.util.List;
  * @Date 2020/10/19 20:57
  * @Version 1.0
  */
+
+
 public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
+
+    private Class<T> getEntityClass() {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return clazz;
+    }
+
+    private Class<E> getExcelClass() {
+        Class<E> clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        return clazz;
+    }
 
 
     Class<T> entityClass;
 
-    private Class<T> getEntityClass() {
-        Class<T> clazz = (Class<T>) ((ParameterizedType) (Type) getClass()).getActualTypeArguments()[0];
-        return clazz;
-    }
 
     @Getter
     List<E> excelList = null;
@@ -54,7 +62,7 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
      * @param service    服务类
      * @param importType 导入类型 0: 新增 1: 保存
      */
-    public NewImportExcelListener(EntityService<T> service, Integer importType) {
+    public NewImportExcelListener(EntityService<T> service, Integer importType) throws ClassNotFoundException {
         this(service, 50, null == importType ? 0 : importType);
     }
 
@@ -65,13 +73,18 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
      * @param importType
      */
     public NewImportExcelListener(EntityService<T> service,
-                                  Integer batchCount, Integer importType) {
+                                  Integer batchCount, Integer importType) throws ClassNotFoundException {
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
         this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
+
+//        Class entity = getEntityClass();
+//        Class excel = getExcelClass();
+
+//        this.entityClass = getEntityClass();
 
         Class clazz = entityService.getClass();
 //
@@ -88,7 +101,8 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
 
         this.entityClass = (Class<T>) ((ParameterizedType) ((Class) clazz.getGenericSuperclass()).getGenericSuperclass()).getActualTypeArguments()[1];
 
-//        this.entityClass = (Class<T>) ((ParameterizedType) clazz.getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1];
+        Class jl = Class.forName(entityClass.getName());
+        this.entityClass = (Class<T>) ((ParameterizedType) clazz.getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1];
 
 //        System.out.println(this.entityClass);
 
@@ -97,10 +111,21 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
 
     @Override
     public void invoke(E excel, AnalysisContext analysisContext) {
-        Class<? extends T> t = null;
+
+//        if ((Type) this.getClass() instanceof ParameterizedType) {
+//            ParameterizedType parameterizedType = (ParameterizedType) (Type) this.getClass();
+//            Type[] types = parameterizedType.getActualTypeArguments();
+//            this.entityClass = (Class<T>) types[1];
+//
+//            System.out.println(this.entityClass);
+//
+//        }
+
+
+        Object t = null;
         try {
-            t = (Class<? extends T>) Class.forName(entityClass.getName());
-            BeanUtils.copyProperties(excel, t);
+            t =  Class.forName(entityClass.getName()).newInstance();
+            BeanUtils.copyProperties(excel,(T) t);
             entityService.importVerify((T) t, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
