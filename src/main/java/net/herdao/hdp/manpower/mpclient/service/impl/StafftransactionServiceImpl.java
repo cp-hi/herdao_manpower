@@ -43,14 +43,14 @@ import java.util.List;
 @AllArgsConstructor
 public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMapper, Stafftransaction> implements StafftransactionService {
     @Override
-    public Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, String searchText) {
-        Page<StafftransDTO> pageResult = this.baseMapper.findStaffTransPage(page, searchText);
+    public Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, String searchText,String staffId) {
+        Page<StafftransDTO> pageResult = this.baseMapper.findStaffTransPage(page, searchText,staffId);
         return pageResult;
     }
 
     @Override
-    public List<StafftransDTO> findStaffTrans(String searchText) {
-        List<StafftransDTO> list = this.baseMapper.findStaffTrans(searchText);
+    public List<StafftransDTO> findStaffTrans(String searchText,String staffId) {
+        List<StafftransDTO> list = this.baseMapper.findStaffTrans(searchText,staffId);
         return list;
     }
     

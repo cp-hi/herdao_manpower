@@ -38,17 +38,19 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
     /**
      * 员工异动情况分页
      * @param page 分页对象
-     * @param searchText
+     * @param searchText 关键字搜索
+     * @param staffId 员工ID
      * @return
      */
-    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, @Param("searchText") String searchText);
+    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, @Param("searchText") String searchText, @Param("staffId") String staffId);
 
     /**
      * 员工异动情况
-     * @param searchText
+     * @param searchText 关键字搜索
+     * @param staffId 员工ID
      * @return
      */
-    List<StafftransDTO> findStaffTrans(@Param("searchText") String searchText);
+    List<StafftransDTO> findStaffTrans(@Param("searchText") String searchText, @Param("staffId") String staffId);
 
     /**
      * 员工详情-员工异动情况
