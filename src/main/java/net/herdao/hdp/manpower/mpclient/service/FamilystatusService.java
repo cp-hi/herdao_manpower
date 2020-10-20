@@ -31,4 +31,7 @@ public interface FamilystatusService extends EntityService<Familystatus> {
      */
     List<FamilyStatusVO> findFamilyStatus(String searchText);
 
+    @Override
+    boolean saveOrUpdate(Familystatus familystatus);
+
 }

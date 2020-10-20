@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Demo;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
@@ -33,7 +34,6 @@ import java.util.List;
 
 /**
  * 员工家庭成员
- *
  * @author andy
  * @date 2020-09-23 10:53:08
  */
@@ -43,7 +43,7 @@ import java.util.List;
 @Api(value = "familystatus", tags = "员工家庭成员管理")
 public class FamilystatusController extends BaseController<Familystatus> {
 
-    private final  FamilystatusService familystatusService;
+    private final FamilystatusService familystatusService;
 
     @Autowired
     public void setEntityService(FamilystatusService familystatusService) {
@@ -71,7 +71,6 @@ public class FamilystatusController extends BaseController<Familystatus> {
      */
     @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
     @PostMapping("/findFamilyStatusPage")
-    @OperationEntity(operation = "员工教育经历分页" ,clazz = Organization.class )
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
@@ -123,6 +122,19 @@ public class FamilystatusController extends BaseController<Familystatus> {
         }
 
         R.ok("导出成功");
+    }
+
+    /**
+     * 新增或修改家庭情况
+     * @param
+     * @return R
+     */
+    @ApiOperation(value = "新增或修改家庭情况", notes = "新增或修改家庭情况")
+    @SysLog("新增或修改家庭情况" )
+    @PostMapping("/saveOrUpdate")
+    public R saveOrUpdate(@RequestBody Familystatus familystatus) {
+        boolean status = familystatusService.saveOrUpdate(familystatus);
+        return R.ok(status);
     }
 
 }

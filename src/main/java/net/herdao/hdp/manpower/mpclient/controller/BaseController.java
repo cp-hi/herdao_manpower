@@ -33,7 +33,6 @@ import java.util.List;
  * @Version 1.0
  */
 //TODO 实现导出功能
-@Deprecated
 public class BaseController<T> {
 
     EntityService entityService;
