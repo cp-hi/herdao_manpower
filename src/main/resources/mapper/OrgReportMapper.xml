@@ -137,7 +137,7 @@
                             INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
                             AND u.MAIN_POST = 1
                             INNER JOIN mp_post s ON s.id = u.POST_ID
-                            INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_CODE
+                            INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_ID1
                         WHERE 1=1
                             <if test="orgCode != null">
                                 AND a.ORG_CODE LIKE concat(#{orgCode},'%')
@@ -181,7 +181,7 @@
         INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
         AND u.MAIN_POST = 1
         INNER JOIN mp_post s ON s.id = u.POST_ID
-        INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_CODE
+        INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_ID1
         WHERE 1=1
         <if test="orgCode != null">
             AND a.ORG_CODE LIKE concat(#{orgCode},'%')

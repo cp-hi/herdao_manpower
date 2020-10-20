@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
@@ -148,10 +150,12 @@ public class NewBaseController<T, D, F, E> {
 
     @PostMapping
     @ApiOperation(value = "新增/修改")
-    public R<F> save(@RequestBody F f) throws ClassNotFoundException {
-        Class<E> e = (Class<E>) Class.forName(getEntityClass().getName());
-        BeanUtils.copyProperties(f, e);
-        entityService.saveEntity(e);
+    public R save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
+        Object t = Class.forName(getEntityClass().getName()).newInstance();
+        BeanUtils.copyProperties(f, (T) t);
+        entityService.saveVerify((T) t);
+        entityService.saveEntity((T) t);
+        BeanUtils.copyProperties((T) t, f);
         return R.ok(f);
     }
 
@@ -163,6 +167,8 @@ public class NewBaseController<T, D, F, E> {
     public R<F> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException {
         T t = (T) entityService.getById(id);
+        if (null == t)
+            throw new RuntimeException("对象不存在，或已被删除");
         F f = getFormClass().newInstance();
         BeanUtils.copyProperties(t, f);
         return R.ok(f);
@@ -178,15 +184,15 @@ public class NewBaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType) throws Exception {
-        ImportExcelListener listener = null;
+        NewImportExcelListener<T, E> listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(entityService,  importType);
+            listener = new NewImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getDataList().size() + "条数据");
+            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getDataList());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getExcelList());
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);

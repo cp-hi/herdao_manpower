@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import java.util.List;
 
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -60,4 +61,11 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @return
 	 */
 	public StaffWorkYearDTO getStaffWorkYear(Long staffid);
+
+	/**
+	 * 查询员工基本信息
+	 * @param id
+	 * @return StaffBaseDTO
+	 */
+	StaffBaseDTO getStaffBase(Long id);
 }

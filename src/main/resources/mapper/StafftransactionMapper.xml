@@ -25,7 +25,7 @@
             <result property="newest" column="NEWEST"/>
             <result property="creatorCode" column="creator_code"/>
             <result property="createdTime" column="CREATED_TIME"/>
-            <result property="modifierCode" column="modifier_code"/>
+            <result property="modifiedCode" column="modified_code"/>
             <result property="modifiedTime" column="MODIFIED_TIME"/>
             <result property="orgDeptOid" column="ORG_DEPT_OID"/>
             <result property="postOid" column="POST_OID"/>

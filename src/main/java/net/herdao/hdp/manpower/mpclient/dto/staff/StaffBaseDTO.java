@@ -32,4 +32,7 @@ public class StaffBaseDTO {
 
     @ApiModelProperty(value="任职类型")
     private String jobType;
+
+    @ApiModelProperty(value="是否停用")
+    private Long isStop;
 }

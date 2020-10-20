@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
+import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
     @Autowired
     private RemoteUserService remoteUserService;
+
+	@Autowired
+	private SysSequenceService sysSequenceService;
+
+	@Autowired
+	private UserService userService;
     
 	@Override
 	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
@@ -178,7 +185,17 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		Staff staff = new Staff();
 		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
 		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
-		return this.save(staff);
+		long code = sysSequenceService.getNext("staff_code");
+		String staffCode = code + "";
+		User user = new User();
+		user.setLoginCode(staffCode);
+		user.setUserName(staff.getStaffName());
+		userService.save(user);
+
+		staff.setStaffCode(staffCode);
+		staff.setUserId(user.getId());
+		boolean isOk = this.save(staff);
+		return isOk;
 	}
 
     @Override
@@ -203,7 +220,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
     public Map<String, Object> getStaffDetail(Long id){
 		Staff staff = this.getById(id);
-		StaffBaseDTO base = new StaffBaseDTO();
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffInfoDTO info = new StaffInfoDTO();
 		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
 		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
@@ -237,7 +254,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		}
 		map.put("staffFamilyDTO", familyDtoList);
 
-		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+		/*List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
 				.eq("STAFF_ID", staff.getId())
 				.orderByDesc("END_DATE")
 		);
@@ -248,14 +265,14 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			BeanUtils.copyProperties(eduList.get(i), eduDto);
 			eduDtoList.add(eduDto);
 		}
-		map.put("staffEducationDTO", eduDtoList);
+		map.put("staffEducationDTO", eduDtoList);*/
 		return map;
 	}
 
 	@Override
 	public Map<String, Object> getHomePage(Long id){
 		Staff staff = this.getById(id);
-		StaffBaseDTO base = new StaffBaseDTO();
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffArchiveDTO archive = new StaffArchiveDTO();
 		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
 		StaffWelfareDTO welfare = new StaffWelfareDTO();
@@ -437,7 +454,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	
 	/**
 	 * 修改实习记录
-	 * @param id 用户id
+	 * @param staffPracticeDTO
 	 * @author lift
 	 * @date 2020-10-19
 	 * @return
@@ -483,7 +500,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public Map<String, Object> getStaffWelfare(Long id){
 		Staff staff = this.getById(id);
-		StaffBaseDTO base = new StaffBaseDTO();
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffSecurityDTO security = new StaffSecurityDTO();
 		StaffFundDTO fund = new StaffFundDTO();
 		StaffSalaryDTO salary = new StaffSalaryDTO();
@@ -518,4 +535,5 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staffWorkYearDTO, staff);
 		return this.updateById(staff);
 	}
+
 }

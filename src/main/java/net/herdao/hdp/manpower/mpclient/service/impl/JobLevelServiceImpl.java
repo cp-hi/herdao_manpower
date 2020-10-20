@@ -41,27 +41,27 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void saveVerify(JobLevel jobLevel) {
+    public void saveVerify(JobLevel jobLevel)  {
 //        if (baseMapper.chkCodeAndName(jobLevel))
 //            throw new RuntimeException("请检查职级的名称和编码");
 //        if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
 //            throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobLevelName(jobLevel))
-            throw new RuntimeException("职级名称重复了");
+            throw new  RuntimeException("职级名称重复了");
     }
 
     @Override
-    public void importVerify(JobLevel jobLevel, int type) {
+    public void importVerify(JobLevel jobLevel,Object excelObj, int type) {
         boolean add = (0 == type);
-        if (add) addJobLevel(jobLevel);
-        else updateJobLevel(jobLevel);
+        if (add) addJobLevel(jobLevel,excelObj);
+        else updateJobLevel(jobLevel,excelObj);
 
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(jobLevel);
     }
 
-    private void addJobLevel(JobLevel jobLevel) {
-        JobLevelImportDTO excel = (JobLevelImportDTO) jobLevel;
+    private void addJobLevel(JobLevel jobLevel,Object excelObj) {
+        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
                 .eq("JOB_GRADE_NAME", excel.getJobGrade()));
@@ -84,8 +84,8 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         jobLevel.setGroupId(jobGrade.getGroupId());
     }
 
-    private void updateJobLevel(JobLevel jobLevel) {
-        JobLevelImportDTO excel = (JobLevelImportDTO) jobLevel;
+    private void updateJobLevel(JobLevel jobLevel,Object excelObj) {
+        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
                 .eq("JOB_GRADE_NAME", excel.getJobGrade()));
@@ -107,5 +107,6 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(jobGrade.getGroupId());
+        jobLevel.setId(tmp.getId());
     }
 }
