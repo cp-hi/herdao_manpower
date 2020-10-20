@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +15,9 @@ import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -27,6 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/client/postSeq")
+@Api(tags = "岗位序列管理")
 public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,PostSeqFormDTO,Class> {
 
     @Autowired
@@ -34,7 +38,7 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
 
     @Autowired
     public void setEntityService(PostSeqService postSeqService) {
-        super.newEntityService = postSeqService;
+        super.entityService = postSeqService;
     }
 
     @GetMapping("/list")
@@ -43,19 +47,15 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
         return R.ok(postSeqService.postSeqList(groupId));
     }
 
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "分页查询")
+    @Override
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "postSeqName", value = "postSeqName"),
+            @ApiImplicitParam(name = "postSeqName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
-    public R  page(Page  page, PostSeq seq)
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, NoSuchFieldException {
-        IPage p = postSeqService.page(page, seq);
-        List<PostSeqListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostSeqListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
+    public R page(HttpServletResponse response, Page  page, PostSeq seq, Integer type)
+            throws Exception {
+        return super.page(response,page,seq,type);
     }
-
-
 }

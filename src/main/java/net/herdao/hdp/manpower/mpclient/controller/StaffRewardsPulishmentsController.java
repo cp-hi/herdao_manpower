@@ -110,7 +110,7 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
             @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
     })
     public R importStaffRp(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService,StaffRewardsPulishments.class, importType);
+        ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService,null, importType);
         try {
             InputStream inputStream = file.getInputStream();
             EasyExcel.read(inputStream, StaffRpVO.class, listener).sheet().doRead();

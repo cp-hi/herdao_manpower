@@ -95,7 +95,7 @@ private static final long serialVersionUID = 1L;
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     /**
      * 国籍
      */
@@ -160,7 +160,7 @@ private static final long serialVersionUID = 1L;
      * 毕业时间
      */
     @ApiModelProperty(value="毕业时间")
-    private LocalDateTime graduatedTime;
+    private LocalDate graduatedTime;
     /**
      * 参加工作日期
      */
@@ -345,7 +345,7 @@ private static final long serialVersionUID = 1L;
      * 加入或迁移公司集体户时间
      */
     @ApiModelProperty(value="加入或迁移公司集体户时间")
-    private LocalDateTime collectiveHouseholdsTime;
+    private LocalDate collectiveHouseholdsTime;
     /**
      * 档案挂靠情况
      */
@@ -445,12 +445,12 @@ private static final long serialVersionUID = 1L;
      * 社保封存时间
      */
     @ApiModelProperty(value="社保封存时间")
-    private LocalDateTime securityArchiveTime;
+    private LocalDate securityArchiveTime;
     /**
      * 公积金封存时间
      */
     @ApiModelProperty(value="公积金封存时间")
-    private LocalDateTime fundArchiveTime;
+    private LocalDate fundArchiveTime;
     /**
      * 个人社保号（省）
      */
@@ -535,7 +535,7 @@ private static final long serialVersionUID = 1L;
      * 参保日期
      */
     @ApiModelProperty(value="参保日期")
-    private LocalDateTime insuredTime;
+    private LocalDate insuredTime;
     /**
      * 中间停缴社保年份
      */

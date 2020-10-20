@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -23,6 +25,9 @@ import java.util.List;
 public interface EntityService<T> extends IService<T> {
 
 
+    default IPage page(Page page, T t) {
+        return page;
+    }
 
     /**
      * 保存实体并自动添加日志
@@ -92,7 +97,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    @Deprecated
+//    @Deprecated
     default void importVerify(T t, int type) {
     }
 
@@ -101,9 +106,8 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    default void importVerify( T t,Object excelObj, int type) {
+    default void importVerify(T t, Object excelObj, int type) {
     }
-
 
 
     //TODO 添加操作日志

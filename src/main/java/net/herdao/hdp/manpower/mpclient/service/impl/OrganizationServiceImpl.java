@@ -40,6 +40,7 @@ import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 
@@ -68,9 +69,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<Organization> findAllOrganizations(Organization condition) {
-        List<Organization> list = this.baseMapper.findAllOrganizations(condition);
-        return list;
+    public List<OrganizationTreeVO> findAllOrganizations(String searchText) {
+       return this.baseMapper.findAllOrganizations(searchText);
     }
 
     @Override
@@ -98,7 +98,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
     
     /**
-     * 预停用组织 
+     * @description 预停用组织 
+     * 
+     * @author      shuling
+	 * @date        2020-10-19 10:45:22
+	 * @version     1.0
      */
     @ApiOperation(value = "停用组织", notes = "停用组织")
     @SysLog("预停用组织")
@@ -121,7 +125,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     
     
     /**
-     * 停用组织 
+     * @description 停用组织
+     * 
+     * @author      shuling
+	 * @date        2020-10-19 10:22:11
+	 * @version     1.0 
      */
     @ApiOperation(value = "停用组织", notes = "停用组织")
     @SysLog("停用组织")
@@ -152,7 +160,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     
     
     /**
-     * 预启用组织
+     * @description 预启用组织
+     * 
+     * @author      shuling
+	 * @date        2020-10-19 10:22:19
+	 * @version     1.0
      */
     @ApiOperation(value = "启用组织", notes = "启用组织")
     @SysLog("预启用组织")
@@ -178,7 +190,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	}
     
     /**
-     * 启用组织
+     * @description 启用组织
+     * 
+     * @author      shuling
+	 * @date        2020-10-19 10:42:15
+	 * @version     1.0
      */
     @ApiOperation(value = "启用组织", notes = "启用组织")
     @SysLog("启用组织")
@@ -203,34 +219,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 		return R.ok(null, ManpowerContants.ENABLE_SUCCESS);
 	}
-
-
-    @SysLog("递归获取组织架构parentId")
-    public void getRecursionParentIds(Long id, List<Map<String, Long>> orgIds,String operate) {
-        Organization condition = new Organization();
-        condition.setId(id);
-        List<Organization> list=new ArrayList<>();
-        if (null != operate && operate=="stopOrg"){
-            list = this.baseMapper.findAllOrg(condition);
-        }else{
-            list = this.baseMapper.findAllOrganizations(condition);
-        }
-
-        if (!list.isEmpty()) {
-            for (Organization entity : list) {
-                if (null != entity) {
-                    Map<String, Long> map = new HashMap<>();
-                    map.put(entity.getOrgName(), entity.getId());
-                    orgIds.add(map);
-
-                    if (null !=entity.getChildren() && !entity.getChildren().isEmpty()) {
-                        getChildren(entity, orgIds);
-                    }
-                }
-
-            }
-        }
-    }
 
     @SysLog("递归获取组织架构parentId")
     public void getChildren(Organization entity, List<Map<String, Long>> orgIds) {
@@ -304,9 +292,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     /**
-     * 删除组织
-     * @param ids
-     * @return R
+     * @description 删除组织
+     * 
+     * @author      shuling
+	 * @date        2020-10-19 20:22:19
+	 * @version     1.0
+     * @param       ids
+     * @return      R
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -342,7 +334,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         }
         
         if(message.length() > 0) {
-        	return R.failed("删除失败，包括离职人员、派遣员等， 以下组织存在人员信息：" + message);
+        	return R.failed("删除失败，组织下不能存在人员，包括离职人员、派遣员等， 以下组织存在人员信息：" + message);
         }
         
         // 删除组织 TOTO 待使用脚本删除方式
@@ -394,10 +386,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public Page<Organization> findOrgPage(Page<Organization> page, String orgCode, Integer stop, String searchText) {
-        Organization organization = this.getOne(new QueryWrapper<Organization>().lambda()
-        								.eq(Organization::getOrgCode, orgCode));
-        return this.baseMapper.findOrgPage(page, orgCode, organization.getOrgTreeLevel() + 1, stop, searchText);
+    public Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, Integer stop, String searchText) {
+        return this.baseMapper.findOrgPage(page, stop, searchText);
     }
 
 
@@ -407,6 +397,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return organization;
     }
 
+    /**
+     * @description 新增、修改组织信息
+     * 
+     * @author      shuling
+	 * @date        2020-10-19 10:22:19
+	 * @version     1.0
+     */
     @Override
     @SysLog("新增、修改组织信息")
     @OperationEntity(operation = "新增、修改组织信息", clazz = Organization.class)
@@ -450,7 +447,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		organization.setStartDate(DateUtil.date());
     	}
     	
-    	if(ObjectUtil.isNotNull(id) && ObjectUtil.isNotNull(parentId)) {
+    	if(ObjectUtil.isNotNull(id)) {
     		
     		Organization tpOrganization = this.getById(id);
     		// 更新了父组织
@@ -487,6 +484,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     
    /**
     * @description 获取组织编码 
+    * 
     * @author      shuling
     * @date        2020-10-18 10:37:22
     * @param       parentId
@@ -554,6 +552,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public boolean saveOrgChart(OrgChartFormDTO form){
         Organization entity = new Organization();
         BeanUtils.copyProperties(form, entity);
+        long parentId = entity.getParentId();
+        String orgCode = getOrgCode(parentId);
+        entity.setOrgCode(orgCode);
         return this.save(entity);
     }
 

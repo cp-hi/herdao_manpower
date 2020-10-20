@@ -5,6 +5,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -91,6 +92,7 @@ public class Staffeducation extends BaseModel<Staffeducation> {
     /**
      * 毕业日期
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     @ApiModelProperty(value="毕业日期")
     private Date endDate;
     /**
@@ -123,10 +125,12 @@ public class Staffeducation extends BaseModel<Staffeducation> {
      */
     @ApiModelProperty(value="预留字段5")
     private String field5;
+
     /**
      * 开始时间
      */
     @ApiModelProperty(value="入学日期")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     private Date beginDate;
     /**
      * 是否删除

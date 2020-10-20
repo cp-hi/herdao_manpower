@@ -40,6 +40,16 @@ public class StaffEditController {
         return R.ok(isOk);
     }
 
+    @ApiOperation(value = "启用员工", notes = "通过工号启用员工")
+    @GetMapping("/enable/{staffCode}" )
+    public R<Boolean> enableByCode(@PathVariable("staffCode" ) String staffCode) {
+        boolean isOk = userService.update(new UpdateWrapper<User>()
+                .set("IS_STOP", 0)
+                .eq("LOGIN_CODE",staffCode)
+        );
+        return R.ok(isOk);
+    }
+
     @ApiOperation(value = "员工详情-个人信息", notes = "个人信息")
     @SysLog("个人信息" )
     @PutMapping("/staffinfo" )

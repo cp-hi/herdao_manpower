@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,19 +23,20 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 @Data
 @TableName("MP_Pipeline")
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "管线")
 public class Pipeline extends BaseEntity<Pipeline> {
-    public Pipeline(Long id) {
-        this.setId(id);
-    }
+    @ApiModelProperty(value = "管线编码",hidden = true)
     private String pipelineCode;
+    @ApiModelProperty(value = "管线名称" )
     private String pipelineName;
+    @ApiModelProperty(value = "集团id",required = true)
     private Integer groupId;
+    @ApiModelProperty(value = "排序",hidden = true)
     private Integer sortNo;
+    @ApiModelProperty(value = "是否停用",hidden = true)
     @TableField("IS_STOP")
     private Boolean stop;
+    @ApiModelProperty(value = "管线标准码",hidden = true)
     private String pipelineStdCode;
-
 }

@@ -5,16 +5,18 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import java.util.List;
 import java.util.Map;
 
-import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 
 /**
  * 
@@ -32,10 +34,12 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     List<Organization> selectOrganizationListByParentOid(String parentOid);
 
     /**
-     * 查询根组织架构
+     * 查询组织树
+     * 
+     * @param searchText
      * @return
      */
-    List<Organization> findAllOrganizations(Organization condition);
+    List<OrganizationTreeVO> findAllOrganizations(@Param("searchText") String searchText);
 
     /**
      * 高级查询根组织架构
@@ -80,15 +84,14 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     List<Organization> findAllOrg(Organization condition);
 
     /**
-     * 分页查询组织架构
+     * 组织列表分页查询
+     * 
      * @param page
-     * @param orgCode
-     * @param treeLevel
      * @param stop
      * @param searchText
      * @return
      */
-    Page<Organization> findOrgPage(Page<Organization> page, @Param("orgCode") String orgCode, @Param("treeLevel") Long treeLevel, @Param("stop")  Integer stop, @Param("searchText") String searchText);
+	Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, @Param("stop") Integer stop, @Param("searchText") String searchText);
 
     /**
      * 查询部门结构树
@@ -136,6 +139,7 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     
     /**
      * @description 获取组织编码
+     * 
      * @author      shuling
      * @date        2020-10-18 10:37:22
      * @param 		parentId
@@ -145,6 +149,7 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     
     /**
      * @description 更新组织编码
+     * 
      * @author      shuling
      * @date        2020-10-18 12:31:28
      * @param 		orgCode

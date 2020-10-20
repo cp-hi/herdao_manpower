@@ -19,24 +19,20 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
  */
 @Data
 @TableName("MP_Post_Seq")
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位序列")
 public class PostSeq extends BaseEntity<PostSeq> {
-    public PostSeq(Long id) {
-        this.setId(id);
-    }
 
-    @ApiModelProperty(value = "岗位序列名称", required = true)
+    @ApiModelProperty(value = "岗位序列名称")
     private String postSeqName;
 
-    @ApiModelProperty(value = "岗位序列编码")
+    @ApiModelProperty(value = "岗位序列编码", hidden = true)
     private String postSeqCode;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty(value = "描述", hidden = true)
     private String description;
 
-    @ApiModelProperty(value = "集团ID")
+    @ApiModelProperty(value = "集团ID",required = true)
     private Long groupId;
 
     @ApiModelProperty(value = "父ID")

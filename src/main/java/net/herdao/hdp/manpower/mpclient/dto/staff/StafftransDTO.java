@@ -30,6 +30,14 @@ public class StafftransDTO {
     @ExcelIgnore
     private Long id;
 
+    @ExcelProperty(value = "员工姓名")
+    @ApiModelProperty(value="员工姓名")
+    private String staffName;
+
+    @ExcelProperty(value = "员工工号")
+    @ApiModelProperty(value="员工工号")
+    private String staffCode;
+
     /**
      * 异动时间
      */

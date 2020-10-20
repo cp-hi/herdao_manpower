@@ -35,64 +35,82 @@
              </resultMap>
 
       <!-- 员工教育情况分页 -->
-      <select id="findStaffEducationPage" resultMap="staffEducationMap">
-            SELECT      s.staff_name,
-                        s.staff_code,
-                        e.BEGIN_DATE,
-                        e.END_DATE,
-                        e.SCHOOL_NAME,
-                        e.PROFESSIONAL,
-                        e.EDUCATION_DEGREE,
-                        e.LEARN_FORM,
-                        e.EDUCATION_QUA,
-                        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
-                        e.MODIFIED_TIME,
-                        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
-                        e.CREATED_TIME
-            FROM  mp_staffeducation e
-            LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-            LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-            AND u.MAIN_POST = 1
-            where 1=1
-            <if test="orgId != null">
-                  and u.ORG_DEPT_ID = #{orgId}
-            </if>
-            <if test="staffName != null">
-                  or s.staff_name LIKE concat(#{staffName},'%')
-            </if>
-            <if test="staffCode != null">
-                  or s.staff_code LIKE concat(#{staffCode},'%')
-            </if>
+      <select id="findStaffEducationPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
+                 select * from (
+                          SELECT
+                          e.id,
+                          s.staff_name,
+                          s.staff_code,
+                          e.BEGIN_DATE,
+                          e.END_DATE,
+                          e.staff_id,
+                          e.SCHOOL_NAME,
+                          e.PROFESSIONAL,
+                          ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_DEGREE_TYPE' AND d.`value` = e.EDUCATION_DEGREE ) EDUCATION_DEGREE,
+                          ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_QUA_TYPE' AND d.`value` = e.EDUCATION_QUA ) EDUCATION_QUA,
+                          e.LEARN_FORM,
+                          ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
+                          e.MODIFIED_TIME,
+                          ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
+                          e.CREATED_TIME
+                          FROM
+                 mp_staffeducation e
+                          LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
+                          LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
+                          AND u.MAIN_POST = 1
+                          WHERE  1 = 1
+                          AND e.del_flag = 0
+                )t where 1=1
+           <if test="staffId != null">
+              and t.staff_id = #{staffId}
+           </if>
+           <if test="searchText != null">
+              and CONCAT(
+                  t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
+                  t.SCHOOL_NAME,t.PROFESSIONAL,t.EDUCATION_DEGREE,t.LEARN_FORM,
+                  t.EDUCATION_QUA,t.modifier_name,t.modifier_name,
+                  t.MODIFIED_TIME, t.create_name,t.CREATED_TIME
+              ) LIKE concat('%',#{searchText},'%')
+          </if>
       </select>
 
     <!-- 员工教育情况 -->
-    <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO">
-        SELECT      s.staff_name,
-                    s.staff_code,
-                    e.BEGIN_DATE BEGIN_DATE,
-                    e.END_DATE END_DATE,
-                    e.SCHOOL_NAME,
-                    e.PROFESSIONAL,
-                    e.EDUCATION_DEGREE,
-                    e.LEARN_FORM,
-                    e.EDUCATION_QUA,
-                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
-                    e.MODIFIED_TIME MODIFIED_TIME,
-                    ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
-                    e.CREATED_TIME CREATED_TIME
-        FROM  mp_staffeducation e
-                LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-                LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-                AND u.MAIN_POST = 1
-                where 1=1
-        <if test="orgId != null">
-            and u.ORG_DEPT_ID = #{orgId}
+    <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
+        select * from (
+        SELECT
+        e.id,
+        s.staff_name,
+        s.staff_code,
+        e.BEGIN_DATE,
+        e.END_DATE,
+        e.staff_id,
+        e.SCHOOL_NAME,
+        e.PROFESSIONAL,
+        ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_DEGREE_TYPE' AND d.`value` = e.EDUCATION_DEGREE ) EDUCATION_DEGREE,
+        ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_QUA_TYPE' AND d.`value` = e.EDUCATION_QUA ) EDUCATION_QUA,
+        e.LEARN_FORM,
+        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
+        e.MODIFIED_TIME,
+        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
+        e.CREATED_TIME
+        FROM
+        mp_staffeducation e
+        LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
+        LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
+        AND u.MAIN_POST = 1
+        WHERE  1 = 1
+        AND e.del_flag = 0
+        )t where 1=1
+        <if test="staffId != null">
+            and t.staff_id = #{staffId}
         </if>
-        <if test="staffName != null">
-            or s.staff_name LIKE concat(#{staffName},'%')
-        </if>
-        <if test="staffCode != null">
-            or s.staff_code LIKE concat(#{staffCode},'%')
+        <if test="searchText != null">
+            and CONCAT(
+                t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
+                t.SCHOOL_NAME,t.PROFESSIONAL,t.EDUCATION_DEGREE,t.LEARN_FORM,
+                t.EDUCATION_QUA,t.modifier_name,t.modifier_name,
+                t.MODIFIED_TIME, t.create_name,t.CREATED_TIME
+            ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
 </mapper>

@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,17 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
  */
 @Data
 @TableName("MP_JOB_GRADE")
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "职等")
 public class JobGrade extends BaseEntity<JobGrade> {
-    public JobGrade(Long id) {
-        this.setId(id);
-    }
+    @ApiModelProperty(value = "职等名称")
     private String jobGradeName;
+    @ApiModelProperty(value = "职等编码", hidden = true)
     private String jobGradeCode;
+    @ApiModelProperty(value = "描述", hidden = true)
     private String description;
+    @ApiModelProperty(value = "集团id",required = true)
     private Long groupId;
+    @ApiModelProperty(value = "职等编码", hidden = true)
     private Integer sortNo;
 }

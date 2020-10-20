@@ -1,10 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.dto.staff;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 /**
  * @author yangrr
  */
@@ -17,8 +19,10 @@ public class StaffEducationLastDTO {
     @ApiModelProperty(value="最高学历")
     private String educationDegree;
 
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty(value="毕业时间")
-    private LocalDateTime graduatedTime;
+    private LocalDate graduatedTime;
 
     @ApiModelProperty(value="毕业院校")
     private String graduatedFrom;

@@ -11,6 +11,7 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffeducationMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
@@ -26,7 +27,6 @@ import java.util.List;
 
 /**
  * 员工教育经历
- *
  * @author andy
  * @date 2020-09-23 17:22:28
  */
@@ -39,15 +39,10 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     private SysDictItemService itemService;
 
     @Override
-    public Page<Staffeducation> findStaffEducationPage(Page<Staffeducation> page, String orgId, String staffName, String staffCode) {
-        Page<Staffeducation> pageResult = this.baseMapper.findStaffEducationPage(page, orgId, staffName, staffCode);
-        return pageResult;
-    }
-
-    @Override
     public Boolean saveEdu(Staffeducation staffeducation) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         Integer userId = userInfo.getSysUser().getUserId().intValue();
+        staffeducation.setCreatorCode(userId.toString());
         staffeducation.setCreatedTime(new Date());
         boolean status = super.save(staffeducation);
         return status;
@@ -58,15 +53,20 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         Integer userId = userInfo.getSysUser().getUserId().intValue();
         staffeducation.setModifierCode(userId.toString());
-        LocalDateTime now = LocalDateTime.now();
         staffeducation.setModifiedTime(new Date());
         boolean status = super.updateById(staffeducation);
         return status;
     }
 
     @Override
-    public List<StaffeducationVO> findStaffEducation(String orgId, String staffName, String staffCode) {
-        List<StaffeducationVO> list = this.baseMapper.findStaffEducation(orgId, staffName, staffCode);
+    public Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page, String searchText, String staffId) {
+        Page<StaffEducationDTO> pageResult = this.baseMapper.findStaffEducationPage(page, searchText, staffId);
+        return pageResult;
+    }
+
+    @Override
+    public List<StaffEducationDTO> findStaffEducation(String searchText, String staffId) {
+        List<StaffEducationDTO> list = this.baseMapper.findStaffEducation(searchText, staffId);
         return list;
     }
 

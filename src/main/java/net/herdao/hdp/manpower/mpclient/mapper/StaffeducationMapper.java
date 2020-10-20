@@ -20,6 +20,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
@@ -40,17 +41,17 @@ public interface StaffeducationMapper extends BaseMapper<Staffeducation> {
     /**
      * 员工家庭情况分页
      * @param page 分页对象
-     * @param orgId
+     * @param searchText 关键字搜索
+     * @param staffId 员工工号
      * @return
      */
-    Page<Staffeducation> findStaffEducationPage(Page<Staffeducation> page, @Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page, @Param("searchText") String searchText, @Param("staffId") String staffId);
 
     /**
      * 员工教育经历
-     * @param orgId
-     * @param staffName
-     * @param staffCode
+     * @param searchText 关键字搜索
+     * @param staffId 员工工号
      * @return
      */
-    List<StaffeducationVO> findStaffEducation(@Param("orgId") String orgId, @Param("staffName") String staffName, @Param("staffCode") String staffCode);
+    List<StaffEducationDTO> findStaffEducation(@Param("searchText") String searchText,@Param("staffId") String staffId);
 }

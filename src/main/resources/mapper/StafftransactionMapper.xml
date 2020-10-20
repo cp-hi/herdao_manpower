@@ -45,26 +45,31 @@
       <!-- 员工异动情况分页-->
       <select id="findStaffTransPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO">
             select * from (
-            SELECT f.id,
-            s.staff_name,
-            s.staff_code,
-            f.TRAN_TIME,
-            f.TRAN_TYPE,
-            f.TRAN_REASON,
-            f.OUT_UNIT_NAME,
-            f.COME_UNIT_NAME,
-            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIED_CODE) MODIFIEd_NAME,
-            f.MODIFIED_TIME
-            FROM   mp_stafftransaction f
-            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
-            where 1=1
+                  SELECT f.id,
+                        s.staff_name,
+                        s.staff_code,
+                        f.TRAN_TIME,
+                        f.TRAN_TYPE,
+                        f.TRAN_REASON,
+                        f.OUT_UNIT_NAME,
+                        f.COME_UNIT_NAME,
+                        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIED_CODE) MODIFIEd_NAME,
+                        f.MODIFIED_TIME,
+                        f.STAFF_ID
+                        FROM   mp_stafftransaction f
+                        LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+                        LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
+                        where 1=1
+                        and f.DEL_FLAG=0
             )t where 1=1
+            <if test="staffId != null">
+                  t.staffId=#{staffId}
+            </if>
             <if test="searchText != null">
                   and CONCAT(
-                  t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
-                  t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
-                  t.MODIFIEd_NAME,t.MODIFIED_TIME
+                        t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
+                        t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
+                        t.MODIFIEd_NAME,t.MODIFIED_TIME
                   ) LIKE concat('%',#{searchText},'%')
             </if>
        </select>
@@ -81,12 +86,17 @@
             f.OUT_UNIT_NAME,
             f.COME_UNIT_NAME,
             ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIED_CODE) MODIFIEd_NAME,
-            f.MODIFIED_TIME
+            f.MODIFIED_TIME,
+            f.STAFF_ID
             FROM   mp_stafftransaction f
             LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
             LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
             where 1=1
+            and f.DEL_FLAG=0
             )t where 1=1
+            <if test="staffId != null">
+                  t.staffId=#{staffId}
+            </if>
             <if test="searchText != null">
                   and CONCAT(
                   t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,

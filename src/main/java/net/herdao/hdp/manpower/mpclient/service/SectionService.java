@@ -10,8 +10,6 @@ import net.herdao.hdp.manpower.mpclient.entity.Section;
 import java.util.List;
 import java.util.Map;
 
-public interface SectionService extends NewEntityService<Section> {
-    IPage  page(Page  page, Section section);
-
+public interface SectionService extends  EntityService<Section> {
     List<Map> sectionList(Long groupId);
 }

@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
@@ -16,6 +17,7 @@ import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -32,46 +34,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO,Class> {
+public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, Class> {
 
     @Autowired
     private PostService postService;
 
     @Autowired
     public void setEntityService(PostService postService) {
-        super.newEntityService = postService;
+        super.entityService = postService;
     }
 
     @Override
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "" +
-            /**
-             *             *postName       字符串搜索
-             *             *groupId        集团ID
-             *             *jobLevelId1    职级ID
-             *             *sectionId      板块ID
-             *             *pipelineId     管线ID
-             *             *current         当前页
-             *             *size           每页条数
-             **/
-            "")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
-//            @ApiImplicitParam(name = "groupId", value = "集团ID"),
-//            @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
-//            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
-//            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
-//            @ApiImplicitParam(name = "current", value = "当前页"),
-//            @ApiImplicitParam(name = "size", value = "每页条数"),
-//    })
-    public R page(HttpServletResponse response, Page page, Post post, Integer type) throws Exception {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "groupId", value = "集团ID"),
+            @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
+            @ApiImplicitParam(name = "sectionId", value = "板块ID"),
+            @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+    })
+    public R page(HttpServletResponse response,@ApiIgnore Page page, Post post, Integer type) throws Exception {
         return super.page(response, page, post, type);
     }
 
     @GetMapping("/baseInfo/{id}")
     @ApiOperation(value = "基础信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id"),
+            @ApiImplicitParam(name = "id", value = "主键"),
     })
     public R<PostBaseDTO> getBaseInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException,
@@ -82,21 +73,6 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
             data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseDTO.class);
         return R.ok(data);
     }
-
-//    @GetMapping("/formInfo/{id}")
-//    @ApiOperation(value = "表单信息")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "id"),
-//    })
-//    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
-//            throws InstantiationException, IllegalAccessException,
-//            ClassNotFoundException, NoSuchFieldException {
-//        IPage p = postService.page(new Page(), new Post(id));
-//        PostFormDTO data = null;
-//        if (p.getRecords().size() > 0)
-//            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
-//        return R.ok(data);
-//    }
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")

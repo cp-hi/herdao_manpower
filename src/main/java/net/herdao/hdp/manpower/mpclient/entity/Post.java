@@ -27,58 +27,56 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
-    public Post(Long id){
-       this.setId(id);
-    }
+    public Post(Long id){setId(id);}
 
-    @ApiModelProperty(value = "岗位编码")
+    @ApiModelProperty(value = "岗位编码",hidden = true)
     private String postCode;
     @ApiModelProperty(value = "岗位名称", required = true)
     private String postName;
-    @ApiModelProperty(value = "管线ID", required = true)
+    @ApiModelProperty(value = "管线ID" )
     private Long pipelineId;
-    @ApiModelProperty(value = "岗位级别", required = true)
+    @ApiModelProperty(value = "岗位级别",hidden = true)
     private String postLevel;
-    @ApiModelProperty(value = "福利级别", required = true)
+    @ApiModelProperty(value = "福利级别",hidden = true)
     private String welfareLevel;
-    @ApiModelProperty(value = "行政级别", required = true)
+    @ApiModelProperty(value = "行政级别",hidden = true)
     private String administrativeLevel;
-    @ApiModelProperty(value = "年终奖比例", required = true)
+    @ApiModelProperty(value = "年终奖比例",hidden = true)
     private String yearPayRatio;
-    @ApiModelProperty(value = "是否销售岗位", required = true)
+    @ApiModelProperty(value = "是否销售岗位",hidden = true)
     private Boolean salesPosition;
-    @ApiModelProperty(value = "是否销售管理岗位", required = true)
+    @ApiModelProperty(value = "是否销售管理岗位",hidden = true)
     private Boolean salesManager;
-    @ApiModelProperty(value = "排序")
+    @ApiModelProperty(value = "排序",hidden = true)
     private Integer sortNo;
-    @ApiModelProperty(value = "是否停用", required = true)
+    @ApiModelProperty(value = "是否停用",hidden = true)
     @TableField("IS_STOP")
     private Boolean stop;
-    @ApiModelProperty(value = "组织类型", required = true)
+    @ApiModelProperty(value = "组织类型" ,hidden = true)
     private String orgType;
-    @ApiModelProperty(value = "板块id", required = true)
+    @ApiModelProperty(value = "板块id" )
     private String sectionId;
-    @ApiModelProperty(value = "岗位职责", required = true)
+    @ApiModelProperty(value = "岗位职责",hidden = true)
     private String postDescr;
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "备注",hidden = true)
     private String remark;
-    @ApiModelProperty(value = "岗位性质")
+    @ApiModelProperty(value = "岗位性质",hidden = true)
     private String postProperties;
-    @ApiModelProperty(value = "绩效工资比例")
+    @ApiModelProperty(value = "绩效工资比例",hidden = true)
     private String perforSalaryRatio;
     @ApiModelProperty(value = "职级1")
     private Long jobLevelId1;
-    @ApiModelProperty(value = "职级2")
+    @ApiModelProperty(value = "职级2",hidden = true)
     private Long jobLevelId2;
-    @ApiModelProperty(value = "岗位序列")
+    @ApiModelProperty(value = "岗位序列",hidden = true)
     private Long postSeqId;
-    @ApiModelProperty(value = "岗位族")
+    @ApiModelProperty(value = "岗位族",hidden = true)
     private String postClan;
-    @ApiModelProperty(value = "职等名称")
+    @ApiModelProperty(value = "职等名称",hidden = true)
     private String gradeName;
-    @ApiModelProperty(value = "集团ID")
+    @ApiModelProperty(value = "集团ID",required = true)
     private Long groupId;
 
-    @ApiModelProperty(value = "是否单职级")
+    @ApiModelProperty(value = "是否单职级",hidden = true)
     private Boolean singleJobLevle;
 }

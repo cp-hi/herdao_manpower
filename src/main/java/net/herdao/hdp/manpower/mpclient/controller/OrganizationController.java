@@ -1,11 +1,11 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +35,7 @@ import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -86,6 +87,7 @@ public class OrganizationController {
     
     /**
      * 新增组织
+     * 
      * @author  shuling
 	 * @date    2020-10-18 10:37:22
 	 * @version 1.0
@@ -99,6 +101,7 @@ public class OrganizationController {
 
 	 /**
      * 修改组织
+     * 
      * @author  shuling
 	 * @date    2020-10-18 10:47:32
 	 * @version 1.0
@@ -150,26 +153,18 @@ public class OrganizationController {
         return R.ok(list);
     }
 
-
     /**
-     * 查询b组织架构树
-     *
+     * 查询组织树
+     * 
+     * @modify shuling
      * @return R
      */
-    @ApiOperation(value = "查询根组织架构树", notes = "查询根组织架构树")
+    @ApiOperation(value = "查询组织树", notes = "查询组织树")
     @GetMapping("/findAllOrganizations")
-    @OperationEntity(operation = "查询根组织架构树，点击切换启用状态 。（默认展示两级架构，根组织及其下一层子组织。)" ,clazz = Organization.class )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="isStop",value="是否停用 值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部"),
-            @ApiImplicitParam(name="isRoot",value="是否加载根组织架构： ture 是 , false 否"),
-    })
-     public R findAllOrganizations(Integer isStop,Boolean isRoot) {
-        Organization organization=new Organization();
-        organization.setIsStop(isStop);
-        organization.setIsRoot(isRoot);
-        List<Organization> list = orgService.findAllOrganizations(organization);
-        return R.ok(list);
+    @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class )
+    @ApiImplicitParam(name="searchText",value="模糊查询内容（点击组织树请传组织编码：orgCode 做为查询条件）")
+    public R<List<OrganizationTreeVO>> findAllOrganizations(String searchText) {
+    	return R.ok(orgService.findAllOrganizations(searchText));
     }
 
 
@@ -315,46 +310,45 @@ public class OrganizationController {
     }
     
     /**
-     * 分页查询组织架构
-     * @param page 分页对象
-     * @param orgCode
+     * 组织列表分页查询 
+     * 
+     * @modified shuling
+     * @param page
+     * @param stop 
+     * @param searchText
      * @return
      */
-    @ApiOperation(value = "分页查询组织架构", notes = "分页查询组织架构")
-    @GetMapping("/findOrgPage")
-    @OperationEntity(operation = "分页查询组织架构" ,clazz = Organization.class )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="id",value="组织架构主键ID"),
-            @ApiImplicitParam(name="orgCode",value="组织编码"),
-            @ApiImplicitParam(name="treeLevel",value="树形层级"),
-            @ApiImplicitParam(name="stop",value="传值：0 查询停用组织信息 ，传值： 1 查询启用信息， 不传或者传值： 3 查询启用信息"),
-            @ApiImplicitParam(name="searchText",value="模糊查询内容")
-    })
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R<Page<Organization>> findOrgPage(Page page, String orgCode, Integer stop, String searchText) {
-        return R.ok(orgService.findOrgPage(page, orgCode, stop, searchText));
-    }
+	@ApiOperation(value = "组织列表分页查询", notes = "组织列表分页查询")
+	@GetMapping("/findOrgPage")
+	@OperationEntity(operation = "组织列表分页查询", clazz = Organization.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "stop", value = "是否停用 （值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）"),
+						 @ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
+	public R<Page<OrganizationVO>> findOrgPage(Page page, Integer stop, String searchText) {
+		return R.ok(orgService.findOrgPage(page, stop, searchText));
+	}
 
     /**
-     * 批量导入组织 (excel导入)
+     * 批量导入组织 (excel导入) TOTO 待完善
+     * 
+     * @modified shuling
      * @param file
      * @return R
      */
     @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
     @PostMapping("/batchImportOrg")
     @ResponseBody
+    @ApiImplicitParams({
+	        @ApiImplicitParam(name = "file", value = "导入文件"),
+	        @ApiImplicitParam(name = "type", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
+	})
     public R batchImportOrg(@RequestParam(value = "file") MultipartFile file){
-        try {
-            //生成导出批次ID
-            String exportId = UUIDUtil.getUUID();
-            InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream,Organization.class, new OrgExcelListener(orgService,sysDictItemService,userService,postService,excelOperateRecordService)).sheet().doRead();
-        }catch (Exception ex){
-            ex.printStackTrace();
-            R.failed("导入失败");
-        }
-
-        return  R.ok("导入成功");
+    	try {
+			InputStream inputStream = file.getInputStream();
+			EasyExcel.read(inputStream,Organization.class, new OrgExcelListener(orgService,sysDictItemService,userService,postService,excelOperateRecordService)).sheet().doRead();
+			return R.ok("导入成功！");
+		} catch (IOException e) {
+			return R.failed(e.getMessage());
+		}
     }
     
     /**

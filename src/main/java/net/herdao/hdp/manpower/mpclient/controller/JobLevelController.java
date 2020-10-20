@@ -36,7 +36,7 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
 
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
-        super.newEntityService = jobLevelService;
+        super.entityService = jobLevelService;
     }
 
     @Override
@@ -51,8 +51,6 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
     }
 
     @Override
-    @GetMapping("/page")
-    @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),

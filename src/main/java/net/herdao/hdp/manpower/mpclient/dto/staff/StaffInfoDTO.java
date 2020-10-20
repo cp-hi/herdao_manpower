@@ -1,10 +1,13 @@
 package net.herdao.hdp.manpower.mpclient.dto.staff;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 /**
  * @author yangrr
@@ -30,8 +33,10 @@ public class StaffInfoDTO {
     @ApiModelProperty(value="身份证号码")
     private String idNumber;
 
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty(value="出生日期")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @ApiModelProperty(value="性别")
     private String sex;

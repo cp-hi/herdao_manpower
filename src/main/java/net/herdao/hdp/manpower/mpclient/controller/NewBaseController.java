@@ -10,7 +10,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.NewEntityService;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
@@ -41,7 +42,7 @@ import java.util.List;
  */
 public class NewBaseController<T, D, F, E> {
 
-    NewEntityService newEntityService;
+    EntityService entityService;
 
     @Autowired
     OperationLogService operationLogService;
@@ -103,15 +104,19 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
     }
 
+
+    @GetMapping("/page")
+    @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
-        IPage p = newEntityService.page(page, t);
+        IPage p = entityService.page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
         p.setRecords(vos);
-        if (null != type && 1 == type)
+        if (null != type && Integer.valueOf(1).equals(type))
             ExcelUtils.export2Web(response, "列表下载", "列表下载", getDTOClass(), vos);
         return R.ok(p);
     }
+
 
     @ApiOperation(value = "通过id删除")
     @DeleteMapping("/{id}")
@@ -119,26 +124,26 @@ public class NewBaseController<T, D, F, E> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R delete(@PathVariable Long id) {
-        return R.ok(newEntityService.delEntity(id));
+        return R.ok(entityService.delEntity(id));
     }
 
     @ApiOperation(value = "启用/停用")
     @PostMapping("/stop/{id}/{stop}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "实体ID"),
+            @ApiImplicitParam(name = "id", value = "主键"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
     public R stop(@PathVariable Long id, @PathVariable boolean stop) throws IllegalAccessException {
-        return R.ok(newEntityService.stopEntity(id, stop));
+        return R.ok(entityService.stopEntity(id, stop));
     }
 
     @ApiOperation(value = "查看是否停用")
     @PostMapping("/status/{id}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "实体ID"),
+            @ApiImplicitParam(name = "id", value = "主键"),
     })
     public R getStatus(@PathVariable Long id) throws IllegalAccessException {
-        return R.ok(newEntityService.getStatus(id));
+        return R.ok(entityService.getStatus(id));
     }
 
     @PostMapping
@@ -146,7 +151,7 @@ public class NewBaseController<T, D, F, E> {
     public R<F> save(@RequestBody F f) throws ClassNotFoundException {
         Class<E> e = (Class<E>) Class.forName(getEntityClass().getName());
         BeanUtils.copyProperties(f, e);
-        newEntityService.saveEntity(e);
+        entityService.saveEntity(e);
         return R.ok(f);
     }
 
@@ -157,7 +162,7 @@ public class NewBaseController<T, D, F, E> {
     })
     public R<F> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException {
-        T t = (T) newEntityService.getById(id);
+        T t = (T) entityService.getById(id);
         F f = getFormClass().newInstance();
         BeanUtils.copyProperties(t, f);
         return R.ok(f);
@@ -173,15 +178,15 @@ public class NewBaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType) throws Exception {
-        NewImportExcelListener listener = null;
+        ImportExcelListener listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new NewImportExcelListener<T,E>(newEntityService, importType);
+            listener = new ImportExcelListener(entityService,  importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
+            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getDataList().size() + "条数据");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getExcelList());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getDataList());
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);

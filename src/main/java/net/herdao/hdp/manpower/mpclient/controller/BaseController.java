@@ -33,7 +33,6 @@ import java.util.List;
  * @Version 1.0
  */
 //TODO 实现导出功能
-@Deprecated
 public class BaseController<T> {
 
     EntityService entityService;
@@ -126,7 +125,7 @@ public class BaseController<T> {
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(entityService, clazz, importType);
+            listener = new ImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功");
         } catch (Exception ex) {
