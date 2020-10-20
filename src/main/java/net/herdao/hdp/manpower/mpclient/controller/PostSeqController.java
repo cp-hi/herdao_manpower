@@ -14,7 +14,9 @@ import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -43,17 +45,14 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
         return R.ok(postSeqService.postSeqList(groupId));
     }
 
+    @Override
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postSeqName", value = "postSeqName"),
     })
-    public R  page(Page  page, PostSeq seq)
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, NoSuchFieldException {
-        IPage p = postSeqService.page(page, seq);
-        List<PostSeqListDTO> vos = DtoConverter.dto2vo(p.getRecords(), PostSeqListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
+    public R  page(HttpServletResponse response, Page  page, PostSeq seq, Integer type)
+            throws Exception {
+        return super.page(response,page,seq,type);
     }
 }

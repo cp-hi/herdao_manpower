@@ -25,14 +25,9 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @TableName("MP_JOB_LEVEL")
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "职级实体类")
 public class JobLevel extends BaseEntity<JobLevel> {
-
-    public JobLevel(Long id) {
-        this.setId(id);
-    }
 
     @NotBlank(message = "职级名称不能为空")
     @ExcelProperty(value = "职级名称",index = 0)

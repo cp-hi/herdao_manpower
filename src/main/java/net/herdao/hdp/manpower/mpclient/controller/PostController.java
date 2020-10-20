@@ -16,6 +16,7 @@ import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -64,7 +65,7 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
 //            @ApiImplicitParam(name = "current", value = "当前页"),
 //            @ApiImplicitParam(name = "size", value = "每页条数"),
 //    })
-    public R page(HttpServletResponse response, Page page, Post post, Integer type) throws Exception {
+    public R page(HttpServletResponse response, Page page, @ApiIgnore Post post, Integer type) throws Exception {
         return super.page(response, page, post, type);
     }
 
@@ -82,21 +83,6 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
             data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseDTO.class);
         return R.ok(data);
     }
-
-//    @GetMapping("/formInfo/{id}")
-//    @ApiOperation(value = "表单信息")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "id"),
-//    })
-//    public R<PostFormDTO> getFormInfo(@PathVariable Long id)
-//            throws InstantiationException, IllegalAccessException,
-//            ClassNotFoundException, NoSuchFieldException {
-//        IPage p = postService.page(new Page(), new Post(id));
-//        PostFormDTO data = null;
-//        if (p.getRecords().size() > 0)
-//            data = DtoConverter.dto2vo(p.getRecords().get(0), PostFormDTO.class);
-//        return R.ok(data);
-//    }
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")

@@ -17,13 +17,9 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
  */
 @Data
 @TableName("MP_JOB_GRADE")
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "职等")
 public class JobGrade extends BaseEntity<JobGrade> {
-    public JobGrade(Long id) {
-        this.setId(id);
-    }
     private String jobGradeName;
     private String jobGradeCode;
     private String description;

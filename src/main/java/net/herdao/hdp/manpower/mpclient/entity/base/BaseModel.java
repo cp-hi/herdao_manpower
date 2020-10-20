@@ -37,6 +37,6 @@ public class BaseModel<T extends Model<?>> extends Model<T> {
     private String field5;
 
     @ExcelIgnore
-    @ApiModelProperty(value = "删除标记" )
+    @ApiModelProperty(value = "删除标记" ,hidden = true)
     private Boolean delFlag;
 }

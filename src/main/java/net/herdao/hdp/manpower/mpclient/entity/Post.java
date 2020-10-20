@@ -27,9 +27,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
-    public Post(Long id){
-       this.setId(id);
-    }
+    public Post(Long id){setId(id);}
 
     @ApiModelProperty(value = "岗位编码")
     private String postCode;
