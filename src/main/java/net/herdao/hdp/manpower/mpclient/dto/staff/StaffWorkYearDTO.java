@@ -5,7 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
 @ApiModel(value = "工作年限")
@@ -13,8 +18,10 @@ public class StaffWorkYearDTO {
 	/**
      * 参加工作日期
      */
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty(value="参加工作日期")
-    private LocalDateTime workDate;
+    private LocalDate workDate;
     /**
      * 参加工作工龄
      */
@@ -23,8 +30,10 @@ public class StaffWorkYearDTO {
     /**
      * 入职本公司日期
      */
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty(value="入职本公司日期")
-    private LocalDateTime entryTime;
+    private LocalDate entryTime;
     /**
      * 本公司工龄
      */
@@ -33,8 +42,10 @@ public class StaffWorkYearDTO {
     /**
      * 入职集团日期
      */
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty(value="入职集团日期")
-    private LocalDateTime entryThreeGroupsTime;
+    private LocalDate entryThreeGroupsTime;
     /**
      * 集团工龄
      */

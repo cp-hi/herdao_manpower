@@ -243,7 +243,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		);
 		List<StaffEducationDTO> eduDtoList = new ArrayList<>();
 		StaffEducationDTO eduDto;
-		for(int i=0;i<familyList.size();i++){
+		for(int i=0;i<eduList.size();i++){
 			eduDto = new StaffEducationDTO();
 			BeanUtils.copyProperties(eduList.get(i), eduDto);
 			eduDtoList.add(eduDto);
