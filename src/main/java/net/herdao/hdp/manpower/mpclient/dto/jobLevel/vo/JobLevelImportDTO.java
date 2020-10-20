@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
+package net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,20 +14,20 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
  * @Version 1.0
  */
 @Data
-public class JobLevelImportVO implements ExcelVO {
+public class JobLevelImportDTO implements ExcelVO {
 
-    @ExcelProperty(value = "职级名称", index = 0)
+    @ExcelProperty(value = "职级名称")
     private String jobLevelName;
 
-    @ExcelProperty(value = "职等", index = 1)
+    @ExcelProperty(value = "职等")
     private String jobGrade;
 
-    @ExcelProperty(value = "排序", index = 2)
-     private Integer sortNo;
+    @ExcelProperty(value = "排序")
+    private Integer sortNo;
 
-    @ExcelProperty(value = "描述", index = 3)
+    @ExcelProperty(value = "描述")
     private String description;
 
-    @ExcelProperty(value = "错误信息", index = 4)
+    @ExcelProperty(value = "错误信息")
     private String errMsg;
 }

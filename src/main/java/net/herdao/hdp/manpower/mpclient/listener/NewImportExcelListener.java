@@ -27,11 +27,13 @@ import java.util.List;
  */
 public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
 
-    private Class<T> entityClass;
+    Class<T> entityClass;
+//    Class<E> excelClass;
 
-    List<T> dataList = null;
     @Getter
     List<E> excelList = null;
+
+    List<T> dataList = null;
 
     Integer BATCH_COUNT = 0;
 
@@ -70,6 +72,9 @@ public class NewImportExcelListener<T, E> extends AnalysisEventListener<E> {
 
         this.entityClass = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
+
+//        this.excelClass = (Class<E>) ((ParameterizedType) getClass()
+//                .getGenericSuperclass()).getActualTypeArguments()[1];
 
         this.dataList = new ArrayList<>();
         this.newEntityService = service;

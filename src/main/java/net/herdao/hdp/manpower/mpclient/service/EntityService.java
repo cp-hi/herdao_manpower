@@ -92,6 +92,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
+    @Deprecated
     default void importVerify(T t, int type) {
     }
 
@@ -102,6 +103,8 @@ public interface EntityService<T> extends IService<T> {
      */
     default void importVerify( T t,Object excelObj, int type) {
     }
+
+
 
     //TODO 添加操作日志
 

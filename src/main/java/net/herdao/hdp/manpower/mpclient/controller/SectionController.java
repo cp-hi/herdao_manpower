@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends NewBaseController<Section,SectionListDTO,SectionFormDTO> {
+public class SectionController extends NewBaseController<Section, SectionListDTO, SectionFormDTO,Class> {
 
     @Autowired
     private SectionService sectionService;
@@ -49,13 +50,10 @@ public class SectionController extends NewBaseController<Section,SectionListDTO,
         return R.ok(sectionService.sectionList(groupId));
     }
 
+    @Override
     @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R  page(Page  page, @RequestBody Section section) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        IPage p = sectionService.page(page, section);
-        List<SectionListDTO> vos = DtoConverter.dto2vo(p.getRecords(), SectionListDTO.class);
-        p.setRecords(vos);
-        return R.ok(p);
+    public R page(HttpServletResponse response,Page page, Section section, Integer type) throws Exception {
+        return super.page(response, page, section, type);
     }
-
 }
