@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
@@ -103,14 +104,14 @@ public class OperationLogAspect {
                     entity.setCreatedTime(new Date());
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
-                    AnnotationUtils.setAnnotationInfo(operation, "operation", "新增" );
+                    AnnotationUtils.setAnnotationInfo(operation, "operation", "新增");
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {
                     entity.setModifiedTime(new Date());
                     entity.setModifierName(sysUser.getUsername());
                     entity.setModifierId(Long.valueOf(sysUser.getUserId()));
-                    AnnotationUtils.setAnnotationInfo(operation, "operation", "修改" );
+                    AnnotationUtils.setAnnotationInfo(operation, "operation", "修改");
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "修改" + model.value());
                 }
@@ -158,8 +159,8 @@ public class OperationLogAspect {
     }
 
 
-    @After("pointDelete()")
-    public void afterDelete(JoinPoint point) {
+    @Before("pointDelete()")
+    public void beforeDelete(JoinPoint point) {
         OperationEntity operation = getOperationEntity(point);
         if (null == operation || 0 == point.getArgs().length)
             return;
@@ -193,6 +194,11 @@ public class OperationLogAspect {
                     AnnotationUtils.setAnnotationInfo(operation, "module", module.toString());
                 }
 
+                if (point.getTarget() instanceof EntityService) {
+                    Object obj = ((EntityService) point.getTarget()).getById((Serializable)arg);
+                    AnnotationUtils.setAnnotationInfo(operation, "clazz", obj.getClass());
+                    AnnotationUtils.setAnnotationInfo(operation, "objId", arg.toString());
+                }
             }
         }
     }
