@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
@@ -45,17 +46,7 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
 
     @Override
     @GetMapping("/page")
-    @ApiOperation(value = "分页查询", notes = "" +
-            /**
-             *             *postName       字符串搜索
-             *             *groupId        集团ID
-             *             *jobLevelId1    职级ID
-             *             *sectionId      板块ID
-             *             *pipelineId     管线ID
-             *             *current         当前页
-             *             *size           每页条数
-             **/
-            "")
+    @ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postName", value = "字符串搜索"),
             @ApiImplicitParam(name = "groupId", value = "集团ID"),

@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 
 @Data
 @TableName("mp_post")
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
@@ -74,7 +73,7 @@ public class Post extends BaseEntity<Post> {
     private String postClan;
     @ApiModelProperty(value = "职等名称",hidden = true)
     private String gradeName;
-    @ApiModelProperty(value = "集团ID")
+    @ApiModelProperty(value = "集团ID",required = true)
     private Long groupId;
 
     @ApiModelProperty(value = "是否单职级",hidden = true)
