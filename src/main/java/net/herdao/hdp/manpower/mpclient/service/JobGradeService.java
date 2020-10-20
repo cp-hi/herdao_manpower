@@ -12,8 +12,7 @@ import java.util.Map;
 /**
  * @author ljan
  */
-public interface JobGradeService extends NewEntityService<JobGrade> {
-    IPage page(Page page, JobGrade jobGrade);
+public interface JobGradeService extends  EntityService<JobGrade> {
 
     List<JobGradeShortDTO> jobGradeList(Long groupId);
 }

@@ -34,7 +34,7 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
 
     @Autowired
     public void setEntityService(PostSeqService postSeqService) {
-        super.newEntityService = postSeqService;
+        super.entityService = postSeqService;
     }
 
     @GetMapping("/list")

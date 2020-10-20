@@ -55,13 +55,12 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         boolean add = (0 == type);
         if (add) addJobLevel(jobLevel);
         else updateJobLevel(jobLevel);
+
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(jobLevel);
     }
 
     private void addJobLevel(JobLevel jobLevel) {
-
-        //TODO 添加校验方法
         JobLevelImportDTO excel = (JobLevelImportDTO) jobLevel;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
@@ -70,17 +69,12 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         if (null == jobGrade)
             throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
 
-        List<JobLevel> tmp = this.baseMapper.selectList(new QueryWrapper<JobLevel>()
+        JobLevel tmp = this.baseMapper.selectOne(new QueryWrapper<JobLevel>()
                 .eq("GROUP_ID", jobGrade.getGroupId())
                 .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
 
-        //TODO 通过add区分新增修改的不同处理
-
-        if (null != tmp && tmp.size() > 0) {
-            if (!tmp.get(0).getGroupId().equals(jobGrade.getGroupId()))
-                throw new RuntimeException("导入的职等中的集团与原先保存的集团不一致");
-            jobLevel.setId(tmp.get(0).getId());
-        }
+        if (null != tmp)
+            throw new RuntimeException("已存在此职级：" + tmp.getJobLevelName());
 
         if (null == jobGrade.getGroupId())
             throw new RuntimeException("集团ID为空");
@@ -91,8 +85,6 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     private void updateJobLevel(JobLevel jobLevel) {
-
-        //TODO 添加校验方法
         JobLevelImportDTO excel = (JobLevelImportDTO) jobLevel;
 
         JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
@@ -101,17 +93,13 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         if (null == jobGrade)
             throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
 
-        List<JobLevel> tmp = this.baseMapper.selectList(new QueryWrapper<JobLevel>()
+        JobLevel tmp = this.baseMapper.selectOne(new QueryWrapper<JobLevel>()
                 .eq("GROUP_ID", jobGrade.getGroupId())
                 .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
 
-        //TODO 通过add区分新增修改的不同处理
+        if (null == tmp)
+            throw new RuntimeException("不存在此职级：" + tmp.getJobLevelName());
 
-        if (null != tmp && tmp.size() > 0) {
-            if (!tmp.get(0).getGroupId().equals(jobGrade.getGroupId()))
-                throw new RuntimeException("导入的职等中的集团与原先保存的集团不一致");
-            jobLevel.setId(tmp.get(0).getId());
-        }
 
         if (null == jobGrade.getGroupId())
             throw new RuntimeException("集团ID为空");

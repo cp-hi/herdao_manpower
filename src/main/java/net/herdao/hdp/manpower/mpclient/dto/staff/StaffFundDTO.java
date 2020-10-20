@@ -1,9 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.dto.staff;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 /**
  * @author yangrr
@@ -20,8 +23,10 @@ public class StaffFundDTO {
     @ApiModelProperty(value="实际公积金支付单位")
     private String payFundUnit;
 
+    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @ApiModelProperty(value="公积金封存时间")
-    private LocalDateTime fundArchiveTime;
+    private LocalDate fundArchiveTime;
 
     @ApiModelProperty(value="公积金银行名称")
     private String fundArchiveBankName;

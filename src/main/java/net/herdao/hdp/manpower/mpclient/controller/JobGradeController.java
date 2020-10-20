@@ -45,7 +45,7 @@ public class JobGradeController extends NewBaseController<JobGrade,JobGradeListD
 
     @Autowired
     public void setEntityService(JobGradeService jobGradeService) {
-        super.newEntityService = jobGradeService;
+        super.entityService = jobGradeService;
     }
 
     @GetMapping("/list")

@@ -11,9 +11,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Post;
 import java.util.List;
 import java.util.Map;
 
-public interface PostService extends NewEntityService<Post> {
-
-    IPage  page(Page page, Post post);
+public interface PostService extends  EntityService<Post> {
 
     /**
      * 岗位列表

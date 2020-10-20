@@ -39,7 +39,7 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
 
     @Autowired
     public void setEntityService(PostService postService) {
-        super.newEntityService = postService;
+        super.entityService = postService;
     }
 
     @Override

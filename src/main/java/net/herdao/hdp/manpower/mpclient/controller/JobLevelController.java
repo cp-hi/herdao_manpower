@@ -36,7 +36,7 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
 
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
-        super.newEntityService = jobLevelService;
+        super.entityService = jobLevelService;
     }
 
     @Override
