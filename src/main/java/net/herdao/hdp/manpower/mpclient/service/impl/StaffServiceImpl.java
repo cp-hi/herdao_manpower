@@ -454,7 +454,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	
 	/**
 	 * 修改实习记录
-	 * @param id 用户id
+	 * @param staffPracticeDTO
 	 * @author lift
 	 * @date 2020-10-19
 	 * @return
