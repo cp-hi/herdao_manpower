@@ -161,7 +161,7 @@ private static final long serialVersionUID = 1L;
      * 最后修改人
      */
     @ApiModelProperty(value="最后修改人")
-    private String modifierCode;
+    private String modifiedCode;
 
     /**
      * 最后修改时间
