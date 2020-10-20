@@ -427,60 +427,45 @@
         </if>
     </update>
 
-    <!-- 组织架构分页 -->
-    <select id="findOrgPage" resultMap="organizationMap">
-        SELECT  t.id,
-                t.ORG_NAME,
-                t.ORG_CODE,
-                t.org_type,
-                t.org_charge_name,
-                t.charge_org,
-                t.staff,
-                t.emp_in_service,
-                t.create_desc,
-                t.update_desc
-        from
-        (
-	        SELECT
-	        org.id,
-	        org.ORG_NAME,
-	        org.ORG_CODE,
-	        ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
-	        ( SELECT u.USER_NAME FROM mp_user u WHERE u.ID = org.org_charge_work_no ) org_charge_name,
-	        ( SELECT p.POST_NAME FROM mp_post p WHERE p.ID = org.charge_org ) charge_org,
-	        0  staff ,
-	        ( SELECT
-		        sum( CASE WHEN s.JOB_TYPE = '全职' AND s.STAFF_SCOPE = '在职人员' THEN 1 ELSE 0 END )
-		      FROM
-		        mp_userpost u ,mp_staff s
-		      WHERE u.ORG_DEPT_ID = org.ID
-				        AND u.MAIN_POST = 1
-				        AND u.USER_ID = s.USER_ID
-	        ) emp_in_service,
-	        CONCAT( ( SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.CREATOR_ID ), ' 于 ', org.CREATED_TIME ,'创建') create_desc,
-	        CONCAT( ( SELECT u.USER_NAME FROM  mp_user u WHERE u.id=org.MODIFIER_ID ),' 于 ', org.MODIFIED_TIME ,'更新') update_desc
-        FROM
-        	mp_organization org
-        <where>
-         	<if test="orgCode != null">
-                AND  org.ORG_CODE LIKE concat(#{orgCode},'%')
-            </if>
-            <if test="treeLevel != null">
-                AND  org.org_tree_level  &lt;= #{treeLevel}
-            </if>
-            <if test="stop != null and stop != 3">
-            	AND org.is_stop = #{stop}
-            </if>
-        </where>
-           
-        ) t 
-        
-        <where>
-        	<if test="searchText != null and searchText != 3">
-        		AND CONCAT(t.org_name, t.org_charge_name, IFNULL(t.create_desc,''), IFNULL(t.update_desc,'')) LIKE CONCAT('%',#{searchText},'%')
-        	</if>
-        </where>
-
+    <!-- 组织列表分页查询  -->
+    <select id="findOrgPage" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO">
+        SELECT  orgList.id,
+                orgList.org_name,
+                orgList.org_code,
+                orgList.org_type,
+                orgList.org_charge_name,
+                orgList.post_name,
+                orgList.staff_total,
+                orgList.workforce_total,
+                orgList.create_desc,
+                orgList.update_desc
+        from (
+		        SELECT
+			        org.id,
+			        org.org_name,
+			        org.org_code,
+			       	org.org_type,
+			        org.org_charge_name,
+			        org.is_stop,
+			        0 staff_total ,
+			        ps.post_name,
+			        IFNULL(workforce_total, 0) AS workforce_total,
+			        CONCAT( cus.user_name, ' 于 ', org.created_time ,'创建') create_desc,
+			        CONCAT( mus.user_name, ' 于 ', org.modified_time ,'更新') update_desc
+        		FROM mp_organization org 
+        		LEFT JOIN (SELECT COUNT(us.id) AS workforce_total, org_dept_id FROM mp_user us WHERE us.is_stop = 0 GROUP BY org_dept_id) usT ON usT.org_dept_id = org.id
+        		LEFT JOIN mp_post ps ON ps.id = org.post_id
+        		LEFT JOIN mp_user cus ON cus.id = org.creator_id 
+        		LEFT JOIN mp_user mus ON mus.id = org.modifier_id 
+       		 ) orgList
+	        <where>
+	        	<if test="stop != null and stop != 3">
+		            AND orgList.is_stop = #{stop}
+		        </if>
+	        	<if test="searchText != null">
+	        		AND CONCAT(orgList.org_name, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')
+	        	</if>
+	        </where>
     </select>
 
 
