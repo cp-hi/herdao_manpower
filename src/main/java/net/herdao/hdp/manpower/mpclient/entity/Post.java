@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 @Data
 @TableName("mp_post")
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
