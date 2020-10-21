@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
@@ -22,9 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @param <T> 实体类Entity类型
@@ -216,10 +221,19 @@ public class NewBaseController<T, D, F, E> {
     })
     public R getDownloadTempl(HttpServletResponse response, Integer importType) throws Exception {
         try {
-            List list = new ArrayList();
             Class templClass = getBatchAddClass();
-            if (Integer.valueOf(1).equals(importType)) templClass = getImportClass();
-            ExcelUtils.export2Web(response, "批量导入模板", "批量导入模板", templClass, list);
+            if (Integer.valueOf(1).equals(importType))
+                templClass = getImportClass();
+            List<LinkedHashMap<String, String>> data = new ArrayList();
+            Field[] fields = templClass.getDeclaredFields();
+            LinkedHashMap<String, String> map = new LinkedHashMap();
+            for (Field field : fields) {
+                if (field.getName().equals("errMsg"))   continue;
+                ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
+                map.put(excel.value()[0], "");
+            }
+            data.add(map);
+            ExcelUtils.export2Web(response, "批量导入模板", data);
             return R.ok();
         } catch (Exception ex) {
             return R.failed(ex.getMessage());
