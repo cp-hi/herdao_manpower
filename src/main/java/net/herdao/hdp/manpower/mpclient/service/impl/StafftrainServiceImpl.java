@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
@@ -21,6 +22,7 @@ import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StafftrainVO;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -165,6 +167,10 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
             if (!checkScore){
                 errorMsg+="培训成绩（请填写正整数）:"+stafftrainVO.getScore()+"，";
             }
+
+            SysUser sysUser = SysUserUtils.getSysUser();
+            stafftrainVO.setCreatedTime(new Date());
+            stafftrainVO.setCreatorCode(sysUser.getUserId().toString());
 
             if (!errorMsg.isEmpty()){
                 throw new RuntimeException(errorMsg);

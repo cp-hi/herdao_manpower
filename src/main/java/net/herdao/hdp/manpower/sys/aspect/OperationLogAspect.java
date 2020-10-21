@@ -94,7 +94,6 @@ public class OperationLogAspect {
         Object[] args = point.getArgs();
         SysUser sysUser = SysUserUtils.getSysUser();
         for (Object arg : args) {
-
             if (arg != null && arg instanceof BaseEntity) {
                 Class clazz = arg.getClass();
                 BaseEntity entity = (BaseEntity) arg;
@@ -153,7 +152,6 @@ public class OperationLogAspect {
                 if (null != module) {
                     AnnotationUtils.setAnnotationInfo(operation, "module", module.toString());
                 }
-
             }
         }
     }
