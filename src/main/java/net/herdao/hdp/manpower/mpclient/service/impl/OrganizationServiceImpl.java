@@ -434,19 +434,23 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	Organization organization = new Organization();
     	
     	BeanUtils.copyProperties(organizationVO, organization);
-
+    	
+    	// 组织id
     	Long id = organizationVO.getId();
+    	
+    	// 更新前组织信息
+    	Organization tpOrganization = ObjectUtil.isNull(id) ? new Organization() : this.getById(id);
     	
     	// 父组织id
     	Long parentId = organizationVO.getParentId();
     	
+    	// 父组织信息
     	Organization parentOrganization = ObjectUtil.isNull(parentId) ? null : this.getById(parentId);
     	
-    	if(StrUtil.isBlank(organization.getOrgCode())) {
+    	if(StrUtil.isBlank(organization.getOrgCode()) || tpOrganization.getParentId() != organization.getParentId()) {
     		
     		// 设置组织编码
         	organization.setOrgCode(getOrgCode(organization.getParentId()));
-        	
     	}
     	
     	// 设置 组织编码、组织名称全路径
@@ -471,9 +475,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	
     	if(ObjectUtil.isNotNull(id)) {
     		
-    		Organization tpOrganization = this.getById(id);
     		// 更新了父组织
-    		if(!organization.getParentId().equals(tpOrganization.getParentId())) {
+    		if(tpOrganization.getParentId() != organization.getParentId()) {
     			List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(tpOrganization.getOrgCode());
     			if(ObjectUtil.isNotEmpty(organizations)) {
     				
