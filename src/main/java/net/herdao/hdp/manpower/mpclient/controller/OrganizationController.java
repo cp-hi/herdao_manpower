@@ -117,9 +117,6 @@ public class OrganizationController {
     /**
      * 更新组织
      *
-     * @author  shuling
-     * @date    2020-10-18 10:47:32
-     * @version 1.0
      */
     @ApiOperation(value = "组织信息", notes = "修改组织信息")
     @SysLog("修改组织信息")
@@ -306,7 +303,7 @@ public class OrganizationController {
         @ApiImplicitParam(name="stopDateStr",value="停用日期 例如： 2020-10-19")
     })
     @SysLog("停用组织")
-    @PutMapping("/disable")
+    @GetMapping("/disable")
     public R disable(Long id, String stopDateStr) {
         return orgService.expectedDisable(id, stopDateStr);
     }
@@ -326,7 +323,7 @@ public class OrganizationController {
         @ApiImplicitParam(name="startDateStr",value="启用日期 例如： 2020-10-19")
     })
     @SysLog("启用组织")
-    @PutMapping("/enable")
+    @GetMapping("/enable")
     public R enable(Long id, String startDateStr) {
         return orgService.expectedEnable(id, startDateStr);
     }
@@ -362,12 +359,17 @@ public class OrganizationController {
     @ResponseBody
     @ApiImplicitParams({
 	        @ApiImplicitParam(name = "file", value = "导入文件"),
-	        @ApiImplicitParam(name = "type", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
+	        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
 	})
-    public R batchImportOrg(@RequestParam(value = "file") MultipartFile file){
+    public R batchImportOrg(@RequestParam(value = "file") MultipartFile file, Integer importType){
     	try {
 			InputStream inputStream = file.getInputStream();
-			EasyExcel.read(inputStream,Organization.class, new OrgExcelListener(orgService,sysDictItemService,userService,postService,excelOperateRecordService)).sheet().doRead();
+			EasyExcel.read(inputStream, Organization.class,
+								new OrgExcelListener(orgService,
+													 sysDictItemService,
+													 userService,
+													 postService,
+													 excelOperateRecordService)).sheet().doRead();
 			return R.ok("导入成功！");
 		} catch (IOException e) {
 			return R.failed(e.getMessage());

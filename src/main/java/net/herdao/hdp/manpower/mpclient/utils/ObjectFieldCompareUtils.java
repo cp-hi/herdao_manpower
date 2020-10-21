@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 对象属性对比 TODO
+ * 对象属性对比
  * 
  * @author shuling
  * @date 2020-10-20 11:37:27
@@ -20,8 +20,6 @@ public class ObjectFieldCompareUtils {
 	 * @param class1 对象1
 	 * @param class2 对象2
 	 * @return
-	 * @throws ClassNotFoundException
-	 * @throws IllegalAccessException
 	 */
 	public static List<Map<String, Object>> compareObject(Object cls1, Object cls2) {
 
@@ -42,7 +40,7 @@ public class ObjectFieldCompareUtils {
 						field1[i].setAccessible(true);
 						field2[j].setAccessible(true);
 						// 如果field1[i]属性值与field2[j]属性值内容不相同
-						if (!compareTwo(field1[i].get(cls1), field2[j].get(cls2))) {
+						if (!compare(field1[i].get(cls1), field2[j].get(cls2))) {
 							Map<String, Object> map2 = new HashMap<String, Object>();
 							map2.put("name", field1[i].getName());
 							map2.put("oldVal", field1[i].get(cls1));
@@ -67,7 +65,7 @@ public class ObjectFieldCompareUtils {
 	 * @param object2
 	 * @return
 	 */
-	public static boolean compareTwo(Object object1, Object object2) {
+	public static boolean compare(Object object1, Object object2) {
 
 		if (object1 == null && object2 == null) {
 			return true;
