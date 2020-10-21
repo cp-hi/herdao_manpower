@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -496,13 +497,21 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		}
     	}
     	
-    	// 操作日志信息 TODO 如果父组织更新了，是否记录子组织操作日志， 需求待优化
+    	// 保存组织
+    	this.saveOrUpdate(organization);
     	
-    	if(ObjectUtil.isNotNull(id)) {
-    		orgModifyRecordService.saveOrgModifyRecord(organization, this.getById(id));
+    	// 上级组织为NULL
+    	if(ObjectUtil.isNull(parentId)) {
+    		LambdaUpdateWrapper<Organization> updateWrapper = new LambdaUpdateWrapper<Organization>();
+            updateWrapper.set(Organization::getParentId, null)
+            			  .eq(Organization::getId, organization.getId());
+            this.update(updateWrapper);
     	}
     	
-    	this.saveOrUpdate(organization);
+    	// 操作日志信息 TODO 如果父组织更新了，是否记录子组织操作日志， 需求待优化
+    	if(ObjectUtil.isNotNull(id)) {
+    		orgModifyRecordService.saveOrgModifyRecord(organization, tpOrganization);
+    	}
     	
     	return R.ok(organization);
     }
