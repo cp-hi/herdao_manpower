@@ -21,10 +21,10 @@ public class StaffSecurityDTO {
     @ApiModelProperty(value="社保类型")
     private String securityType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @ApiModelProperty(value="社保封存时间")
-    private LocalDate securityArchiveTime;
+    private LocalDateTime securityArchiveTime;
 
     @ApiModelProperty(value="个人社保号（省）")
     private String socialSecurityNumberpRovince;
