@@ -57,6 +57,7 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
             @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
+    @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
             throws Exception {
         return super.page(response,page,jobLevel,type);

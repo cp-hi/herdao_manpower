@@ -1,10 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -107,6 +109,17 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      */
     default void importVerify(T t, Object excelObj, int type) {
+    }
+
+    /**
+     * 根据字段名获取单个实体
+     * @param field
+     * @param name
+     * @return
+     */
+    default T getEntityByField(String field, String name) {
+        T t = getOne(new QueryWrapper<T>().eq(field, name));
+        return t;
     }
 
 

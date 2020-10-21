@@ -80,8 +80,8 @@ public class PostListDTO {
     @DtoField(dictField = "XCBL.yearPayRatio")
     private String yearPayRatio;
 
-    @ExcelProperty("岗位组织级别")
-    @ApiModelProperty("岗位组织级别")
+    @ExcelProperty("月度绩效工资比例")
+    @ApiModelProperty("月度绩效工资比例")
     @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
     private String perforSalaryRatio;
 

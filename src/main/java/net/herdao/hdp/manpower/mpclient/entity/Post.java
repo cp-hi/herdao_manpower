@@ -55,7 +55,7 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "岗位组织类型" ,hidden = true)
     private String orgType;
     @ApiModelProperty(value = "板块id" )
-    private String sectionId;
+    private Long sectionId;
     @ApiModelProperty(value = "岗位职责",hidden = true)
     private String postDescr;
     @ApiModelProperty(value = "备注",hidden = true)
@@ -64,6 +64,7 @@ public class Post extends BaseEntity<Post> {
     private String postProperties;
     @ApiModelProperty(value = "绩效工资比例",hidden = true)
     private String perforSalaryRatio;
+
     @ApiModelProperty(value = "职级1")
     private Long jobLevelId1;
     @ApiModelProperty(value = "职级2",hidden = true)
