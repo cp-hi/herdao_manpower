@@ -7,14 +7,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRewardsPulishmentsMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
-import net.herdao.hdp.manpower.mpclient.vo.StaffRpVO;
+import net.herdao.hdp.manpower.mpclient.vo.StaffRpErrMsg;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,12 +55,12 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
     public void importVerify( StaffRewardsPulishments rewardsPulishments,Object excelObj, int type) {
         //新增校检
         if (type == 0){
-            checkAdd((StaffRpVO) rewardsPulishments);
+            checkAdd((StaffRpErrMsg) rewardsPulishments);
         }
 
         //编辑校检
         if (type == 1){
-             checkUpdate((StaffRpVO) rewardsPulishments);
+             checkUpdate((StaffRpErrMsg) rewardsPulishments);
         }
     }
 
@@ -69,7 +68,7 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
      * 新增校检
      * @param dto
      */
-    private void checkAdd(StaffRpVO dto) {
+    private void checkAdd(StaffRpErrMsg dto) {
         String errorMsg="";
 
         if (null == dto.getStaffCode()){
@@ -136,7 +135,7 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
      * 新增校检
      * @param dto
      */
-    private void checkUpdate(StaffRpVO dto) {
+    private void checkUpdate(StaffRpErrMsg dto) {
         String errorMsg="";
 
         if (null == dto.getStaffCode()){

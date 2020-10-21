@@ -9,22 +9,18 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.StafftrainVO;
+import net.herdao.hdp.manpower.mpclient.vo.StafftrainErrMsg;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -129,10 +125,10 @@ public class StafftrainController extends BaseController<Stafftrain> {
         ImportExcelListener listener = new ImportExcelListener(stafftrainService,10, importType);
         try {
             InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, StafftrainVO.class, listener).sheet().doRead();
+            EasyExcel.read(inputStream, StafftrainErrMsg.class, listener).sheet().doRead();
             IOUtils.closeQuietly(inputStream);
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "员工培训错误信息", "员工培训错误信息", StafftrainVO.class, listener.getDataList());
+            ExcelUtils.export2Web(response, "员工培训错误信息", "员工培训错误信息", StafftrainErrMsg.class, listener.getDataList());
             //return R.failed("导入员工教育经历失败",ex.getMessage());
         }
        // return R.ok("导入员工教育经历成功");
