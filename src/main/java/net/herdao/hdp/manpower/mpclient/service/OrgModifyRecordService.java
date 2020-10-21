@@ -21,6 +21,6 @@ public interface OrgModifyRecordService extends IService<OrgModifyRecord> {
 	 * @param       oldOrg
 	 * @return
 	 */
-	OrgModifyRecord createOrgModifyRecord(Organization newOrg, Organization oldOrg);
+	OrgModifyRecord saveOrgModifyRecord(Organization newOrg, Organization oldOrg);
 
 }

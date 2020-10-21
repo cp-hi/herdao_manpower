@@ -667,6 +667,9 @@
     	SELECT
     		 org.* 
     	FROM mp_organization org 
-		WHERE org.org_code LIKE CONCAT(#{orgCode},'%')
+    	<where>
+    		AND org.org_code LIKE CONCAT(#{orgCode},'%')
+    		AND LENGTH(org.org_code) != LENGTH(#{orgCode})
+    	</where>
     </select>
 </mapper>

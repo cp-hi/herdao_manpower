@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,6 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -48,18 +48,18 @@ import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
  * @date 2020-09-09 15:31:20
  */
 @Service
-@AllArgsConstructor
 public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Organization> implements OrganizationService {
 
-    private final UserpostService userpostService;
-
-    private final OrgModifyRecordService orgModifyRecordService;
-
-    private final RemoteUserService remoteUserService;
-
-    private final PostService postService;
-
-    private final UserService userService;
+	@Autowired
+    private UserpostService userpostService;
+	@Autowired
+    private OrgModifyRecordService orgModifyRecordService;
+	@Autowired
+    private RemoteUserService remoteUserService;
+	@Autowired
+    private PostService postService;
+	@Autowired
+    private UserService userService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -116,13 +116,21 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		// 停用状态
 		Integer status = 1;
 		Organization organization = this.getById(id);
-
-		// 设置停用日期
-		organization.setStopDate(DateUtil.parseDate(stopDateStr));
-		// 设置为停用 TOTO 后期关联定时任务
-		organization.setIsStop(status);
-
-		this.saveOrUpdate(organization);
+		
+		List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(organization.getOrgCode());
+		if(ObjectUtil.isNull(organizations)) {
+			organizations = new ArrayList<Organization>();
+		}
+		
+		organizations.add(organization);
+		organizations.forEach(org ->{
+			// 设置停用日期
+			org.setStopDate(DateUtil.parseDate(stopDateStr));
+			// 设置为停用 TOTO 后期关联定时任务
+			org.setIsStop(status);
+		});
+		
+		this.saveOrUpdateBatch(organizations);
 
 		return R.ok(null, ManpowerContants.DISABLE_SUCCESS);
 	}
@@ -152,10 +160,19 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 				// 组织没有在职用户
 				if (countUser == 0) {
-					// 设置为停用 TOTO 后期关联定时任务
-					organization.setIsStop(status);
-
-					this.saveOrUpdate(organization);
+					
+					List<Organization> organizationChildrens = this.baseMapper.selectOrganizationByOrgCode(organization.getOrgCode());
+					if(ObjectUtil.isNull(organizationChildrens)) {
+						organizationChildrens = new ArrayList<Organization>();
+					}
+					
+					organizationChildrens.add(organization);
+					organizationChildrens.forEach(org ->{
+						// 设置为停用 TOTO 后期关联定时任务
+						org.setIsStop(status);
+					});
+					
+					this.saveOrUpdateBatch(organizations);
 				}
 			});
 		}
@@ -216,9 +233,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 			organizations.forEach(organization -> {
 				// 设置为停用 TOTO 后期关联定时任务
 				organization.setIsStop(status);
-
-				this.saveOrUpdate(organization);
 			});
+			
+			this.saveOrUpdateBatch(organizations);
 		}
 
 		return R.ok(null, ManpowerContants.ENABLE_SUCCESS);
@@ -477,10 +494,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		}
     	}
     	
-    	// 操作日志信息 TODO 需求待定
-    	// OrgModifyRecord orgModifyRecord = new OrgModifyRecord();
+    	// 操作日志信息 TODO 如果父组织更新了，是否记录子组织操作日志， 需求待优化
     	
-    	// orgModifyRecordService.save(orgModifyRecord);
+    	if(ObjectUtil.isNotNull(id)) {
+    		orgModifyRecordService.saveOrgModifyRecord(organization, this.getById(id));
+    	}
     	
     	this.saveOrUpdate(organization);
     	
