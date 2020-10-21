@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,17 +10,21 @@ import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -56,7 +61,7 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
-    public R page(HttpServletResponse response,@ApiIgnore Page page, Post post, Integer type) throws Exception {
+    public R page(HttpServletResponse response, @ApiIgnore Page page, Post post, Integer type) throws Exception {
         return super.page(response, page, post, type);
     }
 
@@ -140,6 +145,36 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
     }
 
 
+    @Override
+    @ApiOperation("批量新增/修改")
+    @SysLog("批量新增/修改")
+    @PostMapping("/import")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "要导入的文件"),
+            @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
+    })
+    public R importData(HttpServletResponse response,
+                        @RequestParam(value = "file") MultipartFile file,
+                        Integer importType) throws Exception {
+        if (Integer.valueOf(1).equals(importType)) {
+            return super.importData(response, file, importType);
+        } else {
+            NewImportExcelListener<Post, PostBatchAddDTO> listener = null;
+            InputStream inputStream = null;
+            try {
+                inputStream = file.getInputStream();
+                listener = new NewImportExcelListener(entityService, importType);
+                EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
+                return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
+            } catch (Exception ex) {
+                List<PostBatchAddDTO> batchAddDTOList = DtoConverter.dto2vo(listener.getExcelList(), PostBatchAddDTO.class);
+                ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), batchAddDTOList);
+                return R.failed(ex.getMessage());
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+            }
+        }
+    }
 
 
 }

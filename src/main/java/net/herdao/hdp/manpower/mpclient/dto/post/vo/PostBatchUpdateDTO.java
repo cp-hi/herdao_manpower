@@ -18,7 +18,6 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 @Data
 public class PostBatchUpdateDTO extends PostBatchAddDTO {
 
-
     @ExcelProperty(value = "岗位名称")
     private String postName;
 
@@ -41,16 +40,20 @@ public class PostBatchUpdateDTO extends PostBatchAddDTO {
     private String description;
 
 
-    @ApiModelProperty(value = "岗位组织类型")
+
+
+
+
+    @ApiModelProperty(value = "岗位组织类型",example="GWZZLX")
     private String orgType;
 
-    @ApiModelProperty(value = "岗位薪酬级别",hidden = true)
+    @ApiModelProperty(value = "岗位薪酬级别",example = "XCJB")
     private String postLevel;
 
-    @ApiModelProperty(value = "年终奖比例",hidden = true)
+    @ApiModelProperty(value = "年终奖比例" ,example = "XCBL")
     private String yearPayRatio;
 
-    @ApiModelProperty(value = "绩效工资比例",hidden = true)
+    @ApiModelProperty(value = "月度绩效工资比例" ,example = "YDJXGZBL")
     private String perforSalaryRatio;
 
 

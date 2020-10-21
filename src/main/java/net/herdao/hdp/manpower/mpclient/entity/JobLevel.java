@@ -30,24 +30,24 @@ import javax.validation.constraints.NotBlank;
 public class JobLevel extends BaseEntity<JobLevel> {
 
     @NotBlank(message = "职级名称不能为空")
-    @ExcelProperty(value = "职级名称",index = 0)
+    @ExcelProperty(value = "职级名称")
     @ApiModelProperty(value = "职级名称")
     private String jobLevelName;
 
     @ApiModelProperty(value = "职级编码")
     private String jobLevelCode;
 
-    @ExcelProperty(value = "描述",index = 3)
-    @ApiModelProperty(value = "描述",hidden = true)
+    @ExcelProperty(value = "描述")
+    @ApiModelProperty(value = "描述", hidden = true)
     private String description;
 
-    @ApiModelProperty(value = "职等ID",required = true)
+    @ApiModelProperty(value = "职等ID", required = true)
     private Long jobGradeId;
 
-    @ApiModelProperty(value = "集团ID",required = true)
+    @ApiModelProperty(value = "集团ID", required = true)
     private Long groupId;
 
-    @ExcelProperty(value = "排序",index = 2)
-    @ApiModelProperty(value = "排序",hidden = true)
+    @ExcelProperty(value = "排序")
+    @ApiModelProperty(value = "排序", hidden = true)
     private Integer sortNo;
 }
