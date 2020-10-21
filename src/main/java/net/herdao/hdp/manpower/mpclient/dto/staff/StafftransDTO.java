@@ -90,4 +90,11 @@ public class StafftransDTO {
     @ApiModelProperty(value="操作时间")
     private String modifiedTime;
 
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
+
 }

@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffRpErrMsg;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.apache.commons.io.IOUtils;
@@ -24,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -121,4 +124,23 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
         /*return R.ok("easyexcel读取上传文件成功");*/
         return null;
      }
+
+
+    /**
+     * 修改
+     * @param staffRewardsPulishments
+     * @return R
+     */
+    @ApiOperation(value = "修改", notes = "修改")
+    @SysLog("修改" )
+    @PutMapping("/updateRp" )
+    public R updateById(@RequestBody StaffRewardsPulishments staffRewardsPulishments) {
+        Integer userId = UserUtils.getUserId();
+        staffRewardsPulishments.setModifiedTime(LocalDateTime.now());
+        staffRewardsPulishments.setModifierCode(userId.toString());
+        boolean status = staffRewardsPulishmentsService.updateById(staffRewardsPulishments);
+        return R.ok(status);
+    }
+
+
 }
