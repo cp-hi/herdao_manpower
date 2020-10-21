@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, Class> {
+public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, PostBatchUpdateDTO> {
 
     @Autowired
     private PostService postService;
@@ -137,5 +137,8 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
         }
         return R.ok(data);
     }
+
+
+
 
 }
