@@ -155,7 +155,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     private void addPost(Post post, Object excelObj) {
         PostBatchAddDTO excel = (PostBatchAddDTO) excelObj;
         getPostByName(excel.getPostName(), true);
-        Group group = getGroupByName(excel.getGroupName());
+        Group group = groupService.getGroupByName(excel.getGroupName());
         Section section = getEntityByName(sectionService, "SECTION_NAME", excel.getSectionName());
         Pipeline pipeline = getEntityByName(pipelineService, "PIPELINE_NAME", excel.getPipelineName());
         PostSeq postSeq = getEntityByName(postSeqService, "POST_SEQ_NAME", excel.getPostSeqName());
@@ -171,7 +171,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     private void updatePost(Post post, Object excelObj) {
         PostBatchUpdateDTO excel = (PostBatchUpdateDTO) excelObj;
         Post tmp = getPostByName(excel.getPostName(), false);
-        Group group = getGroupByName(excel.getGroupName());
+        Group group = groupService.getGroupByName(excel.getGroupName());
         Section section = getEntityByName(sectionService, "SECTION_NAME", excel.getSectionName());
         Pipeline pipeline = getEntityByName(pipelineService, "PIPELINE_NAME", excel.getPipelineName());
         PostSeq postSeq = getEntityByName(postSeqService, "POST_SEQ_NAME", excel.getPostSeqName());
@@ -184,14 +184,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setJobLevelId1(jobLevel.getId());
         post.setId(tmp.getId());
 
-        post.setOrgType(getDictItem("GWZZLX",excel.getOrgType()).getValue());
-        post.setPostLevel(getDictItem("XCJB",excel.getPostLevel()).getValue());
-        post.setYearPayRatio(getDictItem("XCBL",excel.getYearPayRatio()).getValue());
-        post.setPerforSalaryRatio(getDictItem("YDJXGZBL",excel.getPerforSalaryRatio()).getValue());
+        post.setOrgType(getDictItem("GWZZLX", excel.getOrgType()).getValue());
+        post.setPostLevel(getDictItem("XCJB", excel.getPostLevel()).getValue());
+        post.setYearPayRatio(getDictItem("XCBL", excel.getYearPayRatio()).getValue());
+        post.setPerforSalaryRatio(getDictItem("YDJXGZBL", excel.getPerforSalaryRatio()).getValue());
     }
 
     private Post getPostByName(String postName, boolean add) {
-        Post post = this.baseMapper.selectOne(new QueryWrapper<Post>().eq("POST_NAME", postName));
+        Post post = this.baseMapper.selectOne(new QueryWrapper<Post>()
+                .eq("POST_NAME", postName));
         if (add && null != post)
             throw new RuntimeException("已存在此岗位：" + post.getPostName());
         if (!add && null == post)
@@ -199,13 +200,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return post;
     }
 
-    private Group getGroupByName(String groupName) {
-        Group group = groupService.getOne(new QueryWrapper<Group>()
-                .eq("GROUP_NAME", groupName));
-        if (null == group)
-            throw new RuntimeException("不存在此集团：" + groupName);
-        return group;
-    }
 
     private <T> T getEntityByName(EntityService<T> service, String field, String name) {
         T t = (T) service.getEntityByField(field, name);
