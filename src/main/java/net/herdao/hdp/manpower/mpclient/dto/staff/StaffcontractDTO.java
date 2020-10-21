@@ -134,6 +134,11 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
     @ExcelProperty(value = "操作人")
     private String modifierName;
 
-
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
 
 }

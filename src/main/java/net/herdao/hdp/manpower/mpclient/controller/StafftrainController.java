@@ -138,4 +138,17 @@ public class StafftrainController extends BaseController<Stafftrain> {
        // return R.ok("导入员工教育经历成功");
         return null;
     }
+
+    /**
+     * 修改
+     * @param stafftrain
+     * @return R
+     */
+    @ApiOperation(value = "修改", notes = "修改")
+    @SysLog("修改" )
+    @PutMapping("/updateTrain" )
+    public R updateById(@RequestBody Stafftrain stafftrain) {
+        boolean status = stafftrainService.updateById(stafftrain);
+        return R.ok(status);
+    }
 }
