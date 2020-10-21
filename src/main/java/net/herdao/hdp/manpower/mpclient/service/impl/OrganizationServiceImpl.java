@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,8 +70,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<OrganizationTreeVO> findAllOrganizations(String searchText) {
-       return this.baseMapper.findAllOrganizations(searchText);
+    public List<OrganizationTreeVO> selectOrganizationTree() {
+       return this.baseMapper.selectOrganizationTree();
+    }
+    
+    @Override
+    public List<OrganizationTreeVO> organizationTreeList(String orgCode, String searchText){
+    	return this.baseMapper.organizationTreeList(orgCode, searchText);
     }
 
     @Override
@@ -386,8 +392,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, Integer stop, String searchText) {
-        return this.baseMapper.findOrgPage(page, stop, searchText);
+    public Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, String orgCode, Integer stop, String searchText) {
+        return this.baseMapper.findOrgPage(page, orgCode, stop, searchText);
     }
 
 

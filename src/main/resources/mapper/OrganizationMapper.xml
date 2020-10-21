@@ -191,6 +191,23 @@
 		<result column="parentOrgCode" property="parent_org_code" />
 		<collection column="{orgCode=org_code}" property="organizationComponents" ofType="OrganizationComponentVO" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
 	</resultMap>
+	
+	 <!-- 组织树 vo -->
+    <resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeMap">
+		<result column="id" property="id" />
+		<result column="orgName" property="org_name" />
+		<result column="orgCode" property="org_code" />
+		<result column="leafNode" property="leaf_node" />
+		<collection column="id" property="organizationChildrens" ofType="OrganizationTreeVO" javaType="java.util.ArrayList" select="selectSecondOrganization"/>
+	</resultMap>
+	
+	<!-- 组织树 模糊查询vo -->
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeListMap">
+		<result column="id" property="id" />
+		<result column="orgName" property="org_name" />
+		<result column="orgCode" property="org_code" />
+		<result column="leafNode" property="leaf_node" />
+	</resultMap>
 
     <!-- 查询类型是部门的组织架构树 -->
     <select id="fetchDeptTree" resultMap="organDeptTreeMap">
@@ -251,31 +268,44 @@
         </if>
         order by SORT_NO
     </select>
-
-    <!-- 查询根组织架构 -->
-    <select id="findAllOrganizations" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO">
-        SELECT
+    
+	<!-- 递归查询组织树 sql -->
+	<sql id="organizationTreeSQL">
+		SELECT
             org.id,
             org.org_name,
             org.org_code,
-            CASE nbs
-		        WHEN 0 THEN 1
-		        ELSE 1
-		    END leaf_node
+            CASE IFNULL(nbs, 0) WHEN 0 THEN 1 ELSE 0 END leaf_node
         FROM mp_organization org 
         LEFT JOIN (SELECT COUNT(1) nbs, orgd.parent_id FROM mp_organization orgd GROUP BY orgd.parent_id) corg ON corg.parent_id = org.id 
-        <where>
-        	 <choose>
-                <when test="searchText == null">
-                     <!-- 模糊查询条件为空，默认查询两级组织树  -->
-	            	 AND org.org_tree_level &lt;= 2
-                </when>
-                <otherwise>
-                    AND org.org_name LIKE CONCAT('%',#{searchText},'%')
-                </otherwise>
-            </choose>
+	</sql>
+	
+    <!-- 查询根组织架构 -->
+    <select id="selectOrganizationTree" resultMap="organizationTreeMap">
+        <include refid="organizationTreeSQL"></include>
+        WHERE org.parent_id IS NULL
+    </select>
+     
+    <!-- 递归查询二级组织树 -->
+    <select id="selectSecondOrganization" resultMap="organizationTreeMap">
+       <include refid="organizationTreeSQL"></include>
+       <where>
+           AND org.parent_id = #{id} AND org.org_tree_level &lt;= 2
         </where>
-     </select>
+    </select>
+    
+    <!-- 组织树模糊查询 -->
+    <select id="organizationTreeList" resultMap="organizationTreeListMap">
+       <include refid="organizationTreeSQL"></include>
+       <where>
+          <if test="orgCode != null">
+          		AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(org.org_code) &lt;= LENGTH(#{orgCode}) + 3
+          </if>
+           <if test="searchText != null">
+          		AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
+          </if>
+        </where>
+    </select>
 
     <!-- 查询根组织架构 无限级递归 -->
     <select id="findAllOrg" resultMap="orgAllChildMap">
@@ -466,6 +496,9 @@
 	        <where>
 	        	<if test="stop != null and stop != 3">
 		            AND orgList.is_stop = #{stop}
+		        </if>
+		        <if test="orgCode != null">
+		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') 
 		        </if>
 	        	<if test="searchText != null">
 	        		AND CONCAT(orgList.org_name, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')

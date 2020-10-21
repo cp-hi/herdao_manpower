@@ -48,6 +48,7 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
     }
 
     @Override
+    @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postSeqName", value = "字符串搜索"),
             @ApiImplicitParam(name = "current", value = "当前页"),

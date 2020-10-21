@@ -34,12 +34,21 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     List<Organization> selectOrganizationListByParentOid(String parentOid);
 
     /**
-     * 查询组织树
+     * 递归查询组织树
+     * @return
+     */
+    List<OrganizationTreeVO> selectOrganizationTree();
+    
+    /**
+     * 模糊查询组织树
      * 
+     * @param orgCode
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> findAllOrganizations(@Param("searchText") String searchText);
+    List<OrganizationTreeVO> organizationTreeList(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
+    
+    
 
     /**
      * 高级查询根组织架构
@@ -87,11 +96,12 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * 组织列表分页查询
      * 
      * @param page
+     * @param orgCode
      * @param stop
      * @param searchText
      * @return
      */
-	Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, @Param("stop") Integer stop, @Param("searchText") String searchText);
+	Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, @Param("orgCode") String orgCode, @Param("stop") Integer stop, @Param("searchText") String searchText);
 
     /**
      * 查询部门结构树

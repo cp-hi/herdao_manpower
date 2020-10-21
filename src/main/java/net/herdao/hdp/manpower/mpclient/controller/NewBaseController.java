@@ -107,7 +107,6 @@ public class NewBaseController<T, D, F, E> {
     }
 
 
-    @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
@@ -139,7 +138,7 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
-    @ApiOperation(value = "查看是否停用")
+    @ApiOperation(value = "查看是否停用，返回true是停用，false启用")
     @PostMapping("/status/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键"),
@@ -151,9 +150,11 @@ public class NewBaseController<T, D, F, E> {
     @PostMapping
     @ApiOperation(value = "新增/修改")
     public R save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
-        Object t =  Class.forName(getEntityClass().getName()).newInstance();
-        entityService.saveEntity(t);
-        BeanUtils.copyProperties( f,(T)t);
+        Object t = Class.forName(getEntityClass().getName()).newInstance();
+        BeanUtils.copyProperties(f, (T) t);
+        entityService.saveVerify((T) t);
+        entityService.saveEntity((T) t);
+        BeanUtils.copyProperties((T) t, f);
         return R.ok(f);
     }
 
@@ -165,6 +166,8 @@ public class NewBaseController<T, D, F, E> {
     public R<F> getFormInfo(@PathVariable Long id)
             throws InstantiationException, IllegalAccessException {
         T t = (T) entityService.getById(id);
+        if (null == t)
+            throw new RuntimeException("对象不存在，或已被删除");
         F f = getFormClass().newInstance();
         BeanUtils.copyProperties(t, f);
         return R.ok(f);

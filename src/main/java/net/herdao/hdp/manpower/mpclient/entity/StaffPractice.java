@@ -50,15 +50,15 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="ID")
     private Long id;
     /**
-     * 开始日期 yyyy/mm/dd
+     * 开始日期 yyyy-MM-dd
      */
-    @ApiModelProperty(value="开始日期 yyyy/mm/dd ")
+    @ApiModelProperty(value="开始日期 yyyy-MM-dd ")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     private Date beginDate;
     /**
-     * 结束日期 yyyy/mm/dd
+     * 结束日期 yyyy-MM-dd
      */
-    @ApiModelProperty(value="结束日期 yyyy/mm/dd ")
+    @ApiModelProperty(value="结束日期 yyyy-MM-dd ")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     private Date endDate;
     /**

@@ -82,7 +82,7 @@ private static final long serialVersionUID = 1L;
     /**
      * 原组织层级(树形层级）
      */
-    @ApiModelProperty(value="原组织层级(树形层级）")
+    @ApiModelProperty(value="原组织层级")
     private Long oldOrgTreeLevel;
     /**
      * 生效日期

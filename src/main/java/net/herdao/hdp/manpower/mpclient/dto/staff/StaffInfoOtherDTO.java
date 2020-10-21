@@ -19,8 +19,8 @@ public class StaffInfoOtherDTO {
     @ApiModelProperty(value="是否集团统招应届生")
     private String admissionGraduates;
 
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="加入或迁移公司集体户时间")
     private LocalDate collectiveHouseholdsTime;
 

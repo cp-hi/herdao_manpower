@@ -35,7 +35,7 @@ public class Post extends BaseEntity<Post> {
     private String postName;
     @ApiModelProperty(value = "管线ID" )
     private Long pipelineId;
-    @ApiModelProperty(value = "岗位级别",hidden = true)
+    @ApiModelProperty(value = "岗位薪酬级别",hidden = true)
     private String postLevel;
     @ApiModelProperty(value = "福利级别",hidden = true)
     private String welfareLevel;
@@ -52,7 +52,7 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "是否停用",hidden = true)
     @TableField("IS_STOP")
     private Boolean stop;
-    @ApiModelProperty(value = "组织类型" ,hidden = true)
+    @ApiModelProperty(value = "岗位组织类型" ,hidden = true)
     private String orgType;
     @ApiModelProperty(value = "板块id" )
     private String sectionId;

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,6 +32,7 @@ public class CompanyListDTO {
     @ApiModelProperty(value = "修改人名称" )
     private String modifierName;
 
+    @ExcelIgnore
     @ApiModelProperty(value = "修改时间" )
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date modifiedTime;
@@ -38,6 +40,7 @@ public class CompanyListDTO {
     @ApiModelProperty(value = "创建人名称" )
     private String creatorName;
 
+    @ExcelIgnore
     @ApiModelProperty(value = "创建时间" )
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdTime;

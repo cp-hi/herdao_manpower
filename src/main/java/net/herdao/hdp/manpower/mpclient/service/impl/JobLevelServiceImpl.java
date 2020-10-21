@@ -41,13 +41,13 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void saveVerify(JobLevel jobLevel) {
+    public void saveVerify(JobLevel jobLevel)  {
 //        if (baseMapper.chkCodeAndName(jobLevel))
 //            throw new RuntimeException("请检查职级的名称和编码");
 //        if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
 //            throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobLevelName(jobLevel))
-            throw new RuntimeException("职级名称重复了");
+            throw new  RuntimeException("职级名称重复了");
     }
 
     @Override

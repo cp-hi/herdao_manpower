@@ -16,7 +16,7 @@
     </resultMap>
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
-        select * from mp_post_seq where 1=1
+        select * from mp_post_seq where  del_flag !=1
         <if test="postSeq.id != null">
             and id = #{postSeq.id}
         </if>

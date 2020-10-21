@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -154,19 +155,26 @@ public class OrganizationController {
     }
 
     /**
-     * 查询组织树
+     * @description 查询组织树
      * 
-     * @modify shuling
-     * @return R
+     * @modify      shuling
+     * @date        2020-10-19 19:29:33
+     * @return      R
      */
     @ApiOperation(value = "查询组织树", notes = "查询组织树")
     @GetMapping("/findAllOrganizations")
-    @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class )
-    @ApiImplicitParam(name="searchText",value="模糊查询内容（点击组织树请传组织编码：orgCode 做为查询条件）")
-    public R<List<OrganizationTreeVO>> findAllOrganizations(String searchText) {
-    	return R.ok(orgService.findAllOrganizations(searchText));
-    }
-
+    @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class)
+    @ApiImplicitParams({
+			        @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
+			        @ApiImplicitParam(name="searchText",value="模糊查询内容")
+    })
+	public R<List<OrganizationTreeVO>> findAllOrganizations(String orgCode, String searchText) {
+		// 默认查询组织层级二级
+		if (StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
+			return R.ok(orgService.selectOrganizationTree());
+		}
+		return R.ok(orgService.organizationTreeList(orgCode, searchText));
+	}
 
     /**
      * 高级查询根组织架构（废弃 2020/09/11)
@@ -321,10 +329,11 @@ public class OrganizationController {
 	@ApiOperation(value = "组织列表分页查询", notes = "组织列表分页查询")
 	@GetMapping("/findOrgPage")
 	@OperationEntity(operation = "组织列表分页查询", clazz = Organization.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "stop", value = "是否停用 （值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）"),
+	@ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码（通过组织树查询传递）"),
+						 @ApiImplicitParam(name = "stop", value = "是否停用 （值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）"),
 						 @ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
-	public R<Page<OrganizationVO>> findOrgPage(Page page, Integer stop, String searchText) {
-		return R.ok(orgService.findOrgPage(page, stop, searchText));
+	public R<Page<OrganizationVO>> findOrgPage(Page page, String orgCode, Integer stop, String searchText) {
+		return R.ok(orgService.findOrgPage(page, orgCode, stop, searchText));
 	}
 
     /**

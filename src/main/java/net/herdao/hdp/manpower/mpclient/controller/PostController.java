@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, Class> {
+public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, PostBatchUpdateDTO> {
 
     @Autowired
     private PostService postService;
@@ -45,6 +45,7 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
     }
 
     @Override
+    @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postName", value = "字符串搜索"),
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
@@ -137,5 +138,8 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
         }
         return R.ok(data);
     }
+
+
+
 
 }

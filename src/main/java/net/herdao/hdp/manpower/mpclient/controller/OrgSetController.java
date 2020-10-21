@@ -28,6 +28,7 @@ import net.herdao.hdp.common.core.constant.CacheConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,8 @@ import java.util.Map;
 public class OrgSetController {
 
 	private final SysDictItemService sysDictItemService;
+
+	private final SysSequenceService sysSequenceService;
 
 	/**
 	 * 通过字典类型查找字典
@@ -108,17 +111,9 @@ public class OrgSetController {
 	@PostMapping("/item")
 	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R save(@RequestBody SysDictItem sysDictItem) {
-		String type = sysDictItem.getType();
-		List<SysDictItem> list = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda()
-				.eq(SysDictItem::getType, type)
-				.orderByAsc(SysDictItem::getValue)
-		);
-		if(list!=null&&list.size()!=0){
-			String value = list.get(0).getValue();
-			int last = Integer.parseInt(value);
-			last++;
-			sysDictItem.setValue(last+"");
-		}
+		long code = sysSequenceService.getNext("staff_code");
+		sysDictItem.setSort((int)code);
+		sysDictItem.setValue(code+"");
 		return R.ok(sysDictItemService.save(sysDictItem));
 	}
 
