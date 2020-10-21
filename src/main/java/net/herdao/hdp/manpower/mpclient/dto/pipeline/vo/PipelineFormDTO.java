@@ -27,4 +27,7 @@ public class PipelineFormDTO {
 
     @ApiModelProperty("是否停用")
     private Boolean stop;
+
+    @ApiModelProperty(value = "备注")
+    private String remark;
 }

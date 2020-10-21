@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
@@ -33,7 +35,12 @@ import java.util.List;
 @RestController
 @Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
-public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO,Class> {
+public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO, PipelineBatchUpdateDTO> {
+
+    @Override
+    protected Class getBatchAddClass() {
+        return PipelineBatchAddDTO.class;
+    }
 
     @Autowired
     private PipelineService pipelineService;

@@ -27,4 +27,7 @@ public class SectionFormDTO {
 
     @ApiModelProperty("排序")
     private Integer sortNo;
+
+    @ApiModelProperty(value = "备注")
+    private String remark;
 }

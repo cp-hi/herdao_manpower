@@ -1,10 +1,8 @@
 package net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 
 /**
  * @ClassName JobLevelDTO
@@ -15,7 +13,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
  * @Version 1.0
  */
 @Data
-public class JobLevelImportDTO implements ExcelVO {
+public class JobLevelImportDTO implements ExcelErrMsg {
 
     @ExcelProperty(value = "职级名称")
     private String jobLevelName;

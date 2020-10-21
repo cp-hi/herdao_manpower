@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 /**
  * @author yangrr
@@ -23,10 +22,10 @@ public class StaffFundDTO {
     @ApiModelProperty(value="实际公积金支付单位")
     private String payFundUnit;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @ApiModelProperty(value="公积金封存时间")
-    private LocalDate fundArchiveTime;
+    private LocalDateTime fundArchiveTime;
 
     @ApiModelProperty(value="公积金银行名称")
     private String fundArchiveBankName;

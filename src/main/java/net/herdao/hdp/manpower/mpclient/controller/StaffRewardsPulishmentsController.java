@@ -1,5 +1,3 @@
-
-
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
@@ -14,7 +12,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.StaffRpVO;
+import net.herdao.hdp.manpower.mpclient.vo.StaffRpErrMsg;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,10 +111,10 @@ public class StaffRewardsPulishmentsController extends BaseController<StaffRewar
         ImportExcelListener listener = new ImportExcelListener(staffRewardsPulishmentsService,null, importType);
         try {
             InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, StaffRpVO.class, listener).sheet().doRead();
+            EasyExcel.read(inputStream, StaffRpErrMsg.class, listener).sheet().doRead();
             IOUtils.closeQuietly(inputStream);
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "员工奖惩错误信息", "员工奖惩错误信息", StaffRpVO.class, listener.getDataList());
+            ExcelUtils.export2Web(response, "员工奖惩错误信息", "员工奖惩错误信息", StaffRpErrMsg.class, listener.getDataList());
            /* return R.failed(ex.getMessage());*/
         }
 

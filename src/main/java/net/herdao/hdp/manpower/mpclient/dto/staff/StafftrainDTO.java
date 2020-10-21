@@ -5,16 +5,12 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 
 import java.util.Date;
 
@@ -26,7 +22,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "员工培训DTO")
-public class StafftrainDTO extends Stafftrain implements ExcelVO {
+public class StafftrainDTO extends Stafftrain implements ExcelErrMsg {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "错误信息")
@@ -145,7 +141,7 @@ public class StafftrainDTO extends Stafftrain implements ExcelVO {
     private Date modifiedTime;
 
     /**
-     * 最后修改时间
+     * 最近更新情况
      */
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")

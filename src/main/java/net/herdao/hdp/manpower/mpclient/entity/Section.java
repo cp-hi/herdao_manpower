@@ -38,4 +38,6 @@ public class Section extends BaseEntity<Section> {
     @TableField("IS_STOP")
     private Boolean stop;
 
+    @ApiModelProperty(value = "备注")
+    private String remark;
 }
