@@ -75,7 +75,7 @@ public class SelectController {
 	public R<List<SelectDTO>> getSection(String groupid) {
 		 //板块应该按集团过滤，当前如果没传全量返回
 		QueryWrapper<Section> queryWrapper = new QueryWrapper<Section>();
-		if(groupid!=null && groupid!=""){
+		if(groupid!=null && !"".equals(groupid)){
 			queryWrapper.eq("group_id",groupid);
 		}
 		queryWrapper.orderByAsc("SORT_NO");
@@ -102,7 +102,7 @@ public class SelectController {
 	public R<List<SelectDTO>> getPipeline(String groupid) {
 		 //板块应该按集团过滤，当前如果没传全量返回
 		QueryWrapper<Pipeline> queryWrapper = new QueryWrapper<Pipeline>();
-		if(groupid!=null && groupid!=""){
+		if(groupid!=null && !"".equals(groupid)){
 			queryWrapper.eq("group_id",groupid);
 		}
 		queryWrapper.orderByAsc("SORT_NO");
@@ -128,7 +128,7 @@ public class SelectController {
 	public R<List<SelectDTO>> getPostSeq(String groupid) {
 		 //岗位序列应该按集团过滤，当前如果没传全量返回
 		QueryWrapper<PostSeq> queryWrapper = new QueryWrapper<PostSeq>();
-		if(groupid!=null && groupid!=""){
+		if(groupid!=null && !"".equals(groupid)){
 			queryWrapper.eq("group_id",groupid);
 		}
 		queryWrapper.orderByAsc("POST_SEQ_CODE");
@@ -154,7 +154,7 @@ public class SelectController {
 	public R<List<SelectDTO>> getJobLevel(String groupid) {
 		 //职级应该按集团过滤，当前如果没传全量返回
 		QueryWrapper<JobLevel> queryWrapper = new QueryWrapper<JobLevel>();
-		if(groupid!=null && groupid!=""){
+		if(groupid!=null && !"".equals(groupid)){
 			queryWrapper.eq("group_id",groupid);
 		}
 		queryWrapper.orderByAsc("SORT_NO");
