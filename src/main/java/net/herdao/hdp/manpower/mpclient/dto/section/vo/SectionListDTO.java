@@ -36,6 +36,9 @@ public class SectionListDTO {
     @DtoField(objField = "group.groupName")
     private String groupName;
 
+    @ApiModelProperty("所属集团id")
+    private Long groupId;
+
     @ExcelProperty("是否停用")
     @ApiModelProperty("是否停用")
     private Boolean stop;
