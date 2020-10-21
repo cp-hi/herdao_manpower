@@ -111,6 +111,12 @@ public interface EntityService<T> extends IService<T> {
     default void importVerify(T t, Object excelObj, int type) {
     }
 
+    /**
+     * 根据字段名获取单个实体
+     * @param field
+     * @param name
+     * @return
+     */
     default T getEntityByField(String field, String name) {
         T t = getOne(new QueryWrapper<T>().eq(field, name));
         return t;

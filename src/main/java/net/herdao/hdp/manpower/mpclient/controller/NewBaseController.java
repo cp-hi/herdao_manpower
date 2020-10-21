@@ -34,7 +34,9 @@ import java.util.List;
  * @param <T> 实体类Entity类型
  * @param <D> 分页类DTO，用于列表展示及列表导出
  * @param <F> 表单页Form类型，用于新增修改
- * @param <E> excel导入类
+ * @param <E> excel导入类，注意，批量新增批量修改所用字段有可能不同，
+ *           所以可能会有不同的类，一般用大类继承小类，然后把大类填
+ *           到这泛型参数上
  * @ClassName NewBaseController
  * @Description NewBaseController
  * @Author ljan
@@ -90,10 +92,20 @@ public class NewBaseController<T, D, F, E> {
      * @return
      * @Author ljan
      */
-    protected Class getImportClass() {
+    protected  Class  getImportClass() {
         Class<E> clazz = (Class<E>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[3];
         return clazz;
+    }
+
+    /**
+     * 批量新增的类，默认返回批量编辑的类，
+     * 如果字段不一样，可以在子类覆盖此方法
+     *
+     * @return
+     */
+    protected Class getBatchAddClass() {
+        return getImportClass();
     }
     //endregion
 
@@ -106,8 +118,6 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
     }
 
-
-    @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
         IPage p = entityService.page(page, t);
@@ -149,7 +159,7 @@ public class NewBaseController<T, D, F, E> {
 
     @PostMapping
     @ApiOperation(value = "新增/修改")
-    public R save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
+    public R<F> save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
         Object t = Class.forName(getEntityClass().getName()).newInstance();
         BeanUtils.copyProperties(f, (T) t);
         entityService.saveVerify((T) t);
@@ -191,7 +201,10 @@ public class NewBaseController<T, D, F, E> {
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
         } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), listener.getExcelList());
+            List data = null;
+            if (Integer.valueOf(1).equals(importType)) data = listener.getExcelList();
+            else data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
+            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), data);
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
