@@ -107,7 +107,6 @@ public class NewBaseController<T, D, F, E> {
     }
 
 
-    @GetMapping("/page")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
@@ -139,7 +138,7 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
-    @ApiOperation(value = "查看是否停用")
+    @ApiOperation(value = "查看是否停用，返回true是停用，false启用")
     @PostMapping("/status/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键"),

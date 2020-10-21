@@ -45,6 +45,7 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
     }
 
     @Override
+    @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postName", value = "字符串搜索"),
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
