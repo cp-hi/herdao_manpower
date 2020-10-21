@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto.section.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
@@ -14,22 +15,23 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  */
 //版块名称、所属集团、启用状态、排序、备注
 @Data
+@ExcelIgnoreUnannotated
 public class SectionBatchUpdateDTO extends SectionBatchAddDTO implements ExcelErrMsg {
 
-    @ExcelProperty("板块名称")
-    private String sectionName;
-
-    @ExcelProperty("所属集团")
-    private String groupName;
+//    @ExcelProperty("板块名称")
+//    private String sectionName;
+//
+//    @ExcelProperty("所属集团")
+//    private String groupName;
 
     @ExcelProperty("是否停用")
     private String stop;
 
-    @ExcelProperty("排序")
-    private Integer sortNo;
-
-    @ExcelProperty("备注")
-    private String remark;
+//    @ExcelProperty("排序")
+//    private Integer sortNo;
+//
+//    @ExcelProperty("备注")
+//    private String remark;
 
     @ExcelProperty("错误信息")
     private String errMsg;
