@@ -303,7 +303,7 @@ public class OrganizationController {
         @ApiImplicitParam(name="stopDateStr",value="停用日期 例如： 2020-10-19")
     })
     @SysLog("停用组织")
-    @PutMapping("/disable")
+    @GetMapping("/disable")
     public R disable(Long id, String stopDateStr) {
         return orgService.expectedDisable(id, stopDateStr);
     }
@@ -323,7 +323,7 @@ public class OrganizationController {
         @ApiImplicitParam(name="startDateStr",value="启用日期 例如： 2020-10-19")
     })
     @SysLog("启用组织")
-    @PutMapping("/enable")
+    @GetMapping("/enable")
     public R enable(Long id, String startDateStr) {
         return orgService.expectedEnable(id, startDateStr);
     }
