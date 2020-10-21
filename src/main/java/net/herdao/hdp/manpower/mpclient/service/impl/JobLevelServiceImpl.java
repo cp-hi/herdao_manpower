@@ -1,11 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelImportDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelBatchUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
@@ -41,68 +40,34 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     }
 
     @Override
-    public void saveVerify(JobLevel jobLevel)  {
+    public void saveVerify(JobLevel jobLevel) {
 //        if (baseMapper.chkCodeAndName(jobLevel))
 //            throw new RuntimeException("请检查职级的名称和编码");
 //        if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
 //            throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobLevelName(jobLevel))
-            throw new  RuntimeException("职级名称重复了");
+            throw new RuntimeException("职级名称重复了");
     }
+
 
     @Override
-    public void importVerify(JobLevel jobLevel,Object excelObj, int type) {
-        boolean add = (0 == type);
-        if (add) addJobLevel(jobLevel,excelObj);
-        else updateJobLevel(jobLevel,excelObj);
-
-        //这个验证要放 最后，因为前面要给ID赋值
-        this.saveVerify(jobLevel);
-    }
-
-    private void addJobLevel(JobLevel jobLevel,Object excelObj) {
-        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
-
-        JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
-                .eq("JOB_GRADE_NAME", excel.getJobGrade()));
-
-        if (null == jobGrade)
-            throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
-
-        JobLevel tmp = this.baseMapper.selectOne(new QueryWrapper<JobLevel>()
-                .eq("GROUP_ID", jobGrade.getGroupId())
-                .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
-
-        if (null != tmp)
-            throw new RuntimeException("已存在此职级：" + tmp.getJobLevelName());
-
-        if (null == jobGrade.getGroupId())
-            throw new RuntimeException("集团ID为空");
+    public void addEntity(JobLevel jobLevel, Object excelObj) {
+        JobLevelBatchUpdateDTO excel = (JobLevelBatchUpdateDTO) excelObj;
+        chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false);
+        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
+        if (null == jobGrade.getGroupId()) throw new RuntimeException("集团ID为空");
 
         jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(jobGrade.getGroupId());
     }
 
-    private void updateJobLevel(JobLevel jobLevel,Object excelObj) {
-        JobLevelImportDTO excel = (JobLevelImportDTO) excelObj;
-
-        JobGrade jobGrade = jobGradeService.getOne(new QueryWrapper<JobGrade>()
-                .eq("JOB_GRADE_NAME", excel.getJobGrade()));
-
-        if (null == jobGrade)
-            throw new RuntimeException("查不到此职等：" + excel.getJobGrade());
-
-        JobLevel tmp = this.baseMapper.selectOne(new QueryWrapper<JobLevel>()
-                .eq("GROUP_ID", jobGrade.getGroupId())
-                .eq("JOB_LEVEL_NAME", excel.getJobLevelName()));
-
-        if (null == tmp)
-            throw new RuntimeException("不存在此职级：" + tmp.getJobLevelName());
-
-
-        if (null == jobGrade.getGroupId())
-            throw new RuntimeException("集团ID为空");
+    @Override
+    public void updateEntity(JobLevel jobLevel, Object excelObj) {
+        JobLevelBatchUpdateDTO excel = (JobLevelBatchUpdateDTO) excelObj;
+        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
+        JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true);
+        if (null == jobGrade.getGroupId()) throw new RuntimeException("集团ID为空");
 
         jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
