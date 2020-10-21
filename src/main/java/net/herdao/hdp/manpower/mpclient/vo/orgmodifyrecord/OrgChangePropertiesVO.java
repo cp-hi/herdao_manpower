@@ -12,28 +12,12 @@ import lombok.Data;
  * @date 2020-20-21 10:01:48
  */
 @Data
-@ApiModel(value = "属性变更")
+@ApiModel(value = "组织属性变更")
 public class OrgChangePropertiesVO {
 	
-	/**
-	 * 现组织id
-	 */
-	@ApiModelProperty(value = "现组织id")
-	private Long curOrgId;
-	/**
-	 * 现上级组织id
-	 */
-	@ApiModelProperty(value = "现上级组织id")
-	private Long curOrgParentId;
-	/**
-	 * 原组织id
-	 */
-	@ApiModelProperty(value = "原组织id")
-	private Long oldOrgId;
-	/**
-	 * 原上级组织ID
-	 */
-	@ApiModelProperty(value = "原上级组织id")
-	private Long oldOrgParentId;
-
+	@ApiModelProperty(value = "组织名称")
+	private String orgName;
+	
+	@ApiModelProperty(value = "父组织id")
+	private Long parentId;
 }

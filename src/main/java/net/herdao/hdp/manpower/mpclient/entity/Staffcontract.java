@@ -1,41 +1,20 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
-
 package net.herdao.hdp.manpower.mpclient.entity;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
-import com.alibaba.excel.annotation.ExcelProperty;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
  * 员工合同签订
- *
  * @author liang
  * @date 2020-09-27 09:15:28
  */
@@ -47,7 +26,7 @@ public class Staffcontract extends BaseModel<Staffcontract> {
 private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     * id
      */
     @TableId
     @ApiModelProperty(value="id")
@@ -141,7 +120,7 @@ private static final long serialVersionUID = 1L;
      * 员工外键(旧平台)
      */
     @ApiModelProperty(value="员工外键(旧平台)")
-    private String satffOid;
+    private String staffOid;
 
     /**
      * 解除劳动合同证明编号
@@ -153,7 +132,7 @@ private static final long serialVersionUID = 1L;
      * 员工外键
      */
     @ApiModelProperty(value="员工外键")
-    private Long satffId;
+    private Long staffId;
 
     /**
      * 新建用户

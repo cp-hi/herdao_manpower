@@ -16,14 +16,14 @@
               <result property="probationMonth" column="PROBATION_MONTH"/>
               <result property="newest" column="NEWEST"/>
               <result property="contractType" column="CONTRACT_TYPE"/>
-              <result property="contractPeiod" column="CONTRACT_PEIOD"/>
+              <result property="contractPeriod" column="CONTRACT_PERIOD"/>
               <result property="liquidatedDamages" column="LIQUIDATED_DAMAGES"/>
               <result property="economicCompensation" column="ECONOMIC_COMPENSATION"/>
               <result property="removeContract" column="REMOVE_CONTRACT"/>
               <result property="removeOid" column="REMOVE_OID"/>
-              <result property="satffOid" column="SATFF_OID"/>
+              <result property="staffOid" column="STAFF_OID"/>
               <result property="removeId" column="REMOVE_ID"/>
-              <result property="satffId" column="SATFF_ID"/>
+              <result property="staffId" column="STAFF_ID"/>
               <result property="creatorCode" column="CREATOR_CODE"/>
               <result property="createdTime" column="CREATED_TIME"/>
               <result property="modifierCode" column="MODIFIER_CODE"/>
@@ -39,7 +39,21 @@
 
      <!-- 员工合同签订分页 -->
      <select id="findStaffContractPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO">
-            select * from (
+         select  t.id,
+                 t.staff_name,
+                 t.staff_code,
+                 t.START_DATE,
+                 t.END_DATE,
+                 t.company,
+                 t.CONTRACT_ID,
+                 t.enableStatus,
+                 t.CONTRACT_TYPE,
+                 t.CONTRACT_PERIOD,
+                 t.PROBATION_MONTH,
+                 t.modifier_name,
+                 t.MODIFIED_TIME,
+                 CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+         from (
                  SELECT      s.id,
                              s.staff_name,
                              s.staff_code,
@@ -53,63 +67,60 @@
                              when  f.NEWEST = 1 then '是'
                              end enableStatus,
                              ( SELECT s.label FROM sys_dict_item s WHERE s.id = f.CONTRACT_TYPE and s.type='HTQXLX' ) CONTRACT_TYPE,
-                             f.CONTRACT_PEIOD,
+                             f.CONTRACT_PERIOD,
                              f.PROBATION_MONTH,
                              ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIER_CODE ) modifier_name,
-                             f.MODIFIED_TIME,
-                             ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.CREATOR_CODE ) create_name,
-                             f.CREATED_TIME
-                           FROM  mp_staffcontract f
-                           LEFT JOIN mp_staff s ON s.ID = f.SATFF_ID
-                           where f.del_flag = 0
-        )t where 1=1
+                             f.MODIFIED_TIME
+                             FROM  mp_staffcontract f
+                             LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
+                             where f.del_flag = 0
+         )t where 1=1
          <if test="searchText != null">
              and CONCAT(
-                t.staff_name,  t.staff_code,t.START_DATE,
-                t.END_DATE,t.company,
-                t.enableStatus,t.CONTRACT_TYPE,t.CONTRACT_PEIOD,
-                t.PROBATION_MONTH,
-                t.modifier_name,t.MODIFIED_TIME,
-                t.create_name,t.CREATED_TIME
-              )  LIKE concat('%',#{searchText},'%')
+                 IFNULL( t.staff_name,''),IFNULL( t.staff_code,''),IFNULL( t.START_DATE,''),
+                 IFNULL( t.END_DATE,'') ,t.company,t.CONTRACT_ID,
+                 t.enableStatus,t.CONTRACT_TYPE,t.CONTRACT_PERIOD,
+                 t.PROBATION_MONTH,
+                 t.modifier_name,t.MODIFIED_TIME
+             )  LIKE concat('%',#{searchText},'%')
          </if>
-     </select>
+      </select>
 
 
     <!-- 员工合同签订 -->
     <select id="findStaffContract" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO">
-              select * from (
-                   SELECT   s.id,
-                            s.staff_name,
-                            s.staff_code,
-                            f.START_DATE,
-                            f.END_DATE,
-                            (
-                            select c.COMPANY_NAME from mp_company c where c.id=f.COMPANY_CODE
-                            ) company,
-                            f.CONTRACT_ID	,
-                            case when f.NEWEST = 0 then '否'
-                            when  f.NEWEST = 1 then '是'
-                            end enableStatus,
-                            ( SELECT s.label FROM sys_dict_item s WHERE s.id = f.CONTRACT_TYPE and s.type='HTQXLX' ) CONTRACT_TYPE,
-                            f.CONTRACT_PEIOD,
-                            f.PROBATION_MONTH,
-                            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIER_CODE ) modifier_name,
-                            f.MODIFIED_TIME,
-                            ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.CREATOR_CODE ) create_name,
-                            f.CREATED_TIME
-                            FROM  mp_staffcontract f
-                            LEFT JOIN mp_staff s ON s.ID = f.SATFF_ID
-                where f.del_flag = 0
+        select * from (
+        SELECT      s.id,
+        s.staff_name,
+        s.staff_code,
+        f.START_DATE,
+        f.END_DATE,
+        (
+        select c.COMPANY_NAME from mp_company c where c.id=f.COMPANY_CODE
+        ) company,
+        f.CONTRACT_ID	,
+        case when f.NEWEST = 0 then '否'
+        when  f.NEWEST = 1 then '是'
+        end enableStatus,
+        ( SELECT s.label FROM sys_dict_item s WHERE s.id = f.CONTRACT_TYPE and s.type='HTQXLX' ) CONTRACT_TYPE,
+        f.CONTRACT_PERIOD,
+        f.PROBATION_MONTH,
+        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.MODIFIER_CODE ) modifier_name,
+        f.MODIFIED_TIME,
+        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = f.CREATOR_CODE ) create_name,
+        f.CREATED_TIME
+        FROM  mp_staffcontract f
+        LEFT JOIN mp_staff s ON s.ID = f.SATFF_ID
+        where f.del_flag = 0
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
-                t.staff_name,  t.staff_code,t.START_DATE,
-                t.END_DATE,t.company,
-                t.enableStatus,t.CONTRACT_TYPE,t.CONTRACT_PEIOD,
-                t.PROBATION_MONTH,
-                t.modifier_name,t.MODIFIED_TIME,
-                t.create_name,t.CREATED_TIME
+            t.staff_name, t.staff_code,t.START_DATE,
+            t.END_DATE,t.company,
+            t.enableStatus,t.CONTRACT_TYPE,t.CONTRACT_PERIOD,
+            t.PROBATION_MONTH,
+            t.modifier_name,t.MODIFIED_TIME,
+            t.create_name,t.CREATED_TIME
             )  LIKE concat('%',#{searchText},'%')
         </if>
     </select>
