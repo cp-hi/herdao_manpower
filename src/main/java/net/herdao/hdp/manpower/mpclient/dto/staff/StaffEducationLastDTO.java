@@ -19,8 +19,8 @@ public class StaffEducationLastDTO {
     @ApiModelProperty(value="最高学历")
     private String educationDegree;
 
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="毕业时间")
     private LocalDate graduatedTime;
 

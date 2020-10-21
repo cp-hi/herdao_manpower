@@ -33,8 +33,8 @@ public class StaffInfoDTO {
     @ApiModelProperty(value="身份证号码")
     private String idNumber;
 
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="出生日期")
     private LocalDate birthday;
 
