@@ -299,7 +299,7 @@
        <include refid="organizationTreeSQL"></include>
        <where>
           <if test="orgCode != null">
-          		AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') 
+          		AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(org.org_code) &lt;= LENGTH(#{orgCode}) + 3
           </if>
            <if test="searchText != null">
           		AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
