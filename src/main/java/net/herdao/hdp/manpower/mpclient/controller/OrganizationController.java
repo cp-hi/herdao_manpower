@@ -115,6 +115,20 @@ public class OrganizationController {
 	}
 
     /**
+     * 更新组织
+     *
+     * @author  shuling
+     * @date    2020-10-18 10:47:32
+     * @version 1.0
+     */
+    @ApiOperation(value = "组织信息", notes = "修改组织信息")
+    @SysLog("修改组织信息")
+    @PutMapping("/updateOrg")
+    public R<Organization> updateOrg(@RequestBody OrganizationVO organizationVO) {
+        return orgService.saveOrUpdateOrganization(organizationVO);
+    }
+
+    /**
      * 通过id删除
      *
      * @param id id
