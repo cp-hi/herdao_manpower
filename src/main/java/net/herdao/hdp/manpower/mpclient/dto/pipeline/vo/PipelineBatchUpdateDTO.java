@@ -17,20 +17,20 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 @ExcelIgnoreUnannotated
 public class PipelineBatchUpdateDTO extends PipelineBatchAddDTO implements ExcelErrMsg {
 
-//    @ExcelProperty("管线名称")
-//    private String pipelineName;
-//
-//    @ExcelProperty("所属集团")
-//    private String groupName;
+    @ExcelProperty("管线名称")
+    private String pipelineName;
+
+    @ExcelProperty("所属集团")
+    private String groupName;
 
     @ExcelProperty("是否停用")
     private String stop;
 
-//    @ExcelProperty("排序")
-//    private Integer sortNo;
-//
-//    @ExcelProperty("备注")
-//    private String remark;
+    @ExcelProperty("排序")
+    private Integer sortNo;
+
+    @ExcelProperty("备注")
+    private String remark;
 
     @ExcelProperty("错误信息")
     private String errMsg;

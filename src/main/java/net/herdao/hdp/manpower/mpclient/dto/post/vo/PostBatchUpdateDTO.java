@@ -19,26 +19,26 @@ import lombok.Data;
 @ExcelIgnoreUnannotated
 public class PostBatchUpdateDTO extends PostBatchAddDTO {
 
-//    @ExcelProperty(value = "岗位名称")
-//    private String postName;
-//
-//    @ExcelProperty(value = "所属集团")
-//    private String groupName;
-//
-//    @ExcelProperty(value = "所属板块")
-//    private String sectionName;
-//
-//    @ExcelProperty(value = "所属管线")
-//    private String pipelineName;
-//
-//    @ExcelProperty(value = "岗位序列")
-//    private String postSeqName;
-//
-//    @ExcelProperty(value = "职级")
-//    private String jobLevelName;
-//
-//    @ExcelProperty(value = "备注")
-//    private String description;
+    @ExcelProperty(value = "岗位名称")
+    private String postName;
+
+    @ExcelProperty(value = "所属集团")
+    private String groupName;
+
+    @ExcelProperty(value = "所属板块")
+    private String sectionName;
+
+    @ExcelProperty(value = "所属管线")
+    private String pipelineName;
+
+    @ExcelProperty(value = "岗位序列")
+    private String postSeqName;
+
+    @ExcelProperty(value = "职级")
+    private String jobLevelName;
+
+    @ExcelProperty(value = "备注")
+    private String description;
 
     @ExcelProperty(value = "岗位组织类型")
     @ApiModelProperty(value = "岗位组织类型",example="GWZZLX")
