@@ -41,10 +41,11 @@ public interface OrganizationService extends IService<Organization> {
     /**
      * 模糊查询组织树
      * 
+     * @param orgCode
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> organizationTreeList(@Param("searchText") String searchText);
+    List<OrganizationTreeVO> organizationTreeList(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
 
     /**
      * 查询部门结构树
@@ -133,11 +134,12 @@ public interface OrganizationService extends IService<Organization> {
      * 组织列表分页查询
      * 
      * @param page
+     * @param orgCode
      * @param stop
      * @param searchText
      * @return
      */
-    Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, Integer stop, String searchText);
+    Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, String orgCode, Integer stop, String searchText);
 
     /**
      * @description 新增、修改组织信息

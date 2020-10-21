@@ -42,10 +42,11 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     /**
      * 模糊查询组织树
      * 
+     * @param orgCode
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> organizationTreeList(@Param("searchText") String searchText);
+    List<OrganizationTreeVO> organizationTreeList(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
     
     
 
@@ -95,11 +96,12 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
      * 组织列表分页查询
      * 
      * @param page
+     * @param orgCode
      * @param stop
      * @param searchText
      * @return
      */
-	Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, @Param("stop") Integer stop, @Param("searchText") String searchText);
+	Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, @Param("orgCode") String orgCode, @Param("stop") Integer stop, @Param("searchText") String searchText);
 
     /**
      * 查询部门结构树

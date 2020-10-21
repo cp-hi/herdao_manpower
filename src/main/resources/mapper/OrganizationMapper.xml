@@ -191,6 +191,23 @@
 		<result column="parentOrgCode" property="parent_org_code" />
 		<collection column="{orgCode=org_code}" property="organizationComponents" ofType="OrganizationComponentVO" javaType="java.util.ArrayList" select="selectOrganizationChildrens"/>
 	</resultMap>
+	
+	 <!-- 组织树 vo -->
+    <resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeMap">
+		<result column="id" property="id" />
+		<result column="orgName" property="org_name" />
+		<result column="orgCode" property="org_code" />
+		<result column="leafNode" property="leaf_node" />
+		<collection column="id" property="organizationChildrens" ofType="OrganizationTreeVO" javaType="java.util.ArrayList" select="selectSecondOrganization"/>
+	</resultMap>
+	
+	<!-- 组织树 模糊查询vo -->
+	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeListMap">
+		<result column="id" property="id" />
+		<result column="orgName" property="org_name" />
+		<result column="orgCode" property="org_code" />
+		<result column="leafNode" property="leaf_node" />
+	</resultMap>
 
     <!-- 查询类型是部门的组织架构树 -->
     <select id="fetchDeptTree" resultMap="organDeptTreeMap">
@@ -252,21 +269,6 @@
         order by SORT_NO
     </select>
     
-    <resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeMap">
-		<result column="id" property="id" />
-		<result column="orgName" property="org_name" />
-		<result column="orgCode" property="org_code" />
-		<result column="leafNode" property="leaf_node" />
-		<collection column="id" property="organizationChildrens" ofType="OrganizationTreeVO" javaType="java.util.ArrayList" select="selectSecondOrganization"/>
-	</resultMap>
-	
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeListMap">
-		<result column="id" property="id" />
-		<result column="orgName" property="org_name" />
-		<result column="orgCode" property="org_code" />
-		<result column="leafNode" property="leaf_node" />
-	</resultMap>
-
 	<!-- 递归查询组织树 sql -->
 	<sql id="organizationTreeSQL">
 		SELECT
@@ -296,7 +298,12 @@
     <select id="organizationTreeList" resultMap="organizationTreeListMap">
        <include refid="organizationTreeSQL"></include>
        <where>
-          AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
+          <if test="orgCode != null">
+          		AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') 
+          </if>
+           <if test="searchText != null">
+          		AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
+          </if>
         </where>
     </select>
 
@@ -489,6 +496,9 @@
 	        <where>
 	        	<if test="stop != null and stop != 3">
 		            AND orgList.is_stop = #{stop}
+		        </if>
+		        <if test="orgCode != null">
+		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') 
 		        </if>
 	        	<if test="searchText != null">
 	        		AND CONCAT(orgList.org_name, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')

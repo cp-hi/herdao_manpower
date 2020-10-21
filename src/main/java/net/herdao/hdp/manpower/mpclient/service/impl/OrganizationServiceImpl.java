@@ -75,8 +75,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
     
     @Override
-    public List<OrganizationTreeVO> organizationTreeList(String searchText){
-    	return this.baseMapper.organizationTreeList(searchText);
+    public List<OrganizationTreeVO> organizationTreeList(String orgCode, String searchText){
+    	return this.baseMapper.organizationTreeList(orgCode, searchText);
     }
 
     @Override
@@ -392,8 +392,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, Integer stop, String searchText) {
-        return this.baseMapper.findOrgPage(page, stop, searchText);
+    public Page<OrganizationVO> findOrgPage(Page<OrganizationVO> page, String orgCode, Integer stop, String searchText) {
+        return this.baseMapper.findOrgPage(page, orgCode, stop, searchText);
     }
 
 

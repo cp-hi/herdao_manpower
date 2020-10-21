@@ -36,9 +36,9 @@ public interface ManpowerContants {
     // 删除状态
     Integer DELETE_STATUS = 1;
     // 启用
-    Integer ENABLE_STATUS = 2;
-    // 禁用
-    Integer DISABLE_STATUS = 3;
+    Integer ENABLE_STATUS = 0;
+    //停用
+    Integer DISABLE_STATUS = 1;
     
     /**
      * 人力服务
