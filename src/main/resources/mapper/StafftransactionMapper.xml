@@ -67,9 +67,9 @@
             </if>
             <if test="searchText != null">
                   and CONCAT(
-                        t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
-                        t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
-                        t.MODIFIEd_NAME,t.MODIFIED_TIME
+                        IFNULL(t.staff_name,'') , IFNULL(t.staff_code,''),IFNULL(t.TRAN_TIME,'') ,
+                        IFNULL(t.TRAN_TYPE,'') ,IFNULL(t.TRAN_REASON,'') , IFNULL(t.OUT_UNIT_NAME,'') ,
+                        IFNULL(t.COME_UNIT_NAME,''),IFNULL(t.MODIFIEd_NAME,''), IFNULL(t.MODIFIED_TIME,'')
                   ) LIKE concat('%',#{searchText},'%')
             </if>
        </select>
@@ -99,9 +99,9 @@
             </if>
             <if test="searchText != null">
                   and CONCAT(
-                  t.staff_name, t.staff_code,t.TRAN_TIME,t.TRAN_TYPE,
-                  t.TRAN_REASON,t.OUT_UNIT_NAME,t.COME_UNIT_NAME,
-                  t.MODIFIEd_NAME,t.MODIFIED_TIME
+                        IFNULL(t.staff_name,'') , IFNULL(t.staff_code,''),IFNULL(t.TRAN_TIME,'') ,
+                        IFNULL(t.TRAN_TYPE,'') ,IFNULL(t.TRAN_REASON,'') , IFNULL(t.OUT_UNIT_NAME,'') ,
+                        IFNULL(t.COME_UNIT_NAME,''),IFNULL(t.MODIFIEd_NAME,''), IFNULL(t.MODIFIED_TIME,'')
                   ) LIKE concat('%',#{searchText},'%')
             </if>
       </select>

@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -33,7 +34,20 @@ import java.util.Map;
  * @date 2020-09-11 11:57:16
  */
 public interface GroupService extends IService<Group> {
-    List<Map<String,String>> groupList();
+    List<Map<String, String>> groupList();
+
+    /**
+     * @Author ljan
+     * @param groupName
+     * @return
+     */
+    default Group getGroupByName(String groupName) {
+        Group group = this.getOne(new QueryWrapper<Group>()
+                .eq("GROUP_NAME", groupName).ne("del_flag",1));
+        if (null == group)
+            throw new RuntimeException("不存在此集团：" + groupName);
+        return group;
+    }
 
     IPage groupPage(Page page, Group group, String searchText);
 
