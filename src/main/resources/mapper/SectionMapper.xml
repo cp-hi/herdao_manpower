@@ -12,7 +12,7 @@
     </resultMap>
 
     <select id="query" resultMap="sectionDTOMap" parameterType="section">
-        select * from mp_section where 1=1
+        select * from mp_section where  del_flag !=1
         <if test="section.id != null">
             and id = #{section.id}
         </if>

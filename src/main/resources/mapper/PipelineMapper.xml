@@ -12,7 +12,7 @@
     </resultMap>
 
     <select id="page" resultMap="pipelineDTOMap" parameterType="pipeline">
-        select * from mp_pipeline where 1=1
+        select * from mp_pipeline where  del_flag !=1
         <if test="pipeline.id != null">
             and id = #{pipeline.id}
         </if>

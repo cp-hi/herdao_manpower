@@ -15,7 +15,7 @@
     </resultMap>
 
     <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
-        select * from mp_job_level where 1=1
+        select * from mp_job_level where  del_flag !=1
         <if test="jobLevel.id != null">
             and id = #{jobLevel.id}
         </if>
