@@ -14,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StafftrainErrMsg;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 
@@ -144,6 +146,10 @@ public class StafftrainController extends BaseController<Stafftrain> {
     @SysLog("修改" )
     @PutMapping("/updateTrain" )
     public R updateById(@RequestBody Stafftrain stafftrain) {
+        String username = UserUtils.getUsername();
+        Integer userId = UserUtils.getUserId();
+        stafftrain.setModifiedTime(new Date());
+        stafftrain.setModifierCode(userId.toString());
         boolean status = stafftrainService.updateById(stafftrain);
         return R.ok(status);
     }
