@@ -1,20 +1,15 @@
 
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 
 import java.util.Date;
 
@@ -25,21 +20,13 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工培训DTO")
-public class StafftrainDTO extends Stafftrain implements ExcelVO {
+@ApiModel(value = "员工培训VO")
+public class StafftrainVO extends Stafftrain implements ExcelVO {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "错误信息")
     @ColumnWidth(100)
     private String errMsg;
-
-    /**
-     * 新平台新增
-     */
-    @TableId
-    @ApiModelProperty(value="id")
-    @ExcelIgnore
-    private Long id;
 
     @ApiModelProperty(value="员工姓名")
     @ExcelProperty(value = "员工姓名")
@@ -54,8 +41,7 @@ public class StafftrainDTO extends Stafftrain implements ExcelVO {
      */
     @ApiModelProperty(value="开始时间")
     @ExcelProperty(value = "开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date beginTime;
+    private String beginTimeStr;
 
     /**
      * 结束时间
@@ -63,7 +49,7 @@ public class StafftrainDTO extends Stafftrain implements ExcelVO {
     @ApiModelProperty(value="结束时间")
     @ExcelProperty(value = "结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date endTime;
+    private String endTimeStr;
 
     /**
      * 培训时长
@@ -128,22 +114,6 @@ public class StafftrainDTO extends Stafftrain implements ExcelVO {
     @ApiModelProperty(value="备注")
     @ExcelProperty(value = "备注")
     private String remarks;
-
-
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="操作人")
-    @ExcelProperty(value = "操作人")
-    private Date modifierName;
-
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="操作时间")
-    @ExcelProperty(value = "操作时间")
-    private Date modifiedTime;
-
 
 
 }

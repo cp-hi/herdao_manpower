@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,6 @@ import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
-import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
@@ -432,9 +430,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		// 设置组织编码
         	organization.setOrgCode(getOrgCode(organization.getParentId()));
         	
-        	// 设置 组织编码、组织名称全路径
-        	setOrgFullCodeAndOrgFullName(organization, parentOrganization);
     	}
+    	
+    	// 设置 组织编码、组织名称全路径
+    	setOrgFullCodeAndOrgFullName(organization, parentOrganization);
     	
     	// 组织组织树层级
     	if(ObjectUtil.isNull(parentOrganization)) {
@@ -479,9 +478,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	}
     	
     	// 操作日志信息 TODO 需求待定
-    	OrgModifyRecord orgModifyRecord = new OrgModifyRecord();
+    	// OrgModifyRecord orgModifyRecord = new OrgModifyRecord();
     	
-    	orgModifyRecordService.save(orgModifyRecord);
+    	// orgModifyRecordService.save(orgModifyRecord);
     	
     	this.saveOrUpdate(organization);
     	
@@ -497,12 +496,18 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     * @return
     */
 	String getOrgCode(Long parentId) {
+		
+		String defaultOrgCode = "001";
 
 		// 最大组织编码
 		String maxOrgCode = this.baseMapper.getMaxOrgCode(parentId);
 		
+		if(StrUtil.isBlank(maxOrgCode) && ObjectUtil.isNotNull(parentId)) {
+			return maxOrgCode = this.getById(parentId).getOrgCode() + defaultOrgCode;
+		}
+			
 		// 首次新增 默认 001
-		maxOrgCode = StrUtil.isBlank(maxOrgCode) ? "001" : maxOrgCode;
+		maxOrgCode = StrUtil.isBlank(maxOrgCode) ? defaultOrgCode : maxOrgCode;
 
 		return String.format("%0" + maxOrgCode.length() + "d", Long.parseLong(maxOrgCode) + 1);
 

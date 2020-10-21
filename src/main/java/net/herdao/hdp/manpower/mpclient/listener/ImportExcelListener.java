@@ -25,7 +25,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Getter
     List<T> dataList = null;
 
-    Integer BATCH_COUNT = 0;
+    Integer BATCH_COUNT = 10;
 
     boolean hasError = false;
 
@@ -81,7 +81,9 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         //TODO 增加导出字段动态排序
-        if (hasError) throw new Exception("导入出现错误，请查看导错误原因");
+        if (hasError) {
+            throw new Exception("导入出现错误，请查看导错误原因");
+        }
         this.entityService.saveList(dataList, BATCH_COUNT);
     }
 }

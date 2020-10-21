@@ -462,19 +462,22 @@ public class DateUtils {
      * @return boolean 返回比较结果
      * @throws Exception
      */
-    public static boolean compareDate(String sDate, String eDate, String pattern)
-            throws Exception {
+    public static boolean compareDate(String sDate, String eDate, String pattern){
+        try {
+            DateFormat df1 = new SimpleDateFormat(pattern);
+            Date date1 = df1.parse(sDate);
+            Date date2 = df1.parse(eDate);
+            if (null == date1 || null == date2) {
+                return false;
+            }
+            long intervalMilli = date2.getTime() - date1.getTime();
+            if (intervalMilli > 0) {
+                return true;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
 
-        DateFormat df1 = new SimpleDateFormat(pattern);
-        Date date1 = df1.parse(sDate);
-        Date date2 = df1.parse(eDate);
-        if (null == date1 || null == date2) {
-            return false;
-        }
-        long intervalMilli = date2.getTime() - date1.getTime();
-        if (intervalMilli > 0) {
-            return true;
-        }
         return false;
     }
 
@@ -664,16 +667,20 @@ public class DateUtils {
      * @return Date 被解析后的日期
      * @throws Exception
      */
-    public static Date parseDate(String date, String pattern) throws Exception {
+    public static Date parseDate(String date, String pattern)  {
         Date returnDate = null;
-        if (pattern == null || pattern.equals("") || pattern.equals("null")) {
-            pattern = "yyyy-MM-dd HH:mm:ss";
-        }
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(pattern);
         try {
-            returnDate = sdf.parse(date);
-        } catch (Exception e) {
-            e.printStackTrace();
+             if (pattern == null || pattern.equals("") || pattern.equals("null")) {
+                pattern = "yyyy-MM-dd HH:mm:ss";
+            }
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(pattern);
+            try {
+                returnDate = sdf.parse(date);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
         return returnDate;
     }
@@ -1003,7 +1010,9 @@ public class DateUtils {
         DateFormat formatter = new SimpleDateFormat(pattern);
         try {
             Date date = formatter.parse(sDate);
-            return sDate.equals(formatter.format(date));
+            String formatStr = formatter.format(date);
+            boolean status = sDate.trim().equals(formatStr.trim());
+            return status;
         } catch (Exception e) {
             return false;
         }
