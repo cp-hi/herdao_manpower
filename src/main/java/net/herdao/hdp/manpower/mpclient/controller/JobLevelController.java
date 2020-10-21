@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelBatchUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelBatchDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends NewBaseController<JobLevel,JobLevelListDTO,JobLevelFormDTO, JobLevelBatchUpdateDTO> {
+public class JobLevelController extends NewBaseController<JobLevel,JobLevelListDTO,JobLevelFormDTO, JobLevelBatchDTO> {
 
     @Autowired
     private JobLevelService jobLevelService;
@@ -41,7 +41,7 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
 
     @Override
     protected Class getImportClass() {
-        return JobLevelBatchUpdateDTO.class;
+        return JobLevelBatchDTO.class;
     }
 
     @GetMapping("/list")
