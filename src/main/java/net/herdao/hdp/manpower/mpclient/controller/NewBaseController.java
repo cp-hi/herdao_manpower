@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -221,19 +222,26 @@ public class NewBaseController<T, D, F, E> {
     })
     public R getDownloadTempl(HttpServletResponse response, Integer importType) throws Exception {
         try {
+            String title = "批量新增模板";
             Class templClass = getBatchAddClass();
-            if (Integer.valueOf(1).equals(importType))
+            if (Integer.valueOf(1).equals(importType)) {
                 templClass = getImportClass();
+                title = "批量编辑模板";
+            }
+            ApiModel apiModel = getEntityClass().getAnnotation(ApiModel.class);
+            if (null != apiModel) title = apiModel.value() + title;
+
             List<LinkedHashMap<String, String>> data = new ArrayList();
             Field[] fields = templClass.getDeclaredFields();
             LinkedHashMap<String, String> map = new LinkedHashMap();
             for (Field field : fields) {
-                if (field.getName().equals("errMsg"))   continue;
+                if (field.getName().equals("errMsg")) continue;
                 ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
                 map.put(excel.value()[0], "");
             }
             data.add(map);
-            ExcelUtils.export2Web(response, "批量导入模板", data);
+
+            ExcelUtils.export2Web(response, title, data);
             return R.ok();
         } catch (Exception ex) {
             return R.failed(ex.getMessage());
