@@ -87,7 +87,7 @@ public class StaffRpDTO  {
     private String modifiedTime;
 
     /**
-     * 最后修改时间
+     * 最近更新情况
      */
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")
