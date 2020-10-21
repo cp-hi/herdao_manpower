@@ -39,6 +39,7 @@ import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -411,11 +412,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return this.baseMapper.findOrgPage(page, orgCode, stop, searchText);
     }
 
-
     @Override
-    public Organization findOrgDetails(Organization condition) {
-        Organization organization = this.baseMapper.findOrgDetails(condition);
-        return organization;
+    public OrganizationFormVO findOrgDetails(Long id) {
+    	return this.baseMapper.findOrgDetails(id);
     }
 
     /**

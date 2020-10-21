@@ -35,7 +35,7 @@ import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.utils.UUIDUtil;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -69,21 +69,18 @@ public class OrganizationController {
 
     /**
      * 通过id查询组织架构详情
-     *
+     * 
+     * @modify  shuling
+	 * @date    2020-10-20 18:23:39
+	 * @version 1.0
      * @param id
      * @return R
      */
     @ApiOperation(value = "通过id查询组织架构详情", notes = "通过id查询组织架构详情")
     @GetMapping("/fetchOrg/{id}")
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="组织架构主键ID")
-    })
-    public R fetchOrg(@PathVariable("id") Long id) {
-        Organization condition=new Organization();
-        condition.setId(id);
-        Organization result = orgService.findOrgDetails(condition);
-        return R.ok(result);
+    @ApiImplicitParam(name="id", value="组织id")
+    public R<OrganizationFormVO> fetchOrg(@PathVariable("id") Long id) {
+       return R.ok(orgService.findOrgDetails(id));
     }
     
     /**
@@ -175,10 +172,8 @@ public class OrganizationController {
     @ApiOperation(value = "查询组织树", notes = "查询组织树")
     @GetMapping("/findAllOrganizations")
     @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class)
-    @ApiImplicitParams({
-			        @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
-			        @ApiImplicitParam(name="searchText",value="模糊查询内容")
-    })
+    @ApiImplicitParams({ @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
+			        	 @ApiImplicitParam(name="searchText",value="模糊查询内容") })
 	public R<List<OrganizationTreeVO>> findAllOrganizations(String orgCode, String searchText) {
 		// 默认查询组织层级二级
 		if (StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
