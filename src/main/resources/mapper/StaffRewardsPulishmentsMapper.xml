@@ -45,7 +45,8 @@
                         WHEN f.choice =2 THEN
                         '惩罚'
                         END choice,
-                        f.execute_date
+                        f.execute_date,
+                        f.staff_id
                 FROM   mp_staff_rewards_pulishments f
                 LEFT JOIN mp_staff s ON s.ID = f.SATFF_ID
                 LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1

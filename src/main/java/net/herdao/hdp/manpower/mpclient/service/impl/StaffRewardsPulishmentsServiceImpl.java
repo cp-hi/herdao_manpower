@@ -124,7 +124,7 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
 
         boolean isNumber = RegexUtils.isNumber(dto.getAmount());
         if (!isNumber){
-            errorMsg+="请填写整的奖金金额（奖金金额为正整数）:"+dto.getAmount()+"，";
+            errorMsg+="请填写正确的奖金金额（奖金金额为正整数）:"+dto.getAmount()+"，";
         }
 
         if (!errorMsg.isEmpty()){

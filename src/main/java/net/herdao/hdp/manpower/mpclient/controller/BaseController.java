@@ -93,7 +93,7 @@ public class BaseController<T> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
-    public R stop(@PathVariable Long id, @PathVariable boolean stop) throws NoSuchFieldException, IllegalAccessException {
+    public R stop(@PathVariable Long id, @PathVariable boolean stop) throws IllegalAccessException {
         return R.ok(entityService.stopEntity(id, stop));
     }
 

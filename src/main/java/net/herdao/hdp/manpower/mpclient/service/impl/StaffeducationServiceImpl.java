@@ -1,4 +1,3 @@
-
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -121,7 +120,6 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
                         break;
                     }
                 }
-
                 if (checkStatus==false){
                     errorMsg+="请填写正确的入学日期时间格式（yyyy/mm/dd 或者 yyyy-mm-dd 或者 yyyy.mm.dd），";
                 }else{
