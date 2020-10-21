@@ -19,6 +19,10 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
 @ApiModel(value = "员工教育经历列表DTO list")
 public class StaffeducationListDTO extends Staffeducation implements ExcelVO {
 
+    @ExcelProperty(value = "错误信息")
+    @ColumnWidth(100)
+    private String errMsg;
+
     /**
      * 学校名称
      */
@@ -115,10 +119,5 @@ public class StaffeducationListDTO extends Staffeducation implements ExcelVO {
     @ApiModelProperty(value="学历")
     @ExcelProperty(value = "学历")
     private String educationQua;
-
-    @ExcelProperty(value = "错误信息")
-    @ColumnWidth(100)
-    private String errMsg;
-
 
 }
