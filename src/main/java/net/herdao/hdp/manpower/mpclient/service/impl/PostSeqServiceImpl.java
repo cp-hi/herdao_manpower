@@ -3,8 +3,12 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
@@ -36,9 +40,19 @@ public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> impl
 
     @Override
     public void saveVerify(PostSeq postSeq) {
-        if (baseMapper.chkDuplicatePostSeqCode(postSeq))
-            throw new RuntimeException("岗位序列编码重复了");
+//        if (baseMapper.chkDuplicatePostSeqCode(postSeq))
+//            throw new RuntimeException("岗位序列编码重复了");
         if (baseMapper.chkDuplicatePostSeqName(postSeq))
             throw new RuntimeException("岗位序列名称重复了");
+    }
+
+    @Override
+    public void addEntity(PostSeq postSeq, Object excelObj) {
+
+    }
+
+    @Override
+    public void updateEntity(PostSeq postSeq, Object excelObj) {
+
     }
 }

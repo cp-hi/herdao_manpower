@@ -99,8 +99,8 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-//    @Deprecated
     default void importVerify(T t, int type) {
+
     }
 
     /**
@@ -109,10 +109,52 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      */
     default void importVerify(T t, Object excelObj, int type) {
+        boolean add = (0 == type);
+        if (add) addEntity(t, excelObj);
+        else updateEntity(t, excelObj);
+        //这个验证要放 最后，因为前面要给ID赋值
+        this.saveVerify(t);
+    }
+
+    /**
+     * 新增校验
+     *
+     * @param t
+     * @param excelObj
+     */
+    default void addEntity(T t, Object excelObj) {
+    }
+
+    /**
+     * 编辑核验
+     *
+     * @param t
+     * @param excelObj
+     */
+    default void updateEntity(T t, Object excelObj) {
+    }
+
+    /**
+     * 根据字段名和字段值获取字段
+     * 并根据条件抛异常
+     * @param field 字段名
+     * @param value  字段值
+     * @param need 是否需要它存在
+     * @Author ljan
+     * @return
+     */
+    default T chkEntityExists(String field, String value, boolean need) {
+        T t = this.getEntityByField(field, value);
+        if (!need && null != t) //不需要它但它不为空
+            throw new RuntimeException("已存在此对象：" + value);
+        if (need && null == t) //需要它但它为空
+            throw new RuntimeException("不存在此对象：" + value);
+        return t;
     }
 
     /**
      * 根据字段名获取单个实体
+     *
      * @param field
      * @param name
      * @return
@@ -133,13 +175,9 @@ public interface EntityService<T> extends IService<T> {
      */
     @Transactional(rollbackFor = Exception.class)
     default void saveList(List<T> dataList, Integer batchCount) {
-        if(0 >= batchCount) {
-            batchCount = 50;
-        }
+        if (0 >= batchCount) batchCount = 50;
         List<List<T>> batch = Lists.partition(dataList, batchCount);
-        for (List<T> tmp : batch) {
-            this.saveOrUpdateBatch(tmp);
-        }
+        for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
 

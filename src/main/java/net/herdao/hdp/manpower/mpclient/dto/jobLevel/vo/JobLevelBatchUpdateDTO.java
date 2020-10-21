@@ -13,7 +13,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  * @Version 1.0
  */
 @Data
-public class JobLevelImportDTO implements ExcelErrMsg {
+public class JobLevelBatchUpdateDTO implements ExcelErrMsg {
 
     @ExcelProperty(value = "职级名称")
     private String jobLevelName;

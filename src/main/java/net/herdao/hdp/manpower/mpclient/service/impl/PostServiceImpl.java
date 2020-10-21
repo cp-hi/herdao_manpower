@@ -142,24 +142,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return baseMapper.getPostStaffs(postId, limit);
     }
 
+    //region 批量新增编辑
 
     @Override
-    public void importVerify(Post post, Object excelObj, int type) {
-        boolean add = (0 == type);
-        if (add) addPost(post, excelObj);
-        else updatePost(post, excelObj);
-        //这个验证要放 最后，因为前面要给ID赋值
-        this.saveVerify(post);
-    }
-
-    private void addPost(Post post, Object excelObj) {
+    public void addEntity(Post post, Object excelObj) {
         PostBatchAddDTO excel = (PostBatchAddDTO) excelObj;
-        getPostByName(excel.getPostName(), true);
+        chkEntityExists("POST_NAME",excel.getPostName(), false);
         Group group = groupService.getGroupByName(excel.getGroupName());
-        Section section = getEntityByName(sectionService, "SECTION_NAME", excel.getSectionName());
-        Pipeline pipeline = getEntityByName(pipelineService, "PIPELINE_NAME", excel.getPipelineName());
-        PostSeq postSeq = getEntityByName(postSeqService, "POST_SEQ_NAME", excel.getPostSeqName());
-        JobLevel jobLevel = getEntityByName(jobLevelService, "JOB_LEVEL_NAME", excel.getJobLevelName());
+        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(),true);
+        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(),true);
+        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(),true);
+        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(),true);
 
         post.setGroupId(group.getId());
         post.setSectionId(section.getId());
@@ -168,14 +161,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setJobLevelId1(jobLevel.getId());
     }
 
-    private void updatePost(Post post, Object excelObj) {
+    @Override
+    public void updateEntity(Post post, Object excelObj) {
         PostBatchUpdateDTO excel = (PostBatchUpdateDTO) excelObj;
-        Post tmp = getPostByName(excel.getPostName(), false);
+        Post tmp = chkEntityExists("POST_NAME",excel.getPostName(), true);
         Group group = groupService.getGroupByName(excel.getGroupName());
-        Section section = getEntityByName(sectionService, "SECTION_NAME", excel.getSectionName());
-        Pipeline pipeline = getEntityByName(pipelineService, "PIPELINE_NAME", excel.getPipelineName());
-        PostSeq postSeq = getEntityByName(postSeqService, "POST_SEQ_NAME", excel.getPostSeqName());
-        JobLevel jobLevel = getEntityByName(jobLevelService, "JOB_LEVEL_NAME", excel.getJobLevelName());
+        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(), true);
+        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true);
+        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true);
+        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true);
 
         post.setGroupId(group.getId());
         post.setSectionId(section.getId());
@@ -190,27 +184,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setPerforSalaryRatio(getDictItem("YDJXGZBL", excel.getPerforSalaryRatio()).getValue());
     }
 
-    private Post getPostByName(String postName, boolean add) {
-        Post post = this.baseMapper.selectOne(new QueryWrapper<Post>()
-                .eq("POST_NAME", postName));
-        if (add && null != post)
-            throw new RuntimeException("已存在此岗位：" + post.getPostName());
-        if (!add && null == post)
-            throw new RuntimeException("不存在此岗位：" + post.getPostName());
-        return post;
-    }
-
-
-    private <T> T getEntityByName(EntityService<T> service, String field, String name) {
-        T t = (T) service.getEntityByField(field, name);
-        if (null == t) throw new RuntimeException("不存在：" + name);
-        return (T) t;
-    }
-
     private SysDictItem getDictItem(String type, String label) {
         SysDictItem dictItem = sysDictItemService.getOne(
                 new QueryWrapper<SysDictItem>().eq("type", type).eq("label", label));
         if (null == dictItem) throw new RuntimeException("不存在此字典值：" + label);
         return dictItem;
     }
+
+    //endregion
 }

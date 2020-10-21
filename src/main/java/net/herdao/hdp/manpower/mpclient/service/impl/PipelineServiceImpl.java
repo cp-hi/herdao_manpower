@@ -2,10 +2,14 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
+import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,7 +26,11 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
+@AllArgsConstructor
 public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
+
+    final GroupService groupService;
+
     @Override
     public List<Map> pipelineList(Long groupId) {
         return baseMapper.pipelineList(groupId);
@@ -34,11 +42,27 @@ public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> i
     }
 
     @Override
-    public boolean saveOrUpdate(Pipeline pipeline) {
+    public void saveVerify(Pipeline pipeline) {
         if (baseMapper.chkDuplicatePipelineCode(pipeline))
             throw new RuntimeException("管线编码重复了");
         if (baseMapper.chkDuplicatePipelineName(pipeline))
             throw new RuntimeException("管线名称重复了");
-        return super.saveOrUpdate(pipeline);
+    }
+
+    @Override
+    public void addEntity(Pipeline pipeline, Object excelObj) {
+        PipelineBatchAddDTO excel = (PipelineBatchAddDTO) excelObj;
+        chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), false);
+        Group group = groupService.getGroupByName(excel.getGroupName());
+        pipeline.setGroupId(group.getId());
+    }
+
+    @Override
+    public void updateEntity(Pipeline pipeline, Object excelObj) {
+        PipelineBatchUpdateDTO excel = (PipelineBatchUpdateDTO) excelObj;
+        Pipeline tmp = chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true);
+        Group group = groupService.getGroupByName(excel.getGroupName());
+        pipeline.setGroupId(group.getId());
+        pipeline.setId(tmp.getId());
     }
 }
