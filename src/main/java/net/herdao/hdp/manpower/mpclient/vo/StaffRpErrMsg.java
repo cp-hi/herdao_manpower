@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "家庭情况分页VO")
-public class StaffRpVO extends StaffRewardsPulishments implements ExcelVO {
+public class StaffRpErrMsg extends StaffRewardsPulishments implements ExcelErrMsg {
     
     @ExcelProperty(value = "错误信息")
     @ColumnWidth(100)

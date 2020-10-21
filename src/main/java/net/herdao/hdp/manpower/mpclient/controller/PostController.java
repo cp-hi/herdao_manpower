@@ -41,6 +41,11 @@ import java.util.List;
 @Api(tags = "岗位管理")
 public class PostController extends NewBaseController<Post, PostListDTO, PostFormDTO, PostBatchUpdateDTO> {
 
+    @Override
+    protected Class getBatchAddClass() {
+        return PostBatchAddDTO.class;
+    }
+
     @Autowired
     private PostService postService;
 
@@ -144,7 +149,6 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
         }
         return R.ok(data);
     }
-
 
 
 }

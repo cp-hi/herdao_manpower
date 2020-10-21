@@ -5,9 +5,8 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelVO;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
             entityService.importVerify(excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
-            ((ExcelVO) excel).setErrMsg(ex.getMessage());
+            ((ExcelErrMsg) excel).setErrMsg(ex.getMessage());
         }
         dataList.add(excel);
     }

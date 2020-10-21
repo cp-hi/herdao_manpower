@@ -8,9 +8,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -18,16 +15,15 @@ import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,8 +31,8 @@ import java.util.List;
  * @param <D> 分页类DTO，用于列表展示及列表导出
  * @param <F> 表单页Form类型，用于新增修改
  * @param <E> excel导入类，注意，批量新增批量修改所用字段有可能不同，
- *           所以可能会有不同的类，一般用大类继承小类，然后把大类填
- *           到这泛型参数上
+ *            所以可能会有不同的类，一般用大类继承小类，然后把大类填
+ *            到这泛型参数上
  * @ClassName NewBaseController
  * @Description NewBaseController
  * @Author ljan
@@ -92,7 +88,7 @@ public class NewBaseController<T, D, F, E> {
      * @return
      * @Author ljan
      */
-    protected  Class  getImportClass() {
+    protected Class getImportClass() {
         Class<E> clazz = (Class<E>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[3];
         return clazz;
@@ -183,17 +179,17 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(f);
     }
 
-    @ApiOperation("批量新增/修改")
-    @SysLog("批量新增/修改")
+    @ApiOperation("批量新增/编辑")
+    @SysLog("批量新增/编辑")
     @PostMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "type", value = "操作类型，0:批量新增 1:批量修改"),
+            @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
     })
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType) throws Exception {
-        NewImportExcelListener<T, E> listener = null;
+        NewImportExcelListener<E> listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
@@ -208,6 +204,25 @@ public class NewBaseController<T, D, F, E> {
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+
+    @ApiOperation("下载模板批量新增/编辑的模板")
+    @SysLog("下载模板批量新增/编辑的模板")
+    @PostMapping("/downloadTempl")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
+    })
+    public R getDownloadTempl(HttpServletResponse response, Integer importType) throws Exception {
+        try {
+            List list = new ArrayList();
+            Class templClass = getBatchAddClass();
+            if (Integer.valueOf(1).equals(importType)) templClass = getImportClass();
+            ExcelUtils.export2Web(response, "批量导入模板", "批量导入模板", templClass, list);
+            return R.ok();
+        } catch (Exception ex) {
+            return R.failed(ex.getMessage());
         }
     }
 }

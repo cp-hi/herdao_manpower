@@ -1,17 +1,13 @@
 
 package net.herdao.hdp.manpower.mpclient.vo;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
-
-import java.util.Date;
 
 /**
  * 员工培训
@@ -21,7 +17,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "员工培训VO")
-public class StafftrainVO extends Stafftrain implements ExcelVO {
+public class StafftrainErrMsg extends Stafftrain implements ExcelErrMsg {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "错误信息")
