@@ -18,8 +18,8 @@ public class StaffWorkYearDTO {
 	/**
      * 参加工作日期
      */
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="参加工作日期")
     private LocalDate workDate;
     /**
@@ -30,8 +30,8 @@ public class StaffWorkYearDTO {
     /**
      * 入职本公司日期
      */
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="入职本公司日期")
     private LocalDate entryTime;
     /**
@@ -42,8 +42,8 @@ public class StaffWorkYearDTO {
     /**
      * 入职集团日期
      */
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="入职集团日期")
     private LocalDate entryThreeGroupsTime;
     /**

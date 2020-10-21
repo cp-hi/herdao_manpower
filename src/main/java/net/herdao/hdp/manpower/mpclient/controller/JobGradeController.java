@@ -58,6 +58,7 @@ public class JobGradeController extends NewBaseController<JobGrade,JobGradeListD
     }
 
     @Override
+    @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jobGradeName", value = "字符串搜索"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),

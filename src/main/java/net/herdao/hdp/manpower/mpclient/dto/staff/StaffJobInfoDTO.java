@@ -30,8 +30,8 @@ public class StaffJobInfoDTO {
     @ApiModelProperty(value="人员归属范围")
     private String staffScope;
 
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="入职本公司日期")
     private LocalDate entryTime;
 
