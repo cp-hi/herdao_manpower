@@ -144,6 +144,11 @@ public class StafftrainDTO extends Stafftrain implements ExcelVO {
     @ExcelProperty(value = "操作时间")
     private Date modifiedTime;
 
-
+    /**
+     * 最后修改时间
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
 
 }
