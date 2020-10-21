@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -39,4 +40,7 @@ public class Pipeline extends BaseEntity<Pipeline> {
     private Boolean stop;
     @ApiModelProperty(value = "管线标准码",hidden = true)
     private String pipelineStdCode;
+
+    @ApiModelProperty(value = "备注",hidden = true)
+    private String remark;
 }
