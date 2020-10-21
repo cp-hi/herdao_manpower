@@ -20,6 +20,9 @@
         <if test="postSeq.id != null">
             and id = #{postSeq.id}
         </if>
+        <if test="postSeq.parentId = null">
+            and parent_id is null
+        </if>
         <if test="postSeq.parentId != null">
             and parent_id = #{postSeq.parentId}
         </if>

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqBatchDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
@@ -31,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/postSeq")
 @Api(tags = "岗位序列管理")
-public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,PostSeqFormDTO,Class> {
+public class PostSeqController extends NewBaseController<PostSeq, PostSeqListDTO, PostSeqFormDTO, PostSeqBatchDTO> {
 
     @Autowired
     PostSeqService postSeqService;
@@ -51,13 +52,14 @@ public class PostSeqController extends NewBaseController<PostSeq,PostSeqListDTO,
     @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postSeqName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "parentId", value = "父级ID，这是查找下级用的，所以查顶级不用传，查下级传自身ID"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(HttpServletResponse response, Page  page, PostSeq seq, Integer type)
+    public R page(HttpServletResponse response, Page page, PostSeq seq, Integer type)
             throws Exception {
-        return super.page(response,page,seq,type);
+        return super.page(response, page, seq, type);
     }
 }
