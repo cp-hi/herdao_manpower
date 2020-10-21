@@ -430,9 +430,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		// 设置组织编码
         	organization.setOrgCode(getOrgCode(organization.getParentId()));
         	
-        	// 设置 组织编码、组织名称全路径
-        	setOrgFullCodeAndOrgFullName(organization, parentOrganization);
     	}
+    	
+    	// 设置 组织编码、组织名称全路径
+    	setOrgFullCodeAndOrgFullName(organization, parentOrganization);
     	
     	// 组织组织树层级
     	if(ObjectUtil.isNull(parentOrganization)) {
