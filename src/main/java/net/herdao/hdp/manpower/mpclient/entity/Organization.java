@@ -102,7 +102,7 @@ public class Organization extends BaseEntity<Organization> {
 	 * 是否停用(0 停用 ，1启用（默认），不传或者传3 查询全部)
 	 */
 	@ApiModelProperty(value = "是否停用")
-	private Integer isStop;
+	private Boolean isStop;
 
 	/**
 	 * 是否停用 页面展示
