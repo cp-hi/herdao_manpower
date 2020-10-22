@@ -90,7 +90,7 @@ public class OrganizationVO {
 	private Integer isStop;
 
 	/**
-	 * 是否虚拟组织（取值待确认）
+	 * 是否虚拟组织
 	 */
 	@ApiModelProperty(value = "是否虚拟组织(值：1 是 、值：否)")
 	private Integer isVirtual;
