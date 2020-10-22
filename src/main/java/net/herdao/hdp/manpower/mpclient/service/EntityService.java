@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,45 @@ public interface EntityService<T> extends IService<T> {
     default IPage page(Page page, T t) {
         return page;
     }
+
+    /**
+     * 获取表名
+     *
+     * @return
+     */
+    default String getTabelName() {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+        TableName table = clazz.getAnnotation(TableName.class);
+        return table.value();
+    }
+
+    /**
+     * 获取编码字段
+     *
+     * @return
+     */
+    default String getTableCodeField() {
+        String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
+                .replaceFirst("sys_", "") + "_code";
+        return codeField;
+    }
+
+    default String getEntityCodeField() {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+        String entityName = clazz.getSimpleName();
+        return clazz.getName()+"Code";
+    }
+
+    /**
+     * 生成编码
+     * @return
+     */
+    default String generateEntityCode() {
+        return null;
+    }
+
 
     /**
      * 保存实体并自动添加日志
@@ -137,11 +178,12 @@ public interface EntityService<T> extends IService<T> {
     /**
      * 根据字段名和字段值获取字段
      * 并根据条件抛异常
+     *
      * @param field 字段名
-     * @param value  字段值
-     * @param need 是否需要它存在
-     * @Author ljan
+     * @param value 字段值
+     * @param need  是否需要它存在
      * @return
+     * @Author ljan
      */
     default T chkEntityExists(String field, String value, boolean need) {
         T t = this.getEntityByField(field, value);
