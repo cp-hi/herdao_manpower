@@ -72,10 +72,11 @@
 		left join mp_pipeline pip on pip.id=p.pipe_id
 		left join mp_post po on po.id=p.post_id
 		left join mp_job_level jl on jl.id=p.job_level
-		WHERE 1=1
-		and p.DEL_FLAG=0
-        <if test="staffid != null">
-            and p.STAFF_ID = #{staffid}
-        </if>
+		<where>
+			and p.DEL_FLAG=0
+	        <if test="staffid != null">
+	            and p.STAFF_ID = #{staffid}
+	        </if>
+        </where>
         </select>
 </mapper>

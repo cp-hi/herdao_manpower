@@ -155,10 +155,12 @@
 						f.FIELD5
             FROM   mp_stafftransaction f
 						left join sys_dict_item dic on f.TRAN_TYPE=dic.value and dic.type='YDLX'
-            where 1=1 and f.DEL_FLAG=0
-            <if test="staffid != null">
-            and f.STAFF_ID = #{staffid}
-            </if>
+            <where> 
+            and f.DEL_FLAG=0
+	            <if test="staffid != null">
+	            and f.STAFF_ID = #{staffid}
+	            </if>
+            </where>
       </select>
 
 </mapper>
