@@ -87,13 +87,13 @@ public class OrganizationVO {
 	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
 	 */
 	@ApiModelProperty(value = "是否停用(值：false 启用 、值：true 停用)")
-	private Integer isStop;
+	private Boolean isStop;
 
 	/**
 	 * 是否虚拟组织
 	 */
 	@ApiModelProperty(value = "是否虚拟组织(值：true 是 、值： false 否)")
-	private Integer isVirtual;
+	private Boolean isVirtual;
 
 	/**
 	 * 组织类型（参考字典：“ZZLX”）
