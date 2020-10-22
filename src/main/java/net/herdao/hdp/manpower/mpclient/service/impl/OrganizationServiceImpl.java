@@ -31,6 +31,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
@@ -115,8 +116,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @Transactional(rollbackFor = Exception.class)
 	public R expectedDisable(Long id, String stopDateStr) {
-		// 停用状态
-		Integer status = 1;
 		Organization organization = this.getById(id);
 		
 		List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(organization.getOrgCode());
@@ -129,7 +128,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 			// 设置停用日期
 			org.setStopDate(DateUtil.parseDate(stopDateStr));
 			// 设置为停用 TOTO 后期关联定时任务
-			org.setIsStop(status);
+			org.setIsStop(true);
 		});
 		
 		this.saveOrUpdateBatch(organizations);
@@ -150,11 +149,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @Transactional(rollbackFor = Exception.class)
 	public R disable() {
-    	// 停用状态
-    	Integer status = 1;
 		// 查询待停用的组织信息
 		List<Organization> organizations = this.lambdaQuery().le(Organization::getStopDate, DateUtil.parseDate(DateUtil.formatDate(new Date())))
-											   .ne(Organization::getIsStop, status).list();
+											   .ne(Organization::getIsStop, true).list();
 		if (ObjectUtil.isNotEmpty(organizations)) {
 			organizations.forEach(organization -> {
 				// 当前组织下在职员工数
@@ -171,7 +168,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 					organizationChildrens.add(organization);
 					organizationChildrens.forEach(org ->{
 						// 设置为停用 TOTO 后期关联定时任务
-						org.setIsStop(status);
+						org.setIsStop(true);
 					});
 					
 					this.saveOrUpdateBatch(organizations);
@@ -194,8 +191,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @Transactional(rollbackFor = Exception.class)
 	public R expectedEnable(Long id, String startDateStr) {
-    	// 启用状态
-    	Integer status = 0;
     	
 		Organization organization = this.getById(id);
 
@@ -205,7 +200,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		// 设置启用
 		organization.setStopDate(DateUtil.parseDate(startDateStr));
 		// 设置为启用 TOTO 后期关联定时任务
-		organization.setIsStop(status);
+		organization.setIsStop(false);
 		
 		this.saveOrUpdate(organization);
 		
@@ -224,17 +219,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @Transactional(rollbackFor = Exception.class)
 	public R enable() {
-    	
-    	// 启用状态
-    	Integer status = 0;
     	// 查询待启用的组织信息
     	List<Organization> organizations = this.lambdaQuery().le(Organization::getStartDate, DateUtil.parseDate(DateUtil.formatDate(new Date())))
-    												   .ne(Organization::getIsStop, status).list();
+    												   .ne(Organization::getIsStop, false).list();
     	
     	if (ObjectUtil.isNotEmpty(organizations)) {
 			organizations.forEach(organization -> {
 				// 设置为停用 TOTO 后期关联定时任务
-				organization.setIsStop(status);
+				organization.setIsStop(false);
 			});
 			
 			this.saveOrUpdateBatch(organizations);
@@ -388,7 +380,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public  R findOrganization2Level(@RequestBody Organization condition) {
         if (null != condition) {
             //默认加载启用状态的组织架构（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
-            condition.setIsStop(0);
+            condition.setIsStop(false);
         }
         List<Organization> rootOrgans = this.baseMapper.findRootOrganizations(condition);
 
@@ -397,7 +389,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 Organization childrenCondition = new Organization();
                 childrenCondition.setParentId(rootOrgan.getId());
                 //默认加载启用状态的组织架构
-                childrenCondition.setIsStop(0);
+                childrenCondition.setIsStop(false);
 
                 List<Organization> childrenOrgans = this.baseMapper.findOrganizationByCondition(childrenCondition);
                 rootOrgan.setChildren(childrenOrgans);
@@ -439,7 +431,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	Long id = organizationVO.getId();
     	
     	// 更新前组织信息
-    	Organization tpOrganization = ObjectUtil.isNull(id) ? new Organization() : this.getById(id);
+    	Organization tpOrganization = ObjectUtil.isNull(id) ? null : this.getById(id);
     	
     	// 父组织id
     	Long parentId = organizationVO.getParentId();
@@ -500,11 +492,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	// 保存组织
     	this.saveOrUpdate(organization);
     	
-    	// 上级组织为NULL
+    	// 更新上级组织为NULL
     	if(ObjectUtil.isNull(parentId)) {
-    		LambdaUpdateWrapper<Organization> updateWrapper = new LambdaUpdateWrapper<Organization>();
+    		LambdaUpdateWrapper<Organization> updateWrapper = Wrappers.lambdaUpdate();
             updateWrapper.set(Organization::getParentId, null)
-            			  .eq(Organization::getId, organization.getId());
+            			 .eq(Organization::getId, organization.getId());
             this.update(updateWrapper);
     	}
     	
@@ -604,4 +596,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         BeanUtils.copyProperties(form, entity);
         return this.updateById(entity);
     }
+
+	@Override
+	public List<OrganizationAddDTO> selectAllOrganization() {
+		return this.baseMapper.selectAllOrganization();
+	}
 }
