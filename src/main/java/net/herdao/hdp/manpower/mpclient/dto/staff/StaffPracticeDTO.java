@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -122,7 +123,7 @@ public class StaffPracticeDTO {
      * 评价时间
     */
     @ApiModelProperty(value="评价时间")
-    private LocalDateTime evaluateTime;
+    private LocalDate evaluateTime;
     /**
      * 人员外键
     */
