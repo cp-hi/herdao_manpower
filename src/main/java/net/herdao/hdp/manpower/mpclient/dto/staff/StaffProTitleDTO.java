@@ -6,7 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @ApiModel(value = "员工职称及职业资料")
@@ -41,8 +44,10 @@ public class StaffProTitleDTO {
     /**
      * 发证时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="发证时间")
-    private String certificateTime;
+    private LocalDate certificateTime;
 
     /**
      * 资质挂靠单位
