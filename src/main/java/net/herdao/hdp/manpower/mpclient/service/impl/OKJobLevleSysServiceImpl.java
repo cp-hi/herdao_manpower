@@ -34,9 +34,9 @@ public class OKJobLevleSysServiceImpl extends ServiceImpl<OKJobLevleSysMapper, O
         return this.baseMapper.findAll();
     }
 
+    @Override
     public OKJobLevleSysDTO findDetail(Long id) {
-//        return this.baseMapper.set();
-        return null;
+        return this.baseMapper.findDetail(id);
     }
 
 }

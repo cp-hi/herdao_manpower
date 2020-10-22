@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevel;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @ClassName OKJobLevelMapper
@@ -11,5 +12,6 @@ import net.herdao.hdp.manpower.mpclient.entity.OKJobLevel;
  * @Date 2020/10/22 9:03
  * @Version 1.0
  */
+@Mapper
 public interface OKJobLevelMapper extends BaseMapper<OKJobLevel> {
 }

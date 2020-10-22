@@ -3,10 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelBatchDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.*;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
@@ -74,7 +71,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     @GetMapping("/okpage")
     @ApiOperation(value = "一键职级系统列表", notes = "一键职级系统列表")
     public R okpage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        List<OKJobLevleSys> jobLevleSys = okJobLevleSysService.findAll();
+        List<OKJobLevleSys> jobLevleSys = okJobLevleSysService.list();
         List<OKJobLevleSysDTO> data = DtoConverter.dto2vo(jobLevleSys, OKJobLevleSysDTO.class);
         return R.ok(data);
     }
@@ -82,15 +79,10 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     @GetMapping("/okJobLevelDetail")
     @ApiOperation(value = "一键职级系统详情", notes = "一键职级系统详情")
     public R okJobLevelDetail(Long okJobLevleSysId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-
-
-        return R.ok();
+        OKJobLevleSysDTO okJobLevleSysDTO = okJobLevleSysService.findDetail(okJobLevleSysId);
+        OKJobLevleSysDetailDTO detailDTO = new OKJobLevleSysDetailDTO();
+        return R.ok(detailDTO);
     }
-
-
-
-
-
 
 
 }

@@ -8,13 +8,13 @@
     <resultMap id="okJobLevleSysDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO">
         <id column="id" property="id"/>
         <collection property="okJobGradeDTOList" column="id" select="getOKJobGradeDTOs"
-                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO" />
+                    javaType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO" />
     </resultMap>
 
     <resultMap id="okJobGradeDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO">
         <id column="id" property="id"/>
         <collection property="okJobLevelDTOList" column="id" select="getOKJobGradeDTOs"
-                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO" />
+                    javaType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO" />
     </resultMap>
 
     <resultMap id="okJobLevelDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO">

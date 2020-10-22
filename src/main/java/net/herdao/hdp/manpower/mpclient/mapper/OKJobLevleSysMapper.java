@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -19,4 +20,6 @@ import java.util.List;
 public interface OKJobLevleSysMapper extends BaseMapper<OKJobLevleSys> {
     @Select("select * from  mp_ok_job_level_sys")
     List<OKJobLevleSys> findAll();
+
+    OKJobLevleSysDTO findDetail(Long id);
 }
