@@ -37,8 +37,22 @@
 
     <!-- 历史任职情况分页 -->
     <select id="findUserPostHistoryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
-         select * from (
-             SELECT u.id,
+           SELECT   t.id,
+                    t.staffName,
+                    t.staffCode,
+                    t.startDate,
+                    t.orgName,
+                    t.sectionName,
+                    t.pipelineName,
+                    t.postName,
+                    t.jobLevelCode,
+                    t.customPost,
+                    t.modifier_name,
+                    t.MODIFIED_TIME,
+                    CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+           FROM
+                (
+                    SELECT u.id,
                     S.STAFF_NAME staffName,
                     S.STAFF_CODE staffCode,
                     u.START_DATE startDate,
@@ -48,9 +62,9 @@
                     p.POST_NAME postName,
                     jl.JOB_LEVEL_NAME jobLevelCode,
                     di.label customPost,
-                    ( SELECT s.USER_NAME FROM mp_user s WHERE s.id = u.MODIFIER_CODE ) modifier_name,
+                    usr.USER_NAME modifier_name,
                     u.MODIFIED_TIME
-                 FROM  mp_userposthistory u
+                    FROM  mp_userposthistory u
                     LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
                     LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
                     LEFT JOIN mp_post p ON p.ID = u.POST_ID
@@ -58,21 +72,35 @@
                     LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
                     LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
                     LEFT JOIN mp_job_level jl ON jl.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
-                    WHERE
-                    1 = 1
+                    LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
+                WHERE   1 = 1
                     AND u.del_flag = 0
-        )t where 1=1
+            )t where 1=1
         <if test="searchText != null">
             and CONCAT(
-                t.staffName, t.staffCode,t.startDate,t.orgName,t.sectionName,
-                t.pipelineName,t.postName,t.jobLevelName, t.customPost,t.modifier_name,t.MODIFIED_TIME
+                IFNULL( t.staffName,''), IFNULL( t.staffCode,''),IFNULL( t.startDate,''),IFNULL( t.orgName,''),IFNULL( t.sectionName,''),
+                IFNULL( t.pipelineName,''),IFNULL( t.postName,''), IFNULL( t.jobLevelName,''), IFNULL( t.customPost,''),IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
 
     <!-- 历史任职情况 -->
     <select id="findUserPostHistory" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
-        select * from (
+        SELECT  t.id,
+                t.staffName,
+                t.staffCode,
+                t.startDate,
+                t.orgName,
+                t.sectionName,
+                t.pipelineName,
+                t.postName,
+                t.jobLevelCode,
+                t.customPost,
+                t.modifier_name,
+                t.MODIFIED_TIME,
+                CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+        FROM
+        (
             SELECT u.id,
             S.STAFF_NAME staffName,
             S.STAFF_CODE staffCode,
@@ -83,7 +111,7 @@
             p.POST_NAME postName,
             jl.JOB_LEVEL_NAME jobLevelCode,
             di.label customPost,
-            ( SELECT s.USER_NAME FROM mp_user s WHERE s.id = u.MODIFIER_CODE ) modifier_name,
+            usr.USER_NAME modifier_name,
             u.MODIFIED_TIME
             FROM  mp_userposthistory u
             LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
@@ -93,14 +121,14 @@
             LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
             LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
             LEFT JOIN mp_job_level jl ON jl.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
-            WHERE
-            1 = 1
+            LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
+            WHERE  1 = 1
             AND u.del_flag = 0
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
-                t.staffName, t.staffCode,t.startDate,t.orgName,t.sectionName,
-                t.pipelineName,t.postName,t.jobLevelName, t.customPost,t.modifier_name,t.MODIFIED_TIME
+            IFNULL( t.staffName,''), IFNULL( t.staffCode,''),IFNULL( t.startDate,''),IFNULL( t.orgName,''),IFNULL( t.sectionName,''),
+            IFNULL( t.pipelineName,''),IFNULL( t.postName,''), IFNULL( t.jobLevelName,''), IFNULL( t.customPost,''),IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
