@@ -187,14 +187,15 @@ public class NewBaseController<T, D, F, E> {
 
     @ApiOperation("批量新增/编辑")
     @SysLog("批量新增/编辑")
-    @PostMapping("/import")
+    @GetMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
             @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
+            @ApiImplicitParam(name = "downloadErrMsg", value = "下载错误信息，0或空不下载 1:下载"),
     })
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
-                        Integer importType) throws Exception {
+                        Integer importType,Integer downloadErrMsg) throws Exception {
         NewImportExcelListener<E> listener = null;
         InputStream inputStream = null;
         try {
@@ -203,10 +204,12 @@ public class NewBaseController<T, D, F, E> {
             EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
         } catch (Exception ex) {
-            List data = null;
-            if (Integer.valueOf(1).equals(importType)) data = listener.getExcelList();
-            else data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
-            ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), data);
+            if (Integer.valueOf(1).equals(downloadErrMsg)) {
+                List data = null;
+                if (Integer.valueOf(1).equals(importType)) data = listener.getExcelList();
+                else data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
+                ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), data);
+            }
             return R.failed(ex.getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);

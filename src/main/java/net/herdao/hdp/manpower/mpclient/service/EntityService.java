@@ -69,7 +69,6 @@ public interface EntityService<T> extends IService<T> {
      */
     default String generateEntityCode() {
         T t = getOne(new QueryWrapper<T>().first(""));
-
         return null;
     }
 
@@ -207,9 +206,6 @@ public interface EntityService<T> extends IService<T> {
         T t = getOne(new QueryWrapper<T>().eq(field, name));
         return t;
     }
-
-
-    //TODO 添加操作日志
 
     /**
      * 批量保存 可以新增/修改
