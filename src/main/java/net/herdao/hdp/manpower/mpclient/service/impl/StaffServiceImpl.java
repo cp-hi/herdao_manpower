@@ -515,7 +515,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("staffSalaryDTO", salary);
 
 		List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
-				.eq("SATFF_ID", staff.getId())
+				.eq("STAFF_ID", staff.getId())
 				.orderByDesc("START_DATE")
 		);
 		List<StaffcontractDTO> contractDtoList = new ArrayList<>();
