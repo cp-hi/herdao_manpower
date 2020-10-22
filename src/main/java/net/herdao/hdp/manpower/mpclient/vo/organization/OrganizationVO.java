@@ -60,10 +60,10 @@ public class OrganizationVO {
 	
 
 	/**
-	 * 是否项目/中心及以上 TODO 取值待确定
+	 * 是否项目/中心及以上
 	 */
-	@ApiModelProperty(value = "是否项目/中心及以上")
-	private Boolean organizational;
+	@ApiModelProperty(value = "是否项目/中心及以上（值：1 是， 值 0 否）")
+	private Integer organizational;
 
 	/**
 	 * 管线编码（取管线表主键）
@@ -86,14 +86,14 @@ public class OrganizationVO {
 	/**
 	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
 	 */
-	@ApiModelProperty(value = "是否停用")
-	private Boolean isStop;
+	@ApiModelProperty(value = "是否停用(值：0 启用 、值：1 停用)")
+	private Integer isStop;
 
 	/**
-	 * 是否虚拟组织（取值待确认）
+	 * 是否虚拟组织
 	 */
-	@ApiModelProperty(value = "是否虚拟组织")
-	private Boolean isVirtual;
+	@ApiModelProperty(value = "是否虚拟组织(值：1 是 、值：否)")
+	private Integer isVirtual;
 
 	/**
 	 * 组织类型（参考字典：“ZZLX”）

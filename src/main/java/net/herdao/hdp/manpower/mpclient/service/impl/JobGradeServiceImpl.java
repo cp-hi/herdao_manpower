@@ -23,12 +23,12 @@ import java.util.Map;
 @Service
 public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> implements JobGradeService {
 
-    @Override
-    public String generateEntityCode() {
-        String tabel = getTabelName();
-        String field = getTableCodeField();
-        return baseMapper.generateEntityCode(tabel, field);
-    }
+//    @Override
+//    public String generateEntityCode() {
+//        String tabel = getTabelName();
+//        String field = getTableCodeField();
+//        return baseMapper.generateEntityCode(tabel, field);
+//    }
 
     @Override
     public IPage page(Page page, JobGrade jobGrade) {
