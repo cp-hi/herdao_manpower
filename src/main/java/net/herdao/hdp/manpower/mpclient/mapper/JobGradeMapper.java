@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface JobGradeMapper extends EntityMapper<JobGrade> {
+public interface JobGradeMapper extends BaseMapper<JobGrade> {
     IPage page(Page page, @Param("jobGrade") JobGrade jobGrade);
 
     List<JobGradeShortDTO> jobGradeList(Long groupId);
