@@ -79,8 +79,8 @@ public class OrganizationFormVO {
 	/**
 	 * 是否虚拟组织（取值待确认）
 	 */
-	@ApiModelProperty(value = "是否虚拟组织(值：1 是 、值：否)")
-	private Integer isVirtual;
+	@ApiModelProperty(value = "是否虚拟组织(值：true 是 、值： false 否)")
+	private Boolean isVirtual;
 	/**
 	 * 人员编制（编制人员数）
 	 */
@@ -90,10 +90,10 @@ public class OrganizationFormVO {
 	/**
 	 * 是否项目/中心及以上
 	 */
-	@ApiModelProperty(value = "是否项目/中心及以上（值：1 是， 值 0 否）")
-	private Integer organizational;
+	@ApiModelProperty(value = "是否项目/中心及以上（值：true 是， 值 false 否）")
+	private Boolean organizational;
 	/**
-	 * 福利类型（取福利标准主键）待确定取数 TOTO
+	 * 福利类型（取福利标准主键）
 	 */
 	@ApiModelProperty(value = "福利类型")
 	private String welfareType;
@@ -105,8 +105,8 @@ public class OrganizationFormVO {
 	/**
 	 * 是否停用（值：0 启用 、值：1 停用）
 	 */
-	@ApiModelProperty(value = "是否停用(值：0 启用 、值：1 停用)")
-	private Integer isStop;
+	@ApiModelProperty(value = "是否停用(值：false 启用 、值：true 停用)")
+	private Boolean isStop;
 	/**
 	 * 启用日期
 	 */

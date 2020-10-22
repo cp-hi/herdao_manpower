@@ -62,8 +62,8 @@ public class OrganizationVO {
 	/**
 	 * 是否项目/中心及以上
 	 */
-	@ApiModelProperty(value = "是否项目/中心及以上（值：1 是， 值 0 否）")
-	private Integer organizational;
+	@ApiModelProperty(value = "是否项目/中心及以上（值：true 是， 值 false 否）")
+	private Boolean organizational;
 
 	/**
 	 * 管线编码（取管线表主键）
@@ -86,13 +86,13 @@ public class OrganizationVO {
 	/**
 	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
 	 */
-	@ApiModelProperty(value = "是否停用(值：0 启用 、值：1 停用)")
+	@ApiModelProperty(value = "是否停用(值：false 启用 、值：true 停用)")
 	private Integer isStop;
 
 	/**
 	 * 是否虚拟组织
 	 */
-	@ApiModelProperty(value = "是否虚拟组织(值：1 是 、值：否)")
+	@ApiModelProperty(value = "是否虚拟组织(值：true 是 、值： false 否)")
 	private Integer isVirtual;
 
 	/**
