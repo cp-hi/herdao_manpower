@@ -25,7 +25,7 @@ import java.util.Date;
  * @date 2020-10-17 16:07
  */
 @Data
-@ApiModel(value = "员工异动情况DTO")
+@ApiModel(value = "员工异动情况")
 public class StafftransactionDTO {
 	/**
      * id

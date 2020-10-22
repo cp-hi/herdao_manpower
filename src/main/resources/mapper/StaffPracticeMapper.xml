@@ -39,7 +39,7 @@
                   <result property="delFlag" column="DEL_FLAG"/>
             </resultMap>
 
-      <!-- 员工职称及职业资料 -->
+      <!-- 实习记录 -->
       <select id="findStaffPractice"  resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO">
               SELECT  p.id,
             p.begin_date,
@@ -47,26 +47,26 @@
             p.period,
             p.group_name,
             p.corporation_name,
-					  p.depart_name,
-					  p.depart_id,
-					  p.plate_id sectionId,
-					  s.SECTION_NAME,
-					  p.pipe_id,
-					  pip.PIPELINE_NAME,
-					  p.post_id,
-					  po.POST_NAME,
-					  p.job_level,
-					  jl.JOB_LEVEL_NAME,											
+			p.depart_name,
+			p.depart_id,
+			p.plate_id sectionId,
+			s.SECTION_NAME,
+			p.pipe_id,
+			pip.PIPELINE_NAME,
+			p.post_id,
+			po.POST_NAME,
+			p.job_level jobLevelId,
+			jl.JOB_LEVEL_NAME,											
             p.score,
             p.evaluate_id,
             p.evaluate_name,
             p.evaluate_time,
-					  p.STAFF_ID,
-					  p.field1,
-					  p.field2,
-					  p.field3,
-					  p.field4,
-					  p.field5
+			p.STAFF_ID,
+			p.field1,
+			p.field2,
+			p.field3,
+			p.field4,
+			p.field5
 		FROM mp_staff_practice p
 		left join mp_section s on p.plate_id=s.id
 		left join mp_pipeline pip on pip.id=p.pipe_id

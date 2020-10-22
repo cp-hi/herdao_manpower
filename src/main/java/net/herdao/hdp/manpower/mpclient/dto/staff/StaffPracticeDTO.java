@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
-@ApiModel(value = "工作经历-lift")
+@ApiModel(value = "实习记录")
 public class StaffPracticeDTO {
 	/**
      * ID
@@ -24,19 +24,19 @@ public class StaffPracticeDTO {
     /**
      * 开始日期 yyyy-MM-dd
      */
-    @ApiModelProperty(value="开始日期 yyyy-MM-dd ")
+    @ApiModelProperty(value="开始日期")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     private Date beginDate;
     /**
      * 结束日期 yyyy-MM-dd
      */
-    @ApiModelProperty(value="结束日期 yyyy-MM-dd ")
+    @ApiModelProperty(value="结束日期")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     private Date endDate;
     /**
      * 实习期 以月为单位，开始日期和结束日期之差，取整
      */
-    @ApiModelProperty(value="实习期 以月为单位，开始日期和结束日期之差，取整")
+    @ApiModelProperty(value="实习期") 
     private String period;
     /**
      * 集团
@@ -51,17 +51,17 @@ public class StaffPracticeDTO {
     /**
      * 部门
      */
-    @ApiModelProperty(value="部门")
+    @ApiModelProperty(value="部门名称")
     private String departName;
     /**
      * 部门ID
      */
-    @ApiModelProperty(value="部门ID")
+    @ApiModelProperty(value="部门")
     private Long departId;
     /**
      * 板块ID
      */
-    @ApiModelProperty(value="板块ID")
+    @ApiModelProperty(value="板块")
     private Long sectionId;
     /**
      * 板块名称
@@ -71,7 +71,7 @@ public class StaffPracticeDTO {
     /**
      * 管线ID
      */
-    @ApiModelProperty(value="管线ID")
+    @ApiModelProperty(value="管线")
     private Long pipelineId;
     /**
      * 管线名称
@@ -81,7 +81,7 @@ public class StaffPracticeDTO {
     /**
      * 岗位ID
      */
-    @ApiModelProperty(value="岗位ID")
+    @ApiModelProperty(value="岗位")
     private Long postId;
     /**
      * 岗位名称
@@ -92,7 +92,7 @@ public class StaffPracticeDTO {
      * 职级
      */
     @ApiModelProperty(value="职级")
-    private String jobLevel;
+    private String jobLevelId;
     /**
      * 职级名称
      */
@@ -111,7 +111,7 @@ public class StaffPracticeDTO {
     /**
      * 评价人ID
     */
-    @ApiModelProperty(value="评价人ID")
+    @ApiModelProperty(value="评价人")
     private String evaluateId;
     /**
      * 评价人姓名

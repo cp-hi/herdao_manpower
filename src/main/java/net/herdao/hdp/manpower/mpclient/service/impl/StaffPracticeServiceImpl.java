@@ -64,6 +64,7 @@ public class StaffPracticeServiceImpl extends ServiceImpl<StaffPracticeMapper, S
         if(staffPracticeDTO.getId()==null){
         	staffPractice = new StaffPractice();
         	BeanUtils.copyProperties(staffPracticeDTO, staffPractice);
+        	staffPractice.setJobLevel(staffPracticeDTO.getJobLevelId());
         	
         	staffPractice.setCreatorId(userId.toString());
         	staffPractice.setCreatedTime(now);
@@ -73,6 +74,8 @@ public class StaffPracticeServiceImpl extends ServiceImpl<StaffPracticeMapper, S
         else{
         	staffPractice = this.getById(staffPracticeDTO.getId());
         	BeanUtils.copyProperties(staffPracticeDTO, staffPractice);
+        	staffPractice.setJobLevel(staffPracticeDTO.getJobLevelId());
+        	
         	staffPractice.setModifierId(userId.toString());
         	staffPractice.setModifiedTime(now);
         }
