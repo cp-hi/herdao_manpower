@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName JobLevelController
@@ -78,17 +81,31 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     }
 
     @GetMapping("/okJobLevelDetail")
-    @ApiOperation(value = "一键职级系统详情", notes = "一键职级系统详情")
-    public R okJobLevelDetail(Long okJobLevleSysId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    @ApiOperation(value = "获取职级系统详情", notes = "获取职级系统详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
+    })
+    public R<OKJobLevleSysDetailDTO> okJobLevelDetail(Long okJobLevleSysId) {
         OKJobLevleSysDTO okJobLevleSysDTO = okJobLevleSysService.findDetail(okJobLevleSysId);
         OKJobLevleSysDetailDTO detailDTO = new OKJobLevleSysDetailDTO();
         BeanUtils.copyProperties(okJobLevleSysDTO, detailDTO);
         for (OKJobGradeDTO jobGradeDTO : okJobLevleSysDTO.getOkJobGradeDTOList()) {
-
+            String jobGradeName = jobGradeDTO.getJobGradeName();
+            String jobLevelName = "";
+            for (OKJobLevelDTO jobLevelDTO : jobGradeDTO.getOkJobLevelDTOList())
+                jobLevelName += jobLevelDTO.getJobLevelName() + " ";
+            detailDTO.getShortJobLevels().add(ShortJobLevelDTO.builder()
+                    .jobGradeName(jobGradeName).jobLevelName(jobLevelName).build());
         }
-
         return R.ok(detailDTO);
     }
 
-
+    @GetMapping("/okCreateJobLevel")
+    @ApiOperation(value = "一键创建职级系统详情", notes = "一键创建职级系统详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
+    })
+    public R okCreateJobLevel(Long okJobLevleSysId) {
+        return R.ok();
+    }
 }

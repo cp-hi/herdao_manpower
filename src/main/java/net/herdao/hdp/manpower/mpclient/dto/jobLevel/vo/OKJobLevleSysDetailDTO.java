@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName OKJobLevleSysDetailDTO
@@ -17,7 +18,7 @@ import java.util.List;
  */
 
 @Data
-@ApiModel(value = "一键创建职级-详情")
+@ApiModel(value = "职级体系-详情")
 public class OKJobLevleSysDetailDTO {
     @ApiModelProperty("ID")
     private Long id;
@@ -27,5 +28,5 @@ public class OKJobLevleSysDetailDTO {
     private String description;
 
     @ApiModelProperty("职级列表")
-    private List<String> jobLevels = new ArrayList<>();
+    private List<ShortJobLevelDTO> shortJobLevels = new ArrayList<>();
 }
