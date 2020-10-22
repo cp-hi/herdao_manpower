@@ -7,9 +7,13 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.staff.*;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,10 @@ public class StaffEditController {
     private final StaffService staffService;
 
     private final UserService userService;
+
+    private final FamilystatusService familystatusService;
+
+    private final StaffcontractService staffcontractService;
 
     @ApiOperation(value = "停用员工", notes = "通过工号停用员工")
     @GetMapping("/stop/{staffCode}" )
@@ -111,6 +119,56 @@ public class StaffEditController {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffSalary, staff);
         return R.ok(staffService.updateById(staff));
+    }
+
+    @ApiOperation(value = "员工详情-修改家庭情况", notes = "家庭情况")
+    @SysLog("修改家庭情况" )
+    @PutMapping("/stafffamily" )
+    public R<Boolean> updateById(@RequestBody StaffFamilyDTO staffFamily) {
+        Familystatus family = new Familystatus();
+        BeanUtils.copyProperties(staffFamily, family);
+        return R.ok(familystatusService.updateById(family));
+    }
+
+    @ApiOperation(value = "员工详情-新增家庭情况", notes = "家庭情况")
+    @SysLog("新增家庭情况" )
+    @PostMapping("/stafffamily" )
+    public R<Boolean> save(@RequestBody StaffFamilyDTO staffFamily) {
+        Familystatus family = new Familystatus();
+        BeanUtils.copyProperties(staffFamily, family);
+        return R.ok(familystatusService.save(family));
+    }
+
+    @ApiOperation(value = "员工详情-删除家庭情况", notes = "家庭情况")
+    @SysLog("删除家庭情况" )
+    @DeleteMapping("/stafffamily/{id}" )
+    public R<Boolean> deleteFamily(@PathVariable Long id) {
+        return R.ok(familystatusService.removeById(id));
+    }
+
+    @ApiOperation(value = "员工详情-修改劳动合同", notes = "劳动合同")
+    @SysLog("修改劳动合同" )
+    @PutMapping("/staffcontract" )
+    public R<Boolean> updateById(@RequestBody StaffcontractDTO staffContract) {
+        Staffcontract contract = new Staffcontract();
+        BeanUtils.copyProperties(staffContract, contract);
+        return R.ok(staffcontractService.updateById(contract));
+    }
+
+    @ApiOperation(value = "员工详情-新增劳动合同", notes = "劳动合同")
+    @SysLog("新增劳动合同" )
+    @PostMapping("/staffcontract" )
+    public R<Boolean> save(@RequestBody StaffcontractDTO staffContract) {
+        Staffcontract contract = new Staffcontract();
+        BeanUtils.copyProperties(staffContract, contract);
+        return R.ok(staffcontractService.save(contract));
+    }
+
+    @ApiOperation(value = "员工详情-删除劳动合同", notes = "劳动合同")
+    @SysLog("删除劳动合同" )
+    @DeleteMapping("/staffcontract/{id}" )
+    public R<Boolean> deleteContract(@PathVariable Long id) {
+        return R.ok(staffcontractService.removeById(id));
     }
 
 }

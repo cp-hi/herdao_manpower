@@ -49,6 +49,10 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
     @ExcelIgnore
     private Long id;
 
+    @ExcelIgnore
+    @ApiModelProperty(value="员工外键")
+    private Long staffId;
+
     /**
      * 员工姓名
      */
@@ -111,7 +115,7 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
      */
     @ApiModelProperty(value="合同期限")
     @ExcelProperty(value = "合同期限")
-    private String contractPeiod;
+    private String contractPeriod;
 
     /**
      * 试用期月数
