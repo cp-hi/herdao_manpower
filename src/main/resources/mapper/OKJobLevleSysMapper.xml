@@ -5,4 +5,33 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OKJobLevleSysMapper">
 
 
+    <resultMap id="okJobLevleSysDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO">
+        <id column="id" property="id"/>
+        <collection property="okJobGradeDTOList" column="id" select="getOKJobGradeDTOs"
+                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO" />
+    </resultMap>
+
+    <resultMap id="okJobGradeDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO">
+        <id column="id" property="id"/>
+        <collection property="okJobLevelDTOList" column="id" select="getOKJobGradeDTOs"
+                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO" />
+    </resultMap>
+
+    <resultMap id="okJobLevelDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO">
+        <id column="id" property="id"/>
+    </resultMap>
+
+
+    <select id="findDetail" parameterType="long" resultMap="okJobLevleSysDTOMap">
+      SELECT * from mp_ok_job_level_sys where id = #{id}
+    </select>
+
+    <select id="getOKJobGradeDTOs" parameterType="long" resultMap="okJobGradeDTOMap">
+       select * from mp_ok_job_grade WHERE ok_job_level_sys_id= #{id}
+    </select>
+
+    <select id="getOKJobGradeDTOs" parameterType="long" resultMap="okJobLevelDTOMap">
+       select * from mp_ok_job_level WHERE ok_job_grade_id= #{id}
+    </select>
+
 </mapper>

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
+@TableName("mp_job_grade")
 public class OKJobGrade extends JobGrade {
     private Long okJobLevelSysId;
 }

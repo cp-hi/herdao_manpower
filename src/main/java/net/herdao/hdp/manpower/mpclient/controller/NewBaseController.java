@@ -118,7 +118,7 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
     }
 
-    public R page(HttpServletResponse response, Page page, T t, Integer type)
+    public R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
         IPage p = entityService.page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
@@ -200,7 +200,7 @@ public class NewBaseController<T, D, F, E> {
             inputStream = file.getInputStream();
             listener = new NewImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().doRead();
-            return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
+
         } catch (Exception ex) {
             if (Integer.valueOf(1).equals(downloadErrMsg)) {
                 List data = null;
@@ -214,10 +214,13 @@ public class NewBaseController<T, D, F, E> {
                 }
                 ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", clazz, data);
             }
-            return R.failed(ex.getMessage());
+            else {
+                throw ex;
+            }
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
+        return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
     }
 
 

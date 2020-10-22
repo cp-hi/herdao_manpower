@@ -6,15 +6,20 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelBatchDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
+import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @ClassName JobLevelController
@@ -33,6 +38,9 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
 
     @Autowired
     private JobLevelService jobLevelService;
+
+    @Autowired
+    private OKJobLevleSysService okJobLevleSysService;
 
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
@@ -65,7 +73,24 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
 
     @GetMapping("/okpage")
     @ApiOperation(value = "一键职级系统列表", notes = "一键职级系统列表")
-    public R okpage() {
+    public R okpage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        List<OKJobLevleSys> jobLevleSys = okJobLevleSysService.findAll();
+        List<OKJobLevleSysDTO> data = DtoConverter.dto2vo(jobLevleSys, OKJobLevleSysDTO.class);
+        return R.ok(data);
+    }
+
+    @GetMapping("/okJobLevelDetail")
+    @ApiOperation(value = "一键职级系统详情", notes = "一键职级系统详情")
+    public R okJobLevelDetail(Long okJobLevleSysId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+
+
         return R.ok();
     }
+
+
+
+
+
+
+
 }

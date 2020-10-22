@@ -35,7 +35,6 @@ public class PostSeq extends BaseEntity<PostSeq> {
     @ApiModelProperty(value = "集团ID",required = true)
     private Long groupId;
 
-    @ApiModelProperty(value = "父ID")
+    @ApiModelProperty(value = "父ID",required = true)
     private Long parentId;
-
 }

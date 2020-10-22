@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.OKJobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevelService;
+import org.springframework.stereotype.Service;
 
 /**
  * @ClassName OKJobLevelServiceImpl
@@ -13,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.service.OKJobLevelService;
  * @Date 2020/10/22 9:22
  * @Version 1.0
  */
+@Service
 public class OKJobLevelServiceImpl extends ServiceImpl<OKJobLevelMapper, OKJobLevel> implements OKJobLevelService {
 
 

@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 
+import java.util.List;
+
 /**
  * @ClassName OKJobLevleSysService
  * @Description OKJobLevleSysService
@@ -13,4 +15,6 @@ import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
  */
 
 public interface OKJobLevleSysService extends  EntityService<OKJobLevleSys>  {
+    List<OKJobLevleSys> findAll();
+
 }

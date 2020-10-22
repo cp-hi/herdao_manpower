@@ -7,6 +7,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.OKJobGradeMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.OKJobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.OKJobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevelService;
+import org.springframework.stereotype.Service;
 
 /**
  * @ClassName OKJobGradeServiceImpl
@@ -16,5 +17,6 @@ import net.herdao.hdp.manpower.mpclient.service.OKJobLevelService;
  * @Date 2020/10/22 9:26
  * @Version 1.0
  */
+@Service
 public class OKJobGradeServiceImpl extends ServiceImpl<OKJobGradeMapper, OKJobGrade> implements OKJobGradeService {
 }
