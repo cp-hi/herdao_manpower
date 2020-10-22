@@ -60,7 +60,7 @@
                     sec.SECTION_NAME sectionName,
                     pi.PIPELINE_NAME pipelineName,
                     p.POST_NAME postName,
-                    jl.JOB_LEVEL_NAME jobLevelCode,
+                    jl.JOB_LEVEL_NAME jobLevelName,
                     di.label customPost,
                     usr.USER_NAME modifier_name,
                     u.MODIFIED_TIME
@@ -86,44 +86,44 @@
 
     <!-- 历史任职情况 -->
     <select id="findUserPostHistory" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
-        SELECT  t.id,
-                t.staffName,
-                t.staffCode,
-                t.startDate,
-                t.orgName,
-                t.sectionName,
-                t.pipelineName,
-                t.postName,
-                t.jobLevelCode,
-                t.customPost,
-                t.modifier_name,
-                t.MODIFIED_TIME,
-                CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+        SELECT   t.id,
+        t.staffName,
+        t.staffCode,
+        t.startDate,
+        t.orgName,
+        t.sectionName,
+        t.pipelineName,
+        t.postName,
+        t.jobLevelCode,
+        t.customPost,
+        t.modifier_name,
+        t.MODIFIED_TIME,
+        CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
         FROM
         (
-            SELECT u.id,
-            S.STAFF_NAME staffName,
-            S.STAFF_CODE staffCode,
-            u.START_DATE startDate,
-            a.ORG_NAME orgName,
-            sec.SECTION_NAME sectionName,
-            pi.PIPELINE_NAME pipelineName,
-            p.POST_NAME postName,
-            jl.JOB_LEVEL_NAME jobLevelCode,
-            di.label customPost,
-            usr.USER_NAME modifier_name,
-            u.MODIFIED_TIME
-            FROM  mp_userposthistory u
-            LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
-            LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
-            LEFT JOIN mp_post p ON p.ID = u.POST_ID
-            LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
-            LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
-            LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
-            LEFT JOIN mp_job_level jl ON jl.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
-            LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
-            WHERE  1 = 1
-            AND u.del_flag = 0
+        SELECT u.id,
+        S.STAFF_NAME staffName,
+        S.STAFF_CODE staffCode,
+        u.START_DATE startDate,
+        a.ORG_NAME orgName,
+        sec.SECTION_NAME sectionName,
+        pi.PIPELINE_NAME pipelineName,
+        p.POST_NAME postName,
+        jl.JOB_LEVEL_NAME jobLevelName,
+        di.label customPost,
+        usr.USER_NAME modifier_name,
+        u.MODIFIED_TIME
+        FROM  mp_userposthistory u
+        LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
+        LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
+        LEFT JOIN mp_post p ON p.ID = u.POST_ID
+        LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
+        LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
+        LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
+        LEFT JOIN mp_job_level jl ON jl.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
+        LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
+        WHERE   1 = 1
+        AND u.del_flag = 0
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
