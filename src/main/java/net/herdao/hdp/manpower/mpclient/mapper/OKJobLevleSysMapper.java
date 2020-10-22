@@ -18,8 +18,5 @@ import java.util.List;
  */
 @Mapper
 public interface OKJobLevleSysMapper extends BaseMapper<OKJobLevleSys> {
-    @Select("select * from  mp_ok_job_level_sys")
-    List<OKJobLevleSys> findAll();
-
     OKJobLevleSysDTO findDetail(Long id);
 }

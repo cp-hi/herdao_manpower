@@ -62,7 +62,6 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     @Override
     @GetMapping("/page")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
             @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
@@ -93,7 +92,8 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             String jobGradeName = jobGradeDTO.getJobGradeName();
             String jobLevelName = "";
             for (OKJobLevelDTO jobLevelDTO : jobGradeDTO.getOkJobLevelDTOList())
-                jobLevelName += jobLevelDTO.getJobLevelName() + " ";
+                jobLevelName +=   "、"+jobLevelDTO.getJobLevelName() ;
+            jobLevelName = jobLevelName.replaceFirst("、","");
             detailDTO.getShortJobLevels().add(ShortJobLevelDTO.builder()
                     .jobGradeName(jobGradeName).jobLevelName(jobLevelName).build());
         }

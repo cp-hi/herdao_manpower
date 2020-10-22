@@ -16,9 +16,6 @@ import java.util.List;
  */
 
 public interface OKJobLevleSysService extends EntityService<OKJobLevleSys> {
-    List<OKJobLevleSys> findAll();
-
     OKJobLevleSysDTO findDetail(Long id);
-
 
 }
