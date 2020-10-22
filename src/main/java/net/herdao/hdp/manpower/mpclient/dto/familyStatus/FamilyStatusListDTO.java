@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 @Data
 @ApiModel(value = "家庭情况分页Dto")
 public class FamilyStatusListDTO extends Familystatus implements ExcelErrMsg {
+    @ExcelProperty(value = "错误信息")
+    @ColumnWidth(100)
+    private String errMsg;
 
     /**
      *
@@ -98,10 +101,11 @@ public class FamilyStatusListDTO extends Familystatus implements ExcelErrMsg {
     @ApiModelProperty(value="操作人")
     private String modifierName;
 
-
-    @ExcelProperty(value = "错误信息")
-    @ColumnWidth(100)
-    private String errMsg;
-
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
 
 }
