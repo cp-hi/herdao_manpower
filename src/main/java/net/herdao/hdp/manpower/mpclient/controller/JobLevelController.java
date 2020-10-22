@@ -92,8 +92,8 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             String jobGradeName = jobGradeDTO.getJobGradeName();
             String jobLevelName = "";
             for (OKJobLevelDTO jobLevelDTO : jobGradeDTO.getOkJobLevelDTOList())
-                jobLevelName +=   "、"+jobLevelDTO.getJobLevelName() ;
-            jobLevelName = jobLevelName.replaceFirst("、","");
+                jobLevelName += "、" + jobLevelDTO.getJobLevelName();
+            jobLevelName = jobLevelName.replaceFirst("、", "");
             detailDTO.getShortJobLevels().add(ShortJobLevelDTO.builder()
                     .jobGradeName(jobGradeName).jobLevelName(jobLevelName).build());
         }
@@ -106,6 +106,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
     })
     public R okCreateJobLevel(Long okJobLevleSysId) {
+        okJobLevleSysService.okCreateJobLevel(okJobLevleSysId);
         return R.ok();
     }
 }
