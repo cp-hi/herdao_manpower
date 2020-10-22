@@ -92,7 +92,7 @@ private static final long serialVersionUID = 1L;
      * 合同期限(月)
      */
     @ApiModelProperty(value="合同期限(月)")
-    private String contractPeiod;
+    private String contractPeriod;
 
     /**
      * 违约金
