@@ -118,11 +118,17 @@ public class WorkexperienceDTO {
     @ApiModelProperty(value="操作时间")
     private LocalDateTime modifiedTime;
 
-
     /**
      * 员工ID
      */
     @ExcelProperty(value = "员工ID")
     @ApiModelProperty(value="员工ID")
     private Long staffId;
+
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
 }
