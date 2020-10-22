@@ -225,21 +225,17 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
 		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
 		StaffEmergencyDTO emergency = new StaffEmergencyDTO();
-		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
 		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, info);
 		BeanUtils.copyProperties(staff, jobInfo);
 		BeanUtils.copyProperties(staff, infoOther);
 		BeanUtils.copyProperties(staff, emergency);
-		BeanUtils.copyProperties(staff, educationLast);
-
 		Map<String, Object> map = new HashMap<>();
 		map.put("staffBaseDTO", base);
 		map.put("staffInfoDTO", info);
 		map.put("staffJobInfoDTO", jobInfo);
 		map.put("staffInfoOtherDTO", infoOther);
 		map.put("staffEmergencyDTO", emergency);
-		map.put("staffEducationLastDTO", educationLast);
 
 		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
 				.eq("STAFF_ID", staff.getId())
@@ -254,18 +250,17 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		}
 		map.put("staffFamilyDTO", familyDtoList);
 
-		/*List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
 				.eq("STAFF_ID", staff.getId())
 				.orderByDesc("END_DATE")
+				.last("limit 1")
 		);
-		List<StaffEducationDTO> eduDtoList = new ArrayList<>();
-		StaffEducationDTO eduDto;
-		for(int i=0;i<eduList.size();i++){
-			eduDto = new StaffEducationDTO();
-			BeanUtils.copyProperties(eduList.get(i), eduDto);
-			eduDtoList.add(eduDto);
+		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		if(eduList!=null && eduList.size()!=0){
+			Staffeducation staffeducation = eduList.get(0);
+			BeanUtils.copyProperties(staffeducation, educationLast);
 		}
-		map.put("staffEducationDTO", eduDtoList);*/
+		map.put("staffEducationLastDTO", educationLast);
 		return map;
 	}
 
@@ -274,18 +269,15 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		Staff staff = this.getById(id);
 		StaffBaseDTO base = baseMapper.getStaffBase(id);
 		StaffArchiveDTO archive = new StaffArchiveDTO();
-		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
 		StaffWelfareDTO welfare = new StaffWelfareDTO();
 		StaffCarreraDTO carrera = new StaffCarreraDTO();
 		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, archive);
-		BeanUtils.copyProperties(staff, educationLast);
 		BeanUtils.copyProperties(staff, welfare);
 		BeanUtils.copyProperties(staff, carrera);
 		Map<String, Object> map = new HashMap<>();
 		map.put("staffBaseDTO", base);
 		map.put("staffArchiveDTO", archive);
-		map.put("staffEducationLastDTO", educationLast);
 		map.put("staffWelfareDTO", welfare);
 		map.put("staffCarreraDTO", carrera);
 
@@ -327,6 +319,18 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			familyDtoList.add(family);
 		}
 		map.put("staffFamilyDTO", familyDtoList);
+
+		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("END_DATE")
+				.last("limit 1")
+		);
+		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		if(eduList!=null && eduList.size()!=0){
+			Staffeducation staffeducation = eduList.get(0);
+			BeanUtils.copyProperties(staffeducation, educationLast);
+		}
+		map.put("staffEducationLastDTO", educationLast);
 		return map;
 	}
 	
