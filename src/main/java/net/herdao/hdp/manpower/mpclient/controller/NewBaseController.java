@@ -15,7 +15,6 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
-import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,7 +29,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @param <T> 实体类Entity类型
@@ -94,7 +92,7 @@ public class NewBaseController<T, D, F, E> {
      * @return
      * @Author ljan
      */
-    protected Class getImportClass() {
+    protected Class getBatchUpdateClass() {
         Class<E> clazz = (Class<E>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[3];
         return clazz;
@@ -107,7 +105,7 @@ public class NewBaseController<T, D, F, E> {
      * @return
      */
     protected Class getBatchAddClass() {
-        return getImportClass();
+        return getBatchUpdateClass();
     }
     //endregion
 
@@ -187,7 +185,7 @@ public class NewBaseController<T, D, F, E> {
 
     @ApiOperation("批量新增/编辑")
     @SysLog("批量新增/编辑")
-    @GetMapping("/import")
+    @PostMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
             @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
@@ -195,20 +193,26 @@ public class NewBaseController<T, D, F, E> {
     })
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
-                        Integer importType,Integer downloadErrMsg) throws Exception {
+                        Integer importType, Integer downloadErrMsg) throws Exception {
         NewImportExcelListener<E> listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
             listener = new NewImportExcelListener(entityService, importType);
-            EasyExcel.read(inputStream, getImportClass(), listener).sheet().doRead();
+            EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().doRead();
             return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
         } catch (Exception ex) {
             if (Integer.valueOf(1).equals(downloadErrMsg)) {
                 List data = null;
-                if (Integer.valueOf(1).equals(importType)) data = listener.getExcelList();
-                else data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
-                ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", getImportClass(), data);
+                Class clazz = null;
+                if (Integer.valueOf(1).equals(importType)) {
+                    data = listener.getExcelList();
+                    clazz = getBatchUpdateClass();
+                } else {
+                    data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
+                    clazz = getBatchAddClass();
+                }
+                ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", clazz, data);
             }
             return R.failed(ex.getMessage());
         } finally {
@@ -228,7 +232,7 @@ public class NewBaseController<T, D, F, E> {
             String title = "批量新增模板";
             Class templClass = getBatchAddClass();
             if (Integer.valueOf(1).equals(importType)) {
-                templClass = getImportClass();
+                templClass = getBatchUpdateClass();
                 title = "批量编辑模板";
             }
             ApiModel apiModel = getEntityClass().getAnnotation(ApiModel.class);

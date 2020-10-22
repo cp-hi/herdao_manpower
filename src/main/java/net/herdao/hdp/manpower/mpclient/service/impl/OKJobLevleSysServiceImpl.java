@@ -16,5 +16,4 @@ import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
 public class OKJobLevleSysServiceImpl extends ServiceImpl<OKJobLevleSysMapper, OKJobLevleSys> implements OKJobLevleSysService {
 
 
-
 }

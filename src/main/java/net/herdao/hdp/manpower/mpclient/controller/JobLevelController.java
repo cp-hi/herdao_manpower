@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends NewBaseController<JobLevel,JobLevelListDTO,JobLevelFormDTO, JobLevelBatchDTO> {
+public class JobLevelController extends NewBaseController<JobLevel, JobLevelListDTO, JobLevelFormDTO, JobLevelBatchDTO> {
 
     @Autowired
     private JobLevelService jobLevelService;
@@ -40,7 +40,7 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
     }
 
     @Override
-    protected Class getImportClass() {
+    protected Class getBatchUpdateClass() {
         return JobLevelBatchDTO.class;
     }
 
@@ -60,6 +60,12 @@ public class JobLevelController extends NewBaseController<JobLevel,JobLevelListD
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
             throws Exception {
-        return super.page(response,page,jobLevel,type);
+        return super.page(response, page, jobLevel, type);
+    }
+
+    @GetMapping("/okpage")
+    @ApiOperation(value = "一键职级系统列表", notes = "一键职级系统列表")
+    public R okpage() {
+        return R.ok();
     }
 }
