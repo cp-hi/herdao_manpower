@@ -68,6 +68,8 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
     default String generateEntityCode() {
+        T t = getOne(new QueryWrapper<T>().first(""));
+
         return null;
     }
 
