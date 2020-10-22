@@ -84,4 +84,12 @@ public class UserpostDTO {
 
     @ApiModelProperty(value = "是否定编岗位" )
     private String officePostTypeName;
+
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
+
 }

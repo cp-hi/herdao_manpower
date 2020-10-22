@@ -96,12 +96,12 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
                 errorMsg+="奖励/惩罚字段只能填写：奖励 或者 惩罚”，";
             }
 
-            //奖励/惩罚 0:奖励 1:惩罚
+            //奖励/惩罚 1:奖励 2:惩罚
             if (!dto.getChoiceName().equals("奖励")  ){
-                dto.setChoice(false);
+                dto.setChoice(1L);
             }
             if (!dto.getChoiceName().equals("惩罚")  ){
-                dto.setChoice(true);
+                dto.setChoice(2L);
             }
         }
 
@@ -165,11 +165,11 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
 
             //奖励/惩罚 0:奖励 1:惩罚
             if (!dto.getChoiceName().equals("奖励")  ){
-                dto.setChoice(false);
+                dto.setChoice(1L);
                 dto.setChoiceName("奖励");
             }
             if (!dto.getChoiceName().equals("惩罚")  ){
-                dto.setChoice(true);
+                dto.setChoice(2L);
                 dto.setChoiceName("惩罚");
             }
         }

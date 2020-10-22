@@ -172,7 +172,7 @@ public class StaffRewardsPulishments extends BaseModel<StaffRewardsPulishments> 
      */
     @ApiModelProperty(value="奖励/惩罚 1:奖励 2:惩罚")
     @ExcelIgnore
-    private Boolean choice;
+    private Long choice;
 
     /**
      * 奖惩时间
