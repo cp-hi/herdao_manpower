@@ -360,11 +360,11 @@ public class OrganizationController {
     	try {
 			InputStream inputStream = file.getInputStream();
 			EasyExcel.read(inputStream, Organization.class,
-								new OrgExcelListener(orgService,
-													 sysDictItemService,
-													 userService,
-													 postService,
-													 excelOperateRecordService)).sheet().doRead();
+								        new OrgExcelListener(orgService,
+															 sysDictItemService,
+															 userService,
+															 postService,
+															 excelOperateRecordService)).sheet().doRead();
 			return R.ok("导入成功！");
 		} catch (IOException e) {
 			return R.failed(e.getMessage());

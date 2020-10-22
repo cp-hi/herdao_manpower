@@ -662,4 +662,21 @@
     		AND LENGTH(org.org_code) != LENGTH(#{orgCode})
     	</where>
     </select>
+    
+    <!-- 查询组织集合用于组织批量新增校验 -->
+    <select id="selectAllOrganization" resultType="net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO">
+    	SELECT 
+    		org.org_name,
+    		org.org_code,
+    		org.org_type,
+    		orgp.org_code AS parent_org_code,
+    		org.org_charge_work_no,
+    		ps.post_code,
+    		org.is_stop AS stop,
+    		org.del_flag
+    	FROM mp_organization org 
+    	LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+    	LEFT JOIN mp_post ps ON ps.id = org.post_id
+    	ORDER BY CAST(org.org_code AS UNSIGNED)   
+    </select>
 </mapper>

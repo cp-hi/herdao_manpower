@@ -13,14 +13,19 @@ public interface ManpowerContants {
     String SEPARATOR = "_";
     
     /**
-     * 分隔符(英文)
+     * 分隔符（英文）
      */
     String EN_SEPARATOR = ",";
     
     /**
-     * 分隔符(中文)
+     * 分隔符（中文）
      */
     String CH_SEPARATOR = "，";
+    
+    /**
+     * 分号（中文）
+     */
+    String CH_SEMICOLON = "；";
     
     /**
      * 操作状态
