@@ -45,7 +45,7 @@ public class WorkexperienceDTO {
     /**
      * 开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "开始时间")
     @ApiModelProperty(value="开始时间")
@@ -54,7 +54,7 @@ public class WorkexperienceDTO {
     /**
      * 结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "结束时间")
     @ApiModelProperty(value="结束时间")
@@ -118,11 +118,17 @@ public class WorkexperienceDTO {
     @ApiModelProperty(value="操作时间")
     private LocalDateTime modifiedTime;
 
-
     /**
      * 员工ID
      */
     @ExcelProperty(value = "员工ID")
     @ApiModelProperty(value="员工ID")
     private Long staffId;
+
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelProperty(value = "最近更新情况")
+    private String updateDesc;
 }
