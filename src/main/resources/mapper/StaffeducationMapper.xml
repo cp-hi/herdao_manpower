@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffeducationMapper">
-
             <resultMap id="staffEducationMap" type="net.herdao.hdp.manpower.mpclient.entity.Staffeducation">
                   <id property="id" column="id"/>
                         <result property="oid" column="OID"/>
@@ -36,9 +32,23 @@
 
       <!-- 员工教育情况分页 -->
       <select id="findStaffEducationPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
-                 select * from (
-                          SELECT
-                          e.id,
+          SELECT      t.id,
+                      t.staff_name,
+                      t.staff_code,
+                      t.BEGIN_DATE,
+                      t.END_DATE,
+                      t.staff_id,
+                      t.SCHOOL_NAME,
+                      t.PROFESSIONAL,
+                      t.EDUCATION_DEGREE,
+                      t.EDUCATION_QUA,
+                      t.LEARN_FORM,
+                      t.modifier_name,
+                      t.MODIFIED_TIME,
+                      CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+                 FROM
+          (
+                  SELECT  e.id,
                           s.staff_name,
                           s.staff_code,
                           e.BEGIN_DATE,
@@ -46,70 +56,84 @@
                           e.staff_id,
                           e.SCHOOL_NAME,
                           e.PROFESSIONAL,
-                          ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_DEGREE_TYPE' AND d.`value` = e.EDUCATION_DEGREE ) EDUCATION_DEGREE,
-                          ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_QUA_TYPE' AND d.`value` = e.EDUCATION_QUA ) EDUCATION_QUA,
+                          dic.label EDUCATION_DEGREE,
+                          di.label EDUCATION_QUA,
                           e.LEARN_FORM,
-                          ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
-                          e.MODIFIED_TIME,
-                          ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
-                          e.CREATED_TIME
-                          FROM
-                 mp_staffeducation e
-                          LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-                          LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-                          AND u.MAIN_POST = 1
-                          WHERE  1 = 1
-                          AND e.del_flag = 0
-                )t where 1=1
-           <if test="staffId != null">
-              and t.staff_id = #{staffId}
-           </if>
-           <if test="searchText != null">
+                          usr.USER_NAME  modifier_name,
+                          e.MODIFIED_TIME
+                  FROM  mp_staffeducation e
+                  LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
+                  LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID  AND u.MAIN_POST = 1
+                  LEFT JOIN sys_dict_item dic ON dic.type='EDUCATION_DEGREE_TYPE' AND dic.`value`= e.EDUCATION_DEGREE
+                  LEFT JOIN sys_dict_item di ON dic.type='EDUCATION_QUA_TYPE' AND dic.`value`= e.EDUCATION_QUA
+                  LEFT JOIN mp_user usr on usr.id=e.MODIFIER_CODE
+                  WHERE  1 = 1
+                  AND e.del_flag = 0
+                  <if test="staffId != null">
+                      and t.staff_id = #{staffId}
+                  </if>
+          ) t
+          WHERE  1 = 1
+          <if test="searchText != null">
               and CONCAT(
-                  t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
-                  t.SCHOOL_NAME,t.PROFESSIONAL,t.EDUCATION_DEGREE,t.LEARN_FORM,
-                  t.EDUCATION_QUA,t.modifier_name,t.modifier_name,
-                  t.MODIFIED_TIME, t.create_name,t.CREATED_TIME
+                  IFNULL(t.staff_name,''), IFNULL(t.staff_code,''),IFNULL(t.BEGIN_DATE,'') ,IFNULL(t.END_DATE,''),
+                  IFNULL(t.SCHOOL_NAME,'') ,IFNULL(t.PROFESSIONAL,'') ,IFNULL(t.EDUCATION_DEGREE,'') ,
+                  IFNULL(t.LEARN_FORM,'') ,IFNULL(t.EDUCATION_QUA,'') ,IFNULL(t.modifier_name,''),
+                  IFNULL(t.modifier_name,''), IFNULL(t.MODIFIED_TIME,'')
               ) LIKE concat('%',#{searchText},'%')
           </if>
       </select>
 
     <!-- 员工教育情况 -->
     <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
-        select * from (
-        SELECT
-        e.id,
-        s.staff_name,
-        s.staff_code,
-        e.BEGIN_DATE,
-        e.END_DATE,
-        e.staff_id,
-        e.SCHOOL_NAME,
-        e.PROFESSIONAL,
-        ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_DEGREE_TYPE' AND d.`value` = e.EDUCATION_DEGREE ) EDUCATION_DEGREE,
-        ( SELECT d.label FROM sys_dict_item d WHERE d.type = 'EDUCATION_QUA_TYPE' AND d.`value` = e.EDUCATION_QUA ) EDUCATION_QUA,
-        e.LEARN_FORM,
-        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.MODIFIER_CODE ) modifier_name,
-        e.MODIFIED_TIME,
-        ( SELECT u.USER_NAME FROM mp_user u WHERE u.id = e.CREATOR_CODE ) create_name,
-        e.CREATED_TIME
-        FROM
-        mp_staffeducation e
-        LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-        LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-        AND u.MAIN_POST = 1
+            SELECT      t.id,
+                        t.staff_name,
+                        t.staff_code,
+                        t.BEGIN_DATE,
+                        t.END_DATE,
+                        t.staff_id,
+                        t.SCHOOL_NAME,
+                        t.PROFESSIONAL,
+                        t.EDUCATION_DEGREE,
+                        t.EDUCATION_QUA,
+                        t.LEARN_FORM,
+                        t.modifier_name,
+                        t.MODIFIED_TIME,
+                        CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+                FROM
+           (
+                SELECT  e.id,
+                s.staff_name,
+                s.staff_code,
+                e.BEGIN_DATE,
+                e.END_DATE,
+                e.staff_id,
+                e.SCHOOL_NAME,
+                e.PROFESSIONAL,
+                dic.label EDUCATION_DEGREE,
+                di.label EDUCATION_QUA,
+                e.LEARN_FORM,
+                usr.USER_NAME  modifier_name,
+                e.MODIFIED_TIME
+                FROM  mp_staffeducation e
+                LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
+                LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID  AND u.MAIN_POST = 1
+                LEFT JOIN sys_dict_item dic ON dic.type='EDUCATION_DEGREE_TYPE' AND dic.`value`= e.EDUCATION_DEGREE
+                LEFT JOIN sys_dict_item di ON dic.type='EDUCATION_QUA_TYPE' AND dic.`value`= e.EDUCATION_QUA
+                LEFT JOIN mp_user usr on usr.id=e.MODIFIER_CODE
+                WHERE  1 = 1
+                AND e.del_flag = 0
+                <if test="staffId != null">
+                    and t.staff_id = #{staffId}
+                </if>
+         ) t
         WHERE  1 = 1
-        AND e.del_flag = 0
-        )t where 1=1
-        <if test="staffId != null">
-            and t.staff_id = #{staffId}
-        </if>
         <if test="searchText != null">
             and CONCAT(
-                t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
-                t.SCHOOL_NAME,t.PROFESSIONAL,t.EDUCATION_DEGREE,t.LEARN_FORM,
-                t.EDUCATION_QUA,t.modifier_name,t.modifier_name,
-                t.MODIFIED_TIME, t.create_name,t.CREATED_TIME
+                IFNULL(t.staff_name,''), IFNULL(t.staff_code,''),IFNULL(t.BEGIN_DATE,'') ,IFNULL(t.END_DATE,''),
+                IFNULL(t.SCHOOL_NAME,'') ,IFNULL(t.PROFESSIONAL,'') ,IFNULL(t.EDUCATION_DEGREE,'') ,
+                IFNULL(t.LEARN_FORM,'') ,IFNULL(t.EDUCATION_QUA,'') ,IFNULL(t.modifier_name,''),
+                IFNULL(t.modifier_name,''), IFNULL(t.MODIFIED_TIME,'')
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
