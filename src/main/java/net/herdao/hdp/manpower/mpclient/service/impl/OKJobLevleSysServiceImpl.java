@@ -48,11 +48,15 @@ public class OKJobLevleSysServiceImpl extends ServiceImpl<OKJobLevleSysMapper, O
         OKJobLevleSysDTO jobLevleSys = findDetail(okJobLevleSysId);
         jobLevleSys.getOkJobGradeDTOList().forEach(okJobGrade -> {
             JobGrade jobGrade = okJobGrade;
-            jobGradeService.save(jobGrade);//TODO 校验
+            jobGrade.setId(null);
+            jobGradeService.saveVerify(jobGrade);//TODO 校验
+            jobGradeService.save(jobGrade);
             List<? extends JobLevel> jobLevels = okJobGrade.getOkJobLevelDTOList();
             jobLevels.forEach(jobLevel -> {
-                // TODO 校验
+                jobLevel.setId(null);
                 jobLevel.setJobGradeId(jobGrade.getId());
+                jobLevelService.saveVerify(jobLevel);  // TODO 校验
+                jobLevelService.saveOrUpdate(jobLevel);
             });
         });
     }

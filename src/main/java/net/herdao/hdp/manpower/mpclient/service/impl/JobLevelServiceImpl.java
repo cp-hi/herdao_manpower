@@ -46,7 +46,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
 //        if (baseMapper.chkDuplicateJobLevelCode(jobLevel))
 //            throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobLevelName(jobLevel))
-            throw new RuntimeException("职级名称重复了");
+            throw new RuntimeException("职级名称重复了:" + jobLevel.getJobLevelName());
     }
 
 
