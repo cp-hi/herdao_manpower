@@ -40,8 +40,6 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     @Autowired
     private JobLevelService jobLevelService;
 
-    @Autowired
-    private OKJobLevleSysService okJobLevleSysService;
 
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
@@ -70,6 +68,9 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             throws Exception {
         return super.page(response, page, jobLevel, type);
     }
+
+    @Autowired
+    private OKJobLevleSysService okJobLevleSysService;
 
     @GetMapping("/okpage")
     @ApiOperation(value = "一键职级系统列表", notes = "一键职级系统列表")

@@ -10,8 +10,6 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +28,6 @@ import java.util.Map;
 public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
     JobGradeService jobGradeService;
-
-    OKJobLevleSysService okJobLevleSysService;
-
 
     @Override
     public IPage page(Page page, JobLevel jobLevel) {
