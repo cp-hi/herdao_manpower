@@ -62,10 +62,11 @@
 				p.STAFF_ID staffid
             FROM
                 mp_staff_pro_title p
-            WHERE
+            <where>
                 p.DEL_FLAG = 0
-            <if test="staffid != null">
-            and p.STAFF_ID = #{staffid}
-            </if>
+	            <if test="staffid != null">
+	            and p.STAFF_ID = #{staffid}
+	            </if>
+            </where>
       </select>
 </mapper>
