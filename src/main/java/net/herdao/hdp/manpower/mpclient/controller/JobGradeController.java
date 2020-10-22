@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @ClassName JobGradeController
- * @Description JobGradeController
+ * @Description 职等不需要做批量导入，所以只传了个Class
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/9/14 19:06
