@@ -27,6 +27,7 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -77,7 +78,7 @@ private static final long serialVersionUID = 1L;
      * 发证时间
      */
     @ApiModelProperty(value="发证时间")
-    private LocalDateTime certificateTime;
+    private LocalDate certificateTime;
     /**
      * 新建用户
      */

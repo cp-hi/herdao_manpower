@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 员工职称
- *
  * @author andy
  * @date 2020-10-10 16:37:15
  */
@@ -75,31 +74,31 @@ public class StaffProTitleController {
         return R.ok(staffProTitleService.getById(id));
     }
 
-    /**
-     * 新增员工职称
-     * @param staffProTitle 员工职称
-     * @return R
-     */
-    @ApiOperation(value = "新增员工职称", notes = "新增员工职称")
-    @SysLog("新增员工职称" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_add')" )
-    public R save(@RequestBody StaffProTitle staffProTitle) {
-        return R.ok(staffProTitleService.save(staffProTitle));
-    }
+//    /**
+//     * 新增员工职称
+//     * @param staffProTitle 员工职称
+//     * @return R
+//     */
+//    @ApiOperation(value = "新增员工职称", notes = "新增员工职称")
+//    @SysLog("新增员工职称" )
+//    @PostMapping
+//    @PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_add')" )
+//    public R save(@RequestBody StaffProTitle staffProTitle) {
+//        return R.ok(staffProTitleService.save(staffProTitle));
+//    }
 
-    /**
-     * 修改员工职称
-     * @param staffProTitle 员工职称
-     * @return R
-     */
-    @ApiOperation(value = "修改员工职称", notes = "修改员工职称")
-    @SysLog("修改员工职称" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_edit')" )
-    public R updateById(@RequestBody StaffProTitle staffProTitle) {
-        return R.ok(staffProTitleService.updateById(staffProTitle));
-    }
+//    /**
+//     * 修改员工职称
+//     * @param staffProTitle 员工职称
+//     * @return R
+//     */
+//    @ApiOperation(value = "修改员工职称", notes = "修改员工职称")
+//    @SysLog("修改员工职称" )
+//    @PutMapping
+//    @PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_edit')" )
+//    public R updateById(@RequestBody StaffProTitle staffProTitle) {
+//        return R.ok(staffProTitleService.updateById(staffProTitle));
+//    }
 
     /**
      * 通过id删除员工职称
@@ -133,18 +132,18 @@ public class StaffProTitleController {
         Page pageResult = staffProTitleService.findStaffProTitlePage(page, staffId);
         return R.ok(pageResult);
     }
-    /**
-     * 新增或修改员工职称
-     * @param staffProTitle 员工职称
-     * @return R
-     */
-    @ApiOperation(value = "新增员工职称", notes = "新增员工职称")
-    @SysLog("新增或修改员工职称" )
-    @PostMapping("/saveOrUpdate")
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_add')" )
-    public R saveOrUpdate(@RequestBody StaffProTitle staffProTitle) {
-        return R.ok(staffProTitleService.saveOrUpdate(staffProTitle));
-    }
+//    /**
+//     * 新增或修改员工职称
+//     * @param staffProTitle 员工职称
+//     * @return R
+//     */
+//    @ApiOperation(value = "新增员工职称", notes = "新增员工职称")
+//    @SysLog("新增或修改员工职称" )
+//    @PostMapping("/saveOrUpdate")
+//    //@PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_add')" )
+//    public R saveOrUpdate(@RequestBody StaffProTitle staffProTitle) {
+//        return R.ok(staffProTitleService.saveOrUpdate(staffProTitle));
+//    }
     /**
      * 新增或修改职称及职业资格
      * @param staffProTitle 员工职称

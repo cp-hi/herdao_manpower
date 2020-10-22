@@ -38,7 +38,20 @@
 
       <!-- 员工工作经历分页-->
       <select id="findStaffWorkPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO">
-          select * from (
+           SELECT t.id,
+                  t.staff_name,
+                  t.staff_code,
+                  t.BEGIN_DATE,
+                  t.END_DATE,
+                  t.COMPANY_NAME,
+                  t.ORG_NAME,
+                  t.POST,
+                  t.MAIN_PERFORMANCE,
+                  t.ROLE,
+                  t.SUBORDINATES,
+                  t.BACKGROUND_CHECKS,
+                  CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+          from (
               SELECT  f.id,
                       s.staff_name,
                       s.staff_code,
@@ -52,62 +65,69 @@
                       f.SUBORDINATES,
                       f.BACKGROUND_CHECKS,
                       f.modifier_name,
-                      f.MODIFIED_TIME,
-                      f.CREATOR_NAME,
-                      f.CREATED_TIME
-                 FROM  mp_workexperience f
+                      f.MODIFIED_TIME
+                      FROM  mp_workexperience f
                       LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                      LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
-                      where 1=1
-                      and f.DEL_FLAG = 0
+                      LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
+              where 1=1  and f.DEL_FLAG = 0
                   <if test="staffId != null">
                       and f.staff_id = #{staffId}
                   </if>
-              )t where 1=1
-              <if test="searchText != null">
-                  and CONCAT(
-                      t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
-                      t.COMPANY_NAME,t.ORG_NAME,t.POST,t.MAIN_PERFORMANCE,
-                      t.ROLE,t.SUBORDINATES,t.BACKGROUND_CHECKS,t.modifier_name,
-                      t.MODIFIED_TIME,t.CREATOR_NAME,t.CREATED_TIME
-                  ) LIKE concat('%',#{searchText},'%')
-              </if>
+           )t where 1=1
+          <if test="searchText != null">
+              and CONCAT(
+                  IFNULL(t.staff_name,''), IFNULL(t.staff_code,''), IFNULL(t.BEGIN_DATE,''),IFNULL(t.END_DATE,''),
+                  IFNULL(t.COMPANY_NAME,'') , IFNULL(t.ORG_NAME,''), IFNULL(t.POST,'') ,IFNULL(t.MAIN_PERFORMANCE,''),
+                  IFNULL(t.ROLE,'') ,IFNULL(t.SUBORDINATES,''),IFNULL(t.BACKGROUND_CHECKS,''),
+                  IFNULL(t.modifier_name,''),IFNULL(t.MODIFIED_TIME,'')
+              ) LIKE concat('%',#{searchText},'%')
+          </if>
       </select>
 
     <!-- 员工工作经历-->
     <select id="findStaffWork" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO">
-        select * from (
-            SELECT  f.id,
-                    s.staff_name,
-                    s.staff_code,
-                    f.BEGIN_DATE,
-                    f.END_DATE,
-                    f.COMPANY_NAME,
-                    f.ORG_NAME,
-                    f.POST,
-                    f.MAIN_PERFORMANCE,
-                    f.ROLE,
-                    f.SUBORDINATES,
-                    f.BACKGROUND_CHECKS,
-                    f.modifier_name,
-                    f.MODIFIED_TIME,
-                    f.CREATOR_NAME,
-                    f.CREATED_TIME
+        SELECT  t.id,
+                t.staff_name,
+                t.staff_code,
+                t.BEGIN_DATE,
+                t.END_DATE,
+                t.COMPANY_NAME,
+                t.ORG_NAME,
+                t.POST,
+                t.MAIN_PERFORMANCE,
+                t.ROLE,
+                t.SUBORDINATES,
+                t.BACKGROUND_CHECKS,
+                CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+        from (
+                SELECT  f.id,
+                        s.staff_name,
+                        s.staff_code,
+                        f.BEGIN_DATE,
+                        f.END_DATE,
+                        f.COMPANY_NAME,
+                        f.ORG_NAME,
+                        f.POST,
+                        f.MAIN_PERFORMANCE,
+                        f.ROLE,
+                        f.SUBORDINATES,
+                        f.BACKGROUND_CHECKS,
+                        f.modifier_name,
+                        f.MODIFIED_TIME
                 FROM  mp_workexperience f
                 LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID 	AND u.MAIN_POST = 1
-                where 1=1
-                and f.DEL_FLAG = 0
+                LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
+                where 1=1  and f.DEL_FLAG = 0
                 <if test="staffId != null">
                     and f.staff_id = #{staffId}
                 </if>
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
-            t.staff_name, t.staff_code,t.BEGIN_DATE,t.END_DATE,
-            t.COMPANY_NAME,t.ORG_NAME,t.POST,t.MAIN_PERFORMANCE,
-            t.ROLE,t.SUBORDINATES,t.BACKGROUND_CHECKS,t.modifier_name,
-            t.MODIFIED_TIME,t.CREATOR_NAME,t.CREATED_TIME
+                IFNULL(t.staff_name,''), IFNULL(t.staff_code,''), IFNULL(t.BEGIN_DATE,''),IFNULL(t.END_DATE,''),
+                IFNULL(t.COMPANY_NAME,'') , IFNULL(t.ORG_NAME,''), IFNULL(t.POST,'') ,IFNULL(t.MAIN_PERFORMANCE,''),
+                IFNULL(t.ROLE,'') ,IFNULL(t.SUBORDINATES,''),IFNULL(t.BACKGROUND_CHECKS,''),
+                IFNULL(t.modifier_name,''),IFNULL(t.MODIFIED_TIME,'')
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
@@ -137,6 +157,5 @@
             <if test="staffid != null">
             and f.STAFF_ID = #{staffid}
             </if>
-
       </select>
 </mapper>
