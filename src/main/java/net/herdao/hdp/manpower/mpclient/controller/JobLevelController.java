@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +82,11 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     public R okJobLevelDetail(Long okJobLevleSysId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         OKJobLevleSysDTO okJobLevleSysDTO = okJobLevleSysService.findDetail(okJobLevleSysId);
         OKJobLevleSysDetailDTO detailDTO = new OKJobLevleSysDetailDTO();
+        BeanUtils.copyProperties(okJobLevleSysDTO, detailDTO);
+        for (OKJobGradeDTO jobGradeDTO : okJobLevleSysDTO.getOkJobGradeDTOList()) {
+
+        }
+
         return R.ok(detailDTO);
     }
 

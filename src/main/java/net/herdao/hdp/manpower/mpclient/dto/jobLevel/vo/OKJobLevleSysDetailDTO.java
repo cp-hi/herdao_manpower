@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,5 +27,5 @@ public class OKJobLevleSysDetailDTO {
     private String description;
 
     @ApiModelProperty("职级列表")
-    private List<String> jobLevels;
+    private List<String> jobLevels = new ArrayList<>();
 }
