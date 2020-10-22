@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 /**
  * @author yangrr
  */
@@ -46,4 +45,12 @@ public class StaffJobInfoDTO {
 
     @ApiModelProperty(value="非连续工作时间（不计算年假的年限）")
     private BigDecimal noWorkingSeniority;
+
+    @ApiModelProperty(value="试用期")
+    private Long probPeriod;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value="转正日期")
+    private LocalDate regularTime;
 }

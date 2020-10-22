@@ -118,4 +118,7 @@ public class StaffInfoDTO {
 
     @ApiModelProperty(value="主要社会资源")
     private String resources;
+
+    @ApiModelProperty(value="证件类型")
+    private String idType;
 }
