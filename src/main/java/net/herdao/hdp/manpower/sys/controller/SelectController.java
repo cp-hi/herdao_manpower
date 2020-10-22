@@ -1,33 +1,25 @@
 package net.herdao.hdp.manpower.sys.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
-import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import net.herdao.hdp.manpower.mpclient.service.PipelineService;
-import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
-import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import net.herdao.hdp.manpower.sys.service.SelectService;
 import net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO;
-import net.herdao.hdp.manpower.mpclient.entity.*;
 
 /**
  * <p>
  * 下拉数据接口
  * </p>
  *
- * @author hdp
- * @since 2019-03-19
+ * @author lift
+ * @since 2020-10-21
  */
 @RestController
 @AllArgsConstructor
@@ -35,15 +27,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 @Api(value = "select", tags = "下拉数据接口")
 public class SelectController {
 	
-	private final GroupService groupService;
-	
-	private final SectionService sectionService;
-	
-	private final PipelineService pipelineService;
-	
-	private final PostSeqService postSeqService;
-	
-	private final JobLevelService jobLevelService;
+	private final SelectService selectService;
 	
 	/**
 	 * 获取集团下拉数据
@@ -51,18 +35,7 @@ public class SelectController {
 	 */
 	@GetMapping("/getGroup")
 	public R<List<SelectDTO>> getGroup() {
-		List<Group> groupList = groupService.list(new QueryWrapper<Group>()
-			.orderByAsc("SORT_NO")
-		); //集团应该按数据权限过滤，目前暂时不过滤
-		List<SelectDTO> selectDTOList = new ArrayList<>();
-		SelectDTO selectDTO;
-		for(int i=0;i<groupList.size();i++){
-			selectDTO = new SelectDTO();
-			selectDTO.setValue(groupList.get(i).getId().toString());
-			selectDTO.setLabel(groupList.get(i).getGroupName());
-			selectDTOList.add(selectDTO);
-		}		
-		
+		List<SelectDTO> selectDTOList = selectService.getGroup();		
 		return R.ok(selectDTOList);
 	}
 	
@@ -73,23 +46,7 @@ public class SelectController {
 	 */
 	@GetMapping("/getSection")
 	public R<List<SelectDTO>> getSection(String groupid) {
-		 //板块应该按集团过滤，当前如果没传全量返回
-		QueryWrapper<Section> queryWrapper = new QueryWrapper<Section>();
-		if(groupid!=null && groupid!=""){
-			queryWrapper.eq("group_id",groupid);
-		}
-		queryWrapper.orderByAsc("SORT_NO");
-		
-		List<Section> sectionList = sectionService.list(queryWrapper);
-		List<SelectDTO> selectDTOList = new ArrayList<>();
-		SelectDTO selectDTO;
-		for(int i=0;i<sectionList.size();i++){
-			selectDTO = new SelectDTO();
-			selectDTO.setValue(sectionList.get(i).getId().toString());
-			selectDTO.setLabel(sectionList.get(i).getSectionName());
-			selectDTOList.add(selectDTO);
-		}		
-		
+		List<SelectDTO> selectDTOList = selectService.getSection(groupid);		
 		return R.ok(selectDTOList);
 	}
 	
@@ -100,23 +57,7 @@ public class SelectController {
 	 */
 	@GetMapping("/getPipeline")
 	public R<List<SelectDTO>> getPipeline(String groupid) {
-		 //板块应该按集团过滤，当前如果没传全量返回
-		QueryWrapper<Pipeline> queryWrapper = new QueryWrapper<Pipeline>();
-		if(groupid!=null && groupid!=""){
-			queryWrapper.eq("group_id",groupid);
-		}
-		queryWrapper.orderByAsc("SORT_NO");
-		
-		List<Pipeline> PipelineList = pipelineService.list(queryWrapper);
-		List<SelectDTO> selectDTOList = new ArrayList<>();
-		SelectDTO selectDTO;
-		for(int i=0;i<PipelineList.size();i++){
-			selectDTO = new SelectDTO();
-			selectDTO.setValue(PipelineList.get(i).getId().toString());
-			selectDTO.setLabel(PipelineList.get(i).getPipelineName());
-			selectDTOList.add(selectDTO);
-		}		
-		
+		List<SelectDTO> selectDTOList = selectService.getPipeline(groupid);		
 		return R.ok(selectDTOList);
 	}
 	
@@ -126,23 +67,7 @@ public class SelectController {
 	 */
 	@GetMapping("/getPostSeq")
 	public R<List<SelectDTO>> getPostSeq(String groupid) {
-		 //岗位序列应该按集团过滤，当前如果没传全量返回
-		QueryWrapper<PostSeq> queryWrapper = new QueryWrapper<PostSeq>();
-		if(groupid!=null && groupid!=""){
-			queryWrapper.eq("group_id",groupid);
-		}
-		queryWrapper.orderByAsc("POST_SEQ_CODE");
-		
-		List<PostSeq> postSeqList = postSeqService.list(queryWrapper);
-		List<SelectDTO> selectDTOList = new ArrayList<>();
-		SelectDTO selectDTO;
-		for(int i=0;i<postSeqList.size();i++){
-			selectDTO = new SelectDTO();
-			selectDTO.setValue(postSeqList.get(i).getId().toString());
-			selectDTO.setLabel(postSeqList.get(i).getPostSeqName());
-			selectDTOList.add(selectDTO);
-		}		
-		
+		List<SelectDTO> selectDTOList = selectService.getPostSeq(groupid);		
 		return R.ok(selectDTOList);
 	}
 	
@@ -152,23 +77,17 @@ public class SelectController {
 	 */
 	@GetMapping("/getJobLevel")
 	public R<List<SelectDTO>> getJobLevel(String groupid) {
-		 //职级应该按集团过滤，当前如果没传全量返回
-		QueryWrapper<JobLevel> queryWrapper = new QueryWrapper<JobLevel>();
-		if(groupid!=null && groupid!=""){
-			queryWrapper.eq("group_id",groupid);
-		}
-		queryWrapper.orderByAsc("SORT_NO");
-		
-		List<JobLevel> jobLevelList = jobLevelService.list(queryWrapper);
-		List<SelectDTO> selectDTOList = new ArrayList<>();
-		SelectDTO selectDTO;
-		for(int i=0;i<jobLevelList.size();i++){
-			selectDTO = new SelectDTO();
-			selectDTO.setValue(jobLevelList.get(i).getId().toString());
-			selectDTO.setLabel(jobLevelList.get(i).getJobLevelName());
-			selectDTOList.add(selectDTO);
-		}		
-		
+		List<SelectDTO> selectDTOList = selectService.getJobLevel(groupid);		
+		return R.ok(selectDTOList);
+	}
+
+	/**
+	 * 获取职等下拉数据
+	 * @return 职等数据
+	 */
+	@GetMapping("/getJobGrade")
+	public R<List<SelectDTO>> getJobGrade(String groupid) {
+		List<SelectDTO> selectDTOList = selectService.getJobGrade(groupid);		
 		return R.ok(selectDTOList);
 	}
 }

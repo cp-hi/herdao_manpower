@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 
@@ -152,10 +153,11 @@ public interface OrganizationService extends IService<Organization> {
 
     /**
      * 查询组织架构详情
-     * @param condition
+     * 
+     * @param id
      * @return
      */
-    Organization findOrgDetails(Organization condition);
+    OrganizationFormVO findOrgDetails(Long id);
     
     /**
  	 * 查询部门/组织信息

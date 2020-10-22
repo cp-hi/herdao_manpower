@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -69,7 +68,6 @@ public class Organization extends BaseEntity<Organization> {
 	 * 父ID
 	 */
 	@ApiModelProperty(value = "父ID")
-	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Long parentId;
 
 	/**

@@ -23,12 +23,6 @@ public class OrganizationVO {
 	private Long id;
 
 	/**
-	 * 组织OID（旧人力系统）
-	 */
-	@ApiModelProperty(value = "组织OID（旧人力系统）")
-	private String oid;
-
-	/**
 	 * 组织名称
 	 */
 	@ApiModelProperty(value = "组织名称")
@@ -47,21 +41,28 @@ public class OrganizationVO {
 	private String orgCode;
 
 	/**
-	 * 上级OID
+	 * 父组织id
 	 */
-	@ApiModelProperty(value = "上级OID（旧人力系统）")
-	private String parentOid;
-
-	/**
-	 * 父ID
-	 */
-	@ApiModelProperty(value = "父ID")
+	@ApiModelProperty(value = "父组织id")
 	private Long parentId;
+	
+	/**
+	 * 父组织名称
+	 */
+	@ApiModelProperty(value = "父组织名称")
+	private String parentOrgName;
+	
+	/**
+	 * 父组织编码
+	 */
+	@ApiModelProperty(value = "父组织编码")
+	private String parentOrgCode;
+	
 
 	/**
-	 * 是否组织、 是否项目/中心及以上 TODO 取值待确定
+	 * 是否项目/中心及以上 TODO 取值待确定
 	 */
-	@ApiModelProperty(value = "是否组织、 是否项目/中心及以上")
+	@ApiModelProperty(value = "是否项目/中心及以上")
 	private Boolean organizational;
 
 	/**
