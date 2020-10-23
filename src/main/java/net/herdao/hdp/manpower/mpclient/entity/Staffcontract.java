@@ -68,13 +68,13 @@ private static final long serialVersionUID = 1L;
      * 合同编号
      */
     @ApiModelProperty(value="合同编号")
-    private Long contractId;
+    private String contractId;
 
     /**
      * 试用期月数
      */
     @ApiModelProperty(value="试用期月数")
-    private BigDecimal probationMonth;
+    private Long probationMonth;
 
     /**
      * 是否当前生效合同 （合同是否生效）
@@ -158,43 +158,4 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="最后修改时间")
     private LocalDateTime modifiedTime;
-    /**
-     * 租户ID
-     */
-    @ApiModelProperty(value="租户ID")
-    private Long tenantId;
-    /**
-     * 预留字段1
-     */
-    @ApiModelProperty(value="预留字段1")
-    private String field1;
-    /**
-     * 预留字段2
-     */
-    @ApiModelProperty(value="预留字段2")
-    private String field2;
-
-    /**
-     * 预留字段3
-     */
-    @ApiModelProperty(value="预留字段3")
-    private String field3;
-
-    /**
-     * 预留字段4
-     */
-    @ApiModelProperty(value="预留字段4")
-    private String field4;
-
-    /**
-     * 预留字段5
-     */
-    @ApiModelProperty(value="预留字段5")
-    private String field5;
-
-    /**
-     * 是否删除
-     */
-    @ApiModelProperty(value="是否删除")
-    private Boolean delFlag;
 }
