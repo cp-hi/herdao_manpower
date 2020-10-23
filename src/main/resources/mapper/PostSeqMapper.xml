@@ -17,11 +17,11 @@
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
         select * from mp_post_seq where  del_flag !=1
-        and (#{postSeq.parentId} is null or parent_id = #{postSeq.parentId})
+         and ((#{postSeq.parentId} is null and parent_id is null) or parent_id = #{postSeq.parentId})
         <if test="postSeq.id != null">
             and id = #{postSeq.id}
         </if>
-<!--        <if test="postSeq.parentId = null">-->
+<!--        <if test="postSeq.parentId == null">-->
 <!--            and parent_id is null-->
 <!--        </if>-->
 <!--        <if test="postSeq.parentId != null">-->

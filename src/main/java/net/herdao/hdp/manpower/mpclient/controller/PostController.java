@@ -168,9 +168,6 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
 
     @GetMapping("/okPostSeqDetail/{okPostSeqSysId}")
     @ApiOperation(value = "获取岗位序列体系详情", notes = "获取岗位序列体系详情")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "okPostSeqSysId", value = "岗位序列体系ID"),
-//    })
     public R<OKPostSeqSysDetailDTO> okPostSeqDetail(@PathVariable Long okPostSeqSysId) {
         OKPostSeqSysDTO okPostSeqSysDTO = okPostSeqSysService.findDetail(okPostSeqSysId);
         OKPostSeqSysDetailDTO detailDTO = new OKPostSeqSysDetailDTO();
@@ -191,9 +188,6 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
 
     @GetMapping("/okCreatePostSeq/{okPostSeqSysId}")
     @ApiOperation(value = "一键创建职级系统详情", notes = "一键创建职级系统详情")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
-//    })
     public R okCreatePostSeq(@PathVariable Long okJobLevleSysId) {
         try {
             okPostSeqSysService.okCreatePostSeq(okJobLevleSysId);
