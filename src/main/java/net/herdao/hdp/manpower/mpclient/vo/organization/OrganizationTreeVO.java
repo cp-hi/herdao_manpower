@@ -34,10 +34,10 @@ public class OrganizationTreeVO {
 	private String orgCode;
 
 	/**
-	 * 是否叶子节点 值： 1、 值 0 否
+	 * 是否叶子节点 值： 1 是、 值 0 否
 	 */
-	@ApiModelProperty(value = "是否叶子节点（值： 1、 值 0 否）")
-	private Integer leafNode;
+	@ApiModelProperty(value = "是否叶子节点（值： true 是、 值： false 否）")
+	private Boolean leafNode;
 	
 	/**
 	 * 子组织信息
