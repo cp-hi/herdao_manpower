@@ -19,5 +19,4 @@ import java.util.List;
 @ApiModel(value = "一键创建职等")
 public class OKJobGradeDTO  extends JobGrade {
     private List<OKJobLevelDTO> okJobLevelDTOList;
-
 }

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -64,7 +65,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
+    public R<IPage<JobLevelListDTO>> page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
             throws Exception {
         return super.page(response, page, jobLevel, type);
     }

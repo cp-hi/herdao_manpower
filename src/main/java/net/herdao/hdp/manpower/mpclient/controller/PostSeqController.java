@@ -58,7 +58,7 @@ public class PostSeqController extends NewBaseController<PostSeq, PostSeqListDTO
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(HttpServletResponse response, Page page, PostSeq seq, Integer type)
+    public R<IPage<PostSeqListDTO>> page(HttpServletResponse response, Page page, PostSeq seq, Integer type)
             throws Exception {
         return super.page(response, page, seq, type);
     }

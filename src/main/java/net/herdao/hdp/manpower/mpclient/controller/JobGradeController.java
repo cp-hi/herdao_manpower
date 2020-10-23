@@ -64,7 +64,7 @@ public class JobGradeController extends NewBaseController<JobGrade,JobGradeListD
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(HttpServletResponse response, Page page, JobGrade jobGrade, Integer type)
+    public R<IPage<JobGradeListDTO>> page(HttpServletResponse response, Page page, JobGrade jobGrade, Integer type)
             throws Exception {
         return super.page(response,page,jobGrade,type);
     }

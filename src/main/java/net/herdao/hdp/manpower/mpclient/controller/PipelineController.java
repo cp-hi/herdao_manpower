@@ -63,7 +63,7 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
+    public R<IPage<PipelineListDTO>> page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
         return super.page(response, page, pipeline, type);
     }
 }
