@@ -1,7 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 import org.apache.ibatis.annotations.Mapper;

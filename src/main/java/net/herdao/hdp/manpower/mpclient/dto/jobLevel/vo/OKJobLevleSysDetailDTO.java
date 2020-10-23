@@ -28,5 +28,5 @@ public class OKJobLevleSysDetailDTO {
     private String description;
 
     @ApiModelProperty("职级列表")
-    private List<ShortJobLevelDTO> shortJobLevelDTOList;
+    private List<ShortJobLevelDTO> shortJobLevelDTOList= new ArrayList<>();
 }

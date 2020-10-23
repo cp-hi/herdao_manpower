@@ -27,5 +27,5 @@ public class OKPostSeqSysDetailDTO {
     private String description;
 
     @ApiModelProperty("岗位序列列表")
-    private List<ShortPostSeqDTO> shortPostSeqDTOList;
+    private List<ShortPostSeqDTO> shortPostSeqDTOList = new ArrayList<>();
 }

@@ -25,11 +25,6 @@ import java.util.List;
  */
 @Service
 public class OKJobLevleSysServiceImpl extends ServiceImpl<OKJobLevleSysMapper, OKJobLevleSys> implements OKJobLevleSysService {
-    @Autowired
-    OKJobLevelService okJobLevelService;
-
-    @Autowired
-    OKJobGradeService okJobGradeService;
 
     @Autowired
     JobLevelService jobLevelService;

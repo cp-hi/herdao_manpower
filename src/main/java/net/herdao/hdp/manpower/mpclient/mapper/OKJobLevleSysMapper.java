@@ -4,9 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 /**
  * @ClassName OKJobLevleSysMapper

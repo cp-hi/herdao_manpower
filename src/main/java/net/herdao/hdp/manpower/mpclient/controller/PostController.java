@@ -5,12 +5,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
+import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
+import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
+import net.herdao.hdp.manpower.mpclient.service.OKPostSeqSysService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
@@ -48,6 +52,9 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private OKPostSeqSysService okPostSeqSysService;
 
     @Autowired
     public void setEntityService(PostService postService) {
@@ -150,5 +157,50 @@ public class PostController extends NewBaseController<Post, PostListDTO, PostFor
         return R.ok(data);
     }
 
+
+    @GetMapping("/okpage")
+    @ApiOperation(value = "一键岗位序列体系列表", notes = "一键岗位序列体系列表")
+    public R<List<OKPostSeqSysDTO>> okpage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        List<OKPostSeqSys> jobLevleSys = okPostSeqSysService.list();
+        List<OKPostSeqSysDTO> data = DtoConverter.dto2vo(jobLevleSys, OKPostSeqSysDTO.class);
+        return R.ok(data);
+    }
+
+    @GetMapping("/okPostSeqDetail")
+    @ApiOperation(value = "获取岗位序列体系详情", notes = "获取岗位序列体系详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "okPostSeqSysId", value = "岗位序列体系ID"),
+    })
+    public R<OKPostSeqSysDetailDTO> okPostSeqDetail(Long okPostSeqSysId) {
+        OKPostSeqSysDTO okPostSeqSysDTO = okPostSeqSysService.findDetail(okPostSeqSysId);
+        OKPostSeqSysDetailDTO detailDTO = new OKPostSeqSysDetailDTO();
+        BeanUtils.copyProperties(okPostSeqSysDTO, detailDTO);
+
+        for (OKPostSeqDTO okPostSeqDTO : okPostSeqSysDTO.getOkPostSeqDTOList()) {
+            String postSeqName = okPostSeqDTO.getPostSeqName();
+            String postName = "";
+            for (OKPostDTO okPostDTO : okPostSeqDTO.getOkPostDTOList())
+                postName += "、" + okPostDTO.getPostName();
+            postName = postName.replaceFirst("、", "");
+            detailDTO.getShortPostSeqDTOList().add(ShortPostSeqDTO.builder()
+                    .postSeqName(postSeqName).postName(postName).build());
+        }
+        return R.ok(detailDTO);
+    }
+
+
+    @GetMapping("/okCreatePostSeq")
+    @ApiOperation(value = "一键创建职级系统详情", notes = "一键创建职级系统详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
+    })
+    public R okCreatePostSeq(Long okJobLevleSysId) {
+        try {
+            okPostSeqSysService.okCreatePostSeq(okJobLevleSysId);
+        } catch (Exception ex) {
+            return R.failed(ex.getMessage());
+        }
+        return R.ok();
+    }
 
 }
