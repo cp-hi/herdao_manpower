@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -23,13 +23,15 @@ public class StaffContractDetailDTO {
 
     @ApiModelProperty(value="合同开始日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @ApiModelProperty(value="合同结束日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
-    @ApiModelProperty(value="劳动合同签订主体")
+    @ApiModelProperty(value="合同签订主体")
     private String companyCode;
 
     @ApiModelProperty(value="合同编号")
@@ -41,13 +43,15 @@ public class StaffContractDetailDTO {
     @ApiModelProperty(value="合同期限类型")
     private String contractType;
 
-    @ApiModelProperty(value="合同期限(月)")
+    @ApiModelProperty(value="合同期限")
     private String contractPeriod;
 
-    @ApiModelProperty(value="试用期月数")
+    @ApiModelProperty(value="试用期")
     private Long probationMonth;
 
     @ApiModelProperty(value="最后修改时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime modifiedTime;
 
     @ApiModelProperty(value="最后修改人")

@@ -526,14 +526,14 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				.eq("STAFF_ID", staff.getId())
 				.orderByDesc("START_DATE")
 		);
-		List<StaffcontractDTO> contractDtoList = new ArrayList<>();
-		StaffcontractDTO contractDto;
+		List<StaffContractDetailDTO> contractDtoList = new ArrayList<>();
+		StaffContractDetailDTO contractDto;
 		for(int i=0;i<contractList.size();i++){
-			contractDto = new StaffcontractDTO();
+			contractDto = new StaffContractDetailDTO();
 			BeanUtils.copyProperties(contractList.get(i), contractDto);
 			contractDtoList.add(contractDto);
 		}
-		map.put("staffcontractDTO", contractDtoList);
+		map.put("staffContractDetailDTO", contractDtoList);
 		return  map;
 	}
 	
