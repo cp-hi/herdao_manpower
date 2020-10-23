@@ -96,7 +96,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             for (OKJobLevelDTO jobLevelDTO : jobGradeDTO.getOkJobLevelDTOList())
                 jobLevelName += "、" + jobLevelDTO.getJobLevelName();
             jobLevelName = jobLevelName.replaceFirst("、", "");
-            detailDTO.getShortJobLevels().add(ShortJobLevelDTO.builder()
+            detailDTO.getShortJobLevelDTOList().add(ShortJobLevelDTO.builder()
                     .jobGradeName(jobGradeName).jobLevelName(jobLevelName).build());
         }
         return R.ok(detailDTO);

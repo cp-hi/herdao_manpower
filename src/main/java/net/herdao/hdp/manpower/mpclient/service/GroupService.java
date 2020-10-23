@@ -44,8 +44,8 @@ public interface GroupService extends IService<Group> {
     default Group getGroupByName(String groupName) {
         Group group = this.getOne(new QueryWrapper<Group>()
                 .eq("GROUP_NAME", groupName).ne("del_flag",1));
-        if (null == group)
-            throw new RuntimeException("不存在此集团：" + groupName);
+//        if (null == group)
+//            throw new RuntimeException("不存在此集团：" + groupName);
         return group;
     }
 
