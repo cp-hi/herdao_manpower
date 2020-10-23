@@ -70,7 +70,7 @@ public class FamilystatusController extends BaseController<Familystatus> {
      * @return
      */
     @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
-    @PostMapping("/findFamilyStatusPage")
+    @GetMapping("/findFamilyStatusPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
