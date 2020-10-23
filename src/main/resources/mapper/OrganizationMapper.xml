@@ -513,7 +513,7 @@
             org.org_name,
             org.org_simple_desc,
             org.org_code,
-            orgp.parent_id, 
+            org.parent_id, 
             orgp.org_name AS parent_org_name, 
 			orgp.org_code AS parent_org_code,
 			org.org_level,
