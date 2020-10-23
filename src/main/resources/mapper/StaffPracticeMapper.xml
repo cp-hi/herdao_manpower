@@ -51,7 +51,7 @@
 			p.depart_id,
 			p.plate_id sectionId,
 			s.SECTION_NAME,
-			p.pipe_id,
+			p.pipe_id pipelineId,
 			pip.PIPELINE_NAME,
 			p.post_id,
 			po.POST_NAME,
