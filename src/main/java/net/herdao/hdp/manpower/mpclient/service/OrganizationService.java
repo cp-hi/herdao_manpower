@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
@@ -24,7 +23,7 @@ import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
  * @author Andy
  * @date 2020-09-09 15:31:20
  */
-public interface OrganizationService extends IService<Organization> {
+public interface OrganizationService extends EasyExcelService<Organization, OrganizationAddDTO>{
 
     /**
      * 查询子组织架构

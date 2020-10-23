@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -187,12 +188,14 @@ public class Organization extends BaseEntity<Organization> {
 	 * 启用日期
 	 */
 	@ApiModelProperty(value = "启用日期")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date startDate;
 
 	/**
 	 * 停用日期
 	 */
 	@ApiModelProperty(value = "停用日期")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date stopDate;
 
 	/**

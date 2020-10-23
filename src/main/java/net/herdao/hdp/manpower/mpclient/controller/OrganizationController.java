@@ -2,8 +2,10 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.util.StrUtil;
@@ -29,12 +32,16 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationExcelErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.listener.OrgExcelListener;
+import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
@@ -356,20 +363,28 @@ public class OrganizationController {
 	        @ApiImplicitParam(name = "file", value = "导入文件"),
 	        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
 	})
-    public R batchImportOrg(@RequestParam(value = "file") MultipartFile file, Integer importType){
-    	try {
-			InputStream inputStream = file.getInputStream();
-			EasyExcel.read(inputStream, Organization.class,
-								        new OrgExcelListener(orgService,
-															 sysDictItemService,
-															 userService,
-															 postService,
-															 excelOperateRecordService)).sheet().doRead();
+	public R batchImportOrg(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
+		try {
+			
+			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, OrganizationAddDTO.class);
+
+			EasyExcelFactory.read(file.getInputStream(), OrganizationAddDTO.class, easyExcelListener).sheet().doRead();
+			
+			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
+			if (!errList.isEmpty()) {
+				// 包含错误信息就导出错误信息
+				List<OrganizationExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+					OrganizationExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationExcelErrDTO.class);
+					excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
+					return excelErrDto;
+				}).collect(Collectors.toList());
+				EasyExcelUtils.webWriteExcel(response, excelErrDtos, OrganizationExcelErrDTO.class, "组织导入错误信息");
+			}
 			return R.ok("导入成功！");
 		} catch (IOException e) {
 			return R.failed(e.getMessage());
 		}
-    }
+	}
     
     /**
      * 部门选择组件
