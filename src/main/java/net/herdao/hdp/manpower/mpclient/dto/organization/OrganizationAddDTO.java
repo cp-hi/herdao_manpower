@@ -24,9 +24,7 @@ public class OrganizationAddDTO {
 
 	@ApiModelProperty(value = "组织编码")
 	private String orgCode;
-	/**
-	 * 组织类型（参考字典：“ZZLX”）
-	 */
+
 	@ExcelProperty(value = "组织类型")
 	private String orgType;
 	
@@ -50,9 +48,7 @@ public class OrganizationAddDTO {
 	
 	@ExcelProperty(value = "岗位编码")
 	private String postCode;
-	/**
-	 * 是否停用(0 停用 ，1启用)
-	 */
+
 	@ExcelProperty(value = "是否停用")
 	private Boolean stop;
 

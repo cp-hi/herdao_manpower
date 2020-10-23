@@ -283,14 +283,14 @@
     <!-- 查询根组织架构 -->
     <select id="selectOrganizationTree" resultMap="organizationTreeMap">
         <include refid="organizationTreeSQL"></include>
-        WHERE org.parent_id IS NULL
+        WHERE org.parent_id IS NULL AND org.del_flag = 0
     </select>
      
     <!-- 递归查询二级组织树 -->
     <select id="selectSecondOrganization" resultMap="organizationTreeMap">
        <include refid="organizationTreeSQL"></include>
        <where>
-           AND org.parent_id = #{id} AND org.org_tree_level &lt;= 2
+           AND org.parent_id = #{id} AND org.org_tree_level &lt;= 2 AND org.del_flag = 0
         </where>
     </select>
     
@@ -470,6 +470,7 @@
                 orgList.org_type,
                 orgList.org_charge_name,
                 orgList.post_name,
+                orgList.del_flag,
                 orgList.staff_total,
                 orgList.workforce_total,
                 orgList.create_desc,
@@ -484,6 +485,7 @@
 			        org.is_stop,
 			        0 staff_total,
 			        ps.post_name,
+			        org.del_flag,
 			        IFNULL(workforce_total, 0) AS workforce_total,
 			        CONCAT( cus.user_name, ' 于 ', org.created_time ,'创建') create_desc,
 			        CONCAT( mus.user_name, ' 于 ', org.modified_time ,'更新') update_desc
@@ -494,13 +496,14 @@
         		LEFT JOIN mp_user mus ON mus.id = org.modifier_id 
        		 ) orgList
 	        <where>
+	        	AND orgList.del_flag = 0
 	        	<if test="stop != null and stop != 3">
 		            AND orgList.is_stop = #{stop}
 		        </if>
-		        <if test="orgCode != null">
-		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') 
+		        <if test="orgCode != null and (searchText == '' or searchText == null) ">
+		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(orgList.org_code) &lt;= LENGTH(#{orgCode}) + 3
 		        </if>
-	        	<if test="searchText != null">
+	        	<if test="searchText != '' and searchText != null">
 	        		AND CONCAT(orgList.org_name, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')
 	        	</if>
 	        </where>
@@ -521,6 +524,7 @@
 			0 staff_total,
 	        org.organizational,
 	        org.welfare_type,
+	        org.org_desc,
 	        org.is_stop,
 	        org.start_date,
 	        org.stop_date

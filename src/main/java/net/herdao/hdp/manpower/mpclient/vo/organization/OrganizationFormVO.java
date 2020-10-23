@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.vo.organization;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -111,10 +113,12 @@ public class OrganizationFormVO {
 	 * 启用日期
 	 */
 	@ApiModelProperty(value = "启用日期")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date startDate;
 	/**
 	 * 停用日期
 	 */
 	@ApiModelProperty(value = "停用日期")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date stopDate;
 }

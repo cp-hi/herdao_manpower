@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,19 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckResultDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
@@ -45,6 +50,7 @@ import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 
 /**
  * @author Andy
@@ -54,15 +60,17 @@ import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Organization> implements OrganizationService {
 
 	@Autowired
-    private UserpostService userpostService;
-	@Autowired
-    private OrgModifyRecordService orgModifyRecordService;
-	@Autowired
-    private RemoteUserService remoteUserService;
-	@Autowired
     private PostService postService;
 	@Autowired
     private UserService userService;
+	@Autowired
+    private UserpostService userpostService;
+	@Autowired
+    private RemoteUserService remoteUserService;
+	@Autowired
+	private SysDictItemService sysDictItemService;
+	@Autowired
+    private OrgModifyRecordService orgModifyRecordService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -439,6 +447,16 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	// 父组织信息
     	Organization parentOrganization = ObjectUtil.isNull(parentId) ? null : this.getById(parentId);
     	
+    	// 校验同一个组织下不能存在组织名称一样的组织
+    	if(ObjectUtil.isNotNull(parentOrganization)) {
+    		List<Organization> orgs = this.lambdaQuery().eq(Organization::getOrgName, organization.getOrgName())
+    						  .eq(Organization::getParentId, parentId)
+    						  .ne(id != null, Organization::getId, id).list();
+    		if(ObjectUtil.isNotEmpty(orgs)) {
+    			return R.failed("组织名称已经存在，请修改后保存！");
+    		}
+    	}
+    	
     	if(StrUtil.isBlank(organization.getOrgCode()) || tpOrganization.getParentId() != organization.getParentId()) {
     		
     		// 设置组织编码
@@ -553,7 +571,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		
     		// 父orgFull + org
     		organization.setOrgFullname(parentOrganization.getOrgName() + pathSeparator + organization.getOrgName());
-    	}
+    	} 	
     }
     
 	@Override
@@ -601,4 +619,48 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	public List<OrganizationAddDTO> selectAllOrganization() {
 		return this.baseMapper.selectAllOrganization();
 	}
+	
+	/**======================================  组织导入 ====================================**/
+
+	@Override
+	public ExcelCheckResultDTO checkImportExcel(List<OrganizationAddDTO> objects) {
+		// 组织类型
+		List<SysDictItem> orgTypeList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
+		
+		// 用户信息
+		List<User> userList = userService.list();
+		
+		// 岗位信息
+		List<Post> postList = postService.list();
+		
+		return null;
+	}
+	
+	/**
+     * 获取组织集合 key = orgName + parentOrgCode 作为唯一标识
+     * @return
+     */
+    Map<String, OrganizationAddDTO> getOrganizationMap(){
+    	
+       Map<String, OrganizationAddDTO> renderMap = new HashMap<String, OrganizationAddDTO>();
+       List<OrganizationAddDTO> orgList = this.selectAllOrganization();
+       if(ObjectUtil.isNotEmpty(orgList)) {
+    	   orgList.forEach(org ->{
+    		   // 唯一标识，用于数据导入校验
+    		   String key = org.getOrgName() + ManpowerContants.SEPARATOR + org.getParentOrgCode();
+    		   renderMap.put(key, org);
+    	   });
+       }
+       return renderMap;
+    }
+    
+    /**
+     * 组织集合 orgCode 作为唯一标识
+     * 
+     * @param orgList
+     * @return
+     */
+    Map<String, OrganizationAddDTO> getParentOrganizationMap(List<OrganizationAddDTO> orgList){
+    	return orgList.stream().collect(Collectors.toMap(OrganizationAddDTO::getOrgCode, (p) -> p)); 
+    }
 }
