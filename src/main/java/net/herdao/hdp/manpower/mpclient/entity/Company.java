@@ -84,11 +84,6 @@ public class Company extends BaseEntity<Company> {
     @ApiModelProperty(value="公积金标准ID")
     private Long cityFundId;
     /**
-     * 目标系统ID
-     */
-    @ApiModelProperty(value="目标系统ID")
-    private Long targetSysId;
-    /**
      * 支付公司账号
      */
     @ApiModelProperty(value="支付公司账号")
@@ -104,4 +99,18 @@ public class Company extends BaseEntity<Company> {
     @ApiModelProperty(value="工会费比例")
     private BigDecimal lohnkostenRate;
 
+    @ApiModelProperty(value="保险标准")
+    private String securityStandard;
+
+    @ApiModelProperty(value="保险科目")
+    private String securitySubject;
+
+    @ApiModelProperty(value="备注")
+    private String remark;
+
+    @ApiModelProperty(value="目标系统")
+    private String targetSys;
+
+    @ApiModelProperty(value="排序")
+    private Long sort;
 }
