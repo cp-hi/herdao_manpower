@@ -259,6 +259,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		if(eduList!=null && eduList.size()!=0){
 			Staffeducation staffeducation = eduList.get(0);
 			BeanUtils.copyProperties(staffeducation, educationLast);
+		}else{
+			educationLast = null;
 		}
 		map.put("staffEducationLastDTO", educationLast);
 		return map;
@@ -329,6 +331,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		if(eduList!=null && eduList.size()!=0){
 			Staffeducation staffeducation = eduList.get(0);
 			BeanUtils.copyProperties(staffeducation, educationLast);
+		}else{
+			educationLast = null;
 		}
 		map.put("staffEducationLastDTO", educationLast);
 		return map;

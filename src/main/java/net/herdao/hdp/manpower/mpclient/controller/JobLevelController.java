@@ -12,11 +12,15 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName JobLevelController
@@ -36,8 +40,6 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     @Autowired
     private JobLevelService jobLevelService;
 
-    @Autowired
-    private OKJobLevleSysService okJobLevleSysService;
 
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
@@ -58,7 +60,6 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     @Override
     @GetMapping("/page")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "jobGradeId", value = "职等ID"),
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
             @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
@@ -67,6 +68,9 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             throws Exception {
         return super.page(response, page, jobLevel, type);
     }
+
+    @Autowired
+    private OKJobLevleSysService okJobLevleSysService;
 
     @GetMapping("/okpage")
     @ApiOperation(value = "一键职级系统列表", notes = "一键职级系统列表")
@@ -77,12 +81,33 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
     }
 
     @GetMapping("/okJobLevelDetail")
-    @ApiOperation(value = "一键职级系统详情", notes = "一键职级系统详情")
-    public R okJobLevelDetail(Long okJobLevleSysId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    @ApiOperation(value = "获取职级系统详情", notes = "获取职级系统详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
+    })
+    public R<OKJobLevleSysDetailDTO> okJobLevelDetail(Long okJobLevleSysId) {
         OKJobLevleSysDTO okJobLevleSysDTO = okJobLevleSysService.findDetail(okJobLevleSysId);
         OKJobLevleSysDetailDTO detailDTO = new OKJobLevleSysDetailDTO();
+        BeanUtils.copyProperties(okJobLevleSysDTO, detailDTO);
+        for (OKJobGradeDTO jobGradeDTO : okJobLevleSysDTO.getOkJobGradeDTOList()) {
+            String jobGradeName = jobGradeDTO.getJobGradeName();
+            String jobLevelName = "";
+            for (OKJobLevelDTO jobLevelDTO : jobGradeDTO.getOkJobLevelDTOList())
+                jobLevelName += "、" + jobLevelDTO.getJobLevelName();
+            jobLevelName = jobLevelName.replaceFirst("、", "");
+            detailDTO.getShortJobLevels().add(ShortJobLevelDTO.builder()
+                    .jobGradeName(jobGradeName).jobLevelName(jobLevelName).build());
+        }
         return R.ok(detailDTO);
     }
 
-
+    @GetMapping("/okCreateJobLevel")
+    @ApiOperation(value = "一键创建职级系统详情", notes = "一键创建职级系统详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
+    })
+    public R okCreateJobLevel(Long okJobLevleSysId) {
+        okJobLevleSysService.okCreateJobLevel(okJobLevleSysId);
+        return R.ok();
+    }
 }

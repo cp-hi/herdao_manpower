@@ -42,10 +42,9 @@ public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> i
 
     @Override
     public void saveVerify(JobGrade jobGrade) {
-        if (baseMapper.chkDuplicateJobGradeCode(jobGrade))
-            throw new RuntimeException("职级编码重复了");
+//        if (baseMapper.chkDuplicateJobGradeCode(jobGrade))
+//            throw new RuntimeException("职级编码重复了");
         if (baseMapper.chkDuplicateJobGradeName(jobGrade))
-            throw new RuntimeException("职级名称重复了");
+            throw new RuntimeException("职级名称重复了:" + jobGrade.getJobGradeName());
     }
-
 }

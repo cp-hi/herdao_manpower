@@ -117,10 +117,12 @@
                 FROM  mp_workexperience f
                 LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
                 LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
-                where 1=1  and f.DEL_FLAG = 0
-                <if test="staffId != null">
+                <where>
+               	 and f.DEL_FLAG = 0
+               	  <if test="staffId != null">
                     and f.staff_id = #{staffId}
                 </if>
+                </where>               
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
@@ -151,10 +153,10 @@
 				  f.FIELD4,
 				  f.FIELD5,
 				  f.STAFF_ID staffid
-            FROM
-            mp_workexperience f
-            where 1=1
+            FROM mp_workexperience f
+            <where>
             and f.DEL_FLAG=0
+            </where>
             <if test="staffid != null">
             and f.STAFF_ID = #{staffid}
             </if>

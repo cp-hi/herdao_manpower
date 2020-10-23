@@ -15,8 +15,11 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeConverter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 员工异动情况
@@ -37,8 +40,10 @@ public class StafftransactionDTO {
     /**
      * 异动时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="异动时间")
-    private LocalDateTime tranTime;
+    private LocalDate tranTime;
 
     /**
      * 异动类型

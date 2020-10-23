@@ -12,8 +12,11 @@ import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @ApiModel(value = "现任职情况")
@@ -30,13 +33,17 @@ public class UserpostDTO {
     @ApiModelProperty(value="员工工号")
     private String staffCode;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "任职日期")
     @ApiModelProperty(value="任职日期")
-    private String startDate;
+    private LocalDate startDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="免职日期")
     @ExcelProperty(value = "免职日期")
-    private String endDate;
+    private LocalDate endDate;
 
     @ExcelProperty(value = "所在组织")
     @ApiModelProperty(value="所在组织")

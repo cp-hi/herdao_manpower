@@ -151,10 +151,11 @@
                 LEFT JOIN sys_dict_item  di on di.id= u.office_post_type
                 LEFT JOIN mp_job_level jl on jl.JOB_LEVEL_CODE=P.JOB_LEVEL_ID1
 				LEFT JOIN sys_dict_item pt on pt.type='OFFICE_POST_TYPE' and pt.value=u.OFFICE_POST_TYPE
-         WHERE 1=1
-        <if test="staffId != null">
-            and st.id = #{staffId}
-        </if>
+		<where>
+	        <if test="staffId != null">
+	            and st.id = #{staffId}
+	        </if>
+		</where>
     </select>
 
 

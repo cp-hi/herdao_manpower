@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 
 import java.util.List;
 
@@ -12,12 +15,9 @@ import java.util.List;
  * @Date 2020/10/22 16:13
  * @Version 1.0
  */
-public class OKJobGradeDTO {
-    @ApiModelProperty("ID")
-    private Long id;
-    @ApiModelProperty("名称")
-    private String jobGradeName;
-
+@Data
+@ApiModel(value = "一键创建职等")
+public class OKJobGradeDTO  extends JobGrade {
     private List<OKJobLevelDTO> okJobLevelDTOList;
 
 }
