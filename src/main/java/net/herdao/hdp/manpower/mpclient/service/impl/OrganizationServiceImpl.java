@@ -338,6 +338,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         // 组织orgCode集合
         List<String> orgCodes = new ArrayList<String>();
         
+        // 删除组织 TOTO 待使用脚本删除方式
+        Set<Organization> organizationSet = new HashSet<Organization>();
+        
         for(int i=0; i<idAy.length; i++) {
         	
         	Long id = Long.parseLong(idAy[i]);
@@ -354,27 +357,31 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         	}
         	
         	orgCodes.add(orgCode);
+        	organizationSet.add(organization);
         }
         
         if(message.length() > 0) {
         	return R.failed("删除失败，组织下不能存在人员，包括离职人员、派遣员等， 以下组织存在人员信息：" + message);
         }
         
-        // 删除组织 TOTO 待使用脚本删除方式
-        Set<Organization> organizationSet = new HashSet<Organization>();
-        
         for(int i=0; i<orgCodes.size(); i++) {
         	List<Organization> organizations =  this.baseMapper.selectOrganizationByOrgCode(orgCodes.get(i));
         	if(ObjectUtil.isNotEmpty(organizations)) {
         		organizations.forEach(organization ->{
-        			organization.setDelFlag(true);
         			organizationSet.add(organization);
         		});
         	}
         }
-        // 批量逻辑删除
-        this.updateBatchById(organizationSet);
         
+        // 批量逻辑删除
+        if(ObjectUtil.isNotEmpty(organizationSet)) {
+        	organizationSet.forEach(org ->{
+        		LambdaUpdateWrapper<Organization> updateWrapper = Wrappers.lambdaUpdate();
+                updateWrapper.set(Organization::getDelFlag, true)
+                			 .eq(Organization::getId, org.getId());
+                this.update(updateWrapper);
+        	});
+        }
         return R.ok(null, ManpowerContants.DELETE_SUCCESS);
         
     }

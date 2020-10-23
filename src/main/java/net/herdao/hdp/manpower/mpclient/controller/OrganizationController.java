@@ -130,21 +130,6 @@ public class OrganizationController {
     }
 
     /**
-     * 通过id删除
-     *
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除")
-    //@DeleteMapping("/{orgOid}" )
-    @PreAuthorize("@pms.hasPermission('oa_organization_del')")
-    public R removeById(@PathVariable String id) {
-        return R.ok(orgService.removeById(id));
-    }
-
-
-    /**
      * 查询子组织架构表
      *
      * @param parentId 组织架构表父id

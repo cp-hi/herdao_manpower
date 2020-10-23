@@ -121,4 +121,7 @@ public class OrganizationFormVO {
 	@ApiModelProperty(value = "停用日期")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date stopDate;
+	
+	@ApiModelProperty(value = "是否可以删除 （值：true 是， 值 false 否）")
+	private Boolean canDelete;
 }

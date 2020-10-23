@@ -527,7 +527,11 @@
 	        org.org_desc,
 	        org.is_stop,
 	        org.start_date,
-	        org.stop_date
+	        org.stop_date,
+	        CASE (
+				 SELECT COUNT(1) FROM mp_user us 
+				 WHERE us.org_dept_id IN( SELECT orgt.id FROM mp_organization orgt WHERE orgt.org_code like CONCAT(org.org_code,'%') )
+			) WHEN 0 THEN 1 ELSE 0 END canDelete
          FROM mp_organization org
          LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
          <where>
