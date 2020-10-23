@@ -107,7 +107,11 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             @ApiImplicitParam(name = "okJobLevleSysId", value = "职级系统ID"),
     })
     public R okCreateJobLevel(Long okJobLevleSysId) {
-        okJobLevleSysService.okCreateJobLevel(okJobLevleSysId);
+        try {
+            okJobLevleSysService.okCreateJobLevel(okJobLevleSysId);
+        } catch (Exception ex) {
+            return R.failed(ex.getMessage());
+        }
         return R.ok();
     }
 }

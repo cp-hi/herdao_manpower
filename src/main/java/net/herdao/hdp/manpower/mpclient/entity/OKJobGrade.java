@@ -12,7 +12,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
-@TableName("mp_job_grade")
+@TableName("mp_ok_job_grade")
 public class OKJobGrade extends JobGrade {
     private Long okJobLevelSysId;
 }
