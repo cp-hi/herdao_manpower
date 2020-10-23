@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.util.StrUtil;
@@ -250,8 +250,8 @@ public class OrganizationController {
 	@ApiImplicitParam(name = "ids", value = "组织id集合 例如： 1,2,3,4")
 	@SysLog("删除组织")
 	@PostMapping("/removeOrg")
-	public R removeOrg(String ids) {
-		return orgService.removeOrg(ids);
+	public R removeOrg(@RequestBody JSONObject json) {
+		return orgService.removeOrg(json.getString("ids"));
 	}
 
     /**
