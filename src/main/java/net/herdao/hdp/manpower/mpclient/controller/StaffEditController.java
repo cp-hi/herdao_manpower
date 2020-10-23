@@ -149,7 +149,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-修改劳动合同", notes = "劳动合同")
     @SysLog("修改劳动合同" )
     @PutMapping("/staffcontract" )
-    public R<Boolean> updateById(@RequestBody StaffcontractDTO staffContract) {
+    public R<Boolean> updateById(@RequestBody StaffContractDetailDTO staffContract) {
         Staffcontract contract = new Staffcontract();
         BeanUtils.copyProperties(staffContract, contract);
         return R.ok(staffcontractService.updateById(contract));
@@ -158,7 +158,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-新增劳动合同", notes = "劳动合同")
     @SysLog("新增劳动合同" )
     @PostMapping("/staffcontract" )
-    public R<Boolean> save(@RequestBody StaffcontractDTO staffContract) {
+    public R<Boolean> save(@RequestBody StaffContractDetailDTO staffContract) {
         Staffcontract contract = new Staffcontract();
         BeanUtils.copyProperties(staffContract, contract);
         return R.ok(staffcontractService.save(contract));

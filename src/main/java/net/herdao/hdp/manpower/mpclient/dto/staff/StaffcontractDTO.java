@@ -78,7 +78,7 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
      */
     @ApiModelProperty(value="合同编号")
     @ExcelProperty(value = "合同编号")
-    private Long contractId;
+    private String contractId;
 
     /**
      * 合同是否生效
@@ -106,7 +106,7 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
      */
     @ApiModelProperty(value="试用期")
     @ExcelProperty(value = "试用期")
-    private BigDecimal probationMonth;
+    private Long probationMonth;
 
     /**
      * 操作时间
