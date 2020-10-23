@@ -74,7 +74,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
 
     @GetMapping("/okpage")
     @ApiOperation(value = "一键职级系统列表", notes = "一键职级系统列表")
-    public R okpage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public R<List<OKJobLevleSysDTO>> okpage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         List<OKJobLevleSys> jobLevleSys = okJobLevleSysService.list();
         List<OKJobLevleSysDTO> data = DtoConverter.dto2vo(jobLevleSys, OKJobLevleSysDTO.class);
         return R.ok(data);
