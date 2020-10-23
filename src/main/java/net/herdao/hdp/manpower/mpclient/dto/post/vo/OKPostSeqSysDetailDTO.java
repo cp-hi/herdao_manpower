@@ -19,7 +19,6 @@ import java.util.List;
 @Data
 @ApiModel(value = "岗位序列体系-详情")
 public class OKPostSeqSysDetailDTO {
-
     @ApiModelProperty("ID")
     private Long id;
     @ApiModelProperty("标题")
@@ -28,5 +27,5 @@ public class OKPostSeqSysDetailDTO {
     private String description;
 
     @ApiModelProperty("岗位序列列表")
-    private List<ShortPostSeqDTO> shortPostSeqs = new ArrayList<>();
+    private List<ShortPostSeqDTO> shortPostSeqDTOList;
 }

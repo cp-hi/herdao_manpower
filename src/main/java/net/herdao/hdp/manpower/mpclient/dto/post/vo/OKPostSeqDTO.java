@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.mpclient.dto.post.vo;
 
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
+
+import java.util.List;
 
 /**
  * @ClassName OKPostSeqDTO
@@ -11,4 +14,6 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
  * @Version 1.0
  */
 public class OKPostSeqDTO extends PostSeq {
+    private List<OKPostDTO > okPostDTOList;
+
 }

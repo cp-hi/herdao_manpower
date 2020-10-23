@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,9 +54,15 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     @Override
     public void addEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchDTO excel = (JobLevelBatchDTO) excelObj;
-        chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false);
-        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
-        if (null == jobGrade.getGroupId()) throw new RuntimeException("集团ID为空");
+        StringBuffer buffer = new StringBuffer();
+        chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false,buffer);
+        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true,buffer);
+
+        if (null == jobGrade.getGroupId())
+            buffer.append("；集团ID为空");
+
+        if(StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
 
         jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
@@ -65,9 +72,16 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
     @Override
     public void updateEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchDTO excel = (JobLevelBatchDTO) excelObj;
-        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
-        JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true);
-        if (null == jobGrade.getGroupId()) throw new RuntimeException("集团ID为空");
+        StringBuffer buffer = new StringBuffer();
+
+        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true,buffer);
+        JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true,buffer);
+
+        if (null == jobGrade.getGroupId())
+            buffer.append("；集团ID为空");
+
+        if(StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
 
         jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());

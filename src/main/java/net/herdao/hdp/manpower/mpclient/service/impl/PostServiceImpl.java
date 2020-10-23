@@ -147,12 +147,19 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public void addEntity(Post post, Object excelObj) {
         PostBatchAddDTO excel = (PostBatchAddDTO) excelObj;
-        chkEntityExists("POST_NAME",excel.getPostName(), false);
+        StringBuffer buffer = new StringBuffer();
+        chkEntityExists("POST_NAME", excel.getPostName(), false, buffer);
         Group group = groupService.getGroupByName(excel.getGroupName());
-        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(),true);
-        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(),true);
-        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(),true);
-        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(),true);
+        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(), true, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true, buffer);
+        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true, buffer);
+        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true, buffer);
+
+        if (null == group)
+            buffer.append("；不存在此集团：" + excel.getGroupName());
+
+        if(StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
 
         post.setGroupId(group.getId());
         post.setSectionId(section.getId());
@@ -164,12 +171,25 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public void updateEntity(Post post, Object excelObj) {
         PostBatchUpdateDTO excel = (PostBatchUpdateDTO) excelObj;
-        Post tmp = chkEntityExists("POST_NAME",excel.getPostName(), true);
+        StringBuffer buffer = new StringBuffer();
+
+        Post tmp = chkEntityExists("POST_NAME", excel.getPostName(), true, buffer);
         Group group = groupService.getGroupByName(excel.getGroupName());
-        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(), true);
-        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true);
-        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true);
-        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true);
+        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(), true,buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true,buffer);
+        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true,buffer);
+        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true,buffer);
+
+        post.setOrgType(sysDictItemService.getDictItemValue("GWZZLX", excel.getOrgType(), buffer));
+        post.setPostLevel(sysDictItemService.getDictItemValue("XCJB", excel.getPostLevel(), buffer));
+        post.setYearPayRatio(sysDictItemService.getDictItemValue("XCBL", excel.getYearPayRatio(), buffer));
+        post.setPerforSalaryRatio(sysDictItemService.getDictItemValue("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
+
+        if (null == group)
+            buffer.append("；不存在此集团：" + excel.getGroupName());
+
+        if(StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
 
         post.setGroupId(group.getId());
         post.setSectionId(section.getId());
@@ -177,18 +197,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setPostSeqId(postSeq.getId());
         post.setJobLevelId1(jobLevel.getId());
         post.setId(tmp.getId());
-
-        post.setOrgType(getDictItem("GWZZLX", excel.getOrgType()).getValue());
-        post.setPostLevel(getDictItem("XCJB", excel.getPostLevel()).getValue());
-        post.setYearPayRatio(getDictItem("XCBL", excel.getYearPayRatio()).getValue());
-        post.setPerforSalaryRatio(getDictItem("YDJXGZBL", excel.getPerforSalaryRatio()).getValue());
-    }
-
-    private SysDictItem getDictItem(String type, String label) {
-        SysDictItem dictItem = sysDictItemService.getOne(
-                new QueryWrapper<SysDictItem>().eq("type", type).eq("label", label));
-        if (null == dictItem) throw new RuntimeException("不存在此字典值：" + label);
-        return dictItem;
     }
 
     //endregion

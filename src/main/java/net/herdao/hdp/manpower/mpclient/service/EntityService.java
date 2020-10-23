@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -28,9 +30,14 @@ import java.util.List;
  */
 public interface EntityService<T> extends IService<T> {
 
-
     default IPage page(Page page, T t) {
         return page;
+    }
+
+    default Class<T> getEntityClass() {
+        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+        return clazz;
     }
 
     /**
@@ -39,10 +46,20 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
     default String getTabelName() {
-        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+        Class<T> clazz = getEntityClass();
         TableName table = clazz.getAnnotation(TableName.class);
         return table.value();
+    }
+
+    /**
+     * 获取实体名
+     *
+     * @return
+     */
+    default String getEntityName() {
+        Class<T> clazz = getEntityClass();
+        ApiModel apiModel = clazz.getAnnotation(ApiModel.class);
+        return apiModel.value();
     }
 
     /**
@@ -60,11 +77,12 @@ public interface EntityService<T> extends IService<T> {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         String entityName = clazz.getSimpleName();
-        return clazz.getName()+"Code";
+        return clazz.getName() + "Code";
     }
 
     /**
      * 生成编码
+     *
      * @return
      */
     default String generateEntityCode() {
@@ -176,6 +194,33 @@ public interface EntityService<T> extends IService<T> {
     default void updateEntity(T t, Object excelObj) {
     }
 
+
+    /**
+     * 根据字段名和字段值获取字段
+     * 并根据条件拼接错误信息
+     *
+     * @param field  字段名
+     * @param value  字段值
+     * @param need   是否需要它存在
+     * @param buffer 拼接信息的StringBuffer，
+     *               这样可以实体多数据返回，
+     *               使用StringBuffer主要是为了线程安全
+     * @return
+     */
+    default T chkEntityExists(String field, String value, boolean need, StringBuffer buffer) {
+        T t = this.getEntityByField(field, value);
+        String entityName = getEntityName();
+        String errMsg = "";
+        if (!need && null != t)  //不需要它但它不为空
+            //添加分号，因为批量导入需要所有错误信息
+            errMsg = "；已存在此" + entityName + "：" + value;
+        if (need && null == t)  //需要它但它为空
+            errMsg = "；不存在此" + entityName + "：" + value;
+
+        buffer.append(errMsg.replaceFirst("：", ""));
+        return t;
+    }
+
     /**
      * 根据字段名和字段值获取字段
      * 并根据条件抛异常
@@ -187,13 +232,13 @@ public interface EntityService<T> extends IService<T> {
      * @Author ljan
      */
     default T chkEntityExists(String field, String value, boolean need) {
-        T t = this.getEntityByField(field, value);
-        if (!need && null != t) //不需要它但它不为空
-            throw new RuntimeException("已存在此对象：" + value);
-        if (need && null == t) //需要它但它为空
-            throw new RuntimeException("不存在此对象：" + value);
+        StringBuffer buffer = new StringBuffer();
+        T t = this.chkEntityExists(field, value, need, buffer);
+        if (StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
         return t;
     }
+
 
     /**
      * 根据字段名获取单个实体
