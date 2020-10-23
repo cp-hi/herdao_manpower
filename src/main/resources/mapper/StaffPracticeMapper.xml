@@ -58,8 +58,9 @@
 			p.job_level jobLevelId,
 			jl.JOB_LEVEL_NAME,											
             p.score,
+            p.evaluate,
             p.evaluate_id,
-            p.evaluate_name,
+            u.USER_NAME evaluate_name,
             p.evaluate_time,
 			p.STAFF_ID,
 			p.field1,
@@ -72,6 +73,7 @@
 		left join mp_pipeline pip on pip.id=p.pipe_id
 		left join mp_post po on po.id=p.post_id
 		left join mp_job_level jl on jl.id=p.job_level
+		left join mp_user u on u.id=p.evaluate_id
 		<where>
 			and p.DEL_FLAG=0
 	        <if test="staffid != null">
