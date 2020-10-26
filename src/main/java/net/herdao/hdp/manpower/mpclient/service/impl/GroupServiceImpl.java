@@ -31,6 +31,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,22 +48,31 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         return baseMapper.groupList();
     }
 
+//    @Override
+//    public IPage groupPage(Page page, Group group, String searchText){
+//        QueryWrapper<Group> wrapper =  Wrappers.query(group);
+//        if(searchText!=null && !"".equals(searchText)){
+//            wrapper.like("CONCAT(GROUP_NAME,GROUP_FULLNAME)", searchText);
+//        }
+//        IPage result = this.page(page, wrapper);
+//        List<Group> list = result.getRecords();
+//        List<GroupListDTO> entityList = new ArrayList<>();
+//        GroupListDTO entity;
+//        for(int i=0;i<list.size();i++){
+//            entity = DtoUtils.transferObject(list.get(i), GroupListDTO.class);
+//            entityList.add(entity);
+//        }
+//        result.setRecords(entityList);
+//        return result;
+//    }
+
     @Override
     public IPage groupPage(Page page, Group group, String searchText){
-        QueryWrapper<Group> wrapper =  Wrappers.query(group);
-        if(searchText!=null && !"".equals(searchText)){
-            wrapper.like("CONCAT(GROUP_NAME,GROUP_FULLNAME)", searchText);
-        }
-        IPage result = this.page(page, wrapper);
-        List<Group> list = result.getRecords();
-        List<GroupListDTO> entityList = new ArrayList<>();
-        GroupListDTO entity;
-        for(int i=0;i<list.size();i++){
-            entity = DtoUtils.transferObject(list.get(i), GroupListDTO.class);
-            entityList.add(entity);
-        }
-        result.setRecords(entityList);
-        return result;
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        map.put("searchText", searchText);
+        page = page.setRecords(baseMapper.groupPage(map));
+        return page;
     }
 
     @Override
