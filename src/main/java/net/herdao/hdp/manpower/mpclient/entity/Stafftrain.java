@@ -61,7 +61,7 @@ public class Stafftrain extends BaseModel<Stafftrain> {
      * 培训时间
      */
     @ApiModelProperty(value="培训时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ExcelIgnore
     private Date trainingTime;
 
@@ -183,7 +183,7 @@ public class Stafftrain extends BaseModel<Stafftrain> {
      */
     @ApiModelProperty(value="开始时间")
     @ExcelIgnore
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date beginTime;
 
 
@@ -192,7 +192,7 @@ public class Stafftrain extends BaseModel<Stafftrain> {
      */
     @ApiModelProperty(value="结束时间")
     @ExcelIgnore
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
 

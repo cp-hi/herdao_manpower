@@ -2,17 +2,26 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationExcelErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
+import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
+import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StafftrainErrMsg;
@@ -26,9 +35,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -39,15 +50,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/stafftrain" )
 @Api(value = "stafftrain", tags = "员工培训管理")
-public class StafftrainController extends BaseController<Stafftrain> {
+public class StafftrainController{
 
     @Autowired
     private StafftrainService stafftrainService;
 
-    @Autowired
-    public void setEntityService( StafftrainService stafftrainService) {
-        super.entityService = stafftrainService;
-    }
 
     /**
      * 分页查询
@@ -102,7 +109,7 @@ public class StafftrainController extends BaseController<Stafftrain> {
     @SysLog("导出员工培训Excel")
     @PostMapping("/exportTrain")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="searchText",value="关键字搜索")
+        @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
     public void exportTrain(HttpServletResponse response,String searchText) {
         try {
@@ -116,26 +123,6 @@ public class StafftrainController extends BaseController<Stafftrain> {
         R.ok("导出成功");
     }
 
-    @ApiOperation("导入员工培训")
-    @SysLog("导入员工培训")
-    @PostMapping("/importStaffTrain")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
-    })
-    public R importStaffTrain(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(stafftrainService,10, importType);
-        try {
-            InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, StafftrainErrMsg.class, listener).sheet().doRead();
-            IOUtils.closeQuietly(inputStream);
-        } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "员工培训错误信息", "员工培训错误信息", StafftrainErrMsg.class, listener.getDataList());
-            //return R.failed("导入员工教育经历失败",ex.getMessage());
-        }
-       // return R.ok("导入员工教育经历成功");
-        return null;
-    }
 
     /**
      * 修改
@@ -151,6 +138,54 @@ public class StafftrainController extends BaseController<Stafftrain> {
         stafftrain.setModifiedTime(new Date());
         stafftrain.setModifierCode(userId.toString());
         boolean status = stafftrainService.updateById(stafftrain);
+        return R.ok(status);
+    }
+
+    /**
+     * 批量导入员工培训（excel导入)
+     * @param file
+     * @return R
+     */
+    @ApiOperation(value = "批量导入员工培训 (excel导入)", notes = "批量导入员工培训 (excel导入)")
+    @GetMapping("/batchImportTrain")
+    @ResponseBody
+    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
+            @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
+    })
+    public R batchImportTrain(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
+        try {
+            EasyExcelListener easyExcelListener = new EasyExcelListener(stafftrainService, StaffTrainAddDTO.class,importType);
+            EasyExcelFactory.read(file.getInputStream(), OrganizationAddDTO.class, easyExcelListener).sheet().doRead();
+            List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
+            if (!errList.isEmpty()) {
+                // 包含错误信息就导出错误信息
+                List<OrganizationExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+                    OrganizationExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationExcelErrDTO.class);
+                    excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
+                    return excelErrDto;
+                }).collect(Collectors.toList());
+                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffTrainExcelErrDTO.class, "批量导入员工培训错误信息");
+            }
+            return R.ok("导入成功！");
+        } catch (IOException e) {
+            return R.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 新增员工培训
+     * @param staffTrain
+     * @return R
+     */
+    @ApiOperation(value = "新增员工培训", notes = "新增员工培训")
+    @SysLog("新增员工培训" )
+    @GetMapping("/saveStaffTrain" )
+    public R saveStaffTrain(@RequestBody Stafftrain staffTrain) {
+        String username = UserUtils.getUsername();
+        Integer userId = UserUtils.getUserId();
+        staffTrain.setCreatedTime(new Date());
+        staffTrain.setCreatorCode(userId.toString());
+        boolean status = stafftrainService.save(staffTrain);
         return R.ok(status);
     }
 }
