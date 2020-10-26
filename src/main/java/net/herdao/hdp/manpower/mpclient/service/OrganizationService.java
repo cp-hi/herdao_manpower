@@ -23,7 +23,7 @@ import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
  * @author Andy
  * @date 2020-09-09 15:31:20
  */
-public interface OrganizationService extends EasyExcelService<Organization, OrganizationAddDTO>{
+public interface OrganizationService extends EasyExcelService<Organization>{
 
     /**
      * 查询子组织架构

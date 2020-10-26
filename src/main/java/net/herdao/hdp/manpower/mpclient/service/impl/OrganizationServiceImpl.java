@@ -33,7 +33,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckResultDTO;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
@@ -627,20 +627,73 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		return this.baseMapper.selectAllOrganization();
 	}
 	
-	/**======================================  组织导入 ====================================**/
-
+	/**======================================  组织导入 start ====================================**/
+	
 	@Override
-	public ExcelCheckResultDTO checkImportExcel(List<OrganizationAddDTO> objects) {
+	public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+
+		// 错误数组
+		List<ExcelCheckErrDTO> errList = new ArrayList<>();
+
+		Map<String, OrganizationAddDTO> parentOrganizationMap = getParentOrganizationMap(this.baseMapper.selectAllOrganization());
+
 		// 组织类型
 		List<SysDictItem> orgTypeList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
-		
+
 		// 用户信息
-		List<User> userList = userService.list();
-		
+		Map<String, User> userMap = getUserMap(userService.lambdaQuery().list());
+
 		// 岗位信息
-		List<Post> postList = postService.list();
-		
-		return null;
+		Map<String, Post> postMap = getPostMap(postService.lambdaQuery().list());
+
+		List<Organization> organizationList = new ArrayList<Organization>();
+
+		if (importType == 0) {
+			// 导入校验
+			for (int i = 0; i < excelList.size(); i++) {
+
+				Organization organization = new Organization();
+
+				OrganizationAddDTO org = (OrganizationAddDTO) excelList.get(i);
+
+				StringBuffer errMsg = new StringBuffer();
+
+				// 父组织信息
+				OrganizationAddDTO orgp = parentOrganizationMap.get(org.getParentOrgCode());
+
+				// 校验父组织信息
+				if (orgp == null) {
+					appendStringBuffer(errMsg, "组织编码：" + org.getParentOrgCode() + "不存在");
+				} else {
+					org.setParentId(orgp.getParentId());
+				}
+				// 校验组织类型
+				String orgType = getDictItem(orgTypeList, org.getOrgType());
+				if (StrUtil.isNotBlank(orgType)) {
+					appendStringBuffer(errMsg, "组织类型：" + org.getOrgType() + "不存在");
+				} else {
+					// 转字典value
+					org.setOrgType(orgType);
+				}
+				// 校验用户信息
+				User user = userMap.get(org.getOrgChargeWorkNo());
+				if (user == null) {
+					appendStringBuffer(errMsg, "组织负责人工号：" + org.getOrgChargeWorkNo() + "不存在");
+				} else {
+					org.setOrgChargeId(StrUtil.toString(user.getId()));
+					org.setOrgChargeName(user.getUserName());
+					org.setOrgChargeWorkNo(user.getLoginCode());
+				}
+
+				if (errMsg.length() > 0) {
+					errList.add(new ExcelCheckErrDTO(orgp, errMsg.toString()));
+				} else {
+					BeanUtils.copyProperties(org, organization);
+					organizationList.add(organization);
+				}
+			}
+		}
+		return errList;
 	}
 	
 	/**
@@ -670,4 +723,77 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     Map<String, OrganizationAddDTO> getParentOrganizationMap(List<OrganizationAddDTO> orgList){
     	return orgList.stream().collect(Collectors.toMap(OrganizationAddDTO::getOrgCode, (p) -> p)); 
     }
+    
+    StringBuffer getStringBuffer(StringBuffer bf) {
+    	if(bf == null) {
+			bf = new StringBuffer();
+		}
+    	return bf;
+    }
+    
+    /**
+     * 拼接组织异常信息
+     * 
+     * @param stringBuffer
+     * @param errorMsg
+     */
+	 void appendStringBuffer(StringBuffer stringBuffer, String errorMsg) {
+
+		if (stringBuffer == null) {
+			stringBuffer = new StringBuffer();
+		}
+
+		stringBuffer.append(stringBuffer.length() > 0 ? errorMsg + ManpowerContants.CH_SEMICOLON : errorMsg);
+	}
+	 
+	/**
+	 * 获取字典value值
+	 * 
+	 * @param sysDictItemList
+	 * @param label
+	 * @return
+	 */
+	public String getDictItem(List<SysDictItem> sysDictItemList, String label) {
+		if (ObjectUtil.isNotEmpty(sysDictItemList)){
+			for(SysDictItem dict : sysDictItemList) {
+				if(dict.getLabel().equals(label)) {
+					return dict.getValue();
+				}
+			}
+        }
+		return null;
+	}
+	
+	/**
+	 * 用户信息
+	 * 
+	 * @return
+	 */
+	public Map<String, User> getUserMap(List<User> userList){
+		Map<String, User> renderMap = new HashMap<String, User>();
+		if(ObjectUtil.isNotEmpty(userList)) {
+			userList.forEach(us ->{
+				renderMap.put(us.getLoginCode(), us);
+			});
+		}
+		return renderMap;
+	}
+	
+	/**
+	 * 岗位信息
+	 * 
+	 * @return
+	 */
+	public Map<String, Post> getPostMap(List<Post> postList){
+		Map<String, Post> renderMap = new HashMap<String, Post>();
+		if(ObjectUtil.isNotEmpty(postList)) {
+			postList.forEach(ps ->{
+				renderMap.put(ps.getPostCode(), ps);
+			});
+		}
+		return renderMap;
+	}
+	
+	/**======================================  组织导入 end ====================================**/
+
 }

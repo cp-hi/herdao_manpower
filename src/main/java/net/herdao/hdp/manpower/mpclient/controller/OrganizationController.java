@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -344,17 +345,16 @@ public class OrganizationController {
     @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
     @PostMapping("/batchImportOrg")
     @ResponseBody
-    @ApiImplicitParams({
-	        @ApiImplicitParam(name = "file", value = "导入文件"),
-	        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
+    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
+    				     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
 	})
 	public R batchImportOrg(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
 		try {
-			
+
 			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, OrganizationAddDTO.class);
 
 			EasyExcelFactory.read(file.getInputStream(), OrganizationAddDTO.class, easyExcelListener).sheet().doRead();
-			
+
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
 			if (!errList.isEmpty()) {
 				// 包含错误信息就导出错误信息
