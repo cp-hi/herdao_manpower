@@ -30,4 +30,6 @@ public @interface DtoField {
 
     String mapFix() default "";
 
+    String converter() default "{true:\"已停用\",false:\"已启用\"}";
+
 }

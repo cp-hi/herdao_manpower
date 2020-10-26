@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.sys.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
@@ -15,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName DtoConverter
@@ -55,118 +57,91 @@ public class DtoConverter {
         Field[] fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
         for (Field field : fields) {
             if (null == field) continue;
-
             field.setAccessible(true);
+
             //根据 DtoField中的信息获取source中对象数据
             DtoField dtoField = field.getAnnotation(DtoField.class);
 
             String value = "";
             if (dtoField.objField().length > 0
                     && StringUtils.isNotBlank(dtoField.objField()[0])) {
-                value = getDtoFieldVal(source, field, dtoField);
+                value = getDtoFieldVal(source, dtoField);
             } else if (StringUtils.isNotBlank(dtoField.listField())) {
-
+                value = getListFieldVal(source, dtoField);
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
-
+                value = getDictFieldVal(source, dtoField);
             }
 
-            /*
-//            int total = 0;
-//            if (dtoField.joinFields().length > 0) total++;
-//            if (StringUtils.isNotBlank(dtoField.objField())) total++;
-//            if (StringUtils.isNotBlank(dtoField.listField())) total++;
-//            if (StringUtils.isNotBlank(dtoField.dictField())) total++;
-//            if (1 != total) throw new RuntimeException("不能设置对象字段同时设置列表字段");
-
-            if (dtoField.joinFields().length > 0 &&
-                    StringUtils.isNotBlank(dtoField.joinFields()[0])) {
-                String value = "";
-                for (String fieldName : dtoField.joinFields()) {
-                    Field currObj = AnnotationUtils.getFieldByName(source, fieldName);
-                    if (null == currObj) continue;
-                    currObj.setAccessible(true);
-                    Object val = currObj.get(source);
-                    if (null == val) continue;
-                    if (java.util.Date.class == val.getClass()) {
-                        String date = DateUtils.formatDate((Date) val, "yyyy-MM-dd hh:mm");
-                        value += dtoField.symbol() + date;
-                    } else {
-                        value += dtoField.symbol() + val;
-                    }
-                }
-                value = value.replaceFirst(dtoField.symbol(), "");
-
-//                if (StringUtils.isNotBlank(value) &&
-////                        StringUtils.isNotBlank(dtoField.suffix()))
-////                    value += dtoField.symbol() + dtoField.suffix();
-
-                field.set(target, value);
-            } else if (StringUtils.isNotBlank(dtoField.objField())) {
-                String[] path = dtoField.objField().split("\\.");
-                Field currObj = source.getClass().getDeclaredField(path[0]);
-                if (null == currObj) continue;
-                currObj.setAccessible(true);
-                Object seq = currObj.get(source);
-                if (null != seq) {
-                    Field val = AnnotationUtils.getFieldByName(seq, path[1]);
-                    val.setAccessible(true);
-                    field.set(target, val.get(seq));
-                }
-            } else if (StringUtils.isNotBlank(dtoField.dictField())) {
-                String[] dictInfo = dtoField.dictField().split("\\.");
-                Field currObj = source.getClass().getSuperclass().getDeclaredField(dictInfo[1]);
-                if (null == currObj) continue;
-                currObj.setAccessible(true);
-                Object val = currObj.get(source);
-                SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
-                        Wrappers.<SysDictItem>query().lambda()
-                                .eq(SysDictItem::getType, dictInfo[0])
-                                .eq(SysDictItem::getValue, (String) val));
-
-                if (null != dictItem) field.set(target, dictItem.getLabel());
-
-            } else if (StringUtils.isNotBlank(dtoField.listField())) {
-
-            } else if (StringUtils.isNotBlank(dtoField.boolField())) {
-                Field currObj = AnnotationUtils.getFieldByName(source, dtoField.boolField());
-                if (null == currObj) continue;
-                currObj.setAccessible(true);
-                Object val = currObj.get(source);
-                if (null == val) continue;
-                field.set(target, val);
-            }
-             */
+            field.set(target, value);
         }
         return (T) target;
     }
 
-    private static String getDtoFieldVal(Object source, Field field, DtoField dtoField) {
-        Object currObj= source;
+    private static String getDtoFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
 
+        List<String> values = new ArrayList<>();
+        for (String fieldStr : dtoField.objField()) {
+            Object currObj = source;
+            String[] path = fieldStr.split("\\.");
+            String fieldName = path[path.length - 1];
+            for (int i = 0; i < path.length - 1; i++) {
+                String currObjName = path[i];
+                Field field = AnnotationUtils.getFieldByName(currObj, currObjName);
+                field.setAccessible(true);
+                currObj = field.get(currObj);
+            }
+            if (null == currObj) continue;
+            Field fieldVal = AnnotationUtils.getFieldByName(currObj, fieldName);
+            fieldVal.setAccessible(true);
+            Object objVal = fieldVal.get(currObj);
+            String value = "";
+            if (Date.class == fieldVal.getType()) {//如果是日期则转格式
+                value = DateUtils.formatDate((Date) objVal, "yyyy-MM-dd hh:mm");
+            } else if (Boolean.class == fieldVal.getType()) {
+                //如果设置了布尔器则转文字
+                if (StringUtils.isNotBlank(dtoField.converter())) {
+                    Map map = (Map) JSON.parse(dtoField.converter());
+                    value = (String) map.get(String.valueOf(objVal));
+                } else {
+                    value =String.valueOf(objVal);
+                }
+            } else if(String.class == fieldVal.getType()) {
+                value =  String.valueOf(objVal);
+            }
+            values.add(value);
+        }
+        //如果有插值map则插值， 一般用于 xx于 xx创建 xx于 xx更新
+        if (StringUtils.isNotBlank(dtoField.mapFix())) {
+            Map infix = (Map) JSON.parse(dtoField.mapFix());
+            for (Object key : infix.keySet()) {
+                Integer index = Integer.valueOf(key.toString());
+                values.add(index, infix.get(key).toString());
+            }
+        }
+        return StringUtils.join(values, dtoField.symbol());
+    }
+
+    private static String getListFieldVal(Object source, DtoField dtoField) {
         for (String fieldStr : dtoField.objField()) {
             String[] path = fieldStr.split("\\.");
             String fieldName = path[path.length - 1];
-
-
         }
         return null;
     }
 
-    private static String getListFieldVal(Object source, Field field, DtoField dtoField) {
-        for (String fieldStr : dtoField.objField()) {
-            String[] path = fieldStr.split("\\.");
-            String fieldName = path[path.length - 1];
+    private static String getDictFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
+        String[] dictInfo = dtoField.dictField().split("\\.");
+        Field currObj = AnnotationUtils.getFieldByName(source, dictInfo[1]);
+        if (null == currObj)
+            return null;
+        currObj.setAccessible(true);
+        Object val = currObj.get(source);
+        SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
+                Wrappers.<SysDictItem>query().lambda()
+                .eq(SysDictItem::getType, dictInfo[0])
+                .eq(SysDictItem::getValue, (String) val));
 
-
-        }
-        return null;
-    }
-
-    private static String getDictFieldVal(Object source, Field field, DtoField dtoField) {
-        for (String fieldStr : dtoField.objField()) {
-            String[] path = fieldStr.split("\\.");
-            String fieldName = path[path.length - 1];
-        }
+        if (null != dictItem)  return dictItem.getLabel();
         return null;
     }
 
