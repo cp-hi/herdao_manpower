@@ -1,6 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -9,16 +8,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.*;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.*;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
-import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +31,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
-public class JobGradeController extends NewBaseController<JobGrade,JobGradeListDTO,JobGradeFormDTO,Class> {
+public class JobGradeController extends NewBaseController<JobGrade, JobGradeListDTO, JobGradeFormDTO,Class> {
 
     private JobGradeService jobGradeService;
 

@@ -1,34 +1,23 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.*;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.*;
-import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
+import net.herdao.hdp.manpower.mpclient.dto.post.*;
 import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
-import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.OKPostSeqSysService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.util.List;
 
 

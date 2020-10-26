@@ -18,7 +18,7 @@ public @interface DtoField {
 
     String[] joinFields() default "";
 
-    String  boolField() default "";
+    String boolField() default "";
 
     String objField() default "";
 
@@ -28,5 +28,8 @@ public @interface DtoField {
 
     String symbol() default "-";
 
-    String suffix() default "";
+    String infix() default "";
+
+    String mapFix() default "";
+
 }

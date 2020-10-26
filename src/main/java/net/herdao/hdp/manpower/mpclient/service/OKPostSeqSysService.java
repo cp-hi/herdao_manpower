@@ -1,6 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostSeqSysDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 
 /**

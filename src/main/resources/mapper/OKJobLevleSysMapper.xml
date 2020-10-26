@@ -5,20 +5,20 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OKJobLevleSysMapper">
 
 
-    <resultMap id="okJobLevleSysDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO">
+    <resultMap id="okJobLevleSysDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDTO">
         <id column="id" property="id"/>
         <collection property="okJobGradeDTOList" column="id" select="getOKJobGradeDTOList"
-                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO" />
+                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobGradeDTO" />
     </resultMap>
 
-    <resultMap id="okJobGradeDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO">
+    <resultMap id="okJobGradeDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobGradeDTO">
         <id column="id" property="id"/>
         <result property="jobGradeName" column="job_grade_name"/>
         <collection property="okJobLevelDTOList" column="id" select="getOKJobLevelDTOList"
-                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO" />
+                    ofType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevelDTO" />
     </resultMap>
 
-    <resultMap id="okJobLevelDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevelDTO">
+    <resultMap id="okJobLevelDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevelDTO">
         <id column="id" property="id"/>
     </resultMap>
 

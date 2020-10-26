@@ -7,19 +7,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqBatchDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostSeqListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqBatchDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
-import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @ClassName PostSeqController

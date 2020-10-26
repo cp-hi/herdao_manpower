@@ -135,7 +135,7 @@
 
 
     <!-- 岗位名称、岗位编码、集团、板块、管线、职级、 创建时间  -->
-    <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO">
+    <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO">
         SELECT
             p.POST_NAME,
             p.POST_CODE,
@@ -157,7 +157,7 @@
     </select>
 
     <!-- 任职岗位、员工姓名、工号、手机号码、所在部门 -->
-    <select id="getPostStaffs" resultType="net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO">
+    <select id="getPostStaffs" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO">
         select
         p.POST_NAME,
         s.STAFF_NAME,

@@ -5,24 +5,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineBatchUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.vo.PipelineListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineBatchAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineBatchUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @ClassName PipelineController

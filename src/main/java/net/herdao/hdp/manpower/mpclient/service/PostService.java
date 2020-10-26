@@ -1,11 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 
 import java.util.List;

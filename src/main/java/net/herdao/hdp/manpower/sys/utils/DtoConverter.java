@@ -84,9 +84,11 @@ public class DtoConverter {
                     }
                 }
                 value = value.replaceFirst(dtoField.symbol(), "");
-                if (StringUtils.isNotBlank(value) &&
-                        StringUtils.isNotBlank(dtoField.suffix()))
-                    value += dtoField.symbol() + dtoField.suffix();
+
+//                if (StringUtils.isNotBlank(value) &&
+////                        StringUtils.isNotBlank(dtoField.suffix()))
+////                    value += dtoField.symbol() + dtoField.suffix();
+
                 field.set(target, value);
             } else if (StringUtils.isNotBlank(dtoField.objField())) {
                 String[] path = dtoField.objField().split("\\.");
