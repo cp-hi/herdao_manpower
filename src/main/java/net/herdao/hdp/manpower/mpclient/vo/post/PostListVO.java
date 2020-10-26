@@ -57,9 +57,9 @@ public class PostListVO {
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
-    @ExcelProperty("管线")
-    @ApiModelProperty("管线")
-    @DtoField(objField = "jobLevel1.jobLevelName")
+    @ExcelProperty("职级")
+    @ApiModelProperty("职级")
+    @DtoField(objField = {"jobLevel1.jobLevelName","jobLevel2.jobLevelName"},symbol = "~")
     private String jobLevelName;
 
     @ExcelProperty("在职员工数")
@@ -69,6 +69,7 @@ public class PostListVO {
     @ExcelProperty("岗位编制")
     @ApiModelProperty(value = "岗位编制")
     private Integer onJobStaffs;
+
 
     @ExcelProperty("岗位薪酬级别")
     @ApiModelProperty("岗位薪酬级别")
@@ -92,7 +93,7 @@ public class PostListVO {
 
     @ExcelProperty("最近更新情况")
     @ApiModelProperty("最近更新情况")
-    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix = "{1:\"于\",3:\"创建\"}")
+    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix = "{1:\"于\",3:\"更新\"}")
     private String lastUpdatedInfo;
 
 }
