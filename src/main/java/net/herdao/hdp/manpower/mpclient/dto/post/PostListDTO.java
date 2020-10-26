@@ -92,7 +92,7 @@ public class PostListDTO {
 
     @ExcelProperty("最近更新情况")
     @ApiModelProperty("最近更新情况")
-    @DtoField(joinFields = {"modifierName", "modifiedTime"}, symbol = " ", infix = "更新")
-    private String lastUpdateInfo;
+    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix = "{1:\"于\",3:\"创建\"}")
+    private String lastUpdatedInfo;
 
 }

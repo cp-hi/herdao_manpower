@@ -16,19 +16,17 @@ import java.lang.annotation.*;
 @Documented
 public @interface DtoField {
 
-    String[] joinFields() default "";
+//    String[] joinFields() default "";
+//
+//    String boolField() default "";
 
-    String boolField() default "";
-
-    String objField() default "";
+    String[] objField() default "";
 
     String listField() default "";
 
     String dictField() default "";
 
-    String symbol() default "-";
-
-    String infix() default "";
+    String symbol() default " ";
 
     String mapFix() default "";
 

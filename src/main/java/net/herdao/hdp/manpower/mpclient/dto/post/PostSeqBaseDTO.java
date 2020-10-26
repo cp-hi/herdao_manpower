@@ -35,7 +35,5 @@ public class PostSeqBaseDTO {
     private String createdInfo;
 
     @ApiModelProperty("最近更新情况")
-    private String lastUpdateInfo;
-
-
+    private String lastUpdatedInfo;
 }

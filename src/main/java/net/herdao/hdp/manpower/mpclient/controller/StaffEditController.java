@@ -58,6 +58,15 @@ public class StaffEditController {
         return R.ok(isOk);
     }
 
+    @ApiOperation(value = "员工详情-头像信息", notes = "头像信息")
+    @SysLog("头像信息" )
+    @PutMapping("/staffbase" )
+    public R<Boolean> updateById(@RequestBody StaffBaseDTO staffBase) {
+        Staff staff = new Staff();
+        BeanUtils.copyProperties(staffBase, staff);
+        return R.ok(staffService.updateById(staff));
+    }
+
     @ApiOperation(value = "员工详情-个人信息", notes = "个人信息")
     @SysLog("个人信息" )
     @PutMapping("/staffinfo" )
