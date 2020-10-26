@@ -67,7 +67,7 @@ public class DtoConverter {
                     && StringUtils.isNotBlank(dtoField.objField()[0])) {
                 value = getDtoFieldVal(source, dtoField);
             } else if (StringUtils.isNotBlank(dtoField.listField())) {
-                value = getListFieldVal(source, dtoField);
+                value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
             }
@@ -77,6 +77,13 @@ public class DtoConverter {
         return (T) target;
     }
 
+    /**
+     * 转换字段属性
+     * @param source 源对象
+     * @param dtoField 字段注解
+     * @return
+     * @throws IllegalAccessException
+     */
     private static String getDtoFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
 
         List<String> values = new ArrayList<>();
@@ -86,6 +93,7 @@ public class DtoConverter {
             String fieldName = path[path.length - 1];
             for (int i = 0; i < path.length - 1; i++) {
                 String currObjName = path[i];
+                if (null == currObj) continue;
                 Field field = AnnotationUtils.getFieldByName(currObj, currObjName);
                 field.setAccessible(true);
                 currObj = field.get(currObj);
@@ -121,6 +129,12 @@ public class DtoConverter {
         return StringUtils.join(values, dtoField.symbol());
     }
 
+    /**
+     * 转换列表属性
+     * @param source
+     * @param dtoField
+     * @return
+     */
     private static String getListFieldVal(Object source, DtoField dtoField) {
         for (String fieldStr : dtoField.objField()) {
             String[] path = fieldStr.split("\\.");
@@ -129,6 +143,13 @@ public class DtoConverter {
         return null;
     }
 
+    /**
+     * 转换字典对象
+     * @param source 源对象
+     * @param dtoField 字典字段上的注解
+     * @return
+     * @throws IllegalAccessException
+     */
     private static String getDictFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
         String[] dictInfo = dtoField.dictField().split("\\.");
         Field currObj = AnnotationUtils.getFieldByName(source, dictInfo[1]);

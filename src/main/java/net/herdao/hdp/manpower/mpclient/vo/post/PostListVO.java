@@ -34,7 +34,8 @@ public class PostListVO {
 
     @ExcelProperty("岗位序列")
     @ApiModelProperty("岗位序列")
-    @DtoField(objField = "postSeqDTO.postSeqName")
+    @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
     private String postSeqName;
 
     @ExcelProperty("所属集团")
@@ -59,7 +60,7 @@ public class PostListVO {
 
     @ExcelProperty("职级")
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevel1.jobLevelName","jobLevel2.jobLevelName"},symbol = "~")
+    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
     private String jobLevelName;
 
     @ExcelProperty("在职员工数")

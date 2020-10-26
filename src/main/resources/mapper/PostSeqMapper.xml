@@ -16,8 +16,6 @@
         <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
         <association property="group" column="group_id" javaType="group"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
-
-
     </resultMap>
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
