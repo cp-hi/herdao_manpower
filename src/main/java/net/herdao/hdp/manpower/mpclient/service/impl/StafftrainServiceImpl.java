@@ -95,7 +95,10 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
             addDTO.setStaffId(staffId);
 
             //校检字典
-            ImportCheckUtils.checkDicItem(errMsg,"TRAIN_TYPE", addDTO.getTrainType(),itemService);
+            SysDictItem dictItem = ImportCheckUtils.checkDicItem(errMsg, "TRAIN_TYPE", addDTO.getTrainType(), itemService);
+            if(null != dictItem){
+                addDTO.setTrainType(dictItem.getValue());
+            }
 
             //校检时间
             String pattern= ImportCheckUtils.checkTime(errMsg, addDTO.getBeginTime(),addDTO.getEndTime());

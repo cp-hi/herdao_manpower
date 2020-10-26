@@ -49,16 +49,18 @@ public class ImportCheckUtils {
      * @param type
      * @param lable
      */
-    public static void checkDicItem(StringBuffer errMsg, String type , String lable, SysDictItemService itemService) {
-        SysDictItem trainTypeDictItem = itemService.getOne(
+    public static SysDictItem checkDicItem(StringBuffer errMsg, String type , String lable, SysDictItemService itemService) {
+        SysDictItem dictItem = itemService.getOne(
                 new QueryWrapper<SysDictItem>()
                         .eq("type", type)
                         .eq("label", lable)
                         .eq("del_flag", 0)
         );
-        if (null == trainTypeDictItem) {
+        if (null == dictItem) {
             appendStringBuffer(errMsg, "培训类型不存在或已停用：" + lable);
         }
+
+        return dictItem;
     }
 
     /**
