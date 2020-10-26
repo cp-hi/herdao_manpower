@@ -117,4 +117,46 @@ public class ImportCheckUtils {
 
         return pattern;
     }
+
+    /**
+     * 校检日期
+     * @param errMsg
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public static String checkDate(StringBuffer errMsg, String beginDate,String endDate) {
+        String pattern = "";
+        //校检开始时间的时间格式
+        boolean checkBeginTime = false;
+        List<String> formatList = Arrays.asList("yyyy/MM/dd", "yyyy-MM-dd", "yyyy.MM.dd");
+        for (String format : formatList) {
+            checkBeginTime = DateUtils.isLegalDate(beginDate, format);
+            if (checkBeginTime) {
+                pattern = format;
+                break;
+            }
+        }
+        if (!checkBeginTime) {
+            appendStringBuffer(errMsg, "请填写正确的开始时间的时间格式（yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd）");
+        }
+        //校检结束时间的时间格式
+        boolean checkEndTime = false;
+        for (String format : formatList) {
+            checkEndTime = DateUtils.isLegalDate(endDate, format);
+            if (checkEndTime) {
+                break;
+            }
+        }
+        if (!checkEndTime) {
+            appendStringBuffer(errMsg, "请填写正确的结束时间的时间格式（yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd）");
+        }
+        //比较开始时间和结束时间
+        boolean compareDateStatus = DateUtils.compareDate(beginDate, endDate, pattern);
+        if (!compareDateStatus) {
+            appendStringBuffer(errMsg, "结束日期必须在开始日期之后");
+        }
+
+        return pattern;
+    }
 }
