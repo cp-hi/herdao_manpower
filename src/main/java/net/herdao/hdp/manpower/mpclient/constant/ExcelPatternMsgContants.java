@@ -55,7 +55,7 @@ public class ExcelPatternMsgContants {
     public static final String NUMBER_LETTER = "^[a-z0-9A-Z]+$";
     public static final String NUMBER_LETTER_MSG = "只能输入数字和字母";
 
-    //数字
+    //正整数
     public static final String NUMBER = "^[0-9]*$";
-    public static final String NUMBER_MSG = "只能输入数字";
+    public static final String NUMBER_MSG = "只能输入正整数";
 }

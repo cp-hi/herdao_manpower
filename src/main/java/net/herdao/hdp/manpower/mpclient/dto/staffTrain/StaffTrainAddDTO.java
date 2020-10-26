@@ -10,9 +10,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,95 +27,90 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "员工培训批量新增DTO")
-@ExcelIgnoreUnannotated
 public class StaffTrainAddDTO  {
+    @ExcelIgnore
+    private Long id;
 
-    @ApiModelProperty(value="员工姓名")
-    @ExcelProperty(value = "员工姓名")
+    @ExcelIgnore
+    private Long staffId;
+
+    @ExcelProperty(index =0 ,value = "员工姓名")
+    @NotBlank(message = "不能为空")
     private String staffName;
 
-    @ApiModelProperty(value="员工工号")
-    @ExcelProperty(value = "员工工号")
+    @ExcelProperty(index =1 ,value = "员工工号")
+    @NotBlank(message = "不能为空")
     private String staffCode;
 
     /**
      * 开始时间
      */
-    @ApiModelProperty(value="开始时间")
-    @ExcelProperty(value = "开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date beginTime;
+    @ExcelProperty(index =2 ,value = "开始时间")
+    private String beginTime;
 
     /**
      * 结束时间
      */
-    @ApiModelProperty(value="结束时间")
-    @ExcelProperty(value = "结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date endTime;
+    @ExcelProperty(index =3 ,value = "结束时间")
+    @NotBlank(message = "不能为空")
+    private String endTime;
 
     /**
      * 培训时长
      */
-    @ApiModelProperty(value="培训时长")
-    @ExcelProperty(value = "培训时长")
+    @ExcelProperty(index =4,value = "培训时长")
+    @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String trainPeriod;
 
     /**
      * 培训总学时
      */
-    @ApiModelProperty(value="培训总学时")
-    @ExcelProperty(value = "培训总学时")
+    @ExcelProperty(index =5,value = "培训总学时")
+    @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String trainLearnPeriod;
 
     /**
      * 培训总学分
      */
-    @ApiModelProperty(value="培训总学分")
-    @ExcelProperty(value = "培训总学分")
+    @ExcelProperty(index =6,value = "培训总学分")
+    @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String trainLearnScore;
 
     /**
      * 培训类型 内部培训；外部培训 下拉选择
      */
-    @ApiModelProperty(value="培训类型")
-    @ExcelProperty(value = "培训类型")
+    @ExcelProperty(index =7,value = "培训类型")
     private String trainType;
 
     /**
      * 培训单位
      */
-    @ApiModelProperty(value="培训单位")
-    @ExcelProperty(value = "培训单位")
+    @ExcelProperty(index =8,value = "培训单位")
     private String trainCompany;
 
     /**
      * 培训成绩
      */
-    @ApiModelProperty(value="培训成绩")
-    @ExcelProperty(value = "培训成绩")
+    @ExcelProperty(index =9,value = "培训成绩")
+    @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String score;
-
 
     /**
      * 证书名称
      */
-    @ApiModelProperty(value="证书名称")
-    @ExcelProperty(value = "证书名称")
+    @ExcelProperty(index =10,value = "证书名称")
     private String certificateName;
 
     /**
      * 证书编号
      */
-    @ApiModelProperty(value="证书编号")
-    @ExcelProperty(value = "证书编号")
+    @ExcelProperty(index =11,value = "证书编号")
     private String certificateCode;
 
     /**
      * 备注
      */
-    @ApiModelProperty(value="备注")
-    @ExcelProperty(value = "备注")
+    @ExcelProperty(index =12,value = "备注")
     private String remarks;
 
 
