@@ -70,13 +70,27 @@ public class AnnotationUtils {
         return fields;
     }
 
-    public static Field getFieldByName(Object object,String fieldName){
+    public static Field getFieldByName(Object object, String fieldName) {
         Field[] fields = getAllFields(object);
-        for(Field field:fields) {
+        for (Field field : fields) {
             if (fieldName.equals(field.getName()))
-            return field;
+                return field;
         }
         return null;
+    }
+
+    public static List<String> getExcelPropertyNames(Object object) {
+        return getExcelPropertyNames(object.getClass());
+    }
+
+    public static List<String> getExcelPropertyNames(Class clazz) {
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> names = new ArrayList<>();
+        for (Field field : fields) {
+            ExcelProperty property= field.getAnnotation(ExcelProperty.class);
+            names.add(property.value()[0]);
+        }
+        return names;
     }
 
     /**

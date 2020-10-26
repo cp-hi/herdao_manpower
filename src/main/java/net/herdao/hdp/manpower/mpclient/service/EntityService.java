@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;

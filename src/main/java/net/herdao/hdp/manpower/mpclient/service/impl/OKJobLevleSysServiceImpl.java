@@ -1,9 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobGradeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;

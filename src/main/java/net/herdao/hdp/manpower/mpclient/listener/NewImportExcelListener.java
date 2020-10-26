@@ -7,11 +7,16 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -29,6 +34,8 @@ import java.util.List;
 public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
     Class entityClass;
+
+//    Class excelClass;
 
     @Getter
     List<E> excelList = null;
@@ -65,16 +72,28 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
         this.importType = importType;
         this.hasError = false;
 
-//        Class clazz = entityService.getClass();
-//        this.entityClass = (Class<T>) ((ParameterizedType) ((Class) clazz.getGenericSuperclass()).getGenericSuperclass()).getActualTypeArguments()[1];
         this.entityClass = (Class) ((ParameterizedType) entityService.getClass()
                 .getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1];
 
     }
 
+    List<String> headExcel = new ArrayList<>( );
+    @Override
+    public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
+        headExcel.addAll(headMap.values());
+    }
 
     @Override
     public void invoke(E excel, AnalysisContext analysisContext) {
+        List<String> headClass = new ArrayList<>(AnnotationUtils.getExcelPropertyNames(excel));
+        List<String> heads = new ArrayList<>();
+        headExcel.forEach(h -> {
+            if (-1 == headClass.indexOf(h))
+                heads.add(h);
+        });
+        if (heads.size() > 0)
+            throw new RuntimeException("导入模板表头不存在：" + StringUtils.join(heads));
+
         Object t = null;
         try {
             t = Class.forName(entityClass.getName()).newInstance();

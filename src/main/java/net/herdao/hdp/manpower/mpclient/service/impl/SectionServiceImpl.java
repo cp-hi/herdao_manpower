@@ -1,22 +1,16 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.PostBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionBatchUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.vo.SectionListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.section.SectionBatchAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.section.SectionBatchUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

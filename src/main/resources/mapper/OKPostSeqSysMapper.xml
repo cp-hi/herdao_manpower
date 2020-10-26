@@ -4,20 +4,20 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OKPostSeqSysMapper">
 
-    <resultMap id="okPostSeqSysDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostSeqSysDTO">
+    <resultMap id="okPostSeqSysDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO">
         <id column="id" property="id"/>
         <collection property="okPostSeqDTOList" column="id" select="getOKPostSeqDTOList"
-                    ofType="net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostSeqDTO" />
+                    ofType="net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqDTO" />
     </resultMap>
 
-    <resultMap id="okPostSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostSeqDTO">
+    <resultMap id="okPostSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqDTO">
         <id column="id" property="id"/>
         <result property="postSeqName" column="post_seq_name"/>
         <collection property="okPostDTOList" column="id" select="getOKPostDTOList"
-                    ofType="net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostDTO" />
+                    ofType="net.herdao.hdp.manpower.mpclient.dto.post.OKPostDTO" />
     </resultMap>
 
-    <resultMap id="okPostDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostDTO">
+    <resultMap id="okPostDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.OKPostDTO">
         <id column="id" property="id"/>
     </resultMap>
 

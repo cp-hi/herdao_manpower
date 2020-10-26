@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.JobLevelBatchDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelBatchDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;

@@ -1,12 +1,9 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.vo.OKJobLevleSysDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.vo.OKPostSeqSysDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.mapper.OKJobLevleSysMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.OKPostSeqSysMapper;
-import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
 import net.herdao.hdp.manpower.mpclient.service.OKPostSeqSysService;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
