@@ -36,6 +36,10 @@ public class PostSeqFormVO {
     @ApiModelProperty("父ID")
     private Long parentId;
 
+    @ApiModelProperty("父级名称")
+    @DtoField(objField = {"parent.postSeqName"})
+    private String parentName;
+
     @ApiModelProperty("描述")
     private String description;
 }
