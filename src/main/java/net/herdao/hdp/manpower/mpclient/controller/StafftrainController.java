@@ -189,6 +189,4 @@ public class StafftrainController{
             return R.failed(e.getMessage());
         }
     }
-
-
 }
