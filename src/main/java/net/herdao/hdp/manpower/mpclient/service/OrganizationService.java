@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
@@ -214,5 +214,5 @@ public interface OrganizationService extends EasyExcelService<Organization>{
      * @date        2020-10-22 13:37:14
      * @return
      */
-    List<OrganizationAddDTO> selectAllOrganization();
+    List<OrganizationImportDTO> selectAllOrganization();
 }

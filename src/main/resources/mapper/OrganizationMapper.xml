@@ -675,8 +675,9 @@
     </select>
     
     <!-- 查询组织集合用于组织批量新增校验 -->
-    <select id="selectAllOrganization" resultType="net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO">
+    <select id="selectAllOrganization" resultType="net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO">
     	SELECT 
+    		org.id,
     		org.org_name,
     		org.org_code,
     		org.org_type,
@@ -685,7 +686,11 @@
     		ps.post_code,
     		org.is_stop AS stop,
     		org.del_flag,
-    		org.org_tree_level
+    		org.org_tree_level,
+    		org.is_virtual,
+    		org.organizational,
+    		org.welfare_type,
+    		org.org_desc
     	FROM mp_organization org 
     	LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
     	LEFT JOIN mp_post ps ON ps.id = org.post_id

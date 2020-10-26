@@ -352,7 +352,7 @@ public class OrganizationController {
 		try {
 
 			Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
-			
+
 			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, excelCls, 0, 1);
 
 			EasyExcelFactory.read(file.getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(2).doRead();
@@ -360,17 +360,24 @@ public class OrganizationController {
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
 			// 包含错误信息就导出错误信息
 			if (!errList.isEmpty()) {
-				
+
 				Class excelErrCls = (importType == 0 ? OrganizationAddErrDTO.class : OrganizationUpdateErrDTO.class);
-				
-				List<OrganizationAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-					OrganizationAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), 
-													    OrganizationAddErrDTO.class);
-					excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
-					
-					return excelErrDto;
-				}).collect(Collectors.toList());
-				EasyExcelUtils.webWriteExcel(response, excelErrDtos, OrganizationAddErrDTO.class, "组织" + (importType == 0 ? "新增" : "修改") + "错误信息");
+
+				List excelErrDtos = null;
+				if (importType == 0) {
+					excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+						OrganizationAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationAddErrDTO.class);
+						excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
+						return excelErrDto;
+					}).collect(Collectors.toList());
+				} else {
+					excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+						OrganizationUpdateErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationUpdateErrDTO.class);
+						excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
+						return excelErrDto;
+					}).collect(Collectors.toList());
+				}
+				EasyExcelUtils.webWriteExcel(response, null, excelErrCls, "组织" + (importType == 0 ? "新增" : "修改") + "错误信息");
 			}
 		} catch (IOException e) {
 			return R.failed("导入异常：" + e.getMessage());

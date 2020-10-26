@@ -35,6 +35,8 @@ import net.herdao.hdp.manpower.mpclient.dto.OrgChartDTO;
 import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
@@ -624,19 +626,18 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
 	@Override
-	public List<OrganizationAddDTO> selectAllOrganization() {
+	public List<OrganizationImportDTO> selectAllOrganization() {
 		return this.baseMapper.selectAllOrganization();
 	}
 	
 	/**======================================  组织导入 start ====================================**/
 	
 	@Override
+	@SuppressWarnings("all")
 	public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
 
 		// 错误数组
 		List<ExcelCheckErrDTO> errList = new ArrayList<>();
-
-		Map<String, OrganizationAddDTO> parentOrganizationMap = getParentOrganizationMap(this.baseMapper.selectAllOrganization());
 
 		// 组织类型
 		List<SysDictItem> orgTypeList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
@@ -649,8 +650,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 		List<Organization> organizationList = new ArrayList<Organization>();
 
+		// 组织信息
+		Map<String, OrganizationImportDTO> parentOrganizationMap = getParentOrganizationMap(this.baseMapper.selectAllOrganization());
+		
 		if (importType == 0) {
 			importAddOrganization(excelList, parentOrganizationMap, orgTypeList, userMap, postMap, errList, organizationList);
+		}else {
+			importUpdateOrganization(excelList, parentOrganizationMap, orgTypeList, userMap, postMap, errList, organizationList);
 		}
 		// 保存新增、修改组织信息
 		if(ObjectUtil.isEmpty(errList)) {
@@ -671,7 +677,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * @param errList
 	 * @param organizationList
 	 */
-	public void importAddOrganization(List excelList, Map<String, OrganizationAddDTO> parentOrganizationMap, List<SysDictItem> orgTypeList, Map<String, User> userMap,
+	@SuppressWarnings("all")
+	public void importAddOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, List<SysDictItem> orgTypeList, Map<String, User> userMap,
 			Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
 		// 导入校验
 		for (int i = 0; i < excelList.size(); i++) {
@@ -689,7 +696,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 			if (ObjectUtil.isNotNull(parentOrgCode)) {
 				// 获取父组织信息
-				OrganizationAddDTO parentOrgDto = parentOrganizationMap.get(orgDto.getParentOrgCode());
+				OrganizationImportDTO parentOrgDto = parentOrganizationMap.get(orgDto.getParentOrgCode());
 				if (ObjectUtil.isNotNull(parentOrgDto)) {
 					parentOrganization = new Organization();
 					BeanUtils.copyProperties(orgDto, parentOrganization);
@@ -741,13 +748,105 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	}
 	
 	/**
+	 * 组织批量编辑
+	 * 
+	 * @param excelList
+	 * @param parentOrganizationMap
+	 * @param orgTypeList
+	 * @param userMap
+	 * @param postMap
+	 * @param errList
+	 * @param organizationList
+	 */
+	@SuppressWarnings("all")
+	public void importUpdateOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, List<SysDictItem> orgTypeList,
+			Map<String, User> userMap, Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
+		// 导入校验
+		for (int i = 0; i < excelList.size(); i++) {
+
+			// 导入组织信息
+			OrganizationUpdateDTO orgDto = (OrganizationUpdateDTO) excelList.get(i);
+
+			String key = orgDto.getOrgName() + ManpowerContants.SEPARATOR + orgDto.getParentOrgCode();
+
+			OrganizationImportDTO orgIDto = getOrganizationMap().get(key);
+
+			// 待更新组织信息
+			Organization organization = null;
+
+			// 异常信息
+			StringBuffer errMsg = null;
+
+			if (orgIDto == null) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织名称：" + orgDto.getOrgName() + "，上级组织编码：" + orgDto.getParentOrgCode() + "不存在");
+			} else {
+				organization = new Organization();
+				BeanUtils.copyProperties(orgIDto, organization);
+			}
+
+			// 父组织信息
+			Organization parentOrganization = null;
+			String parentOrgCode = orgDto.getParentOrgCode();
+
+			if (ObjectUtil.isNotNull(parentOrgCode)) {
+				// 获取父组织信息
+				OrganizationImportDTO parentOrgDto = parentOrganizationMap.get(orgDto.getParentOrgCode());
+				if (ObjectUtil.isNotNull(parentOrgDto)) {
+					parentOrganization = new Organization();
+					BeanUtils.copyProperties(orgDto, parentOrganization);
+					organization.setParentId(parentOrganization.getId());
+				}
+			}
+
+			// 校验组织类型
+			String orgType = getDictItem(orgTypeList, orgDto.getOrgType());
+			if (StrUtil.isNotBlank(orgType)) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织类型：" + orgDto.getOrgType() + "不存在");
+			} else {
+				// 转字典value
+				organization.setOrgType(orgType);
+			}
+			// 校验用户信息
+			User user = userMap.get(orgDto.getOrgChargeWorkNo());
+			if (user == null) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织负责人工号：" + orgDto.getOrgChargeWorkNo() + "不存在");
+			} else {
+				organization.setOrgChargeId(StrUtil.toString(user.getId()));
+				organization.setOrgChargeName(user.getUserName());
+				organization.setOrgChargeWorkNo(user.getLoginCode());
+			}
+
+			Post post = postMap.get(orgDto.getPostCode());
+			if (post == null) {
+				StringBufferUtils.appendStringBuffer(errMsg, "岗位编号：" + orgDto.getPostCode() + "不存在");
+			} else {
+				organization.setPostId(post.getId());
+			}
+
+			// 是否虚拟组织
+			organization.setIsVirtual(StrUtil.toString(orgDto.getIsVirtual()).equals("是") ? true : false);
+			// 是否项目/中心及以上
+			organization.setOrganizational(StrUtil.toString(orgDto.getOrganizational()).equals("是") ? true : false);
+			// 福利类型
+			organization.setWelfareType(orgDto.getWelfareType());
+			// 组织描述
+			organization.setOrgDesc(orgDto.getOrgDesc());
+			if (StrUtil.isNotBlank(errMsg)) {
+				errList.add(new ExcelCheckErrDTO(orgDto, errMsg.toString()));
+			} else {
+				organizationList.add(organization);
+			}
+		}
+	}
+	
+	/**
      * 获取组织集合 key = orgName + parentOrgCode 作为唯一标识
      * @return
      */
-    Map<String, OrganizationAddDTO> getOrganizationMap(){
+    Map<String, OrganizationImportDTO> getOrganizationMap(){
     	
-       Map<String, OrganizationAddDTO> renderMap = new HashMap<String, OrganizationAddDTO>();
-       List<OrganizationAddDTO> orgList = this.selectAllOrganization();
+       Map<String, OrganizationImportDTO> renderMap = new HashMap<String, OrganizationImportDTO>();
+       List<OrganizationImportDTO> orgList = this.selectAllOrganization();
        if(ObjectUtil.isNotEmpty(orgList)) {
     	   orgList.forEach(org ->{
     		   // 唯一标识，用于数据导入校验
@@ -764,8 +863,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @param orgList
      * @return
      */
-    Map<String, OrganizationAddDTO> getParentOrganizationMap(List<OrganizationAddDTO> orgList){
-    	return orgList.stream().collect(Collectors.toMap(OrganizationAddDTO::getOrgCode, (p) -> p)); 
+    Map<String, OrganizationImportDTO> getParentOrganizationMap(List<OrganizationImportDTO> orgList){
+    	return orgList.stream().collect(Collectors.toMap(OrganizationImportDTO::getOrgCode, (p) -> p)); 
     }
     
 	 
