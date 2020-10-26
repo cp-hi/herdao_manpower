@@ -42,19 +42,22 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
     List<E> excelList = new ArrayList<>();
 
     // excel对象的反射类
-    Class<E> clazz;
+    Class<E> entityClass;
     
     // 导入类型
     int importType;
+    
+    private Class<E> clazz;
 
-    public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz){
-        this.easyExcelService = easyExcelService;
-    }
-
-    public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz, Integer importType){
-    	this.importType = importType;
-        this.easyExcelService = easyExcelService;
-    }
+	public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz, Integer importType) {
+		// this.importType = importType;
+		this.easyExcelService = easyExcelService;
+		Type genType = easyExcelService.getClass().getSuperclass().getGenericSuperclass();
+		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+		entityClass = (Class) params[0];
+		
+		this.clazz = clazz;
+	}
 
 	@Override
     public void invoke(E excelCls, AnalysisContext analysisContext) {

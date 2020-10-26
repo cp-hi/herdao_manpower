@@ -685,6 +685,5 @@
     	FROM mp_organization org 
     	LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
     	LEFT JOIN mp_post ps ON ps.id = org.post_id
-    	ORDER BY CAST ( org.org_code AS UNSIGNED )   
     </select>
 </mapper>

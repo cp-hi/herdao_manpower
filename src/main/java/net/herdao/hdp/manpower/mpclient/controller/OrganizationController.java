@@ -351,7 +351,7 @@ public class OrganizationController {
 	public R batchImportOrg(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
 		try {
 
-			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, OrganizationAddDTO.class);
+			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, OrganizationAddDTO.class, importType);
 
 			EasyExcelFactory.read(file.getInputStream(), OrganizationAddDTO.class, easyExcelListener).sheet().doRead();
 

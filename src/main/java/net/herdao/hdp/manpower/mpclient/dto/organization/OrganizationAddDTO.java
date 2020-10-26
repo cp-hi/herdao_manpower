@@ -49,10 +49,4 @@ public class OrganizationAddDTO {
 	@ExcelProperty(value = "岗位编码")
 	private String postCode;
 
-	@ExcelProperty(value = "是否停用")
-	private Boolean stop;
-
-	@ExcelProperty(value = "删除标记")
-	private Boolean delFlag;
-
 }

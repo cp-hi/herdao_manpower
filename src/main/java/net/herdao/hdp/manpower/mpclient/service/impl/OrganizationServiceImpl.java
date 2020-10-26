@@ -665,7 +665,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				if (orgp == null) {
 					appendStringBuffer(errMsg, "组织编码：" + org.getParentOrgCode() + "不存在");
 				} else {
-					org.setParentId(orgp.getParentId());
+					organization.setParentId(orgp.getParentId());
 				}
 				// 校验组织类型
 				String orgType = getDictItem(orgTypeList, org.getOrgType());
@@ -673,18 +673,25 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 					appendStringBuffer(errMsg, "组织类型：" + org.getOrgType() + "不存在");
 				} else {
 					// 转字典value
-					org.setOrgType(orgType);
+					organization.setOrgType(orgType);
 				}
 				// 校验用户信息
 				User user = userMap.get(org.getOrgChargeWorkNo());
 				if (user == null) {
 					appendStringBuffer(errMsg, "组织负责人工号：" + org.getOrgChargeWorkNo() + "不存在");
 				} else {
-					org.setOrgChargeId(StrUtil.toString(user.getId()));
-					org.setOrgChargeName(user.getUserName());
-					org.setOrgChargeWorkNo(user.getLoginCode());
+					organization.setOrgChargeId(StrUtil.toString(user.getId()));
+					organization.setOrgChargeName(user.getUserName());
+					organization.setOrgChargeWorkNo(user.getLoginCode());
 				}
-
+				
+				Post post = postMap.get(org.getPostCode());
+				if(post == null) {
+					appendStringBuffer(errMsg, "岗位编号：" + org.getPostCode() + "不存在");
+				}else {
+					organization.setPostId(post.getId());
+				}
+				
 				if (errMsg.length() > 0) {
 					errList.add(new ExcelCheckErrDTO(orgp, errMsg.toString()));
 				} else {
@@ -693,6 +700,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				}
 			}
 		}
+		
+		if(ObjectUtil.isEmpty(errList)) {
+			// this.saveOrUpdateBatch(organizationList, null);
+		}
+		
 		return errList;
 	}
 	
