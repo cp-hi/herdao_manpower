@@ -20,7 +20,7 @@
 <!--        </if>-->
         <if test="jobGrade.jobGradeName != null">
             <bind name="likeTxt" value="'%'+jobGrade.jobGradeName +'%'"/>
-            job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt}
+           and( job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt})
         </if>
     </select>
 
