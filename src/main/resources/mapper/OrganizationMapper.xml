@@ -615,6 +615,7 @@
         LEFT JOIN mp_staff f ON o.org_charge_work_no = f.STAFF_CODE
         WHERE
             o.ID = #{id}
+        AND o.IS_STOP = 0
         LIMIT 1
     </select>
 
@@ -634,6 +635,7 @@
                             mp_organization o1
                         WHERE
                             o1.PARENT_ID = o.ID
+                        AND o1.IS_STOP = 0
                     )
                 WHEN 0 THEN
                     FALSE
@@ -646,6 +648,7 @@
         LEFT JOIN mp_staff f ON o.org_charge_work_no = f.STAFF_CODE
         WHERE
             o.PARENT_ID = #{id}
+        AND o.IS_STOP = 0
     </select>
     
     <!-- 获取组织编码 -->
