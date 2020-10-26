@@ -27,7 +27,7 @@
         </if>
         <if test="jobLevel.jobLevelName != null">
             <bind name="likeTxt" value="'%'+jobLevel.jobLevelName+'%'"/>
-            job_level_code like #{likeTxt} or job_level_name like #{likeTxt}
+          and(  job_level_code like #{likeTxt} or job_level_name like #{likeTxt})
         </if>
     </select>
 

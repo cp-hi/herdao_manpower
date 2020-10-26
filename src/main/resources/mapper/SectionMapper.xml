@@ -21,7 +21,7 @@
         </if>
         <if test="section.sectionName != null">
             <bind name="likeTxt" value="'%'+section.sectionName+'%'"/>
-            section_code like #{likeTxt} or section_name like #{likeTxt}
+          and ( section_code like #{likeTxt} or section_name like #{likeTxt})
         </if>
     </select>
 

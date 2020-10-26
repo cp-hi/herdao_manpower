@@ -21,7 +21,7 @@
         </if>
         <if test="pipeline.pipelineName != null">
             <bind name="likeTxt" value="'%'+pipeline.pipelineName+'%'"/>
-            pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt}
+          and( pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt})
         </if>
     </select>
 
