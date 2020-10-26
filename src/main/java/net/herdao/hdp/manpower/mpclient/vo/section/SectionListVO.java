@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.pipeline;
+package net.herdao.hdp.manpower.mpclient.vo.section;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -8,28 +8,28 @@ import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
- * @ClassName PipelineListDTO
- * @Description PipelineListDTO
+ * @ClassName SectionListDTO
+ * @Description SectionListDTO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/18 21:16
+ * @Date 2020/10/18 20:41
  * @Version 1.0
  */
 @Data
 @ExcelIgnoreUnannotated
-@ApiModel(value = "管线管理-列表")
-public class PipelineListDTO {
+@ApiModel(value = "板块管理-列表")
+public class SectionListVO {
 
     @ApiModelProperty("ID")
     private Long id;
 
-    @ExcelProperty("管线名称")
-    @ApiModelProperty("管线名称")
-    private String pipelineName;
+    @ExcelProperty("板块名称")
+    @ApiModelProperty("板块名称")
+    private String sectionName;
 
-    @ExcelProperty("管线编码")
-    @ApiModelProperty("管线编码")
-    private String pipelineCode;
+    @ExcelProperty("板块编码")
+    @ApiModelProperty("板块编码")
+    private String sectionCode;
 
     @ExcelProperty("所属集团")
     @ApiModelProperty("所属集团")
@@ -48,13 +48,12 @@ public class PipelineListDTO {
     private Integer sortNo;
 
     @ExcelProperty("创建情况")
-    @ApiModelProperty(value = "创建情况")
-    @DtoField(objField = {"creatorName", "createdTime"},   mapFix =  "{1:\"于\",3:\"创建\"}")
+    @ApiModelProperty( "创建情况")
+    @DtoField(objField = {"creatorName", "createdTime"}, mapFix =  "{1:\"于\",3:\"创建\"}")
     private String createdInfo;
 
     @ExcelProperty("最近更新情况")
     @ApiModelProperty( "最近更新情况")
-    @DtoField(objField = {"modifierName", "modifiedTime"},   mapFix =  "{1:\"于\",3:\"更新\"}")
+    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix =  "{1:\"于\",3:\"更新\"}")
     private String lastUpdatedInfo;
-
 }

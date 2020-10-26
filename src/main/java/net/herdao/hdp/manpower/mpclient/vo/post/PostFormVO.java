@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,7 +18,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "岗位管理-表单信息，用于新增和编辑")
-public class PostFormDTO {
+public class PostFormVO {
 
     @ApiModelProperty("id")
     private Long id;

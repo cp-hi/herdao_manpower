@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.dto.post;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.vo.post.ShortPostSeqVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,5 +27,5 @@ public class OKPostSeqSysDetailDTO {
     private String description;
 
     @ApiModelProperty("岗位序列列表")
-    private List<ShortPostSeqDTO> shortPostSeqDTOList = new ArrayList<>();
+    private List<ShortPostSeqVO> shortPostSeqDTOList = new ArrayList<>();
 }

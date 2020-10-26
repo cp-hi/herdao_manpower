@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelBatchDTO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
@@ -53,7 +53,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
 
     @Override
     public void addEntity(JobLevel jobLevel, Object excelObj) {
-        JobLevelBatchDTO excel = (JobLevelBatchDTO) excelObj;
+        JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false,buffer);
         JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true,buffer);
@@ -71,7 +71,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
 
     @Override
     public void updateEntity(JobLevel jobLevel, Object excelObj) {
-        JobLevelBatchDTO excel = (JobLevelBatchDTO) excelObj;
+        JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
 
         JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true,buffer);

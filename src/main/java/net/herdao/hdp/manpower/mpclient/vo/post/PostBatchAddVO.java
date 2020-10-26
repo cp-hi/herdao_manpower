@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -18,7 +18,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 
 @Data
 @ExcelIgnoreUnannotated
-public class PostBatchAddDTO implements ExcelErrMsg {
+public class PostBatchAddVO implements ExcelErrMsg {
 
     @ExcelProperty(value = "岗位名称")
     private String postName;

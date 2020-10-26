@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionBatchUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionListDTO;
+import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchAddVO;
+import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchUpdateVO;
+import net.herdao.hdp.manpower.mpclient.vo.section.SectionFormVO;
+import net.herdao.hdp.manpower.mpclient.vo.section.SectionListVO;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
 import io.swagger.annotations.ApiOperation;
@@ -29,14 +29,14 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends NewBaseController<Section, SectionListDTO, SectionFormDTO, SectionBatchUpdateDTO> {
+public class SectionController extends NewBaseController<Section, SectionListVO, SectionFormVO, SectionBatchUpdateVO> {
 
     @Autowired
     private SectionService sectionService;
 
     @Override
     protected Class getBatchAddClass (){
-        return SectionBatchAddDTO.class;
+        return SectionBatchAddVO.class;
     }
 
     @Autowired
@@ -57,7 +57,7 @@ public class SectionController extends NewBaseController<Section, SectionListDTO
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<SectionListDTO>> page(HttpServletResponse response, Page page, Section section, Integer type) throws Exception {
+    public R<IPage<SectionListVO>> page(HttpServletResponse response, Page page, Section section, Integer type) throws Exception {
         return super.page(response, page, section, type);
     }
 

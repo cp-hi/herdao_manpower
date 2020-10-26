@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.jobLevel;
+package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "职等管理-下拉列表")
-public class JobGradeShortDTO {
+public class JobGradeShortVO {
     @ApiModelProperty("id")
     private Long id;
     @ApiModelProperty("职等名称")

@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineBatchUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineListDTO;
+import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
+import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
+import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineFormVO;
+import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineListVO;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import io.swagger.annotations.ApiOperation;
@@ -29,11 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
-public class PipelineController extends NewBaseController<Pipeline, PipelineListDTO, PipelineFormDTO, PipelineBatchUpdateDTO> {
+public class PipelineController extends NewBaseController<Pipeline, PipelineListVO, PipelineFormVO, PipelineBatchUpdateVO> {
 
     @Override
     protected Class getBatchAddClass() {
-        return PipelineBatchAddDTO.class;
+        return PipelineBatchAddVO.class;
     }
 
     @Autowired
@@ -57,7 +57,7 @@ public class PipelineController extends NewBaseController<Pipeline, PipelineList
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<PipelineListDTO>> page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
+    public R<IPage<PipelineListVO>> page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
         return super.page(response, page, pipeline, type);
     }
 }

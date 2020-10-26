@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeShortDTO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
@@ -35,7 +35,7 @@ public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> i
     }
 
     @Override
-    public List<JobGradeShortDTO> jobGradeList(Long groupId) {
+    public List<JobGradeShortVO> jobGradeList(Long groupId) {
         return baseMapper.jobGradeList(groupId);
     }
 

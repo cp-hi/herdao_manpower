@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.jobLevel;
+package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
  */
 @Data
 @ApiModel(value = "职级管理-新增修改表单")
-public class JobLevelFormDTO {
+public class JobLevelFormVO {
     @ApiModelProperty("id")
     private Long id;
 

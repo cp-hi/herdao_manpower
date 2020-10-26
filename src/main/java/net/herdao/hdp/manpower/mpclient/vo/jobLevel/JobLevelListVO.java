@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.jobLevel;
+package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -19,7 +19,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
 @Data
 @ExcelIgnoreUnannotated
 @ApiModel(value = "职级管理-列表")
-public class JobLevelListDTO {
+public class JobLevelListVO {
     @ApiModelProperty("id")
     private Long id;
 

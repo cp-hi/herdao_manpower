@@ -8,9 +8,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.*;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeFormVO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeListVO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +33,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
-public class JobGradeController extends NewBaseController<JobGrade, JobGradeListDTO, JobGradeFormDTO,Class> {
+public class JobGradeController extends NewBaseController<JobGrade, JobGradeListVO, JobGradeFormVO,Class> {
 
     private JobGradeService jobGradeService;
 
@@ -45,7 +47,7 @@ public class JobGradeController extends NewBaseController<JobGrade, JobGradeList
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "集团id"),
     })
-    public R<List<JobGradeShortDTO>> list(Long groupId) {
+    public R<List<JobGradeShortVO>> list(Long groupId) {
         return R.ok(jobGradeService.jobGradeList(  groupId));
     }
 
@@ -56,7 +58,7 @@ public class JobGradeController extends NewBaseController<JobGrade, JobGradeList
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<JobGradeListDTO>> page(HttpServletResponse response, Page page, JobGrade jobGrade, Integer type)
+    public R<IPage<JobGradeListVO>> page(HttpServletResponse response, Page page, JobGrade jobGrade, Integer type)
             throws Exception {
         return super.page(response,page,jobGrade,type);
     }

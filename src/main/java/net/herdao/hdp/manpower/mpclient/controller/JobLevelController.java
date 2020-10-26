@@ -12,6 +12,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelFormVO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelListVO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.ShortJobLevelVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +37,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends NewBaseController<JobLevel, JobLevelListDTO, JobLevelFormDTO, JobLevelBatchDTO> {
+public class JobLevelController extends NewBaseController<JobLevel, JobLevelListVO, JobLevelFormVO, JobLevelBatchVO> {
 
     @Autowired
     private JobLevelService jobLevelService;
@@ -46,7 +50,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
 
     @Override
     protected Class getBatchUpdateClass() {
-        return JobLevelBatchDTO.class;
+        return JobLevelBatchVO.class;
     }
 
     @GetMapping("/list")
@@ -62,7 +66,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<JobLevelListDTO>> page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
+    public R<IPage<JobLevelListVO>> page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
             throws Exception {
         return super.page(response, page, jobLevel, type);
     }
@@ -90,7 +94,7 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
             for (OKJobLevelDTO jobLevelDTO : jobGradeDTO.getOkJobLevelDTOList())
                 jobLevelName += "、" + jobLevelDTO.getJobLevelName();
             jobLevelName = jobLevelName.replaceFirst("、", "");
-            detailDTO.getShortJobLevelDTOList().add(ShortJobLevelDTO.builder()
+            detailDTO.getShortJobLevelVOList().add(ShortJobLevelVO.builder()
                     .jobGradeName(jobGradeName).jobLevelName(jobLevelName).build());
         }
         return R.ok(detailDTO);

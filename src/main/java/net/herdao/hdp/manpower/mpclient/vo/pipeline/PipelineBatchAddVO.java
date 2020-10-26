@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.section;
+package net.herdao.hdp.manpower.mpclient.vo.pipeline;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -6,26 +6,25 @@ import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 
 /**
- * @ClassName SectionBatchUpdateDTO
- * @Description SectionBatchUpdateDTO
+ * @ClassName PipelineBatchAddDTO
+ * @Description PipelineBatchAddDTO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/21 12:14
+ * @Date 2020/10/21 14:53
  * @Version 1.0
  */
-//版块名称、所属集团、启用状态、排序、备注
+
+
+//管线名称、所属集团、排序、备注
 @Data
 @ExcelIgnoreUnannotated
-public class SectionBatchUpdateDTO extends SectionBatchAddDTO implements ExcelErrMsg {
+public class PipelineBatchAddVO implements ExcelErrMsg {
 
-    @ExcelProperty("板块名称")
-    private String sectionName;
+    @ExcelProperty("管线名称")
+    private String pipelineName;
 
     @ExcelProperty("所属集团")
     private String groupName;
-
-    @ExcelProperty("是否停用")
-    private String stop;
 
     @ExcelProperty("排序")
     private Integer sortNo;

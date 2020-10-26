@@ -3,8 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.section.SectionBatchUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchAddVO;
+import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
@@ -50,7 +50,7 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
 
     @Override
     public  void addEntity(Section section, Object excelObj) {
-        SectionBatchAddDTO excel = (SectionBatchAddDTO) excelObj;
+        SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
         chkEntityExists("SECTION_NAME",excel.getSectionName(), false);
         Group group = groupService.getGroupByName(excel.getGroupName());
         section.setGroupId(group.getId());
@@ -58,7 +58,7 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
 
     @Override
     public void updateEntity(Section section, Object excelObj) {
-        SectionBatchUpdateDTO excel = (SectionBatchUpdateDTO) excelObj;
+        SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
         Section tmp = chkEntityExists("SECTION_NAME",excel.getSectionName(), true);
         Group group = groupService.getGroupByName(excel.getGroupName());
         section.setGroupId(group.getId());

@@ -1,80 +1,98 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
+
 /**
- * @ClassName PostBaseVO
- * @Description PostBaseVO
+ * @ClassName PostVO
+ * @Description PostVO
  * @Author ljan
  * @mail 122092@gdpr.com
- * @Date 2020/10/17 15:23
+ * @Date 2020/10/15 20:06
  * @Version 1.0
  */
 @Data
-@ApiModel(value = "岗位管理-基础信息")
-public class PostBaseDTO {
+@ExcelIgnoreUnannotated
+@ApiModel(value = "岗位管理-列表，用于列表展示")
+public class PostListVO {
 
     @ApiModelProperty("id")
     private Long id;
 
+    @ExcelProperty("岗位名称")
     @ApiModelProperty("岗位名称")
     private String postName;
 
+    @ExcelProperty("岗位编码")
     @ApiModelProperty("岗位编码")
     private String postCode;
 
+    @ExcelProperty("岗位序列")
     @ApiModelProperty("岗位序列")
     @DtoField(objField = "postSeqDTO.postSeqName")
     private String postSeqName;
 
+    @ExcelProperty("所属集团")
     @ApiModelProperty("所属集团")
     @DtoField(objField = "group.groupName")
     private String groupName;
 
+    @ExcelProperty("版块")
     @ApiModelProperty("版块")
     @DtoField(objField = "section.sectionName")
     private String sectionName;
 
+    @ExcelProperty("管线")
     @ApiModelProperty("管线")
     @DtoField(objField = "pipeline.pipelineName")
     private String pipelineName;
 
+    @ExcelProperty("职等")
     @ApiModelProperty("职等")
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
-    @ApiModelProperty("职级")
+    @ExcelProperty("管线")
+    @ApiModelProperty("管线")
     @DtoField(objField = "jobLevel1.jobLevelName")
     private String jobLevelName;
 
+    @ExcelProperty("在职员工数")
     @ApiModelProperty(value = "在职员工数")
     private Integer postAuthorized;
 
+    @ExcelProperty("岗位编制")
     @ApiModelProperty(value = "岗位编制")
     private Integer onJobStaffs;
 
+    @ExcelProperty("岗位薪酬级别")
     @ApiModelProperty("岗位薪酬级别")
     @DtoField(dictField = "XCJB.postLevel")
     private String postLevel;
 
+    @ExcelProperty("年终奖薪酬比例")
     @ApiModelProperty("年终奖薪酬比例")
     @DtoField(dictField = "XCBL.yearPayRatio")
     private String yearPayRatio;
 
-    @ApiModelProperty("岗位组织级别")
+    @ExcelProperty("月度绩效工资比例")
+    @ApiModelProperty("月度绩效工资比例")
     @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
     private String perforSalaryRatio;
 
+    @ExcelProperty("岗位组织级别")
     @ApiModelProperty("岗位组织级别")
     @DtoField(dictField = "GWZZLX.orgType")
     private String orgType;
 
-    @ApiModelProperty("岗位职责")
-    private String postDescr;
+    @ExcelProperty("最近更新情况")
+    @ApiModelProperty("最近更新情况")
+    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix = "{1:\"于\",3:\"创建\"}")
+    private String lastUpdatedInfo;
 
-    @ApiModelProperty("备注")
-    private String remark;
 }

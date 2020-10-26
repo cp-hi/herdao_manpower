@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.dto.jobLevel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.ShortJobLevelVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +28,5 @@ public class OKJobLevleSysDetailDTO {
     private String description;
 
     @ApiModelProperty("职级列表")
-    private List<ShortJobLevelDTO> shortJobLevelDTOList= new ArrayList<>();
+    private List<ShortJobLevelVO> shortJobLevelVOList = new ArrayList<>();
 }

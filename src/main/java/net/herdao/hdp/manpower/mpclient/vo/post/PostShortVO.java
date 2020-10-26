@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,7 +17,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 @Data
 @ApiModel(value = "岗位管理-下拉列表")
-public class PostShortDTO {
+public class PostShortVO {
 
     @ApiModelProperty("id")
     private Long id;

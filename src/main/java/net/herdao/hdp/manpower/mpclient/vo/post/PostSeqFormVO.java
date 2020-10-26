@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "岗位序列管理-表单页，用于新增")
-public class PostSeqFormDTO {
+public class PostSeqFormVO {
 
     @ApiModelProperty("id")
     private Long id;

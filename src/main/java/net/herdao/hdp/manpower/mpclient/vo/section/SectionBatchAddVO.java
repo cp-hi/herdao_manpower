@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.section;
+package net.herdao.hdp.manpower.mpclient.vo.section;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -16,7 +16,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 //版块名称、所属集团、排序、备注
 @Data
 @ExcelIgnoreUnannotated
-public class SectionBatchAddDTO implements ExcelErrMsg {
+public class SectionBatchAddVO implements ExcelErrMsg {
     @ExcelProperty("板块名称")
     private String sectionName;
     @ExcelProperty("所属集团")

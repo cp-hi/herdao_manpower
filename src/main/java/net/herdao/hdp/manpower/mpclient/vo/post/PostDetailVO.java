@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -20,7 +20,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "岗位明细")
-public class PostDetailDTO {
+public class PostDetailVO {
     //岗位名称、岗位编码、集团、板块、管线、职级、组织层级、创建时间
     @ExcelProperty("岗位名称")
     private String postName;

@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.pipeline;
+package net.herdao.hdp.manpower.mpclient.vo.pipeline;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -15,7 +15,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class PipelineBatchUpdateDTO extends PipelineBatchAddDTO implements ExcelErrMsg {
+public class PipelineBatchUpdateVO extends PipelineBatchAddVO implements ExcelErrMsg {
 
     @ExcelProperty("管线名称")
     private String pipelineName;

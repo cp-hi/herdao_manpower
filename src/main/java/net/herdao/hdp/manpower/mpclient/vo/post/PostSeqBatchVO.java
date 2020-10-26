@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.post;
+package net.herdao.hdp.manpower.mpclient.vo.post;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
@@ -14,7 +14,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  */
 //岗位序列名称、上级岗位序列、描述
 @Data
-public class PostSeqBatchDTO implements ExcelErrMsg {
+public class PostSeqBatchVO implements ExcelErrMsg {
     @ExcelProperty(value = "岗位序列名称")
     private String postSeqName;
     @ExcelProperty(value = "上级岗位序列")

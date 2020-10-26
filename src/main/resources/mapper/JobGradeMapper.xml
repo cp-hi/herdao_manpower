@@ -38,7 +38,7 @@
     </select>
 
     <select id="jobGradeList" parameterType="long"
-            resultType="net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeShortDTO">
+            resultType="net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO">
        	select * from mp_job_grade where group_id = #{groupId}
     </select>
 
