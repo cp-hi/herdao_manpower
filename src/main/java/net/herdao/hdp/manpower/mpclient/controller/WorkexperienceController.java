@@ -152,5 +152,15 @@ public class WorkexperienceController extends BaseController<Workexperience> {
         return R.ok("导出成功");
     }
 
-
+    /**
+     * 通过id删除
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id删除", notes = "通过id删除")
+    @SysLog("通过id删除" )
+    @PostMapping("/del/{id}" )
+    public R removeById(@PathVariable Long id) {
+        return R.ok(workexperienceService.removeById(id));
+    }
 }

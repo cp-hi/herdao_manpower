@@ -91,5 +91,4 @@ public interface WorkexperienceService extends EntityService<Workexperience> {
      * @return
      */
     boolean updateWork(Workexperience orkexperience);
-
 }

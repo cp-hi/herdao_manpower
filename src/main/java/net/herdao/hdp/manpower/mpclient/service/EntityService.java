@@ -35,7 +35,7 @@ public interface EntityService<T> extends IService<T> {
 
     default Class<T> getEntityClass() {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+                .getGenericSuperclass()).getActualTypeArguments()[1];
         return clazz;
     }
 
@@ -216,7 +216,7 @@ public interface EntityService<T> extends IService<T> {
         if (need && null == t)  //需要它但它为空
             errMsg = "；不存在此" + entityName + "：" + value;
 
-        buffer.append(errMsg.replaceFirst("：", ""));
+        buffer.append(errMsg.replaceFirst("；",""));
         return t;
     }
 

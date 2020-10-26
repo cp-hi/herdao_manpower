@@ -3,13 +3,13 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.dto.post.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public IPage page(Page page, Post post) {
-        IPage<PostListDTO> p = baseMapper.page(page, post);
+        IPage<PostListVO> p = baseMapper.page(page, post);
         return p;
     }
 
@@ -116,7 +116,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public List<PostDetailDTO> getPostDetails(Long postId, String operation, String size) {
+    public List<PostDetailVO> getPostDetails(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size)) {
@@ -128,7 +128,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public List<PostStaffDTO> getPostStaffs(Long postId, String operation, String size) {
+    public List<PostStaffVO> getPostStaffs(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size)) {
@@ -143,7 +143,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public void addEntity(Post post, Object excelObj) {
-        PostBatchAddDTO excel = (PostBatchAddDTO) excelObj;
+        PostBatchAddVO excel = (PostBatchAddVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         chkEntityExists("POST_NAME", excel.getPostName(), false, buffer);
         Group group = groupService.getGroupByName(excel.getGroupName());
@@ -167,7 +167,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public void updateEntity(Post post, Object excelObj) {
-        PostBatchUpdateDTO excel = (PostBatchUpdateDTO) excelObj;
+        PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
         StringBuffer buffer = new StringBuffer();
 
         Post tmp = chkEntityExists("POST_NAME", excel.getPostName(), true, buffer);

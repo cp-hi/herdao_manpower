@@ -1,7 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffDTO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 
 import java.util.List;
@@ -30,13 +30,13 @@ public interface PostService extends  EntityService<Post> {
      *
      * @return
      */
-    List<PostDetailDTO> getPostDetails(Long postId, String operation, String size);
+    List<PostDetailVO> getPostDetails(Long postId, String operation, String size);
 
     /**
      * 岗位员工
      *
      * @return
      */
-    List<PostStaffDTO> getPostStaffs(Long postId, String operation, String size);
+    List<PostStaffVO> getPostStaffs(Long postId, String operation, String size);
 
 }

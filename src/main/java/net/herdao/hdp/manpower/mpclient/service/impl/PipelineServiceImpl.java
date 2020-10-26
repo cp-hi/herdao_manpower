@@ -3,8 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineBatchAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineBatchUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
+import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
@@ -51,7 +51,7 @@ public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> i
 
     @Override
     public void addEntity(Pipeline pipeline, Object excelObj) {
-        PipelineBatchAddDTO excel = (PipelineBatchAddDTO) excelObj;
+        PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
         chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), false);
         Group group = groupService.getGroupByName(excel.getGroupName());
         pipeline.setGroupId(group.getId());
@@ -59,7 +59,7 @@ public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> i
 
     @Override
     public void updateEntity(Pipeline pipeline, Object excelObj) {
-        PipelineBatchUpdateDTO excel = (PipelineBatchUpdateDTO) excelObj;
+        PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
         Pipeline tmp = chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true);
         Group group = groupService.getGroupByName(excel.getGroupName());
         pipeline.setGroupId(group.getId());

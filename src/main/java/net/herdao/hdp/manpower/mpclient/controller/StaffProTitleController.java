@@ -107,8 +107,7 @@ public class StaffProTitleController {
      */
     @ApiOperation(value = "通过id删除员工职称", notes = "通过id删除员工职称")
     @SysLog("通过id删除员工职称" )
-    @DeleteMapping("/del/{id}" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffprotitle_del')" )
+    @PostMapping("/del/{id}" )
     @OperationEntity(operation = "删除员工职称", clazz = StaffProTitle.class)
     public R removeById(@PathVariable Integer id) {
         return R.ok(staffProTitleService.removeById(id));

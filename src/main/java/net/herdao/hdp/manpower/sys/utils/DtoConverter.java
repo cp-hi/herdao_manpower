@@ -60,9 +60,10 @@ public class DtoConverter {
             //根据 DtoField中的信息获取source中对象数据
             DtoField dtoField = field.getAnnotation(DtoField.class);
 
+            String value = "";
             if (dtoField.objField().length > 0
-                && StringUtils.isNotBlank(dtoField.objField()[0])) {
-
+                    && StringUtils.isNotBlank(dtoField.objField()[0])) {
+                value = getDtoFieldVal(source, field, dtoField);
             } else if (StringUtils.isNotBlank(dtoField.listField())) {
 
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
@@ -137,6 +138,36 @@ public class DtoConverter {
              */
         }
         return (T) target;
+    }
+
+    private static String getDtoFieldVal(Object source, Field field, DtoField dtoField) {
+        Object currObj= source;
+
+        for (String fieldStr : dtoField.objField()) {
+            String[] path = fieldStr.split("\\.");
+            String fieldName = path[path.length - 1];
+
+
+        }
+        return null;
+    }
+
+    private static String getListFieldVal(Object source, Field field, DtoField dtoField) {
+        for (String fieldStr : dtoField.objField()) {
+            String[] path = fieldStr.split("\\.");
+            String fieldName = path[path.length - 1];
+
+
+        }
+        return null;
+    }
+
+    private static String getDictFieldVal(Object source, Field field, DtoField dtoField) {
+        for (String fieldStr : dtoField.objField()) {
+            String[] path = fieldStr.split("\\.");
+            String fieldName = path[path.length - 1];
+        }
+        return null;
     }
 
     /**

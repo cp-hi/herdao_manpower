@@ -1,6 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobGradeShortDTO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 
 import java.util.List;
@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface JobGradeService extends  EntityService<JobGrade> {
 
-    List<JobGradeShortDTO> jobGradeList(Long groupId);
+    List<JobGradeShortVO> jobGradeList(Long groupId);
 }

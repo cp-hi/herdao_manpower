@@ -7,9 +7,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqBatchDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqListDTO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqFormVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqListVO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/postSeq")
 @Api(tags = "岗位序列管理")
-public class PostSeqController extends NewBaseController<PostSeq, PostSeqListDTO, PostSeqFormDTO, PostSeqBatchDTO> {
+public class PostSeqController extends NewBaseController<PostSeq, PostSeqListVO, PostSeqFormVO, PostSeqBatchVO> {
 
     @Autowired
     PostSeqService postSeqService;
@@ -54,7 +54,7 @@ public class PostSeqController extends NewBaseController<PostSeq, PostSeqListDTO
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<PostSeqListDTO>> page(HttpServletResponse response, Page page, PostSeq seq, Integer type)
+    public R<IPage<PostSeqListVO>> page(HttpServletResponse response, Page page, PostSeq seq, Integer type)
             throws Exception {
         return super.page(response, page, seq, type);
     }
