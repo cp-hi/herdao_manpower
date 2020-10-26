@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.vo.post;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
  * @ClassName PostSeqFormDTO
@@ -28,9 +29,13 @@ public class PostSeqFormVO {
     @ApiModelProperty("集团ID")
     private Long groupId;
 
+    @ApiModelProperty("集团")
+    @DtoField(objField = {"group.groupName"})
+    private String groupName;
+
     @ApiModelProperty("父ID")
     private Long parentId;
 
-    @ApiModelProperty( "描述")
+    @ApiModelProperty("描述")
     private String description;
 }

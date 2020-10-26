@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 
 /**
@@ -23,6 +24,9 @@ public class PostSeqDTO extends PostSeq {
 
     @ApiModelProperty("父序列")
     private PostSeq parent;
+
+    @ApiModelProperty("集团")
+    private Group group;
 
     @ApiModelProperty("是否最末节点")
     private Boolean isLeaf;

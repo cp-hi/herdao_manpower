@@ -14,6 +14,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "岗位序列管理-基础信息")
+@Deprecated
 public class PostSeqBaseVO {
 
     @ApiModelProperty("id")
