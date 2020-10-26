@@ -45,6 +45,7 @@ import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
@@ -649,69 +650,94 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		List<Organization> organizationList = new ArrayList<Organization>();
 
 		if (importType == 0) {
-			// 导入校验
-			for (int i = 0; i < excelList.size(); i++) {
-
-				Organization organization = new Organization();
-				
-				OrganizationAddDTO orgDTO = (OrganizationAddDTO) excelList.get(i);
-
-				StringBuffer errMsg = null;
-
-				// 父组织信息
-				Organization parentOrganization = ObjectUtil.isNull(orgDTO.getParentOrgCode()) ? null : new Organization();
-				
-				// 校验父组织信息
-				if (ObjectUtil.isNull(parentOrganization)) {
-					appendStringBuffer(errMsg, "组织编码：" + orgDTO.getParentOrgCode() + "不存在");
-				} else {
-					BeanUtils.copyProperties(parentOrganizationMap.get(orgDTO.getParentOrgCode()), parentOrganization);
-					organization.setParentId(parentOrganization.getId());
-				}
-				// 校验组织类型
-				String orgType = getDictItem(orgTypeList, orgDTO.getOrgType());
-				if (StrUtil.isNotBlank(orgType)) {
-					appendStringBuffer(errMsg, "组织类型：" + orgDTO.getOrgType() + "不存在");
-				} else {
-					// 转字典value
-					organization.setOrgType(orgType);
-				}
-				// 校验用户信息
-				User user = userMap.get(orgDTO.getOrgChargeWorkNo());
-				if (user == null) {
-					appendStringBuffer(errMsg, "组织负责人工号：" + orgDTO.getOrgChargeWorkNo() + "不存在");
-				} else {
-					organization.setOrgChargeId(StrUtil.toString(user.getId()));
-					organization.setOrgChargeName(user.getUserName());
-					organization.setOrgChargeWorkNo(user.getLoginCode());
-				}
-				
-				Post post = postMap.get(orgDTO.getPostCode());
-				if(post == null) {
-					appendStringBuffer(errMsg, "岗位编号：" + orgDTO.getPostCode() + "不存在");
-				}else {
-					organization.setPostId(post.getId());
-				}
-				// 设置组织编码
-	        	organization.setOrgCode(getOrgCode(organization.getParentId()));
-				// 设置组织层级
-				organization.setOrgTreeLevel(parentOrganization.getOrgTreeLevel() + 1L);
-				// 设置 组织名称全路径
-				setOrgFullCodeAndOrgFullName(organization, parentOrganization);
-				if (StrUtil.isNotBlank(errMsg) && errMsg.length() > 0) {
-					errList.add(new ExcelCheckErrDTO(orgDTO, errMsg.toString()));
-				} else {
-					BeanUtils.copyProperties(orgDTO, organization);
-					organizationList.add(organization);
-				}
-			}
+			importAddOrganization(excelList, parentOrganizationMap, orgTypeList, userMap, postMap, errList, organizationList);
 		}
-		
+		// 保存新增、修改组织信息
 		if(ObjectUtil.isEmpty(errList)) {
 			this.saveOrUpdateBatch(organizationList, null);
 		}
 		
 		return errList;
+	}
+	
+	/**
+	 * 组织批量新增
+	 * 
+	 * @param excelList
+	 * @param parentOrganizationMap
+	 * @param orgTypeList
+	 * @param userMap
+	 * @param postMap
+	 * @param errList
+	 * @param organizationList
+	 */
+	public void importAddOrganization(List excelList, Map<String, OrganizationAddDTO> parentOrganizationMap, List<SysDictItem> orgTypeList, Map<String, User> userMap,
+			Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
+		// 导入校验
+		for (int i = 0; i < excelList.size(); i++) {
+
+			Organization organization = new Organization();
+
+			// 导入组织信息
+			OrganizationAddDTO orgDto = (OrganizationAddDTO) excelList.get(i);
+			// 异常信息
+			StringBuffer errMsg = null;
+
+			// 父组织信息
+			Organization parentOrganization = null;
+			String parentOrgCode = orgDto.getParentOrgCode();
+
+			if (ObjectUtil.isNotNull(parentOrgCode)) {
+				// 获取父组织信息
+				OrganizationAddDTO parentOrgDto = parentOrganizationMap.get(orgDto.getParentOrgCode());
+				if (ObjectUtil.isNotNull(parentOrgDto)) {
+					parentOrganization = new Organization();
+					BeanUtils.copyProperties(orgDto, parentOrganization);
+					organization.setParentId(parentOrganization.getId());
+				}
+			}
+
+			// 校验父组织信息
+			if (ObjectUtil.isNull(parentOrganization)) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织编码：" + orgDto.getParentOrgCode() + "不存在");
+			}
+
+			// 校验组织类型
+			String orgType = getDictItem(orgTypeList, orgDto.getOrgType());
+			if (StrUtil.isNotBlank(orgType)) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织类型：" + orgDto.getOrgType() + "不存在");
+			} else {
+				// 转字典value
+				organization.setOrgType(orgType);
+			}
+			// 校验用户信息
+			User user = userMap.get(orgDto.getOrgChargeWorkNo());
+			if (user == null) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织负责人工号：" + orgDto.getOrgChargeWorkNo() + "不存在");
+			} else {
+				organization.setOrgChargeId(StrUtil.toString(user.getId()));
+				organization.setOrgChargeName(user.getUserName());
+				organization.setOrgChargeWorkNo(user.getLoginCode());
+			}
+
+			Post post = postMap.get(orgDto.getPostCode());
+			if (post == null) {
+				StringBufferUtils.appendStringBuffer(errMsg, "岗位编号：" + orgDto.getPostCode() + "不存在");
+			} else {
+				organization.setPostId(post.getId());
+			}
+			// 设置组织编码
+			organization.setOrgCode(getOrgCode(organization.getParentId()));
+			// 设置组织层级
+			organization.setOrgTreeLevel(parentOrganization.getOrgTreeLevel() + 1L);
+			// 设置 组织名称全路径
+			setOrgFullCodeAndOrgFullName(organization, parentOrganization);
+			if (StrUtil.isNotBlank(errMsg)) {
+				errList.add(new ExcelCheckErrDTO(orgDto, errMsg.toString()));
+			} else {
+				organizationList.add(organization);
+			}
+		}
 	}
 	
 	/**
@@ -742,27 +768,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	return orgList.stream().collect(Collectors.toMap(OrganizationAddDTO::getOrgCode, (p) -> p)); 
     }
     
-    StringBuffer getStringBuffer(StringBuffer bf) {
-    	if(bf == null) {
-			bf = new StringBuffer();
-		}
-    	return bf;
-    }
-    
-    /**
-     * 拼接组织异常信息
-     * 
-     * @param stringBuffer
-     * @param errorMsg
-     */
-	 void appendStringBuffer(StringBuffer stringBuffer, String errorMsg) {
-
-		if (stringBuffer == null) {
-			stringBuffer = new StringBuffer();
-		}
-
-		stringBuffer.append(stringBuffer.length() > 0 ? errorMsg + ManpowerContants.CH_SEMICOLON : errorMsg);
-	}
 	 
 	/**
 	 * 获取字典value值

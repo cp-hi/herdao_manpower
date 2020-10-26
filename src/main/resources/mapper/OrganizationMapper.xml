@@ -501,7 +501,7 @@
 		            AND orgList.is_stop = #{stop}
 		        </if>
 		        <if test="orgCode != null and (searchText == '' or searchText == null) ">
-		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(orgList.org_code) &lt;= LENGTH(#{orgCode}) + 3
+		            AND orgList.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(orgList.org_code) &lt;= LENGTH(#{orgCode}) + 3
 		        </if>
 	        	<if test="searchText != '' and searchText != null">
 	        		AND CONCAT(orgList.org_name, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')

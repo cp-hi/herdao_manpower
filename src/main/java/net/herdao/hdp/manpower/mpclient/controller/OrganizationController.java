@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +33,9 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
@@ -336,7 +336,7 @@ public class OrganizationController {
 	}
 
     /**
-     * 批量导入组织 (excel导入) TOTO 待完善
+     * 批量导入组织 (excel导入)
      * 
      * @modified shuling
      * @param file
@@ -344,31 +344,38 @@ public class OrganizationController {
      */
     @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
     @PostMapping("/batchImportOrg")
-    @ResponseBody
     @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
-    				     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
+    				     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
 	})
+    @SuppressWarnings("all")
 	public R batchImportOrg(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
 		try {
 
-			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, OrganizationAddDTO.class, 0);
+			Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
+			
+			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, excelCls, 0, 1);
 
-			EasyExcelFactory.read(file.getInputStream(), OrganizationAddDTO.class, easyExcelListener).sheet().headRowNumber(3).doRead();
+			EasyExcelFactory.read(file.getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(2).doRead();
 
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
+			// 包含错误信息就导出错误信息
 			if (!errList.isEmpty()) {
-				// 包含错误信息就导出错误信息
-				List<OrganizationExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-					OrganizationExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationExcelErrDTO.class);
+				
+				Class excelErrCls = (importType == 0 ? OrganizationAddErrDTO.class : OrganizationUpdateErrDTO.class);
+				
+				List<OrganizationAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+					OrganizationAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), 
+													    OrganizationAddErrDTO.class);
 					excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
+					
 					return excelErrDto;
 				}).collect(Collectors.toList());
-				EasyExcelUtils.webWriteExcel(response, excelErrDtos, OrganizationExcelErrDTO.class, "组织导入错误信息");
+				EasyExcelUtils.webWriteExcel(response, excelErrDtos, OrganizationAddErrDTO.class, "组织" + (importType == 0 ? "新增" : "修改") + "错误信息");
 			}
-			return R.ok("导入成功！");
 		} catch (IOException e) {
-			return R.failed(e.getMessage());
+			return R.failed("导入异常：" + e.getMessage());
 		}
+		return R.ok(null, "导入成功！");
 	}
     
     /**

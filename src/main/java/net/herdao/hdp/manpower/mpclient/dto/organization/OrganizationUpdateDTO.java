@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 组织批量新增 DTO
+ * 组织批量修改 DTO
  * 
  * @author shuling
  * @date 2020-10-22 10:15:22
@@ -19,8 +19,8 @@ import lombok.Data;
  */
 @Data
 @ExcelIgnoreUnannotated
-@ApiModel(value = "组织批量新增")
-public class OrganizationAddDTO {
+@ApiModel(value = "组织批量修改")
+public class OrganizationUpdateDTO {
 
 	@ExcelProperty(value = "组织名称", index = 0)
 	@ColumnWidth(30)

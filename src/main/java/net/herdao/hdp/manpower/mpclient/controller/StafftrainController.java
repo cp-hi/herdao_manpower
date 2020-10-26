@@ -12,7 +12,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainExcelErrDTO;
@@ -159,8 +159,8 @@ public class StafftrainController{
             List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
             if (!errList.isEmpty()) {
                 // 包含错误信息就导出错误信息
-                List<OrganizationExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-                    OrganizationExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationExcelErrDTO.class);
+                List<OrganizationAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+                    OrganizationAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationAddErrDTO.class);
                     excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
                     return excelErrDto;
                 }).collect(Collectors.toList());
