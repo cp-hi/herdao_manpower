@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class EasyExcelUtils {
     
     @SuppressWarnings("rawtypes")
 	public static void webWriteExcel(HttpServletResponse response, List objects, Class clazz, String fileName, String sheetName) throws IOException {
+        fileName = URLEncoder.encode(fileName, "UTF-8");
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
