@@ -47,17 +47,27 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
     // 导入类型
     int importType;
     
-    private Class<E> clazz;
+    // excel 导入类型
+    Class<E> clazz;
+    
+    // 数据开始行号
+    int excelIndex = 1;
 
 	public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz, Integer importType) {
-		// this.importType = importType;
+		this.importType = importType;
 		this.easyExcelService = easyExcelService;
-		Type genType = easyExcelService.getClass().getSuperclass().getGenericSuperclass();
-		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-		entityClass = (Class) params[0];
-		
 		this.clazz = clazz;
+		setEntityClass();
 	}
+	
+	public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz, Integer importType, Integer excelIndex) {
+		this.importType = importType;
+		this.easyExcelService = easyExcelService;
+		this.clazz = clazz;
+		this.excelIndex = excelIndex;
+		setEntityClass();
+	}
+
 
 	@Override
     public void invoke(E excelCls, AnalysisContext analysisContext) {
@@ -96,26 +106,30 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
       * @param headMap 传入excel的头部（第一行数据）数据的index, name
       * @param context
       */
+    int currExcelIndex = 0;
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         super.invokeHeadMap(headMap, context);
-        if (clazz != null){
-            try {
-                Map<Integer, String> indexNameMap = getIndexNameMap(clazz);
-                Set<Integer> keySet = indexNameMap.keySet();
-                for (Integer key : keySet) {
-                    if (StringUtils.isEmpty(headMap.get(key))){
-                        throw new ExcelAnalysisException("解析excel出错，请传入正确格式的excel");
-                    }
-                    if (!headMap.get(key).equals(indexNameMap.get(key))){
-                        throw new ExcelAnalysisException("解析excel出错，请传入正确格式的excel");
-                    }
-                }
+        if(excelIndex <= currExcelIndex) {
+        	 if (clazz != null){
+                 try {
+                     Map<Integer, String> indexNameMap = getIndexNameMap(clazz);
+                     Set<Integer> keySet = indexNameMap.keySet();
+                     for (Integer key : keySet) {
+                         if (StringUtils.isEmpty(headMap.get(key))){
+                             throw new ExcelAnalysisException("解析excel出错，请传入正确格式的excel");
+                         }
+                         if (!headMap.get(key).equals(indexNameMap.get(key))){
+                             throw new ExcelAnalysisException("解析excel出错，请传入正确格式的excel");
+                         }
+                     }
 
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+                 } catch (NoSuchFieldException e) {
+                     e.printStackTrace();
+                 }
+             }
         }
+        currExcelIndex ++;
     }
 
     /**
@@ -143,5 +157,11 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
 			}
 		}
 		return result;
+	}
+	
+	public void setEntityClass() {
+		Type genType = easyExcelService.getClass().getSuperclass().getGenericSuperclass();
+		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+		entityClass = (Class) params[0];
 	}
 }

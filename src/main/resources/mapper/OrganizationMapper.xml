@@ -681,7 +681,8 @@
     		org.org_charge_work_no,
     		ps.post_code,
     		org.is_stop AS stop,
-    		org.del_flag
+    		org.del_flag,
+    		org.org_tree_level
     	FROM mp_organization org 
     	LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
     	LEFT JOIN mp_post ps ON ps.id = org.post_id

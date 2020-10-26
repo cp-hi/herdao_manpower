@@ -27,6 +27,8 @@ public class OrganizationAddDTO {
 
 	@ExcelProperty(value = "组织类型")
 	private String orgType;
+	@ApiModelProperty(value = "组织树层级")
+	private Long orgTreeLevel;
 	
 	@ApiModelProperty(value = "父组织id")
 	private Long parentId;

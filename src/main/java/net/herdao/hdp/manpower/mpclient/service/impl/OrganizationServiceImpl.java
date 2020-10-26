@@ -560,7 +560,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	}
 	
 	/**
-	 * @description 设置 组织编码、组织名称全路径 例如：orgFullname /广东省/广州市/天河区
+	 * @description 设置 组织名称全路径 例如：orgFullname /广东省/广州市/天河区
 	 * @author      shuling
 	 * @date        2020-10-18 10:42:29
 	 * @param       organization
@@ -653,56 +653,62 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 			for (int i = 0; i < excelList.size(); i++) {
 
 				Organization organization = new Organization();
+				
+				OrganizationAddDTO orgDTO = (OrganizationAddDTO) excelList.get(i);
 
-				OrganizationAddDTO org = (OrganizationAddDTO) excelList.get(i);
-
-				StringBuffer errMsg = new StringBuffer();
+				StringBuffer errMsg = null;
 
 				// 父组织信息
-				OrganizationAddDTO orgp = parentOrganizationMap.get(org.getParentOrgCode());
-
+				Organization parentOrganization = ObjectUtil.isNull(orgDTO.getParentOrgCode()) ? null : new Organization();
+				
 				// 校验父组织信息
-				if (orgp == null) {
-					appendStringBuffer(errMsg, "组织编码：" + org.getParentOrgCode() + "不存在");
+				if (ObjectUtil.isNull(parentOrganization)) {
+					appendStringBuffer(errMsg, "组织编码：" + orgDTO.getParentOrgCode() + "不存在");
 				} else {
-					organization.setParentId(orgp.getParentId());
+					BeanUtils.copyProperties(parentOrganizationMap.get(orgDTO.getParentOrgCode()), parentOrganization);
+					organization.setParentId(parentOrganization.getId());
 				}
 				// 校验组织类型
-				String orgType = getDictItem(orgTypeList, org.getOrgType());
+				String orgType = getDictItem(orgTypeList, orgDTO.getOrgType());
 				if (StrUtil.isNotBlank(orgType)) {
-					appendStringBuffer(errMsg, "组织类型：" + org.getOrgType() + "不存在");
+					appendStringBuffer(errMsg, "组织类型：" + orgDTO.getOrgType() + "不存在");
 				} else {
 					// 转字典value
 					organization.setOrgType(orgType);
 				}
 				// 校验用户信息
-				User user = userMap.get(org.getOrgChargeWorkNo());
+				User user = userMap.get(orgDTO.getOrgChargeWorkNo());
 				if (user == null) {
-					appendStringBuffer(errMsg, "组织负责人工号：" + org.getOrgChargeWorkNo() + "不存在");
+					appendStringBuffer(errMsg, "组织负责人工号：" + orgDTO.getOrgChargeWorkNo() + "不存在");
 				} else {
 					organization.setOrgChargeId(StrUtil.toString(user.getId()));
 					organization.setOrgChargeName(user.getUserName());
 					organization.setOrgChargeWorkNo(user.getLoginCode());
 				}
 				
-				Post post = postMap.get(org.getPostCode());
+				Post post = postMap.get(orgDTO.getPostCode());
 				if(post == null) {
-					appendStringBuffer(errMsg, "岗位编号：" + org.getPostCode() + "不存在");
+					appendStringBuffer(errMsg, "岗位编号：" + orgDTO.getPostCode() + "不存在");
 				}else {
 					organization.setPostId(post.getId());
 				}
-				
-				if (errMsg.length() > 0) {
-					errList.add(new ExcelCheckErrDTO(orgp, errMsg.toString()));
+				// 设置组织编码
+	        	organization.setOrgCode(getOrgCode(organization.getParentId()));
+				// 设置组织层级
+				organization.setOrgTreeLevel(parentOrganization.getOrgTreeLevel() + 1L);
+				// 设置 组织名称全路径
+				setOrgFullCodeAndOrgFullName(organization, parentOrganization);
+				if (StrUtil.isNotBlank(errMsg) && errMsg.length() > 0) {
+					errList.add(new ExcelCheckErrDTO(orgDTO, errMsg.toString()));
 				} else {
-					BeanUtils.copyProperties(org, organization);
+					BeanUtils.copyProperties(orgDTO, organization);
 					organizationList.add(organization);
 				}
 			}
 		}
 		
 		if(ObjectUtil.isEmpty(errList)) {
-			// this.saveOrUpdateBatch(organizationList, null);
+			this.saveOrUpdateBatch(organizationList, null);
 		}
 		
 		return errList;
