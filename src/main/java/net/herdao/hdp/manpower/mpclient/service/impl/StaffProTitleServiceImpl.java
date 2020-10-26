@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -27,6 +28,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPractice;
 import net.herdao.hdp.manpower.mpclient.entity.StaffProTitle;
+import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffProTitleMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
