@@ -60,6 +60,16 @@ public class DtoConverter {
             //根据 DtoField中的信息获取source中对象数据
             DtoField dtoField = field.getAnnotation(DtoField.class);
 
+            if (dtoField.objField().length > 0
+                && StringUtils.isNotBlank(dtoField.objField()[0])) {
+
+            } else if (StringUtils.isNotBlank(dtoField.listField())) {
+
+            } else if (StringUtils.isNotBlank(dtoField.dictField())) {
+
+            }
+
+            /*
 //            int total = 0;
 //            if (dtoField.joinFields().length > 0) total++;
 //            if (StringUtils.isNotBlank(dtoField.objField())) total++;
@@ -124,6 +134,7 @@ public class DtoConverter {
                 if (null == val) continue;
                 field.set(target, val);
             }
+             */
         }
         return (T) target;
     }
