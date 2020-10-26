@@ -16,11 +16,17 @@ public class GroupDetailDTO {
     @ApiModelProperty(value="集团编码")
     private String groupCode;
 
-    @ApiModelProperty(value="对应组织")
+    @ApiModelProperty(value="对应组织主键")
+    private Long orgId;
+
+    @ApiModelProperty(value="对应组织编码")
     private String orgCode;
 
     @ApiModelProperty(value="排序")
     private Integer sortNo;
+
+    @ApiModelProperty(value="绩效计算标准")
+    private String achieveCalculateStandard;
 
     @ApiModelProperty(value="备注")
     private String remark;
