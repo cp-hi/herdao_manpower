@@ -194,11 +194,11 @@ public class NewBaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType, Integer downloadErrMsg) throws Exception {
-        NewImportExcelListener<E> listener = null;
+        NewImportExcelListener<E>  listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new NewImportExcelListener(entityService, importType);
+            listener = new NewImportExcelListener (entityService, importType);
             EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().doRead();
 
         } catch (Exception ex) {
