@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationExcelErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainExcelErrDTO;
@@ -171,7 +169,7 @@ public class StafftrainController{
     @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
             @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
     })
-    public void batchImportTrain(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
+    public R batchImportTrain(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
         try {
             EasyExcelListener easyExcelListener = new EasyExcelListener(stafftrainService, StaffTrainAddDTO.class,importType);
             EasyExcelFactory.read(file.getInputStream(), StaffTrainAddDTO.class, easyExcelListener).sheet().headRowNumber(2).doRead();
@@ -185,10 +183,10 @@ public class StafftrainController{
                 }).collect(Collectors.toList());
                 EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffTrainExcelErrDTO.class, "批量导入员工培训错误信息");
             }
-           /* return R.ok("导入成功！");*/
+            return R.ok("导入成功！");
         } catch (IOException e) {
             log.error("导入失败",e.toString());
-           /* return R.failed(e.getMessage());*/
+            return R.failed(e.getMessage());
         }
     }
 
