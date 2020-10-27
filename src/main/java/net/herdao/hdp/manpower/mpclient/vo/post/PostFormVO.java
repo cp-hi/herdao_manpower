@@ -123,4 +123,6 @@ public class PostFormVO {
     @ApiModelProperty("备注")
     private String remark;
 
+    @ApiModelProperty(value = "是否单职级",hidden = true)
+    private Boolean singleJobLevle;
 }

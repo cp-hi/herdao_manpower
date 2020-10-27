@@ -10,6 +10,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -60,6 +61,21 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<PostListVO>> page(HttpServletResponse response, @ApiIgnore Page page, Post post, Integer type) throws Exception {
         return super.page(response, page, post, type);
+    }
+
+    @Override
+    @PostMapping
+    @ApiOperation(value = "新增/修改")
+    public R<PostFormVO> save(@RequestBody PostFormVO f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String[] jobLevelIds = f.getJobLevelId().split(",");
+
+        if (1 >= jobLevelIds.length)
+            f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
+        else if (2 >= jobLevelIds.length)
+            f.setJobLevelId2(Long.valueOf(jobLevelIds[1]));
+
+        f.setSingleJobLevle(1 == jobLevelIds.length);
+        return super.save(f);
     }
 
 //    @GetMapping("/baseInfo/{id}")
