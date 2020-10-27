@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @ClassName DtoConverter
@@ -79,7 +80,8 @@ public class DtoConverter {
 
     /**
      * 转换字段属性
-     * @param source 源对象
+     *
+     * @param source   源对象
      * @param dtoField 字段注解
      * @return
      * @throws IllegalAccessException
@@ -111,13 +113,25 @@ public class DtoConverter {
                     Map map = (Map) JSON.parse(dtoField.converter());
                     value = (String) map.get(String.valueOf(objVal));
                 } else {
-                    value =String.valueOf(objVal);
+                    value = String.valueOf(objVal);
                 }
-            } else if(String.class == fieldVal.getType()) {
-                value =  String.valueOf(objVal);
+            } else if (String.class == fieldVal.getType()) {
+                value = String.valueOf(objVal);
             }
             values.add(value);
         }
+
+//        boolean isEmpty = values.stream().map(StringUtils::isBlank).reduce(false, (a, b) -> a || b);
+
+        AtomicReference<Boolean> isEmpty = new AtomicReference<>(false);
+
+        values.forEach(v -> {
+            if (StringUtils.isBlank(v))
+                isEmpty.set(true);
+        });
+
+        if (isEmpty.get()) return "";
+
         //如果有插值map则插值， 一般用于 xx于 xx创建 xx于 xx更新
         if (StringUtils.isNotBlank(dtoField.mapFix())) {
             Map infix = (Map) JSON.parse(dtoField.mapFix());
@@ -131,6 +145,7 @@ public class DtoConverter {
 
     /**
      * 转换列表属性
+     *
      * @param source
      * @param dtoField
      * @return
@@ -145,7 +160,8 @@ public class DtoConverter {
 
     /**
      * 转换字典对象
-     * @param source 源对象
+     *
+     * @param source   源对象
      * @param dtoField 字典字段上的注解
      * @return
      * @throws IllegalAccessException
@@ -159,10 +175,10 @@ public class DtoConverter {
         Object val = currObj.get(source);
         SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
                 Wrappers.<SysDictItem>query().lambda()
-                .eq(SysDictItem::getType, dictInfo[0])
-                .eq(SysDictItem::getValue, (String) val));
+                        .eq(SysDictItem::getType, dictInfo[0])
+                        .eq(SysDictItem::getValue, (String) val));
 
-        if (null != dictItem)  return dictItem.getLabel();
+        if (null != dictItem) return dictItem.getLabel();
         return null;
     }
 

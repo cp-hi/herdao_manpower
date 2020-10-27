@@ -64,6 +64,7 @@ public class PostSeqController extends NewBaseController<PostSeq, PostSeqListVO,
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postSeqName", value = "字符串搜索"),
             @ApiImplicitParam(name = "parentId", value = "父级ID，这是查找下级用的，所以查顶级不用传，查下级传自身ID"),
+            @ApiImplicitParam(name = "stop", value = "是否停用，0启用：1停用，不填查所有"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),

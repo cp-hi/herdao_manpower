@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
  * @ClassName ShortPostSeqDTO
@@ -18,6 +19,7 @@ import lombok.Data;
 @ApiModel(value = "简短岗位序列/岗位")
 public class ShortPostSeqVO {
     @ApiModelProperty("岗位序列")
+    @DtoField(objField = "")
     private String postSeqName;
     @ApiModelProperty("岗位")
     private String postName;

@@ -49,6 +49,9 @@
         <if test="post.id != null">
             and id = #{post.id}
         </if>
+        <if test="post.stop != null">
+            and is_stop = #{post.stop}
+        </if>
         <if test="post.groupId != null">
             and group_id = #{post.groupId}
         </if>

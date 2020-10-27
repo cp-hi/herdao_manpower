@@ -56,6 +56,7 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
             @ApiImplicitParam(name = "jobLevelId1", value = "职级ID"),
             @ApiImplicitParam(name = "sectionId", value = "板块ID"),
             @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
+            @ApiImplicitParam(name = "stop", value = "是否停用，0启用：1停用，不填查所有"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),

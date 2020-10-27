@@ -11,6 +11,7 @@
 
     <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
         <id column="id" property="id"/>
+        <result property="stop" column="IS_STOP"/>
         <result property="groupId" column="GROUP_ID"/>
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
         <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
@@ -23,6 +24,9 @@
          and ((#{postSeq.parentId} is null and parent_id is null) or parent_id = #{postSeq.parentId})
         <if test="postSeq.id != null">
             and id = #{postSeq.id}
+        </if>
+        <if test="postSeq.stop != null">
+            and is_stop = #{postSeq.stop}
         </if>
         <if test="postSeq.groupId != null">
             and group_id = #{postSeq.groupId}
