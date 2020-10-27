@@ -123,6 +123,10 @@ public class PostFormVO {
     @ApiModelProperty("备注")
     private String remark;
 
-    @ApiModelProperty(value = "是否单职级",hidden = true)
+    @ApiModelProperty(value = "是否单职级")
     private Boolean singleJobLevle;
+
+    @ApiModelProperty(value = "是否停用")
+    @DtoField(objField = "stop", converter = "{true:\"已停用\",false:\"已启用\"}")
+    private String stop;
 }

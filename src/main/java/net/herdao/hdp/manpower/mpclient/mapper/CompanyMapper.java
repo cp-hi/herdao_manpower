@@ -18,8 +18,12 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 注册公司
@@ -29,5 +33,13 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CompanyMapper extends BaseMapper<Company> {
+
+    /**
+     * 注册公司分页列表
+     *
+     * @param map
+     * @return
+     */
+    List<CompanyListDTO> companyPage(Map<String, Object> map);
 
 }

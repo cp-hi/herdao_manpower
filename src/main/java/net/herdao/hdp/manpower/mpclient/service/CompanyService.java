@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 
 /**
@@ -31,7 +32,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Company;
  */
 public interface CompanyService extends IService<Company> {
 
-    IPage companyPage(Page page, Company company, String searchText);
+    IPage companyPage(Page page, CompanyListDTO company, String searchText);
 
     boolean companySave(CompanyDetailDTO companyForm);
 

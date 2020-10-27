@@ -78,21 +78,6 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
         return super.save(f);
     }
 
-//    @GetMapping("/baseInfo/{id}")
-//    @ApiOperation(value = "基础信息")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "主键"),
-//    })
-//    public R<PostBaseVO> getBaseInfo(@PathVariable Long id)
-//            throws InstantiationException, IllegalAccessException,
-//            ClassNotFoundException, NoSuchFieldException {
-//        IPage p = postService.page(new Page(), new Post(id));
-//        PostBaseVO data = null;
-//        if (p.getRecords().size() > 0)
-//            data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseVO.class);
-//        return R.ok(data);
-//    }
-
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     @ApiImplicitParams({
@@ -157,11 +142,11 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
         return R.ok(data);
     }
 
-    @GetMapping("/generateEntityCode")
-    public R generateEntityCode() throws IllegalAccessException {
-        String data = postService.generateEntityCode();
-        return R.ok(data);
-    }
+//    @GetMapping("/generateEntityCode")
+//    public R generateEntityCode() throws IllegalAccessException {
+//        String data = postService.generateEntityCode();
+//        return R.ok(data);
+//    }
 
 
 }

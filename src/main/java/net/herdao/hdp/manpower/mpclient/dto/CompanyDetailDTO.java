@@ -1,12 +1,13 @@
 package net.herdao.hdp.manpower.mpclient.dto;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
-
+/**
+ * @author yangrr
+ */
 @Data
 @ApiModel(value = "公司表单")
 public class CompanyDetailDTO {
