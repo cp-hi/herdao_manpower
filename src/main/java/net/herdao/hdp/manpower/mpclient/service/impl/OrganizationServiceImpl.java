@@ -465,7 +465,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		if(ObjectUtil.isNotEmpty(orgs)) {
     			return R.failed("组织名称已经存在，请修改后保存！");
     		}
-    		
+    		// 校验上级组织是否是当前组织
     		if(ObjectUtil.isNotNull(id) && parentId.equals(id)) {
     			return R.failed("上级组织不能是当前组织！");
     		}
