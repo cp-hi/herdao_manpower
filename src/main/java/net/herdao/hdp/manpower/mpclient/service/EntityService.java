@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -62,7 +63,7 @@ public interface EntityService<T> extends IService<T> {
     }
 
     /**
-     * 获取编码字段
+     * 获取编码在表中的字段名
      *
      * @return
      */
@@ -72,11 +73,16 @@ public interface EntityService<T> extends IService<T> {
         return codeField;
     }
 
+    /**
+     * 获取编码在实体中的字段名
+     *
+     * @return
+     */
     default String getEntityCodeField() {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
-        String entityName = clazz.getSimpleName();
-        return clazz.getName() + "Code";
+                .getGenericSuperclass()).getActualTypeArguments()[1];
+        String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
+        return entityName + "Code";
     }
 
     /**
@@ -84,9 +90,30 @@ public interface EntityService<T> extends IService<T> {
      *
      * @return
      */
-    default String generateEntityCode() {
-        T t = getOne(new QueryWrapper<T>().first(""));
-        return null;
+    default String generateEntityCode() throws IllegalAccessException {
+        T t = getOne(new QueryWrapper<T>().inSql("id", "select max(id) from " + getTabelName()));
+        String entityCode = "000001";
+        if (null != t) {
+            Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
+            field.setAccessible(true);
+            Object val = field.get(t);
+            if (null != val)
+                entityCode = String.format("%06d", Integer.valueOf(val.toString()) + 1);
+        }
+        return entityCode;
+    }
+
+    /**
+     * 自动设置编码
+     * @param t
+     * @throws IllegalAccessException
+     */
+    default void setEntityCode(T t) throws IllegalAccessException {
+        Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
+        if (null == field) return;
+        String entityCode = generateEntityCode();
+        field.setAccessible(true);
+        field.set(t, entityCode);
     }
 
 

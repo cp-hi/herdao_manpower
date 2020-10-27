@@ -84,31 +84,37 @@ public class PostSeqController extends NewBaseController<PostSeq, PostSeqListVO,
         return R.ok(data);
     }
 
-    @GetMapping("/okPostSeqDetail/{okPostSeqSysId}")
+    @GetMapping("/okPostSeqDetail")
     @ApiOperation(value = "获取岗位序列体系详情", notes = "获取岗位序列体系详情")
-    public R<OKPostSeqSysDetailDTO> okPostSeqDetail(@PathVariable Long okPostSeqSysId) {
-        OKPostSeqSysDTO okPostSeqSysDTO = okPostSeqSysService.findDetail(okPostSeqSysId);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位序列体系ID"),
+    })
+    public R<OKPostSeqSysDetailDTO> okPostSeqDetail(Long id) {
+        OKPostSeqSysDTO okPostSeqSysDTO = okPostSeqSysService.findDetail(id);
         OKPostSeqSysDetailDTO detailDTO = new OKPostSeqSysDetailDTO();
         BeanUtils.copyProperties(okPostSeqSysDTO, detailDTO);
 
         for (OKPostSeqDTO okPostSeqDTO : okPostSeqSysDTO.getOkPostSeqDTOList()) {
             String postSeqName = okPostSeqDTO.getPostSeqName();
-           List <String> postName = new ArrayList<>();
+            List<String> postName = new ArrayList<>();
             for (OKPostDTO okPostDTO : okPostSeqDTO.getOkPostDTOList())
-                postName .add(okPostDTO.getPostName()) ;
+                postName.add(okPostDTO.getPostName());
 
             detailDTO.getShortPostSeqDTOList().add(ShortPostSeqVO.builder()
-                    .postSeqName(postSeqName).postName(StringUtils.join(postName,"、")).build());
+                    .postSeqName(postSeqName).postName(StringUtils.join(postName, "、")).build());
         }
         return R.ok(detailDTO);
     }
 
 
-    @GetMapping("/okCreatePostSeq/{okPostSeqSysId}")
+    @GetMapping("/okCreatePostSeq")
     @ApiOperation(value = "一键创建职级系统详情", notes = "一键创建职级系统详情")
-    public R okCreatePostSeq(@PathVariable Long okJobLevleSysId) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "岗位序列体系ID"),
+    })
+    public R okCreatePostSeq(Long id) {
         try {
-            okPostSeqSysService.okCreatePostSeq(okJobLevleSysId);
+            okPostSeqSysService.okCreatePostSeq(id);
         } catch (Exception ex) {
             return R.failed(ex.getMessage());
         }
