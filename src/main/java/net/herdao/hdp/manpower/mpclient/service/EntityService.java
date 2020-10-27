@@ -75,13 +75,14 @@ public interface EntityService<T> extends IService<T> {
 
     /**
      * 获取编码在实体中的字段名
+     *
      * @return
      */
     default String getEntityCodeField() {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+                .getGenericSuperclass()).getActualTypeArguments()[1];
         String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
-        return clazz.getName() + "Code";
+        return entityName + "Code";
     }
 
     /**
@@ -89,9 +90,30 @@ public interface EntityService<T> extends IService<T> {
      *
      * @return
      */
-    default String generateEntityCode() {
-        T t = getOne(new QueryWrapper<T>().first("").last(""));
-        return null;
+    default String generateEntityCode() throws IllegalAccessException {
+        T t = getOne(new QueryWrapper<T>().inSql("id", "select max(id) from " + getTabelName()));
+        String entityCode = "000001";
+        if (null != t) {
+            Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
+            field.setAccessible(true);
+            Object val = field.get(t);
+            if (null != val)
+                entityCode = String.format("%06d", Integer.valueOf(val.toString()) + 1);
+        }
+        return entityCode;
+    }
+
+    /**
+     * 自动设置编码
+     * @param t
+     * @throws IllegalAccessException
+     */
+    default void setEntityCode(T t) throws IllegalAccessException {
+        Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
+        if (null == field) return;
+        String entityCode = generateEntityCode();
+        field.setAccessible(true);
+        field.set(t, entityCode);
     }
 
 
