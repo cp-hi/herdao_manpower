@@ -68,6 +68,7 @@
                   AND dic.`value` = f.RELATIONS
                   WHERE 1 = 1
                   AND f.del_flag = 0
+                  ORDER BY f.CREATED_TIME desc
           ) t WHERE  1 =1
           <if test="searchText != null">
               and CONCAT(
@@ -81,45 +82,43 @@
     <!-- 员工家庭情况 -->
     <select id="findFamilyStatus" resultType="net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO">
         SELECT  t.id,
-        t.staff_name,
-        t.staff_code,
-        t.NAME,
-        t.RELATIONS,
-        t.age,
-        t.PROFESSIONAL,
-        t.WORK_UNIT,
-        t.address,
-        CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+                t.staff_name,
+                t.staff_code,
+                t.NAME,
+                t.RELATIONS,
+                t.age,
+                t.PROFESSIONAL,
+                t.WORK_UNIT,
+                t.address,
+                CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
         FROM
         (
-        SELECT
-        f.id,
-        s.staff_name,
-        s.staff_code,
-        f.NAME,
-        dic.label RELATIONS,
-        f.age,
-        f.PROFESSIONAL,
-        f.WORK_UNIT,
-        f.address,
-        usr.USER_NAME modifier_name,
-        f.MODIFIED_TIME
-        FROM
-        mp_familystatus f
-        LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-        LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-        AND u.MAIN_POST = 1
-        LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
-        LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
-        AND dic.`value` = f.RELATIONS
-        WHERE 1 = 1
-        AND f.del_flag = 0
+            SELECT  f.id,
+                    s.staff_name,
+                    s.staff_code,
+                    f.NAME,
+                    dic.label RELATIONS,
+                    f.age,
+                    f.PROFESSIONAL,
+                    f.WORK_UNIT,
+                    f.address,
+                    usr.USER_NAME modifier_name,
+                    f.MODIFIED_TIME
+            FROM  mp_familystatus f
+            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+            LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID AND u.MAIN_POST = 1
+            LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
+            LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
+            AND dic.`value` = f.RELATIONS
+            WHERE 1 = 1
+            AND f.del_flag = 0
+            ORDER BY f.CREATED_TIME desc
         ) t WHERE  1 =1
         <if test="searchText != null">
             and CONCAT(
-            IFNULL( t.staff_name,''), IFNULL( t.staff_code,''),IFNULL( t.NAME,''),IFNULL( t.RELATIONS,''),
-            IFNULL( t.age,''),IFNULL( t.PROFESSIONAL,''),IFNULL( t.WORK_UNIT,''),IFNULL( t.address,''),
-            IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
+                IFNULL( t.staff_name,''), IFNULL( t.staff_code,''),IFNULL( t.NAME,''),IFNULL( t.RELATIONS,''),
+                IFNULL( t.age,''),IFNULL( t.PROFESSIONAL,''),IFNULL( t.WORK_UNIT,''),IFNULL( t.address,''),
+                IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>
