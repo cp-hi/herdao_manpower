@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -62,7 +63,7 @@ public interface EntityService<T> extends IService<T> {
     }
 
     /**
-     * 获取编码字段
+     * 获取编码在表中的字段名
      *
      * @return
      */
@@ -72,10 +73,14 @@ public interface EntityService<T> extends IService<T> {
         return codeField;
     }
 
+    /**
+     * 获取编码在实体中的字段名
+     * @return
+     */
     default String getEntityCodeField() {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
-        String entityName = clazz.getSimpleName();
+        String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
         return clazz.getName() + "Code";
     }
 
@@ -85,7 +90,7 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
     default String generateEntityCode() {
-        T t = getOne(new QueryWrapper<T>().first(""));
+        T t = getOne(new QueryWrapper<T>().first("").last(""));
         return null;
     }
 
