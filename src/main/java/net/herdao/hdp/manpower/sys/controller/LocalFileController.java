@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
+import java.net.URLEncoder;
 
 /**
  * <p>
@@ -51,7 +52,7 @@ import java.io.*;
 @RequestMapping("/sys/file")
 @Api(value = "file", tags = "本地文件操作")
 @Slf4j
-public class UploadController {
+public class LocalFileController {
 	private Environment env;
 
 	/**
@@ -93,9 +94,9 @@ public class UploadController {
 	 * @return
 	 */
 	@GetMapping("/downloadFile")
-	public R downloadFile(HttpServletRequest request, HttpServletResponse response)  {
+	public void downloadFile(HttpServletRequest request, HttpServletResponse response,String fileName)  {
 		try {
-			String fullPath = ResourceUtils.getURL("").getPath()+env.getProperty("file.upload.address")+"/核心人力表结构NEW-20200910.xlsx";
+			String fullPath = ResourceUtils.getURL("").getPath()+env.getProperty("local.file.upload.address")+File.separator+fileName;
 			File downloadFile = new File(fullPath);
 
 			if (downloadFile.exists()){
@@ -109,22 +110,25 @@ public class UploadController {
 				response.setContentType(mimeType);
 				response.setContentLength((int) downloadFile.length());
 
+				fileName = URLEncoder.encode(fileName, "UTF-8");
 				String headerKey = "Content-Disposition";
-				String headerValue = String.format("attachment; filename=\"%s\"",downloadFile.getName());
+				String headerValue = String.format("attachment; filename=\"%s\"",fileName);
 				response.setHeader(headerKey, headerValue);
 				InputStream myStream = new FileInputStream(fullPath);
 				IOUtils.copy(myStream, response.getOutputStream());
 				response.flushBuffer();
 				log.info("文件下载成功。");
-				return R.ok("文件下载成功。");
+				//return R.ok("文件下载成功。");
 			}else{
 				log.error("文件下载失败,文件不存在。");
-				return R.failed("文件下载失败,文件不存在。");
+				/*return R.failed("文件下载失败,文件不存在。");*/
 			}
  		} catch (Exception e) {
  			log.error("文件下载失败。",e);
-			return R.failed("文件下载失败");
+			/*return R.failed("文件下载失败");*/
 		}
+
+		//return null;
 	}
 
 	/**
