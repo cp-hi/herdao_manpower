@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -107,6 +106,24 @@ public class NewBaseController<T, D, F, E> {
     protected Class getBatchAddClass() {
         return getBatchUpdateClass();
     }
+
+    /**
+     * 模板上方的说明文字
+     *
+     * @return
+     */
+    protected String getTemplDescription() {
+        String line = System.getProperty("line.separator");
+        StringBuilder builder = new StringBuilder();
+        builder.append("导入说明：").append(line);
+        builder.append("1、标红字段为必填").append(line);
+        builder.append("2、操作导入前请删除示例数据").append(line);
+        builder.append("3、上级组织名称请填写已启用的组织编码").append(line);
+        builder.append("4、组织类型请输入系统中已存在的组织类型，如：部门").append(line);
+        builder.append("5、组织负责人工号请输入在职员工的工号；负责岗位请输入系统中已启用的岗位").append(line);
+        return builder.toString();
+    }
+
     //endregion
 
     @ApiOperation(value = "获取操作记录")
@@ -118,16 +135,17 @@ public class NewBaseController<T, D, F, E> {
         return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
     }
 
-    public R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
+    protected R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
         IPage p = entityService.page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
         p.setRecords(vos);
-        if (null != type && Integer.valueOf(1).equals(type))
-            ExcelUtils.export2Web(response, "列表下载", "列表下载", getDTOClass(), vos);
+        if (null != type && Integer.valueOf(1).equals(type)) {
+            String excelName = this.entityService.getEntityName() + "列表下载";
+            ExcelUtils.export2Web(response, excelName, excelName, getDTOClass(), vos);
+        }
         return R.ok(p);
     }
-
 
     @ApiOperation(value = "通过id删除")
     @DeleteMapping("/{id}")
@@ -159,7 +177,7 @@ public class NewBaseController<T, D, F, E> {
 
     @PostMapping
     @ApiOperation(value = "新增/修改")
-    public R<F> save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InstantiationException {
+    public R<F> save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Object t = Class.forName(getEntityClass().getName()).newInstance();
         BeanUtils.copyProperties(f, (T) t);
         entityService.saveVerify((T) t);
@@ -194,11 +212,11 @@ public class NewBaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType, Integer downloadErrMsg) throws Exception {
-        NewImportExcelListener<E>  listener = null;
+        NewImportExcelListener<E> listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new NewImportExcelListener (entityService, importType);
+            listener = new NewImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().doRead();
 
         } catch (Exception ex) {
@@ -213,8 +231,7 @@ public class NewBaseController<T, D, F, E> {
                     clazz = getBatchAddClass();
                 }
                 ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", clazz, data);
-            }
-            else {
+            } else {
                 throw ex;
             }
         } finally {
@@ -230,7 +247,7 @@ public class NewBaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
-    public R getDownloadTempl(HttpServletResponse response, Integer importType) throws Exception {
+    public R getDownloadTempl(HttpServletResponse response, Integer importType) {
         try {
             String title = "批量新增模板";
             Class templClass = getBatchAddClass();
@@ -238,8 +255,7 @@ public class NewBaseController<T, D, F, E> {
                 templClass = getBatchUpdateClass();
                 title = "批量编辑模板";
             }
-            ApiModel apiModel = getEntityClass().getAnnotation(ApiModel.class);
-            if (null != apiModel) title = apiModel.value() + title;
+            title = entityService.getEntityName() + title;
 
             List<LinkedHashMap<String, String>> data = new ArrayList();
             Field[] fields = templClass.getDeclaredFields();
@@ -251,7 +267,7 @@ public class NewBaseController<T, D, F, E> {
             }
             data.add(map);
 
-            ExcelUtils.export2Web(response, title, data);
+            ExcelUtils.export2Web(response, title,getTemplDescription(), data);
             return R.ok();
         } catch (Exception ex) {
             return R.failed(ex.getMessage());

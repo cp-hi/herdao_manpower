@@ -71,4 +71,7 @@ public class Group extends BaseEntity<Group> {
     @ApiModelProperty(value="集团全称(表头名称)")
     private String groupFullname;
 
+    @ApiModelProperty(value="绩效计算标准")
+    private String achieveCalculateStandard;
+
 }

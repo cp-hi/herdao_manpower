@@ -18,6 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -33,4 +34,12 @@ import java.util.Map;
 @Mapper
 public interface GroupMapper extends BaseMapper<Group> {
     List<Map<String,String>> groupList();
+
+    /**
+     * 查询组织下所有人员
+     *
+     * @param map
+     * @return
+     */
+    List<GroupListDTO> groupPage(Map<String, Object> map);
 }
