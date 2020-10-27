@@ -70,7 +70,7 @@ public class GroupController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_view')" )
-    public R getMpGroupPage(Page page, Group group, String searchText) {
+    public R getMpGroupPage(Page page, GroupListDTO group, String searchText) {
         return R.ok(groupService.groupPage(page, group, searchText));
     }
 
@@ -143,7 +143,7 @@ public class GroupController {
     @ApiOperation(value = "导出", notes = "导出")
     @GetMapping("/export" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public void export(HttpServletResponse response, Page page, Group group, String searchText) {
+    public void export(HttpServletResponse response, Page page, GroupListDTO group, String searchText) {
         page.setCurrent(1);
         page.setSize(50000);
         IPage result = groupService.groupPage(page, group, searchText);

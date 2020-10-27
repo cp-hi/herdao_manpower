@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
@@ -44,10 +45,11 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public IPage groupPage(Page page, Group group, String searchText){
+    public IPage groupPage(Page page, GroupListDTO group, String searchText){
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
         map.put("searchText", searchText);
+        map.put("isStop", group.getIsStop());
         page = page.setRecords(baseMapper.groupPage(map));
         return page;
     }
