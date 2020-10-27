@@ -465,6 +465,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		if(ObjectUtil.isNotEmpty(orgs)) {
     			return R.failed("组织名称已经存在，请修改后保存！");
     		}
+    		
+    		if(ObjectUtil.isNotNull(id) && parentId.equals(id)) {
+    			return R.failed("上级组织不能是当前组织！");
+    		}
     	}
     	
     	if(StrUtil.isBlank(organization.getOrgCode()) || tpOrganization.getParentId() != organization.getParentId()) {
@@ -622,6 +626,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public boolean editOrgChart(OrgChartFormDTO form){
         Organization entity = new Organization();
         BeanUtils.copyProperties(form, entity);
+        if(entity.getParentId() != null && entity.getParentId().equals(entity.getId())) {
+        	throw new RuntimeException("上级组织不能是当前组织！");
+        }
         return this.updateById(entity);
     }
 
