@@ -49,4 +49,42 @@
                         <result property="lohnkostenRate" column="LOHNKOSTEN_RATE"/>
                         <result property="tenantId" column="TENANT_ID"/>
             </resultMap>
+
+      <select id="companyPage" resultType="net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO">
+            SELECT
+                  c.ID,
+                  c.COMPANY_NAME,
+                  c.COMPANY_CODE,
+                  c.ORG_ID,
+                  o.ORG_NAME,
+                  o.ORG_CODE,
+                  o.IS_VIRTUAL,
+                  o.IS_STOP,
+                  c.SORT,
+                  c.CITY_ID,
+                  c.TARGET_SYS,
+                  c.SECURITY_STANDARD,
+                  c.CITY_FUND,
+                  o.emp_in_service,
+                  c.CREATOR_NAME,
+                  c.CREATED_TIME,
+                  c.MODIFIER_NAME,
+                  c.MODIFIED_TIME,
+                  c.FIELD1,
+                  c.FIELD2,
+                  c.FIELD3,
+                  c.FIELD4,
+                  c.FIELD5
+            FROM
+                mp_company c
+            LEFT JOIN mp_organization o ON c.ORG_ID = o.ID
+            <where>
+                  <if test="searchText != null">
+                        AND  CONCAT(c.COMPANY_NAME,o.ORG_NAME) like CONCAT('%',#{searchText},'%')
+                  </if>
+                  <if test="isStop != null">
+                        AND  o.IS_STOP = #{isStop}
+                  </if>
+            </where>
+      </select>
 </mapper>

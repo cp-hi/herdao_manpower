@@ -36,7 +36,7 @@ public interface GroupMapper extends BaseMapper<Group> {
     List<Map<String,String>> groupList();
 
     /**
-     * 查询组织下所有人员
+     * 集团分页列表
      *
      * @param map
      * @return
