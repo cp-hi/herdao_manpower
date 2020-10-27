@@ -13,8 +13,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 /**
- * 员工培训
- *
+ * 员工奖惩批量导入DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */

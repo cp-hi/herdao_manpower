@@ -20,7 +20,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-23 17:22:28
  */
-public interface StaffeducationService extends EntityService<Staffeducation> {
+public interface StaffeducationService extends EasyExcelService<Staffeducation> {
 
     /**
      * 新增员工教育经历

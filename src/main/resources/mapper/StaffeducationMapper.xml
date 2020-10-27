@@ -62,8 +62,7 @@
                   dd.label LEARN_FORM,
                   usr.USER_NAME modifier_name,
                   e.MODIFIED_TIME
-                  FROM
-                  mp_staffeducation e
+              FROM mp_staffeducation e
                   LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
                   LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
                   AND u.MAIN_POST = 1
@@ -80,6 +79,7 @@
                   <if test="staffId != null">
                       and t.staff_id = #{staffId}
                   </if>
+                  ORDER BY e.CREATED_TIME desc
           ) t
           WHERE  1 = 1
           <if test="searchText != null">
@@ -95,53 +95,54 @@
     <!-- 员工教育情况 -->
     <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
         SELECT      t.id,
-        t.staff_name,
-        t.staff_code,
-        t.BEGIN_DATE,
-        t.END_DATE,
-        t.staff_id,
-        t.SCHOOL_NAME,
-        t.PROFESSIONAL,
-        t.EDUCATION_DEGREE,
-        t.EDUCATION_QUA,
-        t.LEARN_FORM,
-        t.modifier_name,
-        t.MODIFIED_TIME,
-        CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
-        FROM
+                    t.staff_name,
+                    t.staff_code,
+                    t.BEGIN_DATE,
+                    t.END_DATE,
+                    t.staff_id,
+                    t.SCHOOL_NAME,
+                    t.PROFESSIONAL,
+                    t.EDUCATION_DEGREE,
+                    t.EDUCATION_QUA,
+                    t.LEARN_FORM,
+                    t.modifier_name,
+                    t.MODIFIED_TIME,
+                    CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+              FROM
         (
-        SELECT
-        e.id,
-        s.staff_name,
-        s.staff_code,
-        e.BEGIN_DATE,
-        e.END_DATE,
-        e.staff_id,
-        e.SCHOOL_NAME,
-        e.PROFESSIONAL,
-        dic.label EDUCATION_DEGREE,
-        di.label EDUCATION_QUA,
-        dd.label LEARN_FORM,
-        usr.USER_NAME modifier_name,
-        e.MODIFIED_TIME
-        FROM
-        mp_staffeducation e
-        LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-        LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-        AND u.MAIN_POST = 1
-        LEFT JOIN sys_dict_item dic ON dic.type = 'EDUCATION_DEGREE_TYPE'
-        AND dic.`value` = e.EDUCATION_DEGREE
-        LEFT JOIN sys_dict_item di ON di.type = 'EDUCATION_QUA_TYPE'
-        AND di.`value` = e.EDUCATION_QUA
-        LEFT JOIN sys_dict_item dd ON dd.type = 'XXXS'
-        AND dd.`value` = e.LEARN_FORM
-        LEFT JOIN mp_user usr ON usr.id = e.MODIFIER_CODE
-        WHERE
-        1 = 1
-        AND e.del_flag = 0
-        <if test="staffId != null">
-            and t.staff_id = #{staffId}
-        </if>
+                SELECT
+                e.id,
+                s.staff_name,
+                s.staff_code,
+                e.BEGIN_DATE,
+                e.END_DATE,
+                e.staff_id,
+                e.SCHOOL_NAME,
+                e.PROFESSIONAL,
+                dic.label EDUCATION_DEGREE,
+                di.label EDUCATION_QUA,
+                dd.label LEARN_FORM,
+                usr.USER_NAME modifier_name,
+                e.MODIFIED_TIME
+                FROM
+                mp_staffeducation e
+                LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
+                LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
+                AND u.MAIN_POST = 1
+                LEFT JOIN sys_dict_item dic ON dic.type = 'EDUCATION_DEGREE_TYPE'
+                AND dic.`value` = e.EDUCATION_DEGREE
+                LEFT JOIN sys_dict_item di ON di.type = 'EDUCATION_QUA_TYPE'
+                AND di.`value` = e.EDUCATION_QUA
+                LEFT JOIN sys_dict_item dd ON dd.type = 'XXXS'
+                AND dd.`value` = e.LEARN_FORM
+                LEFT JOIN mp_user usr ON usr.id = e.MODIFIER_CODE
+                WHERE
+                1 = 1
+                AND e.del_flag = 0
+                <if test="staffId != null">
+                    and t.staff_id = #{staffId}
+                </if>
+                ORDER BY e.CREATED_TIME desc
         ) t
         WHERE  1 = 1
         <if test="searchText != null">

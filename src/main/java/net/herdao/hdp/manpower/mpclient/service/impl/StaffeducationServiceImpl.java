@@ -1,25 +1,36 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffeducationMapper;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
+import net.herdao.hdp.manpower.mpclient.utils.ImportCheckUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +47,8 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     private RemoteUserService remoteUserService;
 
     private SysDictItemService itemService;
+
+    private StaffService staffService;
 
     @Override
     public Boolean saveEdu(Staffeducation staffeducation) {
@@ -69,110 +82,160 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
         return list;
     }
 
-    @Override
-    public void saveVerify(Staffeducation staffeducation) {
-
-    }
 
     @Override
-    public void importVerify(Staffeducation staffeducation, int type) {
-        //新增校检
-        if (type == 0){
-            checkAdd(staffeducation);
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+        StringBuffer errMsg = new StringBuffer();
+        List<ExcelCheckErrDTO> errList = new ArrayList<>();
+        List<Staffeducation> staffEduList=new ArrayList<Staffeducation>();
+
+        // 新增校验
+        if (importType == 0) {
+            checkAdd(excelList, errMsg, errList, staffEduList);
         }
 
-        //编辑校检
-        /*if (type == 1){
-            checkUpdate((FamilyStatusListDTO) familystatus);
-        }*/
+        // 编辑校验
+        if (importType == 1) {
+            checkUpdate(excelList, errMsg, errList, staffEduList);
+        }
+
+        if(ObjectUtil.isEmpty(errList)) {
+            this.saveOrUpdateBatch(staffEduList);
+        }
+        return errList;
     }
 
     /**
-     * 新增校检
-     * @param staffeducation
+     * 新增校验
+     * @param excelList
+     * @param errMsg
+     * @param errList
+     * @param staffEduList
      */
-    private void checkAdd(Staffeducation staffeducation) {
-        try {
-            StaffeducationListDTO dto=(StaffeducationListDTO)staffeducation;
-            String errorMsg="";
+    private void checkAdd(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Staffeducation> staffEduList) {
+        for (int i = 0; i < excelList.size(); i++) {
+            Staffeducation staffEducation=new Staffeducation();
+            StaffEduAddDTO addDTO = (StaffEduAddDTO) excelList.get(i);
 
-            if (null == dto.getStaffName()){
-                errorMsg+="员工姓名不能为空，";
+            //校检员工
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
+            addDTO.setStaffId(staffId.toString());
+
+            //校检学位
+            SysDictItem degreeItem = ImportCheckUtils.checkDicItem(errMsg, "EDUCATION_DEGREE_TYPE", addDTO.getEducationDegree(), itemService);
+            if(null != degreeItem){
+                addDTO.setEducationDegree(degreeItem.getValue());
             }
 
-            if (null == dto.getStaffName()){
-                errorMsg+="员工工号不能为空，";
+            //校检学历
+            SysDictItem eduItem = ImportCheckUtils.checkDicItem(errMsg, "EDUCATION_QUA_TYPE", addDTO.getEducationQua(), itemService);
+            if(null != eduItem){
+                addDTO.setEducationQua(eduItem.getValue());
             }
 
-            if (null == dto.getSchoolName()){
-                errorMsg+="毕业院校不能为空，";
+            //校检学习形式
+            SysDictItem studyItem = ImportCheckUtils.checkDicItem(errMsg, "XXXS", addDTO.getLearnForm(), itemService);
+            if(null != studyItem){
+                addDTO.setLearnForm(studyItem.getValue());
             }
 
-            if (null == dto.getBeginDateView()){
-                errorMsg+="入学日期不能为空，";
-            }else{
-                //判断入学日期的时间格式是否正确
-                boolean checkStatus = false;
-                List<String> formatList = Arrays.asList("yyyy/mm/dd", "yyyy-mm-dd", "yyyy.mm.dd");
-                for (String format : formatList) {
-                    checkStatus = DateUtils.isLegalDate(dto.getBeginDateView(), format);
-                    if (checkStatus==true){
-                        break;
-                    }
-                }
-                if (checkStatus==false){
-                    errorMsg+="请填写正确的入学日期时间格式（yyyy/mm/dd 或者 yyyy-mm-dd 或者 yyyy.mm.dd），";
-                }else{
-                    staffeducation.setBeginDate(DateUtils.parseDate(dto.getBeginDateView(), "yyyy-mm-dd"));
-                }
-            }
+            //校检时间
+            String pattern= ImportCheckUtils.checkDate(errMsg, addDTO.getBeginDate(),addDTO.getEndDate());
 
-            if (null == dto.getEndDateView()){
-                errorMsg+="毕业日期不能为空，";
-            }else{
-                //判断入学日期的时间格式是否正确
-                boolean checkStatus = false;
-                List<String> formatList = Arrays.asList("yyyy/mm/dd", "yyyy-mm-dd", "yyyy.mm.dd");
-                for (String format : formatList) {
-                    checkStatus = DateUtils.isLegalDate(dto.getEndDateView(), format);
-                    if (checkStatus==true){
-                        break;
-                    }
-                }
-
-                if (checkStatus==false){
-                    errorMsg+="请填写正确的毕业日期时间格式（yyyy/mm/dd 或者 yyyy-mm-dd 或者 yyyy.mm.dd），";
-                }else{
-                    staffeducation.setEndDate(DateUtils.parseDate(dto.getEndDateView(), "yyyy-mm-dd"));
-                }
-            }
-
-            SysDictItem eduDegree= itemService.getOne(
-                    new QueryWrapper<SysDictItem>()
-                            .eq("type", "EDUCATION_DEGREE_TYPE")
-                            .eq("label", dto.getEducationDegree())
-                            .eq("del_flag",0)
+            //检查数据库是否存在记录，且唯一记录。
+            List<Staffeducation> checkList = super.list(
+                    new QueryWrapper<Staffeducation>()
+                            .eq("staff_id", staffId)
+                            .eq("begin_date", addDTO.getBeginDate())
+                            .eq("end_date", addDTO.getEndDate())
+                            .eq("school_name", addDTO.getSchoolName())
             );
-            if (null==eduDegree){
-                errorMsg+="学位不存在或已停用:"+dto.getEducationDegree();
+            if (!checkList.isEmpty()&&checkList.size()>=1){
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工教育表中存在多条此记录，因此不可新增；");
             }
 
-            SysDictItem eduQua= itemService.getOne(
-                    new QueryWrapper<SysDictItem>()
-                            .eq("type", "EDUCATION_QUA_TYPE")
-                            .eq("label", dto.getEducationQua())
-                            .eq("del_flag",0)
-            );
-            if (null==eduQua){
-                errorMsg+="学历不存在或已停用:"+dto.getEducationDegree();
-            }
+            if (errMsg.length() > 0) {
+                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+            }else {
+                BeanUtils.copyProperties(addDTO, staffEducation);
+                staffEducation.setBeginDate(DateUtils.parseDate(addDTO.getBeginDate(),pattern));
+                staffEducation.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
 
-            if (!errorMsg.isEmpty()){
-                throw new RuntimeException(errorMsg);
+                SysUser sysUser = SysUserUtils.getSysUser();
+                staffEducation.setCreatedTime(new Date());
+                staffEducation.setCreatorCode(sysUser.getUserId().toString());
+
+                staffEduList.add(staffEducation);
             }
-        }catch (Exception ex){
-            log.error(ex.getMessage());
         }
     }
 
+    /**
+     * 编辑校验
+     * @param excelList
+     * @param errMsg
+     * @param errList
+     * @param staffEduList
+     */
+    private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Staffeducation> staffEduList) {
+        for (int i = 0; i < excelList.size(); i++) {
+            Staffeducation staffEducation=new Staffeducation();
+            StaffEduAddDTO addDTO = (StaffEduAddDTO) excelList.get(i);
+
+            //校检员工
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
+            addDTO.setStaffId(staffId.toString());
+
+            //校检学位
+            SysDictItem degreeItem = ImportCheckUtils.checkDicItem(errMsg, "EDUCATION_DEGREE_TYPE", addDTO.getEducationDegree(), itemService);
+            if(null != degreeItem){
+                addDTO.setEducationDegree(degreeItem.getValue());
+            }
+
+            //校检学历
+            SysDictItem eduItem = ImportCheckUtils.checkDicItem(errMsg, "EDUCATION_QUA_TYPE", addDTO.getEducationQua(), itemService);
+            if(null != eduItem){
+                addDTO.setEducationQua(eduItem.getValue());
+            }
+
+            //校检学习形式
+            SysDictItem studyItem = ImportCheckUtils.checkDicItem(errMsg, "XXXS", addDTO.getLearnForm(), itemService);
+            if(null != studyItem){
+                addDTO.setLearnForm(studyItem.getValue());
+            }
+
+            //校检时间
+            String pattern= ImportCheckUtils.checkDate(errMsg, addDTO.getBeginDate(),addDTO.getEndDate());
+
+            //检查数据库是否存在记录，且唯一记录。
+            List<Staffeducation> checkList = super.list(
+                    new QueryWrapper<Staffeducation>()
+                            .eq("staff_id", staffId)
+                            .eq("begin_date", addDTO.getBeginDate())
+                            .eq("end_date", addDTO.getEndDate())
+                            .eq("school_name", addDTO.getSchoolName())
+            );
+            if (checkList.isEmpty()){
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工教育表中不存在此记录，因此不可编辑更新；");
+            }else if (!checkList.isEmpty()&&checkList.size()>1){
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工教育表中存在多条此记录，因此不可编辑更新；");
+            }else{
+                addDTO.setId(checkList.get(0).getId());
+            }
+
+            if (errMsg.length() > 0) {
+                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+            }else {
+                BeanUtils.copyProperties(addDTO, staffEducation);
+                staffEducation.setBeginDate(DateUtils.parseDate(addDTO.getBeginDate(),pattern));
+                staffEducation.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
+
+                SysUser sysUser = SysUserUtils.getSysUser();
+                staffEducation.setModifiedTime(new Date());
+                staffEducation.setModifierCode(sysUser.getUserId().toString());
+
+                staffEduList.add(staffEducation);
+            }
+        }
+    }
 }

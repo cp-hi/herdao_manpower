@@ -32,7 +32,7 @@ public interface EasyExcelService<T> extends IService<T>{
 	 * @param dataList 数据集
 	 * @param batchSize 批次大小
 	 */
-	public default void saveOrUpdateBatch(List<T> dataList, Integer batchSize) {
+	 default void saveOrUpdateBatch(List<T> dataList, Integer batchSize) {
 		// 默认批次
 		if (batchSize == null || batchSize == 0) {
 			batchSize = 100;
