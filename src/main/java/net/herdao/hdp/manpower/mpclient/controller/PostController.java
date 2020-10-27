@@ -10,6 +10,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -67,11 +68,13 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
     @PostMapping
     @ApiOperation(value = "新增/修改")
     public R<PostFormVO> save(@RequestBody PostFormVO f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        String[] jobLevelIds = f.getJobLevelId().split(",");
+        String[] jobLevelIds = new String[0];
+        if (StringUtils.isNotBlank(f.getJobLevelId()))
+            jobLevelIds = f.getJobLevelId().split(",");
 
-        if (1 >= jobLevelIds.length)
+        if (jobLevelIds.length >= 1)
             f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
-        else if (2 >= jobLevelIds.length)
+        else if (jobLevelIds.length >= 2)
             f.setJobLevelId2(Long.valueOf(jobLevelIds[1]));
 
         f.setSingleJobLevle(1 == jobLevelIds.length);

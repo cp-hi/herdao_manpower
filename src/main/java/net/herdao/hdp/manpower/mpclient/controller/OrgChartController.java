@@ -80,7 +80,11 @@ public class OrgChartController {
     @PutMapping("/edit")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R<Boolean> editOrgChart(@RequestBody OrgChartFormDTO form) {
-        return R.ok(organizationService.editOrgChart(form));
+        try {
+			return R.ok(organizationService.editOrgChart(form));
+		} catch (Exception e) {
+			return R.failed(e.getMessage());
+		}
     }
 
     /**

@@ -151,10 +151,14 @@ public interface EntityService<T> extends IService<T> {
         // 停用实体
         T t = this.getById(id);
         Field stop = AnnotationUtils.getFieldByName(t, "stop");
+        Field stopDate = AnnotationUtils.getFieldByName(t, "stopDate");
+        Field startDate = AnnotationUtils.getFieldByName(t, "startDate");
         Field modifierId = AnnotationUtils.getFieldByName(t, "modifierId");
         Field modifierName = AnnotationUtils.getFieldByName(t, "modifierName");
         Field modifiedTime = AnnotationUtils.getFieldByName(t, "modifiedTime");
         stop.setAccessible(true);
+        stopDate.setAccessible(true);
+        startDate.setAccessible(true);
         modifierId.setAccessible(true);
         modifierName.setAccessible(true);
         modifiedTime.setAccessible(true);
@@ -165,6 +169,14 @@ public interface EntityService<T> extends IService<T> {
         modifierId.set(t, user.getUserId());
         modifierName.set(t, user.getUsername());
         modifiedTime.set(t, new Date());
+
+        if (isStop) {
+            stopDate.set(t, new Date());
+//            startDate.set(t, null);
+        } else {
+//            stopDate.set(t, null);
+            startDate.set(t, new Date());
+        }
         return this.updateById(t);
     }
 
