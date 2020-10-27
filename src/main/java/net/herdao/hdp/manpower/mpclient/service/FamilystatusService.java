@@ -14,7 +14,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-23 10:53:08
  */
-public interface FamilystatusService extends EntityService<Familystatus> {
+public interface FamilystatusService extends EasyExcelService<Familystatus> {
     /**
      * 员工家庭情况分页
      * @param page 分页对象
@@ -22,7 +22,6 @@ public interface FamilystatusService extends EntityService<Familystatus> {
      * @return
      */
     Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, String searchText);
-
 
     /**
      * 员工家庭情况
@@ -33,5 +32,4 @@ public interface FamilystatusService extends EntityService<Familystatus> {
 
     @Override
     boolean saveOrUpdate(Familystatus familystatus);
-
 }
