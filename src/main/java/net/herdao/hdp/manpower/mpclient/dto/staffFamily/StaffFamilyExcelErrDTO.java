@@ -2,6 +2,8 @@ package net.herdao.hdp.manpower.mpclient.dto.staffFamily;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,54 +21,44 @@ public class StaffFamilyExcelErrDTO {
     @ColumnWidth(75)
     private String errMsg;
 
+    /**
+     * 员工姓名
+     */
+    @ApiModelProperty(value="员工姓名")
     @ExcelProperty(value = "员工姓名",index =1)
-    @NotBlank(message = "不能为空")
+    @TableField(exist = false)
     private String staffName;
 
+    /**
+     * 员工工号
+     */
+    @ApiModelProperty(value="员工工号")
     @ExcelProperty(value = "员工工号",index =2)
-    @NotBlank(message = "不能为空")
+    @TableField(exist = false)
     private String staffCode;
 
-    /**
-     * 奖励/惩罚 0:奖励 1:惩罚
-     */
-    @ExcelProperty(value = "奖励/惩罚",index =3)
-    private String choice;
+    @ApiModelProperty(value="家庭成员姓名")
+    @ExcelProperty(value = "家庭成员姓名",index =3)
+    private String name;
 
-    /**
-     * 奖惩时间
-     */
-    @ExcelProperty(value="奖惩时间", index =4)
-    private String executeDate;
+    @ApiModelProperty(value="关系")
+    @ExcelProperty(value = "关系",index =4)
+    private String relations;
 
-    /**
-     * 奖惩类别 通报表扬；年度优秀员工奖；特殊贡献奖。下拉框选择
-     */
-    @ExcelProperty(value = "奖惩类别",index =5)
-    private String type;
+    @ApiModelProperty(value="年龄")
+    @ExcelProperty(value = "年龄",index =5)
+    private String age;
 
-    /**
-     * 奖惩内容
-     */
-    @ExcelProperty(value = "奖惩内容",index =6)
-    private String content;
+    @ApiModelProperty(value="职业")
+    @ExcelProperty(value = "职业",index =6)
+    private String professional;
 
-    /**
-     * 奖惩金额
-     */
-    @ExcelProperty(value = "奖惩金额",index =7)
-    private String amount;
+    @ApiModelProperty(value="工作单位/就读学校")
+    @ExcelProperty(value = "工作单位/就读学校",index =7)
+    private String workUnit;
 
-    /**
-     * 奖惩原因
-     */
-    @ExcelProperty(value = "奖惩原因",index =8)
-    private String reason;
-
-    /**
-     * 备注
-     */
-    @ExcelProperty(value = "备注",index =9)
-    private String remarks;
+    @ApiModelProperty(value="所在地址")
+    @ExcelProperty(value = "所在地址",index =8)
+    private String address;
 
 }

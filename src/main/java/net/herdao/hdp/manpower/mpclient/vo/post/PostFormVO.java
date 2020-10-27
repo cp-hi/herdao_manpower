@@ -21,6 +21,7 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
 @ApiModel(value = "岗位管理-表单信息，用于新增和编辑")
 public class PostFormVO {
 
+
     @ApiModelProperty("id")
     private Long id;
 
@@ -34,7 +35,8 @@ public class PostFormVO {
     private Long postSeqId;
 
     @ApiModelProperty("岗位序列")
-    @DtoField(objField = "postSeqDTO.postSeqName")
+    @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
     private String postSeqName;
 
     @ApiModelProperty("所属集团")
@@ -127,11 +129,12 @@ public class PostFormVO {
     private Boolean singleJobLevle;
 
     @ApiModelProperty(value = "是否停用")
-    private Boolean stop;
+    @DtoField(objField = "stop", converter =  "{true:\"1\",false:\"0\"}")
+    private String stop;
 
-    @ApiModelProperty(value = "是否停用")
-    @DtoField(objField = "stop", converter = "{true:\"已停用\",false:\"已启用\"}")
-    private String stopName;
+//    @ApiModelProperty(value = "是否停用")
+//    @DtoField(objField = "stop", converter = "{true:\"已停用\",false:\"已启用\"}")
+//    private String stopName;
 
     @ApiModelProperty(value = "停用日期")
     @DtoField(objField = "stopDate", pattern = "yyyy-MM-dd")
