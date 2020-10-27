@@ -32,7 +32,7 @@ import java.util.List;
  * @Date 2020/10/15 12:42
  * @Version 1.0
  */
-//TODO 实现导出功能
+    @Deprecated
 public class BaseController<T> {
 
     EntityService entityService;
