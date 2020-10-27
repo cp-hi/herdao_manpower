@@ -156,8 +156,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
             );
             if (checkList.isEmpty()){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中不存在此记录，因此不可编辑更新；");
-            }
-            if (!checkList.isEmpty()&&checkList.size()>1){
+            }else if (!checkList.isEmpty()&&checkList.size()>1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中存在多条此记录，因此不可编辑更新；");
             }else{
                 addDTO.setId(checkList.get(0).getId());
