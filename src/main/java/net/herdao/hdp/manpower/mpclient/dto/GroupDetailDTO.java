@@ -3,7 +3,9 @@ package net.herdao.hdp.manpower.mpclient.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
+/**
+ * @author yangrr
+ */
 @Data
 @ApiModel(value = "集团表单")
 public class GroupDetailDTO {

@@ -91,7 +91,9 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
     default String generateEntityCode() throws IllegalAccessException {
-        T t = getOne(new QueryWrapper<T>().inSql("id", "select max(id) from " + getTabelName()));
+        //todo 解决逻辑删除后无法查询到的问题
+        String sql = "select max(id) from " + getTabelName();
+        T t = getOne(new QueryWrapper<T>().inSql("id", sql));
         String entityCode = "000001";
         if (null != t) {
             Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
@@ -105,6 +107,7 @@ public interface EntityService<T> extends IService<T> {
 
     /**
      * 自动设置编码
+     *
      * @param t
      * @throws IllegalAccessException
      */

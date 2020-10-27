@@ -2,6 +2,7 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +35,11 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
@@ -343,12 +346,12 @@ public class OrganizationController {
      * @return R
      */
     @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
-    @PostMapping("/batchImportOrg")
+    @PostMapping("/importData")
     @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
-    				     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
+    				     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量编辑")
 	})
     @SuppressWarnings("all")
-	public R batchImportOrg(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
+	public R importData(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
 		try {
 
 			Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
@@ -377,7 +380,7 @@ public class OrganizationController {
 						return excelErrDto;
 					}).collect(Collectors.toList());
 				}
-				EasyExcelUtils.webWriteExcel(response, null, excelErrCls, "组织" + (importType == 0 ? "新增" : "修改") + "错误信息");
+				EasyExcelUtils.webWriteExcel(response, null, excelErrCls, "组织" + (importType == 0 ? "新增" : "编辑") + "错误信息");
 			}
 		} catch (IOException e) {
 			return R.failed("导入异常：" + e.getMessage());
@@ -385,6 +388,24 @@ public class OrganizationController {
 		return R.ok(null, "导入成功！");
 	}
     
+    @SuppressWarnings("rawtypes")
+	@ApiOperation(value = "下载组织新增、编辑模板")
+    @GetMapping("/downloadTemplate")
+    @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
+	public R downloadTemplate(HttpServletResponse response, Integer importType) {
+		importType = 1;
+		Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
+		List<OrganizationImportDTO> organizationImportList = importType == 0 ? new ArrayList<>() : this.orgService.selectAllOrganization();
+		try {
+			EasyExcelUtils.webWriteExcel(response, organizationImportList, excelCls, "批量" + ( importType == 0 ? "新增" : "编辑" + "组织模板"),
+					   new EasyExcelSheetWriteHandler(importType == 0 ? 4 : 8, orgService.getRemarks()));
+		} catch (IOException e) {
+			e.printStackTrace();
+			R.failed("下载模板异常：" + e.getMessage());
+		}
+		return R.ok(null, "下载模板成功！");
+	}
+
     /**
      * 部门选择组件
      * 

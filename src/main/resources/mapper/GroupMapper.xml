@@ -69,6 +69,9 @@
             <if test="searchText != null">
                 AND  CONCAT(g.GROUP_NAME,o.ORG_NAME) like CONCAT('%',#{searchText},'%')
             </if>
+            <if test="isStop != null">
+                AND  o.IS_STOP = #{isStop}
+            </if>
         </where>
     </select>
 </mapper>

@@ -21,7 +21,7 @@ import lombok.Data;
 @ExcelIgnoreUnannotated
 @ApiModel(value = "组织批量新增")
 public class OrganizationAddDTO {
-
+	
 	@ExcelProperty(value = "组织名称", index = 0)
 	@ColumnWidth(30)
 	@NotBlank(message = "不能为空")

@@ -634,6 +634,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	
 	@Override
 	@SuppressWarnings("all")
+	@Transactional(rollbackFor = Exception.class)
 	public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
 
 		// 错误数组
@@ -914,6 +915,19 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 			});
 		}
 		return renderMap;
+	}
+	
+
+    // 备注信息
+	public String getRemarks() {
+		StringBuffer remarks = new StringBuffer();
+		remarks.append("导入说明：\r\n")
+				.append("1、标红字段为必填\r\n")
+				.append("2、操作导入前请删除示例数据\r\n")
+				.append("3、上级组织名称请填写已启用的组织编码\r\n")
+				.append("4、组织类型请输入系统中已存在的组织类型，如：部门\r\n")
+			    .append("5、组织负责人工号请输入在职员工的工号；负责岗位请输入系统中已启用的岗位");
+		return remarks.toString();
 	}
 	
 	/**======================================  组织导入 end ====================================**/

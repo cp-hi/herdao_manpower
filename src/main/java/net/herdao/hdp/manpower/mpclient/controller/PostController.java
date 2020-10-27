@@ -3,10 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
-import net.herdao.hdp.manpower.mpclient.dto.post.*;
-import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.service.OKPostSeqSysService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
@@ -66,20 +63,35 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
         return super.page(response, page, post, type);
     }
 
-    @GetMapping("/baseInfo/{id}")
-    @ApiOperation(value = "基础信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键"),
-    })
-    public R<PostBaseVO> getBaseInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException, NoSuchFieldException {
-        IPage p = postService.page(new Page(), new Post(id));
-        PostBaseVO data = null;
-        if (p.getRecords().size() > 0)
-            data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseVO.class);
-        return R.ok(data);
+    @Override
+    @PostMapping
+    @ApiOperation(value = "新增/修改")
+    public R<PostFormVO> save(@RequestBody PostFormVO f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String[] jobLevelIds = f.getJobLevelId().split(",");
+
+        if (1 >= jobLevelIds.length)
+            f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
+        else if (2 >= jobLevelIds.length)
+            f.setJobLevelId2(Long.valueOf(jobLevelIds[1]));
+
+        f.setSingleJobLevle(1 == jobLevelIds.length);
+        return super.save(f);
     }
+
+//    @GetMapping("/baseInfo/{id}")
+//    @ApiOperation(value = "基础信息")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "主键"),
+//    })
+//    public R<PostBaseVO> getBaseInfo(@PathVariable Long id)
+//            throws InstantiationException, IllegalAccessException,
+//            ClassNotFoundException, NoSuchFieldException {
+//        IPage p = postService.page(new Page(), new Post(id));
+//        PostBaseVO data = null;
+//        if (p.getRecords().size() > 0)
+//            data = DtoConverter.dto2vo(p.getRecords().get(0), PostBaseVO.class);
+//        return R.ok(data);
+//    }
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
@@ -114,7 +126,7 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
     })
     public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
         List<PostDetailVO> data = postService.getPostDetails(postId, operation, size);
-        if ("download".equals(operation)) {
+        if (!"download".equals(operation)) {
             try {
                 ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailVO.class, data);
             } catch (Exception ex) {

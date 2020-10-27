@@ -14,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
@@ -192,12 +193,18 @@ public class NewBaseController<T, D, F, E> {
             @ApiImplicitParam(name = "id", value = "id"),
     })
     public R<F> getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException {
-        T t = (T) entityService.getById(id);
-        if (null == t)
-            throw new RuntimeException("对象不存在，或已被删除");
-        F f = getFormClass().newInstance();
-        BeanUtils.copyProperties(t, f);
+            throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+//        T t = (T) entityService.getById(id);
+////        if (null == t)
+////            throw new RuntimeException("对象不存在，或已被删除");
+////        F f = getFormClass().newInstance();
+////        BeanUtils.copyProperties(t, f);
+        Object t = getEntityClass().newInstance();
+        Field field = AnnotationUtils.getFieldByName(t, "id");
+        field.setAccessible(true);
+        field.set(t, id);
+        IPage p = entityService.page(new Page(), t);
+        F f = DtoConverter.dto2vo(p.getRecords().get(0), getFormClass());
         return R.ok(f);
     }
 
@@ -267,7 +274,7 @@ public class NewBaseController<T, D, F, E> {
             }
             data.add(map);
 
-            ExcelUtils.export2Web(response, title,getTemplDescription(), data);
+            ExcelUtils.export2Web(response, title, getTemplDescription(), data);
             return R.ok();
         } catch (Exception ex) {
             return R.failed(ex.getMessage());

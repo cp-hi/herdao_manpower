@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public interface GroupService extends IService<Group> {
         return group;
     }
 
-    IPage groupPage(Page page, Group group, String searchText);
+    IPage groupPage(Page page, GroupListDTO group, String searchText);
 
     boolean groupSave(GroupDetailDTO groupForm);
 

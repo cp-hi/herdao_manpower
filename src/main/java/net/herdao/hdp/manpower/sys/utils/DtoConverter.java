@@ -115,22 +115,23 @@ public class DtoConverter {
                 } else {
                     value = String.valueOf(objVal);
                 }
-            } else if (String.class == fieldVal.getType()) {
+            } else /*if (String.class == fieldVal.getType())*/ {
                 value = String.valueOf(objVal);
             }
-            values.add(value);
+            if (StringUtils.isNotBlank(value))
+                values.add(value);
         }
 
 //        boolean isEmpty = values.stream().map(StringUtils::isBlank).reduce(false, (a, b) -> a || b);
 
-        AtomicReference<Boolean> isEmpty = new AtomicReference<>(false);
-
-        values.forEach(v -> {
-            if (StringUtils.isBlank(v))
-                isEmpty.set(true);
-        });
-
-        if (isEmpty.get()) return "";
+//        AtomicReference<Boolean> isEmpty = new AtomicReference<>(false);
+//
+//        values.forEach(v -> {
+//            if (StringUtils.isBlank(v))
+//                isEmpty.set(true);
+//        });
+//
+//        if (isEmpty.get()) return "";
 
         //如果有插值map则插值， 一般用于 xx于 xx创建 xx于 xx更新
         if (StringUtils.isNotBlank(dtoField.mapFix())) {
