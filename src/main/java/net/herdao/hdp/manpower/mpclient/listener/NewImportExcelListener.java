@@ -77,7 +77,8 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
     }
 
-    List<String> headExcel = new ArrayList<>( );
+    List<String> headExcel = new ArrayList<>();
+
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         headExcel.addAll(headMap.values());
@@ -101,7 +102,10 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
             entityService.importVerify(t, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
-            ((ExcelErrMsg) excel).setErrMsg(ex.getMessage());
+            String errMsg = ex.getMessage();
+            if (errMsg.startsWith("；"))
+                errMsg = errMsg.replaceFirst("；", "");
+            ((ExcelErrMsg) excel).setErrMsg(errMsg);
         }
         excelList.add(excel);
         dataList.add(t);

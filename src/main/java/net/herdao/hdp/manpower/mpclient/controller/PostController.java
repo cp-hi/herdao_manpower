@@ -44,9 +44,6 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
     private PostService postService;
 
     @Autowired
-    private OKPostSeqSysService okPostSeqSysService;
-
-    @Autowired
     public void setEntityService(PostService postService) {
         super.entityService = postService;
     }
@@ -148,43 +145,6 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
     }
 
 
-    @GetMapping("/okpage")
-    @ApiOperation(value = "一键岗位序列体系列表", notes = "一键岗位序列体系列表")
-    public R<List<OKPostSeqSysDTO>> okpage() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        List<OKPostSeqSys> jobLevleSys = okPostSeqSysService.list();
-        List<OKPostSeqSysDTO> data = DtoConverter.dto2vo(jobLevleSys, OKPostSeqSysDTO.class);
-        return R.ok(data);
-    }
 
-    @GetMapping("/okPostSeqDetail/{okPostSeqSysId}")
-    @ApiOperation(value = "获取岗位序列体系详情", notes = "获取岗位序列体系详情")
-    public R<OKPostSeqSysDetailDTO> okPostSeqDetail(@PathVariable Long okPostSeqSysId) {
-        OKPostSeqSysDTO okPostSeqSysDTO = okPostSeqSysService.findDetail(okPostSeqSysId);
-        OKPostSeqSysDetailDTO detailDTO = new OKPostSeqSysDetailDTO();
-        BeanUtils.copyProperties(okPostSeqSysDTO, detailDTO);
-
-        for (OKPostSeqDTO okPostSeqDTO : okPostSeqSysDTO.getOkPostSeqDTOList()) {
-            String postSeqName = okPostSeqDTO.getPostSeqName();
-            String postName = "";
-            for (OKPostDTO okPostDTO : okPostSeqDTO.getOkPostDTOList())
-                postName += "、" + okPostDTO.getPostName();
-            postName = postName.replaceFirst("、", "");
-            detailDTO.getShortPostSeqDTOList().add(ShortPostSeqVO.builder()
-                    .postSeqName(postSeqName).postName(postName).build());
-        }
-        return R.ok(detailDTO);
-    }
-
-
-    @GetMapping("/okCreatePostSeq/{okPostSeqSysId}")
-    @ApiOperation(value = "一键创建职级系统详情", notes = "一键创建职级系统详情")
-    public R okCreatePostSeq(@PathVariable Long okJobLevleSysId) {
-        try {
-            okPostSeqSysService.okCreatePostSeq(okJobLevleSysId);
-        } catch (Exception ex) {
-            return R.failed(ex.getMessage());
-        }
-        return R.ok();
-    }
 
 }

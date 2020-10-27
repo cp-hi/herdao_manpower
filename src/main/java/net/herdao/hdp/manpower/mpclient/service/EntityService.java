@@ -216,7 +216,7 @@ public interface EntityService<T> extends IService<T> {
         if (need && null == t)  //需要它但它为空
             errMsg = "；不存在此" + entityName + "：" + value;
 
-        buffer.append(errMsg.replaceFirst("；",""));
+        buffer.append(errMsg);
         return t;
     }
 
