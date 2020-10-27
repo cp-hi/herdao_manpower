@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @ClassName DtoConverter
@@ -67,7 +68,7 @@ public class DtoConverter {
                     && StringUtils.isNotBlank(dtoField.objField()[0])) {
                 value = getDtoFieldVal(source, dtoField);
             } else if (StringUtils.isNotBlank(dtoField.listField())) {
-                value = getListFieldVal(source, dtoField);
+                value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
             }
@@ -77,6 +78,14 @@ public class DtoConverter {
         return (T) target;
     }
 
+    /**
+     * 转换字段属性
+     *
+     * @param source   源对象
+     * @param dtoField 字段注解
+     * @return
+     * @throws IllegalAccessException
+     */
     private static String getDtoFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
 
         List<String> values = new ArrayList<>();
@@ -86,6 +95,7 @@ public class DtoConverter {
             String fieldName = path[path.length - 1];
             for (int i = 0; i < path.length - 1; i++) {
                 String currObjName = path[i];
+                if (null == currObj) continue;
                 Field field = AnnotationUtils.getFieldByName(currObj, currObjName);
                 field.setAccessible(true);
                 currObj = field.get(currObj);
@@ -103,13 +113,26 @@ public class DtoConverter {
                     Map map = (Map) JSON.parse(dtoField.converter());
                     value = (String) map.get(String.valueOf(objVal));
                 } else {
-                    value =String.valueOf(objVal);
+                    value = String.valueOf(objVal);
                 }
-            } else if(String.class == fieldVal.getType()) {
-                value =  String.valueOf(objVal);
+            } else /*if (String.class == fieldVal.getType())*/ {
+                value = String.valueOf(objVal);
             }
-            values.add(value);
+            if (StringUtils.isNotBlank(value))
+                values.add(value);
         }
+
+//        boolean isEmpty = values.stream().map(StringUtils::isBlank).reduce(false, (a, b) -> a || b);
+
+//        AtomicReference<Boolean> isEmpty = new AtomicReference<>(false);
+//
+//        values.forEach(v -> {
+//            if (StringUtils.isBlank(v))
+//                isEmpty.set(true);
+//        });
+//
+//        if (isEmpty.get()) return "";
+
         //如果有插值map则插值， 一般用于 xx于 xx创建 xx于 xx更新
         if (StringUtils.isNotBlank(dtoField.mapFix())) {
             Map infix = (Map) JSON.parse(dtoField.mapFix());
@@ -121,6 +144,13 @@ public class DtoConverter {
         return StringUtils.join(values, dtoField.symbol());
     }
 
+    /**
+     * 转换列表属性
+     *
+     * @param source
+     * @param dtoField
+     * @return
+     */
     private static String getListFieldVal(Object source, DtoField dtoField) {
         for (String fieldStr : dtoField.objField()) {
             String[] path = fieldStr.split("\\.");
@@ -129,6 +159,14 @@ public class DtoConverter {
         return null;
     }
 
+    /**
+     * 转换字典对象
+     *
+     * @param source   源对象
+     * @param dtoField 字典字段上的注解
+     * @return
+     * @throws IllegalAccessException
+     */
     private static String getDictFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
         String[] dictInfo = dtoField.dictField().split("\\.");
         Field currObj = AnnotationUtils.getFieldByName(source, dictInfo[1]);
@@ -138,10 +176,10 @@ public class DtoConverter {
         Object val = currObj.get(source);
         SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
                 Wrappers.<SysDictItem>query().lambda()
-                .eq(SysDictItem::getType, dictInfo[0])
-                .eq(SysDictItem::getValue, (String) val));
+                        .eq(SysDictItem::getType, dictInfo[0])
+                        .eq(SysDictItem::getValue, (String) val));
 
-        if (null != dictItem)  return dictItem.getLabel();
+        if (null != dictItem) return dictItem.getLabel();
         return null;
     }
 

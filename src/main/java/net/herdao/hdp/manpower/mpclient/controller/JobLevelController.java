@@ -82,10 +82,13 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
         return R.ok(data);
     }
 
-    @GetMapping("/okJobLevelDetail/{okJobLevleSysId}")
+    @GetMapping("/okJobLevelDetail")
     @ApiOperation(value = "获取职级系统详情", notes = "获取职级系统详情")
-    public R<OKJobLevleSysDetailDTO> okJobLevelDetail(@PathVariable Long okJobLevleSysId) {
-        OKJobLevleSysDTO okJobLevleSysDTO = okJobLevleSysService.findDetail(okJobLevleSysId);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "职级体系ID"),
+    })
+    public R<OKJobLevleSysDetailDTO> okJobLevelDetail(Long id) {
+        OKJobLevleSysDTO okJobLevleSysDTO = okJobLevleSysService.findDetail(id);
         OKJobLevleSysDetailDTO detailDTO = new OKJobLevleSysDetailDTO();
         BeanUtils.copyProperties(okJobLevleSysDTO, detailDTO);
         for (OKJobGradeDTO jobGradeDTO : okJobLevleSysDTO.getOkJobGradeDTOList()) {
@@ -100,11 +103,14 @@ public class JobLevelController extends NewBaseController<JobLevel, JobLevelList
         return R.ok(detailDTO);
     }
 
-    @GetMapping("/okCreateJobLevel/{okJobLevleSysId}")
+    @GetMapping("/okCreateJobLevel")
     @ApiOperation(value = "一键创建职级系统", notes = "一键创建职级系统")
-    public R okCreateJobLevel(@PathVariable Long okJobLevleSysId) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "职级体系ID"),
+    })
+    public R okCreateJobLevel( Long id) {
         try {
-            okJobLevleSysService.okCreateJobLevel(okJobLevleSysId);
+            okJobLevleSysService.okCreateJobLevel(id);
         } catch (Exception ex) {
             return R.failed(ex.getMessage());
         }

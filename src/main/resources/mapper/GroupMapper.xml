@@ -40,4 +40,38 @@
     <select id="groupList" parameterType="pipeline" resultType="map">
        	select id,group_code AS code,group_name AS name from mp_group
     </select>
+
+    <select id="groupPage" resultType="net.herdao.hdp.manpower.mpclient.dto.GroupListDTO">
+        SELECT
+            g.ID,
+            g.GROUP_NAME,
+            g.GROUP_CODE,
+            g.ORG_ID,
+            o.ORG_NAME,
+            o.ORG_CODE,
+            o.IS_VIRTUAL,
+            o.IS_STOP,
+            g.SORT_NO,
+            o.emp_in_service,
+            g.CREATOR_NAME,
+            g.CREATED_TIME,
+            g.MODIFIER_NAME,
+            g.MODIFIED_TIME,
+            g.FIELD1,
+            g.FIELD2,
+            g.FIELD3,
+            g.FIELD4,
+            g.FIELD5
+        FROM
+            mp_group g
+        LEFT JOIN mp_organization o ON g.ORG_ID = o.ID
+        <where>
+            <if test="searchText != null">
+                AND  CONCAT(g.GROUP_NAME,o.ORG_NAME) like CONCAT('%',#{searchText},'%')
+            </if>
+            <if test="isStop != null">
+                AND  o.IS_STOP = #{isStop}
+            </if>
+        </where>
+    </select>
 </mapper>

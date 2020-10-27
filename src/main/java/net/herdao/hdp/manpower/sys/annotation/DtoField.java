@@ -16,10 +16,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface DtoField {
 
-//    String[] joinFields() default "";
-//
-//    String boolField() default "";
-
     String[] objField() default "";
 
     String listField() default "";
@@ -30,6 +26,6 @@ public @interface DtoField {
 
     String mapFix() default "";
 
-    String converter() default "{true:\"已停用\",false:\"已启用\"}";
+    String converter() default ""; //"{true:\"已停用\",false:\"已启用\"}"
 
 }

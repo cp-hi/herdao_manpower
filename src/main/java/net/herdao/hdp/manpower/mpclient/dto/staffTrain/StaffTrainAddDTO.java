@@ -26,7 +26,7 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工培训批量新增DTO")
+@ApiModel(value = "员工培训批量导入DTO")
 public class StaffTrainAddDTO  {
     @ExcelIgnore
     private Long id;

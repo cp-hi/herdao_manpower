@@ -80,16 +80,11 @@ public class OperationLogAspect {
     //region 保存实体 设置操作人信息以及实体主键
 
     @Before("pointCutSave()")
-    public void beforeSave(JoinPoint point) {
+    public void beforeSave(JoinPoint point) throws IllegalAccessException {
         Method method = getJoinPointMethod(point);
         OperationEntity operation = getOperationEntity(method);
         if (0 == point.getArgs().length || null == operation)
             return;
-
-        //保存前先验证数据
-//        Object target = point.getTarget();
-//        if (target instanceof EntityService)
-//            ((EntityService) target).saveVerify(point.getArgs()[0]);
 
         Object[] args = point.getArgs();
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -104,6 +99,7 @@ public class OperationLogAspect {
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
                     AnnotationUtils.setAnnotationInfo(operation, "operation", "新增");
+                    ((EntityService) point.getTarget()).setEntityCode(arg);
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {

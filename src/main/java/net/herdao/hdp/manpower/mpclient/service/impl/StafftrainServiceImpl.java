@@ -95,10 +95,23 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
             addDTO.setStaffId(staffId);
 
             //校检字典
-            ImportCheckUtils.checkDicItem(errMsg,"TRAIN_TYPE", addDTO.getTrainType(),itemService);
+            SysDictItem dictItem = ImportCheckUtils.checkDicItem(errMsg, "TRAIN_TYPE", addDTO.getTrainType(), itemService);
+            if(null != dictItem){
+                addDTO.setTrainType(dictItem.getValue());
+            }
 
             //校检时间
             String pattern= ImportCheckUtils.checkTime(errMsg, addDTO.getBeginTime(),addDTO.getEndTime());
+
+            //检查数据库是否存在记录，且唯一记录。
+            List<Stafftrain> checkList = super.list(
+                    new QueryWrapper<Stafftrain>().eq("staff_id", staffId)
+                            .eq("begin_time", addDTO.getBeginTime())
+                            .eq("end_time", addDTO.getEndTime())
+            );
+            if (!checkList.isEmpty()&&checkList.size()>=1){
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中存在多条此记录，因此不可新增；");
+            }
 
             if (errMsg.length() > 0) {
                 errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));

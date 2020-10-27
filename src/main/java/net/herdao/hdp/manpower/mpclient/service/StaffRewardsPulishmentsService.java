@@ -35,7 +35,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-25 16:26:20
  */
-public interface StaffRewardsPulishmentsService extends EntityService<StaffRewardsPulishments> {
+public interface StaffRewardsPulishmentsService extends EasyExcelService<StaffRewardsPulishments> {
 
     /**
      * 员工奖惩分页

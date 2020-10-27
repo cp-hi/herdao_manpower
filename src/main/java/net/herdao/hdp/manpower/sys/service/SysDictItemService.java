@@ -55,10 +55,8 @@ public interface SysDictItemService extends IService<SysDictItem> {
     default String getDictItemValue(String type, String label, StringBuffer buffer) {
         SysDictItem dictItem = this.getOne(new QueryWrapper<SysDictItem>()
                 .eq("type", type).eq("label", label));
-        String errMsg = "";
         if (null == dictItem) {
-			errMsg = "；不存在此字典值：" + label;
-			buffer.append(errMsg.replaceFirst("：", ""));
+			buffer.append( "；不存在此字典值：" + label);
 			return null;
 		}
         return dictItem.getValue();
