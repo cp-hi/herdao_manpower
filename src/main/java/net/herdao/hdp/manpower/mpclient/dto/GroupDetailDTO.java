@@ -33,4 +33,19 @@ public class GroupDetailDTO {
     @ApiModelProperty(value="备注")
     private String remark;
 
+    @ApiModelProperty(value="扩展字段1")
+    private String field1;
+
+    @ApiModelProperty(value="扩展字段2")
+    private String field2;
+
+    @ApiModelProperty(value="扩展字段3")
+    private String field3;
+
+    @ApiModelProperty(value="扩展字段4")
+    private String field4;
+
+    @ApiModelProperty(value="扩展字段5")
+    private String field5;
+
 }
