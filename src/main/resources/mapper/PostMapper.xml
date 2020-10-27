@@ -121,19 +121,30 @@
     </select>
 
     <select id="getPostStaffAges" parameterType="long" resultType="map">
-       with ages as  (
-            select TIMESTAMPDIFF(YEAR ,BIRTHDAY, now()) AS years,p.tenant_id from mp_post p, mp_userpost up , mp_staff s
+       with records as  (
+            select TIMESTAMPDIFF(YEAR ,BIRTHDAY, now()) AS years,p.tenant_id
+            from mp_post p, mp_userpost up , mp_staff s
             where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
             and s.STAFF_SCOPE = '1' and p.id =  #{postId}
-        )
+            ),
+        ages as (
+            select
+            sum( case when years &lt; 20 then 1 else 0 end) as age1 ,
+            sum( case when years &lt; 30 and years &gt;= 20 then 1 else 0 end) as age2,
+            sum( case when years &lt; 40 and years &gt;= 30 then 1 else 0 end) as age3,
+            sum( case when years &lt; 50 and years &gt;= 40 then 1 else 0 end) as age4,
+            sum( case when years &lt; 65 and years &gt;= 50 then 1 else 0 end) as age5,
+            sum( case when years &gt; 65 then 1 else 0 end) as age6,tenant_id
+            from  records
+            )
         select
-        sum( case when years &lt; 20 then 1 else 0 end) as age1 ,
-        sum( case when years &lt; 30 and years &gt;= 20 then 1 else 0 end) as age2,
-        sum( case when years &lt; 40 and years &gt;= 30 then 1 else 0 end) as age3,
-        sum( case when years &lt; 50 and years &gt;= 40 then 1 else 0 end) as age4,
-        sum( case when years &lt; 65 and years &gt;= 50 then 1 else 0 end) as age5,
-        sum( case when years &gt; 65 then 1 else 0 end) as age6
-        from  ages
+        ifnull(age1,0) age1,
+        ifnull(age2,0) age2,
+        ifnull(age3,0) age3,
+        ifnull(age4,0) age4,
+        ifnull(age5,0) age5,
+        ifnull(age6,0) age6,
+        count(*) from ages
     </select>
 
 
