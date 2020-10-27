@@ -1,5 +1,3 @@
-
-
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
@@ -41,14 +39,9 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/familystatus" )
 @Api(value = "familystatus", tags = "员工家庭成员管理")
-public class FamilystatusController extends BaseController<Familystatus> {
+public class FamilystatusController  {
 
-    private final FamilystatusService familystatusService;
-
-    @Autowired
-    public void setEntityService(FamilystatusService familystatusService) {
-        super.entityService = familystatusService;
-    }
+    private FamilystatusService familystatusService;
 
     /**
      * 分页查询
@@ -78,26 +71,6 @@ public class FamilystatusController extends BaseController<Familystatus> {
     public R findFamilyStatusPage(Page page, String searchText) {
         Page pageResult = familystatusService.findFamilyStatusPage(page, searchText);
         return R.ok(pageResult);
-    }
-
-    @ApiOperation("导入家庭情况")
-    @SysLog("导入家庭情况")
-    @PostMapping("/importFamilystatus")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "importType", value = "0:新增，1编辑"),
-    })
-    public R importFamilystatus(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file,Integer importType) throws Exception {
-        ImportExcelListener listener = new ImportExcelListener(familystatusService,null, importType);
-        try {
-            InputStream inputStream = file.getInputStream();
-            EasyExcel.read(inputStream, FamilyStatusListDTO.class, listener).sheet().doRead();
-            IOUtils.closeQuietly(inputStream);
-            return R.ok(" easyexcel读取上传文件成功");
-        } catch (Exception ex) {
-            ExcelUtils.export2Web(response, "家庭情况错误信息", "家庭情况错误信息", FamilyStatusListDTO.class, listener.getDataList());
-            return R.failed(ex.getMessage());
-        }
     }
 
     /**
@@ -136,5 +109,30 @@ public class FamilystatusController extends BaseController<Familystatus> {
         boolean status = familystatusService.saveOrUpdate(familystatus);
         return R.ok(status);
     }
+
+    /**
+     * 通过id删除员工家庭成员表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id删除员工家庭成员表", notes = "通过id删除员工家庭成员表")
+    @SysLog("通过id删除员工家庭成员表" )
+    @DeleteMapping("/{id}" )
+    public R removeById(@PathVariable Integer id) {
+        return R.ok(familystatusService.removeById(id));
+    }
+
+    /**
+     * 通过id查询员工家庭成员表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工家庭成员表", notes = "通过id查询员工家庭成员表")
+    @GetMapping("/{id}" )
+    @PreAuthorize("@pms.hasPermission('demo_demo_view')" )
+    public R getById(@PathVariable("id" ) Integer id) {
+        return R.ok(familystatusService.getById(id));
+    }
+
 
 }
