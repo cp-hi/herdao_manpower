@@ -132,7 +132,6 @@ public class StafftrainController{
     @SysLog("修改" )
     @PutMapping("/updateTrain" )
     public R updateById(@RequestBody Stafftrain stafftrain) {
-        String username = UserUtils.getUsername();
         Integer userId = UserUtils.getUserId();
         stafftrain.setModifiedTime(new Date());
         stafftrain.setModifierCode(userId.toString());

@@ -57,9 +57,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         StringBuffer errMsg = new StringBuffer();
-        // 错误数组
         List<ExcelCheckErrDTO> errList = new ArrayList<>();
-
         List<Stafftrain> stafftrainList=new ArrayList<Stafftrain>();
 
         // 新增校验
