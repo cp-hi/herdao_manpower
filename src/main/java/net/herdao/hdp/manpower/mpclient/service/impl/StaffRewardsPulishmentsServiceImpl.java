@@ -62,7 +62,6 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
         return list;
     }
 
-
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         StringBuffer errMsg = new StringBuffer();

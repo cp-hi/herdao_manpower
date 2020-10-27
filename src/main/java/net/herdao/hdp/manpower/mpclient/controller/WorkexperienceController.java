@@ -1,13 +1,23 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
@@ -19,29 +29,27 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
  * 员工工作经历
- *
  * @author andy
  * @date 2020-09-24 10:24:09
  */
 @RestController
 @RequestMapping("/workexperience" )
 @Api(value = "workexperience", tags = "员工工作经历管理")
-public class WorkexperienceController extends BaseController<Workexperience> {
+@Slf4j
+public class WorkexperienceController {
 
     @Autowired
     private WorkexperienceService workexperienceService;
-
-    @Autowired
-    public void setEntityService(WorkexperienceService workexperienceService) {
-        super.entityService = workexperienceService;
-    }
 
     /**
      * 分页查询
@@ -159,8 +167,51 @@ public class WorkexperienceController extends BaseController<Workexperience> {
      */
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
     @SysLog("通过id删除" )
-    @PostMapping("/del/{id}" )
+    @PostMapping("/{id}" )
     public R removeById(@PathVariable Long id) {
         return R.ok(workexperienceService.removeById(id));
+    }
+
+    /**
+     * 通过id查询员工工作经历表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工工作经历表", notes = "通过id查询员工工作经历表")
+    @GetMapping("/{id}" )
+    public R getById(@PathVariable("id" ) Integer id) {
+        return R.ok(workexperienceService.getById(id));
+    }
+
+    /**
+     * 批量导入员工工作经历（excel导入)
+     * @param file
+     * @return R
+     */
+    @ApiOperation(value = "批量导入员工工作经历(excel导入)", notes = "批量导入员工工作经历(excel导入)")
+    @GetMapping("/batchImportWork")
+    @ResponseBody
+    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
+        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
+    })
+    public R batchImportWork(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
+        try {
+            EasyExcelListener easyExcelListener = new EasyExcelListener(workexperienceService, StaffWorkAddDTO.class,importType);
+            EasyExcelFactory.read(file.getInputStream(), StaffWorkAddDTO.class, easyExcelListener).sheet().headRowNumber(2).doRead();
+            List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
+            if (!errList.isEmpty()) {
+                // 包含错误信息就导出错误信息
+                List<StaffWorkExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+                    StaffWorkExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffWorkExcelErrDTO.class);
+                    excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
+                    return excelErrDto;
+                }).collect(Collectors.toList());
+                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffWorkExcelErrDTO.class, "批量导入员工工作经历错误信息");
+            }
+            return R.ok("导入成功！");
+        } catch (IOException e) {
+            log.error("导入失败",e.toString());
+            return R.failed(e.getMessage());
+        }
     }
 }

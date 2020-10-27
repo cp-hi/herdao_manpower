@@ -121,20 +121,20 @@ private static final long serialVersionUID = 1L;
     /**
      * 中心/项目
      */
-    @ApiModelProperty(value="中心/项目")
+    @ApiModelProperty(value="专业部门（中心/项目）")
     private String orgName;
     /**
      * 结束时间
      */
     @ApiModelProperty(value="结束时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
-    private LocalDate endDate;
+    private Date endDate;
     /**
      * 开始时间
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     @ApiModelProperty(value="开始时间")
-    private LocalDate beginDate;
+    private Date beginDate;
     /**
      * 租户ID
      */
