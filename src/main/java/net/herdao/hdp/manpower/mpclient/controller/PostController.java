@@ -116,7 +116,7 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
     })
     public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
         List<PostDetailVO> data = postService.getPostDetails(postId, operation, size);
-        if ("download".equals(operation)) {
+        if (!"download".equals(operation)) {
             try {
                 ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailVO.class, data);
             } catch (Exception ex) {
