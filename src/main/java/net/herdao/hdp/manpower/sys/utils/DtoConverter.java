@@ -115,10 +115,11 @@ public class DtoConverter {
                 } else {
                     value = String.valueOf(objVal);
                 }
-            } else /*if (String.class == fieldVal.getType())*/ {
+            } else {
                 value = String.valueOf(objVal);
             }
-            if (StringUtils.isNotBlank(value))
+            if (StringUtils.isNotBlank(value)
+                    && !"null".equals(value))
                 values.add(value);
         }
 
@@ -138,7 +139,8 @@ public class DtoConverter {
             Map infix = (Map) JSON.parse(dtoField.mapFix());
             for (Object key : infix.keySet()) {
                 Integer index = Integer.valueOf(key.toString());
-                values.add(index, infix.get(key).toString());
+                if (values.size() >= index)
+                    values.add(index, infix.get(key).toString());
             }
         }
         return StringUtils.join(values, dtoField.symbol());

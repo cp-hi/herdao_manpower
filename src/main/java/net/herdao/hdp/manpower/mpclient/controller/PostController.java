@@ -157,11 +157,11 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
         return R.ok(data);
     }
 
-    @GetMapping("/generateEntityCode")
-    public R generateEntityCode() throws IllegalAccessException {
-        String data = postService.generateEntityCode();
-        return R.ok(data);
-    }
+//    @GetMapping("/generateEntityCode")
+//    public R generateEntityCode() throws IllegalAccessException {
+//        String data = postService.generateEntityCode();
+//        return R.ok(data);
+//    }
 
 
 }

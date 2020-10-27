@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -199,10 +200,15 @@ public class NewBaseController<T, D, F, E> {
 ////            throw new RuntimeException("对象不存在，或已被删除");
 ////        F f = getFormClass().newInstance();
 ////        BeanUtils.copyProperties(t, f);
-        Object t = getEntityClass().newInstance();
-        Field field = AnnotationUtils.getFieldByName(t, "id");
-        field.setAccessible(true);
-        field.set(t, id);
+
+
+//        Object t = getEntityClass().newInstance();
+//        Field field = AnnotationUtils.getFieldByName(t, "id");
+//        field.setAccessible(true);
+//        field.set(t, id);
+
+        T t = getEntityClass().newInstance();
+        ((BaseEntity) t).setId(id);
         IPage p = entityService.page(new Page(), t);
         F f = DtoConverter.dto2vo(p.getRecords().get(0), getFormClass());
         return R.ok(f);
