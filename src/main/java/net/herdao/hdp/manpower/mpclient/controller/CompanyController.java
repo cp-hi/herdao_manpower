@@ -61,7 +61,7 @@ public class CompanyController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_view')" )
-    public R getCompanyPage(Page page, Company company, String searchText) {
+    public R getCompanyPage(Page page, CompanyListDTO company, String searchText) {
         return R.ok(companyService.companyPage(page, company, searchText));
     }
 
@@ -134,7 +134,7 @@ public class CompanyController {
     @ApiOperation(value = "导出", notes = "导出")
     @GetMapping("/export" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public void export(HttpServletResponse response, Page page, Company company, String searchText) {
+    public void export(HttpServletResponse response, Page page, CompanyListDTO company, String searchText) {
         page.setCurrent(1);
         page.setSize(50000);
         IPage result = companyService.companyPage(page, company, searchText);

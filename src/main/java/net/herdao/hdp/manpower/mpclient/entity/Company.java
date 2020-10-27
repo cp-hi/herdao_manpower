@@ -81,8 +81,8 @@ public class Company extends BaseEntity<Company> {
     /**
      * 公积金标准ID
      */
-    @ApiModelProperty(value="公积金标准ID")
-    private Long cityFundId;
+    @ApiModelProperty(value="公积金标准")
+    private String cityFund;
     /**
      * 支付公司账号
      */
