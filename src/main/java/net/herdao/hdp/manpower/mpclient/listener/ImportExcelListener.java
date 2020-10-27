@@ -19,6 +19,7 @@ import java.util.List;
  * @Date 2020/9/27 19:29
  * @Version 1.0
  */
+@Deprecated
 public class ImportExcelListener<T> extends AnalysisEventListener<T> {
 
     @Getter
@@ -79,7 +80,6 @@ public class ImportExcelListener<T> extends AnalysisEventListener<T> {
     @SneakyThrows
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        //TODO 增加导出字段动态排序
         if (hasError) {
             throw new Exception("导入出现错误，请查看导错误原因");
         }
