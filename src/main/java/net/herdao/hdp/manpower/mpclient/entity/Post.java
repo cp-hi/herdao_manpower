@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @ClassName Post
@@ -52,6 +53,10 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "是否停用")
     @TableField("IS_STOP")
     private Boolean stop;
+    @ApiModelProperty(value = "停用日期")
+    private Date stopDate;
+    @ApiModelProperty(value = "启用日期")
+    private Date startDate;
     @ApiModelProperty(value = "岗位组织类型" ,hidden = true)
     private String orgType;
     @ApiModelProperty(value = "板块id" )
