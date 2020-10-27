@@ -67,6 +67,7 @@
             LEFT JOIN sys_dict_item dic on dic.id=f.type and dic.type='YGJCLB'
             LEFT JOIN mp_user usr on usr.id=f.MODIFIER_CODE
             where f.del_flag=0
+            order by f.CREATED_TIME desc
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
@@ -118,6 +119,7 @@
                 LEFT JOIN sys_dict_item dic on dic.id=f.type and dic.type='YGJCLB'
                 LEFT JOIN mp_user usr on usr.id=f.MODIFIER_CODE
                 where f.del_flag=0
+                order by f.CREATED_TIME desc
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(

@@ -57,7 +57,7 @@ public class ImportCheckUtils {
                         .eq("del_flag", 0)
         );
         if (null == dictItem) {
-            appendStringBuffer(errMsg, "培训类型不存在或已停用：" + lable);
+            appendStringBuffer(errMsg, "类型不存在或已停用：" + lable);
         }
 
         return dictItem;
@@ -113,6 +113,31 @@ public class ImportCheckUtils {
         boolean compareDateStatus = DateUtils.compareDate(beginTime, endTime, pattern);
         if (!compareDateStatus) {
             appendStringBuffer(errMsg, "结束日期必须在开始日期之后");
+        }
+
+        return pattern;
+    }
+
+    /**
+     * 校检时间
+     * @param errMsg
+     * @param timeParam
+     * @return
+     */
+    public static String checkSingleTime(StringBuffer errMsg, String timeParam) {
+        String pattern = "";
+        //校检开始时间的时间格式
+        boolean checkTime = false;
+        List<String> formatList = Arrays.asList("yyyy/MM/dd", "yyyy-MM-dd", "yyyy.MM.dd");
+        for (String format : formatList) {
+            checkTime = DateUtils.isLegalDate(timeParam, format);
+            if (checkTime) {
+                pattern = format;
+                break;
+            }
+        }
+        if (!checkTime) {
+            appendStringBuffer(errMsg, "请填写正确的时间格式（yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd）");
         }
 
         return pattern;
