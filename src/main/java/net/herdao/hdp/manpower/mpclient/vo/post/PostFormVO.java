@@ -35,7 +35,8 @@ public class PostFormVO {
     private Long postSeqId;
 
     @ApiModelProperty("岗位序列")
-    @DtoField(objField = "postSeqDTO.postSeqName")
+    @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
     private String postSeqName;
 
     @ApiModelProperty("所属集团")
