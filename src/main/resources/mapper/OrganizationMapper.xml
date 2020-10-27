@@ -551,6 +551,7 @@
 			orgp.org_code AS parent_org_code
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
+			AND org.del_flag = 0
 			AND org.parent_id IS NULL
 			 <if test="searchText != null">
                   <!-- 权限条件 -->
@@ -568,37 +569,31 @@
 			orgp.org_code AS parent_org_code
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
+			AND org.del_flag = 0
 			AND orgp.org_code = #{orgCode}
 		</where>
 	</select>
 
     <!-- 查询组织下所有人员 -->
     <select id="selectOrgStaffAll" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO">
-        SELECT
-            f.ID,
-            f.STAFF_NAME,
-            f.STAFF_CODE,
-            o.ORG_NAME,
-            p.POST_NAME,
-            p.JOB_LEVEL_ID1,
-            f.JOB_TYPE,
-            f.MOBILE,
-            f.EMAIL
-        FROM
-            mp_user u
-        LEFT JOIN mp_userpost up ON u.ID = up.USER_ID
-        LEFT JOIN mp_post p ON p.ID = up.POST_ID
-        LEFT JOIN mp_organization o ON o.ID = u.ORG_DEPT_ID
-        LEFT JOIN mp_staff f ON f.user_id = u.ID
-        WHERE
-            u.ORG_DEPT_ID IN (
-                SELECT
-                    o.ID
-                FROM
-                    mp_organization o
-                WHERE
-                    o.ORG_CODE LIKE CONCAT(#{orgCode},'%')
-            )
+       SELECT
+            f.id,
+            f.staff_name,
+            f.staff_code,
+            o.org_name,
+            p.post_name,
+            CONCAT(IFNULL(lv1.job_level_name, '') ,'-', IFNULL(lv1.job_level_name, '')) AS job_level_id1,
+            f.job_type,
+            f.mobile,
+            f.email
+        FROM mp_user u
+        LEFT JOIN mp_userpost up ON u.id = up.user_id
+        LEFT JOIN mp_post p ON p.id = up.post_id
+        INNER JOIN mp_organization o ON o.id = u.org_dept_id
+        INNER JOIN mp_staff f ON f.user_id = u.id
+        LEFT JOIN mp_job_level lv1 ON p.job_level_id1 = lv1.id
+        LEFT JOIN mp_job_level lv2 ON p.job_level_id2 = lv2.id
+        WHERE o.org_code LIKE CONCAT(#{orgCode},'%')
     </select>
 
     <!-- 查询组织架构图根节点 -->
