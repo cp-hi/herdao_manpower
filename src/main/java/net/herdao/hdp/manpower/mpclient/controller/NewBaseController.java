@@ -193,23 +193,13 @@ public class NewBaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id"),
     })
-    public R<F> getFormInfo(@PathVariable Long id)
-            throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
-//        T t = (T) entityService.getById(id);
-////        if (null == t)
-////            throw new RuntimeException("对象不存在，或已被删除");
-////        F f = getFormClass().newInstance();
-////        BeanUtils.copyProperties(t, f);
-
-
-//        Object t = getEntityClass().newInstance();
-//        Field field = AnnotationUtils.getFieldByName(t, "id");
-//        field.setAccessible(true);
-//        field.set(t, id);
-
+    public R<F> getFormInfo(@PathVariable Long id) throws InstantiationException,
+            IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         T t = getEntityClass().newInstance();
         ((BaseEntity) t).setId(id);
         IPage p = entityService.page(new Page(), t);
+        if (0 == p.getRecords().size())
+            throw new RuntimeException("对象不存在，或已被删除");
         F f = DtoConverter.dto2vo(p.getRecords().get(0), getFormClass());
         return R.ok(f);
     }

@@ -132,10 +132,6 @@ public class PostFormVO {
     @DtoField(objField = "stop", converter =  "{true:\"1\",false:\"0\"}")
     private String stop;
 
-//    @ApiModelProperty(value = "是否停用")
-//    @DtoField(objField = "stop", converter = "{true:\"已停用\",false:\"已启用\"}")
-//    private String stopName;
-
     @ApiModelProperty(value = "停用日期")
     @DtoField(objField = "stopDate", pattern = "yyyy-MM-dd")
     private String stopDate;
