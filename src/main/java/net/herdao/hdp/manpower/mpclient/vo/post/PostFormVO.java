@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 
 /**
@@ -26,38 +27,95 @@ public class PostFormVO {
     @ApiModelProperty("岗位名称")
     private String postName;
 
-    @ApiModelProperty("岗位序列")
+    @ApiModelProperty("岗位编码")
+    private String postCode;
+
+    @ApiModelProperty("岗位序列ID")
     private Long postSeqId;
+
+    @ApiModelProperty("岗位序列")
+    @DtoField(objField = "postSeqDTO.postSeqName")
+    private String postSeqName;
 
     @ApiModelProperty("所属集团")
     private Long groupId;
 
+    @ApiModelProperty("所属集团")
+    @DtoField(objField = "group.groupName")
+    private String groupName;
+
     @ApiModelProperty("版块")
     private Long sectionId;
+
+    @ApiModelProperty("版块")
+    @DtoField(objField = "section.sectionName")
+    private String sectionName;
 
     @ApiModelProperty("管线")
     private Long pipelineId;
 
-    @ApiModelProperty("职级1")
-    private String jobLevelId1;
+    @ApiModelProperty("管线")
+    @DtoField(objField = "pipeline.pipelineName")
+    private String pipelineName;
 
-    @ApiModelProperty("职级2")
-    private String jobLevelId2;
+    @ApiModelProperty("职等")
+    private String jobGradeId;
 
-    @ApiModelProperty("是否单职级")
-    private Boolean singleJobLevle;
+    @ApiModelProperty("职等")
+    @DtoField(objField = "jobGrade.jobGradeName")
+    private String jobGradeName;
+
+    @ApiModelProperty("职级")
+    private Long jobLevelId1;
+
+    @ApiModelProperty("职级")
+    private Long jobLevelId2;
+
+    @ApiModelProperty("职级")
+    @DtoField(objField = {"jobLevel1.id", "jobLevel2.id"}, symbol = ",")
+    private String jobLevelId;
+
+    @ApiModelProperty("职级")
+    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
+    private String jobLevelName;
+
+    @ApiModelProperty(value = "在职员工数")
+    private Integer postAuthorized;
+
+    @ApiModelProperty(value = "岗位编制")
+    private Integer onJobStaffs;
+
+    //region 字典
+
+    @ApiModelProperty("岗位薪酬级别")
+    private String postLevel;
+
+    @ApiModelProperty("岗位薪酬级别")
+    @DtoField(dictField = "XCJB.postLevel")
+    private String postLevelName;
+
+    @ApiModelProperty("年终奖薪酬比例")
+    private String yearPayRatio;
+
+    @ApiModelProperty("年终奖薪酬比例")
+    @DtoField(dictField = "XCBL.yearPayRatio")
+    private String yearPayRatioName;
+
+    @ApiModelProperty("岗位组织级别")
+    private String perforSalaryRatio;
+
+    @ApiModelProperty("岗位组织级别")
+    @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
+    private String perforSalaryRatioName;
 
     @ApiModelProperty("岗位组织级别")
     private String orgType;
 
-    @ApiModelProperty("年终奖比例")
-    private String yearPayRatio;
+    @ApiModelProperty("岗位组织级别")
+    @DtoField(dictField = "GWZZLX.orgType")
+    private String orgTypeName;
 
-    @ApiModelProperty("绩效工资比例")
-    private String perforSalaryRatio;
-
-    @ApiModelProperty("岗位薪酬级别")
-    private String postLevel;
+    //endregion
 
     @ApiModelProperty("岗位职责")
     private String postDescr;

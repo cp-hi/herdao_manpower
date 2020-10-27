@@ -86,11 +86,6 @@ public class OperationLogAspect {
         if (0 == point.getArgs().length || null == operation)
             return;
 
-        //保存前先验证数据
-//        Object target = point.getTarget();
-//        if (target instanceof EntityService)
-//            ((EntityService) target).saveVerify(point.getArgs()[0]);
-
         Object[] args = point.getArgs();
         SysUser sysUser = SysUserUtils.getSysUser();
         for (Object arg : args) {
