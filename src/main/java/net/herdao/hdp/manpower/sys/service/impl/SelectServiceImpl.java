@@ -63,6 +63,7 @@ public class SelectServiceImpl implements SelectService{
 		if(groupid!=null && !"".equals(groupid)){
 			queryWrapper.eq("group_id",groupid);
 		}
+		queryWrapper.eq("IS_STOP", 0);
 		queryWrapper.orderByAsc("SORT_NO");
 		
 		List<Section> sectionList = sectionService.list(queryWrapper);
@@ -84,6 +85,7 @@ public class SelectServiceImpl implements SelectService{
 		if(groupid!=null && !"".equals(groupid)){
 			queryWrapper.eq("group_id",groupid);
 		}
+		queryWrapper.eq("IS_STOP", 0);
 		queryWrapper.orderByAsc("SORT_NO");
 		
 		List<Pipeline> PipelineList = pipelineService.list(queryWrapper);
