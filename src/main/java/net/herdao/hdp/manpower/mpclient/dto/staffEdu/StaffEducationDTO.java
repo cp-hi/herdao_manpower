@@ -64,12 +64,10 @@ public class StaffEducationDTO {
     @ExcelProperty(value = "学习形式")
     private String learnForm;
 
-    @ApiModelProperty(value="操作人")
-    @TableField(exist = false)
-    @ExcelProperty(value = "操作人")
-    private String modifierName;
-
-    @ApiModelProperty(value="操作时间")
-    @ExcelProperty(value = "操作时间")
-    private String modifiedTime;
+    /**
+     * 最近更新情况
+     */
+    @ApiModelProperty(value="最近更新情况")
+    @ExcelIgnore
+    private String updateDesc;
 }

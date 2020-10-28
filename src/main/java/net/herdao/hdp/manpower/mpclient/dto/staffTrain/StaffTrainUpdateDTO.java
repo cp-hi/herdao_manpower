@@ -24,13 +24,11 @@ import javax.validation.constraints.Pattern;
 public class StaffTrainUpdateDTO {
 
     @ExcelProperty(index =0 ,value = "员工姓名")
-    @NotBlank(message = "不能为空")
     @HeadFontStyle(color = 10)
     private String staffName;
 
     @ExcelProperty(index =1 ,value = "员工工号")
     @HeadFontStyle(color = 10)
-    @NotBlank(message = "不能为空")
     private String staffCode;
 
     /**
@@ -38,7 +36,6 @@ public class StaffTrainUpdateDTO {
      */
     @ExcelProperty(index =2 ,value = "开始时间")
     @HeadFontStyle(color = 10)
-    @NotBlank(message = "不能为空")
     private String beginTime;
 
     /**
@@ -46,7 +43,6 @@ public class StaffTrainUpdateDTO {
      */
     @ExcelProperty(index =3 ,value = "结束时间")
     @HeadFontStyle(color = 10)
-    @NotBlank(message = "不能为空")
     private String endTime;
 
     /**

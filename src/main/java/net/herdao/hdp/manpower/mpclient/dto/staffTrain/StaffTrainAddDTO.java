@@ -8,8 +8,9 @@ import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -29,12 +30,14 @@ public class StaffTrainAddDTO  {
     private Long staffId;
 
     @ExcelProperty(index =0 ,value = "员工姓名")
+    @Valid
     @NotBlank(message = "不能为空")
     @HeadFontStyle(color = 10)
     private String staffName;
 
     @ExcelProperty(index =1 ,value = "员工工号")
     @HeadFontStyle(color = 10)
+    @Valid
     @NotBlank(message = "不能为空")
     private String staffCode;
 
@@ -43,6 +46,7 @@ public class StaffTrainAddDTO  {
      */
     @ExcelProperty(index =2 ,value = "开始时间")
     @HeadFontStyle(color = 10)
+    @Valid
     @NotBlank(message = "不能为空")
     private String beginTime;
 
@@ -51,6 +55,7 @@ public class StaffTrainAddDTO  {
      */
     @ExcelProperty(index =3 ,value = "结束时间")
     @HeadFontStyle(color = 10)
+    @Valid
     @NotBlank(message = "不能为空")
     private String endTime;
 

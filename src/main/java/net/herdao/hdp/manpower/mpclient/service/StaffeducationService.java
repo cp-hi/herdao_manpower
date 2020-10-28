@@ -47,4 +47,16 @@ public interface StaffeducationService extends EasyExcelService<Staffeducation> 
      */
     List<StaffEducationDTO> findStaffEducation(String searchText,String staffId);
 
+    /**
+     *  获取批量新增模板备注信息
+     * @return
+     */
+    String getAddRemarks();
+
+    /**
+     *  获取批量编辑模板备注信息
+     * @return
+     */
+    String getUpdateRemarks();
+
 }

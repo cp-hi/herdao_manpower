@@ -12,15 +12,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 员工教育批量新增DTO
+ * 员工教育批量编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工教育批量新增DTO")
+@ApiModel(value = "员工教育批量编辑DTO")
 @ColumnWidth(20)
 @HeadFontStyle
-public class StaffEduAddDTO {
+public class StaffEduUpdateDTO {
     @ExcelIgnore
     private Long id;
 
