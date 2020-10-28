@@ -680,7 +680,7 @@
     		org.id,
     		org.org_name,
     		org.org_code,
-    		org.org_type,
+    		dict.label AS org_type,
     		orgp.org_code AS parent_org_code,
     		org.org_charge_work_no,
     		ps.post_code,
@@ -694,5 +694,6 @@
     	FROM mp_organization org 
     	LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
     	LEFT JOIN mp_post ps ON ps.id = org.post_id
+    	LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
     </select>
 </mapper>
