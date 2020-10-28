@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 /**
@@ -19,7 +20,7 @@ public class StaffListDTO {
     @ApiModelProperty(value="用户id")
     private Long userId;
 
-    @ApiModelProperty(value="姓名")
+    @ApiModelProperty(value="员工姓名")
     private String staffName;
 
     @ApiModelProperty(value="工号")
@@ -31,13 +32,21 @@ public class StaffListDTO {
     @ApiModelProperty(value="任职类型")
     private String jobType;
 
-    @ApiModelProperty(value="入职本公司日期")
-    private LocalDateTime entryTime;
+    @ApiModelProperty(value="入职日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDate entryTime;
+
+    @ApiModelProperty(value="转正日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDate regularTime;
+
+    @ApiModelProperty(value="试用期")
+    private Long probPeriod;
 
     @ApiModelProperty(value="移动电话")
     private String mobile;
 
-    @ApiModelProperty(value="身份证号码")
+    @ApiModelProperty(value="证件号码")
     private String idNumber;
 
     @ApiModelProperty(value="性别")

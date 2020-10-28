@@ -49,11 +49,7 @@ public interface StaffService extends IService<Staff> {
 
 	IPage staffPage(Page page, Staff staff, String searchText);
 
-	StaffDetailBaseDTO staffSave(StaffDetailDTO staffForm);
-
-	boolean staffUpdate(StaffDetailDTO staffForm);
-
-	StaffDetailDTO getStaffById(Long id);
+	StaffDetailDTO staffSave(StaffDetailDTO staffForm);
 
 	Map<String, Object> getStaffDetail(Long id);
 
