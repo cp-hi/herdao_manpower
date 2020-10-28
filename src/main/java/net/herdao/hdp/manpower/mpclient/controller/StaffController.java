@@ -363,7 +363,7 @@ public class StaffController {
     @SysLog("新增员工表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
-    public R save(@RequestBody StaffDetailDTO staffForm) {
+    public R<StaffDetailBaseDTO> save(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffSave(staffForm));
     }
 

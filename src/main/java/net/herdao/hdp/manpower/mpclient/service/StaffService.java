@@ -23,12 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
@@ -54,7 +49,7 @@ public interface StaffService extends IService<Staff> {
 
 	IPage staffPage(Page page, Staff staff, String searchText);
 
-	boolean staffSave(StaffDetailDTO staffForm);
+	StaffDetailBaseDTO staffSave(StaffDetailDTO staffForm);
 
 	boolean staffUpdate(StaffDetailDTO staffForm);
 
