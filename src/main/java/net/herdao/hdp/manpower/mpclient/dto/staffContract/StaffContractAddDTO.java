@@ -23,10 +23,16 @@ public class StaffContractAddDTO {
     private Long id;
 
     @ExcelIgnore
-    private String staffId;
+    private Long staffId;
 
     @ExcelIgnore
     private String companyCode;
+
+    /**
+     * 是否当前生效合同 （合同是否生效）,0生效 ，1失效
+     */
+    @ExcelIgnore
+    private Boolean newest;
 
     /**
      * 员工姓名

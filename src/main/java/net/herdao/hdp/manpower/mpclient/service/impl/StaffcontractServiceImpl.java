@@ -114,7 +114,7 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
 
             //校检员工
             Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
-            addDTO.setStaffId(staffId.toString());
+            addDTO.setStaffId(staffId);
 
             //校检时间
             String pattern= ImportCheckUtils.checkDate(errMsg, addDTO.getStartDate(),addDTO.getEndDate());
@@ -123,6 +123,17 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
             SysDictItem contractTypeDicItem = ImportCheckUtils.checkDicItem(errMsg, "HTQXLX", addDTO.getContractType(), itemService);
             if(null != contractTypeDicItem){
                 addDTO.setContractType(contractTypeDicItem.getValue());
+            }
+
+            //校检合同是否生效 0生效 ，1失效
+            if (addDTO.getContractStatus()!=null){
+                if (addDTO.getContractStatus().equals("是")){
+                    addDTO.setNewest(false);
+                }else if (addDTO.getContractStatus().equals("否")){
+                    addDTO.setNewest(true);
+                }else{
+                    ImportCheckUtils.appendStringBuffer(errMsg, "请填写合同是否生效 : 是或否");
+                }
             }
 
             //校检合同签订主体。
@@ -144,12 +155,8 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
                         .eq("start_date", addDTO.getStartDate())
                         .eq("end_date", addDTO.getEndDate())
             );
-            if (checkList.isEmpty()){
-                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中不存在此记录，因此不可编辑更新；");
-            }else if (!checkList.isEmpty()&&checkList.size()>1){
-                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中存在多条此记录，因此不可编辑更新；");
-            }else{
-                addDTO.setId(checkList.get(0).getId());
+            if (!checkList.isEmpty()&&checkList.size()>=1){
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表存在多条此记录，因此不可新增；");
             }
 
             if (errMsg.length() > 0) {
@@ -182,7 +189,7 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
 
             //校检员工
             Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
-            addDTO.setStaffId(staffId.toString());
+            addDTO.setStaffId(staffId);
 
             //校检时间
             String pattern= ImportCheckUtils.checkDate(errMsg, addDTO.getStartDate(),addDTO.getEndDate());
@@ -191,6 +198,17 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
             SysDictItem contractTypeDicItem = ImportCheckUtils.checkDicItem(errMsg, "HTQXLX", addDTO.getContractType(), itemService);
             if(null != contractTypeDicItem){
                 addDTO.setContractType(contractTypeDicItem.getValue());
+            }
+
+            //校检合同是否生效 0生效 ，1失效
+            if (addDTO.getContractStatus()!=null){
+                if (addDTO.getContractStatus().equals("是")){
+                    addDTO.setNewest(false);
+                }else if (addDTO.getContractStatus().equals("否")){
+                    addDTO.setNewest(true);
+                }else{
+                    ImportCheckUtils.appendStringBuffer(errMsg, "请填写合同是否生效 : 是或否");
+                }
             }
 
             //校检合同签订主体。
@@ -212,9 +230,14 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
                             .eq("start_date", addDTO.getStartDate())
                             .eq("end_date", addDTO.getEndDate())
             );
-            if (!checkList.isEmpty()&&checkList.size()>=1){
-                ImportCheckUtils.appendStringBuffer(errMsg, "员工教育表中存在多条此记录，因此不可新增；");
+            if (checkList.isEmpty()){
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中不存在此记录，因此不可编辑更新；");
+            }else if (!checkList.isEmpty()&&checkList.size()>1){
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中存在多条此记录，因此不可编辑更新；");
+            }else{
+                addDTO.setId(checkList.get(0).getId());
             }
+
 
             if (errMsg.length() > 0) {
                 errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
