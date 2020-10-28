@@ -36,7 +36,7 @@
       </resultMap>
 
     <!-- 历史任职情况分页 -->
-    <select id="findUserPostHistoryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+    <select id="findUserPostHistoryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
            SELECT   t.id,
                     t.staffName,
                     t.staffCode,
@@ -86,7 +86,7 @@
     </select>
 
     <!-- 历史任职情况 -->
-    <select id="findUserPostHistory" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+    <select id="findUserPostHistory" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
         SELECT  t.id,
                 t.staffName,
                 t.staffCode,

@@ -31,7 +31,7 @@
              </resultMap>
 
       <!-- 员工教育情况分页 -->
-      <select id="findStaffEducationPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
+      <select id="findStaffEducationPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO">
           SELECT      t.id,
                       t.staff_name,
                       t.staff_code,
@@ -93,7 +93,7 @@
       </select>
 
     <!-- 员工教育情况 -->
-    <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO">
+    <select id="findStaffEducation" resultType="net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO">
         SELECT      t.id,
                     t.staff_name,
                     t.staff_code,

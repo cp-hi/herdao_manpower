@@ -3,12 +3,9 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
