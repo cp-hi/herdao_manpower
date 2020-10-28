@@ -70,8 +70,8 @@ public class WorkexperienceDTO {
     /**
      * 中心/项目
      */
-    @ExcelProperty(value = "中心/项目")
-    @ApiModelProperty(value="中心/项目")
+    @ExcelProperty(value = "专业部门（中心/项目）")
+    @ApiModelProperty(value="专业部门（中心/项目）")
     private String orgName;
 
     /**

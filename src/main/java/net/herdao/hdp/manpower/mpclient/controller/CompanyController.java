@@ -151,4 +151,15 @@ public class CompanyController {
 
     }
 
+    /**
+     * 公司列表
+     * @return
+     */
+    @ApiOperation(value = "分页查询", notes = "分页查询")
+    @GetMapping("/getCompanyList" )
+    public R getCompanyList() {
+        List<Company> list = companyService.list();
+        return R.ok(list);
+    }
+
 }

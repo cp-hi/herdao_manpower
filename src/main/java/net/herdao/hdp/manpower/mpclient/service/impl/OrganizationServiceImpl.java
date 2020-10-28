@@ -651,10 +651,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		List<SysDictItem> orgTypeList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
 
 		// 用户信息
-		Map<String, User> userMap = getUserMap(userService.lambdaQuery().list());
+		Map<String, User> userMap = getUserMap(userService.lambdaQuery().eq(User::getIsStop, false).list());
 
 		// 岗位信息
-		Map<String, Post> postMap = getPostMap(postService.lambdaQuery().list());
+		Map<String, Post> postMap = getPostMap(postService.lambdaQuery().eq(Post::getStop, false).list());
 
 		List<Organization> organizationList = new ArrayList<Organization>();
 

@@ -63,6 +63,9 @@ public class OrganizationFormVO {
 	 */
 	@ApiModelProperty(value = "组织类型")
 	private String orgType;
+	
+	@ApiModelProperty(value = "组织类型名称")
+	private String orgTypeName;
 	/**
 	 * 负责岗位id
 	 */

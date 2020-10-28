@@ -187,4 +187,17 @@ public class StafftrainController{
             return R.failed(e.getMessage());
         }
     }
+
+    /**
+     * 通过id查询员工奖惩表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工奖惩表", notes = "通过id查询员工奖惩表")
+    @GetMapping("/{id}" )
+    public R getById(@PathVariable("id" ) Integer id) {
+        return R.ok(stafftrainService.getById(id));
+    }
+
+
 }

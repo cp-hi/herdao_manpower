@@ -102,6 +102,9 @@ public class OrganizationVO {
 	 */
 	@ApiModelProperty(value = "组织类型")
 	private String orgType;
+	
+	@ApiModelProperty(value = "组织类型名称")
+	private String orgTypeName;
 
 	/**
 	 * 组织层（ 参考字典：“ZZCJ”）

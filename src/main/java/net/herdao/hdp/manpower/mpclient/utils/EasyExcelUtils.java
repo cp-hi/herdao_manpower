@@ -68,13 +68,12 @@ public class EasyExcelUtils {
         //头策略使用默认
         WriteCellStyle headWriteCellStyle = new WriteCellStyle();
         
-        
         ServletOutputStream outputStream = response.getOutputStream();
         try {
             if(ObjectUtil.isNotNull(handler)) {
             	EasyExcel.write(outputStream, clazz)
             	.registerWriteHandler(handler)
-            	.registerWriteHandler(new HorizontalCellStyleStrategy(headWriteCellStyle,contentWriteCellStyle)).relativeHeadRowIndex(1).sheet(sheetName).doWrite(objects);
+            	.registerWriteHandler(new HorizontalCellStyleStrategy(headWriteCellStyle,contentWriteCellStyle)).useDefaultStyle(true).relativeHeadRowIndex(1).sheet(sheetName).doWrite(objects);
             }else {
             	EasyExcel.write(outputStream, clazz)
             	.registerWriteHandler(new HorizontalCellStyleStrategy(headWriteCellStyle,contentWriteCellStyle)).sheet(sheetName).doWrite(objects);

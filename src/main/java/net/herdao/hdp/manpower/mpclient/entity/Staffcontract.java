@@ -77,9 +77,9 @@ private static final long serialVersionUID = 1L;
     private Long probationMonth;
 
     /**
-     * 是否当前生效合同 （合同是否生效）
+     * 是否当前生效合同 （合同是否生效）,0生效 ，1失效
      */
-    @ApiModelProperty(value="是否当前生效合同 （合同是否生效）")
+    @ApiModelProperty(value="是否当前生效合同 （合同是否生效）,0生效，1失效")
     private Boolean newest;
 
     /**

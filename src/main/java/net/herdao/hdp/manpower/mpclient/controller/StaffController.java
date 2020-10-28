@@ -343,18 +343,6 @@ public class StaffController {
     }
 
     /**
-     * 通过id查询员工表
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R<StaffDetailDTO> getById(@PathVariable("id" ) Long id) {
-        return R.ok(staffService.getStaffById(id));
-    }
-
-    /**
      * 新增员工表
      * @param staffForm 员工信息
      * @return R
@@ -363,21 +351,8 @@ public class StaffController {
     @SysLog("新增员工表" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
-    public R save(@RequestBody StaffDetailDTO staffForm) {
+    public R<StaffDetailDTO> save(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffSave(staffForm));
-    }
-
-    /**
-     * 修改员工表
-     * @param staffForm 员工表
-     * @return R
-     */
-    @ApiOperation(value = "修改员工表", notes = "修改员工表")
-    @SysLog("修改员工表" )
-    @PutMapping
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
-    public R<Boolean> updateById(@RequestBody StaffDetailDTO staffForm) {
-        return R.ok(staffService.staffUpdate(staffForm));
     }
 
     /**

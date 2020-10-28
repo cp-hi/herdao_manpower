@@ -92,7 +92,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
             Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
             addDTO.setStaffId(staffId);
 
-            //校检字典
+            //校检员工培训类型
             SysDictItem dictItem = ImportCheckUtils.checkDicItem(errMsg, "TRAIN_TYPE", addDTO.getTrainType(), itemService);
             if(null != dictItem){
                 addDTO.setTrainType(dictItem.getValue());
@@ -142,7 +142,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
             Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
             addDTO.setStaffId(staffId);
 
-            //校检字典
+            //校检培训类型
             ImportCheckUtils.checkDicItem(errMsg,"TRAIN_TYPE", addDTO.getTrainType(),itemService);
 
             //校检时间
