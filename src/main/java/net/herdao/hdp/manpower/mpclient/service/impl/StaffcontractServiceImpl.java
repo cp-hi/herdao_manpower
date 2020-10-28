@@ -78,7 +78,6 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
         return list;
     }
 
-
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         StringBuffer errMsg = new StringBuffer();
@@ -91,16 +90,15 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
         }
 
         // 编辑校验
-        /*if (importType == 1) {
-            checkUpdate(excelList, errMsg, errList, staffEduList);
-        }*/
+        if (importType == 1) {
+            checkUpdate(excelList, errMsg, errList, staffContractList);
+        }
 
         if(ObjectUtil.isEmpty(errList)) {
             this.saveOrUpdateBatch(staffContractList);
         }
         return errList;
     }
-
 
     /**
      * 新增校验
@@ -136,7 +134,7 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
             if (null==company){
                 ImportCheckUtils.appendStringBuffer(errMsg, "合同签订主体不存在："+addDTO.getCompany()+";");
             }else {
-
+                addDTO.setCompanyCode(company.getCompanyCode());
             }
 
             //检查数据库是否存在记录，且唯一记录。
@@ -145,6 +143,74 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
                         .eq("staff_id", staffId)
                         .eq("start_date", addDTO.getStartDate())
                         .eq("end_date", addDTO.getEndDate())
+            );
+            if (checkList.isEmpty()){
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中不存在此记录，因此不可编辑更新；");
+            }else if (!checkList.isEmpty()&&checkList.size()>1){
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中存在多条此记录，因此不可编辑更新；");
+            }else{
+                addDTO.setId(checkList.get(0).getId());
+            }
+
+            if (errMsg.length() > 0) {
+                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+            }else {
+                BeanUtils.copyProperties(addDTO, staffcontract);
+                staffcontract.setStartDate(DateUtils.parseDate(addDTO.getStartDate(),pattern));
+                staffcontract.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
+
+                SysUser sysUser = SysUserUtils.getSysUser();
+                staffcontract.setCreatedTime(LocalDateTime.now());
+                staffcontract.setCreatorCode(sysUser.getUserId().toString());
+
+                staffContractList.add(staffcontract);
+            }
+        }
+    }
+
+    /**
+     * 新增校验
+     * @param excelList
+     * @param errMsg
+     * @param errList
+     * @param staffContractList
+     */
+    private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Staffcontract> staffContractList) {
+        for (int i = 0; i < excelList.size(); i++) {
+            Staffcontract staffcontract=new Staffcontract();
+            StaffContractAddDTO addDTO = (StaffContractAddDTO) excelList.get(i);
+
+            //校检员工
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
+            addDTO.setStaffId(staffId.toString());
+
+            //校检时间
+            String pattern= ImportCheckUtils.checkDate(errMsg, addDTO.getStartDate(),addDTO.getEndDate());
+
+            //校检合同期限类型
+            SysDictItem contractTypeDicItem = ImportCheckUtils.checkDicItem(errMsg, "HTQXLX", addDTO.getContractType(), itemService);
+            if(null != contractTypeDicItem){
+                addDTO.setContractType(contractTypeDicItem.getValue());
+            }
+
+            //校检合同签订主体。
+            Company company = companyService.getOne(
+                    new QueryWrapper<Company>()
+                            .eq("COMPANY_NAME", addDTO.getCompany())
+
+            );
+            if (null==company){
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订主体不存在："+addDTO.getCompany()+";");
+            }else {
+                addDTO.setCompanyCode(company.getCompanyCode());
+            }
+
+            //检查数据库是否存在记录，且唯一记录。
+            List<Staffcontract> checkList = super.list(
+                    new QueryWrapper<Staffcontract>()
+                            .eq("staff_id", staffId)
+                            .eq("start_date", addDTO.getStartDate())
+                            .eq("end_date", addDTO.getEndDate())
             );
             if (!checkList.isEmpty()&&checkList.size()>=1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工教育表中存在多条此记录，因此不可新增；");
@@ -158,8 +224,8 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
                 staffcontract.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
-                staffcontract.setCreatedTime(LocalDateTime.now());
-                staffcontract.setCreatorCode(sysUser.getUserId().toString());
+                staffcontract.setModifiedTime(LocalDateTime.now());
+                staffcontract.setModifierCode(sysUser.getUserId().toString());
 
                 staffContractList.add(staffcontract);
             }

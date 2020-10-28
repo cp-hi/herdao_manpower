@@ -165,7 +165,6 @@ public class StaffRewardsPulishmentsController {
     @SysLog("新增员工奖惩" )
     @PostMapping("/saveStaffRp" )
     public R saveStaffRp(@RequestBody StaffRewardsPulishments staffRp) {
-        String username = UserUtils.getUsername();
         Integer userId = UserUtils.getUserId();
         staffRp.setCreatedTime(LocalDateTime.now());
         staffRp.setCreatorCode(userId.toString());
@@ -182,11 +181,33 @@ public class StaffRewardsPulishmentsController {
     @SysLog("更新员工奖惩" )
     @PostMapping("/updateStaffRp" )
     public R updateStaffRp(@RequestBody StaffRewardsPulishments staffRp) {
-        String username = UserUtils.getUsername();
         Integer userId = UserUtils.getUserId();
         staffRp.setModifiedTime(LocalDateTime.now());
         staffRp.setModifierCode(userId.toString());
         boolean status = staffRpService.updateById(staffRp);
         return R.ok(status);
+    }
+
+    /**
+     * 通过id查询员工奖惩表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工奖惩表", notes = "通过id查询员工奖惩表")
+    @GetMapping("/{id}" )
+    public R getById(@PathVariable("id" ) Integer id) {
+        return R.ok(staffRpService.getById(id));
+    }
+
+    /**
+     * 通过id删除员工奖惩表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id删除员工奖惩表", notes = "通过id删除员工奖惩表")
+    @SysLog("通过id删除员工奖惩表" )
+    @DeleteMapping("/{id}" )
+    public R removeById(@PathVariable Integer id) {
+        return R.ok(staffRpService.removeById(id));
     }
 }
