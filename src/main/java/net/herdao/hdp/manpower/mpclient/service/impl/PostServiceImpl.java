@@ -71,38 +71,44 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Integer probation = 0;//试用
         Integer authorized = 0;//编制
 
+        Map mapOnJobs = new HashMap();
+        mapOnJobs.put("name", "在职");
+        mapOnJobs.put("value", onJobs);
+
+        Map mapInterns = new HashMap();
+        mapInterns.put("name", "实习");
+        mapInterns.put("value", interns);
+
+        Map mapFullTimes = new HashMap();
+        mapFullTimes.put("name", "全职");
+        mapFullTimes.put("value", fullTimes);
+
+        Map mapPartTimes = new HashMap();
+        mapPartTimes.put("name", "兼职");
+        mapPartTimes.put("value", partTimes);
+
+        Map mapExchanges = new HashMap();
+        mapExchanges.put("name", "交流");
+        mapExchanges.put("value", exchanges);
+
+        Map mapProbation = new HashMap();
+        mapProbation.put("name", "试用");
+        mapProbation.put("value", probation);
+
+        Map mapAuthorized = new HashMap();
+        mapAuthorized.put("name", "编制");
+        mapAuthorized.put("value", authorized);
+
         List<Map> staffInfo = new ArrayList<>();
-        staffInfo.add(new HashMap() {{
-            put("name", "在职");
-            put("value", onJobs);
-        }});
-        staffInfo.add(new HashMap() {{
-            put("name", "实习");
-            put("value", interns);
-        }});
-        staffInfo.add(new HashMap() {{
-            put("name", "全职");
-            put("value", fullTimes);
-        }});
-        staffInfo.add(new HashMap() {{
-            put("name", "兼职");
-            put("value", partTimes);
-        }});
-        staffInfo.add(new HashMap() {{
-            put("name", "交流");
-            put("value", exchanges);
-        }});
-        staffInfo.add(new HashMap() {{
-            put("name", "试用");
-            put("value", probation);
-        }});
-        staffInfo.add(new HashMap() {{
-            put("name", "编制");
-            put("value", authorized);
-        }});
+        staffInfo.add(mapOnJobs);
+        staffInfo.add(mapInterns);
+        staffInfo.add(mapFullTimes);
+        staffInfo.add(mapPartTimes);
+        staffInfo.add(mapExchanges);
+        staffInfo.add(mapProbation);
+        staffInfo.add(mapAuthorized);
 
         map.put("staffInfo", staffInfo);
-
         //年龄分布
         List<Map<String, BigDecimal>> ages = baseMapper.getPostStaffAges(postId);
         map.put("age1", ages.size() > 0 ? ages.get(0).get("age1") : 0);
@@ -155,7 +161,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (null == group)
             buffer.append("；不存在此集团：" + excel.getGroupName());
 
-        if(StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
 
         post.setGroupId(group.getId());
@@ -172,10 +178,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         Post tmp = chkEntityExists("POST_NAME", excel.getPostName(), true, buffer);
         Group group = groupService.getGroupByName(excel.getGroupName());
-        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(), true,buffer);
-        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true,buffer);
-        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true,buffer);
-        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true,buffer);
+        Section section = sectionService.chkEntityExists("SECTION_NAME", excel.getSectionName(), true, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists("PIPELINE_NAME", excel.getPipelineName(), true, buffer);
+        PostSeq postSeq = postSeqService.chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true, buffer);
+        JobLevel jobLevel = jobLevelService.chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true, buffer);
 
         post.setOrgType(sysDictItemService.getDictItemValue("GWZZLX", excel.getOrgType(), buffer));
         post.setPostLevel(sysDictItemService.getDictItemValue("XCJB", excel.getPostLevel(), buffer));
@@ -185,7 +191,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (null == group)
             buffer.append("；不存在此集团：" + excel.getGroupName());
 
-        if(StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
 
         post.setGroupId(group.getId());

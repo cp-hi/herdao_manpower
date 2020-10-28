@@ -30,7 +30,7 @@
   </resultMap>
 
       <!-- 现任职情况 -->
-      <select id="findUserPostNowPage" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+      <select id="findUserPostNowPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
           SELECT  t.ID,
                   t.staffName,
                   t.staffCode,
@@ -81,7 +81,7 @@
       </select>
 
     <!-- 现任职情况 -->
-    <select id="findUserPostNow" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+    <select id="findUserPostNow" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
         SELECT  t.ID,
                 t.staffName,
                 t.staffCode,
@@ -132,7 +132,7 @@
     </select>
 
     <!-- 员工详情-工作情况-目前任职 -->
-    <select id="findCurrentJob" resultType="net.herdao.hdp.manpower.mpclient.dto.UserpostDTO">
+    <select id="findCurrentJob" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
         SELECT  u.START_DATE startDate,
                 u.END_DATE endDate,
                 '' groupName,

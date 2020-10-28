@@ -3,9 +3,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
+import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import org.apache.ibatis.annotations.Param;
 

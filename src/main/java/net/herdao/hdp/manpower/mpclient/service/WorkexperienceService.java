@@ -18,15 +18,11 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 
-import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 员工工作经历

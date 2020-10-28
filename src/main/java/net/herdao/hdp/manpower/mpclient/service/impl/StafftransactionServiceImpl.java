@@ -19,18 +19,13 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.admin.api.dto.UserInfo;
-import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.mapper.StafftransactionMapper;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

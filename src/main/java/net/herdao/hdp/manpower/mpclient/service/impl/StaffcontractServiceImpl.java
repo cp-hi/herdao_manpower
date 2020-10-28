@@ -21,19 +21,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffcontractDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffcontractMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
@@ -47,7 +41,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

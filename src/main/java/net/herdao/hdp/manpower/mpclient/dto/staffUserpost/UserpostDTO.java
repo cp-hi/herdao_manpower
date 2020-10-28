@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto;
+package net.herdao.hdp.manpower.mpclient.dto.staffUserpost;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -18,8 +18,11 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+/**
+ *任职情况list DTO
+ */
 @Data
-@ApiModel(value = "现任职情况")
+@ApiModel(value = "任职情况list DTO")
 public class UserpostDTO {
     @ExcelIgnore
     @ApiModelProperty(value="id")
@@ -80,14 +83,6 @@ public class UserpostDTO {
     @ApiModelProperty(value="任职公司")
     @ExcelProperty(value = "任职公司")
     private String deptName;
-
-    @ApiModelProperty(value = "操作人" )
-    @ExcelProperty(value = "操作人")
-    private String modifierName;
-
-    @ApiModelProperty(value = "操作时间" )
-    @ExcelProperty(value = "操作时间")
-    private String modifiedTime;
 
     @ApiModelProperty(value = "是否定编岗位" )
     private String officePostTypeName;

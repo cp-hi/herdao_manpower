@@ -74,7 +74,7 @@ public class PostController extends NewBaseController<Post, PostListVO, PostForm
 
         if (jobLevelIds.length >= 1)
             f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
-        else if (jobLevelIds.length >= 2)
+        if (jobLevelIds.length >= 2)
             f.setJobLevelId2(Long.valueOf(jobLevelIds[1]));
 
         f.setSingleJobLevle(1 == jobLevelIds.length);

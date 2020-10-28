@@ -20,17 +20,13 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.dto.UserpostDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

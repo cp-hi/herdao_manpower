@@ -3,26 +3,19 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
-import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
@@ -31,11 +24,9 @@ import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -1,6 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,23 +10,16 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduExcelErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainExcelErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
-import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
-import net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
-import org.apache.commons.io.IOUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,8 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

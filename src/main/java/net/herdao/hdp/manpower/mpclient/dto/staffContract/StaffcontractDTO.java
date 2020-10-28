@@ -1,18 +1,13 @@
 
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.dto.staffContract;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * 员工合同签订列表list DTO
@@ -51,7 +46,6 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
     @ExcelProperty(value = "员工工号")
     private String staffCode;
 
-
     /**
      * 劳动合同起始日期
      */
@@ -86,8 +80,6 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
     @ApiModelProperty(value="合同是否生效")
     @ExcelProperty(value = "合同是否生效")
     private String contractStatus;
-
-
 
     /**
      * 合同期限类型

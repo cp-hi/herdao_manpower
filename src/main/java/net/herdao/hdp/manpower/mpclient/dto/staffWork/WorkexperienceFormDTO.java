@@ -1,24 +1,24 @@
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.dto.staffWork;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+/**
+ * 工作经历 表单DTO
+ */
 @Data
-@ApiModel(value = "工作经历")
-public class WorkexperienceDTO {
+@ApiModel(value = "工作经历 表单DTO")
+public class WorkexperienceFormDTO {
 	/**
      * ID
      */
@@ -27,25 +27,18 @@ public class WorkexperienceDTO {
     @ApiModelProperty(value="ID")
     private Long id;
 
-
     /**
-     * 员工姓名
+     * 员工ID
      */
-    @ExcelProperty(value = "员工姓名")
-    @ApiModelProperty(value="员工姓名")
-    private String staffName;
+    @ExcelProperty(value = "员工ID")
+    @ApiModelProperty(value="员工ID")
+    private Long staffId;
 
-    /**
-     * 员工工号
-     */
-    @ExcelProperty(value = "员工工号")
-    @ApiModelProperty(value="员工工号")
-    private String staffCode;
+
 
     /**
      * 开始时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "开始时间")
     @ApiModelProperty(value="开始时间")
@@ -54,7 +47,6 @@ public class WorkexperienceDTO {
     /**
      * 结束时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "结束时间")
     @ApiModelProperty(value="结束时间")
@@ -101,34 +93,4 @@ public class WorkexperienceDTO {
     @ExcelProperty(value = "下属人数")
     @ApiModelProperty(value="下属人数")
     private Integer subordinates;
-
-    /**
-     * 操作人
-     */
-    @ExcelProperty(value = "操作人")
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
-
-    /**
-     * 操作时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @ExcelProperty(value = "操作时间")
-    @ApiModelProperty(value="操作时间")
-    private LocalDateTime modifiedTime;
-
-    /**
-     * 员工ID
-     */
-    @ExcelProperty(value = "员工ID")
-    @ApiModelProperty(value="员工ID")
-    private Long staffId;
-
-    /**
-     * 最近更新情况
-     */
-    @ApiModelProperty(value="最近更新情况")
-    @ExcelProperty(value = "最近更新情况")
-    private String updateDesc;
 }

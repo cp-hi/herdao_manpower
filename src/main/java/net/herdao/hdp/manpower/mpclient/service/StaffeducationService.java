@@ -2,15 +2,8 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.StaffeducationListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.vo.StaffeducationVO;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

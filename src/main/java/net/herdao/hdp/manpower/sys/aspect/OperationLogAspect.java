@@ -2,18 +2,12 @@ package net.herdao.hdp.manpower.sys.aspect;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
-import net.herdao.hdp.admin.api.dto.UserInfo;
-import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +21,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.lang.reflect.Field;
@@ -76,6 +69,7 @@ public class OperationLogAspect {
     public void pointDelete() {
         System.out.println("pointDelete");
     }
+
 
     //region 保存实体 设置操作人信息以及实体主键
 
@@ -189,8 +183,8 @@ public class OperationLogAspect {
                 }
 
                 if (point.getTarget() instanceof EntityService) {
-                    Object obj = ((EntityService) point.getTarget()).getById((Serializable)arg);
-                    if(null == obj)return;
+                    Object obj = ((EntityService) point.getTarget()).getById((Serializable) arg);
+                    if (null == obj) return;
                     AnnotationUtils.setAnnotationInfo(operation, "clazz", obj.getClass());
                     AnnotationUtils.setAnnotationInfo(operation, "objId", arg.toString());
                 }
