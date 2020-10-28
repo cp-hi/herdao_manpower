@@ -1,5 +1,5 @@
 
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.dto.staffTrain;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -15,14 +15,14 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 import java.util.Date;
 
 /**
- * 员工培训
+ * 员工培训list DTO
  *
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工培训DTO")
-public class StafftrainDTO extends Stafftrain implements ExcelErrMsg {
+@ApiModel(value = "员工培训list DTO")
+public class StafftrainDTO  {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "错误信息")

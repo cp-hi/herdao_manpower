@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.dto.staffTrans;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -73,22 +73,6 @@ public class StafftransDTO {
     @ExcelProperty(value = "异动后所在组织")
     @ApiModelProperty(value="异动后所在组织")
     private String comeUnitName;
-
-
-    /**
-     * 操作人
-     */
-    @ExcelProperty(value = "操作人")
-    @ApiModelProperty(value="操作人")
-    private String modifiedName;
-
-
-    /**
-     * 操作时间
-     */
-    @ExcelProperty(value = "操作时间")
-    @ApiModelProperty(value="操作时间")
-    private String modifiedTime;
 
     /**
      * 最近更新情况

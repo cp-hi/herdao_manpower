@@ -40,7 +40,7 @@
       </resultMap>
 
       <!-- 员工异动情况分页-->
-      <select id="findStaffTransPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO">
+      <select id="findStaffTransPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO">
            SELECT t.id,
                   t.staff_name,
                   t.staff_code,
@@ -89,7 +89,7 @@
        </select>
 
       <!-- 员工异动情况-->
-      <select id="findStaffTrans" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StafftransDTO">
+      <select id="findStaffTrans" resultType="net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO">
           SELECT t.id,
           t.staff_name,
           t.staff_code,

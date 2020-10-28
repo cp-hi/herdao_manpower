@@ -38,7 +38,7 @@
         </resultMap>
 
      <!-- 员工合同签订分页 -->
-     <select id="findStaffContractPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO">
+     <select id="findStaffContractPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffcontractDTO">
            select    t.id,
                      t.staff_name,
                      t.staff_code,
@@ -88,7 +88,7 @@
 
 
     <!-- 员工合同签订 -->
-    <select id="findStaffContract" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO">
+    <select id="findStaffContract" resultType="net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffcontractDTO">
         select  t.id,
                 t.staff_name,
                 t.staff_code,

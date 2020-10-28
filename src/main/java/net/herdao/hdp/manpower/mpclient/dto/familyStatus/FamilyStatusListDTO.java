@@ -14,6 +14,9 @@ import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 
 import java.time.LocalDateTime;
 
+/**
+ * 家庭情况分页Dto
+ */
 @Data
 @ApiModel(value = "家庭情况分页Dto")
 public class FamilyStatusListDTO extends Familystatus implements ExcelErrMsg {
@@ -87,19 +90,6 @@ public class FamilyStatusListDTO extends Familystatus implements ExcelErrMsg {
     @ExcelProperty(value="所在地址")
     private String address;
 
-    /**
-     * 最后修改时间
-     */
-    @ExcelIgnore
-    @ApiModelProperty(value="操作时间")
-    private LocalDateTime modifiedTime;
-
-    /**
-     * 修改人(操作人姓名)
-     */
-    @ExcelIgnore
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
 
     /**
      * 最近更新情况

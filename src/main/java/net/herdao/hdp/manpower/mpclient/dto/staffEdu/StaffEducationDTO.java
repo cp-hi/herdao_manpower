@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.staff;
+package net.herdao.hdp.manpower.mpclient.dto.staffEdu;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -10,10 +10,11 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 /**
- * @author yangrr
+ * 教育经历list DTO
+ * @author andy
  */
 @Data
-@ApiModel(value = "教育经历")
+@ApiModel(value = "教育经历list DTO")
 public class StaffEducationDTO {
     /**
      * 主键
