@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto.organization;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @ApiModel(value = "组织批量修改异常处理")
+@ExcelIgnoreUnannotated
 public class OrganizationUpdateErrDTO {
 
     @ExcelProperty(value = "错误信息", index = 0)

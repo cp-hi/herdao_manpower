@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
@@ -47,7 +48,7 @@ public class EasyExcelUtils {
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ExcelTypeEnum.XLSX.getValue());
         
         //内容样式策略
         WriteCellStyle contentWriteCellStyle = new WriteCellStyle();

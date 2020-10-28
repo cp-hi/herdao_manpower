@@ -28,13 +28,13 @@ public class StringBufferUtils {
      * @param stringBuffer
      * @param msg
      */
-	 public static void appendStringBuffer(StringBuffer stringBuffer, String msg) {
+	 public static void appendStringBuffer(StringBuffer bf, String msg) {
 
-		if (stringBuffer == null) {
-			stringBuffer = getStringBuffer(null);
+		if (bf == null) {
+			bf = getStringBuffer(null);
 		}
 
-		stringBuffer.append(stringBuffer.length() > 0 ? msg + ManpowerContants.CH_SEMICOLON : msg);
+		bf.append(bf.length() > 0 ? ManpowerContants.CH_SEMICOLON + msg  : msg);
 	}
 
 

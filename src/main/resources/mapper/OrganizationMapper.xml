@@ -684,16 +684,16 @@
     		orgp.org_code AS parent_org_code,
     		org.org_charge_work_no,
     		ps.post_code,
-    		org.is_stop AS stop,
-    		org.del_flag,
+    		CASE org.is_stop WHEN 0 THEN '否' ELSE '是' END AS stop,
     		org.org_tree_level,
-    		org.is_virtual,
-    		org.organizational,
+    		CASE org.is_virtual WHEN 0 THEN '否' ELSE '是' END AS is_virtual,
+    		CASE org.organizational WHEN 0 THEN '否' ELSE '是' END AS organizational,
     		org.welfare_type,
     		org.org_desc
     	FROM mp_organization org 
     	LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
     	LEFT JOIN mp_post ps ON ps.id = org.post_id
     	LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
+    	WHERE org.del_flag = 0 AND org.parent_id IS NOT NULL
     </select>
 </mapper>

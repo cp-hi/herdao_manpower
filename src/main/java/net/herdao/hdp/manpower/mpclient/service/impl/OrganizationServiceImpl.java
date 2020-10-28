@@ -655,16 +655,20 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 		// 岗位信息
 		Map<String, Post> postMap = getPostMap(postService.lambdaQuery().eq(Post::getStop, false).list());
-
+		
+		// 批量新增、编辑组织信息
 		List<Organization> organizationList = new ArrayList<Organization>();
 
 		// 组织信息
 		Map<String, OrganizationImportDTO> parentOrganizationMap = getParentOrganizationMap(this.baseMapper.selectAllOrganization());
 		
+		// 组织信息（key = orgName + parentOrgCode）
+		Map<String, OrganizationImportDTO> organizationValiMap = getOrganizationMap();
+		
 		if (importType == 0) {
-			importAddOrganization(excelList, parentOrganizationMap, orgTypeList, userMap, postMap, errList, organizationList);
+			importAddOrganization(excelList, parentOrganizationMap, organizationValiMap, orgTypeList, userMap, postMap, errList, organizationList);
 		}else {
-			importUpdateOrganization(excelList, parentOrganizationMap, orgTypeList, userMap, postMap, errList, organizationList);
+			importUpdateOrganization(excelList, parentOrganizationMap, organizationValiMap, orgTypeList, userMap, postMap, errList, organizationList);
 		}
 		// 保存新增、修改组织信息
 		if(ObjectUtil.isEmpty(errList)) {
@@ -679,6 +683,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * 
 	 * @param excelList
 	 * @param parentOrganizationMap
+	 * @param organizationValiMap
 	 * @param orgTypeList
 	 * @param userMap
 	 * @param postMap
@@ -686,7 +691,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * @param organizationList
 	 */
 	@SuppressWarnings("all")
-	public void importAddOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, List<SysDictItem> orgTypeList, Map<String, User> userMap,
+	public void importAddOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, Map<String, OrganizationImportDTO> organizationValiMap, List<SysDictItem> orgTypeList, Map<String, User> userMap,
 			Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
 		// 导入校验
 		for (int i = 0; i < excelList.size(); i++) {
@@ -695,8 +700,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 			// 导入组织信息
 			OrganizationAddDTO orgDto = (OrganizationAddDTO) excelList.get(i);
+			BeanUtils.copyProperties(orgDto, organization);
 			// 异常信息
-			StringBuffer errMsg = null;
+			StringBuffer errMsg = new StringBuffer();
 
 			// 父组织信息
 			Organization parentOrganization = null;
@@ -707,44 +713,55 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				OrganizationImportDTO parentOrgDto = parentOrganizationMap.get(orgDto.getParentOrgCode());
 				if (ObjectUtil.isNotNull(parentOrgDto)) {
 					parentOrganization = new Organization();
-					BeanUtils.copyProperties(orgDto, parentOrganization);
+					BeanUtils.copyProperties(parentOrgDto, parentOrganization);
 					organization.setParentId(parentOrganization.getId());
 				}
 			}
 
+			String key = orgDto.getOrgName() + ManpowerContants.SEPARATOR + orgDto.getParentOrgCode();
+			OrganizationImportDTO orgIDto = organizationValiMap.get(key);
+
+			if (orgIDto != null) {
+				StringBufferUtils.appendStringBuffer(errMsg, "组织名称：" + orgDto.getOrgName() + "，上级组织编码：" + orgDto.getParentOrgCode() + "已经存在");
+			}
+
 			// 校验父组织信息
 			if (ObjectUtil.isNull(parentOrganization)) {
-				StringBufferUtils.appendStringBuffer(errMsg, "组织编码：" + orgDto.getParentOrgCode() + "不存在");
+				StringBufferUtils.appendStringBuffer(errMsg, "上级组织编码：" + orgDto.getParentOrgCode() + "不存在");
 			}
 
 			// 校验组织类型
 			String orgType = getDictItem(orgTypeList, orgDto.getOrgType());
-			if (StrUtil.isNotBlank(orgType)) {
+			if (StrUtil.isBlank(orgType)) {
 				StringBufferUtils.appendStringBuffer(errMsg, "组织类型：" + orgDto.getOrgType() + "不存在");
 			} else {
 				// 转字典value
 				organization.setOrgType(orgType);
 			}
-			// 校验用户信息
+			// 用户信息
 			User user = userMap.get(orgDto.getOrgChargeWorkNo());
-			if (user == null) {
-				StringBufferUtils.appendStringBuffer(errMsg, "组织负责人工号：" + orgDto.getOrgChargeWorkNo() + "不存在");
-			} else {
+			if (ObjectUtil.isNotNull(user)) {
 				organization.setOrgChargeId(StrUtil.toString(user.getId()));
 				organization.setOrgChargeName(user.getUserName());
 				organization.setOrgChargeWorkNo(user.getLoginCode());
 			}
-
+			
+			// 岗位信息
 			Post post = postMap.get(orgDto.getPostCode());
-			if (post == null) {
-				StringBufferUtils.appendStringBuffer(errMsg, "岗位编号：" + orgDto.getPostCode() + "不存在");
-			} else {
+			if (ObjectUtil.isNotNull(post)) {
 				organization.setPostId(post.getId());
 			}
 			// 设置组织编码
 			organization.setOrgCode(getOrgCode(organization.getParentId()));
 			// 设置组织层级
-			organization.setOrgTreeLevel(parentOrganization.getOrgTreeLevel() + 1L);
+			// 组织组织树层级
+	    	if(ObjectUtil.isNull(parentOrganization)) {
+	    		// root 组织级别值：1
+	    		organization.setOrgTreeLevel(1L);
+	    	}else {
+	    		// 组织组织树层级
+	    		organization.setOrgTreeLevel(parentOrganization.getOrgTreeLevel() + 1L);
+	    	}
 			// 设置 组织名称全路径
 			setOrgFullCodeAndOrgFullName(organization, parentOrganization);
 			if (StrUtil.isNotBlank(errMsg)) {
@@ -760,6 +777,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * 
 	 * @param excelList
 	 * @param parentOrganizationMap
+	 * @param organizationValiMap
 	 * @param orgTypeList
 	 * @param userMap
 	 * @param postMap
@@ -767,7 +785,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * @param organizationList
 	 */
 	@SuppressWarnings("all")
-	public void importUpdateOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, List<SysDictItem> orgTypeList,
+	public void importUpdateOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap,  Map<String, OrganizationImportDTO> organizationValiMap, List<SysDictItem> orgTypeList,
 			Map<String, User> userMap, Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
 		// 导入校验
 		for (int i = 0; i < excelList.size(); i++) {
@@ -777,7 +795,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
 			String key = orgDto.getOrgName() + ManpowerContants.SEPARATOR + orgDto.getParentOrgCode();
 
-			OrganizationImportDTO orgIDto = getOrganizationMap().get(key);
+			OrganizationImportDTO orgIDto = organizationValiMap.get(key);
 
 			// 待更新组织信息
 			Organization organization = null;
@@ -801,33 +819,32 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				OrganizationImportDTO parentOrgDto = parentOrganizationMap.get(orgDto.getParentOrgCode());
 				if (ObjectUtil.isNotNull(parentOrgDto)) {
 					parentOrganization = new Organization();
-					BeanUtils.copyProperties(orgDto, parentOrganization);
+					BeanUtils.copyProperties(parentOrgDto, parentOrganization);
 					organization.setParentId(parentOrganization.getId());
+				}else {
+					StringBufferUtils.appendStringBuffer(errMsg, "上级组织编码：" + orgDto.getParentOrgCode() + "已经存在");
 				}
 			}
 
 			// 校验组织类型
 			String orgType = getDictItem(orgTypeList, orgDto.getOrgType());
-			if (StrUtil.isNotBlank(orgType)) {
+			if (StrUtil.isBlank(orgType)) {
 				StringBufferUtils.appendStringBuffer(errMsg, "组织类型：" + orgDto.getOrgType() + "不存在");
 			} else {
 				// 转字典value
 				organization.setOrgType(orgType);
 			}
-			// 校验用户信息
+			// 用户信息
 			User user = userMap.get(orgDto.getOrgChargeWorkNo());
-			if (user == null) {
-				StringBufferUtils.appendStringBuffer(errMsg, "组织负责人工号：" + orgDto.getOrgChargeWorkNo() + "不存在");
-			} else {
+			if (ObjectUtil.isNotNull(user)) {
 				organization.setOrgChargeId(StrUtil.toString(user.getId()));
 				organization.setOrgChargeName(user.getUserName());
 				organization.setOrgChargeWorkNo(user.getLoginCode());
 			}
-
+			
+			// 岗位信息
 			Post post = postMap.get(orgDto.getPostCode());
-			if (post == null) {
-				StringBufferUtils.appendStringBuffer(errMsg, "岗位编号：" + orgDto.getPostCode() + "不存在");
-			} else {
+			if (ObjectUtil.isNotNull(post)) {
 				organization.setPostId(post.getId());
 			}
 
