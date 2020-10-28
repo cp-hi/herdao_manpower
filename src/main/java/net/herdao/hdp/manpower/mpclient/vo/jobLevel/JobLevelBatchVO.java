@@ -2,7 +2,7 @@ package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 
 /**
  * @ClassName JobLevelDTO
@@ -13,7 +13,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  * @Version 1.0
  */
 @Data
-public class JobLevelBatchVO implements ExcelErrMsg {
+public class JobLevelBatchVO implements ExcelMsg {
 
     @ExcelProperty(value = "职级名称")
     private String jobLevelName;
@@ -29,4 +29,6 @@ public class JobLevelBatchVO implements ExcelErrMsg {
 
     @ExcelProperty(value = "错误信息")
     private String errMsg;
+
+
 }

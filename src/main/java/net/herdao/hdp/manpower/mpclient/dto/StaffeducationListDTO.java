@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 
 /**
  * 员工教育经历列表DTO list
@@ -17,7 +17,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  */
 @Data
 @ApiModel(value = "员工教育经历列表DTO list")
-public class StaffeducationListDTO extends Staffeducation implements ExcelErrMsg {
+public class StaffeducationListDTO extends Staffeducation implements ExcelMsg {
 
     @ExcelProperty(value = "错误信息")
     @ColumnWidth(100)

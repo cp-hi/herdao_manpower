@@ -17,7 +17,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
  */
 @Data
 @ApiModel(value = "员工培训VO")
-public class StafftrainErrMsg extends Stafftrain implements ExcelErrMsg {
+public class StafftrainErrMsg extends Stafftrain implements ExcelMsg {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "错误信息")
