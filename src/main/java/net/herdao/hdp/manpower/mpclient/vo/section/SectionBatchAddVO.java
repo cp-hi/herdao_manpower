@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.vo.section;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 
 /**
  * @ClassName SectionBatchAddDTO
@@ -16,7 +16,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 //版块名称、所属集团、排序、备注
 @Data
 @ExcelIgnoreUnannotated
-public class SectionBatchAddVO implements ExcelErrMsg {
+public class SectionBatchAddVO implements ExcelMsg {
     @ExcelProperty("板块名称")
     private String sectionName;
     @ExcelProperty("所属集团")

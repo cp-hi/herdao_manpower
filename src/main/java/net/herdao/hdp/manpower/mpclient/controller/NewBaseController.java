@@ -109,12 +109,16 @@ public class NewBaseController<T, D, F, E> {
         return getBatchUpdateClass();
     }
 
+    protected String getAddTemplDescription() {
+        return getUpdateTemplDescription();
+    }
+
     /**
      * 模板上方的说明文字
      *
      * @return
      */
-    protected String getTemplDescription() {
+    protected String getUpdateTemplDescription() {
         String line = System.getProperty("line.separator");
         StringBuilder builder = new StringBuilder();
         builder.append("导入说明：").append(line);
@@ -252,13 +256,14 @@ public class NewBaseController<T, D, F, E> {
     })
     public R getDownloadTempl(HttpServletResponse response, Integer importType) {
         try {
-            String title = "批量新增模板";
+            String title = entityService.getEntityName() + "批量新增模板";
             Class templClass = getBatchAddClass();
+            String description = getAddTemplDescription();
             if (Integer.valueOf(1).equals(importType)) {
+                title = entityService.getEntityName() + "批量编辑模板";
+                description = getUpdateTemplDescription();
                 templClass = getBatchUpdateClass();
-                title = "批量编辑模板";
             }
-            title = entityService.getEntityName() + title;
 
             List<LinkedHashMap<String, String>> data = new ArrayList();
             Field[] fields = templClass.getDeclaredFields();
@@ -270,7 +275,7 @@ public class NewBaseController<T, D, F, E> {
             }
             data.add(map);
 
-            ExcelUtils.export2Web(response, title, getTemplDescription(), data);
+            ExcelUtils.export2Web(response, title, description, data);
             return R.ok();
         } catch (Exception ex) {
             return R.failed(ex.getMessage());

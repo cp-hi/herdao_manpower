@@ -48,7 +48,7 @@ public interface StaffService extends IService<Staff> {
 
 	Map<String, Object> queryCount();
 
-	IPage staffPage(Page page, Staff staff, String searchText);
+	IPage staffPage(Page page, StaffListDTO staff, String searchText);
 
 	StaffDetailDTO staffSave(StaffDetailDTO staffForm);
 

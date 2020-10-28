@@ -18,8 +18,10 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -68,4 +70,13 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @return StaffBaseDTO
 	 */
 	StaffBaseDTO getStaffBase(Long id);
+
+	/**
+	 * 集团分页列表
+	 *
+	 * @param map
+	 * @return
+	 */
+	List<StaffListDTO> staffPage(Map<String, Object> map);
+
 }

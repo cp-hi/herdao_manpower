@@ -6,17 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -105,7 +103,7 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
             String errMsg = ex.getMessage();
             if (errMsg.startsWith("；"))
                 errMsg = errMsg.replaceFirst("；", "");
-            ((ExcelErrMsg) excel).setErrMsg(errMsg);
+            ((ExcelMsg) excel).setErrMsg(errMsg);
         }
         excelList.add(excel);
         dataList.add(t);

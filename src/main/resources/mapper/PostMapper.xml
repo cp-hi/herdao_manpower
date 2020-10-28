@@ -79,7 +79,7 @@
        select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
     </select>
 
-    <!--     TODO 实现父子查询 -->
+    <!--  父子查询 -->
     <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTOMap">
         select * from  mp_post_seq WHERE id=#{id}
     </select>

@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.vo.pipeline;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 
 /**
  * @ClassName PipelineBatchUpdateDTO
@@ -15,7 +15,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class PipelineBatchUpdateVO extends PipelineBatchAddVO implements ExcelErrMsg {
+public class PipelineBatchUpdateVO extends PipelineBatchAddVO implements ExcelMsg {
 
     @ExcelProperty("管线名称")
     private String pipelineName;

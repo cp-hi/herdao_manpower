@@ -12,7 +12,6 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -164,21 +162,19 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public IPage staffPage(Page page, Staff staff, String searchText){
-		QueryWrapper<Staff> wrapper =  Wrappers.query(staff);
-		if(searchText!=null && !"".equals(searchText)){
-			wrapper.like("CONCAT(STAFF_NAME,STAFF_CODE)", searchText);
-		}
-		IPage result = this.page(page, wrapper);
-		List<Staff> list = result.getRecords();
-		List<StaffListDTO> entityList = new ArrayList<>();
-		StaffListDTO entity;
-		for(int i=0;i<list.size();i++){
-			entity = DtoUtils.transferObject(list.get(i), StaffListDTO.class);
-			entityList.add(entity);
-		}
-		result.setRecords(entityList);
-		return result;
+	public IPage staffPage(Page page, StaffListDTO staff, String searchText){
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("isStop", staff.getIsStop());
+		map.put("jobType", staff.getJobType());
+		map.put("groupId", staff.getGroupId());
+		map.put("postId", staff.getPostId());
+		map.put("sectionId", staff.getSectionId());
+		map.put("pipelineId", staff.getPipelineId());
+		map.put("jobLevelId1", staff.getJobLevelId1());
+		page = page.setRecords(baseMapper.staffPage(map));
+		return page;
 	}
 
 	@Override

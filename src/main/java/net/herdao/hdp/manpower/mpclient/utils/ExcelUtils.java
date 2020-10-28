@@ -105,6 +105,36 @@ public class ExcelUtils {
         EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
     }
 
+    public static void downloadTempl(HttpServletResponse response, String excelName,String description, Class templClass) throws Exception {
+
+
+
+
+
+
+//        List<List<Object>> dataList = new ArrayList<>();
+//        List<List<String>> headList = new ArrayList<>();
+//        for (String k : data.get(0).keySet()) {
+//            List<String> head = new ArrayList<>();
+//            head.add(description);
+//            head.add(k);
+//            headList.add(head);
+//        }
+//        for (LinkedHashMap<String, String> map : data) {
+//            List<Object> objs = new ArrayList<>();
+//            for (List<String> h : headList) {
+//                objs.add(map.get(h.get(0)));
+//            }
+//            dataList.add(objs);
+//        }
+//
+//        response.setContentType("application/vnd.ms-excel");
+//        response.setCharacterEncoding("utf-8");
+//        excelName = URLEncoder.encode(excelName, "UTF-8");
+//        response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
+//        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
+    }
+
     /**
      * 将指定位置指定名称的Excel导出到web
      *

@@ -2,22 +2,13 @@
 package net.herdao.hdp.manpower.mpclient.dto.staffTrain;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
-import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
-import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelErrMsg;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 员工培训
