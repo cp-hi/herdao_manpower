@@ -11,9 +11,11 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StaffcontractDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,11 +25,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 
 /**
  * 员工合同签订
- *
  * @author andy
  * @date 2020-09-27 09:15:28
  */
@@ -35,14 +38,55 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/staffcontract" )
 @Api(value = "staffcontract", tags = "员工合同签订管理")
 @Slf4j
-public class StaffcontractController extends BaseController<Staffcontract> {
+public class StaffcontractController  {
     @Autowired
     private StaffcontractService staffcontractService;
 
-    @Autowired
-    public void setEntityService(StaffcontractService staffcontractService) {
-        super.entityService = staffcontractService;
+    /**
+     * 新增员工培训
+     * @param staffcontract
+     * @return R
+     */
+    @ApiOperation(value = "新增员工合同", notes = "新增员工合同")
+    @SysLog("新增员工合同" )
+    @GetMapping("/saveContract" )
+    public R saveContract(@RequestBody Staffcontract staffcontract) {
+        Integer userId = UserUtils.getUserId();
+        staffcontract.setCreatedTime(LocalDateTime.now());
+        staffcontract.setCreatorCode(userId.toString());
+        boolean status = staffcontractService.save(staffcontract);
+        return R.ok(status);
     }
+
+    /**
+     * 修改
+     * @param staffcontract
+     * @return R
+     */
+    @ApiOperation(value = "修改员工合同", notes = "修改员工合同")
+    @SysLog("修改员工合同" )
+    @GetMapping("/updateContract" )
+    public R updateContract(@RequestBody Staffcontract staffcontract) {
+        Integer userId = UserUtils.getUserId();
+        staffcontract.setModifiedTime(LocalDateTime.now());
+        staffcontract.setModifierCode(userId.toString());
+        boolean status = staffcontractService.updateById(staffcontract);
+        return R.ok(status);
+    }
+
+    /**
+     * 通过id删除员工合同
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id删除员工合同", notes = "通过id删除员工合同")
+    @SysLog("通过id删除员工合同" )
+    @DeleteMapping("/{id}" )
+    //@PreAuthorize("@pms.hasPermission('mpclient_stafftrain_del')" )
+    public R removeById(@PathVariable Long id) {
+        return R.ok(staffcontractService.removeById(id));
+    }
+
 
     /**
      * 分页查询
