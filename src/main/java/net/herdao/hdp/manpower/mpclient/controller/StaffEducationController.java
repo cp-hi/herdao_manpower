@@ -188,7 +188,7 @@ public class StaffEducationController {
      * @return R
      */
     @ApiOperation(value = "批量导入员工教育 (excel导入)", notes = "批量导入员工教育 (excel导入)")
-    @GetMapping("/batchImportEdu")
+    @PostMapping("/batchImportEdu")
     @ResponseBody
     @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
         @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
