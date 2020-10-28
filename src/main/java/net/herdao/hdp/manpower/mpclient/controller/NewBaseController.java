@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.write.style.column.AbstractColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -107,27 +108,6 @@ public class NewBaseController<T, D, F, E> {
      */
     protected Class getBatchAddClass() {
         return getBatchUpdateClass();
-    }
-
-    protected String getAddTemplDescription() {
-        return getUpdateTemplDescription();
-    }
-
-    /**
-     * 模板上方的说明文字
-     *
-     * @return
-     */
-    protected String getUpdateTemplDescription() {
-        String line = System.getProperty("line.separator");
-        StringBuilder builder = new StringBuilder();
-        builder.append("导入说明：").append(line);
-        builder.append("1、标红字段为必填").append(line);
-        builder.append("2、操作导入前请删除示例数据").append(line);
-        builder.append("3、上级组织名称请填写已启用的组织编码").append(line);
-        builder.append("4、组织类型请输入系统中已存在的组织类型，如：部门").append(line);
-        builder.append("5、组织负责人工号请输入在职员工的工号；负责岗位请输入系统中已启用的岗位").append(line);
-        return builder.toString();
     }
 
     //endregion
@@ -256,29 +236,36 @@ public class NewBaseController<T, D, F, E> {
     })
     public R getDownloadTempl(HttpServletResponse response, Integer importType) {
         try {
-            String title = entityService.getEntityName() + "批量新增模板";
+//            String title = entityService.getEntityName() + "批量新增模板";
             Class templClass = getBatchAddClass();
-            String description = getAddTemplDescription();
             if (Integer.valueOf(1).equals(importType)) {
-                title = entityService.getEntityName() + "批量编辑模板";
-                description = getUpdateTemplDescription();
+//                title = entityService.getEntityName() + "批量编辑模板";
                 templClass = getBatchUpdateClass();
             }
 
-            List<LinkedHashMap<String, String>> data = new ArrayList();
-            Field[] fields = templClass.getDeclaredFields();
-            LinkedHashMap<String, String> map = new LinkedHashMap();
-            for (Field field : fields) {
-                if (field.getName().equals("errMsg")) continue;
-                ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
-                map.put(excel.value()[0], "");
-            }
-            data.add(map);
+//            List<LinkedHashMap<String, String>> data = new ArrayList();
+//            Field[] fields = templClass.getDeclaredFields();
+//            LinkedHashMap<String, String> map = new LinkedHashMap();
+//            for (Field field : fields) {
+//                if (field.getName().equals("errMsg")) continue;
+//                ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
+//                map.put(excel.value()[0], "");
+//            }
+//            data.add(map);
+//
+//            String desc = "" +
+//                    "导入说明：\r\n" +
+//                    "1、标红字段为必填\r\n" +
+//                    "2、操作导入前请删除示例数据\r\n" +
+//                    "3、上级组织名称请填写已启用的组织编码\r\n";
 
-            ExcelUtils.export2Web(response, title, description, data);
-            return R.ok();
+//            ExcelUtils.export2Web(response, title, desc, data);
+
+            ExcelUtils.downloadTempl(response, templClass);
+
         } catch (Exception ex) {
             return R.failed(ex.getMessage());
         }
+        return R.ok();
     }
 }

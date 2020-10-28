@@ -60,6 +60,11 @@ public class AnnotationUtils {
      */
     public static Field[] getAllFields(Object object) {
         Class clazz = object.getClass();
+        return getAllFields(clazz);
+    }
+
+    public static Field[] getAllFields(Class clazz) {
+//        Class clazz = object.getClass();
         List<Field> fieldList = new ArrayList<>();
         while (clazz != null) {
             fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
@@ -87,7 +92,7 @@ public class AnnotationUtils {
         Field[] fields = clazz.getDeclaredFields();
         List<String> names = new ArrayList<>();
         for (Field field : fields) {
-            ExcelProperty property= field.getAnnotation(ExcelProperty.class);
+            ExcelProperty property = field.getAnnotation(ExcelProperty.class);
             names.add(property.value()[0]);
         }
         return names;
