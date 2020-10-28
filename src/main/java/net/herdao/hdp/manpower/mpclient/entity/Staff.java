@@ -549,7 +549,7 @@ private static final long serialVersionUID = 1L;
     private BigDecimal realWorkAge;
 
     @ApiModelProperty(value="转正日期")
-    private LocalDateTime regularTime;
+    private LocalDate regularTime;
 
     @ApiModelProperty(value="证件类型")
     private String idType;
