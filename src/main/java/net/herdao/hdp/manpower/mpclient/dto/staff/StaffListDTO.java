@@ -26,6 +26,30 @@ public class StaffListDTO {
     @ApiModelProperty(value="工号")
     private String staffCode;
 
+    @ApiModelProperty(value = "所在组织")
+    private String orgName;
+
+    @ApiModelProperty(value = "任职岗位")
+    private String postName;
+
+    @ApiModelProperty(value="是否停用员工-查询用")
+    private Long isStop;
+
+    @ApiModelProperty(value = "高级搜索集团")
+    private Long groupId;
+
+    @ApiModelProperty(value = "高级搜索岗位")
+    private String postId;
+
+    @ApiModelProperty(value = "所在板块id-高级搜索板块" )
+    private Long sectionId;
+
+    @ApiModelProperty(value = "所在管线ID-高级搜索管线" )
+    private Long pipelineId;
+
+    @ApiModelProperty(value = "职级-高级搜索职级")
+    private Long jobLevelId1;
+
     @ApiModelProperty(value="人员归属范围")
     private String staffScope;
 
@@ -42,6 +66,9 @@ public class StaffListDTO {
 
     @ApiModelProperty(value="试用期")
     private Long probPeriod;
+
+    @ApiModelProperty(value = "直属主管")
+    private String orgChargeName;
 
     @ApiModelProperty(value="移动电话")
     private String mobile;
@@ -70,8 +97,9 @@ public class StaffListDTO {
     @ApiModelProperty(value="户口类型")
     private String accountType;
 
-    @ApiModelProperty(value="毕业时间")
-    private LocalDateTime graduatedTime;
+    @ApiModelProperty(value="毕业日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDate graduatedTime;
 
     @ApiModelProperty(value="毕业院校")
     private String graduatedFrom;

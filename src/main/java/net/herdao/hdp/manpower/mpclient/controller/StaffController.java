@@ -84,7 +84,7 @@ public class StaffController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffPage(Page page, Staff staff, String tab, String searchText) {
+    public R getStaffPage(Page page, StaffListDTO staff, String tab, String searchText) {
         if("1".equals(tab)){
 
         }else if("2".equals(tab)){
