@@ -73,23 +73,10 @@ public class FamilyStatusVO {
     private String address;
 
     /**
-     * 最后修改时间
-     */
-    @ExcelProperty(value="操作时间")
-    @ApiModelProperty(value="操作时间")
-    private LocalDateTime modifiedTime;
-
-    /**
-     * 修改人(操作人姓名)
-     */
-    @ExcelProperty(value="操作人")
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
-
-    /**
      * 最近更新情况
      */
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")
+    @ExcelIgnore
     private String updateDesc;
 }
