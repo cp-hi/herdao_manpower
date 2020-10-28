@@ -216,7 +216,7 @@ public class StaffRewardsPulishmentsController {
      */
     @SuppressWarnings("rawtypes")
     @ApiOperation(value = "下载员工奖惩新增、编辑模板")
-    @PostMapping("/downloadTemplate")
+    @GetMapping("/downloadTemplate")
     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
     public R downloadTemplate(HttpServletResponse response, Integer importType) {
          if (importType!=null){
@@ -234,7 +234,7 @@ public class StaffRewardsPulishmentsController {
                  List<StaffRpDTO> staffRpList = staffRpService.findStaffRp(null);
                  try {
                      EasyExcelUtils.webWriteExcel(response, staffRpList, StaffRpUpdateDTO.class, "批量编辑员工奖惩模板",
-                             new EasyExcelSheetWriteHandler(8 , staffRpService.getAddRemarks()));
+                             new EasyExcelSheetWriteHandler(8 , staffRpService.getUpdateRemarks()));
                  } catch (IOException e) {
                      e.printStackTrace();
                      R.failed("下载模板异常：" + e.getMessage());
