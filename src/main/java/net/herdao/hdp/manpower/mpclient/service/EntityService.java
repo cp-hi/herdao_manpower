@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,6 +21,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+//import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;;
+//import com.baomidou.mybatisplus.mapper.LogicSqlInjector;
 
 /**
  * 实体操作的基础Service
@@ -93,10 +98,14 @@ public interface EntityService<T> extends IService<T> {
     default String generateEntityCode() throws IllegalAccessException {
         //todo 解决逻辑删除后无法查询到的问题
         String sql = "select max(id) from " + getTabelName();
-        T t = getOne(new QueryWrapper<T>().inSql("id", sql));
+
+        T t = this.getOne((Wrapper<T>) new QueryWrapper().select(getTableCodeField()).inSql("id", sql));
+
+
         String entityCode = "000001";
         if (null != t) {
             Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
+            if (null == field) return entityCode;
             field.setAccessible(true);
             Object val = field.get(t);
             if (null != val)
@@ -112,10 +121,11 @@ public interface EntityService<T> extends IService<T> {
      * @throws IllegalAccessException
      */
     default void setEntityCode(T t) throws IllegalAccessException {
-        Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
+        String codeField = getEntityCodeField();
+        Field field = AnnotationUtils.getFieldByName(t, codeField);
         if (null == field) return;
-        String entityCode = generateEntityCode();
         field.setAccessible(true);
+        String entityCode = generateEntityCode();
         field.set(t, entityCode);
     }
 

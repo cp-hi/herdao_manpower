@@ -21,4 +21,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      */
     @Select("select max(${field} ) from ${tabel}")
     String generateEntityCode(String tabel, String field);
+
+    @Select("select * from ${table} where id = #{id, jdbcType=BIGINT} ")
+    T selectIgnoreLogic(Long id,String table);
 }
