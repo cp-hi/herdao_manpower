@@ -163,7 +163,7 @@ public class StaffRewardsPulishmentsController {
      */
     @ApiOperation(value = "新增员工奖惩", notes = "新增员工奖惩")
     @SysLog("新增员工奖惩" )
-    @GetMapping("/saveStaffRp" )
+    @PostMapping("/saveStaffRp" )
     public R saveStaffRp(@RequestBody StaffRewardsPulishments staffRp) {
         String username = UserUtils.getUsername();
         Integer userId = UserUtils.getUserId();
@@ -180,7 +180,7 @@ public class StaffRewardsPulishmentsController {
      */
     @ApiOperation(value = "更新员工奖惩", notes = "更新员工奖惩")
     @SysLog("更新员工奖惩" )
-    @GetMapping("/updateStaffRp" )
+    @PostMapping("/updateStaffRp" )
     public R updateStaffRp(@RequestBody StaffRewardsPulishments staffRp) {
         String username = UserUtils.getUsername();
         Integer userId = UserUtils.getUserId();

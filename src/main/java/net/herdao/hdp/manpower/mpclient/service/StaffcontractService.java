@@ -20,7 +20,7 @@ import java.util.List;
  * @author liang
  * @date 2020-09-27 09:15:28
  */
-public interface StaffcontractService extends EntityService<Staffcontract> {
+public interface StaffcontractService extends EasyExcelService<Staffcontract> {
     /**
      * 员工合同签订分页
      * @param page 分页对象

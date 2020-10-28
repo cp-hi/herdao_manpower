@@ -46,7 +46,6 @@
                      t.END_DATE,
                      t.company,
                      t.CONTRACT_ID,
-                     t.enableStatus,
                      t.CONTRACT_TYPE,
                      t.CONTRACT_PERIOD,
                      t.PROBATION_MONTH,
@@ -63,9 +62,6 @@
                      f.END_DATE,
                      c.COMPANY_NAME company,
                      f.CONTRACT_ID	,
-                     case when f.NEWEST = 0 then '否'
-                     when  f.NEWEST = 1 then '是'
-                     end enableStatus,
                      dic.label CONTRACT_TYPE,
                      f.CONTRACT_PERIOD,
                      f.PROBATION_MONTH,
@@ -74,11 +70,12 @@
                      IF(f.NEWEST=0,'生效','失效') contract_status
                      FROM  mp_staffcontract f
                      LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
-                     LEFT JOIN mp_company c ON  c.id=f.COMPANY_CODE
+                     LEFT JOIN mp_company c ON  c.COMPANY_CODE=f.COMPANY_CODE
                      LEFT JOIN sys_dict_item dic ON  dic.id = f.CONTRACT_TYPE and dic.type='HTQXLX'
                      LEFT JOIN mp_user u ON  u.id = f.MODIFIER_CODE
                      where f.del_flag = 0
-              )t where 1=1
+                     order by f.CREATED_TIME desc
+         )t where 1=1
           <if test="searchText != null">
              and CONCAT(
                  IFNULL( t.staff_name,''),IFNULL( t.staff_code,''),IFNULL( t.START_DATE,''),
@@ -99,7 +96,6 @@
                 t.END_DATE,
                 t.company,
                 t.CONTRACT_ID,
-                t.enableStatus,
                 t.CONTRACT_TYPE,
                 t.CONTRACT_PERIOD,
                 t.PROBATION_MONTH,
@@ -116,9 +112,6 @@
                 f.END_DATE,
                 c.COMPANY_NAME company,
                 f.CONTRACT_ID	,
-                case when f.NEWEST = 0 then '否'
-                when  f.NEWEST = 1 then '是'
-                end enableStatus,
                 dic.label CONTRACT_TYPE,
                 f.CONTRACT_PERIOD,
                 f.PROBATION_MONTH,
@@ -127,17 +120,18 @@
                 IF(f.NEWEST=0,'生效','失效') contract_status
                 FROM  mp_staffcontract f
                 LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
-                LEFT JOIN mp_company c ON  c.id=f.COMPANY_CODE
+                LEFT JOIN mp_company c ON c.COMPANY_CODE=f.COMPANY_CODE
                 LEFT JOIN sys_dict_item dic ON  dic.id = f.CONTRACT_TYPE and dic.type='HTQXLX'
                 LEFT JOIN mp_user u ON  u.id = f.MODIFIER_CODE
                 where f.del_flag = 0
+                order by f.CREATED_TIME desc
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(
-            IFNULL( t.staff_name,''),IFNULL( t.staff_code,''),IFNULL( t.START_DATE,''),
-            IFNULL( t.END_DATE,'') ,IFNULL( t.company,''),IFNULL( t.CONTRACT_ID,''),IFNULL( t.contract_status,'')
-            IFNULL( t.enableStatus,'') ,IFNULL( t.CONTRACT_TYPE,''),IFNULL( t.CONTRACT_PERIOD,'') ,
-            IFNULL( t.PROBATION_MONTH,'') ,IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
+                IFNULL( t.staff_name,''),IFNULL( t.staff_code,''),IFNULL( t.START_DATE,''),
+                IFNULL( t.END_DATE,'') ,IFNULL( t.company,''),IFNULL( t.CONTRACT_ID,''),IFNULL( t.contract_status,'')
+                IFNULL( t.enableStatus,'') ,IFNULL( t.CONTRACT_TYPE,''),IFNULL( t.CONTRACT_PERIOD,'') ,
+                IFNULL( t.PROBATION_MONTH,'') ,IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
             )  LIKE concat('%',#{searchText},'%')
         </if>
     </select>
