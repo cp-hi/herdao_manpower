@@ -1,5 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.handler;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -10,6 +16,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.write.handler.SheetWriteHandler;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
@@ -32,14 +39,25 @@ public class EasyExcelSheetWriteHandler implements SheetWriteHandler{
 	int lastCol = 0;
 	// font 高度
 	int fontHeight = 200;
-	// 备注信息
-	String remarks = "";
+	// 备注、说明信息
+	String description = "";
 	
 	public EasyExcelSheetWriteHandler() {}
 	
-	public EasyExcelSheetWriteHandler(Integer lastCol, String remarks) {
+	public EasyExcelSheetWriteHandler(Integer lastCol, String description) {
 		this.lastCol = lastCol;
-		this.remarks = remarks;
+		this.description = description;
+	}
+	
+	public EasyExcelSheetWriteHandler(Class cls, String description) {
+		this.lastCol = countExcelProperty(cls);
+		this.description = description;
+	}
+	
+	public EasyExcelSheetWriteHandler(Class cls, Integer fontHeight, String description) {
+		this.lastCol = countExcelProperty(cls);
+		this.fontHeight = fontHeight;
+		this.description = description;
 	}
 
 	@Override
@@ -58,7 +76,7 @@ public class EasyExcelSheetWriteHandler implements SheetWriteHandler{
              remarksRow.setHeight((short) remarksRowHeight);
              // 设置 cell 样式
              Cell remarksCell = remarksRow.createCell(remarksCellIndex);
-             remarksCell.setCellValue(remarks);
+             remarksCell.setCellValue(description);
              CellStyle cellStyle = workbook.createCellStyle();
              cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
              cellStyle.setAlignment(HorizontalAlignment.LEFT);
@@ -71,4 +89,49 @@ public class EasyExcelSheetWriteHandler implements SheetWriteHandler{
              sheet.addMergedRegionUnsafe(new CellRangeAddress(0, 0, 0, lastCol));
         }
     }
+    
+    /**
+     * 统计ExcelProperty 注解个数
+     * 
+     * @param object
+     * @return
+     * @throws ClassNotFoundException
+     */
+    public static int countExcelProperty(Class cls) {
+    	
+    	int countExcelprops = -1;
+        try {
+			// 获取属性数组
+			Field[] fields = getFields(Class.forName(cls.getName()));
+
+			for (Field field : fields) {
+				
+				field.setAccessible(true);
+			    Annotation fieldAnnotation = field.getDeclaredAnnotation(ExcelProperty.class);
+			    
+			    if (fieldAnnotation != null) {
+			    	countExcelprops ++;
+			    }
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return countExcelprops;
+    }
+    
+    /**
+     * 获取属性包括父类
+     * @param cls
+     * @return
+     */
+	public static Field[] getFields(Class<?> cls) {
+		List<Field> fieldList = new ArrayList<>();
+		while (cls != null) {
+			fieldList.addAll(new ArrayList<>(Arrays.asList(cls.getDeclaredFields())));
+			cls = cls.getSuperclass();
+		}
+		Field[] fields = new Field[fieldList.size()];
+		fieldList.toArray(fields);
+		return fields;
+	}
 }

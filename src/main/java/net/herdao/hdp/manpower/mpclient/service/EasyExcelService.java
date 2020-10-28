@@ -3,7 +3,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.google.common.collect.Lists;
 
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 
@@ -24,24 +23,5 @@ public interface EasyExcelService<T> extends IService<T>{
 	 * @return
 	 */
 	List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType);
-	
-	
-	/**
-	 * 批量保存 （事务由调用方管控）
-	 * 
-	 * @param dataList 数据集
-	 * @param batchSize 批次大小
-	 */
-	 default void saveOrUpdateBatch(List<T> dataList, Integer batchSize) {
-		// 默认批次
-		if (batchSize == null || batchSize == 0) {
-			batchSize = 100;
-		}
-		List<List<T>> batchList = Lists.partition(dataList, batchSize);
-		batchList.forEach(list -> {
-			this.saveOrUpdateBatch(list);
-		});
-		dataList.clear();
-	}
 
 }

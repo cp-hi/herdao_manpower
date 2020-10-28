@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto.organization;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -22,10 +23,11 @@ import lombok.Data;
 @ExcelIgnoreUnannotated
 @ApiModel(value = "组织批量新增")
 @HeadFontStyle
+@ColumnWidth(30)
 public class OrganizationAddDTO {
 	
 	@ExcelProperty(value = "组织名称", index = 0)
-	@ColumnWidth(30)
+	@Valid
 	@NotBlank(message = "不能为空")
 	@HeadFontStyle(color = 10)
 	private String orgName;
@@ -34,7 +36,7 @@ public class OrganizationAddDTO {
 	private String orgCode;
 
 	@ExcelProperty(value = "组织类型", index = 1)
-	@ColumnWidth(30)
+	@Valid
 	@NotBlank(message = "不能为空")
 	private String orgType;
 	
@@ -45,7 +47,6 @@ public class OrganizationAddDTO {
 	private Long parentId;
 	
 	@ExcelProperty(value = "上级组织编码", index = 2)
-	@ColumnWidth(30)
 	@HeadFontStyle(color = 10)
 	private String parentOrgCode;
 
@@ -56,7 +57,6 @@ public class OrganizationAddDTO {
 	private String orgChargeName;
 	
 	@ExcelProperty(value = "组织负责人工号", index = 3)
-	@ColumnWidth(30)
 	private String orgChargeWorkNo;
 
 	@ApiModelProperty(value = "负责岗位id")
@@ -64,7 +64,6 @@ public class OrganizationAddDTO {
 	
 	// TOTO 需要通过岗位名称与当前用户的集团信息做关联查询
 	@ExcelProperty(value = "负责岗位", index = 4)
-	@ColumnWidth(30)
 	private String postCode;
 
 }

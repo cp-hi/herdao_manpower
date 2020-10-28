@@ -216,9 +216,4 @@ public interface OrganizationService extends EasyExcelService<Organization>{
      */
     List<OrganizationImportDTO> selectAllOrganization();
     
-    /**
-     *  获取批量新增、编辑模板备注信息
-     * @return
-     */
-   	String getRemarks();
 }

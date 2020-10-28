@@ -6,9 +6,7 @@ package net.herdao.hdp.manpower.mpclient.constant;
  * @author hdp
  * @date 2020-10-20 11:37:27
  */
-public class ExcelPatternMsgContants {
-
-    private ExcelPatternMsgContants(){}
+public interface ExcelPatternMsgContants {
 
     //只能输入整数或者小数
     public static final String DECIMAL = "^[0-9]+\\.{0,1}[0-9]{0,2}$";

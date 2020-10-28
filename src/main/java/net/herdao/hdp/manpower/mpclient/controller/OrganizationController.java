@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
@@ -354,7 +355,7 @@ public class OrganizationController {
 			
 			Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
 
-			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, excelCls, 0, 1);
+			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, excelCls, importType, 1);
 
 			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(2).doRead();
 
@@ -396,7 +397,7 @@ public class OrganizationController {
 		List<OrganizationImportDTO> organizationImportList = importType == 0 ? new ArrayList<>() : this.orgService.selectAllOrganization();
 		try {
 			EasyExcelUtils.webWriteExcel(response, organizationImportList, excelCls, "批量" + ( importType == 0 ? "新增" : "编辑" + "组织模板"),
-					   new EasyExcelSheetWriteHandler(importType == 0 ? 4 : 8, orgService.getRemarks()));
+					   new EasyExcelSheetWriteHandler(excelCls, ExcelDescriptionContants.getOrganizationExcelDescription()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			R.failed("下载模板异常：" + e.getMessage());

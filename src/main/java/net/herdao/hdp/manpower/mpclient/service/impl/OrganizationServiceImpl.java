@@ -672,7 +672,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		}
 		// 保存新增、修改组织信息
 		if(ObjectUtil.isEmpty(errList)) {
-			this.saveOrUpdateBatch(organizationList, null);
+			this.saveOrUpdateBatch(organizationList, 200);
 		}
 		
 		return errList;
@@ -807,7 +807,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				StringBufferUtils.appendStringBuffer(errMsg, "组织名称：" + orgDto.getOrgName() + "，上级组织编码：" + orgDto.getParentOrgCode() + "不存在");
 			} else {
 				organization = new Organization();
-				BeanUtils.copyProperties(orgIDto, organization);
+				BeanUtils.copyProperties(orgDto, organization);
+				organization.setId(orgIDto.getId());
+				organization.setOrgCode(orgIDto.getOrgCode());
 			}
 
 			// 父组织信息
@@ -939,19 +941,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 			});
 		}
 		return renderMap;
-	}
-	
-
-    // 备注信息
-	public String getRemarks() {
-		StringBuffer remarks = new StringBuffer();
-		remarks.append("导入说明：\r\n")
-				.append("1、标红字段为必填\r\n")
-				.append("2、操作导入前请删除示例数据\r\n")
-				.append("3、上级组织名称请填写已启用的组织编码\r\n")
-				.append("4、组织类型请输入系统中已存在的组织类型，如：部门\r\n")
-			    .append("5、组织负责人工号请输入在职员工的工号；负责岗位请输入系统中已启用的岗位");
-		return remarks.toString();
 	}
 	
 	/**======================================  组织导入 end ====================================**/
