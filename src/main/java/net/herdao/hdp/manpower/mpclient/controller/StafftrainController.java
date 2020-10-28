@@ -12,10 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainExcelErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
+import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
@@ -28,9 +33,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -157,9 +162,10 @@ public class StafftrainController{
      * @return R
      */
     @ApiOperation(value = "批量导入员工培训 (excel导入)", notes = "批量导入员工培训 (excel导入)")
-    @GetMapping("/batchImportTrain")
+    @PostMapping("/batchImportTrain")
     @ResponseBody
-    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "导入文件"),
             @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
     })
     public R batchImportTrain(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
@@ -194,5 +200,40 @@ public class StafftrainController{
         return R.ok(stafftrainService.getById(id));
     }
 
+    /**
+     * 下载员工培训新增、编辑模板
+     * @param response
+     * @param importType
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    @ApiOperation(value = "下载员工培训新增、编辑模板")
+    @GetMapping("/downloadTemplate")
+    @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
+    public R downloadTemplate(HttpServletResponse response, Integer importType) {
+        if (importType!=null){
+            if (importType==0){
+                try {
+                    EasyExcelUtils.webWriteExcel(response, new ArrayList<>(), StaffTrainAddDTO.class, "批量新增员工培训模板",
+                            new EasyExcelSheetWriteHandler(8 , stafftrainService.getAddRemarks()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    R.failed("下载模板异常：" + e.getMessage());
+                }
+            }
 
+            if (importType==1){
+                List<StafftrainDTO> staffTrainList = stafftrainService.findStaffTrain(null);
+                try {
+                    EasyExcelUtils.webWriteExcel(response, staffTrainList, StaffTrainUpdateDTO.class, "批量编辑员工培训模板",
+                            new EasyExcelSheetWriteHandler(8 , stafftrainService.getUpdateRemarks()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    R.failed("下载模板异常：" + e.getMessage());
+                }
+            }
+        }
+
+        return R.ok(null, "下载模板成功！");
+    }
 }

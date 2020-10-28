@@ -59,9 +59,8 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     @Override
     public boolean saveWorkDTO(WorkexperienceDTO workexperienceDTO){
     	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        String userName=userInfo.getSysUser().getUsername();
+        String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
-        
         Workexperience workexperience = new Workexperience();
         BeanUtils.copyProperties(workexperienceDTO, workexperience);
         //创建人工号、姓名、时间；修改人工号、姓名、时间
@@ -79,7 +78,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     @Override
     public boolean updateWorkDTO(WorkexperienceDTO workexperienceDTO) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        String userName=userInfo.getSysUser().getUsername();
+        String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
         
         Workexperience workexperience = this.getById(workexperienceDTO.getId());
@@ -102,7 +101,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     @Override
     public boolean saveWork(Workexperience workexperience) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        String userName=userInfo.getSysUser().getUsername();
+        String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
         LocalDateTime now = LocalDateTime.now();
         workexperience.setCreatorCode(loginCode);
@@ -115,7 +114,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     @Override
     public boolean updateWork(Workexperience orkexperience) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        String userName=userInfo.getSysUser().getUsername();
+        String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
 
         //修改人工号、姓名、时间

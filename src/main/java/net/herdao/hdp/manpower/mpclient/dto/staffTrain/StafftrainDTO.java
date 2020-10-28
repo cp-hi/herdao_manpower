@@ -14,7 +14,6 @@ import java.util.Date;
 
 /**
  * 员工培训list DTO
- *
  * @author andy
  * @date 2020-09-25 09:49:45
  */
@@ -49,7 +48,7 @@ public class StafftrainDTO  {
     @ApiModelProperty(value="开始时间")
     @ExcelProperty(value = "开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date beginTime;
+    private String beginTime;
 
     /**
      * 结束时间
@@ -57,7 +56,7 @@ public class StafftrainDTO  {
     @ApiModelProperty(value="结束时间")
     @ExcelProperty(value = "结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date endTime;
+    private String endTime;
 
     /**
      * 培训时长
@@ -123,26 +122,12 @@ public class StafftrainDTO  {
     @ExcelProperty(value = "备注")
     private String remarks;
 
-
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="操作人")
-    @ExcelProperty(value = "操作人")
-    private Date modifierName;
-
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="操作时间")
-    @ExcelProperty(value = "操作时间")
-    private Date modifiedTime;
-
     /**
      * 最近更新情况
      */
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")
+    @ExcelIgnore
     private String updateDesc;
 
 }
