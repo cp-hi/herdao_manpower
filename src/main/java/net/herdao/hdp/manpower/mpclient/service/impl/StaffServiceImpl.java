@@ -181,7 +181,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public boolean staffSave(StaffDetailDTO staffForm){
+	public StaffDetailBaseDTO staffSave(StaffDetailDTO staffForm){
 		Staff staff = new Staff();
 		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
 		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
@@ -194,8 +194,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 		staff.setStaffCode(staffCode);
 		staff.setUserId(user.getId());
-		boolean isOk = this.save(staff);
-		return isOk;
+		this.save(staff);
+		StaffDetailBaseDTO baseDTO = new StaffDetailBaseDTO();
+		BeanUtils.copyProperties(staff, baseDTO);
+		return baseDTO;
 	}
 
     @Override
