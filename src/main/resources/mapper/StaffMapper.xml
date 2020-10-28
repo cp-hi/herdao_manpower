@@ -241,10 +241,25 @@
     <select id="getStaffBase" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO">
         SELECT
             f.ID,
-            u.IS_STOP
+            u.IS_STOP,
+            o.ORG_NAME,
+            p.POST_NAME,
+            dt.label JOB_TYPE_NAME
         FROM
             mp_staff f
         LEFT JOIN mp_user u ON f.user_id = u.ID
+        LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
+        LEFT JOIN (
+                SELECT
+                    *
+                FROM
+                    mp_userpost
+                WHERE
+                    MAIN_POST = TRUE
+            ) up ON u.ID = up.USER_ID
+        LEFT JOIN mp_post p ON p.ID = up.POST_ID
+        LEFT JOIN sys_dict_item dt ON f.JOB_TYPE = dt.value
+            AND dt.type = 'JOB_TYPE'
         WHERE
             f.ID = #{id}
         LIMIT 1

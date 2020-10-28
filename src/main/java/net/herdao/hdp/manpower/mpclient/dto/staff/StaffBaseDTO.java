@@ -35,4 +35,13 @@ public class StaffBaseDTO {
 
     @ApiModelProperty(value="是否停用")
     private Long isStop;
+
+    @ApiModelProperty(value="部门")
+    private String orgName;
+
+    @ApiModelProperty(value="职位")
+    private String postName;
+
+    @ApiModelProperty(value="任职类型名称")
+    private String jobTypeName;
 }
