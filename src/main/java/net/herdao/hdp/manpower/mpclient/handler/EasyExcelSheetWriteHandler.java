@@ -14,7 +14,7 @@ import com.alibaba.excel.write.handler.SheetWriteHandler;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
 /**
- * 组织批量新增、编辑 Handler
+ * 批量新增、编辑 Handler
  *
  * @author shuling
  * @date 2020-10-27 14:37:22

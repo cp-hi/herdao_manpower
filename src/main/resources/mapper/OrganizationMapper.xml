@@ -468,6 +468,7 @@
                 orgList.org_name,
                 orgList.org_code,
                 orgList.org_type,
+                orgList.org_type_name,
                 orgList.org_charge_name,
                 orgList.post_name,
                 orgList.del_flag,
@@ -481,6 +482,7 @@
 			        org.org_name,
 			        org.org_code,
 			       	org.org_type,
+			       	dict.label AS org_type_name,
 			        org.org_charge_name,
 			        org.is_stop,
 			        0 staff_total,
@@ -494,6 +496,7 @@
         		LEFT JOIN mp_post ps ON ps.id = org.post_id
         		LEFT JOIN mp_user cus ON cus.id = org.creator_id 
         		LEFT JOIN mp_user mus ON mus.id = org.modifier_id 
+        		LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
        		 ) orgList
 	        <where>
 	        	AND orgList.del_flag = 0
@@ -521,6 +524,7 @@
 			orgp.org_code AS parent_org_code,
 			org.org_level,
 			org.org_type,
+			dict.label AS org_type_name,
 			0 staff_total,
 	        org.organizational,
 	        org.welfare_type,
@@ -534,6 +538,7 @@
 			) WHEN 0 THEN 1 ELSE 0 END canDelete
          FROM mp_organization org
          LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+         LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
          <where>
           <if test="id != null">
               AND  org.id = #{id}
