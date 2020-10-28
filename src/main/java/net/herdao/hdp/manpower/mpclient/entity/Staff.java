@@ -27,6 +27,7 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 员工表
@@ -145,22 +146,25 @@ private static final long serialVersionUID = 1L;
      * 最高学历
      */
     @ApiModelProperty(value="最高学历")
+    private String educationQua;
+
+    @ApiModelProperty(value="最高学位")
     private String educationDegree;
-    /**
-     * 专业
-     */
+
+    @ApiModelProperty(value="毕业院校")
+    private String schoolName;
+
+    @ApiModelProperty(value="入学日期")
+    private Date beginDate;
+
+    @ApiModelProperty(value="毕业日期")
+    private Date endDate;
+
     @ApiModelProperty(value="专业")
     private String professional;
-    /**
-     * 毕业院校
-     */
-    @ApiModelProperty(value="毕业院校")
-    private String graduatedFrom;
-    /**
-     * 毕业时间
-     */
-    @ApiModelProperty(value="毕业时间")
-    private LocalDate graduatedTime;
+
+    @ApiModelProperty(value="学习形式")
+    private String learnForm;
     /**
      * 参加工作日期
      */

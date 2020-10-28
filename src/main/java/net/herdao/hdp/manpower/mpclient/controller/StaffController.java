@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
@@ -419,6 +420,23 @@ public class StaffController {
         }
 
         return R.ok(staff);
+    }
+
+    /**
+     * 获取员工头像
+     * @return
+     */
+    @GetMapping("/getPhotoByCode")
+    public R<String> getPhotoByCode(String staffCode) {
+        List<Staff> list = staffService.list(new QueryWrapper<Staff>()
+                .eq("STAFF_CODE", staffCode)
+                .last("limit 1")
+        );
+        String photoAddr = "";
+        if(list!=null && list.size()!=0){
+            photoAddr = list.get(0).getPhotoAddr();
+        }
+        return R.ok(photoAddr);
     }
 
 }

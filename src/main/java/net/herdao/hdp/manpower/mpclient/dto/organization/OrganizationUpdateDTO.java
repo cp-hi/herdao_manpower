@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,10 +21,12 @@ import lombok.Data;
 @Data
 @ExcelIgnoreUnannotated
 @ApiModel(value = "组织批量修改")
+@HeadFontStyle
 public class OrganizationUpdateDTO {
 
 	@ExcelProperty(value = "组织名称", index = 0)
 	@ColumnWidth(30)
+	@HeadFontStyle(color = 10)
 	@NotBlank(message = "不能为空")
 	private String orgName;
 
@@ -43,6 +46,7 @@ public class OrganizationUpdateDTO {
 	
 	@ExcelProperty(value = "上级组织编码", index = 2)
 	@ColumnWidth(30)
+	@HeadFontStyle(color = 10)
 	private String parentOrgCode;
 
 	@ApiModelProperty(value = "组织负责人id")
@@ -53,15 +57,13 @@ public class OrganizationUpdateDTO {
 	
 	@ExcelProperty(value = "组织负责人工号", index = 3)
 	@ColumnWidth(30)
-	@NotBlank(message = "不能为空")
 	private String orgChargeWorkNo;
 
 	@ApiModelProperty(value = "负责岗位id")
 	private Long postId;
-	
-	@ExcelProperty(value = "岗位编码", index = 4)
+	// TOTO 需要通过岗位名称与当前用户的集团信息做关联查询
+	@ExcelProperty(value = "负责岗位", index = 4)
 	@ColumnWidth(30)
-	@NotBlank(message = "不能为空")
 	private String postCode;
 	
 	@ExcelProperty(value = "是否虚拟组织", index = 5)

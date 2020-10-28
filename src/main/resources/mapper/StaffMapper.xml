@@ -278,10 +278,13 @@
             f.ACCOUNT_TYPE,
             f.MODIFIER_NAME,
             f.MODIFIED_TIME,
+            f.BEGIN_DATE,
+            f.END_DATE,
             f.EDUCATION_DEGREE,
-            f.GRADUATED_TIME,
-            f.GRADUATED_FROM,
-            f.PROFESSIONAL
+            f.EDUCATION_QUA,
+            f.SCHOOL_NAME,
+            f.PROFESSIONAL,
+            f.LEARN_FORM
         FROM
             mp_staff f
         LEFT JOIN mp_user u ON f.user_id = u.ID

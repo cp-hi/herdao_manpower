@@ -92,17 +92,24 @@ public class StaffListDTO {
     private String maritalStatus;
 
     @ApiModelProperty(value="最高学历")
-    private String educationDegree;
+    private String educationQua;
 
     @ApiModelProperty(value="户口类型")
     private String accountType;
 
+    @ApiModelProperty(value="最高学位")
+    private String educationDegree;
+
+    @ApiModelProperty(value="入学日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date beginDate;
+
     @ApiModelProperty(value="毕业日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private LocalDate graduatedTime;
+    private Date endDate;
 
     @ApiModelProperty(value="毕业院校")
-    private String graduatedFrom;
+    private String schoolName;
 
     @ApiModelProperty(value="专业")
     private String professional;

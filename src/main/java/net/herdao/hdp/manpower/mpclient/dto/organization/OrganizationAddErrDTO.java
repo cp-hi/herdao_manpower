@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.dto.organization;
 
 import javax.validation.constraints.NotBlank;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @ApiModel(value = "组织批量新增异常处理")
+@ExcelIgnoreUnannotated
 public class OrganizationAddErrDTO {
 
     @ExcelProperty(value = "错误信息", index = 0)
