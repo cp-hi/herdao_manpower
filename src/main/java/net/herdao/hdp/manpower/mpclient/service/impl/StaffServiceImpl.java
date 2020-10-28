@@ -181,43 +181,29 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public StaffDetailBaseDTO staffSave(StaffDetailDTO staffForm){
+	public StaffDetailDTO staffSave(StaffDetailDTO staffForm){
 		Staff staff = new Staff();
-		BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
-		BeanUtils.copyProperties(staffForm.getJobObj(), staff);
+		BeanUtils.copyProperties(staffForm, staff);
 		long code = sysSequenceService.getNext("staff_code");
 		String staffCode = code + "";
 		User user = new User();
 		user.setLoginCode(staffCode);
 		user.setUserName(staff.getStaffName());
+		user.setOrgDeptId(staffForm.getOrgDeptId());
 		userService.save(user);
+		Userpost up = new Userpost();
+		up.setOrgDeptId(staffForm.getOrgDeptId());
+		up.setPostId(staffForm.getPostId());
+		up.setUserId(user.getId());
+		up.setMainPost(true);
+		userpostService.save(up);
 
 		staff.setStaffCode(staffCode);
 		staff.setUserId(user.getId());
 		this.save(staff);
-		StaffDetailBaseDTO baseDTO = new StaffDetailBaseDTO();
-		BeanUtils.copyProperties(staff, baseDTO);
-		return baseDTO;
+		BeanUtils.copyProperties(staff, staffForm);
+		return staffForm;
 	}
-
-    @Override
-    public boolean staffUpdate(StaffDetailDTO staffForm){
-        Staff staff = new Staff();
-        BeanUtils.copyProperties(staffForm.getBaseObj(), staff);
-        BeanUtils.copyProperties(staffForm.getJobObj(), staff);
-        return this.updateById(staff);
-    }
-
-	@Override
-    public StaffDetailDTO getStaffById(Long id){
-	    Staff staff = this.getById(id);
-        StaffDetailBaseDTO base = new StaffDetailBaseDTO();
-        StaffDetailJobDTO job = new StaffDetailJobDTO();
-        BeanUtils.copyProperties(staff, base);
-        BeanUtils.copyProperties(staff, job);
-        StaffDetailDTO form = new StaffDetailDTO(base, job);
-        return form;
-    }
 
 	@Override
     public Map<String, Object> getStaffDetail(Long id){
