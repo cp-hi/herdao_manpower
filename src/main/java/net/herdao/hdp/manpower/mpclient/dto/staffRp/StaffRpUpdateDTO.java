@@ -5,31 +5,23 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.HeadFontStyle;
-import com.alibaba.excel.annotation.write.style.HeadStyle;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
-import java.util.Date;
 
 /**
- * 员工奖惩批量新增DTO
+ * 员工奖惩批量编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工奖惩批量新增DTO")
+@ApiModel(value = "员工奖惩批量编辑DTO")
 @ColumnWidth(20)
 @HeadFontStyle
-public class StaffRpAddDTO {
-    @ExcelIgnore
-    private Long id;
-
-    @ExcelIgnore
-    private Long staffId;
+public class StaffRpUpdateDTO {
 
     @ExcelProperty(value = "员工姓名",index =0)
     @NotBlank(message = "不能为空")
@@ -74,7 +66,6 @@ public class StaffRpAddDTO {
      * 奖惩金额
      */
     @ExcelProperty(value = "奖惩金额",index =6)
-    @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String amount;
 
     /**

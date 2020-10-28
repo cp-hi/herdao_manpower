@@ -73,23 +73,10 @@ public class StaffRpDTO  {
     private String remarks;
 
     /**
-     * 操作人
-     */
-    @ExcelProperty(value = "操作人")
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
-
-    /**
-     * 操作时间
-     */
-    @ExcelProperty(value = "操作时间")
-    @ApiModelProperty(value="操作时间")
-    private String modifiedTime;
-
-    /**
      * 最近更新情况
      */
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")
+    @ExcelIgnore
     private String updateDesc;
 }
