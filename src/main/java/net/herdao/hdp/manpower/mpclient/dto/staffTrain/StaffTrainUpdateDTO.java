@@ -18,15 +18,10 @@ import javax.validation.constraints.Pattern;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工培训批量新增DTO")
+@ApiModel(value = "员工培训批量编辑DTO")
 @ColumnWidth(20)
 @HeadFontStyle
-public class StaffTrainAddDTO  {
-    @ExcelIgnore
-    private Long id;
-
-    @ExcelIgnore
-    private Long staffId;
+public class StaffTrainUpdateDTO {
 
     @ExcelProperty(index =0 ,value = "员工姓名")
     @NotBlank(message = "不能为空")

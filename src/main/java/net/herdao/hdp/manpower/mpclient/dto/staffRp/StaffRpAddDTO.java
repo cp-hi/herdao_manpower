@@ -5,13 +5,12 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.HeadFontStyle;
-import com.alibaba.excel.annotation.write.style.HeadStyle;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
@@ -32,11 +31,13 @@ public class StaffRpAddDTO {
     private Long staffId;
 
     @ExcelProperty(value = "员工姓名",index =0)
+    @Valid
     @NotBlank(message = "不能为空")
     @HeadFontStyle(color = 10)
     private String staffName;
 
     @ExcelProperty(value = "员工工号",index =1)
+    @Valid
     @NotBlank(message = "不能为空")
     @HeadFontStyle(color = 10)
     private String staffCode;
@@ -45,6 +46,7 @@ public class StaffRpAddDTO {
      * 奖励/惩罚 0:奖励 1:惩罚
      */
     @ExcelProperty(value = "奖励/惩罚",index =2)
+    @Valid
     @NotBlank(message = "不能为空")
     @HeadFontStyle(color = 10)
     private String choice;
@@ -53,6 +55,7 @@ public class StaffRpAddDTO {
      * 奖惩时间
      */
     @ExcelProperty(value="奖惩时间", index =3)
+    @Valid
     @NotBlank(message = "不能为空")
     @HeadFontStyle(color = 10)
     private String executeDate;

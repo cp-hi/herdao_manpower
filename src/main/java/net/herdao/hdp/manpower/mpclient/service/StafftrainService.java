@@ -47,5 +47,15 @@ public interface StafftrainService extends EasyExcelService<Stafftrain> {
      */
     List<StafftrainDTO> findStaffTrain(String searchText);
 
+    /**
+     *  获取批量新增模板备注信息
+     * @return
+     */
+    String getAddRemarks();
 
+    /**
+     *  获取批量编辑模板备注信息
+     * @return
+     */
+    String getUpdateRemarks();
 }
