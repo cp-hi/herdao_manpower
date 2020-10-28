@@ -20,14 +20,12 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import java.util.List;
 import java.util.Map;
 
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -70,6 +68,27 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @return StaffBaseDTO
 	 */
 	StaffBaseDTO getStaffBase(Long id);
+
+	/**
+	 * 查询员工个人档案
+	 * @param id
+	 * @return StaffArchiveDTO
+	 */
+	StaffArchiveDTO getStaffArchive(Long id);
+
+	/**
+	 * 查询员工最高教育经历
+	 * @param id
+	 * @return StaffEducationLastDTO
+	 */
+	StaffEducationLastDTO getStaffEducationLast(Long id);
+
+	/**
+	 * 查询员工劳资情况
+	 * @param id
+	 * @return StaffEducationLastDTO
+	 */
+	StaffWelfareDTO getStaffWelfare(Long id);
 
 	/**
 	 * 集团分页列表

@@ -46,4 +46,6 @@ public class StaffEducationLastDTO {
     @ApiModelProperty(value="学习形式")
     private String learnForm;
 
+    @ApiModelProperty(value="学习形式名称")
+    private String learnFormName;
 }

@@ -255,8 +255,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	public Map<String, Object> getHomePage(Long id){
 		Staff staff = this.getById(id);
 		StaffBaseDTO base = baseMapper.getStaffBase(id);
-		StaffArchiveDTO archive = new StaffArchiveDTO();
-		StaffWelfareDTO welfare = new StaffWelfareDTO();
+		StaffArchiveDTO archive = baseMapper.getStaffArchive(id);
+		StaffWelfareDTO welfare = baseMapper.getStaffWelfare(id);
 		StaffCarreraDTO carrera = new StaffCarreraDTO();
 		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, archive);
@@ -312,7 +312,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				.orderByDesc("END_DATE")
 				.last("limit 1")
 		);
-		StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+		StaffEducationLastDTO educationLast = baseMapper.getStaffEducationLast(id);
 		if(eduList!=null && eduList.size()!=0){
 			Staffeducation staffeducation = eduList.get(0);
 			BeanUtils.copyProperties(staffeducation, educationLast);

@@ -1,10 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.dto.staff;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 /**
  * @author yangrr
@@ -25,13 +27,15 @@ public class StaffWelfareDTO {
     private String socialSecurityNumberCity;
 
     @ApiModelProperty(value="社保封存时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private LocalDateTime securityArchiveTime;
 
     @ApiModelProperty(value="实际社保购买单位")
     private String securityUnit;
 
     @ApiModelProperty(value="参保日期")
-    private LocalDateTime insuredTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDate insuredTime;
 
     @ApiModelProperty(value="中间停缴社保年份")
     private BigDecimal interruptYear;
@@ -43,6 +47,7 @@ public class StaffWelfareDTO {
     private String fundUnit;
 
     @ApiModelProperty(value="公积金封存时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private LocalDateTime fundArchiveTime;
 
     @ApiModelProperty(value="公积金银行名称")
@@ -74,4 +79,11 @@ public class StaffWelfareDTO {
 
     @ApiModelProperty(value="收款银行支行编码")
     private String dueBankCode;
+
+
+    @ApiModelProperty(value="社保类型")
+    private String securityTypeName;
+
+    @ApiModelProperty(value="工资发放形式")
+    private String paySalaryTypeName;
 }
