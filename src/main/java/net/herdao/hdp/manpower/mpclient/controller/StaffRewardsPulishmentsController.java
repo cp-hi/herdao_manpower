@@ -127,7 +127,7 @@ public class StaffRewardsPulishmentsController {
      * @return R
      */
     @ApiOperation(value = "批量导入员工奖惩(excel导入)", notes = "批量导入员工奖惩(excel导入)")
-    @GetMapping("/batchImportRp")
+    @PostMapping("/batchImportRp")
     @ResponseBody
     @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
             @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
@@ -216,7 +216,7 @@ public class StaffRewardsPulishmentsController {
      */
     @SuppressWarnings("rawtypes")
     @ApiOperation(value = "下载员工奖惩新增、编辑模板")
-    @GetMapping("/downloadTemplate")
+    @PostMapping("/downloadTemplate")
     @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
     public R downloadTemplate(HttpServletResponse response, Integer importType) {
          if (importType!=null){
