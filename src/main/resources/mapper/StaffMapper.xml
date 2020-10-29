@@ -363,6 +363,32 @@
         LIMIT 1
     </select>
 
+    <!-- 查询员工社保信息 -->
+    <select id="getStaffSecurity" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO">
+        SELECT
+            dt1.label SECURITY_TYPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.SECURITY_TYPE = dt1.VALUE
+            AND dt1.type = 'SBLX'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工薪资信息 -->
+    <select id="getStaffSalary" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO">
+        SELECT
+            dt1.label PAY_SALARY_TYPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.PAY_SALARY_TYPE = dt1.VALUE
+            AND dt1.type = 'GZFFFS'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
     <!-- 花名册翻页列表 -->
     <select id="staffPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO">
         SELECT
