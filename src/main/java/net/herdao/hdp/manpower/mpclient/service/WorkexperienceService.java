@@ -87,4 +87,16 @@ public interface WorkexperienceService extends HdpService<Workexperience> {
      * @return
      */
     boolean updateWork(Workexperience orkexperience);
+
+    /**
+     *  获取批量新增模板备注信息
+     * @return
+     */
+    String getAddRemarks();
+
+    /**
+     *  获取批量编辑模板备注信息
+     * @return
+     */
+    String getUpdateRemarks();
 }

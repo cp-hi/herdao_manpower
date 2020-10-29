@@ -134,5 +134,6 @@ public class WorkexperienceDTO {
      */
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")
+    @ExcelIgnore
     private String updateDesc;
 }

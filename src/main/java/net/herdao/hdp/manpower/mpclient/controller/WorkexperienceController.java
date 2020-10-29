@@ -10,8 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -28,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -209,4 +215,6 @@ public class WorkexperienceController {
             return R.failed(e.getMessage());
         }
     }
+
+
 }
