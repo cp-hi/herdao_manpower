@@ -78,7 +78,8 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        headExcel.addAll(headMap.values());
+        if (headMap.values().size() > 0 && context.readRowHolder().getRowIndex() > 0)
+            headExcel.addAll(headMap.values());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
     @SneakyThrows
     @Override
-    public void invoke(E excel, AnalysisContext analysisContext) {
+    public void invoke(E excel, AnalysisContext context) {
         //如果所有对象属性都为空则是表头描述，先跳过
 //        if (!AnnotationUtils.isNullObj(excel)){
 //            System.out.println(1234);
@@ -122,7 +123,7 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
     @SneakyThrows
     @Override
-    public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+    public void doAfterAllAnalysed(AnalysisContext context) {
         if (hasError)
             throw new Exception("导入出现错误，请查看导错误原因");
         this.entityService.saveList(dataList, BATCH_COUNT);
