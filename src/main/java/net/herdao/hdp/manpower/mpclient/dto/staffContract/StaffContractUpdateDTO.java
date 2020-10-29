@@ -9,20 +9,21 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 员工合同批量新增DTO
+ * 员工合同批量编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工合同批量新增DTO")
-@ColumnWidth(25)
+@ApiModel(value = "员工合同批量编辑DTO")
+@ColumnWidth(20)
 @HeadFontStyle
-public class StaffContractAddDTO {
+public class StaffContractUpdateDTO {
     @ExcelIgnore
     private Long id;
 

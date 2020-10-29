@@ -62,7 +62,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
                 .append("5、培训类型：输入系统中已存在的类型 ，如：内部培训， 外部培训。\r\n")
                 .append("6、培训时长，培训总学时，培训总学分，培训成绩输入内容格式：正整数。\r\n")
                 .append("7、员工姓名+员工工号+开始时间+结束时间:数据唯一标识，不允许重复导入记录。");
-         return remarks.toString();
+        return remarks.toString();
     }
 
     @Override
