@@ -27,6 +27,10 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
         "2、操作导入前请删除示例数据\r\n"
 )
 public class SectionBatchAddVO implements ExcelMsg {
+
+        @ExcelProperty("错误信息")
+    private String errMsg;
+
     @ExcelProperty({"", "板块名称"})
     private String sectionName;
     @ExcelProperty({"", "所属集团"})
@@ -38,8 +42,6 @@ public class SectionBatchAddVO implements ExcelMsg {
     private String remark;
 
 
-    //    @ExcelProperty("错误信息")
-    private String errMsg;
 
 
 }

@@ -34,14 +34,15 @@
 
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
-        <association property="postSeqDTO" column="post_seq_id" select="getPostSeq"
+        <association property="postSeqDTO" column="post_seq_id"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper.getPostSeqDTO"
                      javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
 
-    <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
-        <association property="parent" column="parent_id" select="getPostSeqParent"
-                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
-    </resultMap>
+<!--    <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">-->
+<!--        <association property="parent" column="parent_id" select="getPostSeqParent"-->
+<!--                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>-->
+<!--    </resultMap>-->
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where del_flag !=1
@@ -80,13 +81,13 @@
     </select>
 
     <!--  父子查询 -->
-    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTOMap">
-        select * from  mp_post_seq WHERE id=#{id}
-    </select>
+<!--    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTOMap">-->
+<!--        select * from  mp_post_seq WHERE id=#{id}-->
+<!--    </select>-->
 
-    <select id="getPostSeq" parameterType="long" resultMap="postSeqDTOMap">
-       select * from mp_post_seq WHERE id= #{id}
-    </select>
+<!--    <select id="getPostSeq" parameterType="long" resultMap="postSeqDTOMap">-->
+<!--       select * from mp_post_seq WHERE id= #{id}-->
+<!--    </select>-->
 
     <!--     TODO 未实现编制统计 -->
     <select id="getPostAuthorized" parameterType="long" resultType="int">

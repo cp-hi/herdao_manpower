@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.vo.post;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,10 +30,15 @@ import lombok.Data;
 )
 public class PostBatchUpdateVO extends PostBatchAddVO {
 
+        @ExcelProperty(value = "错误信息")
+    private String errMsg;
+
     @ExcelProperty({"", "岗位名称"})
+    @HeadFontStyle(color = 10)
     private String postName;
 
     @ExcelProperty({"", "所属集团"})
+    @HeadFontStyle(color = 10)
     private String groupName;
 
     @ExcelProperty({"", "所属板块"})
@@ -66,6 +72,4 @@ public class PostBatchUpdateVO extends PostBatchAddVO {
     @ApiModelProperty(value = "月度绩效工资比例", example = "YDJXGZBL")
     private String perforSalaryRatio;
 
-    //    @ExcelProperty(value = "错误信息")
-    private String errMsg;
 }

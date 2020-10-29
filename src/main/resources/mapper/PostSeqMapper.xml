@@ -19,6 +19,7 @@
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
     </resultMap>
 
+
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
         select * from mp_post_seq where  del_flag !=1
          and ((#{postSeq.parentId} is null and parent_id is null) or parent_id = #{postSeq.parentId})
@@ -45,6 +46,23 @@
          select  (case when  exists (select * from  mp_post_seq
          where parent_id = #{id} ) then 0 else 1 end) as isLeaf
     </select>
+
+
+    <!--  父子查询 -->
+
+    <resultMap id="postSeqDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
+        <association property="parent" column="parent_id" select="getPostSeqParent"
+                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
+    </resultMap>
+
+    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTO">
+        select * from  mp_post_seq WHERE id=#{id}
+    </select>
+
+    <select id="getPostSeqDTO" parameterType="long" resultMap="postSeqDTO">
+       select * from mp_post_seq WHERE id= #{id}
+    </select>
+
 
     <select id="chkDuplicatePostSeqCode" parameterType="postSeq" resultType="boolean">
          SELECT count(*) from mp_post_seq  where (#{id} is null or id != #{id}) and post_seq_code = #{postSeqCode}

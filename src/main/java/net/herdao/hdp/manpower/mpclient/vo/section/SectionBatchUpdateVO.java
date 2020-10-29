@@ -28,6 +28,9 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 )
 public class SectionBatchUpdateVO extends SectionBatchAddVO implements ExcelMsg {
 
+        @ExcelProperty("错误信息")
+    private String errMsg;
+
     @ExcelProperty({"", "板块名称"})
     private String sectionName;
 
@@ -43,6 +46,4 @@ public class SectionBatchUpdateVO extends SectionBatchAddVO implements ExcelMsg 
     @ExcelProperty({"", "备注"})
     private String remark;
 
-    //    @ExcelProperty("错误信息")
-    private String errMsg;
 }

@@ -21,6 +21,9 @@ public class JobGradeFormVO {
     @ApiModelProperty("职等名称")
     private String jobGradeName;
 
+    @ApiModelProperty("集团ID")
+    private String groupId;
+
     @ApiModelProperty("排序")
     private Integer sortNo;
 

@@ -121,22 +121,4 @@ public class StaffListDTO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date modifiedTime;
 
-
-    @ApiModelProperty(value="人员归属范围名称")
-    private String staffScopeName;
-
-    @ApiModelProperty(value="任职类型名称")
-    private String jobTypeName;
-
-    @ApiModelProperty(value="性别名称")
-    private String sexName;
-
-    @ApiModelProperty(value="生育状况名称")
-    private String fertilityName;
-
-    @ApiModelProperty(value="婚姻状况名称")
-    private String maritalStatusName;
-
-    @ApiModelProperty(value="户口类型名称")
-    private String accountTypeName;
 }

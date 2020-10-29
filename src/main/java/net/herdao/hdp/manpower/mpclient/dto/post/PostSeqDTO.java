@@ -23,7 +23,7 @@ public class PostSeqDTO extends PostSeq {
     private Integer postCount;
 
     @ApiModelProperty("父序列")
-    private PostSeq parent;
+    private PostSeqDTO parent;
 
     @ApiModelProperty("集团")
     private Group group;
