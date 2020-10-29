@@ -71,7 +71,6 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
         this.entityClass = (Class) ((ParameterizedType) entityService.getClass()
                 .getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1];
-
     }
 
     List<String> headExcel = new ArrayList<>();
@@ -82,20 +81,9 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
             headExcel.addAll(headMap.values());
     }
 
-//    @Override
-//    public void invokeHead(Map<Integer, CellData> headMap, AnalysisContext context) {
-//        this.invokeHeadMap(ConverterUtils.convertToStringMap(headMap, context), context);
-//    }
-
     @SneakyThrows
     @Override
     public void invoke(E excel, AnalysisContext context) {
-        //如果所有对象属性都为空则是表头描述，先跳过
-//        if (!AnnotationUtils.isNullObj(excel)){
-//            System.out.println(1234);
-//        }
-
-
         List<String> headClass = new ArrayList<>(AnnotationUtils.getExcelPropertyNames(excel));
         List<String> heads = new ArrayList<>();
         headExcel.forEach(h -> {

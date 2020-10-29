@@ -3,9 +3,15 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
+import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,11 +47,36 @@ public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> impl
 
     @Override
     public void addEntity(PostSeq postSeq, Object excelObj) {
-
+        PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
+        StringBuffer buffer = new StringBuffer();
+        chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), false, buffer);
+        PostSeq parent = this.chkEntityExists("POST_SEQ_NAME", excel.getParentName(), true,buffer);
+        if (null != parent) {
+            chkParent(parent, buffer);
+            postSeq.setParentId(parent.getId());
+        }
+        if (StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
     }
 
     @Override
     public void updateEntity(PostSeq postSeq, Object excelObj) {
+        PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
+        StringBuffer buffer = new StringBuffer();
+        PostSeq tmp = chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true, buffer);
+        PostSeq parent = this.chkEntityExists("POST_SEQ_NAME", excel.getParentName(), true,buffer);
 
+        if (null != parent) {
+            chkParent(parent, buffer);
+            postSeq.setParentId(parent.getId());
+        }
+        if (StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
+    }
+
+    private void chkParent(PostSeq postSeq, StringBuffer buffer) {
+        PostSeqDTO dto = baseMapper.getPostSeqDTO(postSeq.getId());
+        if (null != dto.getParent() && null != dto.getParent().getParent())
+            buffer.append("；" + postSeq.getPostSeqName() + "为3级岗位序列，不能再创建子级");
     }
 }
