@@ -291,7 +291,7 @@
         FROM
             mp_staff f
         LEFT JOIN sys_dict_item dt1 ON f.LEARN_FORM = dt1.VALUE
-            AND dt1.type = 'LEARN_FORM'
+            AND dt1.type = 'XXXS'
         WHERE
             f.ID = #{id}
         LIMIT 1
@@ -308,6 +308,82 @@
             AND dt1.type = 'SBLX'
         LEFT JOIN sys_dict_item dt2 ON f.PAY_SALARY_TYPE = dt2.VALUE
             AND dt2.type = 'GZFFFS'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工个人信息 -->
+    <select id="getStaffInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO">
+        SELECT
+            dt1.label SEX_NAME,
+            dt2.label POLITICS_STATUS_NAME,
+            dt3.label COUNTRY_NAME,
+            dt4.label MARITAL_STATUS_NAME,
+            dt5.label FERTILITY_NAME,
+            dt6.label ACCOUNT_TYPE_NAME,
+            dt7.label id_type_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.SEX = dt1.VALUE
+            AND dt1.type = 'SEX'
+        LEFT JOIN sys_dict_item dt2 ON f.POLITICS_STATUS = dt2.VALUE
+            AND dt2.type = 'ZZMM'
+		LEFT JOIN sys_dict_item dt3 ON f.COUNTRY = dt3.VALUE
+            AND dt3.type = 'GJ'
+        LEFT JOIN sys_dict_item dt4 ON f.MARITAL_STATUS = dt4.VALUE
+            AND dt4.type = 'HYZK'
+		LEFT JOIN sys_dict_item dt5 ON f.FERTILITY = dt5.VALUE
+            AND dt5.type = 'SYZK'
+        LEFT JOIN sys_dict_item dt6 ON f.ACCOUNT_TYPE = dt6.VALUE
+            AND dt6.type = 'HKLX'
+		LEFT JOIN sys_dict_item dt7 ON f.id_type = dt7.VALUE
+            AND dt7.type = 'ID_TYPE'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工在职信息 -->
+    <select id="getStaffJobInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO">
+        SELECT
+            dt1.label JOB_TYPE_NAME,
+            dt2.label PERSONNEL_NATURE_NAME,
+            dt3.label STAFF_SCOPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.JOB_TYPE = dt1.VALUE
+            AND dt1.type = 'JOB_TYPE'
+        LEFT JOIN sys_dict_item dt2 ON f.PERSONNEL_NATURE = dt2.VALUE
+            AND dt2.type = 'RYXZ'
+		LEFT JOIN sys_dict_item dt3 ON f.STAFF_SCOPE = dt3.VALUE
+            AND dt3.type = 'RYGSFW'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工社保信息 -->
+    <select id="getStaffSecurity" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO">
+        SELECT
+            dt1.label SECURITY_TYPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.SECURITY_TYPE = dt1.VALUE
+            AND dt1.type = 'SBLX'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工薪资信息 -->
+    <select id="getStaffSalary" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO">
+        SELECT
+            dt1.label PAY_SALARY_TYPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.PAY_SALARY_TYPE = dt1.VALUE
+            AND dt1.type = 'GZFFFS'
         WHERE
             f.ID = #{id}
         LIMIT 1

@@ -52,17 +52,4 @@ public interface StaffRewardsPulishmentsService extends HdpService<StaffRewardsP
      */
     List<StaffRpDTO> findStaffRp(String searchText);
 
-
-    /**
-     *  获取批量新增模板备注信息
-     * @return
-     */
-    String getAddRemarks();
-
-    /**
-     *  获取批量编辑模板备注信息
-     * @return
-     */
-    String getUpdateRemarks();
-
 }

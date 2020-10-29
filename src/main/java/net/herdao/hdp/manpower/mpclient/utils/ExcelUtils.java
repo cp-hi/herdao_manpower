@@ -98,25 +98,25 @@ public class ExcelUtils {
 
     public static void downloadTempl(HttpServletResponse response, Class templClass) throws Exception {
         ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);
-        List<LinkedHashMap<String, String>> data = new ArrayList();
-        Field[] fields = templClass.getDeclaredFields();
-        LinkedHashMap<String, String> map = new LinkedHashMap();
-
-        for (Field field : fields) {
-            if (field.getName().equals("errMsg")) continue;
-            ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
-            map.put(excel.value()[0], "");
-        }
-        data.add(map);
-
-        List<List<String>> headList = new ArrayList<>();
-        for (String k : data.get(0).keySet()) {
-            List<String> head = new ArrayList<>();
-            if (StringUtils.isNotBlank(apiModel.description()))
-                head.add(apiModel.description());
-            head.add(k);
-            headList.add(head);
-        }
+//        List<LinkedHashMap<String, String>> data = new ArrayList();
+//        Field[] fields = templClass.getDeclaredFields();
+//        LinkedHashMap<String, String> map = new LinkedHashMap();
+//
+//        for (Field field : fields) {
+//            if (field.getName().equals("errMsg")) continue;
+//            ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
+//            map.put(excel.value()[1], "");
+//        }
+//        data.add(map);
+//
+//        List<List<String>> headList = new ArrayList<>();
+//        for (String k : data.get(0).keySet()) {
+//            List<String> head = new ArrayList<>();
+//            if (StringUtils.isNotBlank(apiModel.description()))
+//                head.add(apiModel.description());
+//            head.add(k);
+//            headList.add(head);
+//        }
 
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
@@ -136,14 +136,14 @@ public class ExcelUtils {
         contentWriteFont.setFontHeightInPoints((short) 14);
         contentWriteCellStyle.setWriteFont(contentWriteFont);
         //头策略使用默认
-        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
-        headWriteCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
-        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
-        headWriteCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
+//        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+//        headWriteCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
+//        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
+//        headWriteCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
         HorizontalCellStyleStrategy horizontalCellStyleStrategy =
-            new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
+            new HorizontalCellStyleStrategy(new WriteCellStyle(), contentWriteCellStyle);
 
-        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList)
+        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(templClass)
                 .registerWriteHandler(horizontalCellStyleStrategy)
                 .registerWriteHandler(new ImportStyleStrategy(templClass))
                 .doWrite(null);

@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.familyStatus;
+package net.herdao.hdp.manpower.mpclient.dto.staffFamily;
 
 
 import com.alibaba.excel.annotation.ExcelIgnore;

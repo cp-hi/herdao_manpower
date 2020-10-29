@@ -32,14 +32,18 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
 //    Class templClass;
 
     Map<String, Field> fieldMap;
+    String description = null;
 
     public ImportStyleStrategy(Class clazz) {
 //        this.templClass = clazz;
         fieldMap = new LinkedHashMap<>();
         Field[] fields = clazz.getDeclaredFields();
+        ApiModel apiModel = (ApiModel) clazz.getAnnotation(ApiModel.class);
+        this.description = apiModel.description();
         for (Field field : fields) {
             ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
-            fieldMap.put(excelProperty.value()[0], field);
+            if (null != excelProperty)
+                fieldMap.put(excelProperty.value()[excelProperty.value().length - 1], field);
         }
     }
 
@@ -47,17 +51,18 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
     protected void setColumnWidth(WriteSheetHolder writeSheetHolder, List<CellData> list, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
         if (isHead) {
             Workbook workbook = writeSheetHolder.getSheet().getWorkbook();
-            Integer length = cell.getStringCellValue().length();
+//            Integer length = cell.getStringCellValue().length();
             if (0 == relativeRowIndex) {
                 CellStyle cellStyle = workbook.createCellStyle();
                 cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
                 cellStyle.setAlignment(HorizontalAlignment.LEFT);
                 cellStyle.setWrapText(true);
-//                cellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+                cellStyle.setFillBackgroundColor((short) -1);
                 Font font = workbook.createFont();
-                font.setFontHeight((short) 250);
+                font.setFontHeight((short) 200);
                 cellStyle.setFont(font);
                 cell.setCellStyle(cellStyle);
+                cell.setCellValue(description);
             } else if (1 == relativeRowIndex) {
                 CellStyle cellStyle = workbook.createCellStyle();
                 cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -66,14 +71,15 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
 
 //                cellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
                 Font font = workbook.createFont();
-                font.setFontHeight((short) 250);
-                Field field = fieldMap.get(cell.getStringCellValue());
-                if (null != field) {
-                    HeadFontStyle headFontStyle = field.getAnnotation(HeadFontStyle.class);
-                    if (null != headFontStyle) font.setColor(headFontStyle.color());
-                }
-                cellStyle.setFont(font);
-                cell.setCellStyle(cellStyle);
+                font.setFontHeight((short) 200);
+//                Field field = fieldMap.get(cell.getStringCellValue());
+//                if (null != field) {
+//                    HeadFontStyle headFontStyle = field.getAnnotation(HeadFontStyle.class);
+//                    if (null != headFontStyle) font.setColor(headFontStyle.color());
+//                }
+//                cellStyle.setFont(font);
+//                cell.setCellStyle(cellStyle);
+                Integer length = cell.getStringCellValue().length();
                 writeSheetHolder.getSheet().setColumnWidth(cell.getColumnIndex(), length * 1300);
             }
         }

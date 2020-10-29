@@ -1,13 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.dto.staffTrain;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -17,17 +19,27 @@ import javax.validation.constraints.Pattern;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class StaffTrainExcelErrDTO{
+public class StaffTrainUpdateErrDTO {
 
     @ExcelProperty(index =0, value = "错误信息")
     @ColumnWidth(75)
     private String errMsg;
 
+    @ExcelIgnore
+    private Long id;
+
+    @ExcelIgnore
+    private Long staffId;
+
     @ExcelProperty(index =1 ,value = "员工姓名")
+    @Valid
     @NotBlank(message = "不能为空")
+    @HeadFontStyle(color = 10)
     private String staffName;
 
     @ExcelProperty(index =2 ,value = "员工工号")
+    @HeadFontStyle(color = 10)
+    @Valid
     @NotBlank(message = "不能为空")
     private String staffCode;
 
@@ -35,12 +47,17 @@ public class StaffTrainExcelErrDTO{
      * 开始时间
      */
     @ExcelProperty(index =3 ,value = "开始时间")
+    @HeadFontStyle(color = 10)
+    @Valid
+    @NotBlank(message = "不能为空")
     private String beginTime;
 
     /**
      * 结束时间
      */
     @ExcelProperty(index =4 ,value = "结束时间")
+    @HeadFontStyle(color = 10)
+    @Valid
     @NotBlank(message = "不能为空")
     private String endTime;
 
@@ -101,6 +118,5 @@ public class StaffTrainExcelErrDTO{
      */
     @ExcelProperty(index =13,value = "备注")
     private String remarks;
-
 
 }

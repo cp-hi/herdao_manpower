@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.sys.annotation.ImportDescription;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -34,7 +35,7 @@ import java.lang.reflect.Field;
  * @Date 2020/9/14 16:11
  * @Version 1.0
  */
-//TODO 记得添加删除和停用的日志记录
+
 @Aspect
 @Component
 public class OperationLogAspect {
@@ -70,6 +71,10 @@ public class OperationLogAspect {
         System.out.println("pointDelete");
     }
 
+    @Pointcut("@annotation(net.herdao.hdp.manpower.sys.annotation.ImportDescription)")
+    public void pointImport(){
+        System.out.println("pointImport");
+    }
 
     //region 保存实体 设置操作人信息以及实体主键
 

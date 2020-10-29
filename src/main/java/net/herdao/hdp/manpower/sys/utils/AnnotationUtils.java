@@ -1,7 +1,6 @@
 package net.herdao.hdp.manpower.sys.utils;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import sun.reflect.annotation.AnnotationType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -52,6 +51,17 @@ public class AnnotationUtils {
         }
     }
 
+    public static boolean isNullObj(Object object) throws IllegalAccessException {
+        if (null == object) return true;
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object obj = field.get(object);
+            if (null != obj) return false;
+        }
+        return true;
+    }
+
     /**
      * 获取一个类所有字段，包括父类
      *
@@ -93,7 +103,7 @@ public class AnnotationUtils {
         List<String> names = new ArrayList<>();
         for (Field field : fields) {
             ExcelProperty property = field.getAnnotation(ExcelProperty.class);
-            names.add(property.value()[0]);
+            if (null != property) names.add(property.value()[property.value().length - 1]);
         }
         return names;
     }

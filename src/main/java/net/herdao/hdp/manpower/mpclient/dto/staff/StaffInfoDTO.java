@@ -121,4 +121,26 @@ public class StaffInfoDTO {
 
     @ApiModelProperty(value="证件类型")
     private String idType;
+
+
+    @ApiModelProperty(value="性别名称")
+    private String sexName;
+
+    @ApiModelProperty(value="政治面貌名称")
+    private String politicsStatusName;
+
+    @ApiModelProperty(value="国籍名称")
+    private String countryName;
+
+    @ApiModelProperty(value="婚姻状况名称")
+    private String maritalStatusName;
+
+    @ApiModelProperty(value="生育状况名称")
+    private String fertilityName;
+
+    @ApiModelProperty(value="户口类型名称")
+    private String accountTypeName;
+
+    @ApiModelProperty(value="证件类型名称")
+    private String idTypeName;
 }

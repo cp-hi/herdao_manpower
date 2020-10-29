@@ -9,19 +9,18 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkExcelErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +45,42 @@ import java.util.stream.Collectors;
 @RequestMapping("/workexperience" )
 @Api(value = "workexperience", tags = "员工工作经历管理")
 @Slf4j
-public class WorkexperienceController {
+public class WorkexperienceController extends HdpBaseController {
+
+    @Override
+    public HdpService getHdpService() {
+        return workexperienceService;
+    }
+
+    @Override
+    public Class getImportAddCls() {
+        return StaffWorkAddDTO.class;
+    }
+
+    @Override
+    public Class getImportAddErrCls() {
+        return StaffWorkAddErrDTO.class;
+    }
+
+    @Override
+    public Class getImportUpdateCls() {
+        return StaffWorkUpdateDTO.class;
+    }
+
+    @Override
+    public Class getImportUpdateErrCls() {
+        return StaffWorkUpdateErrDTO.class;
+    }
+
+    @Override
+    public String getExcelAddDescription() {
+        return ExcelDescriptionContants.getWorkAddDesc();
+    }
+
+    @Override
+    public String getExcelUpdateDescription() {
+        return ExcelDescriptionContants.getWorkUpdateDesc();
+    }
 
     @Autowired
     private WorkexperienceService workexperienceService;
@@ -184,72 +217,5 @@ public class WorkexperienceController {
         return R.ok(workexperienceService.getById(id));
     }
 
-    /**
-     * 批量导入员工工作经历（excel导入)
-     * @param file
-     * @return R
-     */
-    @ApiOperation(value = "批量导入员工工作经历(excel导入)", notes = "批量导入员工工作经历(excel导入)")
-    @GetMapping("/batchImportWork")
-    @ResponseBody
-    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
-        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
-    })
-    public R batchImportWork(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
-        try {
-            EasyExcelListener easyExcelListener = new EasyExcelListener(workexperienceService, StaffWorkAddDTO.class,importType);
-            EasyExcelFactory.read(file.getInputStream(), StaffWorkAddDTO.class, easyExcelListener).sheet().headRowNumber(2).doRead();
-            List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
-            if (!errList.isEmpty()) {
-                // 包含错误信息就导出错误信息
-                List<StaffWorkExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-                    StaffWorkExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffWorkExcelErrDTO.class);
-                    excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
-                    return excelErrDto;
-                }).collect(Collectors.toList());
-                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffWorkExcelErrDTO.class, "批量导入员工工作经历错误信息");
-            }
-            return R.ok("导入成功！");
-        } catch (IOException e) {
-            log.error("导入失败",e.toString());
-            return R.failed(e.getMessage());
-        }
-    }
 
-    /**
-     * 下载员工工作新增、编辑模板
-     * @param response
-     * @param importType
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    @ApiOperation(value = "下载员工工作新增、编辑模板")
-    @GetMapping("/downloadTemplate")
-    @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
-    public R downloadTemplate(HttpServletResponse response, Integer importType) {
-        if (importType!=null){
-            if (importType==0){
-                try {
-                    EasyExcelUtils.webWriteExcel(response, new ArrayList<>(), StaffWorkAddDTO.class, "批量新增员工工作模板",
-                            new EasyExcelSheetWriteHandler(8 , workexperienceService.getAddRemarks()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    R.failed("下载模板异常：" + e.getMessage());
-                }
-            }
-
-            if (importType==1){
-                List<WorkexperienceDTO> staffWorkList = workexperienceService.findStaffWork(null, null);
-                try {
-                    EasyExcelUtils.webWriteExcel(response, staffWorkList, StaffWorkUpdateDTO.class, "批量编辑员工工作模板",
-                            new EasyExcelSheetWriteHandler(8 , workexperienceService.getUpdateRemarks()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    R.failed("下载模板异常：" + e.getMessage());
-                }
-            }
-        }
-
-        return R.ok(null, "下载模板成功！");
-    }
 }

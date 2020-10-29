@@ -2,7 +2,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 
@@ -33,15 +33,4 @@ public interface FamilystatusService extends HdpService<Familystatus> {
     @Override
     boolean saveOrUpdate(Familystatus familystatus);
 
-    /**
-     *  获取批量新增模板备注信息
-     * @return
-     */
-    String getAddRemarks();
-
-    /**
-     *  获取批量编辑模板备注信息
-     * @return
-     */
-    String getUpdateRemarks();
 }
