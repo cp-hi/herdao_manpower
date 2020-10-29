@@ -185,26 +185,33 @@ public abstract class HdpBaseController {
 			
 			// 包含错误信息就导出错误信息
 			if (ObjectUtil.isNotEmpty(errList)) {
-				// 获取异常信息class
-				Class excelErrCls = getExcelErrCls(importType);
-				// 异常类
-				Object errObj = excelErrCls.getDeclaredConstructor().newInstance();
-				// 获取异常信息提示方法（注：异常提示信息请使用 errMsg属性）
-				Method errMsgMethod = excelErrCls.getMethod("setErrMsg", String.class);
-				// 遍历异常信息
-				List excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-					// 设置异常信息
-					Object excelErrDto = (Object) JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), excelErrCls);
-					try {
-						errMsgMethod.invoke(excelErrDto, excelCheckErrDto.getErrMsg());
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						e.printStackTrace();
-						return R.failed("导入异常：" + e.getMessage());
-					}
-					return excelErrDto;
-				}).collect(Collectors.toList());
-				// 导出异常信息
-				EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, ManpowerContants.ImportTypeEnum.getInstance(importType) + "错误信息");
+				// 是否下载异常信息
+				Integer downloadErrMsg = importDataVO.getDownloadErrMsg();
+				// 下载异常excel
+				if(ObjectUtil.isNotNull(downloadErrMsg) && downloadErrMsg.equals(1)) {
+					// 获取异常信息class
+					Class excelErrCls = getExcelErrCls(importType);
+					// 异常类
+					Object errObj = excelErrCls.getDeclaredConstructor().newInstance();
+					// 获取异常信息提示方法（注：异常提示信息请使用 errMsg属性）
+					Method errMsgMethod = excelErrCls.getMethod("setErrMsg", String.class);
+					// 遍历异常信息
+					List excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+						// 设置异常信息
+						Object excelErrDto = (Object) JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), excelErrCls);
+						try {
+							errMsgMethod.invoke(excelErrDto, excelCheckErrDto.getErrMsg());
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							e.printStackTrace();
+							return R.failed("导入异常：" + e.getMessage());
+						}
+						return excelErrDto;
+					}).collect(Collectors.toList());
+					// 导出异常信息
+					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, ManpowerContants.ImportTypeEnum.getInstance(importType) + "错误信息");
+				}else {
+					return R.failed("导入异常，是否下载错误文件？");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
