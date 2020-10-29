@@ -30,7 +30,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-24 10:24:09
  */
-public interface WorkexperienceService extends EasyExcelService<Workexperience> {
+public interface WorkexperienceService extends HdpService<Workexperience> {
     /**
      * 员工工作经历分页
      * @param page 分页对象

@@ -19,12 +19,13 @@ import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.service.EasyExcelService;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.validator.EasyExcelValidator;
 
 /**
  * @description: easyExcel监听器
- * @author hdp
+ * 
+ * @author shuling
  * @date 2020-10-20 11:37:27
  */
 @Data
@@ -36,7 +37,7 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
     List<ExcelCheckErrDTO> errList = new ArrayList<>();
 
     // 处理逻辑service
-    EasyExcelService easyExcelService;
+    HdpService easyExcelService;
 
     // 导入数据集
     List<E> excelList = new ArrayList<>();
@@ -50,24 +51,23 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
     // excel 导入类型
     Class<E> clazz;
     
-    // 数据开始行号
+    // 数据开始行号 用于数据校验
     int excelIndex = 1;
 
-	public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz, Integer importType) {
+	public EasyExcelListener(HdpService easyExcelService, Class<E> clazz, Integer importType) {
 		this.importType = importType;
 		this.easyExcelService = easyExcelService;
 		this.clazz = clazz;
 		setEntityClass();
 	}
 	
-	public EasyExcelListener(EasyExcelService easyExcelService, Class<E> clazz, Integer importType, Integer excelIndex) {
+	public EasyExcelListener(HdpService easyExcelService, Class<E> clazz, Integer importType, Integer excelIndex) {
 		this.importType = importType;
 		this.easyExcelService = easyExcelService;
 		this.clazz = clazz;
 		this.excelIndex = excelIndex;
 		setEntityClass();
 	}
-
 
 	@Override
     public void invoke(E excelCls, AnalysisContext analysisContext) {
@@ -98,7 +98,6 @@ public class EasyExcelListener<E>  extends AnalysisEventListener<E> {
 			errList.addAll(excelCheckRs);
 		}
 	}
-
 
     /**
       * @description: 校验excel头部格式，必须完全匹配

@@ -14,7 +14,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-23 10:53:08
  */
-public interface FamilystatusService extends EasyExcelService<Familystatus> {
+public interface FamilystatusService extends HdpService<Familystatus> {
     /**
      * 员工家庭情况分页
      * @param page 分页对象

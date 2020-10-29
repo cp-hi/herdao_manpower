@@ -7,6 +7,11 @@ package net.herdao.hdp.manpower.mpclient.constant;
  */
 public interface ManpowerContants {
 
+	 /**
+     * 人力服务
+     */
+    String TEMPLATE_SERVICE = "hdp-manpower-service";
+    
     /**
      * 分隔符
      */
@@ -45,9 +50,37 @@ public interface ManpowerContants {
     //停用
     Integer DISABLE_STATUS = 1;
     
-    /**
-     * 人力服务
-     */
-    String TEMPLATE_SERVICE = "hdp-manpower-service";
+    // excel 导入说明 enum
+	public enum ImportTypeEnum {
+		
+		ADD(0, "新增"), UPDATE(1, "编辑");
 
+		private int importType;
+		
+		private String description;
+
+		ImportTypeEnum(int importType, String description) {
+			this.importType = importType;
+			this.description = description;
+		}
+
+		public int getImportType() {
+			return importType;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+		
+		public static String getInstance(Integer importType) {
+	        for (ImportTypeEnum em : ImportTypeEnum.values()) {
+	            if (em.getImportType() == importType) {
+	                return em.getDescription();
+	            }
+	        }
+	        return null;
+	    }
+
+	}
+    
 }

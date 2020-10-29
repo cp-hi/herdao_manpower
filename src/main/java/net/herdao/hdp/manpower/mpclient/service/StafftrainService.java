@@ -29,7 +29,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-25 09:49:45
  */
-public interface StafftrainService extends EasyExcelService<Stafftrain> {
+public interface StafftrainService extends HdpService<Stafftrain> {
 
     /**
      * 员工培训分页

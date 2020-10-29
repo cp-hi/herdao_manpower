@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
+import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
@@ -42,6 +43,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
@@ -64,7 +66,7 @@ import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 @RequestMapping("/organization")
 @Api(value = "organization", tags = "管理")
 @Slf4j
-public class OrganizationController {
+public class OrganizationController extends HdpBaseController{
 
     private final OrganizationService orgService;
 
@@ -77,7 +79,41 @@ public class OrganizationController {
     private final ExcelOperateRecordService excelOperateRecordService;
 
     private final OperationLogService operationLogService;
+    
+    @Override
+	public Class getImportAddCls() {
+		return OrganizationAddDTO.class;
+	}
 
+	@Override
+	public Class getImportAddErrCls() {
+		return OrganizationAddErrDTO.class;
+	}
+
+	@Override
+	public Class getImportUpdateCls() {
+		return OrganizationUpdateDTO.class;
+	}
+
+	@Override
+	public Class getImportUpdateErrCls() {
+		return OrganizationUpdateErrDTO.class;
+	}
+	
+	@Override
+	public String getExcelDescription() {
+		return ExcelDescriptionContants.getOrganizationExcelDescription();
+	}
+	
+	@Override
+	public List getDownloadUpdateTemplateList() {
+		return this.orgService.selectAllOrganization();
+	}
+	
+	@Override
+	public HdpService getHdpService() {
+		return this.orgService;
+	}
 
     /**
      * 通过id查询组织架构详情
@@ -340,72 +376,6 @@ public class OrganizationController {
 	}
 
     /**
-     * 批量导入组织 (excel导入)
-     * 
-     * @modified shuling
-     * @param file
-     * @return R
-     */
-    @ApiOperation(value = "批量导入组织 (excel导入)", notes = "批量导入组织 (excel导入)")
-    @PostMapping("/importData")
-    @SuppressWarnings("all")
-	public R importData(HttpServletResponse response, ImportDataVO importDataVO) {
-		try {
-			int importType = importDataVO.getImportType();
-			
-			Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
-
-			EasyExcelListener easyExcelListener = new EasyExcelListener(orgService, excelCls, importType, 1);
-
-			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(2).doRead();
-
-			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
-			// 包含错误信息就导出错误信息
-			if (!errList.isEmpty()) {
-
-				Class excelErrCls = (importType == 0 ? OrganizationAddErrDTO.class : OrganizationUpdateErrDTO.class);
-
-				List excelErrDtos = null;
-				if (importType == 0) {
-					excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-						OrganizationAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationAddErrDTO.class);
-						excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
-						return excelErrDto;
-					}).collect(Collectors.toList());
-				} else {
-					excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-						OrganizationUpdateErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), OrganizationUpdateErrDTO.class);
-						excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
-						return excelErrDto;
-					}).collect(Collectors.toList());
-				}
-				EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, "组织" + (importType == 0 ? "新增" : "编辑") + "错误信息");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return R.failed("导入异常：" + e.getMessage());
-		}
-		return R.ok(null, "导入成功！");
-	}
-    
-    @SuppressWarnings("rawtypes")
-	@ApiOperation(value = "下载组织新增、编辑模板")
-    @GetMapping("/downloadTemplate")
-    @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
-	public R downloadTemplate(HttpServletResponse response, @RequestParam(value = "importType")Integer importType) {
-		Class excelCls = (importType == 0 ? OrganizationAddDTO.class : OrganizationUpdateDTO.class);
-		List<OrganizationImportDTO> organizationImportList = importType == 0 ? new ArrayList<>() : this.orgService.selectAllOrganization();
-		try {
-			EasyExcelUtils.webWriteExcel(response, organizationImportList, excelCls, "批量" + ( importType == 0 ? "新增" : "编辑" + "组织模板"),
-					   new EasyExcelSheetWriteHandler(excelCls, ExcelDescriptionContants.getOrganizationExcelDescription()));
-		} catch (Exception e) {
-			e.printStackTrace();
-			R.failed("下载模板异常：" + e.getMessage());
-		}
-		return R.ok(null, "下载模板成功！");
-	}
-
-    /**
      * 部门选择组件
      * 
      * @return
@@ -438,6 +408,4 @@ public class OrganizationController {
     }
 
 }
-
-
 

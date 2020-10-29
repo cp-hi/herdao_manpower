@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.dto.organization;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -17,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 @ApiModel(value = "组织批量修改异常处理")
 @ExcelIgnoreUnannotated
+@HeadFontStyle
 public class OrganizationUpdateErrDTO {
 
     @ExcelProperty(value = "错误信息", index = 0)
@@ -42,6 +44,5 @@ public class OrganizationUpdateErrDTO {
 	@ExcelProperty(value = "岗位编码", index = 5)
 	@ColumnWidth(30)
 	private String postCode;
-
 
 }

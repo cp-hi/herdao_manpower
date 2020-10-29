@@ -2,7 +2,7 @@ package net.herdao.hdp.manpower.mpclient.constant;
 /**
  * @description: 模板导入说明
  * 
- * @author hdp
+ * @author shuling
  * @date 2020-10-28 11:37:27
  */
 public class ExcelDescriptionContants {
@@ -10,7 +10,10 @@ public class ExcelDescriptionContants {
 	// 换行符号
 	static final String LINE_FEED = System.getProperty("line.separator");
 	
-	// 获取批量新增、编辑模板备注信息
+	/**
+	 * 获取批量新增、编辑模板备注信息
+	 * @return
+	 */
 	public static String getOrganizationExcelDescription() {
 		StringBuffer eds = new StringBuffer();
 		eds.append("导入说明：")
@@ -26,5 +29,4 @@ public class ExcelDescriptionContants {
 			    .append("5、组织负责人工号请输入在职员工的工号；负责岗位请输入系统中已启用的岗位");
 		return eds.toString();
 	}
-
 }
