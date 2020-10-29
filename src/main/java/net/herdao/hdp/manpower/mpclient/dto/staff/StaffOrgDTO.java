@@ -23,8 +23,8 @@ public class StaffOrgDTO {
     @ApiModelProperty(value = "岗位名称")
     private String postName;
 
-    @ApiModelProperty(value = "职级1")
-    private Long jobLevelId1;
+    @ApiModelProperty(value = "职级")
+    private String jobLevelName;
 
     @ApiModelProperty(value="任职类型")
     private String jobType;
