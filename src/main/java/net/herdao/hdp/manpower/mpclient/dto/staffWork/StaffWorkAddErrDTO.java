@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @description 异常处理
+ * @description 新增异常处理
  * @author      andy
  * @date        2020-10-18 10:37:22
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class StaffWorkExcelErrDTO {
+public class StaffWorkAddErrDTO {
 
     @ExcelProperty(index =0, value = "错误信息")
     @ColumnWidth(75)

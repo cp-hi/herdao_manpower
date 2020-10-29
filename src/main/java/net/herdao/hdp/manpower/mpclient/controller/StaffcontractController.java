@@ -225,4 +225,16 @@ public class StaffcontractController  {
         return R.ok(null, "下载模板成功！");
     }
 
+    /**
+     * 通过id查询员工合同表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询员工合同表", notes = "通过id查询员工合同表")
+    @GetMapping("/{id}" )
+    @PreAuthorize("@pms.hasPermission('demo_demo_view')" )
+    public R getById(@PathVariable("id" ) Integer id) {
+        return R.ok(staffcontractService.getById(id));
+    }
+
 }
