@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo.upload;
+package net.herdao.hdp.manpower.mpclient.vo.excelud;
 
 import org.springframework.web.multipart.MultipartFile;
 

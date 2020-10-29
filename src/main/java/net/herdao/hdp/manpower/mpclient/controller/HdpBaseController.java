@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.fastjson.JSON;
@@ -20,18 +18,14 @@ import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.upload.ImportDataVO;
+import net.herdao.hdp.manpower.mpclient.vo.excelud.ExportDataVO;
+import net.herdao.hdp.manpower.mpclient.vo.excelud.ImportDataVO;
 /**
  * @description 处理增、删、改、查、批量新增、批量编辑（待完善）
  *
@@ -230,7 +224,8 @@ public abstract class HdpBaseController {
 	@ApiOperation(value = "下载批量新增、编辑模板")
 	@PostMapping("/downloadTemplate")
     @ApiImplicitParam(name = "importType", value = "下载模板类型，值： 0  批量新增模板； 值 1 批量修改模板")
-	public R downloadTemplate(HttpServletResponse response, @RequestParam(value = "importType")Integer importType) {
+	public R downloadTemplate(HttpServletResponse response, ExportDataVO exportDataVO) {
+		int importType = exportDataVO.getImportType();
     	// 导出处理 class
 		Class excelCls = getExcelCls(importType);
 		// 数据集
