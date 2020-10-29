@@ -189,7 +189,7 @@ public class NewBaseController<T, D, F, E> {
     }
 
     @ApiOperation("批量新增/编辑")
-    @SysLog("批量新增/编辑")
+//    @SysLog("批量新增/编辑")
     @PostMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
@@ -225,11 +225,26 @@ public class NewBaseController<T, D, F, E> {
             IOUtils.closeQuietly(inputStream);
         }
         return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
+
     }
 
 
+//    @ApiOperation("批量新增/编辑")
+//    @SysLog("批量新增/编辑")
+//    @PostMapping("/import")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "file", value = "要导入的文件"),
+//            @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
+//            @ApiImplicitParam(name = "downloadErrMsg", value = "下载错误信息，0或空不下载 1:下载"),
+//    })
+//    public R importData(HttpServletResponse response,
+//                        Integer importType, Integer downloadErrMsg) throws Exception {
+//        return R.ok("test ");
+//    }
+
+
     @ApiOperation("下载批量新增/编辑的模板")
-    @SysLog("下载批量新增/编辑的模板")
+//    @SysLog("下载批量新增/编辑的模板")
     @PostMapping("/downloadTempl")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),

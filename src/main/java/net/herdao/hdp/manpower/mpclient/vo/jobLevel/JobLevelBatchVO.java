@@ -18,7 +18,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
  * @Version 1.0
  */
 @Data
-@HeadRowHeight(100)
+//@HeadRowHeight(100)
 //@ContentRowHeight(20)
 @ApiModel(value = "批量新增职级模板",description = "" +
         "导入说明：\r\n" +
@@ -33,14 +33,18 @@ public class JobLevelBatchVO implements ExcelMsg {
     private String jobLevelName;
 
     @ExcelProperty(value = "职等")
+    @HeadFontStyle
     private String jobGrade;
 
     @ExcelProperty(value = "排序")
+    @HeadFontStyle
     private Integer sortNo;
 
     @ExcelProperty(value = "描述")
+    @HeadFontStyle
     private String description;
 
     @ExcelProperty(value = "错误信息")
+    @HeadFontStyle
     private String errMsg;
 }
