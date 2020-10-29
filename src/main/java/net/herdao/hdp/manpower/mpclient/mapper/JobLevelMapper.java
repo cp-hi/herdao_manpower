@@ -21,4 +21,6 @@ public interface JobLevelMapper extends BaseMapper<JobLevel> {
     Boolean chkDuplicateJobLevelName(JobLevel jobLevel);
 
     Boolean chkDuplicateJobLevelCode(JobLevel jobLevel);
+
+    int deleteAll();
 }

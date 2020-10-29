@@ -56,7 +56,7 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false,buffer);
-        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true,buffer);
+        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
 
         if (null == jobGrade.getGroupId())
             buffer.append("；集团ID为空");
@@ -74,8 +74,8 @@ public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> i
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
 
-        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true,buffer);
         JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true,buffer);
+        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
 
         if (null == jobGrade.getGroupId())
             buffer.append("；集团ID为空");

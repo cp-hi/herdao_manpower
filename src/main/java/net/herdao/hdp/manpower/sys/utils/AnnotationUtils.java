@@ -1,7 +1,6 @@
 package net.herdao.hdp.manpower.sys.utils;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import sun.reflect.annotation.AnnotationType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -50,6 +49,17 @@ public class AnnotationUtils {
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static boolean isNullObj(Object object) throws IllegalAccessException {
+        if (null == object) return true;
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object obj = field.get(object);
+            if (null != obj) return false;
+        }
+        return true;
     }
 
     /**

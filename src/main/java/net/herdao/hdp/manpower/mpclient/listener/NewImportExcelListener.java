@@ -2,6 +2,8 @@ package net.herdao.hdp.manpower.mpclient.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.metadata.CellData;
+import com.alibaba.excel.util.ConverterUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -18,7 +20,6 @@ import java.util.Map;
 
 
 /**
- * @param <T> 实体类型Entity
  * @param <E> excel类型
  * @ClassName NewImportExcelListener
  * @Description NewImportExcelListener
@@ -32,8 +33,6 @@ import java.util.Map;
 public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
 
     Class entityClass;
-
-//    Class excelClass;
 
     @Getter
     List<E> excelList = null;
@@ -83,7 +82,19 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
     }
 
     @Override
+    public void invokeHead(Map<Integer, CellData> headMap, AnalysisContext context) {
+        this.invokeHeadMap(ConverterUtils.convertToStringMap(headMap, context), context);
+    }
+
+    @SneakyThrows
+    @Override
     public void invoke(E excel, AnalysisContext analysisContext) {
+        //如果所有对象属性都为空则是表头描述，先跳过
+//        if (!AnnotationUtils.isNullObj(excel)){
+//            System.out.println(1234);
+//        }
+
+
         List<String> headClass = new ArrayList<>(AnnotationUtils.getExcelPropertyNames(excel));
         List<String> heads = new ArrayList<>();
         headExcel.forEach(h -> {
@@ -101,7 +112,7 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
         } catch (Exception ex) {
             this.hasError = true;
             String errMsg = ex.getMessage();
-            if (errMsg.startsWith("；"))
+            if (null != errMsg && errMsg.startsWith("；"))
                 errMsg = errMsg.replaceFirst("；", "");
             ((ExcelMsg) excel).setErrMsg(errMsg);
         }
