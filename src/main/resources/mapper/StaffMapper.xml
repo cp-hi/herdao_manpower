@@ -291,7 +291,7 @@
         FROM
             mp_staff f
         LEFT JOIN sys_dict_item dt1 ON f.LEARN_FORM = dt1.VALUE
-            AND dt1.type = 'LEARN_FORM'
+            AND dt1.type = 'XXXS'
         WHERE
             f.ID = #{id}
         LIMIT 1
