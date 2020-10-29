@@ -313,6 +313,37 @@
         LIMIT 1
     </select>
 
+    <!-- 查询员工个人信息 -->
+    <select id="getStaffInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO">
+        SELECT
+            dt1.label SEX_NAME,
+            dt2.label POLITICS_STATUS_NAME,
+            dt3.label COUNTRY_NAME,
+            dt4.label MARITAL_STATUS_NAME,
+            dt5.label FERTILITY_NAME,
+            dt6.label ACCOUNT_TYPE_NAME,
+            dt7.label id_type_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.SEX = dt1.VALUE
+            AND dt1.type = 'SEX'
+        LEFT JOIN sys_dict_item dt2 ON f.POLITICS_STATUS = dt2.VALUE
+            AND dt2.type = 'ZZMM'
+		LEFT JOIN sys_dict_item dt3 ON f.COUNTRY = dt3.VALUE
+            AND dt3.type = 'GJ'
+        LEFT JOIN sys_dict_item dt4 ON f.MARITAL_STATUS = dt4.VALUE
+            AND dt4.type = 'HYZK'
+		LEFT JOIN sys_dict_item dt5 ON f.FERTILITY = dt5.VALUE
+            AND dt5.type = 'SYZK'
+        LEFT JOIN sys_dict_item dt6 ON f.ACCOUNT_TYPE = dt6.VALUE
+            AND dt6.type = 'HKLX'
+		LEFT JOIN sys_dict_item dt7 ON f.id_type = dt7.VALUE
+            AND dt7.type = 'ID_TYPE'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
     <!-- 花名册翻页列表 -->
     <select id="staffPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO">
         SELECT

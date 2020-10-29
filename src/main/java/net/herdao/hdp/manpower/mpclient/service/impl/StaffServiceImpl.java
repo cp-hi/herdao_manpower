@@ -206,7 +206,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
     public Map<String, Object> getStaffDetail(Long id){
 		Staff staff = this.getById(id);
 		StaffBaseDTO base = baseMapper.getStaffBase(id);
-		StaffInfoDTO info = new StaffInfoDTO();
+		if(base==null){
+			base = new StaffBaseDTO();
+		}
+		StaffInfoDTO info = baseMapper.getStaffInfo(id);
+		if(info==null){
+			info = new StaffInfoDTO();
+		}
 		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
 		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
 		StaffEmergencyDTO emergency = new StaffEmergencyDTO();
