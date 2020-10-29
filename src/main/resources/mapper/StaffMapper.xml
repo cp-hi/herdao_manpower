@@ -423,7 +423,13 @@
             f.EDUCATION_QUA,
             f.SCHOOL_NAME,
             f.PROFESSIONAL,
-            f.LEARN_FORM
+            f.LEARN_FORM,
+            dt1.label STAFF_SCOPE_NAME,
+            dt2.label JOB_TYPE_NAME,
+            dt3.label SEX_NAME,
+            dt4.label FERTILITY_NAME,
+            dt5.label MARITAL_STATUS_NAME,
+            dt6.label ACCOUNT_TYPE_NAME
         FROM
             mp_staff f
         LEFT JOIN mp_user u ON f.user_id = u.ID
@@ -432,6 +438,18 @@
                 SELECT * FROM mp_userpost  WHERE MAIN_POST = TRUE
             ) up ON u.ID = up.USER_ID
         LEFT JOIN mp_post p ON p.ID = up.POST_ID
+        LEFT JOIN sys_dict_item dt1 ON f.STAFF_SCOPE = dt1.VALUE
+            AND dt1.type = 'RYGSFW'
+        LEFT JOIN sys_dict_item dt2 ON f.JOB_TYPE = dt2.VALUE
+            AND dt2.type = 'JOB_TYPE'
+        LEFT JOIN sys_dict_item dt3 ON f.SEX = dt3.VALUE
+            AND dt3.type = 'SEX'
+        LEFT JOIN sys_dict_item dt4 ON f.FERTILITY = dt4.VALUE
+            AND dt4.type = 'SYZK'
+        LEFT JOIN sys_dict_item dt5 ON f.MARITAL_STATUS = dt5.VALUE
+            AND dt5.type = 'HYZK'
+        LEFT JOIN sys_dict_item dt6 ON f.ACCOUNT_TYPE = dt6.VALUE
+            AND dt6.type = 'HKLX'
         <where>
             <if test="searchText != null">
                 AND  CONCAT(f.STAFF_NAME,o.ORG_NAME,p.POST_NAME) like CONCAT('%',#{searchText},'%')
