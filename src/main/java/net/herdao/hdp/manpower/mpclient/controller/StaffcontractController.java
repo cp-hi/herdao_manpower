@@ -44,7 +44,7 @@ import java.util.List;
 @RequestMapping("/staffcontract" )
 @Api(value = "staffcontract", tags = "员工合同签订管理")
 @Slf4j
-public class StaffcontractController extends HdpBaseController   {
+public class StaffcontractController extends HdpBaseController {
     @Autowired
     private StaffcontractService staffcontractService;
 
@@ -182,8 +182,6 @@ public class StaffcontractController extends HdpBaseController   {
 
         return R.ok("导出成功");
     }
-
-
 
     /**
      * 通过id查询员工合同表

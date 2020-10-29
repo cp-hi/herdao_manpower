@@ -72,17 +72,6 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
     }
 
     @Override
-    public String getAddRemarks() {
-        return null;
-    }
-
-    @Override
-    public String getUpdateRemarks() {
-        return null;
-    }
-
-
-    @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         StringBuffer errMsg = new StringBuffer();
         List<ExcelCheckErrDTO> errList = new ArrayList<>();

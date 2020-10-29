@@ -131,4 +131,36 @@ public class ExcelDescriptionContants {
 				.append("10、员工姓名+员工工号+劳动合同起始日期+劳动合同结束日期:数据唯一标识，不允许重复导入记录。");
 		return eds.toString();
 	}
+
+
+	/**
+	 * 获取批量家庭新增说明
+	 * @return
+	 */
+	public static String getFamilyAddDesc() {
+		StringBuffer eds = new StringBuffer();
+		eds.append("导入说明：")
+			.append("1、标红字段为必填\r\n")
+			.append("2、操作导入前请删除示例数据\r\n")
+			.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+			.append("4、关系：输入系统中已存在的类型。");
+
+		return eds.toString();
+	}
+
+	/**
+	 * 获取批量家庭编辑说明
+	 * @return
+	 */
+	public static String getFamilyUpdateDesc() {
+		StringBuffer eds = new StringBuffer();
+		eds.append("导入说明：")
+				.append("1、标红字段为必填\r\n")
+				.append("2、操作导入前请删除示例数据\r\n")
+				.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+				.append("4、关系：输入系统中已存在的类型。\r\n")
+				.append("5、工号+家庭成员姓名:数据唯一标识，不允许重复导入记录。");
+
+		return eds.toString();
+	}
 }

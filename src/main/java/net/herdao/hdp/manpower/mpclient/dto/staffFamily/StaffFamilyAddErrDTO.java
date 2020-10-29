@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class StaffFamilyExcelErrDTO {
+public class StaffFamilyAddErrDTO {
 
     @ExcelProperty(index =0, value = "错误信息")
     @ColumnWidth(75)
