@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.fastjson.JSON;
@@ -164,7 +165,7 @@ public abstract class HdpBaseController {
 	 */
 	@ApiOperation(value = "批量新增、编辑", notes = "批量新增、编辑（excel导入方式， 07版本）")
     @PostMapping("/importData")
-	public void importData(HttpServletResponse response, ImportDataVO importDataVO) {
+	public R importData(HttpServletResponse response, ImportDataVO importDataVO) {
 		try {
 			// 导入类型
 			int importType = importDataVO.getImportType();
@@ -204,14 +205,14 @@ public abstract class HdpBaseController {
 					// 导出异常信息
 					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, ManpowerContants.ImportTypeEnum.getInstance(importType) + "错误信息");
 				}else {
-					/*return R.failed("导入异常，是否下载错误文件？");*/
+					return R.failed("导入异常，是否下载错误文件？");
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			/*return R.failed("导入异常：" + e.getMessage());*/
+			return R.failed("导入异常：" + e.getMessage());
 		}
-		/*return R.ok(null, "导入成功！");*/
+		return R.ok(null, "导入成功！");
 	}
     
 	/**
@@ -224,7 +225,7 @@ public abstract class HdpBaseController {
 	@ApiOperation(value = "下载批量新增、编辑模板")
 	@PostMapping("/downloadTemplate")
     @ApiImplicitParam(name = "importType", value = "下载模板类型，值： 0  批量新增模板； 值 1 批量修改模板")
-	public void downloadTemplate(HttpServletResponse response, ExportDataVO exportDataVO) {
+	public R downloadTemplate(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
 		int importType = exportDataVO.getImportType();
     	// 导出处理 class
 		Class excelCls = getExcelCls(importType);
@@ -235,8 +236,8 @@ public abstract class HdpBaseController {
 					                     new EasyExcelSheetWriteHandler(excelCls, getExcelDescription(importType)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			/*R.failed("下载模板异常：" + e.getMessage());*/
+			R.failed("下载模板异常：" + e.getMessage());
 		}
-		/*return R.ok(null, "下载模板成功！");*/
+		return R.ok(null, "下载模板成功！");
 	}
 }
