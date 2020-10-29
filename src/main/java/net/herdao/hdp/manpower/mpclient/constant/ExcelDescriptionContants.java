@@ -71,4 +71,64 @@ public class ExcelDescriptionContants {
 				.append("6、员工姓名+员工工号+开始时间+结束时间+单位名称:数据唯一标识，不允许重复导入记录。");
 		return eds.toString();
 	}
+
+
+	/**
+	 * 获取批量合同新增说明
+	 * @return
+	 */
+	public static String getContractAddDesc() {
+		StringBuffer eds = new StringBuffer();
+		eds.append("导入说明：")
+				.append(LINE_FEED)
+				.append("1、标红字段为必填\r\n")
+				.append(LINE_FEED)
+				.append("2、操作导入前请删除示例数据\r\n")
+				.append(LINE_FEED)
+				.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+				.append(LINE_FEED)
+				.append("4、合同期限类型：输入系统中已存在的类型。\r\n")
+				.append(LINE_FEED)
+				.append("5、培训时长，培训总学时、培训总学分、培训成绩：正整数。\r\n")
+				.append(LINE_FEED)
+				.append("6、合同编号，合同期限，试用期：正整数。\r\n")
+				.append(LINE_FEED)
+				.append("7、劳动合同起始日期、劳动合同结束日期：格式为yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd。结束时间必须在开始时间之后。")
+				.append(LINE_FEED)
+				.append("8、合同签订主体：从注册公司表中选取。")
+				.append(LINE_FEED)
+				.append("9、合同是否生效： 是，否。");
+
+		return eds.toString();
+	}
+
+	/**
+	 * 获取批量合同编辑说明
+	 * @return
+	 */
+	public static String getContractUpdateDesc() {
+		StringBuffer eds = new StringBuffer();
+		eds.append("导入说明：")
+				.append(LINE_FEED)
+				.append("1、标红字段为必填\r\n")
+				.append(LINE_FEED)
+				.append("2、操作导入前请删除示例数据\r\n")
+				.append(LINE_FEED)
+				.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+				.append(LINE_FEED)
+				.append("4、合同期限类型：输入系统中已存在的类型。\r\n")
+				.append(LINE_FEED)
+				.append("5、培训时长，培训总学时、培训总学分、培训成绩：正整数。\r\n")
+				.append(LINE_FEED)
+				.append("6、合同编号，合同期限，试用期：正整数。\r\n")
+				.append(LINE_FEED)
+				.append("7、劳动合同起始日期、劳动合同结束日期：格式为yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd。结束时间必须在开始时间之后。")
+				.append(LINE_FEED)
+				.append("8、合同签订主体：从注册公司表中选取。")
+				.append(LINE_FEED)
+				.append("9、合同是否生效： 是，否。")
+				.append(LINE_FEED)
+				.append("10、员工姓名+员工工号+劳动合同起始日期+劳动合同结束日期:数据唯一标识，不允许重复导入记录。");
+		return eds.toString();
+	}
 }
