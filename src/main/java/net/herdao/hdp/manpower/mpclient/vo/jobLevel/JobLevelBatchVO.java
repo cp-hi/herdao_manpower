@@ -20,7 +20,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
  * @Version 1.0
  */
 @Data
-@HeadRowHeight(30)
+@HeadRowHeight(20)
 @ContentRowHeight(20)
 @ExcelIgnoreUnannotated
 @ApiModel(value = "批量导入职级", description = "" +
@@ -29,6 +29,10 @@ import org.apache.poi.ss.usermodel.IndexedColors;
         "2、操作导入前请删除示例数据\r\n"
 )
 public class JobLevelBatchVO implements ExcelMsg {
+
+    @ExcelProperty(value = {"", "错误信息"})
+    @HeadFontStyle
+    private String errMsg;
 
     @ExcelProperty(value = {"", "职级名称"})
     @HeadFontStyle(color = 10)
@@ -46,7 +50,4 @@ public class JobLevelBatchVO implements ExcelMsg {
     @HeadFontStyle
     private String description;
 
-    //    @ExcelProperty(value = {"", "错误信息"})
-//    @HeadFontStyle
-    private String errMsg;
 }

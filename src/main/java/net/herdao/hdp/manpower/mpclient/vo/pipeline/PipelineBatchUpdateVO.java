@@ -27,6 +27,9 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 )
 public class PipelineBatchUpdateVO extends PipelineBatchAddVO implements ExcelMsg {
 
+        @ExcelProperty( "错误信息")
+    private String errMsg;
+
     @ExcelProperty({"","管线名称"})
     private String pipelineName;
 
@@ -42,6 +45,4 @@ public class PipelineBatchUpdateVO extends PipelineBatchAddVO implements ExcelMs
     @ExcelProperty({"","备注"})
     private String remark;
 
-//    @ExcelProperty( "错误信息")
-    private String errMsg;
 }

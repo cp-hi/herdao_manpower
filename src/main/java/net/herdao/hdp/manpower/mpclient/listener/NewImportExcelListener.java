@@ -82,10 +82,10 @@ public class NewImportExcelListener<E> extends AnalysisEventListener<E> {
             headExcel.addAll(headMap.values());
     }
 
-    @Override
-    public void invokeHead(Map<Integer, CellData> headMap, AnalysisContext context) {
-        this.invokeHeadMap(ConverterUtils.convertToStringMap(headMap, context), context);
-    }
+//    @Override
+//    public void invokeHead(Map<Integer, CellData> headMap, AnalysisContext context) {
+//        this.invokeHeadMap(ConverterUtils.convertToStringMap(headMap, context), context);
+//    }
 
     @SneakyThrows
     @Override

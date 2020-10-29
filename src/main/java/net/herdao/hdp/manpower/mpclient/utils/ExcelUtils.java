@@ -70,53 +70,63 @@ public class ExcelUtils {
         excelName = URLEncoder.encode(excelName, "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
         //response.setHeader("Content-disposition", "attachment;filename=" + new String(excelName.getBytes("utf-8"),"ISO-8859-1" ) + ExcelTypeEnum.XLSX.getValue());
-        EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(data);
+
+
+        //内容样式策略
+        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+        //垂直居中,水平居中
+        contentWriteCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        //设置 自动换行
+        contentWriteCellStyle.setWrapped(true);
+        // 字体策略
+        WriteFont contentWriteFont = new WriteFont();
+        // 字体大小
+        contentWriteFont.setFontHeightInPoints((short) 10);
+        contentWriteCellStyle.setWriteFont(contentWriteFont);
+        //头策略使用默认
+        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+//        headWriteCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
+//        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
+//        headWriteCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
+//        WriteFont writeFont = new WriteFont();
+//        writeFont.setFontHeightInPoints((short) 10);
+//        headWriteCellStyle.setWriteFont(writeFont);
+        headWriteCellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy =
+            new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
+
+        EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName)
+                .registerWriteHandler(horizontalCellStyleStrategy)
+                .registerWriteHandler(new ImportStyleStrategy(clazz, data))
+                .doWrite(data);
     }
 
-    public static void export2Web(HttpServletResponse response, String excelName, List<LinkedHashMap<String, String>> data) throws Exception {
-        List<List<Object>> dataList = new ArrayList<>();
-        List<List<String>> headList = new ArrayList<>();
-        for (String k : data.get(0).keySet()) {
-            List<String> head = new ArrayList<>();
-            head.add(k);
-            headList.add(head);
-        }
-        for (LinkedHashMap<String, String> map : data) {
-            List<Object> objs = new ArrayList<>();
-            for (List<String> h : headList) {
-                objs.add(map.get(h.get(0)));
-            }
-            dataList.add(objs);
-        }
-
-        response.setContentType("application/vnd.ms-excel");
-        response.setCharacterEncoding("utf-8");
-        excelName = URLEncoder.encode(excelName, "UTF-8");
-        response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
-        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
-    }
-
-    public static void downloadTempl(HttpServletResponse response, Class templClass) throws Exception {
-        ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);
-//        List<LinkedHashMap<String, String>> data = new ArrayList();
-//        Field[] fields = templClass.getDeclaredFields();
-//        LinkedHashMap<String, String> map = new LinkedHashMap();
-//
-//        for (Field field : fields) {
-//            if (field.getName().equals("errMsg")) continue;
-//            ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
-//            map.put(excel.value()[1], "");
-//        }
-//        data.add(map);
-//
+//    public static void export2Web(HttpServletResponse response, String excelName, List<LinkedHashMap<String, String>> data) throws Exception {
+//        List<List<Object>> dataList = new ArrayList<>();
 //        List<List<String>> headList = new ArrayList<>();
 //        for (String k : data.get(0).keySet()) {
 //            List<String> head = new ArrayList<>();
-//            if (StringUtils.isNotBlank(apiModel.description()))
-//                head.add(apiModel.description());
 //            head.add(k);
 //            headList.add(head);
 //        }
+//        for (LinkedHashMap<String, String> map : data) {
+//            List<Object> objs = new ArrayList<>();
+//            for (List<String> h : headList) {
+//                objs.add(map.get(h.get(0)));
+//            }
+//            dataList.add(objs);
+//        }
+//
+//        response.setContentType("application/vnd.ms-excel");
+//        response.setCharacterEncoding("utf-8");
+//        excelName = URLEncoder.encode(excelName, "UTF-8");
+//        response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
+//        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
+//    }
+
+    public static void downloadTempl(HttpServletResponse response, Class templClass) throws Exception {
+        ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);
 
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
@@ -136,12 +146,15 @@ public class ExcelUtils {
         contentWriteFont.setFontHeightInPoints((short) 14);
         contentWriteCellStyle.setWriteFont(contentWriteFont);
         //头策略使用默认
-//        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
 //        headWriteCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
 //        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
 //        headWriteCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
+        WriteFont writeFont = new WriteFont();
+        writeFont.setFontHeightInPoints((short) 10);
+        headWriteCellStyle.setWriteFont(writeFont);
         HorizontalCellStyleStrategy horizontalCellStyleStrategy =
-            new HorizontalCellStyleStrategy(new WriteCellStyle(), contentWriteCellStyle);
+                new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
         EasyExcel.write(response.getOutputStream()).sheet(excelName).head(templClass)
                 .registerWriteHandler(horizontalCellStyleStrategy)
