@@ -42,7 +42,8 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
         this.description = apiModel.description();
         for (Field field : fields) {
             ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
-            if (null != excelProperty) fieldMap.put(excelProperty.value()[1], field);
+            if (null != excelProperty)
+                fieldMap.put(excelProperty.value()[excelProperty.value().length - 1], field);
         }
     }
 
