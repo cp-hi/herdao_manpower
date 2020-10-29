@@ -587,7 +587,7 @@
             f.staff_code,
             o.org_name,
             p.post_name,
-            CONCAT(IFNULL(lv1.job_level_name, '') ,'-', IFNULL(lv1.job_level_name, '')) AS job_level_id1,
+            CONCAT(IFNULL(lv1.job_level_name, '') ,'-', IFNULL(lv1.job_level_name, '')) AS job_level_name,
             f.job_type,
             f.mobile,
             f.email
