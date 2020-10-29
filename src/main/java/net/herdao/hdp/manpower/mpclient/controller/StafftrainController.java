@@ -130,7 +130,7 @@ public class StafftrainController{
      */
     @ApiOperation(value = "修改", notes = "修改")
     @SysLog("修改" )
-    @PutMapping("/updateTrain" )
+    @PostMapping("/updateTrain" )
     public R updateById(@RequestBody Stafftrain stafftrain) {
         Integer userId = UserUtils.getUserId();
         stafftrain.setModifiedTime(new Date());
@@ -146,7 +146,7 @@ public class StafftrainController{
      */
     @ApiOperation(value = "新增员工培训", notes = "新增员工培训")
     @SysLog("新增员工培训" )
-    @GetMapping("/saveStaffTrain" )
+    @PostMapping("/saveStaffTrain" )
     public R saveStaffTrain(@RequestBody Stafftrain staffTrain) {
         String username = UserUtils.getUsername();
         Integer userId = UserUtils.getUserId();
