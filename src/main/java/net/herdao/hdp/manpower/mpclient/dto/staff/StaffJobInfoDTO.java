@@ -53,4 +53,14 @@ public class StaffJobInfoDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="转正日期")
     private LocalDate regularTime;
+
+
+    @ApiModelProperty(value="任职类型名称")
+    private String jobTypeName;
+
+    @ApiModelProperty(value="人员性质名称")
+    private String personnelNatureName;
+
+    @ApiModelProperty(value="人员归属范围名称")
+    private String staffScopeName;
 }

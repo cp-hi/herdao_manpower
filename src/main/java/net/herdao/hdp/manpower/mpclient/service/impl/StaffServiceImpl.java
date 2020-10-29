@@ -213,7 +213,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		if(info==null){
 			info = new StaffInfoDTO();
 		}
-		StaffJobInfoDTO jobInfo = new StaffJobInfoDTO();
+		StaffJobInfoDTO jobInfo = baseMapper.getStaffJobInfo(id);
+		if(jobInfo==null){
+			jobInfo = new StaffJobInfoDTO();
+		}
 		StaffInfoOtherDTO infoOther = new StaffInfoOtherDTO();
 		StaffEmergencyDTO emergency = new StaffEmergencyDTO();
 		BeanUtils.copyProperties(staff, base);

@@ -98,6 +98,13 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	StaffInfoDTO getStaffInfo(Long id);
 
 	/**
+	 * 查询员工在职信息
+	 * @param id
+	 * @return StaffJobInfoDTO
+	 */
+	StaffJobInfoDTO getStaffJobInfo(Long id);
+
+	/**
 	 * 员工分页列表
 	 *
 	 * @param map

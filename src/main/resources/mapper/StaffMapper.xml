@@ -344,6 +344,25 @@
         LIMIT 1
     </select>
 
+    <!-- 查询员工在职信息 -->
+    <select id="getStaffJobInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO">
+        SELECT
+            dt1.label JOB_TYPE_NAME,
+            dt2.label PERSONNEL_NATURE_NAME,
+            dt3.label STAFF_SCOPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.JOB_TYPE = dt1.VALUE
+            AND dt1.type = 'JOB_TYPE'
+        LEFT JOIN sys_dict_item dt2 ON f.PERSONNEL_NATURE = dt2.VALUE
+            AND dt2.type = 'RYXZ'
+		LEFT JOIN sys_dict_item dt3 ON f.STAFF_SCOPE = dt3.VALUE
+            AND dt3.type = 'RYGSFW'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
     <!-- 花名册翻页列表 -->
     <select id="staffPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO">
         SELECT
