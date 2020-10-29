@@ -1,19 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
@@ -24,6 +8,8 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdatelErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffcontractDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
@@ -149,7 +135,7 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
                         .eq("end_date", addDTO.getEndDate())
             );
             if (!checkList.isEmpty()&&checkList.size()>=1){
-                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表存在多条此记录，因此不可新增；");
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表存在此记录，因此不可新增；");
             }
 
             if (errMsg.length() > 0) {
@@ -158,10 +144,14 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
                 BeanUtils.copyProperties(addDTO, staffcontract);
                 staffcontract.setStartDate(DateUtils.parseDate(addDTO.getStartDate(),pattern));
                 staffcontract.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
+                staffcontract.setContractPeriod(Long.parseLong(addDTO.getContractPeriod()));
+                staffcontract.setProbationMonth(Long.parseLong(addDTO.getProbationMonth()));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
                 staffcontract.setCreatedTime(LocalDateTime.now());
-                staffcontract.setCreatorCode(sysUser.getUserId().toString());
+                staffcontract.setCreatorCode(sysUser.getUsername());
+                staffcontract.setCreatorName(sysUser.getAliasName());
+                staffcontract.setCreatorId(sysUser.getUserId());
 
                 staffContractList.add(staffcontract);
             }
@@ -178,27 +168,27 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
     private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Staffcontract> staffContractList) {
         for (int i = 0; i < excelList.size(); i++) {
             Staffcontract staffcontract=new Staffcontract();
-            StaffContractAddDTO addDTO = (StaffContractAddDTO) excelList.get(i);
+            StaffContractUpdateDTO updateDto = (StaffContractUpdateDTO) excelList.get(i);
 
             //校检员工
-            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
-            addDTO.setStaffId(staffId);
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, updateDto.getStaffCode(), updateDto.getStaffName(),staffService);
+            updateDto.setStaffId(staffId);
 
             //校检时间
-            String pattern= ImportCheckUtils.checkDate(errMsg, addDTO.getStartDate(),addDTO.getEndDate());
+            String pattern= ImportCheckUtils.checkDate(errMsg, updateDto.getStartDate(),updateDto.getEndDate());
 
             //校检合同期限类型
-            SysDictItem contractTypeDicItem = ImportCheckUtils.checkDicItem(errMsg, "HTQXLX", addDTO.getContractType(), itemService);
+            SysDictItem contractTypeDicItem = ImportCheckUtils.checkDicItem(errMsg, "HTQXLX", updateDto.getContractType(), itemService);
             if(null != contractTypeDicItem){
-                addDTO.setContractType(contractTypeDicItem.getValue());
+                updateDto.setContractType(contractTypeDicItem.getValue());
             }
 
             //校检合同是否生效 0生效 ，1失效
-            if (addDTO.getContractStatus()!=null){
-                if (addDTO.getContractStatus().equals("是")){
-                    addDTO.setNewest(false);
-                }else if (addDTO.getContractStatus().equals("否")){
-                    addDTO.setNewest(true);
+            if (updateDto.getContractStatus()!=null){
+                if (updateDto.getContractStatus().equals("是")){
+                    updateDto.setNewest(false);
+                }else if (updateDto.getContractStatus().equals("否")){
+                    updateDto.setNewest(true);
                 }else{
                     ImportCheckUtils.appendStringBuffer(errMsg, "请填写合同是否生效 : 是或否");
                 }
@@ -207,41 +197,43 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
             //校检合同签订主体。
             Company company = companyService.getOne(
                     new QueryWrapper<Company>()
-                            .eq("COMPANY_NAME", addDTO.getCompany())
+                            .eq("COMPANY_NAME", updateDto.getCompany())
 
             );
             if (null==company){
-                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订主体不存在："+addDTO.getCompany()+";");
+                ImportCheckUtils.appendStringBuffer(errMsg, "合同签订主体不存在："+updateDto.getCompany()+";");
             }else {
-                addDTO.setCompanyCode(company.getCompanyCode());
+                updateDto.setCompanyCode(company.getCompanyCode());
             }
 
             //检查数据库是否存在记录，且唯一记录。
             List<Staffcontract> checkList = super.list(
                     new QueryWrapper<Staffcontract>()
                             .eq("staff_id", staffId)
-                            .eq("start_date", addDTO.getStartDate())
-                            .eq("end_date", addDTO.getEndDate())
+                            .eq("start_date", updateDto.getStartDate())
+                            .eq("end_date", updateDto.getEndDate())
             );
             if (checkList.isEmpty()){
                 ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中不存在此记录，因此不可编辑更新；");
             }else if (!checkList.isEmpty()&&checkList.size()>1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "合同签订表中存在多条此记录，因此不可编辑更新；");
             }else{
-                addDTO.setId(checkList.get(0).getId());
+                updateDto.setId(checkList.get(0).getId());
             }
 
 
             if (errMsg.length() > 0) {
-                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+                errList.add(new ExcelCheckErrDTO(updateDto, errMsg.toString()));
             }else {
-                BeanUtils.copyProperties(addDTO, staffcontract);
-                staffcontract.setStartDate(DateUtils.parseDate(addDTO.getStartDate(),pattern));
-                staffcontract.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
+                BeanUtils.copyProperties(updateDto, staffcontract);
+                staffcontract.setContractPeriod(Long.parseLong(updateDto.getContractPeriod()));
+                staffcontract.setProbationMonth(Long.parseLong(updateDto.getProbationMonth()));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
                 staffcontract.setModifiedTime(LocalDateTime.now());
-                staffcontract.setModifierCode(sysUser.getUserId().toString());
+                staffcontract.setModifierCode(sysUser.getUsername());
+                staffcontract.setModifierName(sysUser.getAliasName());
+                staffcontract.setModifierId(sysUser.getUserId());
 
                 staffContractList.add(staffcontract);
             }

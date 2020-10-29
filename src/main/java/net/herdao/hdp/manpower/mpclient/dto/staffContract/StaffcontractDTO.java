@@ -100,7 +100,7 @@ public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
      */
     @ApiModelProperty(value="试用期")
     @ExcelProperty(value = "试用期")
-    private Long probationMonth;
+    private String probationMonth;
 
     /**
      * 最近更新情况

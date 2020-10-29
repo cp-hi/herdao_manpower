@@ -158,4 +158,16 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="最后修改时间")
     private LocalDateTime modifiedTime;
+
+    @ApiModelProperty(value = "修改ID" ,hidden = true)
+    private Long modifierId;
+
+    @ApiModelProperty(value = "修改人名称" ,hidden = true)
+    private String modifierName;
+
+    @ApiModelProperty(value = "创建人ID" ,hidden = true)
+    private Long creatorId;
+
+    @ApiModelProperty(value = "创建人名称" ,hidden = true)
+    private String creatorName;
 }

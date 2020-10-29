@@ -5,14 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkUpdateErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
@@ -22,6 +20,7 @@ import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
@@ -83,6 +82,12 @@ public class StaffcontractController extends HdpBaseController {
         return ExcelDescriptionContants.getContractUpdateDesc();
     }
 
+    @Override
+    public List getDownloadUpdateTemplateList() {
+        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null);
+        return list;
+    }
+
     /**
      * 新增员工培训
      * @param staffcontract
@@ -92,9 +97,11 @@ public class StaffcontractController extends HdpBaseController {
     @SysLog("新增员工合同" )
     @PostMapping("/saveContract" )
     public R saveContract(@RequestBody Staffcontract staffcontract) {
-        Integer userId = UserUtils.getUserId();
+        SysUser sysUser = SysUserUtils.getSysUser();
         staffcontract.setCreatedTime(LocalDateTime.now());
-        staffcontract.setCreatorCode(userId.toString());
+        staffcontract.setCreatorCode(sysUser.getUsername());
+        staffcontract.setCreatorName(sysUser.getAliasName());
+        staffcontract.setCreatorId(sysUser.getUserId());
         boolean status = staffcontractService.save(staffcontract);
         return R.ok(status);
     }
@@ -108,9 +115,11 @@ public class StaffcontractController extends HdpBaseController {
     @SysLog("修改员工合同" )
     @PostMapping("/updateContract" )
     public R updateContract(@RequestBody Staffcontract staffcontract) {
-        Integer userId = UserUtils.getUserId();
+        SysUser sysUser = SysUserUtils.getSysUser();
         staffcontract.setModifiedTime(LocalDateTime.now());
-        staffcontract.setModifierCode(userId.toString());
+        staffcontract.setModifierCode(sysUser.getUsername());
+        staffcontract.setModifierName(sysUser.getAliasName());
+        staffcontract.setModifierId(sysUser.getUserId());
         boolean status = staffcontractService.updateById(staffcontract);
         return R.ok(status);
     }
