@@ -27,9 +27,8 @@ public class SysUserUtils {
     }
 
     public static SysUser getSysUser() {
-        UserInfo userInfo = remoteUserService.info(
-                SecurityUtils.getUser().getUsername(),
-                SecurityConstants.FROM_IN).getData();
-        return userInfo.getSysUser();
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        SysUser sysUser = userInfo.getSysUser();
+        return sysUser;
     }
 }
