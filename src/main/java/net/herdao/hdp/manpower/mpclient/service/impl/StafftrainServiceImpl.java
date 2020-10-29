@@ -52,34 +52,6 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
     }
 
     @Override
-    public String getAddRemarks() {
-        StringBuffer remarks = new StringBuffer();
-        remarks.append("导入说明：\r\n")
-                .append("1、标红字段为必填\r\n")
-                .append("2、操作导入前请删除示例数据\r\n")
-                .append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
-                .append("4、开始时间，结束时间的日期格式为：yyyy/MM/dd HH:mm:ss 或者 yyyy/MM/dd HH:mm:ss 或者 yyyy.MM.dd HH:mm:ss。\r\n")
-                .append("5、培训类型：输入系统中已存在的类型 ，如：内部培训， 外部培训。\r\n")
-                .append("6、培训时长，培训总学时，培训总学分，培训成绩输入内容格式：正整数。\r\n")
-                .append("7、员工姓名+员工工号+开始时间+结束时间:数据唯一标识，不允许重复导入记录。");
-        return remarks.toString();
-    }
-
-    @Override
-    public String getUpdateRemarks() {
-        StringBuffer remarks = new StringBuffer();
-        remarks.append("导入说明：\r\n")
-                .append("1、标红字段为必填\r\n")
-                .append("2、操作导入前请删除示例数据\r\n")
-                .append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
-                .append("4、开始时间，结束时间的日期格式为：yyyy/MM/dd HH:mm:ss 或者 yyyy/MM/dd HH:mm:ss 或者 yyyy.MM.dd HH:mm:ss。\r\n")
-                .append("5、培训类型：输入系统中已存在的类型 ，如：内部培训， 外部培训。\r\n")
-                .append("6、培训时长，培训总学时，培训总学分，培训成绩输入内容格式：正整数。");
-
-        return remarks.toString();
-    }
-
-    @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         StringBuffer errMsg = new StringBuffer();
         List<ExcelCheckErrDTO> errList = new ArrayList<>();
