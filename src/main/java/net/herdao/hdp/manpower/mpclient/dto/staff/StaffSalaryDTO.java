@@ -35,4 +35,7 @@ public class StaffSalaryDTO {
 
     @ApiModelProperty(value="收款银行支行编码")
     private String dueBankCode;
+
+    @ApiModelProperty(value="工资发放形式名称")
+    private String paySalaryTypeName;
 }

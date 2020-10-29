@@ -42,4 +42,7 @@ public class StaffSecurityDTO {
 
     @ApiModelProperty(value="中间停缴社保年份")
     private BigDecimal interruptYear;
+
+    @ApiModelProperty(value="社保类型名称")
+    private String securityTypeName;
 }

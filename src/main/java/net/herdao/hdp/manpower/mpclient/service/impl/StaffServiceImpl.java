@@ -340,6 +340,47 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("staffEducationLastDTO", educationLast);
 		return map;
 	}
+
+	@Override
+	public Map<String, Object> getStaffWelfare(Long id){
+		Staff staff = this.getById(id);
+		StaffBaseDTO base = baseMapper.getStaffBase(id);
+		if(base==null){
+			base = new StaffBaseDTO();
+		}
+		StaffSecurityDTO security = baseMapper.getStaffSecurity(id);
+		if(security==null){
+			security = new StaffSecurityDTO();
+		}
+		StaffFundDTO fund = new StaffFundDTO();
+		StaffSalaryDTO salary = baseMapper.getStaffSalary(id);
+		if(salary==null){
+			salary = new StaffSalaryDTO();
+		}
+		BeanUtils.copyProperties(staff, base);
+		BeanUtils.copyProperties(staff, security);
+		BeanUtils.copyProperties(staff, fund);
+		BeanUtils.copyProperties(staff, salary);
+		Map<String, Object> map = new HashMap<>();
+		map.put("staffBaseDTO", base);
+		map.put("staffSecurityDTO", security);
+		map.put("staffFundDTO", fund);
+		map.put("staffSalaryDTO", salary);
+
+		List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
+				.eq("STAFF_ID", staff.getId())
+				.orderByDesc("START_DATE")
+		);
+		List<StaffContractDetailDTO> contractDtoList = new ArrayList<>();
+		StaffContractDetailDTO contractDto;
+		for(int i=0;i<contractList.size();i++){
+			contractDto = new StaffContractDetailDTO();
+			BeanUtils.copyProperties(contractList.get(i), contractDto);
+			contractDtoList.add(contractDto);
+		}
+		map.put("staffContractDetailDTO", contractDtoList);
+		return  map;
+	}
 	
 
 	/**
@@ -507,39 +548,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		List<StaffProTitleDTO> staffProTitleList = staffProTitleService.findStaffProTitleDTO(id);
 		return staffProTitleList;
 	}
-	
-	@Override
-	public Map<String, Object> getStaffWelfare(Long id){
-		Staff staff = this.getById(id);
-		StaffBaseDTO base = baseMapper.getStaffBase(id);
-		StaffSecurityDTO security = new StaffSecurityDTO();
-		StaffFundDTO fund = new StaffFundDTO();
-		StaffSalaryDTO salary = new StaffSalaryDTO();
-		BeanUtils.copyProperties(staff, base);
-		BeanUtils.copyProperties(staff, security);
-		BeanUtils.copyProperties(staff, fund);
-		BeanUtils.copyProperties(staff, salary);
-		Map<String, Object> map = new HashMap<>();
-		map.put("staffBaseDTO", base);
-		map.put("staffSecurityDTO", security);
-		map.put("staffFundDTO", fund);
-		map.put("staffSalaryDTO", salary);
 
-		List<Staffcontract> contractList = staffcontractService.list(new QueryWrapper<Staffcontract>()
-				.eq("STAFF_ID", staff.getId())
-				.orderByDesc("START_DATE")
-		);
-		List<StaffContractDetailDTO> contractDtoList = new ArrayList<>();
-		StaffContractDetailDTO contractDto;
-		for(int i=0;i<contractList.size();i++){
-			contractDto = new StaffContractDetailDTO();
-			BeanUtils.copyProperties(contractList.get(i), contractDto);
-			contractDtoList.add(contractDto);
-		}
-		map.put("staffContractDetailDTO", contractDtoList);
-		return  map;
-	}
-	
 	@Override
 	public boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO){
 		Staff staff = this.getById(staffWorkYearDTO.getStaffid());
