@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
@@ -46,6 +45,7 @@ public class EasyExcelUtils {
 	public static void webWriteExcel(HttpServletResponse response, List objects, Class clazz, String fileName, String sheetName, WriteHandler handler) throws IOException {
 		
         fileName = URLEncoder.encode(fileName, "UTF-8");
+        
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ExcelTypeEnum.XLSX.getValue());
