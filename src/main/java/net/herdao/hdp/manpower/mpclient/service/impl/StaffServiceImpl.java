@@ -255,8 +255,17 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	public Map<String, Object> getHomePage(Long id){
 		Staff staff = this.getById(id);
 		StaffBaseDTO base = baseMapper.getStaffBase(id);
+		if(base==null){
+			base = new StaffBaseDTO();
+		}
 		StaffArchiveDTO archive = baseMapper.getStaffArchive(id);
+		if(archive==null){
+			archive = new StaffArchiveDTO();
+		}
 		StaffWelfareDTO welfare = baseMapper.getStaffWelfare(id);
+		if(welfare==null){
+			welfare = new StaffWelfareDTO();
+		}
 		StaffCarreraDTO carrera = new StaffCarreraDTO();
 		BeanUtils.copyProperties(staff, base);
 		BeanUtils.copyProperties(staff, archive);
