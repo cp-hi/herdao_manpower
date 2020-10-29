@@ -216,5 +216,40 @@ public class WorkexperienceController {
         }
     }
 
+    /**
+     * 下载员工工作新增、编辑模板
+     * @param response
+     * @param importType
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    @ApiOperation(value = "下载员工工作新增、编辑模板")
+    @GetMapping("/downloadTemplate")
+    @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
+    public R downloadTemplate(HttpServletResponse response, Integer importType) {
+        if (importType!=null){
+            if (importType==0){
+                try {
+                    EasyExcelUtils.webWriteExcel(response, new ArrayList<>(), StaffWorkAddDTO.class, "批量新增员工工作模板",
+                            new EasyExcelSheetWriteHandler(8 , workexperienceService.getAddRemarks()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    R.failed("下载模板异常：" + e.getMessage());
+                }
+            }
 
+            if (importType==1){
+                List<WorkexperienceDTO> staffWorkList = workexperienceService.findStaffWork(null, null);
+                try {
+                    EasyExcelUtils.webWriteExcel(response, staffWorkList, StaffWorkUpdateDTO.class, "批量编辑员工工作模板",
+                            new EasyExcelSheetWriteHandler(8 , workexperienceService.getUpdateRemarks()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    R.failed("下载模板异常：" + e.getMessage());
+                }
+            }
+        }
+
+        return R.ok(null, "下载模板成功！");
+    }
 }
