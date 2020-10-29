@@ -165,7 +165,7 @@ public abstract class HdpBaseController {
 	 */
 	@ApiOperation(value = "批量新增、编辑", notes = "批量新增、编辑（excel导入方式， 07版本）")
     @PostMapping("/importData")
-	public R importData(HttpServletResponse response, ImportDataVO importDataVO) {
+	public void importData(HttpServletResponse response, ImportDataVO importDataVO) {
 		try {
 			// 导入类型
 			int importType = importDataVO.getImportType();
@@ -205,14 +205,14 @@ public abstract class HdpBaseController {
 					// 导出异常信息
 					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, ManpowerContants.ImportTypeEnum.getInstance(importType) + "错误信息");
 				}else {
-					return R.failed("导入异常，是否下载错误文件？");
+					/*return R.failed("导入异常，是否下载错误文件？");*/
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return R.failed("导入异常：" + e.getMessage());
+			/*return R.failed("导入异常：" + e.getMessage());*/
 		}
-		return R.ok(null, "导入成功！");
+		/*return R.ok(null, "导入成功！");*/
 	}
     
 	/**

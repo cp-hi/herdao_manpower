@@ -14,6 +14,7 @@ import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.FamilystatusMapper;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
@@ -140,16 +141,18 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                             .eq("name", addDTO.getName())
             );
             if (!checkList.isEmpty()&&checkList.size()>=1){
-                ImportCheckUtils.appendStringBuffer(errMsg, "员工家庭表中存在多条此记录，因此不可新增；");
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工家庭表中存在此记录，因此不可新增；");
             }
 
             if (errMsg.length() > 0) {
                 errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
             }else {
                 BeanUtils.copyProperties(addDTO, familystatus);
+                familystatus.setAge(Integer.parseInt(addDTO.getAge()));
+
                 SysUser sysUser = SysUserUtils.getSysUser();
                 familystatus.setCreatedTime(LocalDateTime.now());
-                familystatus.setCreatorCode(sysUser.getUserId().toString());
+                familystatus.setCreatorCode(sysUser.getUsername());
 
                 familystatusList.add(familystatus);
             }
@@ -166,40 +169,42 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Familystatus> familystatusList) {
         for (int i = 0; i < excelList.size(); i++) {
             Familystatus familystatus=new Familystatus();
-            StaffFamilyAddDTO addDTO = (StaffFamilyAddDTO) excelList.get(i);
+            StaffFamilyUpdateDTO updateDTO = (StaffFamilyUpdateDTO) excelList.get(i);
 
             //校检员工
-            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
-            addDTO.setStaffId(staffId);
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, updateDTO.getStaffCode(), updateDTO.getStaffName(),staffService);
+            updateDTO.setStaffId(staffId);
 
             //校检关系
-            SysDictItem relationItem = ImportCheckUtils.checkDicItem(errMsg, "RELATIONS_TYPE", addDTO.getRelations(), itemService);
+            SysDictItem relationItem = ImportCheckUtils.checkDicItem(errMsg, "RELATIONS_TYPE", updateDTO.getRelations(), itemService);
             if(null != relationItem){
-                addDTO.setRelations(relationItem.getValue());
+                updateDTO.setRelations(relationItem.getValue());
             }
 
             //检查数据库是否存在记录，且唯一记录。
             List<Familystatus> checkList = super.list(
                     new QueryWrapper<Familystatus>()
                             .eq("staff_id", staffId)
-                            .eq("name", addDTO.getName())
+                            .eq("name", updateDTO.getName())
             );
             if (checkList.isEmpty()){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工家庭表中不存在此记录，因此不可编辑更新；");
             }else if (!checkList.isEmpty()&&checkList.size()>1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工家庭表中不存在此记录，因此不可编辑更新；");
             }else{
-                addDTO.setId(checkList.get(0).getId());
+                updateDTO.setId(checkList.get(0).getId());
             }
 
             if (errMsg.length() > 0) {
-                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+                errList.add(new ExcelCheckErrDTO(updateDTO, errMsg.toString()));
             }else {
-                BeanUtils.copyProperties(addDTO, familystatus);
+                BeanUtils.copyProperties(updateDTO, familystatus);
+                familystatus.setAge(Integer.parseInt(updateDTO.getAge()));
+
                 SysUser sysUser = SysUserUtils.getSysUser();
                 familystatus.setModifierName(sysUser.getUsername());
                 familystatus.setModifiedTime(LocalDateTime.now());
-                familystatus.setModifierCode(sysUser.getUserId().toString());
+                familystatus.setModifierCode(sysUser.getUsername());
 
                 familystatusList.add(familystatus);
             }

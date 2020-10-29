@@ -49,7 +49,7 @@ public class FamilyStatusVO {
      */
     @ApiModelProperty(value="年龄")
     @ExcelProperty(value = "年龄")
-    private Integer age;
+    private String age;
 
     /**
      * 职业
