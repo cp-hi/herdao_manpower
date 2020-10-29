@@ -103,7 +103,7 @@ public class AnnotationUtils {
         List<String> names = new ArrayList<>();
         for (Field field : fields) {
             ExcelProperty property = field.getAnnotation(ExcelProperty.class);
-            names.add(property.value()[0]);
+            if (null != property) names.add(property.value()[property.value().length - 1]);
         }
         return names;
     }
