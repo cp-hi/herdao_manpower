@@ -10,14 +10,17 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractAddlErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdatelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -46,9 +49,44 @@ import java.util.stream.Collectors;
 @RequestMapping("/staffEducation" )
 @Api(value = "staffEducation", tags = "员工教育经历管理")
 @Slf4j
-public class StaffEducationController {
+public class StaffEducationController extends HdpBaseController {
 
     private final  StaffeducationService staffeducationService;
+
+    @Override
+    public HdpService getHdpService() {
+        return staffeducationService;
+    }
+
+    @Override
+    public Class getImportAddCls() {
+        return StaffEduAddDTO.class;
+    }
+
+    @Override
+    public Class getImportAddErrCls() {
+        return StaffEduAddErrDTO.class;
+    }
+
+    @Override
+    public Class getImportUpdateCls() {
+        return StaffEduUpdateDTO.class;
+    }
+
+    @Override
+    public Class getImportUpdateErrCls() {
+        return StaffEduUpdateErrDTO.class;
+    }
+
+    @Override
+    public String getExcelAddDescription() {
+        return ExcelDescriptionContants.getEduAddDesc();
+    }
+
+    @Override
+    public String getExcelUpdateDescription() {
+        return ExcelDescriptionContants.getEduUpdateDesc();
+    }
 
     /**
      * 分页查询
@@ -179,73 +217,5 @@ public class StaffEducationController {
         R.ok("导出成功");
     }
 
-    /**
-     * 批量导入员工教育（excel导入)
-     * @param file
-     * @return R
-     */
-    @ApiOperation(value = "批量导入员工教育 (excel导入)", notes = "批量导入员工教育 (excel导入)")
-    @PostMapping("/batchImportEdu")
-    @ResponseBody
-    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
-        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
-    })
-    public R batchImportEdu(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
-        try {
-            EasyExcelListener easyExcelListener = new EasyExcelListener(staffeducationService, StaffEduAddDTO.class,importType);
-            EasyExcelFactory.read(file.getInputStream(), StaffEduAddDTO.class, easyExcelListener).sheet().headRowNumber(2).doRead();
-            List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
-            if (!errList.isEmpty()) {
-                // 包含错误信息就导出错误信息
-                List<StaffEduAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-                    StaffEduAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffEduAddErrDTO.class);
-                    excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
-                    return excelErrDto;
-                }).collect(Collectors.toList());
-                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffEduAddErrDTO.class, "批量导入员工教育错误信息");
-            }
-            return R.ok("导入成功！");
-        } catch (IOException e) {
-            log.error("导入失败",e.toString());
-            return R.failed(e.getMessage());
-        }
-    }
-
-    /**
-     * 下载员工教育新增、编辑模板
-     * @param response
-     * @param importType
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    @ApiOperation(value = "下载员工教育新增、编辑模板")
-    @GetMapping("/downloadTemplate")
-    @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改")
-    public R downloadTemplate(HttpServletResponse response, Integer importType) {
-        if (importType!=null){
-            if (importType==0){
-                try {
-                    EasyExcelUtils.webWriteExcel(response, new ArrayList<>(), StaffEduAddDTO.class, "批量新增员工教育模板",
-                            new EasyExcelSheetWriteHandler(8 , staffeducationService.getAddRemarks()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    R.failed("下载模板异常：" + e.getMessage());
-                }
-            }
-
-            if (importType==1){
-                List<StaffEducationDTO> staffEducationList = staffeducationService.findStaffEducation(null, null);
-                try {
-                    EasyExcelUtils.webWriteExcel(response, staffEducationList, StaffEduUpdateDTO.class, "批量编辑员工教育模板",
-                            new EasyExcelSheetWriteHandler(8 , staffeducationService.getUpdateRemarks()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    R.failed("下载模板异常：" + e.getMessage());
-                }
-            }
-        }
-
-        return R.ok(null, "下载模板成功！");
-    }
 
 }
