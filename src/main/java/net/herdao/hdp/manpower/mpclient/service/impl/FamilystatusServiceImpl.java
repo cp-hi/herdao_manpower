@@ -94,6 +94,29 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     }
 
     @Override
+    public String getAddRemarks() {
+        StringBuffer remarks = new StringBuffer();
+        remarks.append("导入说明：\r\n")
+                .append("1、标红字段为必填\r\n")
+                .append("2、操作导入前请删除示例数据\r\n")
+                .append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+                .append("4、关系：输入系统中已存在的类型。");
+        return remarks.toString();
+    }
+
+    @Override
+    public String getUpdateRemarks() {
+        StringBuffer remarks = new StringBuffer();
+        remarks.append("导入说明：\r\n")
+                .append("1、标红字段为必填\r\n")
+                .append("2、操作导入前请删除示例数据\r\n")
+                .append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+                .append("4、关系：输入系统中已存在的类型。\r\n")
+                .append("5、工号+家庭成员姓名:数据唯一标识，不允许重复导入记录。") ;
+        return remarks.toString();
+    }
+
+    @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         StringBuffer errMsg = new StringBuffer();
         List<ExcelCheckErrDTO> errList = new ArrayList<>();

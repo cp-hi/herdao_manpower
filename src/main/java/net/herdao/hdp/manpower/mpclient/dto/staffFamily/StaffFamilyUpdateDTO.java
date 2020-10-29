@@ -16,15 +16,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 员工奖惩批量新增DTO
+ * 员工奖惩批量编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工奖惩批量新增DTO")
+@ApiModel(value = "员工奖惩批量编辑DTO")
 @ColumnWidth(20)
 @HeadFontStyle
-public class StaffFamilyAddDTO {
+public class StaffFamilyUpdateDTO {
     @ExcelIgnore
     private Long id;
 

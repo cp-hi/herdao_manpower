@@ -3,9 +3,23 @@ package net.herdao.hdp.manpower.mpclient.utils;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.metadata.style.WriteFont;
+import com.alibaba.excel.write.style.AbstractCellStyleStrategy;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.manpower.mpclient.handler.ImportStyleStrategy;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.util.IOUtils;
 
 import javax.servlet.ServletOutputStream;
@@ -13,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -81,58 +96,57 @@ public class ExcelUtils {
         EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
     }
 
-    public static void export2Web(HttpServletResponse response, String excelName,String description, List<LinkedHashMap<String, String>> data) throws Exception {
-        List<List<Object>> dataList = new ArrayList<>();
+    public static void downloadTempl(HttpServletResponse response, Class templClass) throws Exception {
+        ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);
+        List<LinkedHashMap<String, String>> data = new ArrayList();
+        Field[] fields = templClass.getDeclaredFields();
+        LinkedHashMap<String, String> map = new LinkedHashMap();
+
+        for (Field field : fields) {
+            if (field.getName().equals("errMsg")) continue;
+            ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
+            map.put(excel.value()[0], "");
+        }
+        data.add(map);
+
         List<List<String>> headList = new ArrayList<>();
         for (String k : data.get(0).keySet()) {
             List<String> head = new ArrayList<>();
-            head.add(description);
+            if (StringUtils.isNotBlank(apiModel.description()))
+                head.add(apiModel.description());
             head.add(k);
             headList.add(head);
-        }
-        for (LinkedHashMap<String, String> map : data) {
-            List<Object> objs = new ArrayList<>();
-            for (List<String> h : headList) {
-                objs.add(map.get(h.get(0)));
-            }
-            dataList.add(objs);
         }
 
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
-        excelName = URLEncoder.encode(excelName, "UTF-8");
+        String excelName = URLEncoder.encode(apiModel.value(), "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
-        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
-    }
 
-    public static void downloadTempl(HttpServletResponse response, String excelName,String description, Class templClass) throws Exception {
+        //内容样式策略
+        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+        //垂直居中,水平居中
+        contentWriteCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        contentWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        //设置 自动换行
+        contentWriteCellStyle.setWrapped(true);
+        // 字体策略
+        WriteFont contentWriteFont = new WriteFont();
+        // 字体大小
+        contentWriteFont.setFontHeightInPoints((short) 14);
+        contentWriteCellStyle.setWriteFont(contentWriteFont);
+        //头策略使用默认
+        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+        headWriteCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
+        headWriteCellStyle.setHorizontalAlignment(HorizontalAlignment.LEFT);
+        headWriteCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
+        HorizontalCellStyleStrategy horizontalCellStyleStrategy =
+            new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
-
-
-
-
-
-//        List<List<Object>> dataList = new ArrayList<>();
-//        List<List<String>> headList = new ArrayList<>();
-//        for (String k : data.get(0).keySet()) {
-//            List<String> head = new ArrayList<>();
-//            head.add(description);
-//            head.add(k);
-//            headList.add(head);
-//        }
-//        for (LinkedHashMap<String, String> map : data) {
-//            List<Object> objs = new ArrayList<>();
-//            for (List<String> h : headList) {
-//                objs.add(map.get(h.get(0)));
-//            }
-//            dataList.add(objs);
-//        }
-//
-//        response.setContentType("application/vnd.ms-excel");
-//        response.setCharacterEncoding("utf-8");
-//        excelName = URLEncoder.encode(excelName, "UTF-8");
-//        response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
-//        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
+        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList)
+                .registerWriteHandler(horizontalCellStyleStrategy)
+                .registerWriteHandler(new ImportStyleStrategy(templClass))
+                .doWrite(null);
     }
 
     /**

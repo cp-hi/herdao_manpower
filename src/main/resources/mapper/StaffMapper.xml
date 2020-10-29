@@ -265,6 +265,54 @@
         LIMIT 1
     </select>
 
+    <!-- 查询员工个人档案 -->
+    <select id="getStaffArchive" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffArchiveDTO">
+        SELECT
+            dt1.label JOB_TYPE_NAME,
+            dt2.label id_type_NAME,
+            dt3.label STAFF_SCOPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.JOB_TYPE = dt1.VALUE
+            AND dt1.type = 'JOB_TYPE'
+        LEFT JOIN sys_dict_item dt2 ON f.id_type = dt2.VALUE
+            AND dt2.type = 'ID_TYPE'
+        LEFT JOIN sys_dict_item dt3 ON f.STAFF_SCOPE = dt3.VALUE
+            AND dt3.type = 'RYGSFW'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工最高教育经历 -->
+    <select id="getStaffEducationLast" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO">
+        SELECT
+            dt1.label LEARN_FORM_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.LEARN_FORM = dt1.VALUE
+            AND dt1.type = 'LEARN_FORM'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
+    <!-- 查询员工劳资情况 -->
+    <select id="getStaffWelfare" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffWelfareDTO">
+        SELECT
+            dt1.label SECURITY_TYPE_NAME,
+            dt2.label PAY_SALARY_TYPE_NAME
+        FROM
+            mp_staff f
+        LEFT JOIN sys_dict_item dt1 ON f.SECURITY_TYPE = dt1.VALUE
+            AND dt1.type = 'SBLX'
+        LEFT JOIN sys_dict_item dt2 ON f.PAY_SALARY_TYPE = dt2.VALUE
+            AND dt2.type = 'GZFFFS'
+        WHERE
+            f.ID = #{id}
+        LIMIT 1
+    </select>
+
     <!-- 花名册翻页列表 -->
     <select id="staffPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO">
         SELECT
