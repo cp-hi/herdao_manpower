@@ -61,7 +61,7 @@ public class StaffcontractController  {
      */
     @ApiOperation(value = "新增员工合同", notes = "新增员工合同")
     @SysLog("新增员工合同" )
-    @GetMapping("/saveContract" )
+    @PostMapping("/saveContract" )
     public R saveContract(@RequestBody Staffcontract staffcontract) {
         Integer userId = UserUtils.getUserId();
         staffcontract.setCreatedTime(LocalDateTime.now());
@@ -77,7 +77,7 @@ public class StaffcontractController  {
      */
     @ApiOperation(value = "修改员工合同", notes = "修改员工合同")
     @SysLog("修改员工合同" )
-    @GetMapping("/updateContract" )
+    @PostMapping("/updateContract" )
     public R updateContract(@RequestBody Staffcontract staffcontract) {
         Integer userId = UserUtils.getUserId();
         staffcontract.setModifiedTime(LocalDateTime.now());

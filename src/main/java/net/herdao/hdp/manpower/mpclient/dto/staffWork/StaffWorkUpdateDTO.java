@@ -16,15 +16,15 @@ import javax.validation.constraints.Pattern;
 
 
 /**
- * 员工工作经历批量新增DTO
+ * 员工工作经历批量编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "员工工作经历批量新增DTO")
+@ApiModel(value = "员工工作经历批量编辑DTO")
 @ColumnWidth(20)
 @HeadFontStyle
-public class StaffWorkAddDTO {
+public class StaffWorkUpdateDTO {
     @ExcelIgnore
     private Long id;
 
