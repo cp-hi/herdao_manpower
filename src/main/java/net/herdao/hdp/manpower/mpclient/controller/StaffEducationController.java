@@ -14,10 +14,7 @@ import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduExcelErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
@@ -200,12 +197,12 @@ public class StaffEducationController {
             List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
             if (!errList.isEmpty()) {
                 // 包含错误信息就导出错误信息
-                List<StaffEduExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-                    StaffEduExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffEduExcelErrDTO.class);
+                List<StaffEduAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+                    StaffEduAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffEduAddErrDTO.class);
                     excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
                     return excelErrDto;
                 }).collect(Collectors.toList());
-                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffEduExcelErrDTO.class, "批量导入员工教育错误信息");
+                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffEduAddErrDTO.class, "批量导入员工教育错误信息");
             }
             return R.ok("导入成功！");
         } catch (IOException e) {

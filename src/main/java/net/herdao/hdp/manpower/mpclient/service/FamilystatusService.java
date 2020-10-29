@@ -2,7 +2,7 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.manpower.mpclient.dto.familyStatus.FamilyStatusListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 

@@ -1,10 +1,17 @@
 package net.herdao.hdp.manpower.mpclient.dto.staffWork;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * @description 新增异常处理
@@ -19,11 +26,20 @@ public class StaffWorkAddErrDTO {
     @ColumnWidth(75)
     private String errMsg;
 
+    @ExcelIgnore
+    private Long id;
+
+    @ExcelIgnore
+    private String staffId;
+
     /**
      * 员工姓名
      */
     @ExcelProperty(value = "员工姓名",index = 1)
     @ApiModelProperty(value="员工姓名")
+    @Valid
+    @NotBlank(message = "不能为空")
+    @HeadFontStyle(color = 10)
     private String staffName;
 
     /**
@@ -31,6 +47,9 @@ public class StaffWorkAddErrDTO {
      */
     @ExcelProperty(value = "员工工号",index = 2)
     @ApiModelProperty(value="员工工号")
+    @Valid
+    @NotBlank(message = "不能为空")
+    @HeadFontStyle(color = 10)
     private String staffCode;
 
     /**
@@ -38,6 +57,9 @@ public class StaffWorkAddErrDTO {
      */
     @ExcelProperty(value = "开始日期",index = 3)
     @ApiModelProperty(value="开始日期")
+    @Valid
+    @NotBlank(message = "不能为空")
+    @HeadFontStyle(color = 10)
     private String beginDate;
 
     /**
@@ -45,6 +67,9 @@ public class StaffWorkAddErrDTO {
      */
     @ExcelProperty(value = "结束日期",index = 4)
     @ApiModelProperty(value="结束日期")
+    @Valid
+    @NotBlank(message = "不能为空")
+    @HeadFontStyle(color = 10)
     private String endDate;
 
     /**
@@ -52,6 +77,9 @@ public class StaffWorkAddErrDTO {
      */
     @ExcelProperty(value = "单位名称",index = 5)
     @ApiModelProperty(value="单位名称")
+    @Valid
+    @NotBlank(message = "不能为空")
+    @HeadFontStyle(color = 10)
     private String companyName;
 
     /**
@@ -87,6 +115,7 @@ public class StaffWorkAddErrDTO {
      */
     @ExcelProperty(value = "下属人数",index = 10)
     @ApiModelProperty(value="下属人数")
-    private Integer subordinates;
+    @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
+    private String subordinates;
 
 }

@@ -132,7 +132,6 @@ public class ExcelDescriptionContants {
 		return eds.toString();
 	}
 
-
 	/**
 	 * 获取批量家庭新增说明
 	 * @return
@@ -140,10 +139,14 @@ public class ExcelDescriptionContants {
 	public static String getFamilyAddDesc() {
 		StringBuffer eds = new StringBuffer();
 		eds.append("导入说明：")
+		    .append(LINE_FEED)
 			.append("1、标红字段为必填\r\n")
+		    .append(LINE_FEED)
 			.append("2、操作导入前请删除示例数据\r\n")
-			.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
-			.append("4、关系：输入系统中已存在的类型。");
+		    .append(LINE_FEED)
+	        .append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+		    .append(LINE_FEED)
+		    .append("4、关系：输入系统中已存在的类型。");
 
 		return eds.toString();
 	}
@@ -155,11 +158,60 @@ public class ExcelDescriptionContants {
 	public static String getFamilyUpdateDesc() {
 		StringBuffer eds = new StringBuffer();
 		eds.append("导入说明：")
+				.append(LINE_FEED)
+				.append("1、标红字段为必填\r\n")
+				.append(LINE_FEED)
+				.append("2、操作导入前请删除示例数据\r\n")
+				.append(LINE_FEED)
+				.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+				.append(LINE_FEED)
+				.append("4、关系：输入系统中已存在的类型。\r\n")
+				.append(LINE_FEED)
+				.append("5、工号+家庭成员姓名:数据唯一标识，不允许重复导入记录。");
+
+		return eds.toString();
+	}
+
+	/**
+	 * 获取批量奖惩新增说明
+	 * @return
+	 */
+	public static String getRpAddDesc() {
+		StringBuffer eds = new StringBuffer();
+		eds.append("导入说明：")
+			.append(LINE_FEED)
+			.append("1、标红字段为必填\r\n")
+	        .append(LINE_FEED)
+			.append("2、操作导入前请删除示例数据\r\n")
+		    .append(LINE_FEED)
+			.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
+		    .append(LINE_FEED)
+			.append("4、奖惩时间的日期格式为：yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd。\r\n")
+		    .append(LINE_FEED)
+			.append("5、奖惩类别：输入系统中已存在的类型 ，如：年度优秀员工奖。\r\n")
+		    .append(LINE_FEED)
+			.append("6、奖惩金额：正整数。\r\n")
+		    .append(LINE_FEED)
+			.append("7、奖惩/惩罚 ：奖惩 或 惩罚");
+
+		return eds.toString();
+	}
+
+	/**
+	 * 获取批量奖惩编辑说明
+	 * @return
+	 */
+	public static String getRpUpdateDesc() {
+		StringBuffer eds = new StringBuffer();
+		eds.append("导入说明：")
 				.append("1、标红字段为必填\r\n")
 				.append("2、操作导入前请删除示例数据\r\n")
 				.append("3、员工工号，员工姓名：请输入系统中已存在的员工工号和员工姓名，员工工号和员工姓名必须匹配一致。\r\n")
-				.append("4、关系：输入系统中已存在的类型。\r\n")
-				.append("5、工号+家庭成员姓名:数据唯一标识，不允许重复导入记录。");
+				.append("4、奖惩时间的日期格式为：yyyy/MM/dd 或者 yyyy-MM-dd 或者 yyyy.MM.dd。\r\n")
+				.append("5、奖惩类别：输入系统中已存在的类型 ，如：年度优秀员工奖。\r\n")
+				.append("6、奖惩金额：正整数。\r\n")
+				.append("7、奖惩/惩罚 ：奖惩 或 惩罚。")
+				.append("8、员工姓名+员工工号+奖励/惩罚+奖惩时间+奖惩类别:数据唯一标识，不允许重复导入记录。") ;
 
 		return eds.toString();
 	}

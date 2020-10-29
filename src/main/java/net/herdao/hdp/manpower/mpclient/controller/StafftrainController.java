@@ -12,13 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainExcelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
@@ -175,12 +172,12 @@ public class StafftrainController{
             List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
             if (!errList.isEmpty()) {
                 // 包含错误信息就导出错误信息
-                List<StaffTrainExcelErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-                    StaffTrainExcelErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffTrainExcelErrDTO.class);
+                List<StaffTrainAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
+                    StaffTrainAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffTrainAddErrDTO.class);
                     excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
                     return excelErrDto;
                 }).collect(Collectors.toList());
-                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffTrainExcelErrDTO.class, "批量导入员工培训错误信息");
+                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffTrainAddErrDTO.class, "批量导入员工培训错误信息");
             }
             return R.ok("导入成功！");
         } catch (IOException e) {
