@@ -47,6 +47,41 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WorkexperienceController extends HdpBaseController {
 
+    @Override
+    public HdpService getHdpService() {
+        return workexperienceService;
+    }
+
+    @Override
+    public Class getImportAddCls() {
+        return StaffWorkAddDTO.class;
+    }
+
+    @Override
+    public Class getImportAddErrCls() {
+        return StaffWorkAddErrDTO.class;
+    }
+
+    @Override
+    public Class getImportUpdateCls() {
+        return StaffWorkUpdateDTO.class;
+    }
+
+    @Override
+    public Class getImportUpdateErrCls() {
+        return StaffWorkUpdateErrDTO.class;
+    }
+
+    @Override
+    public String getExcelAddDescription() {
+        return ExcelDescriptionContants.getWorkAddDesc();
+    }
+
+    @Override
+    public String getExcelUpdateDescription() {
+        return ExcelDescriptionContants.getWorkUpdateDesc();
+    }
+
     @Autowired
     private WorkexperienceService workexperienceService;
 
@@ -182,66 +217,5 @@ public class WorkexperienceController extends HdpBaseController {
         return R.ok(workexperienceService.getById(id));
     }
 
-    /**
-     * 批量导入员工工作经历（excel导入)
-     * @param file
-     * @return R
-     */
-    @ApiOperation(value = "批量导入员工工作经历(excel导入)", notes = "批量导入员工工作经历(excel导入)")
-    @GetMapping("/batchImportWork")
-    @ResponseBody
-    @ApiImplicitParams({ @ApiImplicitParam(name = "file", value = "导入文件"),
-        @ApiImplicitParam(name = "importType", value = "导入类型，值： 0  批量新增； 值 1 批量修改"),
-    })
-    public R batchImportWork(HttpServletResponse response, @RequestParam(value = "file") MultipartFile file, Integer importType) {
-        try {
-            EasyExcelListener easyExcelListener = new EasyExcelListener(workexperienceService, StaffWorkAddDTO.class,importType);
-            EasyExcelFactory.read(file.getInputStream(), StaffWorkAddDTO.class, easyExcelListener).sheet().headRowNumber(2).doRead();
-            List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
-            if (!errList.isEmpty()) {
-                // 包含错误信息就导出错误信息
-                List<StaffWorkAddErrDTO> excelErrDtos = errList.stream().map(excelCheckErrDto -> {
-                    StaffWorkAddErrDTO excelErrDto = JSON.parseObject(JSON.toJSONString(excelCheckErrDto.getT()), StaffWorkAddErrDTO.class);
-                    excelErrDto.setErrMsg(excelCheckErrDto.getErrMsg());
-                    return excelErrDto;
-                }).collect(Collectors.toList());
-                EasyExcelUtils.webWriteExcel(response, excelErrDtos, StaffWorkAddErrDTO.class, "批量导入员工工作经历错误信息");
-            }
-            return R.ok("导入成功！");
-        } catch (IOException e) {
-            log.error("导入失败",e.toString());
-            return R.failed(e.getMessage());
-        }
-    }
 
-
-    @Override
-    public HdpService getHdpService() {
-         return workexperienceService;
-    }
-
-    @Override
-    public Class getImportAddCls() {
-        return StaffWorkAddDTO.class;
-    }
-
-    @Override
-    public Class getImportAddErrCls() {
-        return StaffWorkAddErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffWorkUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffWorkUpdateErrDTO.class;
-    }
-
-    @Override
-    public String getExcelAddDescription() {
-        return "";
-    }
 }

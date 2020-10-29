@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class StaffContractExcelErrDTO {
+public class StaffContractAddlErrDTO {
 
     @ExcelProperty(index =0, value = "错误信息")
     @ColumnWidth(75)
