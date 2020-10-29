@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
@@ -31,6 +36,7 @@ import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 员工表
@@ -76,6 +82,35 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Autowired
 	private UserService userService;
+
+	@Override
+	@SuppressWarnings("all")
+	@Transactional(rollbackFor = Exception.class)
+	public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+
+		// 错误数组
+		List<ExcelCheckErrDTO> errList = new ArrayList<>();
+
+		// 批量新增、编辑组织信息
+		List<Staff> staffList = new ArrayList<>();
+
+		if (importType == 0) {
+			for(int i=0;i<excelList.size();i++){
+				StaffAddVM entity = (StaffAddVM)excelList.get(i);
+				Staff staff = new Staff();
+				BeanUtils.copyProperties(entity, staff);
+				staffList.add(staff);
+			}
+			//add
+		}else {
+			//update
+		}
+		// 保存新增、修改组织信息
+		if(ObjectUtil.isEmpty(errList)) {
+			this.saveOrUpdateBatch(staffList, 200);
+		}
+		return errList;
+	}
     
 	@Override
 	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
