@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostListVO;
@@ -18,7 +19,7 @@ import java.util.Map;
 @Mapper
 public interface PostMapper extends EntityMapper<Post> {
 
-    List<Map> postList(Long groupId);
+    List<PostDTO> postList(Long groupId);
     @Override
 
     IPage  page(IPage  page, @Param("post") Post post);

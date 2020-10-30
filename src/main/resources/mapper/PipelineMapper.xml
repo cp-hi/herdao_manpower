@@ -26,7 +26,8 @@
     </select>
 
     <select id="pipelineList"  resultType="map">
-       	select id,pipeline_code AS code,pipeline_name AS name   from mp_pipeline where group_id = #{groupId}
+       	select id,pipeline_code AS code,pipeline_name AS name from mp_pipeline
+       	where group_id = #{groupId} and del_flag != 1 and is_stop != 1
     </select>
 
     <select id="chkDuplicatePipelineCode" parameterType="pipeline" resultType="boolean">

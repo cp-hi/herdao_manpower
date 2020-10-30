@@ -4,7 +4,6 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper">
 
-
     <resultMap id="jobLevelDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.jobLevel.JobLevelDTO">
         <id column="id" property="id"/>
         <result property="jobGradeId" column="job_grade_id"/>
@@ -38,7 +37,8 @@
     </select>
 
     <select id="jobLevelList" resultType="map">
-       	select id,job_level_code AS code,job_level_name AS name from mp_job_level where group_id = #{groupId}
+       	select id,job_level_code AS code,job_level_name AS name from mp_job_level
+       	where group_id = #{groupId} and del_flag != 1
     </select>
 
 

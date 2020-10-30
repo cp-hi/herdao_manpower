@@ -365,18 +365,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("staffArchiveDTO", archive);
 		map.put("staffWelfareDTO", welfare);
 		map.put("staffCarreraDTO", carrera);
-
-		List<Userposthistory> uphList = userposthistoryService.list(new QueryWrapper<Userposthistory>()
-				.eq("USER_ID", staff.getUserId())
-				.orderByDesc("START_DATE")
-		);
-		List<StaffJobTravelDTO> uphDtoList = new ArrayList<>();
-		StaffJobTravelDTO jobTravel;
-		for(int i=0;i<uphList.size();i++){
-			jobTravel = new StaffJobTravelDTO();
-			BeanUtils.copyProperties(uphList.get(i), jobTravel);
-			uphDtoList.add(jobTravel);
-		}
+		List<StaffJobTravelDTO> uphDtoList = baseMapper.getJobTravel(id);
 		map.put("staffJobTravelDTO", uphDtoList);
 
 		List<Workexperience> expList = workexperienceService.list(new QueryWrapper<Workexperience>()

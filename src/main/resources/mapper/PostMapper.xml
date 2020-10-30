@@ -60,10 +60,6 @@
             <bind name="likeTxt" value="'%'+post.postName+'%'"/>
             and concat(POST_CODE,POST_NAME) like #{likeTxt}
         </if>
-
-        <if test="post.groupId != null">
-            AND group_id = #{post.groupId}
-        </if>
         <if test="post.sectionId != null">
             AND section_id = #{post.sectionId}
         </if>
@@ -103,8 +99,8 @@
 
     <!--*************************以上为分页查询用到的函数***********************************-->
 
-    <select id="postList" resultType="map">
-       	select id,POST_CODE AS postCode,POST_NAME AS postName from mp_post where group_id = #{groupId}
+    <select id="postList" resultMap="postDTOMap">
+       	select * from mp_post where group_id = #{groupId} and del_flag != 1 and is_stop != 1
     </select>
 
     <select id="chkDuplicatePostCode" parameterType="post" resultType="boolean">

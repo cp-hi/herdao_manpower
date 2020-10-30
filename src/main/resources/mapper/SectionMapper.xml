@@ -26,7 +26,8 @@
     </select>
 
     <select id="sectionList"  resultType="map">
-       	select id,section_code AS code,section_name AS name  from mp_section where group_id = #{groupId}
+       	select id,section_code AS code,section_name AS name  from mp_section
+       	where group_id = #{groupId} and  del_flag != 1 and is_stop != 1
     </select>
 
     <select id="chkDuplicateSectionCode" parameterType="section" resultType="boolean" >
