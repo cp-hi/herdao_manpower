@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper;
@@ -60,5 +61,10 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     public UserpostDTO findCurrentJob(Long staffid){
     	UserpostDTO userpostDTO = this.baseMapper.findCurrentJob(staffid);
     	return userpostDTO;
+    }
+
+    @Override
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+        return null;
     }
 }

@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import net.herdao.hdp.manpower.mpclient.mapper.UserposthistoryMapper;
@@ -47,5 +48,10 @@ public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMappe
     public List<UserpostDTO> findUserPostHistory(String searchText) {
         List<UserpostDTO> pageResult = this.baseMapper.findUserPostHistory(searchText);
         return pageResult;
+    }
+
+    @Override
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+        return null;
     }
 }

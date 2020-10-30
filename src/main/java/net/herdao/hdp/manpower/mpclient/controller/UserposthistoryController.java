@@ -11,6 +11,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -31,13 +32,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/userposthistory" )
 @Api(value = "userposthistory", tags = "员工岗位历史表管理")
-public class UserposthistoryController extends BaseController<Userposthistory> {
+public class UserposthistoryController extends HdpBaseController {
     @Autowired
     private UserposthistoryService userposthistoryService;
 
-    @Autowired
-    public void setEntityService(UserposthistoryService userposthistoryService) {
-        super.entityService = userposthistoryService;
+    @Override
+    public HdpService getHdpService() {
+        return userposthistoryService;
     }
 
     /**
@@ -94,5 +95,6 @@ public class UserposthistoryController extends BaseController<Userposthistory> {
 
         return R.ok("导出成功");
     }
+
 
 }
