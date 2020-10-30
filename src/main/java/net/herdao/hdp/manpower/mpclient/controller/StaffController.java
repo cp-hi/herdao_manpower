@@ -115,55 +115,6 @@ public class StaffController extends HdpBaseController{
         return R.ok(staffService.staffPage(page, staff, searchText));
     }
 
-    @ApiOperation(value = "导出员工信息", notes = "导出员工信息")
-    @GetMapping("/export" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public void exportStaff(HttpServletResponse response, Page page, Staff staff, String tab, String searchText) {
-        if("1".equals(tab)){
-
-        }else if("2".equals(tab)){
-            staff.setJobType("1");
-        }else if("3".equals(tab)){
-            staff.setJobType("2");
-        }else if("4".equals(tab)){
-            staff.setJobType("3");
-        }
-        page.setCurrent(1);
-        page.setSize(50000);
-        IPage result = staffService.page(page, Wrappers.query(staff));
-        long total = result.getTotal();
-        if(total>50000){
-            return;
-        }
-        List<Staff> list = result.getRecords();
-        List<StaffDTO> entityList = new ArrayList<>();
-        StaffDTO entity;
-        for(int i=0;i<list.size();i++){
-            entity = DtoUtils.transferObject(list.get(i), StaffDTO.class);
-            entityList.add(entity);
-        }
-        try {
-            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffDTO.class,entityList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @ApiOperation("导入")
-    @SysLog("导入")
-    @PostMapping("/import")
-    public R<String> importExcel(MultipartFile file, String editType){
-        System.out.println(editType);
-        try {
-            EasyExcel.read(file.getInputStream(), StaffDTO.class,
-                    new StaffExcelListener<StaffDTO, Staff>(staffService, Staff.class)).sheet().doRead();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return R.ok("导入成功");
-    }
-
     /**
      * 花名册员工数量
      */
