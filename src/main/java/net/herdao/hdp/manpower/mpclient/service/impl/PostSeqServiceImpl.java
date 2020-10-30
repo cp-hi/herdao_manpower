@@ -73,6 +73,8 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         }
         if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
+
+        postSeq.setId(tmp.getId());
     }
 
     private void chkParent(Long parentId, StringBuffer buffer) {

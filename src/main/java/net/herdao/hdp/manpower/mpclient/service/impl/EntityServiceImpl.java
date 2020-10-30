@@ -43,7 +43,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public  Class<T> getEntityClass() {
+    public Class<T> getEntityClass() {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[1];
         return clazz;
@@ -67,7 +67,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
 
     @Override
-    public  String getTableCodeField() {
+    public String getTableCodeField() {
         String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
                 .replaceFirst("sys_", "") + "_code";
         return codeField;
@@ -75,23 +75,25 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
 
     @Override
-    public  String getEntityCodeField() {
+    public String getEntityCodeField() {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[1];
         String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
         return entityName + "Code";
     }
 
-
+    @Override
+    public String generateEntityCode() throws IllegalAccessException {
+        String currEntityCode = getCurrEntityCode();
+        String entityCode = String.format("%06d", Integer.valueOf(currEntityCode) + 1);
+        return entityCode;
+    }
 
     @Override
-    public  String generateEntityCode() throws IllegalAccessException {
+    public String getCurrEntityCode() throws IllegalAccessException {
         //todo 解决逻辑删除后无法查询到的问题
         String sql = "select max(id) from " + getTabelName();
-
         T t = this.getOne((Wrapper<T>) new QueryWrapper().select(getTableCodeField()).inSql("id", sql));
-
-
         String entityCode = "000001";
         if (null != t) {
             Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
@@ -99,20 +101,27 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             field.setAccessible(true);
             Object val = field.get(t);
             if (null != val)
-                entityCode = String.format("%06d", Integer.valueOf(val.toString()) + 1);
+                entityCode = val.toString();
         }
         return entityCode;
     }
 
+
     @Override
-    public  void setEntityCode(T t) throws IllegalAccessException {
+    public void setEntityCode(T t) throws IllegalAccessException {
+        String entityCode = generateEntityCode();
+        setEntityCode(t, entityCode);
+    }
+
+    @Override
+    public void setEntityCode(T t, String entityCode) throws IllegalAccessException {
         String codeField = getEntityCodeField();
         Field field = AnnotationUtils.getFieldByName(t, codeField);
         if (null == field) return;
         field.setAccessible(true);
-        String entityCode = generateEntityCode();
         field.set(t, entityCode);
     }
+
 
     @Override
     @OperationEntity(clazz = Class.class)
@@ -171,17 +180,17 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public  void saveVerify(T t) {
+    public void saveVerify(T t) {
     }
 
     @Override
-    public  void importVerify(T t, int type) {
+    public void importVerify(T t, int type) {
 
     }
 
 
     @Override
-    public  void importVerify(T t, Object excelObj, int type) {
+    public void importVerify(T t, Object excelObj, int type) {
         boolean add = (0 == type);
         if (add) addEntity(t, excelObj);
         else updateEntity(t, excelObj);
@@ -193,7 +202,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void addEntity(T t, Object excelObj) {
     }
-
 
 
     @Override
@@ -224,7 +232,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             throw new RuntimeException(buffer.toString());
         return t;
     }
-
 
 
     @Override

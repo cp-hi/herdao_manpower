@@ -230,30 +230,9 @@ public class BaseController<T, D, F, E> {
     })
     public R getDownloadTempl(HttpServletResponse response, Integer importType) {
         try {
-//            String title = entityService.getEntityName() + "批量新增模板";
             Class templClass = getBatchAddClass();
-            if (Integer.valueOf(1).equals(importType)) {
-//                title = entityService.getEntityName() + "批量编辑模板";
+            if (Integer.valueOf(1).equals(importType))
                 templClass = getBatchUpdateClass();
-            }
-
-//            List<LinkedHashMap<String, String>> data = new ArrayList();
-//            Field[] fields = templClass.getDeclaredFields();
-//            LinkedHashMap<String, String> map = new LinkedHashMap();
-//            for (Field field : fields) {
-//                if (field.getName().equals("errMsg")) continue;
-//                ExcelProperty excel = field.getAnnotation(ExcelProperty.class);
-//                map.put(excel.value()[0], "");
-//            }
-//            data.add(map);
-//
-//            String desc = "" +
-//                    "导入说明：\r\n" +
-//                    "1、标红字段为必填\r\n" +
-//                    "2、操作导入前请删除示例数据\r\n" +
-//                    "3、上级组织名称请填写已启用的组织编码\r\n";
-
-//            ExcelUtils.export2Web(response, title, desc, data);
 
             if(templClass == Class.class)
                 throw new RuntimeException("没有找到模板");
