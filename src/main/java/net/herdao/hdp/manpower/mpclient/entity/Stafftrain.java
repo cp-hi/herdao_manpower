@@ -274,4 +274,29 @@ public class Stafftrain extends BaseModel<Stafftrain> {
     @ApiModelProperty(value="备注")
     @ExcelIgnore
     private String remarks;
+
+    /**
+     * 创建人ID
+     */
+    @ApiModelProperty(value = "创建人ID" ,hidden = true)
+    private Long creatorId;
+
+    /**
+     * 创建人名称
+     */
+    @ApiModelProperty(value = "创建人名称" ,hidden = true)
+    private String creatorName;
+
+    /**
+     * 修改ID
+     */
+    @ApiModelProperty(value = "修改ID" ,hidden = true)
+    private Long modifierId;
+
+    /**
+     * 修改人(操作人姓名)
+     */
+    @ApiModelProperty(value="修改人(操作人姓名)")
+    private String modifierName;
+
 }
