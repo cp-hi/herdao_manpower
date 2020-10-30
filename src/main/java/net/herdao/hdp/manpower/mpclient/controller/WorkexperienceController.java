@@ -78,6 +78,12 @@ public class WorkexperienceController extends HdpBaseController {
     }
 
     @Override
+    public List getDownloadUpdateTemplateList() {
+        List<WorkexperienceDTO> list = this.workexperienceService.findStaffWork(null, null);
+        return list;
+    }
+
+    @Override
     public String getExcelUpdateDescription() {
         return ExcelDescriptionContants.getWorkUpdateDesc();
     }

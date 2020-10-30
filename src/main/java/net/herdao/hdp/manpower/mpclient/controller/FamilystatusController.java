@@ -11,13 +11,11 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractAddlErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdatelErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
@@ -65,17 +63,17 @@ public class FamilystatusController extends HdpBaseController  {
 
     @Override
     public Class getImportAddErrCls() {
-        return StaffContractAddlErrDTO.class;
+        return StaffFamilyAddErrDTO.class;
     }
 
     @Override
     public Class getImportUpdateCls() {
-        return StaffContractUpdateDTO.class;
+        return StaffFamilyUpdateDTO.class;
     }
 
     @Override
     public Class getImportUpdateErrCls() {
-        return StaffContractUpdatelErrDTO.class;
+        return StaffFamilyUpdateErrDTO.class;
     }
 
     @Override
@@ -86,6 +84,12 @@ public class FamilystatusController extends HdpBaseController  {
     @Override
     public String getExcelUpdateDescription() {
         return ExcelDescriptionContants.getFamilyUpdateDesc();
+    }
+
+    @Override
+    public List getDownloadUpdateTemplateList() {
+        List<FamilyStatusVO> list = this.familystatusService.findFamilyStatus(null);
+        return list;
     }
 
     /**

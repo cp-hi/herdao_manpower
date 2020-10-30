@@ -12,6 +12,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractAddlErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffContractUpdatelErrDTO;
@@ -81,6 +82,12 @@ public class StaffEducationController extends HdpBaseController {
     @Override
     public String getExcelAddDescription() {
         return ExcelDescriptionContants.getEduAddDesc();
+    }
+
+    @Override
+    public List getDownloadUpdateTemplateList() {
+        List<StaffEducationDTO> list = this.staffeducationService.findStaffEducation(null, null);
+        return list;
     }
 
     @Override

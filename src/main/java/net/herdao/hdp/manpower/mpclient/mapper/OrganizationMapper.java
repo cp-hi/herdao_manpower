@@ -37,18 +37,21 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
 
     /**
      * 递归查询组织树
+     * 
+     * @param stop
      * @return
      */
-    List<OrganizationTreeVO> selectOrganizationTree();
+    List<OrganizationTreeVO> selectOrganizationTree(@Param("stop")Integer stop);
     
     /**
      * 模糊查询组织树
      * 
      * @param orgCode
+     * @param stop
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> organizationTreeList(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
+    List<OrganizationTreeVO> organizationTreeList(@Param("orgCode") String orgCode, @Param("stop") Integer stop, @Param("searchText") String searchText);
     
     
 

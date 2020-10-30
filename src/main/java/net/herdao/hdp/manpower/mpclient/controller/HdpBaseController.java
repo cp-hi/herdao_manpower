@@ -8,9 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.fastjson.JSON;
@@ -20,18 +19,14 @@ import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.upload.ImportDataVO;
+import net.herdao.hdp.manpower.mpclient.vo.excelud.ExportDataVO;
+import net.herdao.hdp.manpower.mpclient.vo.excelud.ImportDataVO;
 /**
  * @description 处理增、删、改、查、批量新增、批量编辑（待完善）
  *
@@ -170,7 +165,7 @@ public abstract class HdpBaseController {
 	 */
 	@ApiOperation(value = "批量新增、编辑", notes = "批量新增、编辑（excel导入方式， 07版本）")
     @PostMapping("/importData")
-	public R importData(HttpServletResponse response, ImportDataVO importDataVO) {
+	public Object importData(HttpServletResponse response, ImportDataVO importDataVO) {
 		try {
 			// 导入类型
 			int importType = importDataVO.getImportType();
@@ -180,6 +175,14 @@ public abstract class HdpBaseController {
 			EasyExcelListener easyExcelListener = new EasyExcelListener(getHdpService(), excelCls, importType, getExcelIndex());
 			// 读取excel
 			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(getHeadRowNumber()).doRead();
+			
+			// 批量标识
+			String dsp = ManpowerContants.ImportTypeEnum.getInstance(importType);
+			
+			List excelList = easyExcelListener.getExcelList();
+			if(ObjectUtil.isEmpty(excelList)) {
+				return R.failed("批量" + dsp + "失败，模板数据为空！");
+			}
 			// 导入异常信息集合
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
 			
@@ -208,7 +211,7 @@ public abstract class HdpBaseController {
 						return excelErrDto;
 					}).collect(Collectors.toList());
 					// 导出异常信息
-					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, ManpowerContants.ImportTypeEnum.getInstance(importType) + "错误信息");
+					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, dsp + "错误信息");
 				}else {
 					return R.failed("导入异常，是否下载错误文件？");
 				}
@@ -217,7 +220,7 @@ public abstract class HdpBaseController {
 			e.printStackTrace();
 			return R.failed("导入异常：" + e.getMessage());
 		}
-		return R.ok(null, "导入成功！");
+		return null;
 	}
     
 	/**
@@ -230,7 +233,8 @@ public abstract class HdpBaseController {
 	@ApiOperation(value = "下载批量新增、编辑模板")
 	@PostMapping("/downloadTemplate")
     @ApiImplicitParam(name = "importType", value = "下载模板类型，值： 0  批量新增模板； 值 1 批量修改模板")
-	public R downloadTemplate(HttpServletResponse response, @RequestParam(value = "importType")Integer importType) {
+	public Object downloadTemplate(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
+		int importType = exportDataVO.getImportType();
     	// 导出处理 class
 		Class excelCls = getExcelCls(importType);
 		// 数据集
@@ -240,8 +244,8 @@ public abstract class HdpBaseController {
 					                     new EasyExcelSheetWriteHandler(excelCls, getExcelDescription(importType)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			R.failed("下载模板异常：" + e.getMessage());
+			return R.failed("下载模板异常：" + e.getMessage());
 		}
-		return R.ok(null, "下载模板成功！");
+		return null;
 	}
 }

@@ -53,7 +53,7 @@ public class WorkexperienceDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "开始时间")
     @ApiModelProperty(value="开始时间")
-    private LocalDate beginDate;
+    private String beginDate;
 
     /**
      * 结束时间
@@ -62,7 +62,7 @@ public class WorkexperienceDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "结束时间")
     @ApiModelProperty(value="结束时间")
-    private LocalDate endDate;
+    private String endDate;
 
     /**
      * 单位名称
@@ -104,30 +104,7 @@ public class WorkexperienceDTO {
      */
     @ExcelProperty(value = "下属人数")
     @ApiModelProperty(value="下属人数")
-    private Integer subordinates;
-
-    /**
-     * 操作人
-     */
-    @ExcelProperty(value = "操作人")
-    @ApiModelProperty(value="操作人")
-    private String modifierName;
-
-    /**
-     * 操作时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @ExcelProperty(value = "操作时间")
-    @ApiModelProperty(value="操作时间")
-    private LocalDateTime modifiedTime;
-
-    /**
-     * 员工ID
-     */
-    @ExcelProperty(value = "员工ID")
-    @ApiModelProperty(value="员工ID")
-    private Long staffId;
+    private String subordinates;
 
     /**
      * 最近更新情况

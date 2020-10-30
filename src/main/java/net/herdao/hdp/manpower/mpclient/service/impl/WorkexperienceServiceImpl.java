@@ -11,6 +11,7 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
@@ -178,7 +179,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
                             .eq("company_name", addDTO.getCompanyName())
             );
             if (!checkList.isEmpty()&&checkList.size()>=1){
-                ImportCheckUtils.appendStringBuffer(errMsg, "员工工作经历表中存在多条此记录，因此不可新增；");
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工工作经历表中存在此记录，因此不可新增；");
             }
 
             if (errMsg.length() > 0) {
@@ -192,7 +193,8 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
 
                 SysUser sysUser = SysUserUtils.getSysUser();
                 workexperience.setCreatedTime(LocalDateTime.now());
-                workexperience.setCreatorCode(sysUser.getUserId().toString());
+                workexperience.setCreatorCode(sysUser.getUsername());
+                workexperience.setCreatorName(sysUser.getAliasName());
 
                 workexperienceList.add(workexperience);
             }
@@ -209,7 +211,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Workexperience> workexperienceList) {
         for (int i = 0; i < excelList.size(); i++) {
             Workexperience workexperience=new Workexperience();
-            StaffWorkAddDTO addDTO = (StaffWorkAddDTO) excelList.get(i);
+            StaffWorkUpdateDTO addDTO = (StaffWorkUpdateDTO) excelList.get(i);
 
             //校检员工
             Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
@@ -240,12 +242,11 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
                 BeanUtils.copyProperties(addDTO, workexperience);
                 workexperience.setStaffId(Long.parseLong(addDTO.getStaffId()));
                 workexperience.setSubordinates(Integer.parseInt(addDTO.getSubordinates()));
-                workexperience.setBeginDate(DateUtils.parseDate(addDTO.getBeginDate(),pattern));
-                workexperience.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
-                workexperience.setCreatedTime(LocalDateTime.now());
-                workexperience.setCreatorCode(sysUser.getUserId().toString());
+                workexperience.setModifiedTime(LocalDateTime.now());
+                workexperience.setModifierCode(sysUser.getUsername());
+                workexperience.setModifierName(sysUser.getAliasName());
 
                 workexperienceList.add(workexperience);
             }
