@@ -39,11 +39,6 @@
                      javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
 
-<!--    <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">-->
-<!--        <association property="parent" column="parent_id" select="getPostSeqParent"-->
-<!--                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>-->
-<!--    </resultMap>-->
-
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where del_flag !=1
 
@@ -75,15 +70,6 @@
     <select id="getJobGrade" parameterType="long" resultType="jobGrade">
        select * from mp_job_grade g where g.id =(select job_grade_id from mp_job_level l WHERE l.id=#{id})
     </select>
-
-    <!--  父子查询 -->
-<!--    <select id="getPostSeqParent" parameterType="long" resultMap="postSeqDTOMap">-->
-<!--        select * from  mp_post_seq WHERE id=#{id}-->
-<!--    </select>-->
-
-<!--    <select id="getPostSeq" parameterType="long" resultMap="postSeqDTOMap">-->
-<!--       select * from mp_post_seq WHERE id= #{id}-->
-<!--    </select>-->
 
     <!--     TODO 未实现编制统计 -->
     <select id="getPostAuthorized" parameterType="long" resultType="int">

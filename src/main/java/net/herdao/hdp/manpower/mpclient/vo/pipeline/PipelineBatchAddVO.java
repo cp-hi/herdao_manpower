@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.vo.pipeline;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -29,19 +30,19 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
         "2、操作导入前请删除示例数据\r\n"
 )
 public class PipelineBatchAddVO implements ExcelMsg {
-
+    @HeadFontStyle
     @ExcelProperty("错误信息")
     private String errMsg;
-
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "管线名称"})
     private String pipelineName;
-
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "所属集团"})
     private String groupName;
-
+    @HeadFontStyle
     @ExcelProperty({"", "排序"})
     private Integer sortNo;
-
+    @HeadFontStyle
     @ExcelProperty({"", "备注"})
     private String remark;
 

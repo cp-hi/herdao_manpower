@@ -17,18 +17,23 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 员工表
@@ -39,12 +44,20 @@ import java.util.Map;
 public interface StaffService extends HdpService<Staff> {
 
 	/**
- 	 * 查询员工信息
- 	 * 
- 	 * @return
- 	 */
+	 * 员工信息查询递归（组件）
+	 * 
+	 * @return
+	 */
 	R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent();
-
+	
+	/**
+	 * 查询员工信息（组件）
+	 * 
+	 * @param searchText
+	 * @return
+	 */
+	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String searchText);
+	
 	Map<String, Object> queryCount();
 
 	IPage staffPage(Page page, StaffListDTO staff, String searchText);

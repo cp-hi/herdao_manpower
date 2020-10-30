@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -594,8 +595,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     
 	@Override
 	public R<List<OrganizationComponentVO>> selectOrganizations() {
-		String searchText = "";
-		return R.ok(this.baseMapper.selectOrganizations(searchText));
+		return R.ok(this.baseMapper.selectOrganizations());
+	}
+	
+	@Override
+	public R<List<OrganizationComponentVO>> selectOrganizationComponentList(String orgCode, String searchText){
+		return R.ok(this.baseMapper.selectOrganizationComponentList(orgCode, searchText));
 	}
 
     @Override

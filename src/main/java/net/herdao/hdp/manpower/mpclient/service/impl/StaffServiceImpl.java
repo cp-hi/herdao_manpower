@@ -7,20 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import net.herdao.hdp.admin.api.entity.SysDictItem;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.*;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -33,10 +23,55 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffArchiveDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffCarreraDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffContractDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEmergencyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFundDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoOtherDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobTravelDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWelfareDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkExpDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
+import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
+import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
+import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
+import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
+import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
+import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
-import org.springframework.transaction.annotation.Transactional;
+import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 
 /**
  * 员工表
@@ -115,11 +150,21 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
 		
-		// 待接入用户权限 TODO
-		String searchText = "";
+		List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizations();
 		
-		List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizations(searchText);
+		return R.ok(recursion(organizations));
+	}
+	
+	@Override
+	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String searchText) {
 		
+		List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizationComponentList(searchText);
+		
+		return R.ok(recursion(organizations));
+	}
+	
+	
+	public List<StaffOrganizationComponentVO> recursion(List<StaffOrganizationComponentVO> organizations){
 		// 获取部门员工数
 		Map<String, Integer> taffTotalComponentMap = this.baseMapper.getStaffTotals().stream()
 				                                         .collect(Collectors.toMap(StaffTotalComponentVO::getOrgCode, StaffTotalComponentVO::getTotal));
@@ -135,9 +180,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				recursionOrganization(staffOrganizationComponents, taffTotalComponentMap);
 			}
 		});
-		
-		return R.ok(organizations);
+		return organizations;
 	}
+	
 	
 	/**
 	 * 递归合计部门/组织人员数

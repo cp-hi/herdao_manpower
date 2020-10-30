@@ -255,6 +255,8 @@ public class BaseController<T, D, F, E> {
 
 //            ExcelUtils.export2Web(response, title, desc, data);
 
+            if(templClass == Class.class)
+                throw new RuntimeException("没有找到模板");
             ExcelUtils.downloadTempl(response, templClass);
 
         } catch (Exception ex) {
