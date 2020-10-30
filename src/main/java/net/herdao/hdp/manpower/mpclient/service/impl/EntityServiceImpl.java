@@ -127,6 +127,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
 
+    @OperationEntity(clazz = Class.class)
     @Override
     public boolean stopEntity(Serializable id, boolean isStop) throws IllegalAccessException {
         // 停用实体

@@ -82,14 +82,12 @@ public interface EntityService<T> extends IService<T> {
      * @param id
      * @return
      */
-    @OperationEntity(operation = "删除", clazz = Class.class)
     boolean delEntity(Serializable id);
 
     /**
      * @param id
      * @return
      */
-    @OperationEntity(clazz = Class.class)
     boolean stopEntity(Serializable id, boolean isStop) throws IllegalAccessException;
 
     boolean getStatus(Serializable id) throws IllegalAccessException;
