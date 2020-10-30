@@ -130,9 +130,10 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
                 staffRp.setExecuteDate(DateUtils.parseDate(addDTO.getExecuteDate(),pattern));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
+                staffRp.setCreatorName(sysUser.getUsername());
                 staffRp.setCreatedTime(LocalDateTime.now());
-                staffRp.setCreatorCode(sysUser.getUserId().toString());
-                staffRp.setChoice(Long.parseLong(choiceValue));
+                staffRp.setCreatorCode(sysUser.getUsername());
+                staffRp.setCreatorId(sysUser.getUserId());
 
                 staffRpList.add(staffRp);
             }
@@ -203,9 +204,10 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
                     BeanUtils.copyProperties(updateDTO, staffRp);
 
                     SysUser sysUser = SysUserUtils.getSysUser();
+                    staffRp.setModifierName(sysUser.getUsername());
                     staffRp.setModifiedTime(LocalDateTime.now());
-                    staffRp.setModifierCode(sysUser.getUserId().toString());
-                    staffRp.setChoice(Long.parseLong(choiceValue));
+                    staffRp.setModifierCode(sysUser.getUsername());
+                    staffRp.setModifierId(sysUser.getUserId());
 
                     staffRpList.add(staffRp);
                 }
