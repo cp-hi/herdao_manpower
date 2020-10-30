@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -29,13 +30,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/stafftransaction" )
 @Api(value = "stafftransaction", tags = "异动情况")
-public class StafftransactionController extends BaseController<Stafftransaction>  {
+public class StafftransactionController extends HdpBaseController  {
     @Autowired
     private StafftransactionService stafftransactionService;
 
-    @Autowired
-    public void setEntityService(StafftransactionService stafftransactionService) {
-        super.entityService = stafftransactionService;
+    @Override
+    public HdpService getHdpService() {
+        return stafftransactionService;
     }
 
     /**
@@ -93,4 +94,6 @@ public class StafftransactionController extends BaseController<Stafftransaction>
 
         R.ok("导出成功");
     }
+
+
 }
