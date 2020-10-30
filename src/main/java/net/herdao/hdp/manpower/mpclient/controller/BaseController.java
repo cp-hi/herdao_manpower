@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
-import net.herdao.hdp.manpower.mpclient.listener.NewImportExcelListener;
+import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
@@ -192,11 +192,11 @@ public class BaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType, Integer downloadErrMsg) throws Exception {
-        NewImportExcelListener<E> listener = null;
+        ImportExcelListener<E> listener = null;
         InputStream inputStream = null;
         try {
             inputStream = file.getInputStream();
-            listener = new NewImportExcelListener(entityService, importType);
+            listener = new ImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().doRead();
 
         } catch (Exception ex) {
