@@ -22,18 +22,6 @@ import java.util.List;
 @Service
 public class JobGradeServiceImpl extends EntityServiceImpl<JobGradeMapper, JobGrade> implements JobGradeService {
 
-//    @Override
-//    public String generateEntityCode() {
-//        String tabel = getTabelName();
-//        String field = getTableCodeField();
-//        return baseMapper.generateEntityCode(tabel, field);
-//    }
-
-//    @Override
-//    public IPage page(Page page, JobGrade jobGrade) {
-//        return baseMapper.page(page, jobGrade);
-//    }
-
     @Override
     public List<JobGradeShortVO> jobGradeList(Long groupId) {
         return baseMapper.jobGradeList(groupId);

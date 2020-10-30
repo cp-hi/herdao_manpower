@@ -39,7 +39,7 @@
 
     <select id="jobGradeList" parameterType="long"
             resultType="net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO">
-       	select * from mp_job_grade where group_id = #{groupId}
+       	select * from mp_job_grade where group_id = #{groupId} and del_flag != 1
     </select>
 
     <select id="chkDuplicateJobGradeCode" parameterType="jobGrade" resultType="boolean">
