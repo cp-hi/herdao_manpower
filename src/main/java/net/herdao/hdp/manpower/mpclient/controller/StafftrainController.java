@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
@@ -15,6 +16,7 @@ import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
@@ -121,7 +123,7 @@ public class StafftrainController extends HdpBaseController {
     @GetMapping("/findStaffTrainPage")
     @OperationEntity(operation = "员工培训分页" ,clazz = Stafftrain.class )
     @ApiImplicitParams({
-            @ApiImplicitParam(name="searchText",value="关键字搜索"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findStaffTrainPage(Page page, String searchText) {
@@ -161,9 +163,11 @@ public class StafftrainController extends HdpBaseController {
     @SysLog("修改" )
     @PostMapping("/updateTrain" )
     public R updateById(@RequestBody Stafftrain stafftrain) {
-        Integer userId = UserUtils.getUserId();
+        SysUser sysUser = SysUserUtils.getSysUser();
+        stafftrain.setModifierName(sysUser.getUsername());
         stafftrain.setModifiedTime(new Date());
-        stafftrain.setModifierCode(userId.toString());
+        stafftrain.setModifierCode(sysUser.getUsername());
+        stafftrain.setModifierId(sysUser.getUserId());
         boolean status = stafftrainService.updateById(stafftrain);
         return R.ok(status);
     }
@@ -177,10 +181,13 @@ public class StafftrainController extends HdpBaseController {
     @SysLog("新增员工培训" )
     @PostMapping("/saveStaffTrain" )
     public R saveStaffTrain(@RequestBody Stafftrain staffTrain) {
-        String username = UserUtils.getUsername();
-        Integer userId = UserUtils.getUserId();
+
+        SysUser sysUser = SysUserUtils.getSysUser();
+        staffTrain.setCreatorName(sysUser.getAliasName());
         staffTrain.setCreatedTime(new Date());
-        staffTrain.setCreatorCode(userId.toString());
+        staffTrain.setCreatorCode(sysUser.getUsername());
+        staffTrain.setCreatorId(sysUser.getUserId());
+
         boolean status = stafftrainService.save(staffTrain);
         return R.ok(status);
     }
