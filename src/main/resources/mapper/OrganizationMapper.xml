@@ -675,9 +675,14 @@
         	CONCAT( MAX(org.org_code) )
         FROM mp_organization org
         <where>
-	        <if test="parentId != null">
-	        	AND org.parent_id = #{parentId}
-	        </if>
+        	<choose>
+                <when test="parentId != null">
+                   	AND org.parent_id = #{parentId}
+                </when>
+                <otherwise>
+                	AND LENGTH(org.org_code) = 3 <!-- 新增root节点组织 -->
+                </otherwise>
+            </choose>
         </where>
     </select>
     
