@@ -11,6 +11,7 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
@@ -119,11 +120,11 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
             if (addDTO.getChoice().equals("惩罚")){
                 choiceValue="2";
             }
-            List<StaffRewardsPulishments> checkList = super.list(
+            List<StaffRewardsPulishments> checkList = this.list(
                     new QueryWrapper<StaffRewardsPulishments>().eq("staff_id", staffId)
                             .eq("choice", choiceValue)
                             .eq("execute_date", addDTO.getExecuteDate())
-                            .eq("type", dictItem.getValue())
+                            .eq("type",  dictItem!=null? dictItem.getValue():"")
             );
             if (!checkList.isEmpty() && checkList.size()>=1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工奖惩表中存在多条此记录，因此不可新增；");
@@ -155,34 +156,34 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
     private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<StaffRewardsPulishments> staffRpList) {
         for (int i = 0; i < excelList.size(); i++) {
             StaffRewardsPulishments staffRp=new StaffRewardsPulishments();
-            StaffRpAddDTO addDTO = (StaffRpAddDTO) excelList.get(i);
+            StaffRpUpdateDTO updateDTO = (StaffRpUpdateDTO) excelList.get(i);
 
             //校检员工
-            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
-            addDTO.setStaffId(staffId);
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, updateDTO.getStaffCode(), updateDTO.getStaffName(),staffService);
+            updateDTO.setStaffId(staffId);
 
             //校检字典
-            SysDictItem dictItem = ImportCheckUtils.checkDicItem(errMsg, "YGJCLB", addDTO.getType(), itemService);
+            SysDictItem dictItem = ImportCheckUtils.checkDicItem(errMsg, "YGJCLB", updateDTO.getType(), itemService);
             if(null != dictItem){
-                addDTO.setType(dictItem.getValue());
+                updateDTO.setType(dictItem.getValue());
             }
 
             //校检时间
-            String pattern= ImportCheckUtils.checkSingleTime(errMsg, addDTO.getExecuteDate());
+            String pattern= ImportCheckUtils.checkSingleTime(errMsg, updateDTO.getExecuteDate());
 
             //检查数据库是否存在记录，且唯一记录。
             String choiceValue="";
-            if (addDTO.getChoice().equals("奖励")){
+            if (updateDTO.getChoice().equals("奖励")){
                 choiceValue="1";
             }
-            if (addDTO.getChoice().equals("惩罚")){
+            if (updateDTO.getChoice().equals("惩罚")){
                 choiceValue="2";
             }
             List<StaffRewardsPulishments> checkList = super.list(
                     new QueryWrapper<StaffRewardsPulishments>()
                             .eq("staff_id", staffId)
                             .eq("choice", choiceValue)
-                            .eq("execute_date", addDTO.getExecuteDate())
+                            .eq("execute_date", updateDTO.getExecuteDate())
                             .eq("type", dictItem.getValue())
             );
 
@@ -191,14 +192,14 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
             }else if (checkList.size()>1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工奖惩表中存在多条此记录，因此不可编辑；");
             }else{
-                addDTO.setId(checkList.get(0).getId());
+                updateDTO.setId(checkList.get(0).getId());
             }
 
             if (errMsg.length() > 0) {
-                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+                errList.add(new ExcelCheckErrDTO(updateDTO, errMsg.toString()));
             }else {
                 StaffRpChangePropertiesVO newStaffRp=new StaffRpChangePropertiesVO();
-                BeanUtils.copyProperties(addDTO,newStaffRp);
+                BeanUtils.copyProperties(updateDTO,newStaffRp);
 
                 StaffRpChangePropertiesVO oldStaffRp=new StaffRpChangePropertiesVO();
                 BeanUtils.copyProperties(checkList.get(0),oldStaffRp);
@@ -206,7 +207,7 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
                 List<Map<String, Object>> compareResult = ObjectFieldCompareUtils.compareObject(newStaffRp, oldStaffRp);
                 //数据有变动
                 if (!ObjectUtil.isEmpty(compareResult)){
-                    BeanUtils.copyProperties(addDTO, staffRp);
+                    BeanUtils.copyProperties(updateDTO, staffRp);
 
                     SysUser sysUser = SysUserUtils.getSysUser();
                     staffRp.setModifiedTime(LocalDateTime.now());
