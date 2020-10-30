@@ -56,7 +56,7 @@ public class OperationLogAspect {
      */
     @Pointcut("execution(public * com.baomidou.mybatisplus.extension.service..*.saveOrUpdate(..))" +
             "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))" +
-            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveEntity(..))" +
+//            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveEntity(..))" +
             "||execution(public * net.herdao.hdp.manpower.mpclient.service.impl..*.saveEntity(..))")
     public void pointCutSave() {
         System.out.println("pointCutSave");

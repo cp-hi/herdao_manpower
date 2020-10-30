@@ -11,7 +11,6 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -31,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends NewBaseController<Post, PostListVO, PostFormVO, PostBatchUpdateVO> {
+public class PostController extends BaseController<Post, PostListVO, PostFormVO, PostBatchUpdateVO> {
 
     @Override
     protected Class getBatchAddClass() {

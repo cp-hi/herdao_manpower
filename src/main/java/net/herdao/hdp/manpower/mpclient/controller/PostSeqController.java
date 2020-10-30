@@ -40,7 +40,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/postSeq")
 @Api(tags = "岗位序列管理")
-public class PostSeqController extends NewBaseController<PostSeq, PostSeqListVO, PostSeqFormVO, PostSeqBatchVO> {
+public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, PostSeqFormVO, PostSeqBatchVO> {
 
     @Autowired
     private PostSeqService postSeqService;
