@@ -555,8 +555,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		// 最大组织编码
 		String maxOrgCode = this.baseMapper.getMaxOrgCode(parentId);
 		
-		if(StrUtil.isBlank(maxOrgCode) && ObjectUtil.isNotNull(parentId)) {
-			return maxOrgCode = this.getById(parentId).getOrgCode() + defaultOrgCode;
+		if(StrUtil.isBlank(maxOrgCode)) {
+			if(ObjectUtil.isNotNull(parentId)) {
+				return maxOrgCode = this.getById(parentId).getOrgCode() + defaultOrgCode;
+			}else {
+				return defaultOrgCode;
+			}
 		}
 			
 		// 首次新增 默认 001
