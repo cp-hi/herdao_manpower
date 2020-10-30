@@ -98,7 +98,7 @@ public class Organization extends BaseEntity<Organization> {
 	 * 排序
 	 */
 	@ApiModelProperty(value = "排序")
-	private String sortNo;
+	private Long sortNo;
 	/**
 	 * 是否停用(0 停用 ，1启用（默认），不传或者传3 查询全部)
 	 */

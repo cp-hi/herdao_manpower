@@ -92,6 +92,11 @@ public class FamilystatusController extends HdpBaseController  {
         return list;
     }
 
+    @Override
+    public String getTemplateName() {
+        return "员工家庭情况";
+    }
+
     /**
      * 分页查询
      * @param page 分页对象

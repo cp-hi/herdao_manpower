@@ -47,9 +47,6 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     @Autowired
     private SysDictItemService itemService;
 
-    @Autowired
-    private RemoteUserService remoteUserService;
-
     @Override
     public Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, String searchText) {
         Page<FamilyStatusListDTO> pageResult = this.baseMapper.findFamilyStatusPage(page, searchText);
@@ -67,22 +64,21 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     public boolean saveOrUpdate(Familystatus familystatus) {
         boolean status =false;
         if (null != familystatus){
-            UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-            String userName=userInfo.getSysUser().getUsername();
-            String loginCode=userInfo.getSysUser().getUsername();
+            SysUser sysUser = SysUserUtils.getSysUser();
 
             //新增
             if (null == familystatus.getId()){
-                familystatus.setCreatorCode(loginCode);
                 familystatus.setCreatedTime(LocalDateTime.now());
+                familystatus.setCreatorCode(sysUser.getUsername());
+                familystatus.setCreatorId(sysUser.getUserId());
                 status = super.save(familystatus);
             }
 
             //修改
             if (null != familystatus.getId()){
-                familystatus.setModifierCode(loginCode);
-                familystatus.setModifierName(userName);
                 familystatus.setModifiedTime(LocalDateTime.now());
+                familystatus.setModifierCode(sysUser.getUsername());
+                familystatus.setModifierId(sysUser.getUserId());
                 status = super.updateById(familystatus);
             }
         }
@@ -153,6 +149,7 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                 SysUser sysUser = SysUserUtils.getSysUser();
                 familystatus.setCreatedTime(LocalDateTime.now());
                 familystatus.setCreatorCode(sysUser.getUsername());
+                familystatus.setCreatorId(sysUser.getUserId());
 
                 familystatusList.add(familystatus);
             }
@@ -202,9 +199,9 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                 familystatus.setAge(Integer.parseInt(updateDTO.getAge()));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
-                familystatus.setModifierName(sysUser.getUsername());
                 familystatus.setModifiedTime(LocalDateTime.now());
                 familystatus.setModifierCode(sysUser.getUsername());
+                familystatus.setModifierId(sysUser.getUserId());
 
                 familystatusList.add(familystatus);
             }
