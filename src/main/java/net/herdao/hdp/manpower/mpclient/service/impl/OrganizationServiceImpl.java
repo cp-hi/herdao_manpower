@@ -82,13 +82,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
 
     @Override
-    public List<OrganizationTreeVO> selectOrganizationTree() {
-       return this.baseMapper.selectOrganizationTree();
+    public List<OrganizationTreeVO> selectOrganizationTree(Integer stop) {
+       return this.baseMapper.selectOrganizationTree(stop);
     }
     
     @Override
-    public List<OrganizationTreeVO> organizationTreeList(String orgCode, String searchText){
-    	return this.baseMapper.organizationTreeList(orgCode, searchText);
+    public List<OrganizationTreeVO> organizationTreeList(String orgCode, Integer stop, String searchText){
+    	return this.baseMapper.organizationTreeList(orgCode, stop, searchText);
     }
 
     @Override

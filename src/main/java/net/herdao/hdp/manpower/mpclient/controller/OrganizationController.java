@@ -207,12 +207,12 @@ public class OrganizationController extends HdpBaseController{
     @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class)
     @ApiImplicitParams({ @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
 			        	 @ApiImplicitParam(name="searchText",value="模糊查询内容") })
-	public R<List<OrganizationTreeVO>> findAllOrganizations(String orgCode, String searchText) {
+	public R<List<OrganizationTreeVO>> findAllOrganizations(String orgCode, Integer stop, String searchText) {
 		// 默认查询组织层级二级
 		if (StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
-			return R.ok(orgService.selectOrganizationTree());
+			return R.ok(orgService.selectOrganizationTree(stop));
 		}
-		return R.ok(orgService.organizationTreeList(orgCode, searchText));
+		return R.ok(orgService.organizationTreeList(orgCode, stop, searchText));
 	}
 
     /**
