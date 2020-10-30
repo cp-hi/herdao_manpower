@@ -71,7 +71,7 @@ public class StaffTrainUpdateErrDTO {
     /**
      * 培训总学时
      */
-    @ExcelProperty(index =6,value = "培训总学时")
+    @ExcelProperty(index =6,value = "培训总学时长")
     @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String trainLearnPeriod;
 

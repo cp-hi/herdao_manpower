@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -31,13 +32,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/userpost" )
 @Api(value = "userpost", tags = "用户岗位")
-public class UserpostController extends BaseController<Userpost> {
+public class UserpostController extends HdpBaseController {
+
     @Autowired
     private UserpostService userpostService;
 
-    @Autowired
-    public void setEntityService(UserpostService userpostService) {
-//        super.entityService = userpostService;
+    @Override
+    public HdpService getHdpService() {
+        return userpostService;
     }
 
     /**
@@ -94,6 +96,5 @@ public class UserpostController extends BaseController<Userpost> {
 
         return R.ok("导出成功");
     }
-
 
 }

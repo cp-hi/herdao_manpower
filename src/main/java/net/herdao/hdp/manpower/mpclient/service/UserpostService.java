@@ -18,7 +18,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import org.apache.ibatis.annotations.Param;
@@ -29,7 +28,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-15 08:57:53
  */
-public interface UserpostService extends IService<Userpost> {
+public interface UserpostService extends HdpService<Userpost> {
 
     /**
      * 查询用户岗位

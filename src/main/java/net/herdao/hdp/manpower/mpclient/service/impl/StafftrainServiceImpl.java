@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
@@ -105,7 +106,7 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
                             .eq("end_time", addDTO.getEndTime())
             );
             if (!checkList.isEmpty()&&checkList.size()>=1){
-                ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中存在多条此记录，因此不可新增；");
+                ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中已存在此记录，因此不可新增；");
             }
 
             if (errMsg.length() > 0) {
@@ -134,37 +135,37 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
     private void checkUpdate(List excelList, StringBuffer errMsg, List<ExcelCheckErrDTO> errList, List<Stafftrain> stafftrainList) {
         for (int i = 0; i < excelList.size(); i++) {
             Stafftrain stafftrain=new Stafftrain();
-            StaffTrainAddDTO addDTO = (StaffTrainAddDTO) excelList.get(i);
+            StaffTrainUpdateDTO updateDTO = (StaffTrainUpdateDTO) excelList.get(i);
             //校检员工
-            Long staffId = ImportCheckUtils.checkStaff(errMsg, addDTO.getStaffCode(), addDTO.getStaffName(),staffService);
-            addDTO.setStaffId(staffId);
+            Long staffId = ImportCheckUtils.checkStaff(errMsg, updateDTO.getStaffCode(), updateDTO.getStaffName(),staffService);
+            updateDTO.setStaffId(staffId);
 
             //校检培训类型
-            ImportCheckUtils.checkDicItem(errMsg,"TRAIN_TYPE", addDTO.getTrainType(),itemService);
+            ImportCheckUtils.checkDicItem(errMsg,"TRAIN_TYPE", updateDTO.getTrainType(),itemService);
 
             //校检时间
-            String pattern= ImportCheckUtils.checkTime(errMsg, addDTO.getBeginTime(),addDTO.getEndTime());
+            String pattern= ImportCheckUtils.checkTime(errMsg, updateDTO.getBeginTime(),updateDTO.getEndTime());
 
             //检查数据库是否存在记录，且唯一记录。
             List<Stafftrain> checkList = super.list(
                     new QueryWrapper<Stafftrain>().eq("staff_id", staffId)
-                            .eq("begin_time", addDTO.getBeginTime())
-                            .eq("end_time", addDTO.getEndTime())
+                            .eq("begin_time", updateDTO.getBeginTime())
+                            .eq("end_time", updateDTO.getEndTime())
             );
             if (checkList.isEmpty()){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中不存在此记录，因此不可编辑更新；");
             }else if (!checkList.isEmpty()&&checkList.size()>1){
                 ImportCheckUtils.appendStringBuffer(errMsg, "员工培训表中存在多条此记录，因此不可编辑更新；");
             }else{
-                addDTO.setId(checkList.get(0).getId());
+                updateDTO.setId(checkList.get(0).getId());
             }
 
             if (errMsg.length() > 0) {
-                errList.add(new ExcelCheckErrDTO(addDTO, errMsg.toString()));
+                errList.add(new ExcelCheckErrDTO(updateDTO, errMsg.toString()));
             }else {
-                BeanUtils.copyProperties(addDTO, stafftrain);
-                stafftrain.setBeginTime(DateUtils.parseDate(addDTO.getBeginTime(),pattern));
-                stafftrain.setEndTime(DateUtils.parseDate(addDTO.getEndTime(),pattern));
+                BeanUtils.copyProperties(updateDTO, stafftrain);
+                stafftrain.setBeginTime(DateUtils.parseDate(updateDTO.getBeginTime(),pattern));
+                stafftrain.setEndTime(DateUtils.parseDate(updateDTO.getEndTime(),pattern));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
                 stafftrain.setModifiedTime(new Date());

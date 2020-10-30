@@ -22,9 +22,7 @@ import java.util.Date;
 public class StafftrainDTO  {
     private static final long serialVersionUID = 1L;
 
-    @ExcelProperty(value = "错误信息")
-    @ColumnWidth(100)
-    private String errMsg;
+
 
     /**
      * 新平台新增
@@ -68,8 +66,8 @@ public class StafftrainDTO  {
     /**
      * 培训总学时
      */
-    @ApiModelProperty(value="培训总学时")
-    @ExcelProperty(value = "培训总学时")
+    @ApiModelProperty(value="培训总学时长")
+    @ExcelProperty(value = "培训总学时长")
     private String trainLearnPeriod;
 
     /**
