@@ -172,7 +172,6 @@ public abstract class HdpBaseController {
 	 * @param importDataVO
 	 * @return
 	 */
-	@ApiOperation(value = "批量新增、编辑", notes = "批量新增、编辑（excel导入方式， 07版本）")
     @PostMapping("/importData")
 	public Object importData(HttpServletResponse response, ImportDataVO importDataVO) {
 		try {
