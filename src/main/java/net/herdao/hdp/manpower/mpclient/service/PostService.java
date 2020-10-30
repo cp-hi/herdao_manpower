@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
@@ -14,7 +15,7 @@ public interface PostService extends  EntityService<Post> {
      *
      * @return
      */
-    List<Map> postList(Long groupId);
+    List<PostDTO> postList(Long groupId);
 
 
     /**

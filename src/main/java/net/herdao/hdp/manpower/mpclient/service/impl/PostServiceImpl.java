@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
@@ -39,7 +40,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     final SysDictItemService sysDictItemService;
 
     @Override
-    public List<Map> postList(Long groupId) {
+    public List<PostDTO> postList(Long groupId) {
         return baseMapper.postList(groupId);
     }
 
