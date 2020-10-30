@@ -48,6 +48,7 @@ import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.excelud.ImportDataVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
@@ -382,8 +383,14 @@ public class OrganizationController extends HdpBaseController{
      */
     @ApiOperation(value = "部门选择组件", notes = "部门选择组件")
     @GetMapping("/selectOrganizationComponent")
-    public R<?> selectOrganizationComponent() {
-        return orgService.selectOrganizations();
+    @ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码（通过组织树查询传递）"),
+    					 @ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
+    public R<List<OrganizationComponentVO>> selectOrganizationComponent(String orgCode, String searchText) {
+    	if(StrUtil.isBlank(searchText) && StrUtil.isBlank(orgCode)) {
+    		return orgService.selectOrganizations();
+    	}else {
+    		return orgService.selectOrganizationComponentList(orgCode, searchText);
+    	}
     }
 
 

@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.dto.OrgChartFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
@@ -161,11 +163,20 @@ public interface OrganizationService extends HdpService<Organization>{
     OrganizationFormVO findOrgDetails(Long id);
     
     /**
- 	 * 查询部门/组织信息
+ 	 * 查询组织信息（组件）
  	 * 
  	 * @return
  	 */
-    R<?> selectOrganizations();
+    R<List<OrganizationComponentVO>> selectOrganizations();
+    
+    /**
+     * 查询子组织信息（组件）
+     * 
+     * @param orgCode
+     * @param searchText
+     * @return
+     */
+    R<List<OrganizationComponentVO>> selectOrganizationComponentList(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
 
     /**
      * 查询组织下所有人员

@@ -20,12 +20,21 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import java.util.List;
 import java.util.Map;
 
-import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffArchiveDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWelfareDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -40,12 +49,19 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 public interface StaffMapper extends BaseMapper<Staff> {
 	
 	/**
-	 * 查询员工信息（包含部门/组织信息）
+	 * 查询员工信息（组件）
 	 * 
-	 * @param searchText 查询条件
 	 * @return
 	 */
-	public List<StaffOrganizationComponentVO> selectOrganizations(@Param("searchText") String searchText);
+	public List<StaffOrganizationComponentVO> selectOrganizations();
+	
+	/**
+	 * 查询员工信息（组件）
+	 * 
+	 * @param searchText
+	 * @return
+	 */
+	public List<StaffOrganizationComponentVO> selectOrganizationComponentList(@Param("searchText") String searchText);
 	
 	
 	/**

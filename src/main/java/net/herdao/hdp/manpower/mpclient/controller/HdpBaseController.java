@@ -248,7 +248,6 @@ public abstract class HdpBaseController {
 	 */
 	@ApiOperation(value = "下载批量新增、编辑模板")
 	@PostMapping("/downloadTemplate")
-    @ApiImplicitParam(name = "importType", value = "下载模板类型，值： 0  批量新增模板； 值 1 批量修改模板")
 	public Object downloadTemplate(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
 		int importType = exportDataVO.getImportType();
     	// 导出处理 class
