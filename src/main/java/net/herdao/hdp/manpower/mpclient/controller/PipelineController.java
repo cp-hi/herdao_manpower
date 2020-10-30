@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
-public class PipelineController extends NewBaseController<Pipeline, PipelineListVO, PipelineFormVO, PipelineBatchUpdateVO> {
+public class PipelineController extends BaseController<Pipeline, PipelineListVO, PipelineFormVO, PipelineBatchUpdateVO> {
 
     @Override
     protected Class getBatchAddClass() {

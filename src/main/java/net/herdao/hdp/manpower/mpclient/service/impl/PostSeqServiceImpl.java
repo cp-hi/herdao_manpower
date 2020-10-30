@@ -26,16 +26,12 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-public class PostSeqServiceImpl extends ServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
+public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
     @Override
     public List<Map> postSeqList(Long groupId) {
         return baseMapper.postSeqList(groupId);
     }
 
-    @Override
-    public IPage page(Page page, PostSeq postSeq) {
-        return baseMapper.page(page, postSeq);
-    }
 
     @Override
     public void saveVerify(PostSeq postSeq) {

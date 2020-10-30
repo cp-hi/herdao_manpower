@@ -11,12 +11,20 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author ljan
+ */
 @Mapper
-public interface SectionMapper extends BaseMapper<Section> {
+public interface SectionMapper extends EntityMapper<Section> {
     List<Map> sectionList(Long groupId);
-    IPage<SectionListVO> query(Page<SectionListVO> page, @Param("section") Section section);
+
+    @Override
+    IPage page(IPage page, @Param("section") Section section);
 
     Boolean chkDuplicateSectionCode(Section section);
+
     Boolean chkDuplicateSectionName(Section section);
-    List<String>  getSectionCodesByGroupId(Long groupId);
+
+    List<String> getSectionCodesByGroupId(Long groupId);
+
 }

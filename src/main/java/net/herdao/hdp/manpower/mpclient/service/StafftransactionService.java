@@ -15,7 +15,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-24 16:00:18
  */
-public interface StafftransactionService extends EntityService<Stafftransaction> {
+public interface StafftransactionService extends HdpService<Stafftransaction> {
     /**
      * 员工异动情况分页
      * @param page 分页对象

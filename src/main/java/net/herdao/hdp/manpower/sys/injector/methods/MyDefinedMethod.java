@@ -13,6 +13,7 @@ import org.apache.ibatis.mapping.SqlSource;
  * @Date 2020/10/29 8:41
  * @Version 1.0
  */
+@Deprecated
 public class MyDefinedMethod extends AbstractMethod {
     //    @Override
 //    public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
@@ -20,7 +21,7 @@ public class MyDefinedMethod extends AbstractMethod {
 //    }
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        String myDefineSql = "delete from " + tableInfo.getTableName();//构造一条delete from 表，待注入的sql预编译语句
+        String myDefineSql = "update " + tableInfo.getTableName() +" set del_flag = 1";//构造一条delete from 表，待注入的sql预编译语句
         String methodName = "deleteAll";//方法名 -->这个就是在UserMapper中需要添加的方法名
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, myDefineSql, modelClass);// 进行预编译得到sqlSource对象
         //添加到delete操作的Statement中也就是相当于将预编译sql和其它的delete相关的编译后的sql存在一起

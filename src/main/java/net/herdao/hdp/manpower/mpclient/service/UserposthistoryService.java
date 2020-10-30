@@ -15,7 +15,7 @@ import java.util.List;
  * @author yangrr
  * @date 2020-09-25 17:24:25
  */
-public interface UserposthistoryService extends EntityService<Userposthistory> {
+public interface UserposthistoryService extends HdpService<Userposthistory> {
     /**
      * 历史任职情况分页
      * @param page 分页对象

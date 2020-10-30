@@ -28,7 +28,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-15 08:57:53
  */
-public interface UserpostService extends EntityService<Userpost> {
+public interface UserpostService extends HdpService<Userpost> {
 
     /**
      * 查询用户岗位

@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface JobLevelMapper extends BaseMapper<JobLevel> {
-    IPage page(Page page, @Param("jobLevel") JobLevel jobLevel);
+public interface JobLevelMapper extends EntityMapper<JobLevel> {
+    @Override
+    IPage page(IPage page, @Param("jobLevel") JobLevel jobLevel);
 
     List<Map> jobLevelList(Long groupId);
 
@@ -22,5 +23,4 @@ public interface JobLevelMapper extends BaseMapper<JobLevel> {
 
     Boolean chkDuplicateJobLevelCode(JobLevel jobLevel);
 
-    int deleteAll();
 }

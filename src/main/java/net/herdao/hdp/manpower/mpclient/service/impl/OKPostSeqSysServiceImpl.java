@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;

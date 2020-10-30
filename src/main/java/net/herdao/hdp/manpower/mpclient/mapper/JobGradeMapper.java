@@ -11,8 +11,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface JobGradeMapper extends BaseMapper<JobGrade> {
-    IPage page(Page page, @Param("jobGrade") JobGrade jobGrade);
+public interface JobGradeMapper extends EntityMapper<JobGrade> {
+    @Override
+    IPage page(IPage page, @Param("jobGrade") JobGrade jobGrade);
 
     List<JobGradeShortVO> jobGradeList(Long groupId);
 

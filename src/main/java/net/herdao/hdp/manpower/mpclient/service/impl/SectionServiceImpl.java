@@ -26,18 +26,13 @@ import java.util.Map;
  */
 @Service
 @AllArgsConstructor
-public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
+public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section> implements SectionService {
 
     final GroupService groupService;
 
     @Override
     public List<Map> sectionList(Long groupId) {
         return baseMapper.sectionList(groupId);
-    }
-
-    @Override
-    public IPage page(Page page, Section Section) {
-        return baseMapper.query(page, Section);
     }
 
     @Override
@@ -49,9 +44,9 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
     }
 
     @Override
-    public  void addEntity(Section section, Object excelObj) {
+    public void addEntity(Section section, Object excelObj) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
-        chkEntityExists("SECTION_NAME",excel.getSectionName(), false);
+        chkEntityExists("SECTION_NAME", excel.getSectionName(), false);
         Group group = groupService.getGroupByName(excel.getGroupName());
         section.setGroupId(group.getId());
     }
@@ -59,7 +54,7 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
     @Override
     public void updateEntity(Section section, Object excelObj) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
-        Section tmp = chkEntityExists("SECTION_NAME",excel.getSectionName(), true);
+        Section tmp = chkEntityExists("SECTION_NAME", excel.getSectionName(), true);
         Group group = groupService.getGroupByName(excel.getGroupName());
         section.setGroupId(group.getId());
         section.setId(tmp.getId());

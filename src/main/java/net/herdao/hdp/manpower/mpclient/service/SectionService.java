@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface SectionService extends  EntityService<Section> {
     List<Map> sectionList(Long groupId);
+
 }

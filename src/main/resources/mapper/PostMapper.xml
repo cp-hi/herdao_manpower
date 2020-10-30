@@ -17,20 +17,20 @@
         <result property="postSeqId" column="post_seq_id"/>
 
         <association property="group" column="group_id" javaType="group"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById"/>
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectIgnoreDel"/>
 
         <association property="section" column="section_id" javaType="section"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectById"/>
+                     select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectIgnoreDel"/>
 
         <association property="pipeline" column="pipeline_id" javaType="pipeline"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectById"/>
+                     select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectIgnoreDel"/>
 
         <association property="jobGrade" column="job_level_id1" select="getJobGrade" javaType="jobGrade"/>
 
         <association property="jobLevel1" column="job_level_id1" javaType="jobLevel"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectById"/>
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectIgnoreDel"/>
         <association property="jobLevel2" column="job_level_id2" javaType="jobLevel"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectById"/>
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectIgnoreDel"/>
 
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>

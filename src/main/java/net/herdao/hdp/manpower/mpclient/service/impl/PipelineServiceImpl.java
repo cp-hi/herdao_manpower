@@ -27,18 +27,13 @@ import java.util.Map;
  */
 @Service
 @AllArgsConstructor
-public class PipelineServiceImpl extends ServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
+public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
 
     final GroupService groupService;
 
     @Override
     public List<Map> pipelineList(Long groupId) {
         return baseMapper.pipelineList(groupId);
-    }
-
-    @Override
-    public IPage page(Page page, Pipeline pipeline) {
-        return baseMapper.page(page, pipeline);
     }
 
     @Override

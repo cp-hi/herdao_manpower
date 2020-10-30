@@ -29,13 +29,13 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends NewBaseController<Section, SectionListVO, SectionFormVO, SectionBatchUpdateVO> {
+public class SectionController extends BaseController<Section, SectionListVO, SectionFormVO, SectionBatchUpdateVO> {
 
     @Autowired
     private SectionService sectionService;
 
     @Override
-    protected Class getBatchAddClass (){
+    protected Class getBatchAddClass() {
         return SectionBatchAddVO.class;
     }
 
@@ -60,6 +60,4 @@ public class SectionController extends NewBaseController<Section, SectionListVO,
     public R<IPage<SectionListVO>> page(HttpServletResponse response, Page page, Section section, Integer type) throws Exception {
         return super.page(response, page, section, type);
     }
-
-
 }
