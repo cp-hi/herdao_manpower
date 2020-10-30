@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -85,13 +86,15 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO,
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
-    public R<IPage<PostShortVO>> list(Long groupId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        Post post = new Post();
-        post.setGroupId(groupId);
-        IPage p = postService.page(new Page(), post);
-        List<PostShortVO> records = DtoConverter.dto2vo(p.getRecords(), PostShortVO.class);
-        p.setRecords(records);
-        return R.ok(p);
+    public R<List<PostShortVO>> list(Long groupId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+//        Post post = new Post();
+//        post.setGroupId(groupId);
+//        IPage p = postService.page(new Page(), post);
+//        List<PostShortVO> records = DtoConverter.dto2vo(p.getRecords(), PostShortVO.class);
+//        p.setRecords(records);
+        List<PostDTO> list = postService.postList(groupId);
+        List<PostShortVO> vos = DtoConverter.dto2vo(list, PostShortVO.class);
+        return R.ok(vos);
     }
 
     @ApiOperation(value = "岗位概况")
