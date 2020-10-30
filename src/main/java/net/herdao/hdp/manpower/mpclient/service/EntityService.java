@@ -19,7 +19,7 @@ public interface EntityService<T> extends IService<T> {
 
     IPage page(IPage page, T t);
 
-    T getEntity(Long id);
+    T selectIgnoreDel(Long id);
 
     Class<T> getEntityClass();
 

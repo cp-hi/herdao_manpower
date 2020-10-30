@@ -15,13 +15,13 @@ import org.apache.ibatis.scripting.defaults.RawSqlSource;
  * @Date 2020/10/29 20:56
  * @Version 1.0
  */
-public class GetEntity extends AbstractMethod {
-    public GetEntity() {
+public class SelectIgnoreDel extends AbstractMethod {
+    public SelectIgnoreDel() {
     }
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ", this.sqlSelectColumns(tableInfo, false), tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty() ), Object.class);
-        return this.addSelectMappedStatementForTable(mapperClass, "getEntity", sqlSource, tableInfo);
+        return this.addSelectMappedStatementForTable(mapperClass, "selectIgnoreDel", sqlSource, tableInfo);
     }
 }

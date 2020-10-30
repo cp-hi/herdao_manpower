@@ -33,7 +33,7 @@ import java.util.Map;
  */
 @Mapper
 public interface GroupMapper extends BaseMapper<Group> {
-    List<Map<String,String>> groupList();
+    List<Map<String, String>> groupList();
 
     /**
      * 集团分页列表
@@ -42,4 +42,6 @@ public interface GroupMapper extends BaseMapper<Group> {
      * @return
      */
     List<GroupListDTO> groupPage(Map<String, Object> map);
+
+    Group selectIgnoreDel(Long id);
 }

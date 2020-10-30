@@ -38,8 +38,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public T getEntity(Long id) {
-        return baseMapper.getEntity(id);
+    public T selectIgnoreDel(Long id) {
+        return baseMapper.selectIgnoreDel(id);
     }
 
     @Override

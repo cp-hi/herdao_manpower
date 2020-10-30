@@ -8,7 +8,7 @@
         <result property="stop" column="IS_STOP"/>
         <result property="groupId" column="GROUP_ID"/>
         <association property="group" column="group_id" javaType="group"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectById" />
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectIgnoreDel" />
     </resultMap>
 
     <select id="page" resultMap="pipelineDTOMap" parameterType="pipeline">

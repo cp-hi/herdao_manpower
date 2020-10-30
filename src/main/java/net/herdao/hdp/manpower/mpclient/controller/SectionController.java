@@ -60,15 +60,4 @@ public class SectionController extends BaseController<Section, SectionListVO, Se
     public R<IPage<SectionListVO>> page(HttpServletResponse response, Page page, Section section, Integer type) throws Exception {
         return super.page(response, page, section, type);
     }
-
-//    @GetMapping("/deleteAll")
-//    public R deleteAll() {
-//        return R.ok(sectionService.deleteAll());
-//    }
-
-    @GetMapping("/getEntity")
-    public R getEntity(Long id) {
-        return R.ok(sectionService.getEntity(id));
-    }
-
 }

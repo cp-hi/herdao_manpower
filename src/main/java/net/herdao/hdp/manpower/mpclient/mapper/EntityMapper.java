@@ -18,7 +18,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @param id
      * @return
      */
-    T getEntity(Long id);
+    T selectIgnoreDel(Long id);
 
     /**
      * 分页，默认用自身实体可传所有参数，
