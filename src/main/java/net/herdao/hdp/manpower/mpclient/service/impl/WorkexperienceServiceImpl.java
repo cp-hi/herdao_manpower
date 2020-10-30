@@ -62,6 +62,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
         Workexperience workexperience = new Workexperience();
         BeanUtils.copyProperties(workexperienceDTO, workexperience);
         //创建人工号、姓名、时间；修改人工号、姓名、时间
@@ -69,9 +70,8 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         workexperience.setCreatorCode(loginCode); 
         workexperience.setCreatorName(userName);
         workexperience.setCreatedTime(now);
-        workexperience.setModifierCode(loginCode); 
-        workexperience.setModifierName(userName);
-        workexperience.setModifiedTime(now);
+        workexperience.setCreatorId(userId);
+
         boolean flag = super.save(workexperience);
         return flag;
     }
@@ -81,7 +81,8 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
-        
+        Long userId = userInfo.getSysUser().getUserId();
+
         Workexperience workexperience = this.getById(workexperienceDTO.getId());
         BeanUtils.copyProperties(workexperienceDTO, workexperience);
         //修改人工号、姓名、时间
@@ -89,6 +90,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         workexperience.setModifierCode(loginCode);
         workexperience.setModifierName(userName);
         workexperience.setModifiedTime(now);
+        workexperience.setModifierId(userId);
         boolean status = super.updateById(workexperience);
         return status;
     }
@@ -104,30 +106,32 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
         LocalDateTime now = LocalDateTime.now();
         workexperience.setCreatorCode(loginCode);
         workexperience.setCreatorName(userName);
         workexperience.setCreatedTime(now);
+        workexperience.setCreatorId(userId);
         boolean flag = super.save(workexperience);
         return flag;
      }
 
     @Override
-    public boolean updateWork(Workexperience orkexperience) {
+    public boolean updateWork(Workexperience workexperience) {
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
 
         //修改人工号、姓名、时间
         LocalDateTime now = LocalDateTime.now();
-        orkexperience.setModifierCode(loginCode);
-        orkexperience.setModifierName(userName);
-        orkexperience.setModifiedTime(now);
-        boolean status = super.updateById(orkexperience);
+        workexperience.setModifierCode(loginCode);
+        workexperience.setModifierName(userName);
+        workexperience.setModifiedTime(now);
+        workexperience.setModifierId(userId);
+        boolean status = super.updateById(workexperience);
         return status;
     }
-
-
 
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
@@ -195,6 +199,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
                 workexperience.setCreatedTime(LocalDateTime.now());
                 workexperience.setCreatorCode(sysUser.getUsername());
                 workexperience.setCreatorName(sysUser.getAliasName());
+                workexperience.setCreatorId(sysUser.getUserId());
 
                 workexperienceList.add(workexperience);
             }
@@ -247,6 +252,7 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
                 workexperience.setModifiedTime(LocalDateTime.now());
                 workexperience.setModifierCode(sysUser.getUsername());
                 workexperience.setModifierName(sysUser.getAliasName());
+                workexperience.setModifierId(sysUser.getUserId());
 
                 workexperienceList.add(workexperience);
             }

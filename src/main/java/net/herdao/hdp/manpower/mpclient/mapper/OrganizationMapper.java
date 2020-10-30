@@ -122,12 +122,20 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
     OrganizationFormVO findOrgDetails(@Param("id") Long id);
      
      /**
- 	 * 查询部门/组织信息
+ 	 * 查询组织信息，递归方式（组件）
  	 * 
- 	 * @param searchText
  	 * @return
  	 */
-     List<OrganizationComponentVO> selectOrganizations(@Param("searchText") String searchText);
+     List<OrganizationComponentVO> selectOrganizations();
+     
+     /**
+      * 查询子组织信息（组件）
+      * 
+      * @param orgCode
+      * @param searchText
+      * @return
+      */
+     List<OrganizationComponentVO> selectOrganizationComponentList( @Param("orgCode") String orgCode, @Param("searchText") String searchText);
 
     /**
      * 查询组织下所有人员

@@ -163,14 +163,10 @@
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
 			AND org.parent_id IS NULL
-			<if test="searchText != null">
-				<!-- 权限条件 -->
-			</if>
 		</where>
 	</select>
 	
-	<!-- 查询子部门/组织信息 -->
-	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
+	<sql id="selectOrganizationComponentSql">
 		SELECT 
 			org.id,
 			org.org_name, 
@@ -178,8 +174,29 @@
 			orgp.org_name AS parent_org_name, 
 			orgp.org_code AS parent_org_code
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+	</sql>
+	
+	<!-- 查询子组织信息 -->
+	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
+		<include refid="selectOrganizationComponentSql"></include>
 		<where>
-			AND orgp.org_code = #{orgCode}
+			<if test="orgCode != null">
+				AND orgp.org_code = #{orgCode}
+				AND org.org_tree_level &lt;= 2
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询子组织信息 -->
+	<select id="selectOrganizationComponentList" resultMap="organizationComponentMap">
+		<include refid="selectOrganizationComponentSql"></include>
+		<where>
+			<if test="orgCode != null">
+				AND orgp.org_code = #{orgCode}
+			</if>
+			<if test="searchText != null">
+				AND org.org_name LIKE CONCAT(#{searchText},'%')
+			</if>
 		</where>
 	</select>
 	
@@ -215,6 +232,9 @@
 		<where>
 			AND ut.office_post_type = '1'
 			AND org.org_code = #{orgCode}
+			<if test="searchText != null">
+				AND org.org_name LIKE CONCAT(#{searchText},'%')
+			</if>
 		</where>
 	</select>
 	
@@ -387,6 +407,29 @@
         WHERE
             f.ID = #{id}
         LIMIT 1
+    </select>
+
+    <!-- 查询员工任职轨迹 -->
+    <select id="getJobTravel" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobTravelDTO">
+        SELECT
+            st.id,
+            st.STAFF_ID,
+            dt.label TRAN_TYPE,
+            st.TRAN_TIME,
+            st.OUT_UNIT_NAME,
+            st.OUT_CENTER_NAME,
+            st.POST_ID,
+            p.POST_NAME
+        FROM
+            mp_stafftransaction st
+        LEFT JOIN mp_staff f ON st.STAFF_ID = f.ID
+        LEFT JOIN mp_post p ON p.ID = st.POST_ID
+        LEFT JOIN sys_dict_item dt ON dt.type = 'YDLX'
+            AND dt.VALUE = st.TRAN_TYPE
+        WHERE
+            f.ID = #{id}
+        ORDER BY
+            st.TRAN_TIME
     </select>
 
     <!-- 花名册翻页列表 -->

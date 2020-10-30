@@ -71,6 +71,7 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                 familystatus.setCreatedTime(LocalDateTime.now());
                 familystatus.setCreatorCode(sysUser.getUsername());
                 familystatus.setCreatorId(sysUser.getUserId());
+                familystatus.setCreatorName(sysUser.getAliasName());
                 status = super.save(familystatus);
             }
 
@@ -79,6 +80,7 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                 familystatus.setModifiedTime(LocalDateTime.now());
                 familystatus.setModifierCode(sysUser.getUsername());
                 familystatus.setModifierId(sysUser.getUserId());
+                familystatus.setModifierName(sysUser.getAliasName());
                 status = super.updateById(familystatus);
             }
         }
@@ -150,6 +152,7 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                 familystatus.setCreatedTime(LocalDateTime.now());
                 familystatus.setCreatorCode(sysUser.getUsername());
                 familystatus.setCreatorId(sysUser.getUserId());
+                familystatus.setCreatorName(sysUser.getAliasName());
 
                 familystatusList.add(familystatus);
             }
@@ -202,6 +205,7 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
                 familystatus.setModifiedTime(LocalDateTime.now());
                 familystatus.setModifierCode(sysUser.getUsername());
                 familystatus.setModifierId(sysUser.getUserId());
+                familystatus.setModifierName(sysUser.getAliasName());
 
                 familystatusList.add(familystatus);
             }

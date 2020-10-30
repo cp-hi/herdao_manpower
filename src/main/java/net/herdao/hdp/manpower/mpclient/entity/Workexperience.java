@@ -190,4 +190,16 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="修改人")
     @TableField(exist = false)
     private String modifierName;
+
+    /**
+     * 创建人ID
+     */
+    @ApiModelProperty(value = "创建人ID" ,hidden = true)
+    private Long creatorId;
+
+    /**
+     * 修改ID
+     */
+    @ApiModelProperty(value = "修改ID" ,hidden = true)
+    private Long modifierId;
 }

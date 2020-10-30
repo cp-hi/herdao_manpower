@@ -80,6 +80,11 @@ public class StaffEducationController extends HdpBaseController {
         return ExcelDescriptionContants.getEduUpdateDesc();
     }
 
+    @Override
+    public String getTemplateName() {
+        return "员工教育";
+    }
+
     /**
      * 分页查询
      * @param page 分页对象
