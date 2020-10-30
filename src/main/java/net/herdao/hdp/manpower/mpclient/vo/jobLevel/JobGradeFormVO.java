@@ -22,7 +22,7 @@ public class JobGradeFormVO {
     private String jobGradeName;
 
     @ApiModelProperty("集团ID")
-    private String groupId;
+    private Long groupId;
 
     @ApiModelProperty("排序")
     private Integer sortNo;
