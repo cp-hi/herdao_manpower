@@ -26,6 +26,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工教育经历")
 public class Staffeducation extends BaseModel<Staffeducation> {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -142,5 +143,29 @@ public class Staffeducation extends BaseModel<Staffeducation> {
      */
     @ApiModelProperty(value="学历")
     private String educationQua;
+
+    /**
+     * 修改人(操作人姓名)
+     */
+    @ApiModelProperty(value="修改人(操作人姓名)")
+    private String modifierName;
+
+    /**
+     * 创建人ID
+     */
+    @ApiModelProperty(value = "创建人ID" ,hidden = true)
+    private Long creatorId;
+
+    /**
+     * 创建人名称
+     */
+    @ApiModelProperty(value = "创建人名称" ,hidden = true)
+    private String creatorName;
+
+    /**
+     * 修改ID
+     */
+    @ApiModelProperty(value = "修改ID" ,hidden = true)
+    private Long modifierId;
 
 }

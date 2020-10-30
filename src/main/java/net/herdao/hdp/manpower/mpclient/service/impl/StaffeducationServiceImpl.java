@@ -47,10 +47,11 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
 
     @Override
     public Boolean saveEdu(Staffeducation staffeducation) {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        Integer userId = userInfo.getSysUser().getUserId().intValue();
-        staffeducation.setCreatorCode(userId.toString());
+        SysUser sysUser = SysUserUtils.getSysUser();
         staffeducation.setCreatedTime(new Date());
+        staffeducation.setCreatorCode(sysUser.getUsername());
+        staffeducation.setCreatorId(sysUser.getUserId());
+        staffeducation.setCreatorName(sysUser.getAliasName());
         boolean status = super.save(staffeducation);
         return status;
     }

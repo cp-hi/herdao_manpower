@@ -80,6 +80,11 @@ public class StafftrainController extends HdpBaseController {
         return list;
     }
 
+    @Override
+    public String getTemplateName() {
+        return "员工培训";
+    }
+
     /**
      * 分页查询
      * @param page 分页对象

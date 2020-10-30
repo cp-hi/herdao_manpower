@@ -84,6 +84,11 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
         return list;
     }
 
+    @Override
+    public String getTemplateName() {
+        return "员工奖惩";
+    }
+
     /**
      * 分页查询
      * @param page 分页对象

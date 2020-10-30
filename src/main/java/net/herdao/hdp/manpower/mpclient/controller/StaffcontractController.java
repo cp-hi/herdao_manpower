@@ -88,6 +88,11 @@ public class StaffcontractController extends HdpBaseController {
         return list;
     }
 
+    @Override
+    public String getTemplateName() {
+        return "员工签订";
+    }
+
     /**
      * 新增员工培训
      * @param staffcontract

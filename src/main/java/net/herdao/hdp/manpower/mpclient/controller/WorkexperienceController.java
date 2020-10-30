@@ -88,6 +88,11 @@ public class WorkexperienceController extends HdpBaseController {
         return ExcelDescriptionContants.getWorkUpdateDesc();
     }
 
+    @Override
+    public String getTemplateName() {
+        return "员工工作经历";
+    }
+
     @Autowired
     private WorkexperienceService workexperienceService;
 
