@@ -69,7 +69,7 @@ public class StaffTrainAddDTO  {
     /**
      * 培训总学时
      */
-    @ExcelProperty(index =5,value = "培训总学时")
+    @ExcelProperty(index =5,value = "培训总学时长")
     @Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = ExcelPatternMsgContants.NUMBER_MSG)
     private String trainLearnPeriod;
 

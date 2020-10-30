@@ -1,9 +1,5 @@
-
-
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcelFactory;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,19 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.*;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
-import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
-import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
-import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
-import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
@@ -33,13 +20,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -91,6 +74,11 @@ public class StafftrainController extends HdpBaseController {
         return ExcelDescriptionContants.getTrainUpdateDesc();
     }
 
+    @Override
+    public List getDownloadUpdateTemplateList() {
+        List<StafftrainDTO> list = this.stafftrainService.findStaffTrain(null);
+        return list;
+    }
 
     /**
      * 分页查询
@@ -192,7 +180,6 @@ public class StafftrainController extends HdpBaseController {
         return R.ok(status);
     }
 
-
     /**
      * 通过id查询员工奖惩表
      * @param id id
@@ -203,6 +190,5 @@ public class StafftrainController extends HdpBaseController {
     public R getById(@PathVariable("id" ) Integer id) {
         return R.ok(stafftrainService.getById(id));
     }
-
 
 }

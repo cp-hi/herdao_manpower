@@ -207,7 +207,7 @@ public class Stafftrain extends BaseModel<Stafftrain> {
     /**
      * 培训总学时
      */
-    @ApiModelProperty(value="培训总学时")
+    @ApiModelProperty(value="培训总学时长")
     @ExcelIgnore
     private String trainLearnPeriod;
 

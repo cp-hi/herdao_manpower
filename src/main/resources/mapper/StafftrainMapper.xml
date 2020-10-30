@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StafftrainMapper">
           <resultMap id="stafftrainMap" type="net.herdao.hdp.manpower.mpclient.entity.Stafftrain">
                   <id property="id" column="id"/>
@@ -81,7 +78,7 @@
               mp_stafftrain f
               LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
               LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID  AND u.MAIN_POST = 1
-              LEFT JOIN sys_dict_item dic ON dic.id = f.train_type AND dic.type = 'TRAIN_TYPE'
+              LEFT JOIN sys_dict_item dic ON dic.value = f.train_type AND dic.type = 'TRAIN_TYPE'
               LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
               WHERE
               1 = 1
@@ -150,7 +147,7 @@
         mp_stafftrain f
         LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
         LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID  AND u.MAIN_POST = 1
-        LEFT JOIN sys_dict_item dic ON dic.id = f.train_type AND dic.type = 'TRAIN_TYPE'
+        LEFT JOIN sys_dict_item dic ON dic.value = f.train_type AND dic.type = 'TRAIN_TYPE'
         LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
         WHERE
         1 = 1
@@ -161,19 +158,19 @@
         1 =1
         <if test="searchText != null">
             and CONCAT(
-            IFNULL(t.staff_name,''),
-            IFNULL(t.staff_code,''),
-            IFNULL(t.begin_time,''),
-            IFNULL(t.end_time,''),
-            IFNULL(t.train_period,''),
-            IFNULL(t.train_learn_period,''),
-            IFNULL(t.train_learn_score,''),
-            IFNULL(t.score,''),
-            IFNULL(t.train_type,''),
-            IFNULL(t.train_company,'') ,
-            IFNULL(t.certificate_name,''),
-            IFNULL(t.certificate_code,''),
-            IFNULL(t.remarks,'')
+                IFNULL(t.staff_name,''),
+                IFNULL(t.staff_code,''),
+                IFNULL(t.begin_time,''),
+                IFNULL(t.end_time,''),
+                IFNULL(t.train_period,''),
+                IFNULL(t.train_learn_period,''),
+                IFNULL(t.train_learn_score,''),
+                IFNULL(t.score,''),
+                IFNULL(t.train_type,''),
+                IFNULL(t.train_company,'') ,
+                IFNULL(t.certificate_name,''),
+                IFNULL(t.certificate_code,''),
+                IFNULL(t.remarks,'')
             )  LIKE concat('%',#{searchText},'%')
         </if>
     </select>
