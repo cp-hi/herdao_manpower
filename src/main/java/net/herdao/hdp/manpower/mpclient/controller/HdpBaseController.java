@@ -175,6 +175,14 @@ public abstract class HdpBaseController {
 			EasyExcelListener easyExcelListener = new EasyExcelListener(getHdpService(), excelCls, importType, getExcelIndex());
 			// 读取excel
 			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(getHeadRowNumber()).doRead();
+			
+			// 批量标识
+			String dsp = ManpowerContants.ImportTypeEnum.getInstance(importType);
+			
+			List excelList = easyExcelListener.getExcelList();
+			if(ObjectUtil.isEmpty(excelList)) {
+				return R.failed("批量" + dsp + "失败，模板数据为空！");
+			}
 			// 导入异常信息集合
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
 			
@@ -203,7 +211,7 @@ public abstract class HdpBaseController {
 						return excelErrDto;
 					}).collect(Collectors.toList());
 					// 导出异常信息
-					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, ManpowerContants.ImportTypeEnum.getInstance(importType) + "错误信息");
+					EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, dsp + "错误信息");
 				}else {
 					return R.failed("导入异常，是否下载错误文件？");
 				}
