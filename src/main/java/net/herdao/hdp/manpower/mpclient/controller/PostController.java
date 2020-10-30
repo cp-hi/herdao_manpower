@@ -87,11 +87,6 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO,
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
     public R<List<PostShortVO>> list(Long groupId) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-//        Post post = new Post();
-//        post.setGroupId(groupId);
-//        IPage p = postService.page(new Page(), post);
-//        List<PostShortVO> records = DtoConverter.dto2vo(p.getRecords(), PostShortVO.class);
-//        p.setRecords(records);
         List<PostDTO> list = postService.postList(groupId);
         List<PostShortVO> vos = DtoConverter.dto2vo(list, PostShortVO.class);
         return R.ok(vos);
@@ -146,12 +141,4 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO,
         }
         return R.ok(data);
     }
-
-//    @GetMapping("/generateEntityCode")
-//    public R generateEntityCode() throws IllegalAccessException {
-//        String data = postService.generateEntityCode();
-//        return R.ok(data);
-//    }
-
-
 }

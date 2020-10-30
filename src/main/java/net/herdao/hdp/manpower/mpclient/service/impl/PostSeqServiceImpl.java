@@ -37,6 +37,11 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     public void saveVerify(PostSeq postSeq) {
 //        if (baseMapper.chkDuplicatePostSeqCode(postSeq))
 //            throw new RuntimeException("岗位序列编码重复了");
+
+        StringBuffer buffer = new StringBuffer();
+        chkParent(postSeq.getId(),buffer);
+        if(StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
         if (baseMapper.chkDuplicatePostSeqName(postSeq))
             throw new RuntimeException("岗位序列名称重复了");
     }
@@ -46,9 +51,9 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), false, buffer);
-        PostSeq parent = this.chkEntityExists("POST_SEQ_NAME", excel.getParentName(), true,buffer);
+        PostSeq parent = this.chkEntityExists("POST_SEQ_NAME", excel.getParentName(), true, buffer);
         if (null != parent) {
-            chkParent(parent, buffer);
+            chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
         if (StringUtils.isNotBlank(buffer.toString()))
@@ -60,19 +65,19 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         PostSeq tmp = chkEntityExists("POST_SEQ_NAME", excel.getPostSeqName(), true, buffer);
-        PostSeq parent = this.chkEntityExists("POST_SEQ_NAME", excel.getParentName(), true,buffer);
+        PostSeq parent = this.chkEntityExists("POST_SEQ_NAME", excel.getParentName(), true, buffer);
 
         if (null != parent) {
-            chkParent(parent, buffer);
+            chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
         if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
     }
 
-    private void chkParent(PostSeq postSeq, StringBuffer buffer) {
-        PostSeqDTO dto = baseMapper.getPostSeqDTO(postSeq.getId());
+    private void chkParent(Long parentId, StringBuffer buffer) {
+        PostSeqDTO dto = baseMapper.getPostSeqDTO(parentId);
         if (null != dto.getParent() && null != dto.getParent().getParent())
-            buffer.append("；" + postSeq.getPostSeqName() + "为3级岗位序列，不能再创建子级");
+            buffer.append("；" + dto.getPostSeqName() + "为3级岗位序列，不能再创建子级");
     }
 }

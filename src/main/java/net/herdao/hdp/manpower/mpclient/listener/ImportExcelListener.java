@@ -95,6 +95,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
         try {
             t = Class.forName(entityClass.getName()).newInstance();
             BeanUtils.copyProperties(excel, t);
+            ((ExcelMsg) excel).setErrMsg("");
             entityService.importVerify(t, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;

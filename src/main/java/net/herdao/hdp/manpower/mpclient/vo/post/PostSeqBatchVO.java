@@ -37,6 +37,10 @@ public class PostSeqBatchVO implements ExcelMsg {
     @HeadFontStyle(color = 10)
     private String postSeqName;
 
+    @ExcelProperty({"", "所属集团"})
+    @HeadFontStyle(color = 10)
+    private String groupName;
+
     @ExcelProperty(value ={"", "上级岗位序列"})
     @HeadFontStyle
     private String parentName;

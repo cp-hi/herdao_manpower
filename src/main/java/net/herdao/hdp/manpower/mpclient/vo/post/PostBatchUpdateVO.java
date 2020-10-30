@@ -29,8 +29,8 @@ import lombok.Data;
         "2、操作导入前请删除示例数据\r\n"
 )
 public class PostBatchUpdateVO extends PostBatchAddVO {
-
-        @ExcelProperty(value = "错误信息")
+    @HeadFontStyle
+    @ExcelProperty(value = "错误信息")
     private String errMsg;
 
     @ExcelProperty({"", "岗位名称"})
@@ -40,34 +40,34 @@ public class PostBatchUpdateVO extends PostBatchAddVO {
     @ExcelProperty({"", "所属集团"})
     @HeadFontStyle(color = 10)
     private String groupName;
-
+    @HeadFontStyle
     @ExcelProperty({"", "所属板块"})
     private String sectionName;
-
+    @HeadFontStyle
     @ExcelProperty({"", "所属管线"})
     private String pipelineName;
-
+    @HeadFontStyle
     @ExcelProperty({"", "岗位序列"})
     private String postSeqName;
-
+    @HeadFontStyle
     @ExcelProperty({"", "职级"})
     private String jobLevelName;
-
+    @HeadFontStyle
     @ExcelProperty(value = {"", "备注"})
     private String description;
-
+    @HeadFontStyle
     @ExcelProperty(value = {"", "岗位组织类型"})
     @ApiModelProperty(value = "岗位组织类型", example = "GWZZLX")
     private String orgType;
-
+    @HeadFontStyle
     @ExcelProperty(value = {"", "岗位薪酬级别"})
     @ApiModelProperty(value = "岗位薪酬级别", example = "XCJB")
     private String postLevel;
-
+    @HeadFontStyle
     @ExcelProperty(value = {"", "年终奖比例"})
     @ApiModelProperty(value = "年终奖比例", example = "XCBL")
     private String yearPayRatio;
-
+    @HeadFontStyle
     @ExcelProperty(value = {"", "月度绩效工资比例"})
     @ApiModelProperty(value = "月度绩效工资比例", example = "YDJXGZBL")
     private String perforSalaryRatio;
