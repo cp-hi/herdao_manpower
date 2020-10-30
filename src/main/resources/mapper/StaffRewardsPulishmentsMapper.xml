@@ -27,7 +27,7 @@
     </resultMap>
 
     <!-- 员工奖惩情况分页 -->
-    <select id="findStaffRpPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO">
+    <select id="findStaffRpPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpDTO">
         select  t.id,
                 t.staff_name,
                 t.staff_code,
@@ -79,7 +79,7 @@
     </select>
 
     <!-- 员工奖惩情况 -->
-    <select id="findStaffRp" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO">
+    <select id="findStaffRp" resultType="net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpDTO">
         select  t.id,
                 t.staff_name,
                 t.staff_code,

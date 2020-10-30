@@ -56,14 +56,13 @@
                   f.PROFESSIONAL,
                   f.WORK_UNIT,
                   f.address,
-                  usr.USER_NAME modifier_name,
+                  f.modifier_name,
                   f.MODIFIED_TIME
                   FROM
                   mp_familystatus f
                   LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
                   LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
                   AND u.MAIN_POST = 1
-                  LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
                   LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
                   AND dic.`value` = f.RELATIONS
                   WHERE 1 = 1
@@ -91,9 +90,10 @@
                 t.WORK_UNIT,
                 t.address,
                 CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
-        FROM
-        (
-            SELECT  f.id,
+                FROM
+          (
+                SELECT
+                    f.id,
                     s.staff_name,
                     s.staff_code,
                     f.NAME,
@@ -102,17 +102,18 @@
                     f.PROFESSIONAL,
                     f.WORK_UNIT,
                     f.address,
-                    usr.USER_NAME modifier_name,
+                    f.modifier_name,
                     f.MODIFIED_TIME
-            FROM  mp_familystatus f
-            LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-            LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID AND u.MAIN_POST = 1
-            LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
-            LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
-            AND dic.`value` = f.RELATIONS
-            WHERE 1 = 1
-            AND f.del_flag = 0
-            ORDER BY f.CREATED_TIME desc
+                FROM
+                mp_familystatus f
+                LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+                LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
+                AND u.MAIN_POST = 1
+                LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
+                AND dic.`value` = f.RELATIONS
+                WHERE 1 = 1
+                AND f.del_flag = 0
+                ORDER BY f.CREATED_TIME desc
         ) t WHERE  1 =1
         <if test="searchText != null">
             and CONCAT(

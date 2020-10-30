@@ -3,27 +3,21 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffRpDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
-import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRewardsPulishmentsMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ImportCheckUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ObjectFieldCompareUtils;
-import net.herdao.hdp.manpower.mpclient.utils.RegexUtils;
-import net.herdao.hdp.manpower.mpclient.vo.StaffRpErrMsg;
 import net.herdao.hdp.manpower.mpclient.vo.staffRp.StaffRpChangePropertiesVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -33,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
