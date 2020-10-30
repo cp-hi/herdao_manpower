@@ -3,7 +3,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
@@ -16,7 +15,7 @@ import java.util.List;
  * @author andy
  * @date 2020-09-24 16:00:18
  */
-public interface StafftransactionService extends IService<Stafftransaction> {
+public interface StafftransactionService extends HdpService<Stafftransaction> {
     /**
      * 员工异动情况分页
      * @param page 分页对象

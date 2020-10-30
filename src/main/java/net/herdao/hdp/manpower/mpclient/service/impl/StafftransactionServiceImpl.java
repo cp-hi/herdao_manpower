@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
@@ -53,5 +54,10 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     public List<StafftransactionDTO> findStafftransactionDto(Long staffid){
     	List<StafftransactionDTO> list = this.baseMapper.findStafftransactionDto(staffid);
         return list;
+    }
+
+    @Override
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+        return null;
     }
 }
