@@ -114,10 +114,12 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
         if (hasError)
             throw new Exception("导入出现错误，请查看导错误原因");
 
-        Integer currCode = Integer.valueOf(entityService.getCurrEntityCode());
-        for (int i = 0; i < dataList.size(); i++) {
-            String entityCode = String.format("%06d", ++currCode);
-            entityService.setEntityCode(dataList.get(i), entityCode);
+        if (0 == importType) {
+            Integer currCode = Integer.valueOf(entityService.getCurrEntityCode());
+            for (int i = 0; i < dataList.size(); i++) {
+                String entityCode = String.format("%06d", ++currCode);
+                entityService.setEntityCode(dataList.get(i), entityCode);
+            }
         }
         this.entityService.saveList(dataList, BATCH_COUNT);
     }

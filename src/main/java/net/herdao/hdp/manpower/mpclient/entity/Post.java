@@ -53,9 +53,9 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "是否停用")
     @TableField("IS_STOP")
     private Boolean stop;
-    @ApiModelProperty(value = "停用日期")
+    @ApiModelProperty(value = "停用日期",hidden = true)
     private Date stopDate;
-    @ApiModelProperty(value = "启用日期")
+    @ApiModelProperty(value = "启用日期",hidden = true)
     private Date startDate;
     @ApiModelProperty(value = "岗位组织类型" ,hidden = true)
     private String orgType;
