@@ -198,7 +198,7 @@
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />
 		<result column="leafNode" property="leaf_node" />
-		<collection column="id" property="organizationChildrens" ofType="OrganizationTreeVO" javaType="java.util.ArrayList" select="selectSecondOrganization"/>
+		<collection column="{id=id,stop=is_stop}" property="organizationChildrens" ofType="OrganizationTreeVO" javaType="java.util.ArrayList" select="selectSecondOrganization"/>
 	</resultMap>
 	
 	<!-- 组织树 模糊查询vo -->
@@ -275,15 +275,27 @@
             org.id,
             org.org_name,
             org.org_code,
-            CASE IFNULL(nbs, 0) WHEN 0 THEN 1 ELSE 0 END leaf_node
+            CASE IFNULL(nbs, 0) WHEN 0 THEN 1 ELSE 0 END leaf_node,
+            org.is_stop
         FROM mp_organization org 
-        LEFT JOIN (SELECT COUNT(1) nbs, orgd.parent_id FROM mp_organization orgd GROUP BY orgd.parent_id) corg ON corg.parent_id = org.id 
+        LEFT JOIN (SELECT COUNT(1) nbs, orgd.parent_id FROM mp_organization orgd
+        <if test="stop != null and stop != 3">
+        	<where>
+        		AND orgd.is_stop = #{stop}
+        	</where>
+        </if>
+         GROUP BY orgd.parent_id) corg ON corg.parent_id = org.id 
 	</sql>
 	
     <!-- 查询根组织架构 -->
     <select id="selectOrganizationTree" resultMap="organizationTreeMap">
         <include refid="organizationTreeSQL"></include>
-        WHERE org.parent_id IS NULL AND org.del_flag = 0
+        <where>
+        	AND org.parent_id IS NULL AND org.del_flag = 0
+       	    <if test="stop != null and stop != 3">
+              AND org.is_stop = #{stop}
+            </if>
+        </where>
     </select>
      
     <!-- 递归查询二级组织树 -->
@@ -291,6 +303,9 @@
        <include refid="organizationTreeSQL"></include>
        <where>
            AND org.parent_id = #{id} AND org.org_tree_level &lt;= 2 AND org.del_flag = 0
+           <if test="stop != null and stop != 3">
+              AND org.is_stop = #{stop}
+           </if>
         </where>
     </select>
     
@@ -304,6 +319,9 @@
            <if test="searchText != null">
           		AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
           </if>
+          <if test="stop != null and stop != 3">
+            	AND org.is_stop = #{stop}
+         </if>
         </where>
     </select>
 

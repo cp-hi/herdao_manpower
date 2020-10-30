@@ -27,6 +27,8 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
@@ -72,10 +74,24 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 @RequestMapping("/staff" )
 @Api(value = "staff", tags = "员工表管理")
-public class StaffController {
+public class StaffController extends HdpBaseController{
 
     private final  StaffService staffService;
-    
+
+    @Override
+    public HdpService getHdpService() {
+        return this.staffService;
+    }
+
+    @Override
+    public Class getImportAddCls() {
+        return StaffAddVM.class;
+    }
+
+    @Override
+    public Class getImportUpdateCls() {
+        return StaffUpdateVM.class;
+    }
     /**
      * 分页查询
      * @param page 分页对象

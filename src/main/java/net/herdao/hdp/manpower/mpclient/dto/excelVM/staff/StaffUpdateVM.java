@@ -19,7 +19,7 @@ import javax.validation.constraints.NotBlank;
 @ApiModel(value = "人员批量新增")
 @HeadFontStyle
 @ColumnWidth(30)
-public class StaffAddVM {
+public class StaffUpdateVM {
 
     @ExcelProperty(value = "姓名", index = 0)
     @Valid

@@ -19,7 +19,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
@@ -37,14 +36,14 @@ import java.util.Map;
  * @author yangrr
  * @date 2020-09-23 18:10:29
  */
-public interface StaffService extends IService<Staff> {
+public interface StaffService extends HdpService<Staff> {
 
 	/**
  	 * 查询员工信息
  	 * 
  	 * @return
  	 */
-	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent();
+	R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent();
 
 	Map<String, Object> queryCount();
 

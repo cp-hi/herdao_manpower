@@ -2,7 +2,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -35,18 +34,20 @@ public interface OrganizationService extends HdpService<Organization>{
     /**
      * 递归查询组织树
      * 
+     * @param stop 
      * @return
      */
-    List<OrganizationTreeVO> selectOrganizationTree();
+    List<OrganizationTreeVO> selectOrganizationTree(Integer stop);
     
     /**
      * 模糊查询组织树
      * 
      * @param orgCode
+     * @param stop
      * @param searchText
      * @return
      */
-    List<OrganizationTreeVO> organizationTreeList(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
+    List<OrganizationTreeVO> organizationTreeList(String orgCode, Integer stop, String searchText);
 
     /**
      * 查询部门结构树
