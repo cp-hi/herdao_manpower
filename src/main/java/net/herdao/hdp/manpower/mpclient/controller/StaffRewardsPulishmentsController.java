@@ -22,6 +22,7 @@ import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
+import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -80,6 +81,12 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     @Override
     public String getExcelUpdateDescription() {
         return ExcelDescriptionContants.getRpUpdateDesc();
+    }
+
+    @Override
+    public List getDownloadUpdateTemplateList() {
+        List<StaffRpDTO> list = this.staffRpService.findStaffRp(null);
+        return list;
     }
 
     /**
