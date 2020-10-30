@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
@@ -19,6 +20,7 @@ import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
@@ -168,9 +170,11 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     @SysLog("新增员工奖惩" )
     @PostMapping("/saveStaffRp" )
     public R saveStaffRp(@RequestBody StaffRewardsPulishments staffRp) {
-        Integer userId = UserUtils.getUserId();
+        SysUser sysUser = SysUserUtils.getSysUser();
+        staffRp.setCreatorName(sysUser.getUsername());
         staffRp.setCreatedTime(LocalDateTime.now());
-        staffRp.setCreatorCode(userId.toString());
+        staffRp.setCreatorCode(sysUser.getUsername());
+        staffRp.setCreatorId(sysUser.getUserId());
         boolean status = staffRpService.save(staffRp);
         return R.ok(status);
     }
@@ -184,9 +188,11 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     @SysLog("更新员工奖惩" )
     @PostMapping("/updateStaffRp" )
     public R updateStaffRp(@RequestBody StaffRewardsPulishments staffRp) {
-        Integer userId = UserUtils.getUserId();
+        SysUser sysUser = SysUserUtils.getSysUser();
+        staffRp.setModifierName(sysUser.getUsername());
         staffRp.setModifiedTime(LocalDateTime.now());
-        staffRp.setModifierCode(userId.toString());
+        staffRp.setModifierCode(sysUser.getUsername());
+        staffRp.setModifierId(sysUser.getUserId());
         boolean status = staffRpService.updateById(staffRp);
         return R.ok(status);
     }
