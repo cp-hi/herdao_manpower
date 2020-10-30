@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 
@@ -11,7 +12,7 @@ import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
  * @Date 2020/10/23 16:29
  * @Version 1.0
  */
-public interface OKPostSeqSysService extends EntityService<OKPostSeqSys> {
+public interface OKPostSeqSysService extends IService<OKPostSeqSys> {
     /**
      *
      * @param okPostSeqSysId

@@ -20,7 +20,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Service
-public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> implements JobGradeService {
+public class JobGradeServiceImpl extends EntityServiceImpl<JobGradeMapper, JobGrade> implements JobGradeService {
 
 //    @Override
 //    public String generateEntityCode() {
@@ -29,10 +29,10 @@ public class JobGradeServiceImpl extends ServiceImpl<JobGradeMapper, JobGrade> i
 //        return baseMapper.generateEntityCode(tabel, field);
 //    }
 
-    @Override
-    public IPage page(Page page, JobGrade jobGrade) {
-        return baseMapper.page(page, jobGrade);
-    }
+//    @Override
+//    public IPage page(Page page, JobGrade jobGrade) {
+//        return baseMapper.page(page, jobGrade);
+//    }
 
     @Override
     public List<JobGradeShortVO> jobGradeList(Long groupId) {

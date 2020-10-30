@@ -27,7 +27,7 @@ import java.util.*;
  */
 @Service
 @AllArgsConstructor
-public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
+public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> implements PostService {
 
     final PipelineMapper pipelineMapper;
     final SectionMapper sectionMapper;
@@ -37,12 +37,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
     final SysDictItemService sysDictItemService;
-
-    @Override
-    public IPage page(Page page, Post post) {
-        IPage<PostListVO> p = baseMapper.page(page, post);
-        return p;
-    }
 
     @Override
     public List<Map> postList(Long groupId) {

@@ -35,7 +35,7 @@ public class StafftransactionController extends BaseController<Stafftransaction>
 
     @Autowired
     public void setEntityService(StafftransactionService stafftransactionService) {
-        super.entityService = stafftransactionService;
+//        super.entityService = stafftransactionService;
     }
 
     /**

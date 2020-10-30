@@ -37,7 +37,7 @@ public class UserpostController extends BaseController<Userpost> {
 
     @Autowired
     public void setEntityService(UserpostService userpostService) {
-        super.entityService = userpostService;
+//        super.entityService = userpostService;
     }
 
     /**

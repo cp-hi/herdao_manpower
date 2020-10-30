@@ -13,11 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface PostSeqMapper extends BaseMapper<PostSeq> {
+public interface PostSeqMapper extends EntityMapper<PostSeq> {
 
     List<Map> postSeqList(Long groupId);
 
-    IPage<PostSeqListVO> page(Page<PostSeqListVO> page, @Param("postSeq")PostSeq postSeq);
+    @Override
+    IPage  page(IPage  page, @Param("postSeq")PostSeq postSeq);
 
     PostSeqDTO getPostSeqDTO(Long id);
 

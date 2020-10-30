@@ -16,11 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface PostMapper extends BaseMapper<Post> {
+public interface PostMapper extends EntityMapper<Post> {
 
     List<Map> postList(Long groupId);
+    @Override
 
-    IPage<PostListVO> page(Page<PostListVO> page, @Param("post") Post post);
+    IPage  page(IPage  page, @Param("post") Post post);
 
     Boolean chkDuplicatePostName(Post post);
 

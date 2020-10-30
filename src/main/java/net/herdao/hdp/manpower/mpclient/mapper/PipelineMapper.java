@@ -11,10 +11,12 @@ import java.util.Map;
 import java.util.List;
 
 @Mapper
-public interface PipelineMapper extends BaseMapper<Pipeline> {
+public interface PipelineMapper extends EntityMapper<Pipeline> {
     List<Map> pipelineList(Long groupId);
 
-    IPage page(Page page, @Param("pipeline") Pipeline pipeline);
+    @Override
+
+    IPage page(IPage page, @Param("pipeline") Pipeline pipeline);
 
     Boolean chkDuplicatePipelineName(Pipeline pipeline);
 

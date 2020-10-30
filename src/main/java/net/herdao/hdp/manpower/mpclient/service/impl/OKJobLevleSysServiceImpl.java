@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
@@ -52,5 +53,13 @@ public class OKJobLevleSysServiceImpl extends ServiceImpl<OKJobLevleSysMapper, O
                 jobLevelService.saveOrUpdate(jobLevel);
             });
         });
+    }
+
+    public IPage page(IPage page, OKJobLevleSys okJobLevleSys) {
+        return null;
+    }
+
+    public OKJobLevleSys getEntity(Long id) {
+        return null;
     }
 }

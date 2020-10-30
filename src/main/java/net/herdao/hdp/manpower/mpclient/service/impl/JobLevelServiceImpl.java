@@ -11,6 +11,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,15 +26,10 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@AllArgsConstructor
-public class JobLevelServiceImpl extends ServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
+public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLevel> implements JobLevelService {
 
+    @Autowired
     JobGradeService jobGradeService;
-
-    @Override
-    public IPage page(Page page, JobLevel jobLevel) {
-        return baseMapper.page(page, jobLevel);
-    }
 
     @Override
     public List<Map> jobLevelList(Long groupId) {

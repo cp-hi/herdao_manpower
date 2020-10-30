@@ -35,7 +35,7 @@ public class SectionController extends NewBaseController<Section, SectionListVO,
     private SectionService sectionService;
 
     @Override
-    protected Class getBatchAddClass (){
+    protected Class getBatchAddClass() {
         return SectionBatchAddVO.class;
     }
 
@@ -61,5 +61,14 @@ public class SectionController extends NewBaseController<Section, SectionListVO,
         return super.page(response, page, section, type);
     }
 
+//    @GetMapping("/deleteAll")
+//    public R deleteAll() {
+//        return R.ok(sectionService.deleteAll());
+//    }
+
+    @GetMapping("/getEntity")
+    public R getEntity(Long id) {
+        return R.ok(sectionService.getEntity(id));
+    }
 
 }
