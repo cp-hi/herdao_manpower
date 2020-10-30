@@ -156,6 +156,15 @@ public abstract class HdpBaseController {
 	}
 	
 	/**
+	 * 模板名称
+	 * 
+	 * @return
+	 */
+	public String getTemplateName() {
+		return "";
+	}
+	
+	/**
 	 * 
 	 * 批量新增、编辑
 	 * 
@@ -176,7 +185,7 @@ public abstract class HdpBaseController {
 			// 读取excel
 			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(getHeadRowNumber()).doRead();
 			// 批量标识
-			String dsp = ManpowerContants.ImportTypeEnum.getInstance(importType);
+			String dsp = ManpowerContants.ImportTypeEnum.getInstance(importType) + getTemplateName();
 			List excelList = easyExcelListener.getExcelList();
 			if(ObjectUtil.isEmpty(excelList) && !importDataVO.getDownloadErrMsg().equals(1)) {
 				return R.failed("批量" + dsp + "失败，模板数据为空！");
@@ -248,7 +257,7 @@ public abstract class HdpBaseController {
 		// 数据集
 		List dataList = (importType == 0 ? new ArrayList<>() : getDownloadUpdateTemplateList());
 		try {
-			EasyExcelUtils.webWriteExcel(response, dataList, excelCls, "批量" + ManpowerContants.ImportTypeEnum.getInstance(importType) + "模板",
+			EasyExcelUtils.webWriteExcel(response, dataList, excelCls, "批量" + ManpowerContants.ImportTypeEnum.getInstance(importType) + getTemplateName() + "模板",
 					                     new EasyExcelSheetWriteHandler(excelCls, getExcelDescription(importType)));
 		} catch (Exception e) {
 			e.printStackTrace();
