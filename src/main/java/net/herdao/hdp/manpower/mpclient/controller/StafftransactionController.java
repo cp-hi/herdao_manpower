@@ -45,8 +45,8 @@ public class StafftransactionController extends HdpBaseController  {
      * @param stafftransaction 异动情况
      * @return
      */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
+    @ApiOperation(value = "分页查询", notes = "分页查询")
     @PreAuthorize("@pms.hasPermission('mpclient_stafftransaction_view')" )
     public R page(Page page, Stafftransaction stafftransaction) {
         return R.ok(stafftransactionService.page(page, Wrappers.query(stafftransaction)));
