@@ -389,6 +389,29 @@
         LIMIT 1
     </select>
 
+    <!-- 查询员工任职轨迹 -->
+    <select id="getJobTravel" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobTravelDTO">
+        SELECT
+            st.id,
+            st.STAFF_ID,
+            dt.label TRAN_TYPE,
+            st.TRAN_TIME,
+            st.OUT_UNIT_NAME,
+            st.OUT_CENTER_NAME,
+            st.POST_ID,
+            p.POST_NAME
+        FROM
+            mp_stafftransaction st
+        LEFT JOIN mp_staff f ON st.STAFF_ID = f.ID
+        LEFT JOIN mp_post p ON p.ID = st.POST_ID
+        LEFT JOIN sys_dict_item dt ON dt.type = 'YDLX'
+            AND dt.VALUE = st.TRAN_TYPE
+        WHERE
+            f.ID = #{id}
+        ORDER BY
+            st.TRAN_TIME
+    </select>
+
     <!-- 花名册翻页列表 -->
     <select id="staffPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO">
         SELECT
