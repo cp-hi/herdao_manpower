@@ -30,6 +30,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobTravelDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO;
