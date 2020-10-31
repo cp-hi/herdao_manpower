@@ -197,7 +197,7 @@ public class BaseController<T, D, F, E> {
         try {
             inputStream = file.getInputStream();
             listener = new ImportExcelListener(entityService, importType);
-            EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().doRead();
+            EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().headRowNumber(2).doRead();
 
         } catch (Exception ex) {
             if (Integer.valueOf(1).equals(downloadErrMsg)) {

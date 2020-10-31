@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
@@ -138,37 +139,19 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @OperationEntity(clazz = Class.class)
     @Override
-    public boolean stopEntity(Serializable id, boolean isStop) throws IllegalAccessException {
-        // 停用实体
-        T t = this.getById(id);
-        Field stop = AnnotationUtils.getFieldByName(t, "stop");
-        Field stopDate = AnnotationUtils.getFieldByName(t, "stopDate");
-        Field startDate = AnnotationUtils.getFieldByName(t, "startDate");
-        Field modifierId = AnnotationUtils.getFieldByName(t, "modifierId");
-        Field modifierName = AnnotationUtils.getFieldByName(t, "modifierName");
-        Field modifiedTime = AnnotationUtils.getFieldByName(t, "modifiedTime");
-        stop.setAccessible(true);
-        stopDate.setAccessible(true);
-        startDate.setAccessible(true);
-        modifierId.setAccessible(true);
-        modifierName.setAccessible(true);
-        modifiedTime.setAccessible(true);
-
-        // 获取用户并保存，在切面中实现
-        SysUser user = SysUserUtils.getSysUser();
-        stop.set(t, isStop);
-        modifierId.set(t, user.getUserId());
-        modifierName.set(t, user.getUsername());
-        modifiedTime.set(t, new Date());
-
+    public boolean stopEntity(Serializable id, boolean isStop) {
+        UpdateWrapper<T> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        updateWrapper.set("is_stop", isStop);
         if (isStop) {
-            stopDate.set(t, new Date());
-            startDate.set(t, null);
+            updateWrapper.set("stop_date", new Date());
+            updateWrapper.set("start_date", null);
         } else {
-            stopDate.set(t, null);
-            startDate.set(t, new Date());
+            updateWrapper.set("stop_date", null);
+            updateWrapper.set("start_date", new Date());
         }
-        return this.updateById(t);
+        boolean result = this.update(updateWrapper);
+        return result;
     }
 
     @Override
@@ -183,10 +166,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public void saveVerify(T t) {
     }
 
-    @Override
-    public void importVerify(T t, int type) {
-
-    }
+//    @Override
+//    public void importVerify(T t, int type) {
+//
+//    }
 
 
     @Override

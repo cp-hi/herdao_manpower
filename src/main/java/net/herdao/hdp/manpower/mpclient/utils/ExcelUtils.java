@@ -31,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class ExcelUtils {
 //        headWriteCellStyle.setWriteFont(writeFont);
         headWriteCellStyle.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         HorizontalCellStyleStrategy horizontalCellStyleStrategy =
-            new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
+                new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
         EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName)
                 .registerWriteHandler(horizontalCellStyleStrategy)
@@ -157,14 +158,11 @@ public class ExcelUtils {
         HorizontalCellStyleStrategy horizontalCellStyleStrategy =
                 new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
-        List<String > excupt = new ArrayList<>();
-        excupt.add("errMsg");
         EasyExcel.write(response.getOutputStream()).sheet(excelName).head(templClass)
-                .excludeColumnFiledNames(excupt)
+                .excludeColumnFiledNames(Arrays.asList("errMsg"))
                 .registerWriteHandler(horizontalCellStyleStrategy)
 //                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
                 .registerWriteHandler(new ImportStyleStrategy(templClass))
-
                 .doWrite(null);
     }
 

@@ -91,7 +91,7 @@ public interface EntityService<T> extends IService<T> {
      * @param id
      * @return
      */
-    boolean stopEntity(Serializable id, boolean isStop) throws IllegalAccessException;
+    boolean stopEntity(Serializable id, boolean isStop);
 
     boolean getStatus(Serializable id) throws IllegalAccessException;
 
@@ -107,7 +107,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    void importVerify(T t, int type);
+//    void importVerify(T t, int type);
 
     /**
      * 导入校验
