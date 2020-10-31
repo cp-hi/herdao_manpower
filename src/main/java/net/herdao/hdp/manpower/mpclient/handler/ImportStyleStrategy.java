@@ -20,12 +20,8 @@ import java.util.List;
  */
 public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
 
-//    Class templClass;
-
-    //    Map<String, Field> fieldMap;
     String description = null;
 
-    List data = null;
     Field[] fields = null;
 
     public ImportStyleStrategy(Class clazz) {
@@ -41,10 +37,7 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
 //        }
     }
 
-    public ImportStyleStrategy(Class clazz, List data) {
-        this(clazz);
-        this.data = data;
-    }
+
 
     @Override
     protected void setColumnWidth(WriteSheetHolder writeSheetHolder, List<CellData> list, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
@@ -81,16 +74,8 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
                 Integer length = cell.getStringCellValue().length();
                 writeSheetHolder.getSheet().setColumnWidth(cell.getColumnIndex(), length * 1000);
 //
-                if (head.getColumnIndex() == (fields.length - 2) && null == data)
-                    writeSheetHolder.getSheet().setColumnHidden(0, true);
-            }
-        } else {
-//        TODO    动态插入错误信息
-            // 这里已经写完最后一条数据
-            if (null != data && data.size() == (relativeRowIndex + 1)
-                    && head.getColumnIndex() == (fields.length - 2)) {
-//                Row r = writeSheetHolder.getSheet().getRow(0);
-//                writeSheetHolder.getSheet().removeRow(r);
+//                if (head.getColumnIndex() == (fields.length - 2) && null == data)
+//                    writeSheetHolder.getSheet().setColumnHidden(0, true);
             }
         }
     }

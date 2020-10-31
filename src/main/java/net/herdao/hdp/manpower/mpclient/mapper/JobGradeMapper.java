@@ -12,8 +12,6 @@ import java.util.List;
 
 @Mapper
 public interface JobGradeMapper extends EntityMapper<JobGrade> {
-    @Override
-    IPage page(IPage page, @Param("jobGrade") JobGrade jobGrade);
 
     List<JobGradeShortVO> jobGradeList(Long groupId);
 

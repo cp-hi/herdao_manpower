@@ -12,8 +12,6 @@ import java.util.Map;
 
 @Mapper
 public interface JobLevelMapper extends EntityMapper<JobLevel> {
-    @Override
-    IPage page(IPage page, @Param("jobLevel") JobLevel jobLevel);
 
     List<Map> jobLevelList(Long groupId);
 

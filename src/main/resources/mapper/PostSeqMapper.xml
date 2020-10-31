@@ -23,18 +23,18 @@
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
         select * from mp_post_seq where  del_flag !=1
-         and ((#{postSeq.parentId} is null and parent_id is null) or parent_id = #{postSeq.parentId})
-        <if test="postSeq.id != null">
-            and id = #{postSeq.id}
+         and ((#{t.parentId} is null and parent_id is null) or parent_id = #{t.parentId})
+        <if test="t.id != null">
+            and id = #{t.id}
         </if>
-        <if test="postSeq.stop != null">
-            and is_stop = #{postSeq.stop}
+        <if test="t.stop != null">
+            and is_stop = #{t.stop}
         </if>
-        <if test="postSeq.groupId != null">
-            and group_id = #{postSeq.groupId}
+        <if test="t.groupId != null">
+            and group_id = #{t.groupId}
         </if>
-        <if test="postSeq.postSeqName != null">
-            <bind name="likeTxt" value="'%'+postSeq.postSeqName+'%'"/>
+        <if test="t.postSeqName != null">
+            <bind name="likeTxt" value="'%'+t.postSeqName+'%'"/>
             and( post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt})
         </if>
     </select>

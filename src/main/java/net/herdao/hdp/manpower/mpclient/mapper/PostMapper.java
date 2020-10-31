@@ -20,9 +20,6 @@ import java.util.Map;
 public interface PostMapper extends EntityMapper<Post> {
 
     List<PostDTO> postList(Long groupId);
-    @Override
-
-    IPage  page(IPage  page, @Param("post") Post post);
 
     Boolean chkDuplicatePostName(Post post);
 

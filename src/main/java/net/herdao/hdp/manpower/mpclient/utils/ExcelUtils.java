@@ -10,6 +10,7 @@ import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.AbstractCellStyleStrategy;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.manpower.mpclient.handler.ImportStyleStrategy;
@@ -98,7 +99,7 @@ public class ExcelUtils {
 
         EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName)
                 .registerWriteHandler(horizontalCellStyleStrategy)
-                .registerWriteHandler(new ImportStyleStrategy(clazz, data))
+                .registerWriteHandler(new ImportStyleStrategy(clazz))
                 .doWrite(data);
     }
 
@@ -156,9 +157,14 @@ public class ExcelUtils {
         HorizontalCellStyleStrategy horizontalCellStyleStrategy =
                 new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
+        List<String > excupt = new ArrayList<>();
+        excupt.add("errMsg");
         EasyExcel.write(response.getOutputStream()).sheet(excelName).head(templClass)
+                .excludeColumnFiledNames(excupt)
                 .registerWriteHandler(horizontalCellStyleStrategy)
+//                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
                 .registerWriteHandler(new ImportStyleStrategy(templClass))
+
                 .doWrite(null);
     }
 

@@ -18,9 +18,6 @@ import java.util.Map;
 public interface SectionMapper extends EntityMapper<Section> {
     List<Map> sectionList(Long groupId);
 
-    @Override
-    IPage page(IPage page, @Param("section") Section section);
-
     Boolean chkDuplicateSectionCode(Section section);
 
     Boolean chkDuplicateSectionName(Section section);

@@ -13,14 +13,14 @@
 
     <select id="page" resultMap="sectionDTOMap" parameterType="section">
         select * from mp_section where  del_flag !=1
-        <if test="section.id != null">
-            and id = #{section.id}
+        <if test="t.id != null">
+            and id = #{t.id}
         </if>
-        <if test="section.groupId != null">
-            and group_id = #{section.groupId}
+        <if test="t.groupId != null">
+            and group_id = #{t.groupId}
         </if>
-        <if test="section.sectionName != null">
-            <bind name="likeTxt" value="'%'+section.sectionName+'%'"/>
+        <if test="t.sectionName != null">
+            <bind name="likeTxt" value="'%'+t.sectionName+'%'"/>
           and ( section_code like #{likeTxt} or section_name like #{likeTxt})
         </if>
     </select>

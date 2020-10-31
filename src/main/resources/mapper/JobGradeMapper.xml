@@ -12,14 +12,14 @@
 
     <select id="page" resultMap="jobGradeDTOMap" parameterType="jobGrade">
         select * from mp_job_grade where  del_flag !=1
-        <if test="jobGrade.id != null and jobGrade.groupId == null ">
-            and id = #{jobGrade.id}
+        <if test="t.id != null and t.groupId == null ">
+            and id = #{t.id}
         </if>
-        <if test="jobGrade.id == null and jobGrade.groupId != null ">
-            and group_id = #{jobGrade.groupId}
+        <if test="t.id == null and t.groupId != null ">
+            and group_id = #{t.groupId}
         </if>
-        <if test="jobGrade.jobGradeName != null">
-            <bind name="likeTxt" value="'%'+jobGrade.jobGradeName +'%'"/>
+        <if test="t.jobGradeName != null">
+            <bind name="likeTxt" value="'%'+t.jobGradeName +'%'"/>
            and( job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt})
         </if>
     </select>

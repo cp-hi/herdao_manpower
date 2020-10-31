@@ -42,28 +42,28 @@
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where del_flag !=1
 
-        <if test="post.id != null">
-            and id = #{post.id}
+        <if test="t.id != null">
+            and id = #{t.id}
         </if>
-        <if test="post.stop != null">
-            and is_stop = #{post.stop}
+        <if test="t.stop != null">
+            and is_stop = #{t.stop}
         </if>
-        <if test="post.groupId != null">
-            and group_id = #{post.groupId}
+        <if test="t.groupId != null">
+            and group_id = #{t.groupId}
         </if>
-        <if test="post.postName != null">
-            <bind name="likeTxt" value="'%'+post.postName+'%'"/>
+        <if test="t.postName != null">
+            <bind name="likeTxt" value="'%'+t.postName+'%'"/>
             and concat(POST_CODE,POST_NAME) like #{likeTxt}
         </if>
-        <if test="post.sectionId != null">
-            AND section_id = #{post.sectionId}
+        <if test="t.sectionId != null">
+            AND section_id = #{t.sectionId}
         </if>
-        <if test="post.pipelineId != null">
-            AND pipeline_id = #{post.pipelineId}
+        <if test="t.pipelineId != null">
+            AND pipeline_id = #{t.pipelineId}
         </if>
-        <if test="post.jobLevelId1 != null">
-            AND (job_level_id1 = #{post.jobLevelId1}
-            or job_level_id2 = #{post.jobLevelId1})
+        <if test="t.jobLevelId1 != null">
+            AND (job_level_id1 = #{t.jobLevelId1}
+            or job_level_id2 = #{t.jobLevelId1})
         </if>
     </select>
 

@@ -17,9 +17,6 @@ public interface PostSeqMapper extends EntityMapper<PostSeq> {
 
     List<Map> postSeqList(Long groupId);
 
-    @Override
-    IPage  page(IPage  page, @Param("postSeq")PostSeq postSeq);
-
     PostSeqDTO getPostSeqDTO(Long id);
 
     Boolean chkDuplicatePostSeqName(PostSeq postSeq);

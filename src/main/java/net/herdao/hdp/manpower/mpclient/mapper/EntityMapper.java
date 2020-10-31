@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @ClassName EntityMapper
@@ -22,12 +23,12 @@ public interface EntityMapper<T> extends BaseMapper<T> {
 
     /**
      * 分页，默认用自身实体可传所有参数，
-     * 如有其他参数需自己另写方法
+     * 如有其他参数需自己另写方法实现
      * @param page
      * @param t
      * @return
      */
-    IPage page(IPage page, T t);
+    IPage page(IPage page, @Param("t") T t);
 
 
 }
