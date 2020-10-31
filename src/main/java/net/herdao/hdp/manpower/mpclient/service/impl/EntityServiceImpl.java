@@ -43,7 +43,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.selectIgnoreDel(id);
     }
 
-//    @Override
+    //    @Override
 //    public Class<T> getEntityClass() {
 //        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
 //                .getGenericSuperclass()).getActualTypeArguments()[1];
@@ -61,7 +61,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 //
     @Override
     public String getEntityName() {
-       return baseMapper.getEntityName();
+        return baseMapper.getEntityName();
     }
 
 //
@@ -154,11 +154,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public boolean getStatus(Serializable id) throws IllegalAccessException {
-        T t = this.getById(id);
-        Field stop = AnnotationUtils.getFieldByName(t, "stop");
-        stop.setAccessible(true);
-        return (Boolean) stop.get(t);
+    public boolean getStatus(Serializable id) {
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("is_stop").eq("id", id);
+        List<Object> objs = baseMapper.selectObjs(queryWrapper);
+        if (objs.size() > 0) return (Boolean) objs.get(0);
+        return false;
     }
 
     @Override

@@ -93,7 +93,7 @@ public interface EntityService<T> extends IService<T> {
      */
     boolean stopEntity(Serializable id, boolean isStop);
 
-    boolean getStatus(Serializable id) throws IllegalAccessException;
+    boolean getStatus(Serializable id) ;
 
     /**
      * 保存核验

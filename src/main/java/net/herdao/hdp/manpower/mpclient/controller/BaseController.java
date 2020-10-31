@@ -150,7 +150,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键"),
     })
-    public R getStatus(@PathVariable Long id) throws IllegalAccessException {
+    public R getStatus(@PathVariable Long id) {
         return R.ok(entityService.getStatus(id));
     }
 
