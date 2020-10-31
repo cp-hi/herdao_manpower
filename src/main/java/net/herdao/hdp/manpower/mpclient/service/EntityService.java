@@ -21,14 +21,14 @@ public interface EntityService<T> extends IService<T> {
 
     T selectIgnoreDel(Long id);
 
-    Class<T> getEntityClass();
+//    Class<T> getEntityClass();
 
     /**
      * 获取表名
      *
      * @return
      */
-    String getTabelName();
+//    String getTabelName();
 
     /**
      * 获取实体名
@@ -42,14 +42,14 @@ public interface EntityService<T> extends IService<T> {
      *
      * @return
      */
-    String getTableCodeField();
+//    String getTableCodeField();
 
     /**
      * 获取编码在实体中的字段名
      *
      * @return
      */
-    String getEntityCodeField();
+//    String getEntityCodeField();
 
     /**
      * 生成编码

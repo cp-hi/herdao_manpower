@@ -43,44 +43,61 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.selectIgnoreDel(id);
     }
 
-    @Override
-    public Class<T> getEntityClass() {
-        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[1];
-        return clazz;
-    }
-
-
-    @Override
-    public String getTabelName() {
-        Class<T> clazz = getEntityClass();
-        TableName table = clazz.getAnnotation(TableName.class);
-        return table.value();
-    }
-
-
+//    @Override
+//    public Class<T> getEntityClass() {
+//        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
+//                .getGenericSuperclass()).getActualTypeArguments()[1];
+//        return clazz;
+//    }
+//
+//
+//    @Override
+//    public String getTabelName() {
+//        Class<T> clazz = getEntityClass();
+//        TableName table = clazz.getAnnotation(TableName.class);
+//        return table.value();
+//    }
+//
+//
     @Override
     public String getEntityName() {
-        Class<T> clazz = getEntityClass();
-        ApiModel apiModel = clazz.getAnnotation(ApiModel.class);
-        return apiModel.value();
+       return baseMapper.getEntityName();
     }
+
+//
+//
+//    @Override
+//    public String getTableCodeField() {
+//        String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
+//                .replaceFirst("sys_", "") + "_code";
+//        return codeField;
+//    }
+//
+//
+//    @Override
+//    public String getEntityCodeField() {
+//        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
+//                .getGenericSuperclass()).getActualTypeArguments()[1];
+//        String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
+//        return entityName + "Code";
+//    }
 
 
     @Override
-    public String getTableCodeField() {
-        String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
-                .replaceFirst("sys_", "") + "_code";
-        return codeField;
-    }
-
-
-    @Override
-    public String getEntityCodeField() {
-        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[1];
-        String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
-        return entityName + "Code";
+    public String getCurrEntityCode() throws IllegalAccessException {
+        //todo 解决逻辑删除后无法查询到的问题
+        String sql = "select max(id) from " + baseMapper.getTabelName();
+        T t = this.getOne((Wrapper<T>) new QueryWrapper().select(baseMapper.getTableCodeField()).inSql("id", sql));
+        String entityCode = "000001";
+        if (null != t) {
+            Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
+            if (null == field) return entityCode;
+            field.setAccessible(true);
+            Object val = field.get(t);
+            if (null != val)
+                entityCode = val.toString();
+        }
+        return entityCode;
     }
 
     @Override
@@ -91,24 +108,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public String getCurrEntityCode() throws IllegalAccessException {
-        //todo 解决逻辑删除后无法查询到的问题
-        String sql = "select max(id) from " + getTabelName();
-        T t = this.getOne((Wrapper<T>) new QueryWrapper().select(getTableCodeField()).inSql("id", sql));
-        String entityCode = "000001";
-        if (null != t) {
-            Field field = AnnotationUtils.getFieldByName(t, getEntityCodeField());
-            if (null == field) return entityCode;
-            field.setAccessible(true);
-            Object val = field.get(t);
-            if (null != val)
-                entityCode = val.toString();
-        }
-        return entityCode;
-    }
-
-
-    @Override
     public void setEntityCode(T t) throws IllegalAccessException {
         String entityCode = generateEntityCode();
         setEntityCode(t, entityCode);
@@ -116,7 +115,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     public void setEntityCode(T t, String entityCode) throws IllegalAccessException {
-        String codeField = getEntityCodeField();
+        String codeField = baseMapper.getEntityCodeField();
         Field field = AnnotationUtils.getFieldByName(t, codeField);
         if (null == field) return;
         field.setAccessible(true);
@@ -195,7 +194,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public T chkEntityExists(String field, String value, boolean need, StringBuffer buffer) {
         T t = this.getEntityByField(field, value);
-        String entityName = getEntityName();
+        String entityName = baseMapper.getEntityName();
         String errMsg = "";
         if (!need && null != t)  //不需要它但它不为空
             //添加分号，因为批量导入需要所有错误信息
