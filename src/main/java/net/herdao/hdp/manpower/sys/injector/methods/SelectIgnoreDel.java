@@ -9,7 +9,7 @@ import org.apache.ibatis.scripting.defaults.RawSqlSource;
 
 /**
  * @ClassName SelectIgnoreDel
- * @Description SelectIgnoreDel
+ * @Description 通过ID查询，忽略逻辑删除
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/10/29 20:56

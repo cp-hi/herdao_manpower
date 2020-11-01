@@ -2,6 +2,8 @@ package net.herdao.hdp.manpower.sys.injector;
 
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import net.herdao.hdp.manpower.sys.injector.methods.SelectEntityCode;
+import net.herdao.hdp.manpower.sys.injector.methods.SelectEntityName;
 import net.herdao.hdp.manpower.sys.injector.methods.SelectIgnoreDel;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,8 @@ public class HdpSqlInjector extends DefaultSqlInjector {
     public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
         List<AbstractMethod> methodList = super.getMethodList(mapperClass);
         methodList.add(new SelectIgnoreDel());
+        methodList.add(new SelectEntityCode());
+        methodList.add(new SelectEntityName());
         return methodList;
     }
 }
