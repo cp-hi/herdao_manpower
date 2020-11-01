@@ -16,6 +16,9 @@
         <result property="jobLevelId2" column="job_Level_id2"/>
         <result property="postSeqId" column="post_seq_id"/>
 
+        <association property="sectionName" column="section_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectEntityName" />
+
         <association property="group" column="group_id" javaType="group"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectIgnoreDel"/>
 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -120,5 +121,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      */
     IPage page(IPage page, @Param("t") T t);
 
+    String selectEntityCode(Long id);
 
+    String selectEntityName(Long id);
 }

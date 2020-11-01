@@ -141,7 +141,7 @@ public class BaseController<T, D, F, E> {
             @ApiImplicitParam(name = "id", value = "主键"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
-    public R stop(@PathVariable Long id, @PathVariable boolean stop) throws IllegalAccessException {
+    public R stop(@PathVariable Long id, @PathVariable boolean stop) {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
