@@ -62,8 +62,6 @@ public class OrganizationController extends HdpBaseController{
     @Override
 	public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex, 
 								  Integer headRowNumber, List downloadUpdateTemplateList, String excelDescription, String templateName) {
-    	super.initEasyExcelArgs(importAddCls, importAddErrCls, importUpdateCls, importUpdateErrCls, 
-    							excelIndex, headRowNumber, downloadUpdateTemplateList, excelDescription, templateName);	
     	this.importAddCls = OrganizationAddDTO.class;
     	this.importAddErrCls = OrganizationAddErrDTO.class; 
     	this.importUpdateCls = OrganizationUpdateDTO.class;
