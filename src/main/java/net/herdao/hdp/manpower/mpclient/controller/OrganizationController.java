@@ -1,12 +1,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.excel.EasyExcelFactory;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -32,30 +24,19 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
-import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.ExcelOperateRecordService;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
-import net.herdao.hdp.manpower.mpclient.vo.excelud.ImportDataVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
-import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 
 
 /**
@@ -71,51 +52,27 @@ public class OrganizationController extends HdpBaseController{
 
     private final OrganizationService orgService;
 
-    private final SysDictItemService sysDictItemService;
-
-    private final UserService userService;
-
-    private final PostService postService;
-
-    private final ExcelOperateRecordService excelOperateRecordService;
-
     private final OperationLogService operationLogService;
     
     @Override
-	public Class getImportAddCls() {
-		return OrganizationAddDTO.class;
-	}
-
-	@Override
-	public Class getImportAddErrCls() {
-		return OrganizationAddErrDTO.class;
-	}
-
-	@Override
-	public Class getImportUpdateCls() {
-		return OrganizationUpdateDTO.class;
-	}
-
-	@Override
-	public Class getImportUpdateErrCls() {
-		return OrganizationUpdateErrDTO.class;
-	}
-	
-	@Override
-	public String getExcelDescription() {
-		return ExcelDescriptionContants.getOrganizationExcelDescription();
-	}
-	
-	@Override
-	public List getDownloadUpdateTemplateList() {
-		return this.orgService.selectAllOrganization();
-	}
-	
-	@Override
 	public HdpService getHdpService() {
 		return this.orgService;
 	}
-
+    
+    @Override
+	public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex, 
+								  Integer headRowNumber, List downloadUpdateTemplateList, String excelDescription, String templateName) {
+    	super.initEasyExcelArgs(importAddCls, importAddErrCls, importUpdateCls, importUpdateErrCls, 
+    							excelIndex, headRowNumber, downloadUpdateTemplateList, excelDescription, templateName);	
+    	this.importAddCls = OrganizationAddDTO.class;
+    	this.importAddErrCls = OrganizationAddErrDTO.class; 
+    	this.importUpdateCls = OrganizationUpdateDTO.class;
+    	this.importUpdateErrCls = OrganizationUpdateErrDTO.class;
+    	this.downloadUpdateTemplateList = this.orgService.selectAllOrganization();
+    	this.excelDescription = ExcelDescriptionContants.getOrganizationExcelDescription();
+    	this.templateName = "组织模板";
+	}
+    
     /**
      * 通过id查询组织架构详情
      * 
@@ -413,6 +370,5 @@ public class OrganizationController extends HdpBaseController{
         page = page.setRecords(orgService.selectOrgStaffAll(page, orgCode));
         return R.ok(page);
     }
-
 }
 

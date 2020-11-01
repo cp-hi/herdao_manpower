@@ -440,7 +440,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @SysLog("新增、修改组织信息")
     @OperationEntity(operation = "新增、修改组织信息", clazz = Organization.class)
     @Transactional(rollbackFor = Exception.class)
-    public R<Organization> saveOrUpdateOrganization(OrganizationVO organizationVO) {
+    public synchronized R<Organization> saveOrUpdateOrganization(OrganizationVO organizationVO) {
     	
     	Organization organization = new Organization();
     	

@@ -11,10 +11,7 @@ import lombok.Data;
 @Data
 public class ExportDataVO {
 	
-	/**
-	 * 导入类型，值： 0  批量新增； 值 1 批量编辑
-	 */
-	@ApiModelProperty(value = "导入类型，值： 0  批量新增； 值 1 批量编辑")
+	@ApiModelProperty(value = "下载导入类型模板，值： 0  批量新增模板； 值 1 批量编辑模板")
 	Integer importType;
 
 }

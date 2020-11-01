@@ -16,7 +16,6 @@ import com.alibaba.fastjson.JSON;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
@@ -41,6 +40,29 @@ public abstract class HdpBaseController {
 	 * @return
 	 */
 	public abstract HdpService getHdpService();
+	
+	// 导入处理 class
+	Class excelCls;
+	// 异常处理 class
+	Class excelErrCls;
+	// 批量新增处理Class
+	Class importAddCls;
+	// 批量新增处理异常Class
+	Class importAddErrCls;
+	// 批量修改处理Class
+	Class importUpdateCls;
+	// 批量修改异常处理Class
+	Class importUpdateErrCls;
+	// 导入数据开始行号
+	Integer excelIndex;
+	// 表头行号
+	Integer headRowNumber;
+	// 批量新增导出数据集
+	List downloadUpdateTemplateList;
+	// 模板描述
+	String excelDescription;
+	// 模板名称
+	String templateName;
 	
 	/**
 	 * 批量新增需要重写该方法
@@ -164,6 +186,71 @@ public abstract class HdpBaseController {
 		return "";
 	}
 	
+	public HdpBaseController() {}
+	
+	/**
+	 * 初始化批量新增、编辑参数
+	 * 
+	 * @param importAddCls               批量新增处理Class
+	 * @param importAddErrCls            批量新增处理异常Class
+	 * @param importUpdateCls            批量修改处理Class
+	 * @param importUpdateErrCls         批量修改异常处理Class
+	 * @param excelIndex                 导入数据开始行号
+	 * @param headRowNumber              表头行号
+	 * @param downloadUpdateTemplateList 批量新增导出数据集
+	 * @param templateName               模板名称
+	 * @param excelDescription           模板描述
+	 */
+	public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, 
+						 Integer excelIndex, Integer headRowNumber, List downloadUpdateTemplateList, String excelDescription, String templateName) {
+		this.importAddCls = importAddCls;
+		this.importAddErrCls = importAddErrCls;
+		this.importUpdateCls = importUpdateCls;
+		this.importUpdateErrCls = importUpdateErrCls;
+		this.excelIndex = excelIndex;
+		this.headRowNumber = headRowNumber;
+		this.downloadUpdateTemplateList = downloadUpdateTemplateList;
+		this.excelDescription = excelDescription;
+		this.templateName = templateName;
+	}
+	
+	/**
+	 * 兼容单个参数初始化情况
+	 * 
+	 * @param importType
+	 */
+	private void getInitEasyExcelArgs(Integer importType) {
+		
+		initEasyExcelArgs(importAddCls, importAddErrCls, importUpdateCls, importUpdateErrCls, excelIndex, headRowNumber, 
+						  downloadUpdateTemplateList, excelDescription, templateName);
+		// 是否批量新增
+		boolean isAddImport = (importType.equals(0) ? true : false);
+		
+		excelCls = getExcelCls(importType);
+		if (ObjectUtil.isNull(excelCls)) {
+			excelCls = isAddImport ? importAddCls : importUpdateCls;
+		}
+		excelErrCls = getExcelErrCls(importType);
+		if (ObjectUtil.isNull(excelErrCls)) {
+			excelErrCls = isAddImport ? importAddErrCls : importUpdateErrCls;
+		}
+		if (ObjectUtil.isNull(excelIndex)) {
+			excelIndex = getExcelIndex();
+		}
+		if (ObjectUtil.isNull(headRowNumber)) {
+			headRowNumber = getHeadRowNumber();
+		}
+		if (ObjectUtil.isNull(downloadUpdateTemplateList)) {
+			downloadUpdateTemplateList = getDownloadUpdateTemplateList();
+		}
+		if (StrUtil.isBlank(excelDescription)) {
+			excelDescription = this.getExcelDescription(importType);
+		}
+		if (StrUtil.isBlank(templateName)) {
+			templateName = getTemplateName();
+		}
+	}
+	
 	/**
 	 * 
 	 * 批量新增、编辑
@@ -173,26 +260,24 @@ public abstract class HdpBaseController {
 	 * @return
 	 */
     @PostMapping("/importData")
-	public Object importData(HttpServletResponse response, ImportDataVO importDataVO) {
+	public synchronized Object importData(HttpServletResponse response, ImportDataVO importDataVO) {
 		try {
 			// 导入类型
 			int importType = importDataVO.getImportType();
-			// 导入处理 class
-			Class excelCls = getExcelCls(importType);
+			// 获取初始化参数
+			getInitEasyExcelArgs(importType);
 			// 导入Listener
-			EasyExcelListener easyExcelListener = new EasyExcelListener(getHdpService(), excelCls, importType, getExcelIndex());
+			EasyExcelListener easyExcelListener = new EasyExcelListener(getHdpService(), excelCls, importType, excelIndex);
 			// 读取excel
-			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(getHeadRowNumber()).doRead();
+			EasyExcelFactory.read(importDataVO.getFile().getInputStream(), excelCls, easyExcelListener).sheet().headRowNumber(headRowNumber).doRead();
 			// 批量标识
-			String dsp = ManpowerContants.ImportTypeEnum.getInstance(importType) + getTemplateName();
+			String templateDp = ManpowerContants.ImportTypeEnum.getInstance(importType) + templateName;
 			List excelList = easyExcelListener.getExcelList();
 			if(ObjectUtil.isEmpty(excelList) && !importDataVO.getDownloadErrMsg().equals(1)) {
-				return R.failed("批量" + dsp + "失败，模板数据为空！");
+				return R.failed("批量" + templateDp + "失败，模板数据为空！");
 			}
 			// 导入异常信息集合
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
-			// 获取异常信息class
-			Class excelErrCls = getExcelErrCls(importType);
 			// 获取异常信息提示方法（注：异常提示信息请使用 errMsg属性）
 			Method errMsgMethod = excelErrCls.getMethod("setErrMsg", String.class);
 			// 遍历异常信息
@@ -230,7 +315,7 @@ public abstract class HdpBaseController {
 					excelErrDtos.add(errObj);
 				}
 				// 导出异常信息
-				EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, dsp + "信息为空");
+				EasyExcelUtils.webWriteExcel(response, excelErrDtos, excelErrCls, templateDp + "信息为空");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -249,14 +334,15 @@ public abstract class HdpBaseController {
 	@ApiOperation(value = "下载批量新增、编辑模板")
 	@PostMapping("/downloadTemplate")
 	public Object downloadTemplate(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
+		// 下载导入类型模板
 		int importType = exportDataVO.getImportType();
-    	// 导出处理 class
-		Class excelCls = getExcelCls(importType);
+		// 获取初始化参数
+		getInitEasyExcelArgs(importType);
 		// 数据集
-		List dataList = (importType == 0 ? new ArrayList<>() : getDownloadUpdateTemplateList());
+		List dataList = (importType == 0 ? null : downloadUpdateTemplateList);
 		try {
-			EasyExcelUtils.webWriteExcel(response, dataList, excelCls, "批量" + ManpowerContants.ImportTypeEnum.getInstance(importType) + getTemplateName() + "模板",
-					                     new EasyExcelSheetWriteHandler(excelCls, getExcelDescription(importType)));
+			EasyExcelUtils.webWriteExcel(response, dataList, excelCls, "批量" + ManpowerContants.ImportTypeEnum.getInstance(importType) + templateName,
+					                     new EasyExcelSheetWriteHandler(excelCls, excelDescription));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.failed("下载模板异常：" + e.getMessage());
