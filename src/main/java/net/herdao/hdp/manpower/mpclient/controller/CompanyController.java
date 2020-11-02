@@ -17,24 +17,20 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcel;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyAddVM;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyUpdateVM;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
-import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -48,10 +44,24 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/company" )
 @Api(value = "company", tags = "注册公司管理")
-public class CompanyController {
+public class CompanyController extends HdpBaseController{
 
     private final CompanyService companyService;
 
+    @Override
+    public HdpService getHdpService() {
+        return this.companyService;
+    }
+
+    @Override
+    public Class getImportAddCls() {
+        return CompanyAddVM.class;
+    }
+
+    @Override
+    public Class getImportUpdateCls() {
+        return CompanyUpdateVM.class;
+    }
     /**
      * 分页查询
      * @param page 分页对象
@@ -117,39 +127,6 @@ public class CompanyController {
         return R.ok(companyService.removeById(id));
     }
 
-    @ApiOperation("导入")
-    @SysLog("导入")
-    @PostMapping("/import")
-    public R<String> importExcel(MultipartFile file, String editType){
-        System.out.println(editType);
-        try {
-            EasyExcel.read(file.getInputStream(), CompanyListDTO.class,
-                    new StaffExcelListener<CompanyListDTO, Company>(companyService, Company.class)).sheet().doRead();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return R.ok("导入成功");
-    }
-
-    @ApiOperation(value = "导出", notes = "导出")
-    @GetMapping("/export" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public void export(HttpServletResponse response, Page page, CompanyListDTO company, String searchText) {
-        page.setCurrent(1);
-        page.setSize(50000);
-        IPage result = companyService.companyPage(page, company, searchText);
-        long total = result.getTotal();
-        if(total>50000){
-            return;
-        }
-        List<CompanyListDTO> list = result.getRecords();
-        try {
-            ExcelUtils.export2Web(response, "公司", "公司", CompanyListDTO.class,list);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * 公司列表

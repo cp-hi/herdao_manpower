@@ -55,7 +55,6 @@ import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
-import net.herdao.hdp.manpower.mpclient.entity.Userposthistory;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
@@ -67,8 +66,8 @@ import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
-import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
@@ -87,9 +86,6 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
     @Autowired
 	private StaffeducationService staffeducationService;
-
-	@Autowired
-	private UserposthistoryService userposthistoryService;
 
 	@Autowired
 	private WorkexperienceService workexperienceService;
@@ -150,25 +146,25 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
 		
-		List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizations();
-		
-		return R.ok(recursion(organizations));
+		return R.ok(recursion(this.baseMapper.selectOrganizations(), null));
 	}
 	
 	@Override
-	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String searchText) {
+	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String orgCode, String searchText) {
 		
-		List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizationComponentList(searchText);
-		
-		return R.ok(recursion(organizations));
+		return R.ok(recursion(this.baseMapper.selectOrganizationComponentList(orgCode), orgCode));
 	}
 	
+	@Override
+	public R<List<StaffComponentVO>> selectStaffs(String orgCode, String searchText){
+		return R.ok(this.baseMapper.selectStaffs(orgCode, searchText));
+	}
 	
-	public List<StaffOrganizationComponentVO> recursion(List<StaffOrganizationComponentVO> organizations){
+	public List<StaffOrganizationComponentVO> recursion(List<StaffOrganizationComponentVO> organizations, String orgCode){
 		// 获取部门员工数
-		Map<String, Integer> taffTotalComponentMap = this.baseMapper.getStaffTotals().stream()
+		Map<String, Integer> taffTotalComponentMap = this.baseMapper.getStaffTotals(orgCode).stream()
 				                                         .collect(Collectors.toMap(StaffTotalComponentVO::getOrgCode, StaffTotalComponentVO::getTotal));
-		// 部门/组织员工数
+		// 组织员工数
 		organizations.forEach(organization -> {
 			Integer staffTotal = sumKeyLike(taffTotalComponentMap, organization.getOrgCode());
 			organization.setStaffTotal(staffTotal);

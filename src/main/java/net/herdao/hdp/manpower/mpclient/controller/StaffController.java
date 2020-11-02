@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,12 +33,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.util.StrUtil;
@@ -50,7 +45,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.StaffDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
@@ -63,12 +57,9 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.listener.StaffExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-import net.herdao.hdp.manpower.mpclient.utils.DtoUtils;
-import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
 
@@ -351,14 +342,21 @@ public class StaffController extends HdpBaseController{
 
      * @return
      */
-    @ApiOperation(value = "员工选择组件", notes = "员工选择组件")
+    @ApiOperation(value = "员工选择组件", notes = "不传参数默认加载前二级组织信息，传orgCode 查询子组织和员工信息，模糊查询只查询员工信息（不带树形结构）")
     @GetMapping("/selectStaffOrganizationComponent")
-    @ApiImplicitParam(name="searchText", value="模糊查询条件")
-    public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String searchText) {
-    	if(StrUtil.isBlank(searchText)) {
-    		return staffService.selectStaffOrganizationComponent();
+    @ApiImplicitParams({@ApiImplicitParam(name="orgCode", value="组织编码"),
+    					@ApiImplicitParam(name="searchText", value="模糊查询条件")
+    })
+    public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String orgCode, String searchText) {
+    	if(StrUtil.isNotBlank(searchText)) {
+    		List<StaffOrganizationComponentVO> staffOrganizationComponentList = new ArrayList<StaffOrganizationComponentVO>();
+    		StaffOrganizationComponentVO staffOrganizationComponent = new StaffOrganizationComponentVO();
+    		staffOrganizationComponent.setStaffComponents(staffService.selectStaffs(null, searchText).getData());
+    		return R.ok(staffOrganizationComponentList);
+    	}else if(StrUtil.isNotBlank(orgCode)){
+    		return staffService.selectOrganizationComponentList(null, searchText);
     	}else {
-    		return staffService.selectOrganizationComponentList(searchText);
+    		return staffService.selectStaffOrganizationComponent();
     	}
     }
 
