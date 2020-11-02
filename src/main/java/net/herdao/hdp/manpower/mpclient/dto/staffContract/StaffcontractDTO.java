@@ -17,7 +17,7 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
  */
 @Data
 @ApiModel(value = "员工合同签订列表list DTO")
-public class StaffcontractDTO extends BaseModel<StaffcontractDTO> {
+public class StaffcontractDTO {
     private static final long serialVersionUID = 1L;
 
     /**
