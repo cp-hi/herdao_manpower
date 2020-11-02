@@ -25,6 +25,13 @@
         select * from mp_job_level where id = #{id}
     </select>
 
+    <select id="checkDuplicateNameInJobGrade" parameterType="jobLevel" resultType="boolean">
+      select case when  exists (
+      select * from mp_job_level where job_level_name = #{jobLevelName}
+      and job_grade_id = #{jobGradeId} and (id !=#{id} or #{id} is null)
+      ) then 1 else 0 end  as duplicateName
+    </select>
+
     <select id="getOnJobStaffs" parameterType="long" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id

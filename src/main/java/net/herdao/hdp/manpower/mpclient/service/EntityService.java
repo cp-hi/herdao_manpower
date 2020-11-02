@@ -2,7 +2,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +18,8 @@ import java.util.List;
 public interface EntityService<T> extends IService<T> {
 
     IPage page(IPage page, T t);
+
+    Object form(Long id);
 
     List<OperationLog> getOperationLogs(Long objId);
 
@@ -150,6 +151,5 @@ public interface EntityService<T> extends IService<T> {
     @Transactional(rollbackFor = Exception.class)
     void saveList(List<T> dataList, Integer batchCount);
 
-    Object form(Long id);
 
 }

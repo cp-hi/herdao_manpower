@@ -1,20 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
-import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
@@ -22,11 +17,9 @@ import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.Date;
 import java.util.List;
 
@@ -48,9 +41,33 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return operationLogService.findByEntity(objId, baseMapper.getEntityClass().getName());
     }
 
+    /**
+     * 添加操作记录
+     *
+     * @param operation
+     * @param objId
+     */
+    private void addOperationLog(String operation, String objId) {
+        SysUser sysUser = SysUserUtils.getSysUser();
+        OperationLog log = new OperationLog();
+        log.setOperation(operation);
+        log.setOperatorId(sysUser.getUserId());
+        log.setOperator(sysUser.getUsername());
+        log.setContent(operation + baseMapper.getEntityName());
+        log.setEntityClass(baseMapper.getEntityClass().getName());
+        log.setOperatedTime(new Date());
+        log.setObjId(Long.valueOf(objId));
+        operationLogService.saveOrUpdate(log);
+    }
+
     @Override
     public IPage page(IPage page, T t) {
         return baseMapper.page(page, t);
+    }
+
+    @Override
+    public Object form(Long id) {
+        return baseMapper.form(id);
     }
 
     @Override
@@ -96,7 +113,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         field.setAccessible(true);
         field.set(t, entityCode);
     }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -171,7 +187,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void saveVerify(T t) {
         Boolean result = baseMapper.checkDuplicateName(t);
-        if (result) throw new RuntimeException("名称重复");
+        if (result) throw new RuntimeException("该集团下已经有相同名称的" + baseMapper.getEntityName());
     }
 
     @Override
@@ -231,30 +247,5 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         List<List<T>> batch = Lists.partition(dataList, batchCount);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
-    }
-
-    @Override
-    public Object form(Long id) {
-        return baseMapper.form(id);
-    }
-
-
-    /**
-     * 添加操作记录
-     *
-     * @param operation
-     * @param objId
-     */
-    private void addOperationLog(String operation, String objId) {
-        SysUser sysUser = SysUserUtils.getSysUser();
-        OperationLog log = new OperationLog();
-        log.setOperation(operation);
-        log.setOperatorId(sysUser.getUserId());
-        log.setOperator(sysUser.getUsername());
-        log.setContent(operation + baseMapper.getEntityName());
-        log.setEntityClass(baseMapper.getEntityClass().getName());
-        log.setOperatedTime(new Date());
-        log.setObjId(Long.valueOf(objId));
-        operationLogService.saveOrUpdate(log);
     }
 }

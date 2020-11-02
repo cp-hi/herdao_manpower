@@ -17,4 +17,6 @@ public interface JobLevelMapper extends EntityMapper<JobLevel> {
 
     Boolean chkCodeAndName(JobLevel jobLevel);
 
+    Boolean checkDuplicateNameInJobGrade(JobLevel jobLevel);
+
 }

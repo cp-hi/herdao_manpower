@@ -37,16 +37,24 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     }
 
     @Override
+    public void saveVerify(JobLevel jobLevel) {
+        Boolean result = baseMapper.checkDuplicateNameInJobGrade(jobLevel);
+        if (result) throw new RuntimeException("该职等下已经有相同名称的职级");
+        super.saveVerify(jobLevel);
+    }
+
+
+    @Override
     public void addEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
-        chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false,buffer);
+        chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false, buffer);
         JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
 
         if (null == jobGrade.getGroupId())
             buffer.append("；集团ID为空");
 
-        if(StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
 
         jobLevel.setJobLevelName(excel.getJobLevelName());
@@ -59,13 +67,13 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
 
-        JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true,buffer);
+        JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true, buffer);
         JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
 
         if (null == jobGrade.getGroupId())
             buffer.append("；集团ID为空");
 
-        if(StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
 
         jobLevel.setJobLevelName(excel.getJobLevelName());
