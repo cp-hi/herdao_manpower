@@ -104,14 +104,6 @@ public interface EntityMapper<T> extends BaseMapper<T> {
     //endregion
 
     /**
-     * 通过ID获取实体，忽略逻辑删除
-     *
-     * @param id
-     * @return
-     */
-//    T selectIgnoreDel(Long id);
-
-    /**
      * 分页，默认用自身实体可传所有参数，
      * 如有其他参数需自己另写方法实现
      *
@@ -120,6 +112,13 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     IPage page(IPage page, @Param("t") T t);
+
+    /**
+     * 获取表单对象
+     * @param id
+     * @return
+     */
+    Object form(Long id);
 
     /**
      * 校验重复名称
@@ -134,6 +133,4 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     String getLastEntityCode(T t);
-
-    Object form(Long id);
 }

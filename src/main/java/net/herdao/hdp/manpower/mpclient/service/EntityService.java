@@ -20,13 +20,6 @@ public interface EntityService<T> extends IService<T> {
 
     IPage page(IPage page, T t);
 
-    /**
-     * 检查名称是否重复
-     * @param t
-     * @return
-     */
-//    Boolean checkDuplicateName(T t);
-
     List<OperationLog> getOperationLogs(Long objId);
 
     /**

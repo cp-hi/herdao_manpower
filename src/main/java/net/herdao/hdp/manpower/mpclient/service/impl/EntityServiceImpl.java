@@ -53,11 +53,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.page(page, t);
     }
 
-//    @Override
-//    public Boolean checkDuplicateName(T t) {
-//        return baseMapper.checkDuplicateName(t);
-//    }
-
     @Override
     public String getEntityName() {
         return baseMapper.getEntityName();
