@@ -9,18 +9,14 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+
 
 /**
  * 家庭情况分页Dto
  */
 @Data
 @ApiModel(value = "家庭情况分页Dto")
-public class FamilyStatusListDTO extends Familystatus implements ExcelMsg {
-    @ExcelProperty(value = "错误信息")
-    @ColumnWidth(100)
-    private String errMsg;
+public class FamilyStatusListDTO  {
 
     /**
      *
