@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -9,13 +10,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -33,6 +40,14 @@ import java.util.List;
  */
 public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl<M, T> implements EntityService<T> {
 
+    @Autowired
+    OperationLogService operationLogService;
+
+    @Override
+    public List<OperationLog> getOperationLogs(Long objId) {
+        return operationLogService.findByEntity(objId, baseMapper.getEntityClass().getName());
+    }
+
     @Override
     public IPage page(IPage page, T t) {
         return baseMapper.page(page, t);
@@ -43,51 +58,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.checkDuplicateName(t);
     }
 
-
-//    @Override
-//    public T selectIgnoreDel(Long id) {
-//        return baseMapper.selectIgnoreDel(id);
-//    }
-
-    //    @Override
-//    public Class<T> getEntityClass() {
-//        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-//                .getGenericSuperclass()).getActualTypeArguments()[1];
-//        return clazz;
-//    }
-//
-//
-//    @Override
-//    public String getTabelName() {
-//        Class<T> clazz = getEntityClass();
-//        TableName table = clazz.getAnnotation(TableName.class);
-//        return table.value();
-//    }
-//
-//
     @Override
     public String getEntityName() {
         return baseMapper.getEntityName();
     }
-
-//
-//
-//    @Override
-//    public String getTableCodeField() {
-//        String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
-//                .replaceFirst("sys_", "") + "_code";
-//        return codeField;
-//    }
-//
-//
-//    @Override
-//    public String getEntityCodeField() {
-//        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass()
-//                .getGenericSuperclass()).getActualTypeArguments()[1];
-//        String entityName = StringBufferUtils.toLowerCaseFirstOne(clazz.getSimpleName());
-//        return entityName + "Code";
-//    }
-
 
     @Override
     public String getCurrEntityCode() throws IllegalAccessException {
@@ -130,20 +104,40 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
 
     @Override
-//    @OperationEntity(clazz = Class.class)
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveEntity(T t) {
-        return this.saveOrUpdate(t);
+        String operation = "";
+        BaseEntity entity = (BaseEntity) t;
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (null == entity.getId() || 0 == entity.getId()) {
+            operation = "新增";
+            entity.setCreatedTime(new Date());
+            entity.setCreatorName(sysUser.getUsername());
+            entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
+        } else {
+            operation = "修改";
+            entity.setModifiedTime(new Date());
+            entity.setModifierName(sysUser.getUsername());
+            entity.setModifierId(Long.valueOf(sysUser.getUserId()));
+        }
+
+        boolean result = this.saveOrUpdate(t);
+        if (result)
+            addOperationLog(operation, entity.getId().toString());
+        return result;
     }
 
-    //    @OperationEntity(operation = "删除", clazz = Class.class)
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean delEntity(Serializable id) {
-        return this.removeById(id);
+        boolean result = this.removeById(id);
+        if (result)
+            addOperationLog("删除", (String) id);
+        return result;
     }
 
-
-    //    @OperationEntity(clazz = Class.class)
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean stopEntity(Serializable id, boolean isStop) {
         UpdateWrapper<T> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
@@ -156,8 +150,13 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             updateWrapper.set("start_date", new Date());
         }
         boolean result = this.update(updateWrapper);
+        if (result) {
+            String operation = isStop ? "停用" : "启用";
+            addOperationLog(operation, (String) id);
+        }
         return result;
     }
+
 
     @Override
     public boolean getStatus(Serializable id) {
@@ -173,12 +172,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result) throw new RuntimeException("名称重复");
     }
-
-//    @Override
-//    public void importVerify(T t, int type) {
-//
-//    }
-
 
     @Override
     public void importVerify(T t, Object excelObj, int type) {
@@ -237,5 +230,24 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         List<List<T>> batch = Lists.partition(dataList, batchCount);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
+    }
+
+    /**
+     * 添加操作记录
+     *
+     * @param operation
+     * @param objId
+     */
+    private void addOperationLog(String operation, String objId) {
+        SysUser sysUser = SysUserUtils.getSysUser();
+        OperationLog log = new OperationLog();
+        log.setOperation(operation);
+        log.setOperatorId(sysUser.getUserId());
+        log.setOperator(sysUser.getUsername());
+        log.setContent(operation + baseMapper.getEntityName());
+        log.setEntityClass(baseMapper.getEntityClass().getName());
+        log.setOperatedTime(new Date());
+        log.setObjId(Long.valueOf(objId));
+        operationLogService.saveOrUpdate(log);
     }
 }

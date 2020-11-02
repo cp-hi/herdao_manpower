@@ -44,8 +44,6 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         return baseMapper.postList(groupId);
     }
 
-
-
     @Override
     public Map getPostStaffInfo(Long postId) {
         Map map = new LinkedHashMap();
