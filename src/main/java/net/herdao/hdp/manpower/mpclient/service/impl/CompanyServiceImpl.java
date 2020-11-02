@@ -16,18 +16,24 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyAddVM;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.mapper.CompanyMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +44,35 @@ import java.util.Map;
  */
 @Service
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
+
+    @Override
+    @SuppressWarnings("all")
+    @Transactional(rollbackFor = Exception.class)
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+
+        // 错误数组
+        List<ExcelCheckErrDTO> errList = new ArrayList<>();
+
+        // 批量新增、编辑组织信息
+        List<Company> companyList = new ArrayList<>();
+
+        if (importType == 0) {
+            for(int i=0;i<excelList.size();i++){
+                CompanyAddVM entity = (CompanyAddVM)excelList.get(i);
+                Company company = new Company();
+                BeanUtils.copyProperties(entity, company);
+                companyList.add(company);
+            }
+            //add
+        }else {
+            //update
+        }
+        // 保存新增、修改组织信息
+        if(ObjectUtil.isEmpty(errList)) {
+            this.saveOrUpdateBatch(companyList, 200);
+        }
+        return errList;
+    }
 
     @Override
     public IPage companyPage(Page page, CompanyListDTO company, String searchText){

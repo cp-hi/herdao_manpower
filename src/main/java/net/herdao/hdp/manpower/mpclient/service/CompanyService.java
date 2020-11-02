@@ -30,7 +30,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Company;
  * @author liang
  * @date 2020-09-15 17:10:12
  */
-public interface CompanyService extends IService<Company> {
+public interface CompanyService extends HdpService<Company> {
 
     IPage companyPage(Page page, CompanyListDTO company, String searchText);
 
