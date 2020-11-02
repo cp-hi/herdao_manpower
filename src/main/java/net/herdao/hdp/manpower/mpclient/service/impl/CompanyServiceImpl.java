@@ -66,6 +66,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             //add
         }else {
             //update
+            return errList;
         }
         // 保存新增、修改组织信息
         if(ObjectUtil.isEmpty(errList)) {
