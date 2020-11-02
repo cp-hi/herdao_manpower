@@ -35,7 +35,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     @Override
     public void saveVerify(PostSeq postSeq) {
         StringBuffer buffer = new StringBuffer();
-        chkParent(postSeq.getId(), buffer);
+        chkParent(postSeq.getParentId(), buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
         super.saveVerify(postSeq);

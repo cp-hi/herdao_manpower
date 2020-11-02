@@ -19,7 +19,7 @@
         </if>
     </select>
 
-    <select id="form" resultMap="pipelineDTOMap" parameterType="long">
+    <select id="form" resultMap="pipelineDTOMap" >
      select * from mp_pipeline where  id = #{id}
     </select>
 

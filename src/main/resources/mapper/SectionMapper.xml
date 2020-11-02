@@ -15,11 +15,11 @@
         select * from mp_section where  del_flag !=1 and group_id = #{t.groupId}
         <if test="t.sectionName != null">
             <bind name="likeTxt" value="'%'+t.sectionName+'%'"/>
-          and (section_code like #{likeTxt} or section_name like #{likeTxt})
+            and (section_code like #{likeTxt} or section_name like #{likeTxt})
         </if>
     </select>
 
-    <select id="form" resultMap="sectionDTOMap" parameterType="long">
+    <select id="form" resultMap="sectionDTOMap" >
         select * from mp_section where  id = #{id}
     </select>
 

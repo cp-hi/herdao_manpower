@@ -21,7 +21,7 @@
         </if>
     </select>
 
-    <select id="form" resultMap="jobLevelDTOMap" parameterType="long">
+    <select id="form" resultMap="jobLevelDTOMap"  >
         select * from mp_job_level where id = #{id}
     </select>
 

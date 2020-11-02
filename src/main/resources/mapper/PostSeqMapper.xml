@@ -37,7 +37,7 @@
         </if>
     </select>
 
-    <select id="form" resultMap="postSeqDTOMap" parameterType="long">
+    <select id="form" resultMap="postSeqDTOMap" >
         select * from mp_post_seq where id = #{id}
     </select>
 
