@@ -30,14 +30,6 @@
        	where group_id = #{groupId} and del_flag != 1 and is_stop != 1
     </select>
 
-    <select id="chkDuplicatePipelineCode" parameterType="pipeline" resultType="boolean">
-         SELECT count(*) from mp_Pipeline where  (#{id} is null or  id != #{id})  and  pipeline_code = #{pipelineCode}
-    </select>
-
-    <select id="chkDuplicatePipelineName" parameterType="pipeline" resultType="boolean">
-      SELECT count(*) from mp_Pipeline where   (#{id} is null or  id != #{id})    and pipeline_name = #{pipelineName}
-    </select>
-
     <select id="getPipelineCodesByGroupId" parameterType="long" resultType="String">
       SELECT pipeline_code from mp_Pipeline where group_id = #{groupId}
     </select>

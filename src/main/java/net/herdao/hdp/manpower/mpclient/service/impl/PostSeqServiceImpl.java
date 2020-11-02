@@ -35,15 +35,11 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
 
     @Override
     public void saveVerify(PostSeq postSeq) {
-//        if (baseMapper.chkDuplicatePostSeqCode(postSeq))
-//            throw new RuntimeException("岗位序列编码重复了");
-
         StringBuffer buffer = new StringBuffer();
-        chkParent(postSeq.getId(),buffer);
-        if(StringUtils.isNotBlank(buffer.toString()))
+        chkParent(postSeq.getId(), buffer);
+        if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
-        if (baseMapper.chkDuplicatePostSeqName(postSeq))
-            throw new RuntimeException("岗位序列名称重复了");
+        super.saveVerify(postSeq);
     }
 
     @Override

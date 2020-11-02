@@ -65,12 +65,4 @@
     </select>
 
 
-    <select id="chkDuplicatePostSeqCode" parameterType="postSeq" resultType="boolean">
-         SELECT count(*) from mp_post_seq  where (#{id} is null or id != #{id}) and post_seq_code = #{postSeqCode}
-    </select>
-
-    <select id="chkDuplicatePostSeqName" parameterType="postSeq" resultType="boolean">
-        SELECT count(*) from mp_post_seq  where  (#{id} is null or id != #{id}) and post_seq_name = #{postSeqName}
-    </select>
-
 </mapper>

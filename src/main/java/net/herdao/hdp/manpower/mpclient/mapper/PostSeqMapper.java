@@ -18,8 +18,4 @@ public interface PostSeqMapper extends EntityMapper<PostSeq> {
     List<Map> postSeqList(Long groupId);
 
     PostSeqDTO getPostSeqDTO(Long id);
-
-    Boolean chkDuplicatePostSeqName(PostSeq postSeq);
-
-    Boolean chkDuplicatePostSeqCode(PostSeq postSeq);
 }

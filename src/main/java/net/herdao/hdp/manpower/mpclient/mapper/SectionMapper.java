@@ -18,10 +18,6 @@ import java.util.Map;
 public interface SectionMapper extends EntityMapper<Section> {
     List<Map> sectionList(Long groupId);
 
-    Boolean chkDuplicateSectionCode(Section section);
-
-    Boolean chkDuplicateSectionName(Section section);
-
     List<String> getSectionCodesByGroupId(Long groupId);
 
 }

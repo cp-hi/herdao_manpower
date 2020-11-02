@@ -24,11 +24,12 @@ public class SelectEntityCode extends AbstractMethod {
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        List<TableFieldInfo> fieldInfo = tableInfo.getFieldList().stream().filter(f -> {
+        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f -> {
             return f.getEl().contains("Code");
         }).collect(Collectors.toList());
-        String code = (null == fieldInfo || 0 == fieldInfo.size()) ? "''" : fieldInfo.get(0).getColumn();
-        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ", code, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
+        String code = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
+        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ",
+                code, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectEntityCode", sqlSource, String.class);
     }
 }

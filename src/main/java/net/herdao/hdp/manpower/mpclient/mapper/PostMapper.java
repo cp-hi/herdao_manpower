@@ -21,10 +21,6 @@ public interface PostMapper extends EntityMapper<Post> {
 
     List<PostDTO> postList(Long groupId);
 
-    Boolean chkDuplicatePostName(Post post);
-
-    Boolean chkDuplicatePostCode(Post post);
-
     Integer getPostStaffCount(String condition);
 
     List<Map<String, BigDecimal>> getPostStaffAges(Long postId);

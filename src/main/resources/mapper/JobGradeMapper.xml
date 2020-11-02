@@ -42,11 +42,4 @@
        	select * from mp_job_grade where group_id = #{groupId} and del_flag != 1
     </select>
 
-    <select id="chkDuplicateJobGradeCode" parameterType="jobGrade" resultType="boolean">
-         SELECT count(*) from mp_job_Grade  where  (#{id} is null or  id != #{id})  and  job_Grade_code = #{jobGradeCode}
-    </select>
-
-    <select id="chkDuplicateJobGradeName" parameterType="jobGrade" resultType="boolean" >
-        SELECT count(*) from mp_Job_Grade  where  (#{id} is null or  id != #{id})   and  job_Grade_name = #{jobGradeName}
-    </select>
 </mapper>

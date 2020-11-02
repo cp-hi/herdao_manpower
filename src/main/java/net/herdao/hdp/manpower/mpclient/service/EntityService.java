@@ -19,7 +19,10 @@ public interface EntityService<T> extends IService<T> {
 
     IPage page(IPage page, T t);
 
-    T selectIgnoreDel(Long id);
+    Boolean checkDuplicateName(T t);
+
+
+//    T selectIgnoreDel(Long id);
 
 //    Class<T> getEntityClass();
 

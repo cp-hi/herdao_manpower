@@ -39,9 +39,15 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public T selectIgnoreDel(Long id) {
-        return baseMapper.selectIgnoreDel(id);
+    public Boolean checkDuplicateName(T t) {
+        return baseMapper.checkDuplicateName(t);
     }
+
+
+//    @Override
+//    public T selectIgnoreDel(Long id) {
+//        return baseMapper.selectIgnoreDel(id);
+//    }
 
     //    @Override
 //    public Class<T> getEntityClass() {
@@ -86,7 +92,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public String getCurrEntityCode() throws IllegalAccessException {
         //todo 解决逻辑删除后无法查询到的问题
-        String sql = "select max(id) from " + baseMapper.getTabelName();
+        String sql = "select max(id) from " + baseMapper.getTableName();
         T t = this.getOne((Wrapper<T>) new QueryWrapper().select(baseMapper.getTableCodeField()).inSql("id", sql));
         String entityCode = "000001";
         if (null != t) {
@@ -124,19 +130,19 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
 
     @Override
-    @OperationEntity(clazz = Class.class)
+//    @OperationEntity(clazz = Class.class)
     public boolean saveEntity(T t) {
         return this.saveOrUpdate(t);
     }
 
-    @OperationEntity(operation = "删除", clazz = Class.class)
+    //    @OperationEntity(operation = "删除", clazz = Class.class)
     @Override
     public boolean delEntity(Serializable id) {
         return this.removeById(id);
     }
 
 
-    @OperationEntity(clazz = Class.class)
+    //    @OperationEntity(clazz = Class.class)
     @Override
     public boolean stopEntity(Serializable id, boolean isStop) {
         UpdateWrapper<T> updateWrapper = new UpdateWrapper<>();
@@ -159,11 +165,13 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         queryWrapper.select("is_stop").eq("id", id);
         List<Object> objs = baseMapper.selectObjs(queryWrapper);
         if (objs.size() > 0) return (Boolean) objs.get(0);
-        return false;
+        throw new RuntimeException("找不到此对象，或已被删除");
     }
 
     @Override
     public void saveVerify(T t) {
+        Boolean result = baseMapper.checkDuplicateName(t);
+        if (result) throw new RuntimeException("名称重复");
     }
 
 //    @Override

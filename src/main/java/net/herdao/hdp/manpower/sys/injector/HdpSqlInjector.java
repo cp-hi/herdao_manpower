@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.sys.injector;
 
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import net.herdao.hdp.manpower.sys.injector.methods.CheckDuplicateName;
 import net.herdao.hdp.manpower.sys.injector.methods.SelectEntityCode;
 import net.herdao.hdp.manpower.sys.injector.methods.SelectEntityName;
 import net.herdao.hdp.manpower.sys.injector.methods.SelectIgnoreDel;
@@ -28,6 +29,7 @@ public class HdpSqlInjector extends DefaultSqlInjector {
         methodList.add(new SelectIgnoreDel());
         methodList.add(new SelectEntityCode());
         methodList.add(new SelectEntityName());
+        methodList.add(new CheckDuplicateName());
         return methodList;
     }
 }

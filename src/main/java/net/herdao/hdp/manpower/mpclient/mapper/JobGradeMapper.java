@@ -14,8 +14,4 @@ import java.util.List;
 public interface JobGradeMapper extends EntityMapper<JobGrade> {
 
     List<JobGradeShortVO> jobGradeList(Long groupId);
-
-    Boolean chkDuplicateJobGradeName(JobGrade jobGrade);
-
-    Boolean chkDuplicateJobGradeCode(JobGrade jobGrade);
 }

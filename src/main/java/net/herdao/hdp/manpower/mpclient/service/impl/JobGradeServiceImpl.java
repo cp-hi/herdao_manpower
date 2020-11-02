@@ -27,11 +27,4 @@ public class JobGradeServiceImpl extends EntityServiceImpl<JobGradeMapper, JobGr
         return baseMapper.jobGradeList(groupId);
     }
 
-    @Override
-    public void saveVerify(JobGrade jobGrade) {
-//        if (baseMapper.chkDuplicateJobGradeCode(jobGrade))
-//            throw new RuntimeException("职级编码重复了");
-        if (baseMapper.chkDuplicateJobGradeName(jobGrade))
-            throw new RuntimeException("职级名称重复了:" + jobGrade.getJobGradeName());
-    }
 }

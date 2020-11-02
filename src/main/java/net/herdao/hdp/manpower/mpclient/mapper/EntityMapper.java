@@ -44,7 +44,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      *
      * @return
      */
-    default String getTabelName() {
+    default String getTableName() {
         Class<T> clazz = getEntityClass();
         TableName table = clazz.getAnnotation(TableName.class);
         return table.value();
@@ -63,7 +63,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     default String getTableCodeField() {
-        String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
+        String codeField = getTableName().toLowerCase().replaceFirst("mp_", "")
                 .replaceFirst("sys_", "") + "_code";
         return codeField;
     }
@@ -85,7 +85,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     default String getTableNameField() {
-        String codeField = getTabelName().toLowerCase().replaceFirst("mp_", "")
+        String codeField = getTableName().toLowerCase().replaceFirst("mp_", "")
                 .replaceFirst("sys_", "") + "_name";
         return codeField;
     }
@@ -109,7 +109,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @param id
      * @return
      */
-    T selectIgnoreDel(Long id);
+//    T selectIgnoreDel(Long id);
 
     /**
      * 分页，默认用自身实体可传所有参数，
@@ -121,7 +121,10 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      */
     IPage page(IPage page, @Param("t") T t);
 
-    String selectEntityCode(Long id);
-
-    String selectEntityName(Long id);
+    /**
+     * 校验重复名称
+     * @param t
+     * @return
+     */
+    Boolean checkDuplicateName(T t);
 }

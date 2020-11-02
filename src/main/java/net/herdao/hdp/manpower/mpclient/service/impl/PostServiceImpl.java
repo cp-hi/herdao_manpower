@@ -45,13 +45,6 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
 
-    @Override
-    public void saveVerify(Post post) {
-//        if (baseMapper.chkDuplicatePostCode(post))
-//            throw new RuntimeException("岗位编码重复了");
-        if (baseMapper.chkDuplicatePostName(post))
-            throw new RuntimeException("岗位名称重复了");
-    }
 
     @Override
     public Map getPostStaffInfo(Long postId) {

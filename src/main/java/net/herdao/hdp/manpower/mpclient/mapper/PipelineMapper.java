@@ -14,9 +14,5 @@ import java.util.List;
 public interface PipelineMapper extends EntityMapper<Pipeline> {
     List<Map> pipelineList(Long groupId);
 
-    Boolean chkDuplicatePipelineName(Pipeline pipeline);
-
-    Boolean chkDuplicatePipelineCode(Pipeline pipeline);
-
     List<String> getPipelineCodesByGroupId(Long groupId);
 }

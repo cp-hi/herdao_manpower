@@ -92,14 +92,6 @@
        	select * from mp_post where group_id = #{groupId} and del_flag != 1 and is_stop != 1
     </select>
 
-    <select id="chkDuplicatePostCode" parameterType="post" resultType="boolean">
-         SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})  and  post_code = #{postCode}
-    </select>
-
-    <select id="chkDuplicatePostName" parameterType="post" resultType="boolean">
-        SELECT count(*) from mp_post  where  (#{id} is null or  id != #{id})   and  post_name = #{postName}
-    </select>
-
     <select id="getPostStaffCount" parameterType="string" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id

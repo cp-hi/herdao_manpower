@@ -36,13 +36,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         return baseMapper.pipelineList(groupId);
     }
 
-    @Override
-    public void saveVerify(Pipeline pipeline) {
-        if (baseMapper.chkDuplicatePipelineCode(pipeline))
-            throw new RuntimeException("管线编码重复了");
-        if (baseMapper.chkDuplicatePipelineName(pipeline))
-            throw new RuntimeException("管线名称重复了");
-    }
+
 
     @Override
     public void addEntity(Pipeline pipeline, Object excelObj) {
