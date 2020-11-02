@@ -231,7 +231,7 @@
 		<where>
 			AND ut.office_post_type = '1'
 			<if test="orgCode != null">
-				AND org.org_code LIKE CONCAT(#{orgCode},'%')
+				AND org.org_code = #{orgCode}
 			</if>
 			<if test="searchText != null">
 				AND sf.staff_name LIKE CONCAT(#{searchText},'%')
