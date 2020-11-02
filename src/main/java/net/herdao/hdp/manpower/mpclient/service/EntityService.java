@@ -58,7 +58,7 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
 
-    boolean saveEntity(T t);
+    boolean saveEntity(T t) throws IllegalAccessException;
 
     /**
      * 逻辑删除实体并自动添加日志

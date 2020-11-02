@@ -16,12 +16,10 @@ import org.apache.ibatis.scripting.defaults.RawSqlSource;
  * @Version 1.0
  */
 public class SelectIgnoreDel extends AbstractMethod {
-    public SelectIgnoreDel() {
-    }
-
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ", this.sqlSelectColumns(tableInfo, false), tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty() ), Object.class);
+        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ",
+                this.sqlSelectColumns(tableInfo, false), tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty() ), Object.class);
         return this.addSelectMappedStatementForTable(mapperClass, "selectIgnoreDel", sqlSource, tableInfo);
     }
 }

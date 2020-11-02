@@ -21,9 +21,6 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 public class CheckDuplicateName extends AbstractMethod {
-    public CheckDuplicateName() {
-    }
-
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
         List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f -> {

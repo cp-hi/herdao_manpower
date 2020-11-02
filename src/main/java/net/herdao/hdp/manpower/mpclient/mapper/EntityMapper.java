@@ -127,4 +127,11 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     Boolean checkDuplicateName(T t);
+
+    /**
+     * 获取最新的实体编码
+     * @param t
+     * @return
+     */
+    String getLastEntityCode(T t);
 }

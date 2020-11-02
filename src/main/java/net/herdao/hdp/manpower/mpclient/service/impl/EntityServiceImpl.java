@@ -105,7 +105,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveEntity(T t) {
+    public boolean saveEntity(T t) throws IllegalAccessException {
         String operation = "";
         BaseEntity entity = (BaseEntity) t;
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -114,6 +114,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setCreatedTime(new Date());
             entity.setCreatorName(sysUser.getUsername());
             entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
+            String lastEntityCode = baseMapper.getLastEntityCode(t);
+            String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
+            String codeField = baseMapper.getEntityCodeField();
+            Field field = AnnotationUtils.getFieldByName(t, codeField);
+            field.setAccessible(true);
+            field.set(t, entityCode);
         } else {
             operation = "修改";
             entity.setModifiedTime(new Date());

@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 public class SelectEntityName extends AbstractMethod {
-    public SelectEntityName() {
-    }
-
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
         //TODO 添加通过 TableField 注解获取 name字段名，目前就简单从表名拼接的方式

@@ -15,10 +15,7 @@ import org.apache.ibatis.mapping.SqlSource;
  */
 @Deprecated
 public class MyDefinedMethod extends AbstractMethod {
-    //    @Override
-//    public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-//        return null;
-//    }
+
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
         String myDefineSql = "update " + tableInfo.getTableName() +" set del_flag = 1";//构造一条delete from 表，待注入的sql预编译语句
