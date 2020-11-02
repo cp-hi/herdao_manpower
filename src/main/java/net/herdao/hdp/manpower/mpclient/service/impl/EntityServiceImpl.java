@@ -174,7 +174,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return result;
     }
 
-
     @Override
     public boolean getStatus(Serializable id) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
