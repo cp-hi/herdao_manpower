@@ -43,16 +43,9 @@
     </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
-        select * from mp_post where del_flag !=1
-
-        <if test="t.id != null">
-            and id = #{t.id}
-        </if>
+        select * from mp_post where del_flag !=1 and group_id = #{t.groupId}
         <if test="t.stop != null">
             and is_stop = #{t.stop}
-        </if>
-        <if test="t.groupId != null">
-            and group_id = #{t.groupId}
         </if>
         <if test="t.postName != null">
             <bind name="likeTxt" value="'%'+t.postName+'%'"/>
@@ -68,6 +61,10 @@
             AND (job_level_id1 = #{t.jobLevelId1}
             or job_level_id2 = #{t.jobLevelId1})
         </if>
+    </select>
+
+    <select id="form" resultMap="postDTOMap" >
+        select * from mp_post where id = #{id}
     </select>
 
     <select id="getJobGrade" parameterType="long" resultType="jobGrade">

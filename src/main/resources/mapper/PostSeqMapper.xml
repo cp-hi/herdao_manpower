@@ -20,23 +20,25 @@
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectIgnoreDel" />
     </resultMap>
 
-
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
-        select * from mp_post_seq where  del_flag !=1
-         and ((#{t.parentId} is null and parent_id is null) or parent_id = #{t.parentId})
-        <if test="t.id != null">
-            and id = #{t.id}
+        select * from mp_post_seq where  del_flag !=1 and group_id = #{t.groupId}
+        <if test=" t.parentId == null">
+            and parent_id is null
+        </if>
+        <if test=" t.parentId != null">
+            and parent_id = #{t.parentId}
         </if>
         <if test="t.stop != null">
             and is_stop = #{t.stop}
-        </if>
-        <if test="t.groupId != null">
-            and group_id = #{t.groupId}
         </if>
         <if test="t.postSeqName != null">
             <bind name="likeTxt" value="'%'+t.postSeqName+'%'"/>
             and( post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt})
         </if>
+    </select>
+
+    <select id="form" resultMap="postSeqDTOMap" parameterType="long">
+        select * from mp_post_seq where id = #{id}
     </select>
 
     <select id="getPostCount" parameterType="long" resultType="int">
@@ -48,9 +50,7 @@
          where parent_id = #{id} ) then 0 else 1 end) as isLeaf
     </select>
 
-
     <!--  父子查询 -->
-
     <resultMap id="postSeqDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
         <association property="parent" column="parent_id" select="getPostSeqParent"
                      javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>

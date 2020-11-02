@@ -12,17 +12,15 @@
     </resultMap>
 
     <select id="page" resultMap="pipelineDTOMap" parameterType="pipeline">
-        select * from mp_pipeline where  del_flag !=1
-        <if test="t.id != null">
-            and id = #{t.id}
-        </if>
-        <if test="t.groupId != null">
-            and group_id = #{t.groupId}
-        </if>
+        select * from mp_pipeline where  del_flag !=1  and group_id = #{t.groupId}
         <if test="t.pipelineName != null">
             <bind name="likeTxt" value="'%'+t.pipelineName+'%'"/>
           and( pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt})
         </if>
+    </select>
+
+    <select id="form" resultMap="pipelineDTOMap" parameterType="long">
+     select * from mp_pipeline where  id = #{id}
     </select>
 
     <select id="pipelineList"  resultType="map">

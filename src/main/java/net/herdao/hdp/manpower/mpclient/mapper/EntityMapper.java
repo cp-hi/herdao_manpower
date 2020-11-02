@@ -134,4 +134,6 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     String getLastEntityCode(T t);
+
+    Object form(Long id);
 }

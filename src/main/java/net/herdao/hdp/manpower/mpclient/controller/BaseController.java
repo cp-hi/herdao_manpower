@@ -123,6 +123,20 @@ public class BaseController<T, D, F, E> {
         return R.ok(p);
     }
 
+    @GetMapping("/form/{id}")
+    @ApiOperation(value = "获取表单信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id"),
+    })
+    public R<F> getFormInfo(@PathVariable Long id) throws InstantiationException,
+            IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+        Object from = entityService.form(id);
+        if (null == from) throw new RuntimeException("对象不存在，或已被删除");
+        F f = DtoConverter.dto2vo(from, getFormClass());
+        return R.ok(f);
+    }
+
+
     @ApiOperation(value = "通过id删除")
     @DeleteMapping("/{id}")
     @ApiImplicitParams({
@@ -162,21 +176,6 @@ public class BaseController<T, D, F, E> {
         return R.ok(f);
     }
 
-    @GetMapping("/form/{id}")
-    @ApiOperation(value = "获取表单信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id"),
-    })
-    public R<F> getFormInfo(@PathVariable Long id) throws InstantiationException,
-            IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
-        T t = getEntityClass().newInstance();
-        ((BaseEntity) t).setId(id);
-        IPage p = entityService.page(new Page(), t);
-        if (0 == p.getRecords().size())
-            throw new RuntimeException("对象不存在，或已被删除");
-        F f = DtoConverter.dto2vo(p.getRecords().get(0), getFormClass());
-        return R.ok(f);
-    }
 
     @ApiOperation("批量新增/编辑")
 //    @SysLog("批量新增/编辑")

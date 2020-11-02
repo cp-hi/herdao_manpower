@@ -11,19 +11,16 @@
     </resultMap>
 
     <select id="page" resultMap="jobGradeDTOMap" parameterType="jobGrade">
-        select * from mp_job_grade where  del_flag !=1
-        <if test="t.id != null and t.groupId == null ">
-            and id = #{t.id}
-        </if>
-        <if test="t.id == null and t.groupId != null ">
-            and group_id = #{t.groupId}
-        </if>
+        select * from mp_job_grade where  del_flag !=1 and group_id = #{t.groupId}
         <if test="t.jobGradeName != null">
             <bind name="likeTxt" value="'%'+t.jobGradeName +'%'"/>
-           and( job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt})
+           and(job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt})
         </if>
     </select>
 
+    <select id="form" resultMap="jobGradeDTOMap" parameterType="long">
+        select * from mp_job_grade where  id = #{id}
+    </select>
 
     <select id="getOnJobStaffs" parameterType="long" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s

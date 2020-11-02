@@ -15,19 +15,14 @@
 
     <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
         select * from mp_job_level where del_flag !=1 and job_grade_id = #{t.jobGradeId}
-        <if test="t.id != null">
-            and id = #{t.id}
-        </if>
-        <if test="t.groupId != null">
-            and group_id = #{t.groupId}
-        </if>
-        <if test="t.jobGradeId != null">
-            and job_grade_id = #{t.jobGradeId}
-        </if>
         <if test="t.jobLevelName != null">
             <bind name="likeTxt" value="'%'+t.jobLevelName+'%'"/>
             and(job_level_code like #{likeTxt} or job_level_name like #{likeTxt})
         </if>
+    </select>
+
+    <select id="form" resultMap="jobLevelDTOMap" parameterType="long">
+        select * from mp_job_level where id = #{id}
     </select>
 
     <select id="getOnJobStaffs" parameterType="long" resultType="int">

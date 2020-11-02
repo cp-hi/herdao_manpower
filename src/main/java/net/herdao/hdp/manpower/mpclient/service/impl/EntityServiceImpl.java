@@ -53,10 +53,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.page(page, t);
     }
 
-    @Override
-    public Boolean checkDuplicateName(T t) {
-        return baseMapper.checkDuplicateName(t);
-    }
+//    @Override
+//    public Boolean checkDuplicateName(T t) {
+//        return baseMapper.checkDuplicateName(t);
+//    }
 
     @Override
     public String getEntityName() {
@@ -237,6 +237,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
+
+    @Override
+    public Object form(Long id) {
+        return baseMapper.form(id);
+    }
+
 
     /**
      * 添加操作记录

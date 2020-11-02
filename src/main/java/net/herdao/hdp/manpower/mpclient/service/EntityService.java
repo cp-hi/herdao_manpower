@@ -20,7 +20,12 @@ public interface EntityService<T> extends IService<T> {
 
     IPage page(IPage page, T t);
 
-    Boolean checkDuplicateName(T t);
+    /**
+     * 检查名称是否重复
+     * @param t
+     * @return
+     */
+//    Boolean checkDuplicateName(T t);
 
     List<OperationLog> getOperationLogs(Long objId);
 
@@ -151,5 +156,7 @@ public interface EntityService<T> extends IService<T> {
      */
     @Transactional(rollbackFor = Exception.class)
     void saveList(List<T> dataList, Integer batchCount);
+
+    Object form(Long id);
 
 }

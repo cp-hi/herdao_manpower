@@ -12,17 +12,15 @@
     </resultMap>
 
     <select id="page" resultMap="sectionDTOMap" parameterType="section">
-        select * from mp_section where  del_flag !=1
-        <if test="t.id != null">
-            and id = #{t.id}
-        </if>
-        <if test="t.groupId != null">
-            and group_id = #{t.groupId}
-        </if>
+        select * from mp_section where  del_flag !=1 and group_id = #{t.groupId}
         <if test="t.sectionName != null">
             <bind name="likeTxt" value="'%'+t.sectionName+'%'"/>
-          and ( section_code like #{likeTxt} or section_name like #{likeTxt})
+          and (section_code like #{likeTxt} or section_name like #{likeTxt})
         </if>
+    </select>
+
+    <select id="form" resultMap="sectionDTOMap" parameterType="long">
+        select * from mp_section where  id = #{id}
     </select>
 
     <select id="sectionList"  resultType="map">
