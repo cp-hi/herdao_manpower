@@ -14,7 +14,7 @@
     </resultMap>
 
     <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
-        select * from mp_job_level where  del_flag !=1 and job_grade_id = #{t.jobGradeId}
+        select * from mp_job_level where del_flag !=1 and job_grade_id = #{t.jobGradeId}
         <if test="t.id != null">
             and id = #{t.id}
         </if>
@@ -26,7 +26,7 @@
         </if>
         <if test="t.jobLevelName != null">
             <bind name="likeTxt" value="'%'+t.jobLevelName+'%'"/>
-          and(  job_level_code like #{likeTxt} or job_level_name like #{likeTxt})
+            and(job_level_code like #{likeTxt} or job_level_name like #{likeTxt})
         </if>
     </select>
 
@@ -40,7 +40,6 @@
        	select id,job_level_code AS code,job_level_name AS name from mp_job_level
        	where group_id = #{groupId} and del_flag != 1
     </select>
-
 
     <select id="chkCodeAndName" parameterType="jobLevel" resultType="boolean">
         SELECT count(*) from mp_job_level  where

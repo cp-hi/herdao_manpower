@@ -54,10 +54,12 @@ public class OperationLogAspect {
     /**
      * 保存时设置操作人信息的切入点
      */
-    @Pointcut("execution(public * com.baomidou.mybatisplus.extension.service..*.saveOrUpdate(..))" +
-            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))" +
+    @Pointcut(
+//            "execution(public * com.baomidou.mybatisplus.extension.service..*.saveOrUpdate(..))" +
+            "execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))"
 //            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveEntity(..))" +
-            "||execution(public * net.herdao.hdp.manpower.mpclient.service.impl..*.saveEntity(..))")
+//            "||execution(public * net.herdao.hdp.manpower.mpclient.service.impl..*.saveEntity(..))"
+    )
     public void pointCutSave() {
         System.out.println("pointCutSave");
     }
@@ -266,7 +268,7 @@ public class OperationLogAspect {
         //重设注解属性值，避免带到下一个切面
         AnnotationUtils.setAnnotationInfo(operation, "operation", "");
         AnnotationUtils.setAnnotationInfo(operation, "objId", "");
-        /*AnnotationUtils.setAnnotationInfo(operation, "clazz", null);*/
+        //AnnotationUtils.setAnnotationInfo(operation, "clazz", null);
         AnnotationUtils.setAnnotationInfo(operation, "content", "");
     }
 

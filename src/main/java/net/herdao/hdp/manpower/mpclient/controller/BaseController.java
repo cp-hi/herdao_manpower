@@ -43,9 +43,6 @@ public class BaseController<T, D, F, E> {
 
     EntityService entityService;
 
-    @Autowired
-    OperationLogService operationLogService;
-
     //region 各种Class
 
     /**
@@ -111,7 +108,7 @@ public class BaseController<T, D, F, E> {
             @ApiImplicitParam(name = "objId", value = "所需要查询记录实体的ID"),
     })
     public R<List<OperationLog>> getOperationLogs(@PathVariable Long objId) {
-        return R.ok(operationLogService.findByEntity(objId, getEntityClass().getName()));
+        return R.ok(entityService.getOperationLogs(objId));
     }
 
     protected R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
@@ -221,7 +218,6 @@ public class BaseController<T, D, F, E> {
 
     }
 
-
     @ApiOperation("下载批量新增/编辑的模板")
 //    @SysLog("下载批量新增/编辑的模板")
     @PostMapping("/downloadTempl")
@@ -234,7 +230,7 @@ public class BaseController<T, D, F, E> {
             if (Integer.valueOf(1).equals(importType))
                 templClass = getBatchUpdateClass();
 
-            if(templClass == Class.class)
+            if (templClass == Class.class)
                 throw new RuntimeException("没有找到模板");
             ExcelUtils.downloadTempl(response, templClass);
 

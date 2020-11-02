@@ -32,7 +32,6 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         return baseMapper.postSeqList(groupId);
     }
 
-
     @Override
     public void saveVerify(PostSeq postSeq) {
         StringBuffer buffer = new StringBuffer();

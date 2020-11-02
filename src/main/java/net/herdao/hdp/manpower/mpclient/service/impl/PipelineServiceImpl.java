@@ -36,8 +36,6 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         return baseMapper.pipelineList(groupId);
     }
 
-
-
     @Override
     public void addEntity(Pipeline pipeline, Object excelObj) {
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;

@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -21,17 +22,7 @@ public interface EntityService<T> extends IService<T> {
 
     Boolean checkDuplicateName(T t);
 
-
-//    T selectIgnoreDel(Long id);
-
-//    Class<T> getEntityClass();
-
-    /**
-     * 获取表名
-     *
-     * @return
-     */
-//    String getTabelName();
+    List<OperationLog> getOperationLogs(Long objId);
 
     /**
      * 获取实体名
@@ -41,27 +32,14 @@ public interface EntityService<T> extends IService<T> {
     String getEntityName();
 
     /**
-     * 获取编码在表中的字段名
-     *
-     * @return
-     */
-//    String getTableCodeField();
-
-    /**
-     * 获取编码在实体中的字段名
-     *
-     * @return
-     */
-//    String getEntityCodeField();
-
-    /**
      * 生成编码
      *
      * @return
      */
     String generateEntityCode() throws IllegalAccessException;
 
-    String getCurrEntityCode()throws IllegalAccessException;
+    String getCurrEntityCode() throws IllegalAccessException;
+
     /**
      * 自动设置编码
      *
@@ -70,7 +48,7 @@ public interface EntityService<T> extends IService<T> {
      */
     void setEntityCode(T t) throws IllegalAccessException;
 
-    void setEntityCode(T t,String code) throws IllegalAccessException;
+    void setEntityCode(T t, String code) throws IllegalAccessException;
 
 
     /**
@@ -96,7 +74,7 @@ public interface EntityService<T> extends IService<T> {
      */
     boolean stopEntity(Serializable id, boolean isStop);
 
-    boolean getStatus(Serializable id) ;
+    boolean getStatus(Serializable id);
 
     /**
      * 保存核验
@@ -104,13 +82,6 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      */
     void saveVerify(T t);
-
-    /**
-     * 导入校验
-     *
-     * @param t
-     */
-//    void importVerify(T t, int type);
 
     /**
      * 导入校验
