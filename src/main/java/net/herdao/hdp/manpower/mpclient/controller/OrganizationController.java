@@ -336,15 +336,15 @@ public class OrganizationController extends HdpBaseController{
      * 
      * @return
      */
-    @ApiOperation(value = "部门选择组件", notes = "部门选择组件")
+    @ApiOperation(value = "组织选择组件", notes = "默认加载前二级组织信息，传orgCode查询子组织和员工信息，传 searchText 模糊查询组织信息列表（不带属性结构）")
     @GetMapping("/selectOrganizationComponent")
-    @ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码（通过组织树查询传递）"),
+    @ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码"),
     					 @ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
     public R<List<OrganizationComponentVO>> selectOrganizationComponent(String orgCode, String searchText) {
     	if(StrUtil.isBlank(searchText) && StrUtil.isBlank(orgCode)) {
     		return orgService.selectOrganizations();
     	}else {
-    		return orgService.selectOrganizationComponentList(orgCode, searchText);
+    		return orgService.selectOrganizationComponentList(orgCode, StrUtil.isBlank(orgCode) ? searchText : "");
     	}
     }
 

@@ -33,22 +33,28 @@ import lombok.Data;
 @ApiModel(value = "部门组件")
 public class OrganizationComponentVO {
 
-	@ApiModelProperty(value = "部门/组织id")
+	@ApiModelProperty(value = "组织id")
 	private Long id;
 	
-	@ApiModelProperty(value = "部门/组织名称")
+	@ApiModelProperty(value = "组织名称")
 	private String orgName;
 
-	@ApiModelProperty(value = "部门/组织编码")
+	@ApiModelProperty(value = "组织编码")
 	private String orgCode;
 	
-	@ApiModelProperty(value = "父部门/组织名称")
+	@ApiModelProperty(value = "是否叶子节点组织， 值 true 是， 值 false 否")
+	private Boolean leafNode;
+	
+	@ApiModelProperty(value = "父组织id")
+	private Long parentId;
+	
+	@ApiModelProperty(value = "父组织编码")
 	private String parentOrgName;
 
-	@ApiModelProperty(value = "父部门/组织编码")
+	@ApiModelProperty(value = "父组织名称")
 	private String parentOrgCode;
 	
-	@ApiModelProperty(value = "子部门/组织信息")
+	@ApiModelProperty(value = "子组织集合")
 	private List<OrganizationComponentVO> organizationComponents;
 	
 }

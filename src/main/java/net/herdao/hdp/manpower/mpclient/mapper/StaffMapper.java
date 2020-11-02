@@ -37,6 +37,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWelfareDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 
@@ -59,18 +60,28 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	/**
 	 * 查询员工信息（组件）
 	 * 
+	 * @param orgCode
+	 * @return
+	 */
+	public List<StaffOrganizationComponentVO> selectOrganizationComponentList(@Param("orgCode") String orgCode);
+	
+	/**
+	 * 查询组织下所有人员信息
+	 * 
+	 * @param orgCode
 	 * @param searchText
 	 * @return
 	 */
-	public List<StaffOrganizationComponentVO> selectOrganizationComponentList(@Param("searchText") String searchText);
+	public List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
 	
 	
 	/**
-	 * 统计部门/组织员工数
+	 * 统计组织员工数
 	 * 
+	 * @param orgCode
 	 * @return
 	 */
-	public List<StaffTotalComponentVO> getStaffTotals();
+	public List<StaffTotalComponentVO> getStaffTotals(String orgCode);
 	
 	/**
 	 * 查询员工工龄信息
