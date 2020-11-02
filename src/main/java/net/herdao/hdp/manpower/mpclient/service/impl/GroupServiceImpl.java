@@ -16,17 +16,22 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +44,36 @@ import java.util.Map;
  */
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements GroupService {
+
+    @Override
+    @SuppressWarnings("all")
+    @Transactional(rollbackFor = Exception.class)
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+
+        // 错误数组
+        List<ExcelCheckErrDTO> errList = new ArrayList<>();
+
+        // 批量新增、编辑组织信息
+        List<Group> groupList = new ArrayList<>();
+
+        if (importType == 0) {
+            for(int i=0;i<excelList.size();i++){
+                GroupAddVM entity = (GroupAddVM)excelList.get(i);
+                Group group = new Group();
+                BeanUtils.copyProperties(entity, group);
+                groupList.add(group);
+            }
+            //add
+        }else {
+            //update
+        }
+        // 保存新增、修改组织信息
+        if(ObjectUtil.isEmpty(errList)) {
+            this.saveOrUpdateBatch(groupList, 200);
+        }
+        return errList;
+    }
+
     @Override
     public List<Map<String, String>> groupList() {
         return baseMapper.groupList();

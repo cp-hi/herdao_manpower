@@ -20,7 +20,6 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -34,7 +33,7 @@ import java.util.Map;
  * @author yangrr
  * @date 2020-09-11 11:57:16
  */
-public interface GroupService extends IService<Group> {
+public interface GroupService extends HdpService<Group> {
     List<Map<String, String>> groupList();
 
     /**

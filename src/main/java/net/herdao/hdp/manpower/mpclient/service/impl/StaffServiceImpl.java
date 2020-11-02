@@ -66,7 +66,6 @@ import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
-import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
@@ -87,9 +86,6 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
     @Autowired
 	private StaffeducationService staffeducationService;
-
-	@Autowired
-	private UserposthistoryService userposthistoryService;
 
 	@Autowired
 	private WorkexperienceService workexperienceService;
