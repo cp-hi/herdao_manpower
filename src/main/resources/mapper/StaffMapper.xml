@@ -127,6 +127,7 @@
 		<result column="id" property="id" />
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />
+		<result column="leafNode" property="leaf_node" />
 		<result column="parentOrgName" property="parent_org_name" />
 		<result column="parentOrgCode" property="parent_org_code" />
 		<collection column="{orgCode=org_code}" property="staffComponents" ofType="StaffComponentVO" javaType="java.util.ArrayList" select="selectStaffs"/>
@@ -152,52 +153,45 @@
 		<result column="total" property="total" />
 	</resultMap>
 	
-	<!-- 查询部门信息组件  -->
-	<select id="selectOrganizations" resultMap="organizationComponentMap">
-		SELECT 
-			org.id,
-			org.org_name, 
-			org.org_code,
-		    orgp.org_name AS parent_org_name, 
-			orgp.org_code AS parent_org_code
-		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
-		<where>
-			AND org.parent_id IS NULL
-		</where>
-	</select>
 	
+	<!-- 员工组件 sql -->
 	<sql id="selectOrganizationComponentSql">
 		SELECT 
 			org.id,
 			org.org_name, 
 			org.org_code,
-			orgp.org_name AS parent_org_name, 
+			CASE IFNULL(nbs, 0) WHEN 0 THEN 1 ELSE 0 END leaf_node,
+		    orgp.org_name AS parent_org_name, 
 			orgp.org_code AS parent_org_code
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+		LEFT JOIN ( SELECT COUNT(1) nbs, orgd.parent_id FROM mp_organization orgd WHERE orgd.is_stop = 0 GROUP BY orgd.parent_id ) corg ON corg.parent_id = org.id 
+		WHERE org.is_stop = 0
 	</sql>
+	
+	<!-- 查询部门信息组件  -->
+	<select id="selectOrganizations" resultMap="organizationComponentMap">
+		<include refid="selectOrganizationComponentSql"></include>
+		AND org.parent_id IS NULL
+	</select>
 	
 	<!-- 查询子组织信息 -->
 	<select id="selectOrganizationChildrens" resultMap="organizationComponentMap">
 		<include refid="selectOrganizationComponentSql"></include>
-		<where>
-			<if test="orgCode != null">
-				AND orgp.org_code = #{orgCode}
-				AND org.org_tree_level &lt;= 2
-			</if>
-		</where>
+		<if test="orgCode != null">
+			AND orgp.org_code = #{orgCode}
+			AND org.org_tree_level &lt;= 2
+		</if>
 	</select>
 	
 	<!-- 查询子组织信息 -->
 	<select id="selectOrganizationComponentList" resultMap="organizationComponentMap">
 		<include refid="selectOrganizationComponentSql"></include>
-		<where>
-			<if test="orgCode != null">
-				AND orgp.org_code = #{orgCode}
-			</if>
-			<if test="searchText != null">
-				AND org.org_name LIKE CONCAT(#{searchText},'%')
-			</if>
-		</where>
+		<if test="orgCode != null">
+			AND orgp.org_code = #{orgCode}
+		</if>
+		<if test="searchText != null">
+			AND org.org_name LIKE CONCAT(#{searchText},'%')
+		</if>
 	</select>
 	
 	<!-- 统计部门/组织下的人员数 （包括下级部门/组织人员）-->
@@ -208,11 +202,16 @@
 		FROM mp_staff sf
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
 		INNER JOIN mp_organization org ON org.id = ut.org_dept_id
+		<where>
+			<if test="orgCode != null">
+				 org.org_code LIKE CONCAT(#{orgCode},'%')
+			</if>
+		</where>
 		GROUP BY org.org_code
 		<!-- 查询条件待完善 -->
 	</select>
 	
-	<!-- 查询当前部门下的所有人员 -->
+	<!-- 查询组织下所有人员信息 -->
 	<select id="selectStaffs" resultMap="staffComponentMap">
 		SELECT 
 			sf.id, 
@@ -231,9 +230,11 @@
 		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
 			AND ut.office_post_type = '1'
-			AND org.org_code = #{orgCode}
+			<if test="orgCode != null">
+				AND org.org_code LIKE CONCAT(#{orgCode},'%')
+			</if>
 			<if test="searchText != null">
-				AND org.org_name LIKE CONCAT(#{searchText},'%')
+				AND sf.staff_name LIKE CONCAT(#{searchText},'%')
 			</if>
 		</where>
 	</select>

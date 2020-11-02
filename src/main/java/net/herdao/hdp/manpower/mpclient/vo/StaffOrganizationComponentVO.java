@@ -24,37 +24,40 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 员工部门/组织组件Vo
+ * 员工组件Vo
  *
  * @author shuling
  * @date 2020-09-24 15:01:48
  */
 @Data
-@ApiModel(value = "员工部门/组织组件")
+@ApiModel(value = "员工组件")
 public class StaffOrganizationComponentVO {
 
-	@ApiModelProperty(value = "部门/组织id")
+	@ApiModelProperty(value = "组织id")
 	private Long id;
 	
-	@ApiModelProperty(value = "部门/组织名称")
+	@ApiModelProperty(value = "组织名称")
 	private String orgName;
 
-	@ApiModelProperty(value = "部门/组织编码")
+	@ApiModelProperty(value = "组织编码")
 	private String orgCode;
 	
-	@ApiModelProperty(value = "父部门/组织名称")
+	@ApiModelProperty(value = "是否叶子节点（值： true 是、 值： false 否）")
+	private Boolean leafNode;
+	
+	@ApiModelProperty(value = "父组织名称")
 	private String parentOrgName;
 
-	@ApiModelProperty(value = "父部门/组织编码")
+	@ApiModelProperty(value = "父组织编码")
 	private String parentOrgCode;
 	
-	@ApiModelProperty(value = "部门/组织员工数")
+	@ApiModelProperty(value = "组织员工数")
 	private Integer staffTotal;
 	
 	@ApiModelProperty(value = "员工信息")
 	private List<StaffComponentVO> staffComponents;
 	
-	@ApiModelProperty(value = "子部门/组织员工数")
+	@ApiModelProperty(value = "子组织员工数")
 	private List<StaffOrganizationComponentVO> staffOrganizationComponents;
 	
 }

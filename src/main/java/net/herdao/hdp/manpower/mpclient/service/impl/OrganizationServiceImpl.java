@@ -581,13 +581,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     void setOrgFullCodeAndOrgFullName(Organization organization, Organization parentOrganization) {
     	
     	String pathSeparator = "/";
-    	
     	if(ObjectUtil.isNull(parentOrganization)) {
-    		
     		// 取当前组织信息
     		organization.setOrgFullname(pathSeparator + organization.getOrgName());
     	}else {
-    		
     		// 父orgFull + org
     		organization.setOrgFullname(parentOrganization.getOrgName() + pathSeparator + organization.getOrgName());
     	} 	

@@ -33,6 +33,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
 /**
@@ -53,10 +54,21 @@ public interface StaffService extends HdpService<Staff> {
 	/**
 	 * 查询员工信息（组件）
 	 * 
+	 * @param orgCode
 	 * @param searchText
 	 * @return
 	 */
-	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String searchText);
+	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String orgCode, String searchText);
+	
+	/**
+	 * 查询组织下所有人员信息
+	 * 
+	 * @param orgCode
+	 * @param searchText
+	 * @return
+	 */
+	public R<List<StaffComponentVO>> selectStaffs(String orgCode, String searchText);
+	
 	
 	Map<String, Object> queryCount();
 
