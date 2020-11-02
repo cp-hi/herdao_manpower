@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.sys.mapper.SelectMapper">
+	  <!-- 省份数据-->
+      <select id="getProvince" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+        select a.sz_code value,
+        a.name label
+		from sys_city a
+		where a.sz_code like '__0000'
+		order by a.sz_code
+      </select>
+      
+      <!-- 市数据-->
+      <select id="getCity" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+        select a.sz_code value,
+        a.name label
+		from sys_city a
+		<where>
+		<if test="provinceCode != null">
+		and a.sz_code like CONCAT(left(#{provinceCode},2),'%')
+		and a.sz_code != #{provinceCode}
+		</if>
+		</where>
+		order by a.sz_code
+      </select>
+            
+      <!-- 城市配置数据-->
+      <select id="getCitySet" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+        select a.city_code value,
+        a.city_name label
+		from mp_city_set a
+		order by a.city_name
+      </select>
+</mapper>

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
@@ -16,17 +17,20 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
+import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import net.herdao.hdp.manpower.sys.mapper.SelectMapper;
 import net.herdao.hdp.manpower.sys.service.SelectService;
 
 @Service
 @AllArgsConstructor
-public class SelectServiceImpl implements SelectService{
+public class SelectServiceImpl extends ServiceImpl<SelectMapper, SelectDTO> implements SelectService{
 
 	private final GroupService groupService;
 	
@@ -163,4 +167,21 @@ public class SelectServiceImpl implements SelectService{
 		return selectDTOList;
 	}
 
+	@Override
+	public List<SelectDTO> getProvince(){
+		List<SelectDTO> list = this.baseMapper.getProvince();
+		return list;
+	}
+
+	@Override
+	public List<SelectDTO> getCity(String provinceCode){
+		List<SelectDTO> list = this.baseMapper.getCity(provinceCode);
+		return list;
+	}
+
+	@Override
+	public List<SelectDTO> getCitySet(){
+		List<SelectDTO> list = this.baseMapper.getCitySet();
+		return list;
+	}
 }
