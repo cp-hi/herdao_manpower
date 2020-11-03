@@ -111,7 +111,7 @@ public class OrgSetController {
 	@PostMapping("/item")
 	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
 	public R save(@RequestBody SysDictItem sysDictItem) {
-		long code = sysSequenceService.getNext("staff_code");
+		long code = sysSequenceService.getNext("org_set");
 		sysDictItem.setSort((int)code);
 		sysDictItem.setValue(code+"");
 		return R.ok(sysDictItemService.save(sysDictItem));
