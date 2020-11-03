@@ -220,6 +220,14 @@
 			<if test="searchText != null">
 				AND sf.staff_name LIKE CONCAT(#{searchText},'%')
 			</if>
+			<!-- 根据组织编码查询用户 -->
+			<if test="batchSelectOrgCodes !=null and batchSelectOrgCodes.length>0">
+				AND ( 1 != 1
+					<foreach item="orCode" index="index" collection="batchSelectOrgCodes">
+		               OR org.org_code LIKE CONCAT(#{orCode},'%')
+		       		</foreach>
+	        		)
+			</if>
 		</where>
 	</select>
 	

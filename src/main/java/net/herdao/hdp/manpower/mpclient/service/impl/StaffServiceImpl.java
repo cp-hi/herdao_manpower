@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,6 +24,7 @@ import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffArchiveDTO;
@@ -148,17 +148,15 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
     
 	@SuppressWarnings("all")
 	@Override
-	public R<List> selectStaffOrganizationComponent(String orgCode, String searchText) {
+	public R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String searchText) {
 		
+		// 组织、员工信息集合
 		List stfList = new ArrayList<>();
 		
 		// 默认查询一级组织信息
-		if(StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
+		if(StrUtil.isAllBlank(orgCode, searchText, batchSelectOrgCodes)) {
 			 stfList.addAll(recursion(this.baseMapper.selectOrganizations(), null));
 		}else {
-			
-			List<StaffOrganizationComponentVO> orgs = new ArrayList<StaffOrganizationComponentVO>();
-			
 			if(StrUtil.isNotBlank(orgCode)) {
 				// 子组织信息
 				List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizationComponentList(orgCode);
@@ -166,16 +164,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				if(ObjectUtil.isNotEmpty(organizations)) {
 					stfList.addAll(recursion(organizations, orgCode));
 				}
-				// 组织下员工信息
-				List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, null);
-				if(ObjectUtil.isNotEmpty(staffs)) {
-					stfList.addAll(staffs);
-				}
-			}else{
-				List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(null, searchText);
-				if(ObjectUtil.isNotEmpty(staffs)) {
-					stfList.addAll(staffs);
-				}
+			}
+			
+			// 组织下员工信息
+			List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, (StrUtil.isBlank(batchSelectOrgCodes) ? "" : batchSelectOrgCodes).split(ManpowerContants.EN_SEPARATOR), searchText);
+			if(ObjectUtil.isNotEmpty(staffs)) {
+				stfList.addAll(staffs);
 			}
 		}
 		return R.ok(stfList);

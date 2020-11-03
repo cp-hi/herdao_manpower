@@ -339,13 +339,14 @@ public class StaffController extends HdpBaseController{
 
      * @return
      */
-    @ApiOperation(value = "员工选择组件", notes = "不传参数默认加载前二级组织信息，传orgCode 查询子组织和员工信息，模糊查询只查询员工信息（不带树形结构）")
+    @ApiOperation(value = "员工选择组件", notes = "不传参数默认加载前二级组织信息，传orgCode 查询子组织和员工信息，模糊查询只查询员工信息（不带树形结构），以下参数根据场景传递")
     @GetMapping("/selectStaffOrganizationComponent")
     @ApiImplicitParams({@ApiImplicitParam(name="orgCode", value="组织编码"),
-    					@ApiImplicitParam(name="searchText", value="模糊查询条件")
+    					@ApiImplicitParam(name="searchText", value="模糊查询条件"),
+    					@ApiImplicitParam(name="batchSelectOrgCodes", value="批量选中组织编码多个以：“,”分隔开， 例如：001,002")
     })
-    public R<List> selectStaffOrganizationComponent(String orgCode, String searchText) {
-    	return staffService.selectStaffOrganizationComponent(orgCode, searchText);
+    public R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String searchText) {
+    	return staffService.selectStaffOrganizationComponent(orgCode, batchSelectOrgCodes, searchText);
     }
 
 
