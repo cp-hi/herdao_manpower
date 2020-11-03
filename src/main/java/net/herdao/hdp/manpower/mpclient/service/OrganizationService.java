@@ -163,11 +163,13 @@ public interface OrganizationService extends HdpService<Organization>{
     OrganizationFormVO findOrgDetails(Long id);
     
     /**
- 	 * 查询组织信息（组件）
- 	 * 
- 	 * @return
- 	 */
-    R<List<OrganizationComponentVO>> selectOrganizations();
+     * 查询组织信息（组件）
+     * 
+     * @param orgCode
+     * @param searchText
+     * @return
+     */
+    R<List<OrganizationComponentVO>> selectOrganizations(String orgCode, String searchText);
     
     /**
      * 查询子组织信息（组件）
