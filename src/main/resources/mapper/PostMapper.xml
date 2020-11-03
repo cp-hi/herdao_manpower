@@ -25,8 +25,8 @@
         <association property="pipelineName" column="pipeline_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>
 
-        <association property="jobGrade" column="job_level_id1" javaType="jobGrade"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getByJobLevelId" />
+        <association property="jobGradeName" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId" />
 
         <association property="jobLevelName1" column="job_level_id1" javaType="jobLevel"
                      select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
@@ -50,7 +50,7 @@
         </if>
         <if test="t.postName != null">
             <bind name="likeTxt" value="'%'+t.postName+'%'"/>
-            and concat(POST_CODE,POST_NAME) like #{likeTxt}
+            and (POST_CODE like #{likeTxt} or POST_NAME like #{likeTxt})
         </if>
         <if test="t.sectionId != null">
             AND section_id = #{t.sectionId}
@@ -84,33 +84,21 @@
 
     <resultMap id="postShortVOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
         <id column="id" property="id"/>
-        <result property="stop" column="IS_STOP"/>
         <result property="groupId" column="GROUP_ID"/>
-        <result property="sectionId" column="section_id"/>
-        <result property="pipelineId" column="pipeline_id"/>
-        <result property="jobLevelId1" column="job_Level_id1"/>
-        <result property="jobLevelId2" column="job_Level_id2"/>
-        <result property="postSeqId" column="post_seq_id"/>
 
         <association property="sectionName" column="section_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectEntityName"/>
 
-        <association property="groupName" column="group_id" javaType="string"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectEntityName"/>
-
         <association property="pipelineName" column="pipeline_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>
 
-        <association property="jobGrade" column="job_level_id1" javaType="jobGrade"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getByJobLevelId" />
+        <association property="jobGradeName" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId" />
 
         <association property="postSeqDTO" column="post_seq_id"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper.getPostSeqDTO"
-                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
+                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper.getPostSeqDTO"/>
     </resultMap>
-
-
-
 
     <select id="postList" resultMap="postShortVOMap">
        	select * from mp_post where group_id = #{groupId} and del_flag != 1 and is_stop != 1

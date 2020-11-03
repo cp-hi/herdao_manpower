@@ -19,4 +19,9 @@ public interface JobGradeMapper extends EntityMapper<JobGrade> {
     @Select("select * from mp_job_grade g where  g.id =" +
             "(select job_grade_id from mp_job_level l WHERE l.id=#{jobLevelId,jdbcType=BIGINT})")
     JobGrade getByJobLevelId(Long jobLevelId);
+
+    @Select("select job_grade_name from mp_job_grade g where  g.id =" +
+            "(select job_grade_id from mp_job_level l WHERE l.id=#{jobLevelId,jdbcType=BIGINT})")
+    String getJobGradeByJobLevelId(Long jobLevelId);
+
 }

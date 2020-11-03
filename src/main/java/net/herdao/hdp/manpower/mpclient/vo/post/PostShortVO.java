@@ -31,15 +31,12 @@ public class PostShortVO {
     private Long groupId;
 
     @ApiModelProperty("版块")
-    @DtoField(objField = "sectionName")
     private String sectionName;
 
     @ApiModelProperty("管线")
-    @DtoField(objField = "pipelineName")
     private String pipelineName;
 
     @ApiModelProperty("职等")
-    @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
     @ApiModelProperty("岗位序列")

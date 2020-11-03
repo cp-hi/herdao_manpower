@@ -32,7 +32,7 @@ public class PostDTO extends Post {
     private String pipelineName;
 
     @ApiModelProperty("职等")
-    private JobGrade jobGrade;
+    private String jobGradeName;
 
     @ApiModelProperty("所属集团")
     private String groupName;
