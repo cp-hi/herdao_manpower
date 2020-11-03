@@ -90,6 +90,8 @@ public interface EntityService<T> extends IService<T> {
      */
     void saveVerify(T t);
 
+    void saveVerify(T t,StringBuffer buffer);
+
     /**
      * 导入校验
      *

@@ -33,7 +33,7 @@
     </select>
 
     <select id="getLastEntityCode" resultType="string" parameterType="jobLevel"  >
-      SELECT IFNULL(job_level_code,'000001') FROM mp_job_level
+      SELECT IFNULL(job_level_code,'000000') FROM mp_job_level
       WHERE id=(select max(id) from mp_job_level where job_grade_id=#{jobGradeId})
     </select>
 

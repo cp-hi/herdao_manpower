@@ -43,21 +43,18 @@ public class PostFormVO {
     private Long groupId;
 
     @ApiModelProperty("所属集团")
-    @DtoField(objField = "group.groupName")
     private String groupName;
 
     @ApiModelProperty("版块")
     private Long sectionId;
 
     @ApiModelProperty("版块")
-    @DtoField(objField = "section.sectionName")
     private String sectionName;
 
     @ApiModelProperty("管线")
     private Long pipelineId;
 
     @ApiModelProperty("管线")
-    @DtoField(objField = "pipeline.pipelineName")
     private String pipelineName;
 
     @ApiModelProperty("职等")
@@ -74,11 +71,11 @@ public class PostFormVO {
     private Long jobLevelId2;
 
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevel1.id", "jobLevel2.id"}, symbol = ",")
+    @DtoField(objField = {"jobLevelId1", "jobLevelId2"}, symbol = ",")
     private String jobLevelId;
 
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
+    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, symbol = "~")
     private String jobLevelName;
 
     @ApiModelProperty(value = "在职员工数")

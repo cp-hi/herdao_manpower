@@ -98,11 +98,13 @@ public class DtoConverter {
                 String currObjName = path[i];
                 if (null == currObj) continue;
                 Field field = AnnotationUtils.getFieldByName(currObj, currObjName);
+                if (null == field) continue;
                 field.setAccessible(true);
                 currObj = field.get(currObj);
             }
             if (null == currObj) continue;
             Field fieldVal = AnnotationUtils.getFieldByName(currObj, fieldName);
+            if (null == fieldVal) continue;
             fieldVal.setAccessible(true);
             Object objVal = fieldVal.get(currObj);
             String value = "";
