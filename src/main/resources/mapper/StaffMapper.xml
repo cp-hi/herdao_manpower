@@ -228,6 +228,7 @@
 	            </when>
 	            <!-- 根据员工工号查询员工信息 -->
 	            <when test="staffCodes !=null and staffCodes.length>0">
+	            	AND sf.staff_code IN
 	            	<foreach item="staffCode" index="index" collection="staffCodes" open="(" close=")" separator=",">
 					  #{staffCode}
 					</foreach>

@@ -154,7 +154,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		List stfList = new ArrayList<>();
 		
 		// 默认查询一级组织信息
-		if(StrUtil.isAllBlank(orgCode, searchText, batchSelectOrgCodes)) {
+		if(StrUtil.isAllBlank(orgCode, staffCodes, batchSelectOrgCodes, searchText)) {
 			 stfList.addAll(recursion(this.baseMapper.selectOrganizations(), null));
 		}else {
 			if(StrUtil.isNotBlank(orgCode)) {
@@ -165,10 +165,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 					stfList.addAll(recursion(organizations, orgCode));
 				}
 			}
-			
 			// 组织下员工信息
-			List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, (StrUtil.isBlank(batchSelectOrgCodes) ? "" : batchSelectOrgCodes).split(ManpowerContants.EN_SEPARATOR), 
-					(StrUtil.isBlank(staffCodes) ? "" : staffCodes).split(ManpowerContants.EN_SEPARATOR),searchText);
+			List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, (StrUtil.isBlank(batchSelectOrgCodes) ? null  : batchSelectOrgCodes.split(ManpowerContants.EN_SEPARATOR)), 
+					(StrUtil.isBlank(staffCodes) ? null : staffCodes.split(ManpowerContants.EN_SEPARATOR)), searchText);
 			if(ObjectUtil.isNotEmpty(staffs)) {
 				stfList.addAll(staffs);
 			}
