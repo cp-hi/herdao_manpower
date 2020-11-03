@@ -332,7 +332,7 @@ public class OrganizationController extends HdpBaseController{
 	}
 
     /**
-     * 部门选择组件
+     * 组织选择组件
      * 
      * @return
      */
