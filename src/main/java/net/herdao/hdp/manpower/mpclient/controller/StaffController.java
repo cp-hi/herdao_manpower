@@ -19,10 +19,9 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -60,7 +58,6 @@ import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
-import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 
 
 /**
@@ -347,7 +344,7 @@ public class StaffController extends HdpBaseController{
     @ApiImplicitParams({@ApiImplicitParam(name="orgCode", value="组织编码"),
     					@ApiImplicitParam(name="searchText", value="模糊查询条件")
     })
-    public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String orgCode, String searchText) {
+    public R<List> selectStaffOrganizationComponent(String orgCode, String searchText) {
     	return staffService.selectStaffOrganizationComponent(orgCode, searchText);
     }
 

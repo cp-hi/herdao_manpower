@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -145,31 +146,39 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		return errList;
 	}
     
+	@SuppressWarnings("all")
 	@Override
-	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String orgCode, String searchText) {
+	public R<List> selectStaffOrganizationComponent(String orgCode, String searchText) {
+		
+		List stfList = new ArrayList<>();
 		
 		// 默认查询一级组织信息
 		if(StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
-			return R.ok(recursion(this.baseMapper.selectOrganizations(), null));
+			 stfList.addAll(recursion(this.baseMapper.selectOrganizations(), null));
 		}else {
 			
 			List<StaffOrganizationComponentVO> orgs = new ArrayList<StaffOrganizationComponentVO>();
-			StaffOrganizationComponentVO staffOrganizationComponentVO = new StaffOrganizationComponentVO();
 			
 			if(StrUtil.isNotBlank(orgCode)) {
 				// 子组织信息
 				List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizationComponentList(orgCode);
-				staffOrganizationComponentVO.setStaffOrganizationComponents(organizations);
+				// 设置子组织信息
+				if(ObjectUtil.isNotEmpty(organizations)) {
+					stfList.addAll(recursion(organizations, orgCode));
+				}
 				// 组织下员工信息
 				List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, null);
-				staffOrganizationComponentVO.setStaffComponents(staffs);
+				if(ObjectUtil.isNotEmpty(staffs)) {
+					stfList.addAll(staffs);
+				}
 			}else{
 				List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(null, searchText);
-				staffOrganizationComponentVO.setStaffComponents(staffs);
+				if(ObjectUtil.isNotEmpty(staffs)) {
+					stfList.addAll(staffs);
+				}
 			}
-			orgs.add(staffOrganizationComponentVO);
-			return R.ok(recursion(orgs, orgCode));
 		}
+		return R.ok(stfList);
 	}
 	
 	public List<StaffOrganizationComponentVO> recursion(List<StaffOrganizationComponentVO> organizations, String orgCode){
@@ -181,33 +190,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			Integer staffTotal = sumKeyLike(taffTotalComponentMap, organization.getOrgCode());
 			organization.setStaffTotal(staffTotal);
 		});
-				
-		organizations.forEach(organization -> {
-			List<StaffOrganizationComponentVO> staffOrganizationComponents = organization.getStaffOrganizationComponents();
-			if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
-				recursionOrganization(staffOrganizationComponents, taffTotalComponentMap);
-			}
-		});
 		return organizations;
-	}
-	
-	
-	/**
-	 * 递归合计部门/组织人员数
-	 * @param staffOrganizationComponents
-	 * @param taffTotalComponentMap
-	 */
-	public void recursionOrganization(List<StaffOrganizationComponentVO> staffOrganizationComponents, Map<String, Integer> taffTotalComponentMap) {
-		if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
-			staffOrganizationComponents.forEach(organizationChildren ->{
-				// 子部门/组织员工数
-				if(ObjectUtil.isNotNull(organizationChildren)) {
-					Integer staffTotal = sumKeyLike(taffTotalComponentMap, organizationChildren.getOrgCode());
-					organizationChildren.setStaffTotal(staffTotal);
-					recursionOrganization(organizationChildren.getStaffOrganizationComponents(), taffTotalComponentMap);
-				}
-			});
-		}
 	}
 	
 	/**
