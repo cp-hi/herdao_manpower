@@ -27,23 +27,22 @@ public class PostShortVO {
     @ApiModelProperty("岗位编码")
     private String postCode;
 
-
     @ApiModelProperty("所属集团")
     private Long groupId;
 
     @ApiModelProperty("版块")
-    @DtoField(objField = "section.sectionName")
+    @DtoField(objField = "sectionName")
     private String sectionName;
 
     @ApiModelProperty("管线")
-    @DtoField(objField = "pipeline.pipelineName")
+    @DtoField(objField = "pipelineName")
     private String pipelineName;
 
     @ApiModelProperty("职等")
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
-    @ApiModelProperty("职等")
-    @DtoField(objField = "postSeqDTO.postSeqName")
+    @ApiModelProperty("岗位序列")
+    @DtoField(objField = "postSeqName")
     private String postSeqName;
 }
