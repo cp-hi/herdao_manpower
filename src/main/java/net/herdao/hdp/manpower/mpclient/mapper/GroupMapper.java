@@ -22,6 +22,7 @@ import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @date 2020-09-11 11:57:16
  */
 @Mapper
+@Component
 public interface GroupMapper extends BaseMapper<Group> {
     List<Map<String, String>> groupList();
 

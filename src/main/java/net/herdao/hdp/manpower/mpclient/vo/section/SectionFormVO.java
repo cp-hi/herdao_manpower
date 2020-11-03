@@ -15,10 +15,13 @@ import lombok.Data;
 @Data
 @ApiModel(value = "板块管理-表单信息，用于新增和编辑")
 public class SectionFormVO {
+
     @ApiModelProperty("ID")
     private Long id;
+
     @ApiModelProperty("板块名称")
     private String sectionName;
+
     @ApiModelProperty("所属集团")
     private Long groupId;
 

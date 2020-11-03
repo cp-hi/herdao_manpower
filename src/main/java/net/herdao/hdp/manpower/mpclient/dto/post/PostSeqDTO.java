@@ -26,7 +26,7 @@ public class PostSeqDTO extends PostSeq {
     private PostSeqDTO parent;
 
     @ApiModelProperty("集团")
-    private Group group;
+    private String groupName;
 
     @ApiModelProperty("是否最末节点")
     private Boolean isLeaf;

@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper">
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper" >
 
     <select id="postSeqList" resultType="map">
        	select id,POST_SEQ_CODE AS code,POST_SEQ_NAME AS name,
@@ -16,8 +16,8 @@
         <result property="groupId" column="GROUP_ID"/>
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
         <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
-        <association property="group" column="group_id" javaType="group"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectIgnoreDel" />
+        <association property="groupName" column="group_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectEntityName"/>
     </resultMap>
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">

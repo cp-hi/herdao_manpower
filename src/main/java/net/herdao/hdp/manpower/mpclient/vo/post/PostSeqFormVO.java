@@ -26,14 +26,14 @@ public class PostSeqFormVO {
     @ApiModelProperty("岗位序列编码")
     private String postSeqCode;
 
-    @ApiModelProperty("集团ID")
+    @ApiModelProperty("所属集团")
     private Long groupId;
 
     @ApiModelProperty("集团")
-    @DtoField(objField = {"group.groupName"})
+//    @DtoField(objField = {"group.groupName"})
     private String groupName;
 
-    @ApiModelProperty("父ID")
+    @ApiModelProperty("父级节点")
     private Long parentId;
 
     @ApiModelProperty("父级名称")
