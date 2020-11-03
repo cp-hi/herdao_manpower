@@ -30,10 +30,9 @@ public class PostSeqFormVO {
     private Long groupId;
 
     @ApiModelProperty("集团")
-//    @DtoField(objField = {"group.groupName"})
     private String groupName;
 
-    @ApiModelProperty("父级节点")
+    @ApiModelProperty("上级岗位序列")
     private Long parentId;
 
     @ApiModelProperty("父级名称")
