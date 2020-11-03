@@ -190,15 +190,21 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void saveVerify(T t) {
         StringBuffer buffer = new StringBuffer();
-        saveVerify(t, buffer);
-        if (StringUtils.isNotBlank(buffer))
-            throw new RuntimeException(buffer.toString());
+        this.saveVerify(t, buffer);
+        handleErrMsg(buffer.toString());
     }
 
     @Override
     public void saveVerify(T t, StringBuffer buffer) {
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
+    }
+
+    protected void handleErrMsg(String errMsg) {
+        if (null != errMsg && errMsg.startsWith("；")) {
+            errMsg = errMsg.replaceFirst("；", "");
+            throw new RuntimeException(errMsg);
+        }
     }
 
     @Override
@@ -242,6 +248,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveList(List<T> dataList, Integer batchCount) {
+        //TODO 验证批次内是否有重名，以及不同集团
         if (0 >= batchCount) batchCount = 50;
         List<List<T>> batch = Lists.partition(dataList, batchCount);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);

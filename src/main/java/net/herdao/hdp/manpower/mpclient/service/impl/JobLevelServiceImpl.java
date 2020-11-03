@@ -43,11 +43,17 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
 
     @Override
     public void saveVerify(JobLevel jobLevel) {
-        Boolean result = baseMapper.checkDuplicateNameInJobGrade(jobLevel);
-        if (result) throw new RuntimeException("该职等下已经有相同名称的职级");
-        super.saveVerify(jobLevel);
+        StringBuffer buffer = new StringBuffer();
+        this.saveVerify(jobLevel, buffer);
+        handleErrMsg(buffer.toString());
     }
 
+    @Override
+    public void saveVerify(JobLevel jobLevel, StringBuffer buffer) {
+        Boolean result = baseMapper.checkDuplicateNameInJobGrade(jobLevel);
+        if (result) buffer.append("；该职等下已经有相同名称的职级");
+        super.saveVerify(jobLevel, buffer);
+    }
 
     @Override
     public void addEntity(JobLevel jobLevel, Object excelObj) {
