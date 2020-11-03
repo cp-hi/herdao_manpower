@@ -27,7 +27,9 @@ import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
+import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,9 @@ import java.util.Map;
  */
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements GroupService {
+
+    @Autowired
+    private SysSequenceService sysSequenceService;
 
     @Override
     @SuppressWarnings("all")
@@ -94,6 +99,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     public boolean groupSave(GroupDetailDTO groupForm){
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
+        long code = sysSequenceService.getNext("group_code");
+        String groupCode = "JT" + code;
+        group.setGroupCode(groupCode);
         return this.save(group);
     }
 
