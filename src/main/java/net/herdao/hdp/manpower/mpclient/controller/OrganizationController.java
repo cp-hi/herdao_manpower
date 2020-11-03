@@ -336,7 +336,7 @@ public class OrganizationController extends HdpBaseController{
      * 
      * @return
      */
-    @ApiOperation(value = "组织选择组件", notes = "默认加载前二级组织信息，传orgCode查询子组织和员工信息，传 searchText 模糊查询组织信息列表（不带属性结构）")
+    @ApiOperation(value = "组织选择组件", notes = "默认加载前二级组织信息，传orgCode查询子组织和员工信息，传 searchText 模糊查询组织信息列表（不带树形结构）")
     @GetMapping("/selectOrganizationComponent")
     @ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码"),
     					 @ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
