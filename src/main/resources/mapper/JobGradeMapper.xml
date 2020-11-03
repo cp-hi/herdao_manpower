@@ -11,7 +11,10 @@
     </resultMap>
 
     <select id="page" resultMap="jobGradeDTOMap" parameterType="jobGrade">
-        select * from mp_job_grade where  del_flag !=1 and group_id = #{t.groupId}
+        select * from mp_job_grade where  del_flag !=1
+        <if test="t.groupId != null">
+            and group_id = #{t.groupId}
+        </if>
         <if test="t.jobGradeName != null">
             <bind name="likeTxt" value="'%'+t.jobGradeName +'%'"/>
            and(job_grade_code like #{likeTxt} or job_grade_name like #{likeTxt})

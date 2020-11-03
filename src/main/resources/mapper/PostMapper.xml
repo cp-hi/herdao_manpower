@@ -44,7 +44,10 @@
     </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
-        select * from mp_post where del_flag !=1 and group_id = #{t.groupId}
+        select * from mp_post where del_flag !=1
+        <if test="t.groupId != null">
+            and group_id = #{t.groupId}
+        </if>
         <if test="t.stop != null">
             and is_stop = #{t.stop}
         </if>
