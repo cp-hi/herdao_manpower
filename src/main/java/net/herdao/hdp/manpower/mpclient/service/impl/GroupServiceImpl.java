@@ -32,11 +32,13 @@ import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.relation.RoleUnresolved;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,11 +77,10 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
                 renderMap.put(org.getOrgCode(), org.getId());
             });
         }
-
         if (importType == 0) {
             long code = sysSequenceService.getNext("group_code");
-            for(int i=0;i<excelList.size();i++){
-                GroupAddVM entity = (GroupAddVM)excelList.get(i);
+            for (int i = 0; i < excelList.size(); i++) {
+                GroupAddVM entity = (GroupAddVM) excelList.get(i);
                 Group group = new Group();
                 BeanUtils.copyProperties(entity, group);
                 String groupCode = "JT" + code;
@@ -115,7 +116,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
             if(groupList.size()!=0){
                 this.saveOrUpdateBatch(groupList, 200);
             }
-
+        } else {
+            //update
+            return errList;
         }
         return errList;
     }
@@ -126,7 +129,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public IPage groupPage(Page page, GroupListDTO group, String searchText){
+    public IPage groupPage(Page page, GroupListDTO group, String searchText) {
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
         map.put("searchText", searchText);
@@ -136,7 +139,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public boolean groupSave(GroupDetailDTO groupForm){
+    public boolean groupSave(GroupDetailDTO groupForm) {
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         long code = sysSequenceService.getNext("group_code");
@@ -146,17 +149,39 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
-    public boolean groupUpdate(GroupDetailDTO groupForm){
+    public boolean groupUpdate(GroupDetailDTO groupForm) {
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         return this.updateById(group);
     }
 
     @Override
-    public GroupDetailDTO getGroupById(Long id){
+    public GroupDetailDTO getGroupById(Long id) {
         Group group = this.getById(id);
         GroupDetailDTO form = new GroupDetailDTO();
         BeanUtils.copyProperties(group, form);
         return form;
+    }
+
+    @Override
+    public Group selectByName(String groupName, boolean need, StringBuffer buffer) {
+        Group group = baseMapper.selectByName(groupName);
+        String errMsg = "";
+        if (!need && null != group)  //不需要它但它不为空
+            //添加分号，因为批量导入需要所有错误信息
+            errMsg = "；已存在此集团" + groupName;
+        if (need && null == group)  //需要它但它为空
+            errMsg = "；不存在此集团" + groupName;
+        buffer.append(errMsg);
+        return group;
+    }
+
+    @Override
+    public Group selectByName(String groupName, boolean need) {
+        StringBuffer buffer = new StringBuffer();
+        Group group = this.selectByName(groupName, need, buffer);
+        if (StringUtils.isNotBlank(buffer.toString()))
+            throw new RuntimeException(buffer.toString());
+        return group;
     }
 }

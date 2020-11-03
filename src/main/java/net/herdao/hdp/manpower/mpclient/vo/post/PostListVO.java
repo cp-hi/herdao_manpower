@@ -40,17 +40,17 @@ public class PostListVO {
 
     @ExcelProperty("所属集团")
     @ApiModelProperty("所属集团")
-    @DtoField(objField = "group.groupName")
+//    @DtoField(objField = "group.groupName")
     private String groupName;
 
     @ExcelProperty("版块")
     @ApiModelProperty("版块")
-    @DtoField(objField = "section.sectionName")
+//    @DtoField(objField = "section.sectionName")
     private String sectionName;
 
     @ExcelProperty("管线")
     @ApiModelProperty("管线")
-    @DtoField(objField = "pipeline.pipelineName")
+//    @DtoField(objField = "pipeline.pipelineName")
     private String pipelineName;
 
     @ExcelProperty("职等")
@@ -60,7 +60,8 @@ public class PostListVO {
 
     @ExcelProperty("职级")
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
+//    @DtoField(objField = {"jobLevel1.jobLevelName", "jobLevel2.jobLevelName"}, symbol = "~")
+    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, symbol = "~")
     private String jobLevelName;
 
     @ExcelProperty("在职员工数")

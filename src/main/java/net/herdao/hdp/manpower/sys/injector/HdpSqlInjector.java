@@ -27,6 +27,7 @@ public class HdpSqlInjector extends DefaultSqlInjector {
         methodList.add(new SelectEntityCode());
         methodList.add(new SelectEntityName());
         methodList.add(new GetLastEntityCode());
+        methodList.add(new GetEntityByName());
         methodList.add(new CheckDuplicateName());
         return methodList;
     }

@@ -21,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName EntityServiceImpl
@@ -53,7 +55,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         log.setOperation(operation);
         log.setOperatorId(sysUser.getUserId());
         log.setOperator(sysUser.getUsername());
-        log.setContent(operation + baseMapper.getEntityName());
+        log.setContent(operation + getEntityName());
         log.setEntityClass(baseMapper.getEntityClass().getName());
         log.setOperatedTime(new Date());
         log.setObjId(Long.valueOf(objId));
@@ -186,7 +188,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void saveVerify(T t) {
         Boolean result = baseMapper.checkDuplicateName(t);
-        if (result) throw new RuntimeException("该集团下已经有相同名称的" + baseMapper.getEntityName());
+        if (result) throw new RuntimeException("该集团下已经有相同名称的" + getEntityName());
     }
 
     @Override
@@ -198,49 +200,30 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         this.saveVerify(t);
     }
 
-
     @Override
-    public void addEntity(T t, Object excelObj) {
-    }
-
-
-    @Override
-    public void updateEntity(T t, Object excelObj) {
-    }
-
-
-    @Override
-    public T chkEntityExists(String field, String value, boolean need, StringBuffer buffer) {
-        T t = this.getEntityByField(field, value);
-        String entityName = baseMapper.getEntityName();
+    public T chkEntityExists(String name, Long groupId, boolean need, StringBuffer buffer) {
+        T t = baseMapper.getEntityByName(name,groupId);
         String errMsg = "";
         if (!need && null != t)  //不需要它但它不为空
             //添加分号，因为批量导入需要所有错误信息
-            errMsg = "；已存在此" + entityName + "：" + value;
+            errMsg = "；该集团下已存在此" + getEntityName() + "：" + name;
         if (need && null == t)  //需要它但它为空
-            errMsg = "；不存在此" + entityName + "：" + value;
-
+            errMsg = "；该集团下不存在此" + getEntityName() + "：" + name;
         buffer.append(errMsg);
         return t;
     }
 
     @Override
-    public T chkEntityExists(String field, String value, boolean need) {
+    public T chkEntityExists(String name, Long groupId, boolean need) {
         StringBuffer buffer = new StringBuffer();
-        T t = this.chkEntityExists(field, value, need, buffer);
+        T t = this.chkEntityExists(name, groupId, need, buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
         return t;
     }
 
-
     @Override
-    public T getEntityByField(String field, String name) {
-        T t = getOne(new QueryWrapper<T>().eq(field, name));
-        return t;
-    }
-
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveList(List<T> dataList, Integer batchCount) {
         if (0 >= batchCount) batchCount = 50;
         List<List<T>> batch = Lists.partition(dataList, batchCount);

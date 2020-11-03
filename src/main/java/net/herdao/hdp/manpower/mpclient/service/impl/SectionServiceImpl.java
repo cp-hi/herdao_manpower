@@ -11,6 +11,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +26,9 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@AllArgsConstructor
 public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section> implements SectionService {
-
-    final GroupService groupService;
+    @Autowired
+    GroupService groupService;
 
     @Override
     public List<Map> sectionList(Long groupId) {
@@ -38,16 +38,16 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     @Override
     public void addEntity(Section section, Object excelObj) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
-        chkEntityExists("SECTION_NAME", excel.getSectionName(), false);
-        Group group = groupService.getGroupByName(excel.getGroupName());
+        Group group = groupService.selectByName(excel.getGroupName(), true);
+        chkEntityExists(excel.getSectionName(), group.getId(), false);
         section.setGroupId(group.getId());
     }
 
     @Override
     public void updateEntity(Section section, Object excelObj) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
-        Section tmp = chkEntityExists("SECTION_NAME", excel.getSectionName(), true);
-        Group group = groupService.getGroupByName(excel.getGroupName());
+        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         section.setGroupId(group.getId());
         section.setId(tmp.getId());
     }

@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * @ClassName DtoConverter
  * @Description DTO VO ENTITY之间的转换类
+ * ，配合@DtoField使用
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/10/16 8:31

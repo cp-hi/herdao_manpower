@@ -68,11 +68,19 @@ public interface EntityService<T> extends IService<T> {
     boolean delEntity(Serializable id);
 
     /**
+     * 停用/启用
+     *
      * @param id
      * @return
      */
     boolean stopEntity(Serializable id, boolean isStop);
 
+    /**
+     * 获取状态
+     *
+     * @param id
+     * @return
+     */
     boolean getStatus(Serializable id);
 
     /**
@@ -95,7 +103,8 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @param excelObj
      */
-    void addEntity(T t, Object excelObj);
+    default void addEntity(T t, Object excelObj) {
+    }
 
     /**
      * 编辑核验
@@ -103,44 +112,34 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @param excelObj
      */
-    void updateEntity(T t, Object excelObj);
+    default void updateEntity(T t, Object excelObj) {
+    }
 
 
     /**
      * 根据字段名和字段值获取字段
      * 并根据条件拼接错误信息
      *
-     * @param field  字段名
-     * @param value  字段值
+     * @param name   实体名称
      * @param need   是否需要它存在
      * @param buffer 拼接信息的StringBuffer，
      *               这样可以实体多数据返回，
      *               使用StringBuffer主要是为了线程安全
      * @return
      */
-    T chkEntityExists(String field, String value, boolean need, StringBuffer buffer);
+    T chkEntityExists(String name, Long groupId, boolean need, StringBuffer buffer);
 
     /**
      * 根据字段名和字段值获取字段
      * 并根据条件抛异常
      *
-     * @param field 字段名
-     * @param value 字段值
-     * @param need  是否需要它存在
+     * @param name 实体名称
+     * @param need 是否需要它存在
      * @return
      * @Author ljan
      */
-    T chkEntityExists(String field, String value, boolean need);
+    T chkEntityExists(String name, Long groupId, boolean need);
 
-
-    /**
-     * 根据字段名获取单个实体
-     *
-     * @param field
-     * @param name
-     * @return
-     */
-    T getEntityByField(String field, String name);
 
     /**
      * 批量保存 可以新增/修改
@@ -148,8 +147,6 @@ public interface EntityService<T> extends IService<T> {
      * @param dataList
      * @param batchCount
      */
-    @Transactional(rollbackFor = Exception.class)
     void saveList(List<T> dataList, Integer batchCount);
-
 
 }

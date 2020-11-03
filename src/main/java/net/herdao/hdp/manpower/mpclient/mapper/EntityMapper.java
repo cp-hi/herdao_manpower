@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName EntityMapper
@@ -133,4 +135,6 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @return
      */
     String getLastEntityCode(T t);
+
+   T getEntityByName(String name,Long groupId);
 }

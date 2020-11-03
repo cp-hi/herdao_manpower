@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -44,4 +45,7 @@ public interface GroupMapper extends BaseMapper<Group> {
     List<GroupListDTO> groupPage(Map<String, Object> map);
 
     Group selectIgnoreDel(Long id);
+
+    @Select("select * from mp_group where group_name = #{name, jdbcType=VARCHAR}")
+    Group selectByName(String name);
 }
