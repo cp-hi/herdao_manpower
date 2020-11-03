@@ -213,21 +213,29 @@
 		LEFT JOIN mp_post ps ON ps.id = ut.post_id
 		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
-			AND ut.office_post_type = '1'
-			<if test="orgCode != null">
-				AND org.org_code = #{orgCode}
-			</if>
-			<if test="searchText != null">
-				AND sf.staff_name LIKE CONCAT(#{searchText},'%')
-			</if>
-			<!-- 根据组织编码查询用户 -->
-			<if test="batchSelectOrgCodes !=null and batchSelectOrgCodes.length>0">
-				AND ( 1 != 1
-					<foreach item="orCode" index="index" collection="batchSelectOrgCodes">
-		               OR org.org_code LIKE CONCAT(#{orCode},'%')
-		       		</foreach>
-	        		)
-			</if>
+			 AND ( ut.office_post_type = '1' OR ut.id IS NULL )
+			 <choose>
+	            <when test="orgCode != null">
+	                AND org.org_code = #{orgCode}
+	            </when>
+	            <!-- 根据组织编码查询用户 -->
+	            <when test="batchSelectOrgCodes !=null and batchSelectOrgCodes.length>0">
+	            	AND ( 1 != 1
+						<foreach item="orCode" index="index" collection="batchSelectOrgCodes">
+			               OR org.org_code LIKE CONCAT(#{orCode},'%')
+			       		</foreach>
+		        		)
+	            </when>
+	            <!-- 根据员工工号查询员工信息 -->
+	            <when test="staffCodes !=null and staffCodes.length>0">
+	            	<foreach item="staffCode" index="index" collection="staffCodes" open="(" close=")" separator=",">
+					  #{staffCode}
+					</foreach>
+	            </when>
+	            <when test="searchText != null">
+	                AND sf.staff_name LIKE CONCAT(#{searchText},'%')
+	            </when>
+	        </choose>
 		</where>
 	</select>
 	
