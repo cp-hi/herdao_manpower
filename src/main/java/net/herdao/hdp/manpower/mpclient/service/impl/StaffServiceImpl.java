@@ -201,9 +201,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		if(ObjectUtil.isNotEmpty(staffOrganizationComponents)) {
 			staffOrganizationComponents.forEach(organizationChildren ->{
 				// 子部门/组织员工数
-				Integer staffTotal = sumKeyLike(taffTotalComponentMap, organizationChildren.getOrgCode());
-				organizationChildren.setStaffTotal(staffTotal);
-				recursionOrganization(organizationChildren.getStaffOrganizationComponents(), taffTotalComponentMap);
+				if(ObjectUtil.isNotNull(organizationChildren)) {
+					Integer staffTotal = sumKeyLike(taffTotalComponentMap, organizationChildren.getOrgCode());
+					organizationChildren.setStaffTotal(staffTotal);
+					recursionOrganization(organizationChildren.getStaffOrganizationComponents(), taffTotalComponentMap);
+				}
 			});
 		}
 	}
@@ -217,9 +219,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	 */
 	public Integer sumKeyLike(Map<String, Integer> dataMap, String keyLike) {
 		Integer valSum = 0;
-		for (Map.Entry<String, Integer> entity : dataMap.entrySet()) {
-			if (entity.getKey().startsWith(keyLike)) {
-				valSum += entity.getValue();
+		if(!StrUtil.isBlank(keyLike)) {
+			for (Map.Entry<String, Integer> entity : dataMap.entrySet()) {
+				if (entity.getKey().startsWith(keyLike)) {
+					valSum += entity.getValue();
+				}
 			}
 		}
 		return valSum;
