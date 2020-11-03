@@ -23,22 +23,23 @@ public class GroupUpdateVM {
     @ApiModelProperty(value="集团名称")
     private String groupName;
 
-    @ApiModelProperty(value="对应组织主键")
-    private Long orgId;
+    @ExcelProperty(value = "集团编码", index = 1)
+    @ApiModelProperty(value="集团编码")
+    private String groupCode;
 
-    @ExcelProperty(value = "对应组织编码", index = 1)
+    @ExcelProperty(value = "对应组织编码", index = 2)
     @ApiModelProperty(value="对应组织编码")
     private String orgCode;
 
-    @ExcelProperty(value = "排序", index = 2)
+    @ExcelProperty(value = "排序", index = 3)
     @ApiModelProperty(value="排序")
     private Integer sortNo;
 
-    @ExcelProperty(value = "绩效计算标准", index = 3)
+    @ExcelProperty(value = "绩效计算标准", index = 4)
     @ApiModelProperty(value="绩效计算标准")
     private String achieveCalculateStandard;
 
-    @ExcelProperty(value = "备注", index = 4)
+    @ExcelProperty(value = "备注", index = 5)
     @ApiModelProperty(value="备注")
     private String remark;
 }

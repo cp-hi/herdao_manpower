@@ -35,4 +35,9 @@ public interface SysSequenceService extends IService<SysSequence> {
      */
     Long getNext(String seqCode);
 
+    /**
+     * 批量新增后，更新当前序列值
+     */
+    void updateSeq(String seqCode, Long current);
+
 }

@@ -52,4 +52,16 @@ public class SysSequenceServiceImpl extends ServiceImpl<SysSequenceMapper, SysSe
         }
     }
 
+    @Override
+    public void updateSeq(String seqCode, Long current){
+        List<SysSequence> list = this.list(new QueryWrapper<SysSequence>()
+                .eq("seq_code", seqCode)
+        );
+        if(list!=null&&list.size()!=0){
+            SysSequence entity = list.get(0);
+            entity.setCurrentVal(current);
+            this.updateById(entity);
+        }
+    }
+
 }

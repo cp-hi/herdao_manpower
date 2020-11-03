@@ -23,9 +23,6 @@ public class GroupAddVM {
     @ApiModelProperty(value="集团名称")
     private String groupName;
 
-    @ApiModelProperty(value="对应组织主键")
-    private Long orgId;
-
     @ExcelProperty(value = "对应组织编码", index = 1)
     @ApiModelProperty(value="对应组织编码")
     private String orgCode;

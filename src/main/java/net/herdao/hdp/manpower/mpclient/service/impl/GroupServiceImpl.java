@@ -24,9 +24,13 @@ import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupUpdateVM;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
+import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +54,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     @Autowired
     private SysSequenceService sysSequenceService;
 
+    @Autowired
+    private OrganizationService organizationService;
+
     @Override
     @SuppressWarnings("all")
     @Transactional(rollbackFor = Exception.class)
@@ -61,21 +68,54 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         // 批量新增、编辑组织信息
         List<Group> groupList = new ArrayList<>();
 
+        List<OrganizationImportDTO> orgList = organizationService.selectAllOrganization();
+        Map<String, Long> renderMap = new HashMap<>();
+        if(ObjectUtil.isNotEmpty(orgList)) {
+            orgList.forEach(org ->{
+                renderMap.put(org.getOrgCode(), org.getId());
+            });
+        }
+
         if (importType == 0) {
+            long code = sysSequenceService.getNext("group_code");
             for(int i=0;i<excelList.size();i++){
                 GroupAddVM entity = (GroupAddVM)excelList.get(i);
                 Group group = new Group();
                 BeanUtils.copyProperties(entity, group);
+                String groupCode = "JT" + code;
+                group.setGroupCode(groupCode);
+                Long OrgId = renderMap.get(group.getOrgCode());
+                group.setOrgId(OrgId);
+                code++;
                 groupList.add(group);
             }
+            sysSequenceService.updateSeq("group_code", code-1);
             //add
         }else {
-            //update
-            return errList;
+            List<Group> groupAllList = this.list();
+            Map<String, Long> renderGroupMap = new HashMap<>();
+            if(ObjectUtil.isNotEmpty(groupAllList)) {
+                groupAllList.forEach(group ->{
+                    renderGroupMap.put(group.getGroupCode(), group.getId());
+                });
+            }
+            for(int i=0;i<excelList.size();i++){
+                GroupUpdateVM entity = (GroupUpdateVM)excelList.get(i);
+                Group group = new Group();
+                BeanUtils.copyProperties(entity, group);
+                Long OrgId = renderMap.get(group.getOrgCode());
+                group.setOrgId(OrgId);
+                Long id = renderGroupMap.get(group.getGroupCode());
+                group.setId(id);
+                groupList.add(group);
+            }
         }
         // 保存新增、修改组织信息
         if(ObjectUtil.isEmpty(errList)) {
-            this.saveOrUpdateBatch(groupList, 200);
+            if(groupList.size()!=0){
+                this.saveOrUpdateBatch(groupList, 200);
+            }
+
         }
         return errList;
     }
