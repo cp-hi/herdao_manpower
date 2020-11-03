@@ -27,7 +27,9 @@ import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyAddVM;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.mapper.CompanyMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
+import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,9 @@ import java.util.Map;
  */
 @Service
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
+
+    @Autowired
+    private SysSequenceService sysSequenceService;
 
     @Override
     @SuppressWarnings("all")
@@ -66,6 +71,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             //add
         }else {
             //update
+            return errList;
         }
         // 保存新增、修改组织信息
         if(ObjectUtil.isEmpty(errList)) {
@@ -88,6 +94,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     public boolean companySave(CompanyDetailDTO companyForm){
         Company company = new Company();
         BeanUtils.copyProperties(companyForm, company);
+        long code = sysSequenceService.getNext("company_code");
+        String companyCode = "GS" + code;
+        company.setCompanyCode(companyCode);
         return this.save(company);
     }
 

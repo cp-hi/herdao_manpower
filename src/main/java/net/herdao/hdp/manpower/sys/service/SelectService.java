@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.sys.service;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
+
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO;
 
 public interface SelectService {
@@ -44,4 +47,23 @@ public interface SelectService {
 	 * @return 职等数据
 	 */
 	List<SelectDTO> getJobGrade(String groupid);
+	
+
+	/**
+	 * 获取省份下拉数据
+	 * @return 省份数据
+	 */
+	List<SelectDTO> getProvince();
+
+	/**
+	 * 获取市下拉数据
+	 * @return 市数据
+	 */
+	List<SelectDTO> getCity(String provinceCode);
+
+	/**
+	 * 获取市配置下拉数据
+	 * @return 市配置数据
+	 */
+	List<SelectDTO> getCitySet();
 }

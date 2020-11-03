@@ -90,4 +90,34 @@ public class SelectController {
 		List<SelectDTO> selectDTOList = selectService.getJobGrade(groupid);		
 		return R.ok(selectDTOList);
 	}
+
+	/**
+	 * 获取省份下拉数据
+	 * @return 省份数据
+	 */
+	@GetMapping("/getProvince")
+	public R<List<SelectDTO>> getProvince() {
+		List<SelectDTO> selectDTOList = selectService.getProvince();		
+		return R.ok(selectDTOList);
+	}
+
+	/**
+	 * 获取市下拉数据
+	 * @return 市数据
+	 */
+	@GetMapping("/getCity")
+	public R<List<SelectDTO>> getCity(String provinceCode) {
+		List<SelectDTO> selectDTOList = selectService.getCity(provinceCode);		
+		return R.ok(selectDTOList);
+	}
+
+	/**
+	 * 获取市配置下拉数据
+	 * @return 市配置数据
+	 */
+	@GetMapping("/getCitySet")
+	public R<List<SelectDTO>> getCitySet() {
+		List<SelectDTO> selectDTOList = selectService.getCitySet();		
+		return R.ok(selectDTOList);
+	}
 }
