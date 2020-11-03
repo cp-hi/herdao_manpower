@@ -69,10 +69,11 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * 查询组织下所有人员信息
 	 * 
 	 * @param orgCode
+	 * @param batchSelectOrgCodes
 	 * @param searchText
 	 * @return
 	 */
-	public List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("searchText") String searchText);
+	public List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("batchSelectOrgCodes") String [] batchSelectOrgCodes, @Param("searchText") String searchText);
 	
 	
 	/**

@@ -46,10 +46,11 @@ public interface StaffService extends HdpService<Staff> {
 	 * 员工组件
 	 * 
 	 * @param orgCode
+	 * @param batchSelectOrgCodes
 	 * @param searchText
 	 * @return
 	 */
-	R<List> selectStaffOrganizationComponent(String orgCode, String searchText);
+	R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String searchText);
 	
 	
 	Map<String, Object> queryCount();
