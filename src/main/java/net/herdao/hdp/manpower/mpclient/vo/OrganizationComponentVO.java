@@ -24,13 +24,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 部门组件Vo
+ * 组织组件Vo
  *
  * @author shuling
  * @date 2020-09-24 15:01:48
  */
 @Data
-@ApiModel(value = "部门组件")
+@ApiModel(value = "组织组件")
 public class OrganizationComponentVO {
 
 	@ApiModelProperty(value = "组织id")
@@ -54,7 +54,7 @@ public class OrganizationComponentVO {
 	@ApiModelProperty(value = "父组织名称")
 	private String parentOrgCode;
 	
-	@ApiModelProperty(value = "子组织集合")
+	@ApiModelProperty(value = "子组织信息")
 	private List<OrganizationComponentVO> organizationComponents;
 	
 }

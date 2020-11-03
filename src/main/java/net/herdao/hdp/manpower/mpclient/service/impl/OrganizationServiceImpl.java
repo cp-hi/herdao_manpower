@@ -472,7 +472,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		}
     	}
     	
-    	if(StrUtil.isBlank(organization.getOrgCode()) || tpOrganization.getParentId() != organization.getParentId()) {
+    	if(StrUtil.isBlank(organization.getOrgCode()) || !tpOrganization.getParentId().equals(organization.getParentId())) {
     		
     		// 设置组织编码
         	organization.setOrgCode(getOrgCode(organization.getParentId()));
@@ -501,7 +501,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	if(ObjectUtil.isNotNull(id)) {
     		
     		// 更新了父组织
-    		if(tpOrganization.getParentId() != organization.getParentId()) {
+    		if(!tpOrganization.getParentId().equals(organization.getParentId())) {
     			List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(tpOrganization.getOrgCode());
     			if(ObjectUtil.isNotEmpty(organizations)) {
     				

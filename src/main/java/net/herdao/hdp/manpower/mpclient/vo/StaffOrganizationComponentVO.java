@@ -57,7 +57,7 @@ public class StaffOrganizationComponentVO {
 	@ApiModelProperty(value = "员工信息")
 	private List<StaffComponentVO> staffComponents;
 	
-	@ApiModelProperty(value = "子组织员工数")
+	@ApiModelProperty(value = "子组织信息")
 	private List<StaffOrganizationComponentVO> staffOrganizationComponents;
 	
 }

@@ -46,7 +46,7 @@ import net.herdao.hdp.manpower.sys.service.OperationLogService;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/organization")
-@Api(value = "organization", tags = "管理")
+@Api(value = "organization", tags = "组织管理")
 @Slf4j
 public class OrganizationController extends HdpBaseController{
 
