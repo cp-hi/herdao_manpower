@@ -14,6 +14,7 @@ import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,6 +129,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setCreatorName(sysUser.getUsername());
             entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
             String lastEntityCode = baseMapper.getLastEntityCode(t);
+            if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
             String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
             String codeField = baseMapper.getEntityCodeField();
             Field field = AnnotationUtils.getFieldByName(t, codeField);
@@ -187,22 +189,37 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     public void saveVerify(T t) {
+        StringBuffer buffer = new StringBuffer();
+        saveVerify(t, buffer);
+        if (StringUtils.isNotBlank(buffer))
+            throw new RuntimeException(buffer.toString());
+    }
+
+    @Override
+    public void saveVerify(T t, StringBuffer buffer) {
         Boolean result = baseMapper.checkDuplicateName(t);
-        if (result) throw new RuntimeException("该集团下已经有相同名称的" + getEntityName());
+        if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
     }
 
     @Override
     public void importVerify(T t, Object excelObj, int type) {
         boolean add = (0 == type);
-        if (add) addEntity(t, excelObj);
-        else updateEntity(t, excelObj);
+        StringBuffer buffer = new StringBuffer();
+        try {
+            if (add) addEntity(t, excelObj);
+            else updateEntity(t, excelObj);
+        } catch (Exception ex) {
+            buffer.append(ex.getMessage());
+        }
         //这个验证要放 最后，因为前面要给ID赋值
-        this.saveVerify(t);
+        this.saveVerify(t, buffer);
+        if (StringUtils.isNotBlank(buffer))
+            throw new RuntimeException(buffer.toString());
     }
 
     @Override
     public T chkEntityExists(String name, Long groupId, boolean need, StringBuffer buffer) {
-        T t = baseMapper.getEntityByName(name,groupId);
+        T t = baseMapper.getEntityByName(name, groupId);
         String errMsg = "";
         if (!need && null != t)  //不需要它但它不为空
             //添加分号，因为批量导入需要所有错误信息

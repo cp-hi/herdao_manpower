@@ -27,7 +27,7 @@ public class GetLastEntityCode extends AbstractMethod {
             return f.getEl().contains("Code");
         }).collect(Collectors.toList());
         String code = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
-        String sql = "SELECT IFNULL( %s,'000001') FROM %s WHERE %s=(select max(%s) from %s where group_id=#{groupId}) ";
+        String sql = "SELECT IFNULL( %s,'000000') FROM %s WHERE %s=(select max(%s) from %s where group_id=#{groupId}) ";
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql, code,
                 tableInfo.getTableName(), tableInfo.getKeyColumn(),tableInfo.getKeyColumn(),
                 tableInfo.getTableName()), Object.class);
