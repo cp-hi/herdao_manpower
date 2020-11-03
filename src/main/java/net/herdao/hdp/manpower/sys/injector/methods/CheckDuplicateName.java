@@ -30,7 +30,7 @@ public class CheckDuplicateName extends AbstractMethod {
         TableFieldInfo fieldInfo = fieldInfos.get(0);
         String sql = "select case when  exists ( SELECT * FROM %s WHERE %s=#{%s} and group_id = #{groupId} and (%s != #{%s} or #{%s} is null) ) then 1 else 0 end  as duplicateName ";
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql, tableInfo.getTableName(), fieldInfo.getColumn(),
-                fieldInfo.getEl(),  tableInfo.getKeyColumn(), tableInfo.getKeyProperty(), tableInfo.getKeyProperty()), Object.class);
+                fieldInfo.getEl(),  tableInfo.getKeyColumn(), tableInfo.getKeyProperty(), tableInfo.getKeyProperty()), modelClass);
         return this.addMappedStatement(mapperClass, "checkDuplicateName", sqlSource, SqlCommandType.SELECT,
                 modelClass, (String) null, Boolean.class, new NoKeyGenerator(), (String) null, (String) null);
     }

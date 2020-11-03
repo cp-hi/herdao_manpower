@@ -36,6 +36,7 @@ public class PipelineBatchAddVO implements ExcelMsg {
     @HeadFontStyle(color = 10)
     @ExcelProperty({"", "管线名称"})
     private String pipelineName;
+
     @HeadFontStyle(color = 10)
     @ExcelProperty({"", "所属集团"})
     private String groupName;

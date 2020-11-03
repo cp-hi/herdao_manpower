@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
@@ -18,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName OperationLogServiceImpl
- * @Description OperationLogServiceImpl
+ * @ClassName JobLevelServiceImpl
+ * @Description JobLevelServiceImpl
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/9/14 16:28
@@ -30,6 +32,9 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
 
     @Autowired
     JobGradeService jobGradeService;
+
+    @Autowired
+    GroupService groupService;
 
     @Override
     public List<Map> jobLevelList(Long groupId) {
@@ -48,37 +53,36 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     public void addEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
-        chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), false, buffer);
-        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
+        Group group = groupService.selectByName(excel.getGroupName(), true);
+        chkEntityExists(excel.getJobLevelName(), group.getId(), false);
+        JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
 
-        if (null == jobGrade.getGroupId())
-            buffer.append("；集团ID为空");
+        if (!group.getId().equals(jobGrade.getGroupId()))
+            buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
         if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
 
-        jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
-        jobLevel.setGroupId(jobGrade.getGroupId());
+        jobLevel.setGroupId(group.getId());
     }
 
     @Override
     public void updateEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
+        Group group = groupService.selectByName(excel.getGroupName(), true);
+        JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true);
+        JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
 
-        JobLevel tmp = chkEntityExists("JOB_LEVEL_NAME", excel.getJobLevelName(), true, buffer);
-        JobGrade jobGrade = jobGradeService.chkEntityExists("JOB_GRADE_NAME", excel.getJobGrade(), true);
-
-        if (null == jobGrade.getGroupId())
-            buffer.append("；集团ID为空");
+        if (!group.getId().equals(jobGrade.getGroupId()))
+            buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
         if (StringUtils.isNotBlank(buffer.toString()))
             throw new RuntimeException(buffer.toString());
 
-        jobLevel.setJobLevelName(excel.getJobLevelName());
         jobLevel.setJobGradeId(jobGrade.getId());
-        jobLevel.setGroupId(jobGrade.getGroupId());
+        jobLevel.setGroupId(group.getId());
         jobLevel.setId(tmp.getId());
     }
 

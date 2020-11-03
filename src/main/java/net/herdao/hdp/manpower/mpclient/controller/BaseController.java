@@ -136,7 +136,6 @@ public class BaseController<T, D, F, E> {
         return R.ok(f);
     }
 
-
     @ApiOperation(value = "通过id删除")
     @DeleteMapping("/{id}")
     @ApiImplicitParams({
@@ -175,7 +174,6 @@ public class BaseController<T, D, F, E> {
         BeanUtils.copyProperties((T) t, f);
         return R.ok(f);
     }
-
 
     @ApiOperation("批量新增/编辑")
 //    @SysLog("批量新增/编辑")
@@ -238,4 +236,5 @@ public class BaseController<T, D, F, E> {
         }
         return R.ok();
     }
+
 }

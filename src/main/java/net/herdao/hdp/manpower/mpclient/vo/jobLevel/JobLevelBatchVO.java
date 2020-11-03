@@ -42,6 +42,10 @@ public class JobLevelBatchVO implements ExcelMsg {
     @HeadFontStyle
     private String jobGrade;
 
+    @HeadFontStyle(color = 10)
+    @ExcelProperty({"", "所属集团"})
+    private String groupName;
+
     @ExcelProperty(value = {"", "排序"})
     @HeadFontStyle
     private Integer sortNo;

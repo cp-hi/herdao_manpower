@@ -37,17 +37,19 @@ public interface GroupService extends HdpService<Group> {
     List<Map<String, String>> groupList();
 
     /**
+     *      * 通过名称查找集团
      * @Author ljan
      * @param groupName
      * @return
      */
-    default Group getGroupByName(String groupName) {
-        Group group = this.getOne(new QueryWrapper<Group>()
-                .eq("GROUP_NAME", groupName).ne("del_flag",1));
-//        if (null == group)
-//            throw new RuntimeException("不存在此集团：" + groupName);
-        return group;
-    }
+    Group selectByName(String groupName,boolean need,StringBuffer buffer) ;
+    /**
+     * 通过名称查找集团
+     * @Author ljan
+     * @param groupName
+     * @return
+     */
+    Group selectByName(String groupName,boolean need) ;
 
     IPage groupPage(Page page, GroupListDTO group, String searchText);
 
