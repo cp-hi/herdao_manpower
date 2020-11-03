@@ -45,29 +45,13 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 public interface StaffService extends HdpService<Staff> {
 
 	/**
-	 * 员工信息查询递归（组件）
-	 * 
-	 * @return
-	 */
-	R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent();
-	
-	/**
-	 * 查询员工信息（组件）
+	 * 员工组件
 	 * 
 	 * @param orgCode
 	 * @param searchText
 	 * @return
 	 */
-	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String orgCode, String searchText);
-	
-	/**
-	 * 查询组织下所有人员信息
-	 * 
-	 * @param orgCode
-	 * @param searchText
-	 * @return
-	 */
-	public R<List<StaffComponentVO>> selectStaffs(String orgCode, String searchText);
+	R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String orgCode, String searchText);
 	
 	
 	Map<String, Object> queryCount();

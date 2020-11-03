@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
@@ -145,20 +146,30 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
     
 	@Override
-	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent() {
+	public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String orgCode, String searchText) {
 		
-		return R.ok(recursion(this.baseMapper.selectOrganizations(), null));
-	}
-	
-	@Override
-	public R<List<StaffOrganizationComponentVO>> selectOrganizationComponentList(String orgCode, String searchText) {
-		
-		return R.ok(recursion(this.baseMapper.selectOrganizationComponentList(orgCode), orgCode));
-	}
-	
-	@Override
-	public R<List<StaffComponentVO>> selectStaffs(String orgCode, String searchText){
-		return R.ok(this.baseMapper.selectStaffs(orgCode, searchText));
+		// 默认查询一级组织信息
+		if(StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
+			return R.ok(recursion(this.baseMapper.selectOrganizations(), null));
+		}else {
+			
+			List<StaffOrganizationComponentVO> orgs = new ArrayList<StaffOrganizationComponentVO>();
+			StaffOrganizationComponentVO staffOrganizationComponentVO = new StaffOrganizationComponentVO();
+			
+			if(StrUtil.isNotBlank(orgCode)) {
+				// 子组织信息
+				List<StaffOrganizationComponentVO> organizations = this.baseMapper.selectOrganizationComponentList(orgCode);
+				staffOrganizationComponentVO.setStaffOrganizationComponents(organizations);
+				// 组织下员工信息
+				List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, null);
+				staffOrganizationComponentVO.setStaffComponents(staffs);
+			}else{
+				List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(null, searchText);
+				staffOrganizationComponentVO.setStaffComponents(staffs);
+			}
+			orgs.add(staffOrganizationComponentVO);
+			return R.ok(recursion(orgs, orgCode));
+		}
 	}
 	
 	public List<StaffOrganizationComponentVO> recursion(List<StaffOrganizationComponentVO> organizations, String orgCode){

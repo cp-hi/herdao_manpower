@@ -47,12 +47,12 @@ public class OrganizationFormVO {
 	 * 上级组织名称
 	 */
 	@ApiModelProperty(value = "上级组织名称")
-	private String parentOrgName;
+	private String parentName;
 	/**
 	 * 上级组织
 	 */
 	@ApiModelProperty(value = "上级组织编码")
-	private String parentOrgCode;
+	private String parentCode;
 	/**
 	 * 组织层（ 参考字典：“ZZCJ”）
 	 */

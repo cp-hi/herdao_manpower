@@ -81,7 +81,7 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param orgCode
 	 * @return
 	 */
-	public List<StaffTotalComponentVO> getStaffTotals(String orgCode);
+	public List<StaffTotalComponentVO> getStaffTotals(@Param("orgCode")String orgCode);
 	
 	/**
 	 * 查询员工工龄信息

@@ -348,16 +348,7 @@ public class StaffController extends HdpBaseController{
     					@ApiImplicitParam(name="searchText", value="模糊查询条件")
     })
     public R<List<StaffOrganizationComponentVO>> selectStaffOrganizationComponent(String orgCode, String searchText) {
-    	if(StrUtil.isNotBlank(searchText)) {
-    		List<StaffOrganizationComponentVO> staffOrganizationComponentList = new ArrayList<StaffOrganizationComponentVO>();
-    		StaffOrganizationComponentVO staffOrganizationComponent = new StaffOrganizationComponentVO();
-    		staffOrganizationComponent.setStaffComponents(staffService.selectStaffs(null, searchText).getData());
-    		return R.ok(staffOrganizationComponentList);
-    	}else if(StrUtil.isNotBlank(orgCode)){
-    		return staffService.selectOrganizationComponentList(null, searchText);
-    	}else {
-    		return staffService.selectStaffOrganizationComponent();
-    	}
+    	return staffService.selectStaffOrganizationComponent(orgCode, searchText);
     }
 
 
