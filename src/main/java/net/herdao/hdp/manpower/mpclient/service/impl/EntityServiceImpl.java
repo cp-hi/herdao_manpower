@@ -43,7 +43,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public IPage getOperationLogs(IPage page, Long objId) {
         QueryWrapper<OperationLog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("ENTITY_CLASS",baseMapper.getEntityClass().getName());
-        queryWrapper.eq("OBJ_ID",objId);
+        queryWrapper.eq("OBJ_ID",objId).orderBy(true,false,"operated_time");
         return operationLogService.page(page, queryWrapper);
     }
 
