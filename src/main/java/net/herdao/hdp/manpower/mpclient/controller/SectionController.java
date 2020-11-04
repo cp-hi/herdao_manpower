@@ -57,7 +57,7 @@ public class SectionController extends BaseController<Section, SectionListVO, Se
             @ApiImplicitParam(name = "sectionName", value = "字符串搜索"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<SectionListVO>> page(HttpServletResponse response, @ApiIgnore Page page, Section section, Integer type) throws Exception {

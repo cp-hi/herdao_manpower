@@ -66,7 +66,7 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<JobLevelListVO>> page(HttpServletResponse response, @ApiIgnore Page page, JobLevel jobLevel, Integer type)

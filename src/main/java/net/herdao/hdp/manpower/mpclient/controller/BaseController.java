@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
@@ -108,9 +109,16 @@ public class BaseController<T, D, F, E> {
             @ApiImplicitParam(name = "objId", value = "所需要查询记录实体的ID"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
+
     })
-    public R getOperationLogs(Page page,Long objId) {
-        return R.ok(entityService.getOperationLogs(page,objId));
+    public R<IPage<OperationLog>> getOperationLogs(HttpServletResponse response, @ApiIgnore Page page, Long objId, Integer type) throws Exception {
+        IPage p = entityService.getOperationLogs(page, objId);
+        if (null != type && Integer.valueOf(1).equals(type)) {
+            String excelName = this.entityService.getEntityName() + "操作记录列表下载";
+            ExcelUtils.export2Web(response, excelName, excelName, OperationLog.class, p.getRecords());
+        }
+        return R.ok(p);
     }
 
     protected R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)

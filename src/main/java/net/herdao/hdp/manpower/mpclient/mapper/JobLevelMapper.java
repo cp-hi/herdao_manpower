@@ -15,8 +15,6 @@ public interface JobLevelMapper extends EntityMapper<JobLevel> {
 
     List<Map> jobLevelList(Long groupId);
 
-    Boolean chkCodeAndName(JobLevel jobLevel);
-
     @Override
     String getLastEntityCode(JobLevel jobLevel);
 
