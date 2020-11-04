@@ -40,8 +40,11 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     OperationLogService operationLogService;
 
     @Override
-    public List<OperationLog> getOperationLogs(Long objId) {
-        return operationLogService.findByEntity(objId, baseMapper.getEntityClass().getName());
+    public IPage getOperationLogs(IPage page, Long objId) {
+        QueryWrapper<OperationLog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("ENTITY_CLASS",baseMapper.getEntityClass().getName());
+        queryWrapper.eq("OBJ_ID",objId);
+        return operationLogService.page(page, queryWrapper);
     }
 
     /**

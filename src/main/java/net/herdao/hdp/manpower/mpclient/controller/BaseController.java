@@ -107,8 +107,8 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "objId", value = "所需要查询记录实体的ID"),
     })
-    public R<List<OperationLog>> getOperationLogs(@PathVariable Long objId) {
-        return R.ok(entityService.getOperationLogs(objId));
+    public R getOperationLogs(Page page, @PathVariable Long objId) {
+        return R.ok(entityService.getOperationLogs(page,objId));
     }
 
     protected R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
