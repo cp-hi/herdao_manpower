@@ -83,8 +83,9 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     private void chkParent(Long parentId, StringBuffer buffer) {
+        if (null == parentId) return;
         PostSeqDTO dto = baseMapper.getPostSeqDTO(parentId);
-        if (null != dto.getParent() && null != dto.getParent().getParent())
+        if (null != dto && null != dto.getParent() && null != dto.getParent().getParent())
             buffer.append("；" + dto.getPostSeqName() + "为3级岗位序列，不能再创建子级");
     }
 }
