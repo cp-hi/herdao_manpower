@@ -58,6 +58,10 @@ public class OrganizationFormVO {
 	 */
 	@ApiModelProperty(value = "组织层级")
 	private String orgLevel;
+	
+	@ApiModelProperty(value = "组织层级名称")
+	private String orgLevelName;
+	
 	/**
 	 * 组织类型（参考字典：“ZZLX”）
 	 */

@@ -538,6 +538,7 @@
             orgp.org_name AS parent_name, 
 			orgp.org_code AS parent_code,
 			org.org_level,
+			dicc.label AS org_level_name,
 			org.org_type,
 			dict.label AS org_type_name,
 			0 staff_total,
@@ -553,6 +554,7 @@
 			) WHEN 0 THEN 1 ELSE 0 END canDelete
          FROM mp_organization org
          LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+         LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ' AND dicc.value = org.org_level AND dicc.del_flag = 0
          LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
          <where>
           <if test="id != null">

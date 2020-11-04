@@ -111,6 +111,9 @@ public class OrganizationVO {
 	 */
 	@ApiModelProperty(value = "组织层级")
 	private String orgLevel;
+	
+	@ApiModelProperty(value = "组织层级名称")
+	private String orgLevelName;
 
 	/**
 	 * 组织树层级
