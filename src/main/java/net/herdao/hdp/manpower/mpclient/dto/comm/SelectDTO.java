@@ -13,4 +13,7 @@ public class SelectDTO {
 	
 	@ApiModelProperty(value="label")
     private String label;
+	
+	@ApiModelProperty(value="children")
+	private Object children;
 }
