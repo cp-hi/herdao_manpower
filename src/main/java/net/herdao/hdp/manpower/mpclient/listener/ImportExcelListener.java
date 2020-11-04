@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,40 +61,41 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
      * @param importType
      */
     public ImportExcelListener(EntityService service, Integer batchCount, Integer importType) {
+        this.entityClass = service.getEntityClass();
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
         this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
-
-        this.entityClass = (Class) ((ParameterizedType) entityService.getClass()
-                .getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
+    //excel表头
     List<String> headExcel = new ArrayList<>();
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        if (headMap.values().size() > 0 && context.readRowHolder().getRowIndex() > 0)
+        if (headMap.values().size() > 0 && context.readRowHolder().getRowIndex() > 0) {
             headExcel.addAll(headMap.values());
+        }
     }
 
     @SneakyThrows
     @Override
     public void invoke(E excel, AnalysisContext context) {
-        List<String> headClass = new ArrayList<>(AnnotationUtils.getExcelPropertyNames(excel));
-        List<String> heads = new ArrayList<>();
+        //导入类的表头
+        List<String> headClass = AnnotationUtils.getExcelPropertyNames(excel, "errMsg");
+        List<String> nonexistentHeads = new ArrayList<>();
         headExcel.forEach(h -> {
             if (-1 == headClass.indexOf(h))
-                heads.add(h);
+                nonexistentHeads.add(h);
         });
-        if (heads.size() > 0)
-            throw new RuntimeException("导入模板表头不存在：" + StringUtils.join(heads));
+        if (nonexistentHeads.size() > 0)
+            throw new RuntimeException("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
 
         Object t = null;
         try {
-            t = Class.forName(entityClass.getName()).newInstance();
+            t = entityClass.newInstance();
             BeanUtils.copyProperties(excel, t);
             ((ExcelMsg) excel).setErrMsg("");
             entityService.importVerify(t, excel, importType);

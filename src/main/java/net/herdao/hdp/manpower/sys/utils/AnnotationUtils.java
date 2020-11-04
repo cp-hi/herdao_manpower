@@ -51,17 +51,6 @@ public class AnnotationUtils {
         }
     }
 
-    public static boolean isNullObj(Object object) throws IllegalAccessException {
-        if (null == object) return true;
-        Field[] fields = object.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            Object obj = field.get(object);
-            if (null != obj) return false;
-        }
-        return true;
-    }
-
     /**
      * 获取一个类所有字段，包括父类
      *
@@ -74,7 +63,6 @@ public class AnnotationUtils {
     }
 
     public static Field[] getAllFields(Class clazz) {
-//        Class clazz = object.getClass();
         List<Field> fieldList = new ArrayList<>();
         while (clazz != null) {
             fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
@@ -92,6 +80,12 @@ public class AnnotationUtils {
                 return field;
         }
         return null;
+    }
+
+    public static List<String> getExcelPropertyNames(Object object, String... excludeColumn) {
+        List<String> propertyNames = getExcelPropertyNames(object.getClass());
+        propertyNames.removeAll(Arrays.asList(excludeColumn));
+        return propertyNames;
     }
 
     public static List<String> getExcelPropertyNames(Object object) {

@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface EntityService<T> extends IService<T> {
 
+    Class<T> getEntityClass();
+
     IPage page(IPage page, T t);
 
     Object form(Long id);
@@ -29,26 +31,6 @@ public interface EntityService<T> extends IService<T> {
      * @return
      */
     String getEntityName();
-
-    /**
-     * 生成编码
-     *
-     * @return
-     */
-//    String generateEntityCode() throws IllegalAccessException;
-//
-//    String getCurrEntityCode() throws IllegalAccessException;
-
-    /**
-     * 自动设置编码
-     *
-     * @param t
-     * @throws IllegalAccessException
-     */
-//    void setEntityCode(T t) throws IllegalAccessException;
-
-//    void setEntityCode(T t, String code) throws IllegalAccessException;
-
 
     /**
      * 保存实体并自动添加日志

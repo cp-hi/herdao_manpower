@@ -66,6 +66,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         operationLogService.saveOrUpdate(log);
     }
 
+
+    @Override
+    public Class<T> getEntityClass() {
+        return baseMapper.getEntityClass();
+    }
+
     @Override
     public IPage page(IPage page, T t) {
         return baseMapper.page(page, t);
@@ -80,44 +86,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public String getEntityName() {
         return baseMapper.getEntityName();
     }
-
-//    @Override
-//    public String getCurrEntityCode() throws IllegalAccessException {
-//        String sql = "select max(id) from " + baseMapper.getTableName();
-//        T t = this.getOne((Wrapper<T>) new QueryWrapper().select(baseMapper.getTableCodeField()).inSql("id", sql));
-//        String entityCode = "000001";
-//        if (null != t) {
-//            Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-//            if (null == field) return entityCode;
-//            field.setAccessible(true);
-//            Object val = field.get(t);
-//            if (null != val)
-//                entityCode = val.toString();
-//        }
-//        return entityCode;
-//    }
-
-//    @Override
-//    public String generateEntityCode() throws IllegalAccessException {
-//        String currEntityCode = getCurrEntityCode();
-//        String entityCode = String.format("%06d", Integer.valueOf(currEntityCode) + 1);
-//        return entityCode;
-//    }
-
-//    @Override
-//    public void setEntityCode(T t) throws IllegalAccessException {
-//        String entityCode = generateEntityCode();
-//        setEntityCode(t, entityCode);
-//    }
-
-//    @Override
-//    public void setEntityCode(T t, String entityCode) throws IllegalAccessException {
-//        String codeField = baseMapper.getEntityCodeField();
-//        Field field = AnnotationUtils.getFieldByName(t, codeField);
-//        if (null == field) return;
-//        field.setAccessible(true);
-//        field.set(t, entityCode);
-//    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

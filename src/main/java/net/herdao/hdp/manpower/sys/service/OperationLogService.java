@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.sys.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
@@ -14,6 +15,9 @@ public interface OperationLogService extends IService<OperationLog> {
      * @return
      */
     List<OperationLog> findByEntity(Long objId,String entityClass);
+
+
+    IPage page(IPage page, Long objId,String entityClass);
 
     /**
      * 根据实体信息查询分页

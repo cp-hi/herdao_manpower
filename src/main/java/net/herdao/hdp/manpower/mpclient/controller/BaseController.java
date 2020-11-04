@@ -103,6 +103,11 @@ public class BaseController<T, D, F, E> {
 
     //endregion
 
+
+    @Autowired
+    OperationLogService operationLogService;
+
+
     @ApiOperation(value = "获取操作记录")
     @GetMapping("/operationLog")
     @ApiImplicitParams({
@@ -177,7 +182,7 @@ public class BaseController<T, D, F, E> {
     @PostMapping
     @ApiOperation(value = "新增/修改")
     public R<F> save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Object t = Class.forName(getEntityClass().getName()).newInstance();
+        Object t = getEntityClass().newInstance();
         BeanUtils.copyProperties(f, (T) t);
         entityService.saveVerify((T) t);
         entityService.saveEntity((T) t);
@@ -237,7 +242,7 @@ public class BaseController<T, D, F, E> {
             if (Integer.valueOf(1).equals(importType))
                 templClass = getBatchUpdateClass();
 
-            if (templClass == Class.class)
+            if (Class.class == templClass)
                 throw new RuntimeException("没有找到模板");
             ExcelUtils.downloadTempl(response, templClass);
 
