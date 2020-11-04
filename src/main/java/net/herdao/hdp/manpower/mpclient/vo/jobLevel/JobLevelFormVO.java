@@ -19,13 +19,13 @@ public class JobLevelFormVO {
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("职级名称")
+    @ApiModelProperty(value = "职级名称",required = true)
     private String jobLevelName;
 
     @ApiModelProperty("职等")
     private Long jobGradeId;
 
-    @ApiModelProperty(value = "所属集团")
+    @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
 
     @ApiModelProperty("排序")

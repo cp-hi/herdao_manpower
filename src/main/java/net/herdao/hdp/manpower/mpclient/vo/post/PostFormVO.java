@@ -25,13 +25,13 @@ public class PostFormVO {
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("岗位名称")
+    @ApiModelProperty(value = "岗位名称",required = true)
     private String postName;
 
-    @ApiModelProperty("岗位编码")
+    @ApiModelProperty(value = "岗位编码",hidden = true)
     private String postCode;
 
-    @ApiModelProperty("岗位序列ID")
+    @ApiModelProperty(value = "岗位序列",required = true)
     private Long postSeqId;
 
     @ApiModelProperty("岗位序列")
@@ -39,7 +39,7 @@ public class PostFormVO {
             "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
     private String postSeqName;
 
-    @ApiModelProperty("所属集团")
+    @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
 
     @ApiModelProperty("所属集团")

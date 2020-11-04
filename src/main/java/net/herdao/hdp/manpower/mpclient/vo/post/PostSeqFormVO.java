@@ -20,13 +20,13 @@ public class PostSeqFormVO {
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("岗位序列名称")
+    @ApiModelProperty(value = "岗位序列名称",required = true)
     private String postSeqName;
 
-    @ApiModelProperty("岗位序列编码")
+    @ApiModelProperty(value = "岗位序列编码",hidden = true)
     private String postSeqCode;
 
-    @ApiModelProperty("所属集团")
+    @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
 
     @ApiModelProperty("集团")
