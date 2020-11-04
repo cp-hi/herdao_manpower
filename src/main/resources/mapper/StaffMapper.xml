@@ -235,7 +235,7 @@
 					</foreach>
 	            </when>
 	            <when test="searchText != null">
-	                AND sf.staff_name LIKE CONCAT(#{searchText},'%')
+	                AND CONCAT(sf.staff_name, IFNULL(sf.staff_code, '')) LIKE CONCAT('%',#{searchText},'%')
 	            </when>
 	        </choose>
 		</where>
