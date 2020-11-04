@@ -18,6 +18,4 @@ import java.util.Map;
 public interface SectionMapper extends EntityMapper<Section> {
     List<Map> sectionList(Long groupId);
 
-    List<String> getSectionCodesByGroupId(Long groupId);
-
 }

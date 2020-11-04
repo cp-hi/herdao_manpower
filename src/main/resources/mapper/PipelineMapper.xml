@@ -31,8 +31,4 @@
        	where group_id = #{groupId} and del_flag != 1 and is_stop != 1
     </select>
 
-    <select id="getPipelineCodesByGroupId" parameterType="long" resultType="String">
-      SELECT pipeline_code from mp_Pipeline where group_id = #{groupId}
-    </select>
-
 </mapper>
