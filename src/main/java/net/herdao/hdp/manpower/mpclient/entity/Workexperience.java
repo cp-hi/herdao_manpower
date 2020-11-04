@@ -97,11 +97,6 @@ private static final long serialVersionUID = 1L;
      * 人员外键
      */
     @ApiModelProperty(value="人员外键")
-    private Integer staffOid;
-    /**
-     * 人员外键
-     */
-    @ApiModelProperty(value="人员外键")
     private Long staffId;
     /**
      * 主要业绩
