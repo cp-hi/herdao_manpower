@@ -40,7 +40,7 @@
         </if>
     </select>
 
-    <select id="form" resultMap="postSeqDTOMap" >
+    <select id="form" resultMap="postSeqDTO" >
         select * from mp_post_seq where id = #{id}
     </select>
 
@@ -55,6 +55,7 @@
 
     <!--  父子查询 -->
     <resultMap id="postSeqDTO" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
+        <result property="parentId" column="parent_id"/>
         <association property="parent" column="parent_id" select="getPostSeqParent"
                      javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
