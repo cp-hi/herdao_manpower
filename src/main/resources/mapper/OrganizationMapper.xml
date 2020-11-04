@@ -617,7 +617,7 @@
             f.email
         FROM mp_user u
         LEFT JOIN mp_userpost up ON u.id = up.user_id
-        LEFT JOIN mp_post p ON p.id = up.post_id
+        LEFT JOIN mp_post p ON p.id = up.post_id AND u.MAIN_POST = 1
         INNER JOIN mp_organization o ON o.id = u.org_dept_id
         INNER JOIN mp_staff f ON f.user_id = u.id
         LEFT JOIN mp_job_level lv1 ON p.job_level_id1 = lv1.id
