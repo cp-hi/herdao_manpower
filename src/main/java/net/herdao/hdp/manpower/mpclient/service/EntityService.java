@@ -21,7 +21,7 @@ public interface EntityService<T> extends IService<T> {
 
     Object form(Long id);
 
-    List<OperationLog> getOperationLogs(Long objId);
+    IPage getOperationLogs(IPage page,Long objId);
 
     /**
      * 获取实体名
