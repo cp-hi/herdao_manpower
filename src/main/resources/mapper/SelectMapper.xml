@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.herdao.hdp.manpower.sys.mapper.SelectMapper">
+	  <!-- 中国城市数据-->
+      <select id="getChinaCity" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+        select a.sz_code value,
+        a.name label
+		from sys_city a
+		order by a.sz_code
+      </select>
+
 	  <!-- 省份数据-->
       <select id="getProvince" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
         select a.sz_code value,
