@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.sys.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -22,13 +23,13 @@ import java.util.Date;
  * @Version 1.0
  */
 @Data
+@ExcelIgnoreUnannotated
 @TableName("SYS_OPERATION_LOG")
 @ApiModel(value = "岗位实体类")
 public class OperationLog {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "ID", type = IdType.AUTO)
-    @ExcelIgnore
     private Integer id;
 
     @ExcelProperty(value = "操作")
@@ -40,7 +41,6 @@ public class OperationLog {
     private String content;
 
     @ApiModelProperty(value="操作者ID",required = true)
-    @ExcelIgnore
     private Long operatorId;
 
     @ExcelProperty(value = "操作者名称")
@@ -52,20 +52,16 @@ public class OperationLog {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date operatedTime;
 
-    @ApiModelProperty(value="被操作的实体类",required = true)
-    @ExcelIgnore
+    @ApiModelProperty(value="被操作的实体类",hidden = true)
     private String entityClass;
 
-    @ApiModelProperty(value="被操作的实体类主键")
-    @ExcelIgnore
+    @ApiModelProperty(value="被操作的实体类主键",hidden = true)
     private Long objId;
 
-    @ApiModelProperty(value="额外信息")
-    @ExcelIgnore
+    @ApiModelProperty(value="额外信息",hidden = true)
     private String extraKey;
 
-    @ApiModelProperty(value="模块名")
-    @ExcelIgnore
+    @ApiModelProperty(value="模块名",hidden = true)
     private String module;
 
 }
