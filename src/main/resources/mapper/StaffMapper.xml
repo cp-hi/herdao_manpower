@@ -188,8 +188,9 @@
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
 		INNER JOIN mp_organization org ON org.id = ut.org_dept_id
 		<where>
+			AND ut.office_post_type = '1'
 			<if test="orgCode != null">
-				 org.org_code LIKE CONCAT(#{orgCode},'%')
+				 AND org.org_code LIKE CONCAT(#{orgCode},'%')
 			</if>
 		</where>
 		GROUP BY org.org_code
@@ -197,7 +198,9 @@
 	
 	<!-- 查询组织下所有人员信息 -->
 	<select id="selectStaffs" resultMap="staffComponentMap">
+		<!-- 目前员工数据是否主岗有问题，暂时采用 DISTINCT-->
 		SELECT 
+		  DISTINCT
 			sf.id, 
 			sf.staff_name, 
 			sf.staff_code, 
@@ -213,7 +216,7 @@
 		LEFT JOIN mp_post ps ON ps.id = ut.post_id
 		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
-			 AND ( ut.office_post_type = '1' OR ut.id IS NULL )
+			 AND ut.office_post_type = '1'
 			 <choose>
 	            <when test="orgCode != null">
 	                AND org.org_code = #{orgCode}
@@ -234,7 +237,7 @@
 					</foreach>
 	            </when>
 	            <when test="searchText != null">
-	                AND sf.staff_name LIKE CONCAT(#{searchText},'%')
+	                AND CONCAT(sf.staff_name, IFNULL(sf.staff_code, '')) LIKE CONCAT('%',#{searchText},'%')
 	            </when>
 	        </choose>
 		</where>

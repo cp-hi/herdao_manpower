@@ -18,6 +18,12 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SelectMapper extends BaseMapper<SelectDTO> {
+
+	/**
+	 * 获取中国城市下拉数据
+	 * @return 城市数据
+	 */
+	List<SelectDTO> getChinaCity();
 	
 	/**
 	 * 获取省份下拉数据

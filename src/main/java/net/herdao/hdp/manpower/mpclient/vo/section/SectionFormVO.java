@@ -19,10 +19,10 @@ public class SectionFormVO {
     @ApiModelProperty("ID")
     private Long id;
 
-    @ApiModelProperty("板块名称")
+    @ApiModelProperty(value = "板块名称",required = true)
     private String sectionName;
 
-    @ApiModelProperty("所属集团")
+    @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
 
     @ApiModelProperty("是否停用")

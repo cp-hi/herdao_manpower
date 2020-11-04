@@ -50,7 +50,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      * @param operation
      * @param objId
      */
-    private void addOperationLog(String operation, String objId) {
+    private void addOperationLog(String operation, Long objId) {
         SysUser sysUser = SysUserUtils.getSysUser();
         OperationLog log = new OperationLog();
         log.setOperation(operation);
@@ -59,7 +59,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         log.setContent(operation + getEntityName());
         log.setEntityClass(baseMapper.getEntityClass().getName());
         log.setOperatedTime(new Date());
-        log.setObjId(Long.valueOf(objId));
+        log.setObjId(objId);
         operationLogService.saveOrUpdate(log);
     }
 
@@ -144,7 +144,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
         boolean result = this.saveOrUpdate(t);
         if (result)
-            addOperationLog(operation, entity.getId().toString());
+            addOperationLog(operation, entity.getId());
         return result;
     }
 
@@ -153,7 +153,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public boolean delEntity(Serializable id) {
         boolean result = this.removeById(id);
         if (result)
-            addOperationLog("删除", (String) id);
+            addOperationLog("删除", (Long) id);
         return result;
     }
 
@@ -173,7 +173,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         boolean result = this.update(updateWrapper);
         if (result) {
             String operation = isStop ? "停用" : "启用";
-            addOperationLog(operation, (String) id);
+            addOperationLog(operation, (Long) id);
         }
         return result;
     }

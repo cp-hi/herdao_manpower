@@ -18,10 +18,10 @@ public class JobGradeFormVO {
     @ApiModelProperty("id")
     private Long id;
 
-    @ApiModelProperty("职等名称")
+    @ApiModelProperty(value = "职等名称",required = true)
     private String jobGradeName;
 
-    @ApiModelProperty("所属集团")
+    @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
 
     @ApiModelProperty("排序")

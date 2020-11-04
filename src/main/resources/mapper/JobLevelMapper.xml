@@ -29,7 +29,7 @@
       select case when  exists (
       select * from mp_job_level where job_level_name = #{jobLevelName}
       and job_grade_id = #{jobGradeId} and (id !=#{id} or #{id} is null)
-      ) then 1 else 0 end  as duplicateName
+      and del_flag != 1 ) then 1 else 0 end  as duplicateName
     </select>
 
     <select id="getLastEntityCode" resultType="string" parameterType="jobLevel"  >

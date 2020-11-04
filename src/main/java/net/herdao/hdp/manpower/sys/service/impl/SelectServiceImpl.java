@@ -43,7 +43,7 @@ public class SelectServiceImpl extends ServiceImpl<SelectMapper, SelectDTO> impl
 	private final JobLevelService jobLevelService;
 	
 	private final JobGradeService jobGradeService;
-	
+		
 	@Override
 	public List<SelectDTO> getGroup() {
 		List<Group> groupList = groupService.list(new QueryWrapper<Group>()
@@ -169,7 +169,30 @@ public class SelectServiceImpl extends ServiceImpl<SelectMapper, SelectDTO> impl
 
 	@Override
 	public List<SelectDTO> getProvince(){
-		List<SelectDTO> list = this.baseMapper.getProvince();
+		List<SelectDTO> list = new ArrayList();
+		List<SelectDTO> cityList = this.baseMapper.getChinaCity(); //所有城市数据
+		
+		//取出省数据
+		for(int i=0;i<cityList.size();i++){
+			String val=cityList.get(i).getValue();
+			if(val.length()>4 && val.substring(val.length()-4).equals("0000")){
+				
+				//取出下级市
+				List<SelectDTO> childrenList = new ArrayList();
+				for(int j=0;j<cityList.size();j++){
+					String cityVal = cityList.get(j).getValue();
+					if(!val.equals(cityVal)){//排查当前省
+						if(val.substring(0,2).equals(cityVal.substring(0,2))){//插入前两个编码一样的市数据
+							childrenList.add(cityList.get(j));							
+						}
+					}
+				}
+				
+				cityList.get(i).setChildren(childrenList);
+				list.add(cityList.get(i));
+			}
+		}
+		
 		return list;
 	}
 
