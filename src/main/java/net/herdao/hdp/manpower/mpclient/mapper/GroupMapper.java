@@ -46,8 +46,6 @@ public interface GroupMapper extends BaseMapper<Group> {
      */
     List<GroupListDTO> groupPage(Map<String, Object> map);
 
-    Group selectIgnoreDel(Long id);
-
     @Select("select * from mp_group where group_name = #{name, jdbcType=VARCHAR}")
     Group selectByName(String name);
 }
