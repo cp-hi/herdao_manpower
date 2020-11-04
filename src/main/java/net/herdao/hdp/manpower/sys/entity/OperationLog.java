@@ -32,22 +32,22 @@ public class OperationLog {
     @TableId(value = "ID", type = IdType.AUTO)
     private Integer id;
 
-    @ExcelProperty(value = "操作")
+    @ExcelProperty(value = {"","操作"})
     @ApiModelProperty(value="操作",required = true)
     private String operation;
 
-    @ExcelProperty(value = "操作内容")
+    @ExcelProperty(value =  {"","操作内容"})
     @ApiModelProperty(value="操作内容",required = true)
     private String content;
 
     @ApiModelProperty(value="操作者ID",required = true)
     private Long operatorId;
 
-    @ExcelProperty(value = "操作者名称")
+    @ExcelProperty(value =  {"","操作者名称"})
     @ApiModelProperty(value="操作者名称",required = true)
     private String operator;
 
-    @ExcelProperty(value = "操作时间")
+    @ExcelProperty(value =  {"","操作时间"})
     @ApiModelProperty(value="操作时间",required = true)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date operatedTime;
