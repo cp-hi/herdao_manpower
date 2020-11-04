@@ -35,9 +35,9 @@ public interface EntityService<T> extends IService<T> {
      *
      * @return
      */
-    String generateEntityCode() throws IllegalAccessException;
-
-    String getCurrEntityCode() throws IllegalAccessException;
+//    String generateEntityCode() throws IllegalAccessException;
+//
+//    String getCurrEntityCode() throws IllegalAccessException;
 
     /**
      * 自动设置编码
@@ -45,9 +45,9 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @throws IllegalAccessException
      */
-    void setEntityCode(T t) throws IllegalAccessException;
+//    void setEntityCode(T t) throws IllegalAccessException;
 
-    void setEntityCode(T t, String code) throws IllegalAccessException;
+//    void setEntityCode(T t, String code) throws IllegalAccessException;
 
 
     /**

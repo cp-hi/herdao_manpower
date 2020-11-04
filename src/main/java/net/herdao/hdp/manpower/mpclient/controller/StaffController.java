@@ -19,7 +19,6 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -106,7 +105,11 @@ public class StaffController extends HdpBaseController{
         }else if("3".equals(tab)){
             staff.setJobType("2");
         }else if("4".equals(tab)){
-            staff.setJobType("3");
+            staff.setJobType("7");
+        }else if("5".equals(tab)){
+            staff.setJobType("97");
+        }else if("6".equals(tab)){
+            staff.setJobType("98");
         }
         return R.ok(staffService.staffPage(page, staff, searchText));
     }

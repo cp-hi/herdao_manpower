@@ -48,10 +48,4 @@
        	select id,job_level_code AS code,job_level_name AS name from mp_job_level
        	where group_id = #{groupId} and del_flag != 1
     </select>
-
-    <select id="chkCodeAndName" parameterType="jobLevel" resultType="boolean">
-        SELECT count(*) from mp_job_level  where
-        ( JOB_LEVEL_NAME = #{jobLevelName} AND JOB_LEVEL_CODE != #{jobLevelCode} ) OR
-        ( JOB_LEVEL_NAME != #{jobLevelName} AND JOB_LEVEL_CODE = #{jobLevelCode} )
-    </select>
 </mapper>

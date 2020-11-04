@@ -101,7 +101,7 @@ public class OperationLogAspect {
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
                     AnnotationUtils.setAnnotationInfo(operation, "operation", "新增");
-                    ((EntityService) point.getTarget()).setEntityCode(arg);
+//                    ((EntityService) point.getTarget()).setEntityCode(arg);
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {

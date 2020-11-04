@@ -27,7 +27,6 @@ import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupUpdateVM;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
@@ -38,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.relation.RoleUnresolved;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
