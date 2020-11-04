@@ -285,46 +285,41 @@
 			        </if>
 	              ) orgd
          GROUP BY orgd.parent_id) corg ON corg.parent_id = org.id 
+         WHERE org.del_flag = 0
 	</sql>
 	
     <!-- 查询根组织架构 -->
     <select id="selectOrganizationTree" resultMap="organizationTreeMap">
         <include refid="organizationTreeSQL"></include>
-        <where>
-        	AND org.parent_id IS NULL
-	     	<if test="stop != null and stop != 3">
-	          AND org.is_stop = #{stop}
-	        </if>
-        </where>
+       	  AND org.parent_id IS NULL
+     	<if test="stop != null and stop != 3">
+          AND org.is_stop = #{stop}
+        </if>
         ORDER BY org.sort_no
     </select>
      
     <!-- 递归查询二级组织树 -->
     <select id="selectSecondOrganization" resultMap="organizationTreeMap">
        <include refid="organizationTreeSQL"></include>
-       <where>
            AND org.parent_id = #{id} AND org.org_tree_level &lt;= 2
-           <if test="stop != null and stop != 3">
-              AND org.is_stop = #{stop}
-           </if>
-        </where>
+        <if test="stop != null and stop != 3">
+           AND org.is_stop = #{stop}
+        </if>
     </select>
     
     <!-- 组织树模糊查询 -->
     <select id="organizationTreeList" resultMap="organizationTreeListMap">
        <include refid="organizationTreeSQL"></include>
-       <where>
-          <if test="orgCode != null">
-          		AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(org.org_code) &lt;= LENGTH(#{orgCode}) + 3
-          </if>
-           <if test="searchText != null">
-          		AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
-          </if>
-          <if test="stop != null and stop != 3">
-            	AND org.is_stop = #{stop}
-         </if>
-        </where>
-        order by org.SORT_NO
+        <if test="orgCode != null">
+        	AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(org.org_code) &lt;= LENGTH(#{orgCode}) + 3
+        </if>
+         <if test="searchText != null">
+        	AND CONCAT(org.org_name, org.org_code) LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test="stop != null and stop != 3">
+          	AND org.is_stop = #{stop}
+        </if>
+        ORDER BY org.sort_no ASC
     </select>
 
     <!-- 查询根组织架构 无限级递归 -->
