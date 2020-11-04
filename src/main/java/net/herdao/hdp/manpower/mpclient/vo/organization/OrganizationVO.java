@@ -83,7 +83,7 @@ public class OrganizationVO {
 	 * 排序
 	 */
 	@ApiModelProperty(value = "排序")
-	private String sortNo;
+	private Long sortNo;
 
 	/**
 	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
