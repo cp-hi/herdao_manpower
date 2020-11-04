@@ -109,7 +109,7 @@ public class BaseController<T, D, F, E> {
             @ApiImplicitParam(name = "objId", value = "所需要查询记录实体的ID"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
 
     })
     public R<IPage<OperationLog>> getOperationLogs(HttpServletResponse response, @ApiIgnore Page page, Long objId, Integer type) throws Exception {

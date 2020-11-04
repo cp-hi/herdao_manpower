@@ -68,7 +68,7 @@ public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, Po
             @ApiImplicitParam(name = "stop", value = "是否停用，0启用：1停用，不填查所有"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<PostSeqListVO>> page(HttpServletResponse response, @ApiIgnore Page page, PostSeq seq, Integer type)

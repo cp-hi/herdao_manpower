@@ -58,15 +58,11 @@ public class JobGradeController extends BaseController<JobGrade, JobGradeListVO,
             @ApiImplicitParam(name = "jobGradeName", value = "字符串搜索"),
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
+            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<JobGradeListVO>> page(HttpServletResponse response, @ApiIgnore Page page, JobGrade jobGrade, Integer type)
             throws Exception {
         return super.page(response,page,jobGrade,type);
     }
-
-
-
-
 }
