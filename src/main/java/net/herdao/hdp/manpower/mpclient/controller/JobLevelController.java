@@ -20,6 +20,7 @@ import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -63,10 +64,12 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
     @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "操作类型，0:或空查询 1:下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<JobLevelListVO>> page(HttpServletResponse response, Page page, JobLevel jobLevel, Integer type)
+    public R<IPage<JobLevelListVO>> page(HttpServletResponse response, @ApiIgnore Page page, JobLevel jobLevel, Integer type)
             throws Exception {
         return super.page(response, page, jobLevel, type);
     }

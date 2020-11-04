@@ -103,11 +103,13 @@ public class BaseController<T, D, F, E> {
     //endregion
 
     @ApiOperation(value = "获取操作记录")
-    @GetMapping("/operationLog/{objId}")
+    @GetMapping("/operationLog")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "objId", value = "所需要查询记录实体的ID"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
     })
-    public R getOperationLogs(Page page, @PathVariable Long objId) {
+    public R getOperationLogs(Page page,Long objId) {
         return R.ok(entityService.getOperationLogs(page,objId));
     }
 

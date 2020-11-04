@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,10 +55,12 @@ public class PipelineController extends BaseController<Pipeline, PipelineListVO,
     @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pipelineName", value = "字符串搜索"),
+            @ApiImplicitParam(name = "current", value = "当前页"),
+            @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<PipelineListVO>> page(HttpServletResponse response, Page page, Pipeline pipeline, Integer type) throws Exception {
+    public R<IPage<PipelineListVO>> page(HttpServletResponse response, @ApiIgnore Page page, Pipeline pipeline, Integer type) throws Exception {
         return super.page(response, page, pipeline, type);
     }
 }
