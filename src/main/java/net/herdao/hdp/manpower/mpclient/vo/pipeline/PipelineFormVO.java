@@ -19,10 +19,10 @@ public class PipelineFormVO {
     @ApiModelProperty("ID")
     private Long id;
 
-    @ApiModelProperty("管线名称")
+    @ApiModelProperty(value = "管线名称",required = true)
     private String pipelineName;
 
-    @ApiModelProperty("所属集团")
+    @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
 
     @ApiModelProperty("是否停用")
