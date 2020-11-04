@@ -45,9 +45,17 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     public void saveVerify(JobLevel jobLevel) {
         StringBuffer buffer = new StringBuffer();
         this.saveVerify(jobLevel, buffer);
-        handleErrMsg(buffer.toString());
+        super.handleErrMsg(buffer);
     }
 
+    /**
+     * 与父类的验证方式不同，
+     * 除了集团内不能同名，
+     * 同职等下也不能同名，
+     * 所以要覆盖父验证方法
+     * @param jobLevel
+     * @param buffer
+     */
     @Override
     public void saveVerify(JobLevel jobLevel, StringBuffer buffer) {
         Boolean result = baseMapper.checkDuplicateNameInJobGrade(jobLevel);

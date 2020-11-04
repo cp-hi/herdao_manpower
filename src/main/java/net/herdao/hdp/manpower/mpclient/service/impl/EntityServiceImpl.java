@@ -42,8 +42,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public IPage getOperationLogs(IPage page, Long objId) {
         QueryWrapper<OperationLog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("ENTITY_CLASS",baseMapper.getEntityClass().getName());
-        queryWrapper.eq("OBJ_ID",objId).orderBy(true,false,"operated_time");
+        queryWrapper.eq("ENTITY_CLASS", baseMapper.getEntityClass().getName());
+        queryWrapper.eq("OBJ_ID", objId).orderBy(true, false, "operated_time");
         return operationLogService.page(page, queryWrapper);
     }
 
@@ -81,44 +81,43 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.getEntityName();
     }
 
-    @Override
-    public String getCurrEntityCode() throws IllegalAccessException {
-        //todo 解决逻辑删除后无法查询到的问题
-        String sql = "select max(id) from " + baseMapper.getTableName();
-        T t = this.getOne((Wrapper<T>) new QueryWrapper().select(baseMapper.getTableCodeField()).inSql("id", sql));
-        String entityCode = "000001";
-        if (null != t) {
-            Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-            if (null == field) return entityCode;
-            field.setAccessible(true);
-            Object val = field.get(t);
-            if (null != val)
-                entityCode = val.toString();
-        }
-        return entityCode;
-    }
+//    @Override
+//    public String getCurrEntityCode() throws IllegalAccessException {
+//        String sql = "select max(id) from " + baseMapper.getTableName();
+//        T t = this.getOne((Wrapper<T>) new QueryWrapper().select(baseMapper.getTableCodeField()).inSql("id", sql));
+//        String entityCode = "000001";
+//        if (null != t) {
+//            Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
+//            if (null == field) return entityCode;
+//            field.setAccessible(true);
+//            Object val = field.get(t);
+//            if (null != val)
+//                entityCode = val.toString();
+//        }
+//        return entityCode;
+//    }
 
-    @Override
-    public String generateEntityCode() throws IllegalAccessException {
-        String currEntityCode = getCurrEntityCode();
-        String entityCode = String.format("%06d", Integer.valueOf(currEntityCode) + 1);
-        return entityCode;
-    }
+//    @Override
+//    public String generateEntityCode() throws IllegalAccessException {
+//        String currEntityCode = getCurrEntityCode();
+//        String entityCode = String.format("%06d", Integer.valueOf(currEntityCode) + 1);
+//        return entityCode;
+//    }
 
-    @Override
-    public void setEntityCode(T t) throws IllegalAccessException {
-        String entityCode = generateEntityCode();
-        setEntityCode(t, entityCode);
-    }
+//    @Override
+//    public void setEntityCode(T t) throws IllegalAccessException {
+//        String entityCode = generateEntityCode();
+//        setEntityCode(t, entityCode);
+//    }
 
-    @Override
-    public void setEntityCode(T t, String entityCode) throws IllegalAccessException {
-        String codeField = baseMapper.getEntityCodeField();
-        Field field = AnnotationUtils.getFieldByName(t, codeField);
-        if (null == field) return;
-        field.setAccessible(true);
-        field.set(t, entityCode);
-    }
+//    @Override
+//    public void setEntityCode(T t, String entityCode) throws IllegalAccessException {
+//        String codeField = baseMapper.getEntityCodeField();
+//        Field field = AnnotationUtils.getFieldByName(t, codeField);
+//        if (null == field) return;
+//        field.setAccessible(true);
+//        field.set(t, entityCode);
+//    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -194,7 +193,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public void saveVerify(T t) {
         StringBuffer buffer = new StringBuffer();
         this.saveVerify(t, buffer);
-        handleErrMsg(buffer.toString());
+        this.handleErrMsg(buffer);
     }
 
     @Override
@@ -203,7 +202,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
     }
 
-    protected void handleErrMsg(String errMsg) {
+    /**
+     * 处理异常信息
+     * @param buffer
+     */
+    protected void handleErrMsg(StringBuffer buffer) {
+        String errMsg = buffer.toString();
         if (null != errMsg && errMsg.startsWith("；")) {
             errMsg = errMsg.replaceFirst("；", "");
             throw new RuntimeException(errMsg);
