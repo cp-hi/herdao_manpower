@@ -198,7 +198,9 @@
 	
 	<!-- 查询组织下所有人员信息 -->
 	<select id="selectStaffs" resultMap="staffComponentMap">
+		<!-- 目前员工数据是否主岗有问题，暂时采用 DISTINCT-->
 		SELECT 
+		  DISTINCT
 			sf.id, 
 			sf.staff_name, 
 			sf.staff_code, 

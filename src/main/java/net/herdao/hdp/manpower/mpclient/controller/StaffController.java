@@ -344,14 +344,25 @@ public class StaffController extends HdpBaseController{
     @GetMapping("/selectStaffOrganizationComponent")
     @ApiImplicitParams({@ApiImplicitParam(name="orgCode", value="组织编码"),
     					@ApiImplicitParam(name="batchSelectOrgCodes", value="批量选中组织编码，多个采用：“,”分隔开， 例如：001,002"),
-    					@ApiImplicitParam(name="staffCodes", value="工号，多个采用：“,”分隔开， 例如：1001,1002"),
     					@ApiImplicitParam(name="searchText", value="模糊查询条件")
     					
     })
-    public R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String staffCodes, String searchText) {
-    	return staffService.selectStaffOrganizationComponent(orgCode, batchSelectOrgCodes, staffCodes, searchText);
+    public R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String searchText) {
+    	return staffService.selectStaffOrganizationComponent(orgCode, batchSelectOrgCodes, null, searchText);
     }
+    
+    /**
+     * 根据员工工号查询员工信息
 
+     * @return
+     */
+    @ApiOperation(value = "根据员工工号查询员工信息", notes = "staffCodes 根据员工工号查询员工信息")
+    @GetMapping("/selectStaffByStaffCodes")
+    @ApiImplicitParam(name="staffCodes", value="工号，多个采用：“,”分隔开， 例如：1001,1002")
+    public R<List> selectStaffByStaffCodes(String staffCodes) {
+    	return staffService.selectStaffOrganizationComponent(null, null, staffCodes, null);
+    }
+    
 
     /**
      * 通过id查询员工工作年限
