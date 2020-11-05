@@ -22,9 +22,8 @@ import java.util.stream.Collectors;
 public class GetEntityByName extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f -> {
-            return f.getEl().contains("Name");
-        }).collect(Collectors.toList());
+        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
+                f.getEl().contains("Name")).collect(Collectors.toList());
 
         if (0 == fieldInfos.size()) return null;
 

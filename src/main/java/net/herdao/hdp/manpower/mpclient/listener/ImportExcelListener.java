@@ -31,7 +31,6 @@ import java.util.Map;
 
 public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
-    Class entityClass;
 
     @Getter
     List<E> excelList = null;
@@ -61,7 +60,6 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
      * @param importType
      */
     public ImportExcelListener(EntityService service, Integer batchCount, Integer importType) {
-        this.entityClass = service.getEntityClass();
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
@@ -77,6 +75,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         if (headMap.values().size() > 0 && context.readRowHolder().getRowIndex() > 0) {
             headExcel.addAll(headMap.values());
+            headExcel.remove("错误信息");
         }
     }
 
@@ -84,7 +83,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     @Override
     public void invoke(E excel, AnalysisContext context) {
         //导入类的表头
-        List<String> headClass = AnnotationUtils.getExcelPropertyNames(excel, "errMsg");
+        List<String> headClass = AnnotationUtils.getExcelPropertyNames(excel, "错误信息");
         List<String> nonexistentHeads = new ArrayList<>();
         headExcel.forEach(h -> {
             if (-1 == headClass.indexOf(h))
@@ -95,7 +94,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
         Object t = null;
         try {
-            t = entityClass.newInstance();
+            t = this.entityService.getEntityClass().newInstance();
             BeanUtils.copyProperties(excel, t);
             ((ExcelMsg) excel).setErrMsg("");
             entityService.importVerify(t, excel, importType);
