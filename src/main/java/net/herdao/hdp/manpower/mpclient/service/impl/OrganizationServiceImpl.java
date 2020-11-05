@@ -470,8 +470,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     			return R.failed("上级组织不能是当前组织！");
     		}
     	}
-    	
-    	if(StrUtil.isBlank(organization.getOrgCode()) || !tpOrganization.getParentId().equals(organization.getParentId())) {
+
+    	if(StrUtil.isBlank(organization.getOrgCode()) || !StrUtil.toString(tpOrganization.getParentId()).equals(StrUtil.toString(organization.getParentId()))) {
     		
     		// 设置组织编码
         	organization.setOrgCode(getOrgCode(organization.getParentId()));
@@ -500,7 +500,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	if(ObjectUtil.isNotNull(id)) {
     		
     		// 更新了父组织
-    		if(!tpOrganization.getParentId().equals(organization.getParentId())) {
+    		if(!StrUtil.toString(tpOrganization.getParentId()).equals(StrUtil.toString(organization.getParentId()))) {
     			List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(tpOrganization.getOrgCode());
     			if(ObjectUtil.isNotEmpty(organizations)) {
     				
