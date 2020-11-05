@@ -16,10 +16,15 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
@@ -38,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +63,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Autowired
     private OrganizationService organizationService;
+    
+    @Autowired
+    private RemoteUserService remoteUserService;
 
     @Override
     @SuppressWarnings("all")
@@ -139,18 +148,45 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Override
     public boolean groupSave(GroupDetailDTO groupForm) {
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getAliasName();
+        String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
+        
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         long code = sysSequenceService.getNext("group_code");
         String groupCode = "JT" + code;
         group.setGroupCode(groupCode);
+
+      //创建人工号、姓名、时间；修改人工号、姓名、时间
+        DateTime now = DateTime.now();//LocalDateTime.now();
+        group.setCreatorId(userId);
+        group.setCreatorName(userName);
+        group.setCreatedTime(now);
+        group.setModifierId(userId);
+        group.setModifierName(userName);
+        group.setModifiedTime(now);
+        
         return this.save(group);
     }
 
     @Override
     public boolean groupUpdate(GroupDetailDTO groupForm) {
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getAliasName();
+        String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
+        
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
+
+        //修改人工号、姓名、时间
+	    DateTime now = DateTime.now();
+	    group.setModifierId(userId);
+	    group.setModifierName(userName);
+	    group.setModifiedTime(now);
+          
         return this.updateById(group);
     }
 
