@@ -7,6 +7,7 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
 import net.herdao.hdp.manpower.mpclient.mapper.OrgReportMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgReportService;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +21,14 @@ import java.util.List;
 public class OrgReportServiceImpl extends ServiceImpl<OrgReportMapper, OrgReport> implements OrgReportService {
 
     @Override
-    public List<OrgReport> findOrgReportView(OrgReport condition) {
-        List<OrgReport> list = this.baseMapper.findOrgReportView(condition);
+    public List<OrgReportVO> findOrgReportView(OrgReport condition) {
+        List<OrgReportVO> list = this.baseMapper.findOrgReportView(condition);
         return list;
     }
 
     @Override
-    public List<OrgReport> exportOrg(OrgReport condition) {
-        List<OrgReport> list = this.baseMapper.exportOrg(condition);
+    public List<OrgReportVO> exportOrg(OrgReport condition) {
+        List<OrgReportVO> list = this.baseMapper.exportOrg(condition);
         return list;
     }
 
