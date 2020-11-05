@@ -5,16 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
-import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
-import net.herdao.hdp.manpower.mpclient.entity.OrgMinReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
 import net.herdao.hdp.manpower.mpclient.service.OrgReportService;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -131,7 +127,8 @@ public class OrgReportController {
     })
     public R exportOrg(HttpServletResponse response, @RequestBody OrgReport condition) {
         try {
-            ExcelUtils.export2Web(response, "组织架构表", "组织架构表", OrgMinReport.class, orgReportService.exportOrg(condition));
+            List<OrgReportVO> list = orgReportService.exportOrg(condition);
+            ExcelUtils.export2Web(response, "组织架构表", "组织架构表", OrgReportVO.class, list);
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");
@@ -191,7 +188,7 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "组织职级统计预览", notes = "组织职级统计预览")
-   @PostMapping("/fetchOrgJobLevelView")
+    @PostMapping("/fetchOrgJobLevelView")
     public R fetchOrgJobLevelView(@RequestBody JobLevelReport condition) {
         List<JobLevelReport> list = orgReportService.fetchOrgJobLevel(condition);
         return R.ok(list);

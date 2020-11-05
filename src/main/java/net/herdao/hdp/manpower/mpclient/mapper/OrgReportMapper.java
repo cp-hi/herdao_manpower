@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,14 +24,14 @@ public interface OrgReportMapper extends BaseMapper<OrgReport> {
      * @param condition
      * @return
      */
-    List<OrgReport> findOrgReportView(OrgReport condition);
+    List<OrgReportVO> findOrgReportView(OrgReport condition);
 
     /**
      * 组织架构表下载
      * @param condition
      * @return
      */
-    List<OrgReport> exportOrg(OrgReport condition);
+    List<OrgReportVO> exportOrg(OrgReport condition);
 
     /**
      * 组织架构表明细下载
