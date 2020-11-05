@@ -24,7 +24,6 @@ import java.util.List;
 @ApiModel(value = "岗位DTO")
 public class PostDTO extends Post {
 
-
     @ApiModelProperty("板块")
     private String sectionName;
 

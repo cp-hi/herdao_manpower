@@ -23,9 +23,8 @@ public class SelectEntityName extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
         //TODO 添加通过 TableField 注解获取 name字段名，目前就简单从表名拼接的方式
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f -> {
-            return f.getEl().contains("Name");
-        }).collect(Collectors.toList());
+        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
+                f.getEl().contains("Name")).collect(Collectors.toList());
         String name = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ",
                 name, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
