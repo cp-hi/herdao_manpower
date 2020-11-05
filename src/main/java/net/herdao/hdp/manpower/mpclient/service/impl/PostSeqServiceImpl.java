@@ -8,6 +8,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
+import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @ClassName PipelineServiceImpl
@@ -89,5 +91,10 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         PostSeqDTO dto = baseMapper.getPostSeqDTO(parentId);
         if (null != dto && null != dto.getParent() && null != dto.getParent().getParent())
             buffer.append("；" + dto.getPostSeqName() + "为3级岗位序列，不能再创建子级");
+    }
+
+    @Override
+    public Function<PostSeq, String> getNameFieldMapper() {
+        return PostSeq::getPostSeqName;
     }
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @ClassName JobLevelServiceImpl
@@ -103,4 +105,8 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         jobLevel.setId(tmp.getId());
     }
 
+    @Override
+    public Function<JobLevel, String> getNameFieldMapper() {
+        return JobLevel::getJobLevelName;
+    }
 }

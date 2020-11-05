@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @ClassName PipelineServiceImpl
@@ -51,5 +53,10 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true);
         pipeline.setGroupId(group.getId());
         pipeline.setId(tmp.getId());
+    }
+
+    @Override
+    public Function<Pipeline, String> getNameFieldMapper() {
+        return Pipeline::getPipelineName;
     }
 }
