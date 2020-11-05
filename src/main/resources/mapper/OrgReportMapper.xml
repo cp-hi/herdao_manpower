@@ -111,51 +111,47 @@
     </select>
 
     <!-- 组织职级统计导出 -->
-    <select id="exportOrgJobLevel" resultMap="jobLevelMap">
-            SELECT  b.ORG_NAME,
-                    b.ORG_CODE,
-                    GROUP_CONCAT( b.JOB_LEVEL_NAME ) JOB_LEVEL_NAME ,
-                    GROUP_CONCAT( b.JOB_LEVEL_CODE ) JOB_LEVEL_CODE ,
-                    GROUP_CONCAT( b.job_level_num ) job_level_num
-            FROM
-                (
-                    SELECT
-                        t.ORG_NAME,
-                        t.ORG_CODE,
-                        t.JOB_LEVEL_NAME,
-                        t.JOB_LEVEL_CODE,
-                        count( JOB_LEVEL_CODE ) job_level_num
-                    FROM
-                        (
-                        SELECT
-                            a.ORG_NAME,
-                            a.ORG_CODE,
-                            lev.JOB_LEVEL_NAME,
-                            lev.JOB_LEVEL_CODE
-                        FROM
-                            mp_organization a
-                            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
-                            AND u.MAIN_POST = 1
-                            INNER JOIN mp_post s ON s.id = u.POST_ID
-                            INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_ID1
-                        WHERE 1=1
-                            <if test="orgCode != null">
-                                AND a.ORG_CODE LIKE concat(#{orgCode},'%')
-                            </if>
-                        ) t
-                    GROUP BY
-                        t.ORG_NAME,
-                        t.ORG_CODE,
-                        t.JOB_LEVEL_NAME,
-                        t.JOB_LEVEL_CODE
-                ) b
-            GROUP BY
-                b.ORG_NAME,
-                b.ORG_CODE
+    <select id="exportOrgJobLevel" resultType="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
+        SELECT  b.ORG_NAME orgName,
+                b.ORG_CODE orgCode,
+                GROUP_CONCAT( b.JOB_LEVEL_NAME ) jobLevelName,
+                GROUP_CONCAT( b.JOB_LEVEL_CODE ) jobLevelCode,
+                GROUP_CONCAT( b.job_level_num )  jobLevelNum
+        FROM
+        (
+        SELECT
+        t.ORG_NAME,
+        t.ORG_CODE,
+        t.JOB_LEVEL_NAME,
+        t.job_level_code,
+        count( t.JOB_LEVEL_CODE ) job_level_num
+        FROM
+        (
+        SELECT 	a.ORG_NAME,
+        a.ORG_CODE,
+        lev.JOB_LEVEL_NAME,
+        lev.JOB_LEVEL_CODE
+        FROM mp_organization a
+        LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+        LEFT JOIN mp_job_level lev ON lev.ID = u.JOB_LEVEL_ID
+        WHERE 1=1
+        <if test="orgCode != null">
+            AND a.ORG_CODE LIKE concat(#{orgCode},'%')
+        </if>
+        ) t
+        GROUP BY
+        t.ORG_NAME,
+        t.ORG_CODE,
+        t.job_level_name,
+        t.job_level_code
+        ) b
+        GROUP BY
+        b.ORG_NAME,
+        b.ORG_CODE
     </select>
 
     <!-- 组织职级统计 -->
-    <select id="fetchOrgJobLevel" resultMap="jobLevelMap">
+    <select id="fetchOrgJobLevel" resultType="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
         SELECT  b.ORG_NAME,
                 b.ORG_CODE,
                 GROUP_CONCAT( b.JOB_LEVEL_NAME ) JOB_LEVEL_NAME ,
@@ -192,7 +188,6 @@
         GROUP BY
         b.ORG_NAME,
         b.ORG_CODE
-
-
+        LIMIT 0, 10
     </select>
 </mapper>

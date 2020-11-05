@@ -133,7 +133,6 @@ public class StaffEducationController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "新增员工教育经历", notes = "新增员工教育经历")
-    @SysLog("新增员工教育经历" )
     @PostMapping("/saveEducation")
    // @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_add')" )
     public R saveEducation(@RequestBody Staffeducation staffeducation) {
@@ -147,7 +146,6 @@ public class StaffEducationController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "修改员工教育经历", notes = "修改员工教育经历")
-    @SysLog("修改员工教育经历" )
     @PutMapping("/updateEducation")
     // @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_edit')" )
     public R updateById(@RequestBody Staffeducation staffeducation) {
@@ -161,7 +159,6 @@ public class StaffEducationController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "通过id删除员工教育经历", notes = "通过id删除员工教育经历")
-    @SysLog("通过id删除员工教育经历" )
     @DeleteMapping("/del/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_staffeducation_del')" )
     public R removeById(@PathVariable Long id) {
@@ -196,7 +193,6 @@ public class StaffEducationController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出员工教育经历Excel", notes = "导出员工教育经历Excel")
-    @SysLog("导出员工教育经历Excel")
     @PostMapping("/exportStaffEdu")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索"),

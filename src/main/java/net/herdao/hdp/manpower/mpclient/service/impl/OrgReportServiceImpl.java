@@ -38,14 +38,14 @@ public class OrgReportServiceImpl extends ServiceImpl<OrgReportMapper, OrgReport
     }
 
     @Override
-    public List<JobLevel> exportOrgJobLevel(JobLevelReport condition) {
-        List<JobLevel> list = this.baseMapper.exportOrgJobLevel(condition);
+    public List<JobLevelReport> exportOrgJobLevel(JobLevelReport condition) {
+        List<JobLevelReport > list = this.baseMapper.exportOrgJobLevel(condition);
         return list;
     }
 
     @Override
-    public List<JobLevel> fetchOrgJobLevel(JobLevelReport condition) {
-        List<JobLevel> list = this.baseMapper.fetchOrgJobLevel(condition);
+    public List<JobLevelReport> fetchOrgJobLevel(JobLevelReport condition) {
+        List<JobLevelReport> list = this.baseMapper.fetchOrgJobLevel(condition);
         return list;
     }
 }

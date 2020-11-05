@@ -71,7 +71,6 @@ public class OrgModifyRecordController {
      * @return R
      */
     @ApiOperation(value = "新增", notes = "新增")
-    @SysLog("新增")
     @PostMapping
     @PreAuthorize("@pms.hasPermission('mpclient_orgmodifyrecord_add')")
     public R save(@RequestBody OrgModifyRecord orgModifyRecord) {
@@ -85,7 +84,6 @@ public class OrgModifyRecordController {
      * @return R
      */
     @ApiOperation(value = "修改", notes = "修改")
-    @SysLog("修改")
     @PutMapping
     @PreAuthorize("@pms.hasPermission('mpclient_orgmodifyrecord_edit')")
     public R updateById(@RequestBody OrgModifyRecord orgModifyRecord) {
@@ -99,7 +97,6 @@ public class OrgModifyRecordController {
      * @return R
      */
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除")
     @DeleteMapping("/{id}")
     @PreAuthorize("@pms.hasPermission('mpclient_orgmodifyrecord_del')")
     public R removeById(@PathVariable Long id) {

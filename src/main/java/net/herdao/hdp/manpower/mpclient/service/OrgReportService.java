@@ -41,13 +41,13 @@ public interface OrgReportService extends IService<OrgReport> {
      * @param condition
      * @return
      */
-    List<JobLevel> exportOrgJobLevel(JobLevelReport condition);
+    List<JobLevelReport > exportOrgJobLevel(JobLevelReport condition);
 
     /**
      * 组织职级统计
      * @param condition
      * @return
      */
-    List<JobLevel> fetchOrgJobLevel(JobLevelReport condition);
+    List<JobLevelReport> fetchOrgJobLevel(JobLevelReport condition);
 
 }

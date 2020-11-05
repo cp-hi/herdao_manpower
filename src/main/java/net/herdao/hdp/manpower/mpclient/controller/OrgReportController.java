@@ -6,6 +6,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
+import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
+import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgMinReport;
@@ -18,6 +22,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
@@ -69,7 +74,6 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "新增组织报表", notes = "新增组织报表")
-    @SysLog("新增组织报表")
     @PostMapping
     @PreAuthorize("@pms.hasPermission('mpclient_orgreport_add')")
     public R save(@RequestBody OrgReport orgReport) {
@@ -83,7 +87,6 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "修改组织报表", notes = "修改组织报表")
-    @SysLog("修改组织报表")
     @PutMapping
     @PreAuthorize("@pms.hasPermission('mpclient_orgreport_edit')")
     public R updateById(@RequestBody OrgReport orgReport) {
@@ -97,7 +100,6 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "通过id删除组织报表", notes = "通过id删除组织报表")
-    @SysLog("通过id删除组织报表")
     @DeleteMapping("/{orgName}")
     @PreAuthorize("@pms.hasPermission('mpclient_orgreport_del')")
     public R removeById(@PathVariable String orgName) {
@@ -111,7 +113,6 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "组织架构预览", notes = "组织架构预览s")
-    @SysLog("组织架构预览")
     @PostMapping("/findOrgReportView")
     public R findOrgReportView(@RequestBody OrgReport condition) {
         return R.ok(orgReportService.findOrgReportView(condition));
@@ -124,7 +125,6 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "导出组织架构Excel", notes = "导出组织架构Excel")
-    @SysLog("导出组织架构Excel")
     @PostMapping("/exportOrg")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgCode", value = "组织编码")
@@ -146,10 +146,9 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "导出组织架构明细Excel", notes = "导出组织架构明细Excel")
-    @SysLog("导出组织架构明细Excel" )
     @PostMapping("/exportDetailsOrg")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="orgCode",value="组织编码")
+        @ApiImplicitParam(name="orgCode",value="组织编码")
     })
     public R exportDetailsOrg(HttpServletResponse response,@RequestBody OrgReport condition) {
         try {
@@ -168,14 +167,15 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "组织职级统计导出Excel", notes = "组织职级统计导出Excel")
-    @SysLog("组织职级统计导出Excel" )
     @PostMapping("/exportOrgJobLevel")
     @ApiImplicitParams({
         @ApiImplicitParam(name="orgCode",value="组织编码")
     })
     public R exportOrgJobLevel(HttpServletResponse response,@RequestBody JobLevelReport condition) {
         try {
-            ExcelUtils.export2Web(response, "组织职级统计表", "组织职级统计表", JobLevelReport.class, orgReportService.exportOrgJobLevel(condition));
+            List<JobLevelReport> list = orgReportService.exportOrgJobLevel(condition);
+            EasyExcelUtils.webWriteExcel(response, list, JobLevelReport.class, "组织职级统计表");
+            /*ExcelUtils.export2Web(response, "组织职级统计表", "组织职级统计表", JobLevelReport.class,list);*/
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");
@@ -191,10 +191,10 @@ public class OrgReportController {
      * @return R
      */
     @ApiOperation(value = "组织职级统计预览", notes = "组织职级统计预览")
-    @SysLog("组织职级统计预览")
-    @PostMapping("/fetchOrgJobLevelView")
+   @PostMapping("/fetchOrgJobLevelView")
     public R fetchOrgJobLevelView(@RequestBody JobLevelReport condition) {
-        return R.ok(orgReportService.fetchOrgJobLevel(condition));
+        List<JobLevelReport> list = orgReportService.fetchOrgJobLevel(condition);
+        return R.ok(list);
     }
 
 }

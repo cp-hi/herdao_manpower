@@ -134,7 +134,6 @@ public class FamilystatusController extends HdpBaseController  {
      * @return R
      */
     @ApiOperation(value = "导出家庭情况Excel", notes = "导出家庭情况Excel")
-    @SysLog("导出家庭情况Excel")
     @PostMapping("/exportFamily")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索")
@@ -157,7 +156,6 @@ public class FamilystatusController extends HdpBaseController  {
      * @return R
      */
     @ApiOperation(value = "新增或修改家庭情况", notes = "新增或修改家庭情况")
-    @SysLog("新增或修改家庭情况" )
     @PostMapping("/saveOrUpdate")
     public R saveOrUpdate(@RequestBody Familystatus familystatus) {
         boolean status = familystatusService.saveOrUpdate(familystatus);
@@ -170,7 +168,6 @@ public class FamilystatusController extends HdpBaseController  {
      * @return R
      */
     @ApiOperation(value = "通过id删除员工家庭成员表", notes = "通过id删除员工家庭成员表")
-    @SysLog("通过id删除员工家庭成员表" )
     @DeleteMapping("/{id}" )
     public R removeById(@PathVariable Integer id) {
         return R.ok(familystatusService.removeById(id));

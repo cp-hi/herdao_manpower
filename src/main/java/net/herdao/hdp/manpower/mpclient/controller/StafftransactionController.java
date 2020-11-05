@@ -76,7 +76,6 @@ public class StafftransactionController extends HdpBaseController  {
      * @return R
      */
     @ApiOperation(value = "导出员工异动情况Excel", notes = "导出员工异动情况Excel")
-    @SysLog("导出员工异动情况Excel")
     @PostMapping("/exportTrans")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键字"),
