@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
@@ -148,13 +149,14 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return result;
     }
 
+    @SneakyThrows
     @Override
     public boolean getStatus(Serializable id) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("is_stop").eq("id", id);
         List<Object> objs = baseMapper.selectObjs(queryWrapper);
         if (objs.size() > 0) return (Boolean) objs.get(0);
-        throw new RuntimeException("找不到此对象，或已被删除");
+        throw new  Exception("找不到此对象，或已被删除");
     }
 
     @Override
@@ -174,14 +176,16 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      * 处理异常信息
      * @param buffer
      */
+    @SneakyThrows
     protected void handleErrMsg(StringBuffer buffer) {
         String errMsg = buffer.toString();
         if (null != errMsg && errMsg.startsWith("；")) {
             errMsg = errMsg.replaceFirst("；", "");
-            throw new RuntimeException(errMsg);
+            throw new Exception(errMsg);
         }
     }
 
+    @SneakyThrows
     @Override
     public void importVerify(T t, Object excelObj, int type) {
         boolean add = (0 == type);
@@ -195,7 +199,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(t, buffer);
         if (StringUtils.isNotBlank(buffer))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
     }
 
     @Override
@@ -211,12 +215,13 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return t;
     }
 
+    @SneakyThrows
     @Override
     public T chkEntityExists(String name, Long groupId, boolean need) {
         StringBuffer buffer = new StringBuffer();
         T t = this.chkEntityExists(name, groupId, need, buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
         return t;
     }
 

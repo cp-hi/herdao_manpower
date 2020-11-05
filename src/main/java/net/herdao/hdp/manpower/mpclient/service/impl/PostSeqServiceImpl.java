@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -45,6 +46,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         super.handleErrMsg(buffer);
     }
 
+    @SneakyThrows
     @Override
     public void addEntity(PostSeq postSeq, Object excelObj) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
@@ -57,11 +59,12 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
             postSeq.setParentId(parent.getId());
         }
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
 
         postSeq.setGroupId(group.getId());
     }
 
+    @SneakyThrows
     @Override
     public void updateEntity(PostSeq postSeq, Object excelObj) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
@@ -75,7 +78,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
             postSeq.setParentId(parent.getId());
         }
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new  Exception(buffer.toString());
 
         postSeq.setGroupId(group.getId());
         postSeq.setId(tmp.getId());

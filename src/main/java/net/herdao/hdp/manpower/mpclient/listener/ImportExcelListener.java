@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -68,29 +69,30 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
         this.hasError = false;
     }
 
-    //excel表头
-    List<String> headExcel = new ArrayList<>();
+    //来自excel文件表头，
+    //字段可能是batch update 和 batch add
+    //字段有可能多有可能少
+    List<String> headExcelFile = new ArrayList<>();
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         if (headMap.values().size() > 0 && context.readRowHolder().getRowIndex() > 0) {
-            headExcel.addAll(headMap.values());
-            headExcel.remove("错误信息");
+            headExcelFile.addAll(headMap.values());
+            headExcelFile.remove("错误信息");
         }
     }
 
     @SneakyThrows
     @Override
     public void invoke(E excel, AnalysisContext context) {
-        //导入类的表头
-        List<String> headClass = AnnotationUtils.getExcelPropertyNames(excel, "错误信息");
-        List<String> nonexistentHeads = new ArrayList<>();
-        headExcel.forEach(h -> {
-            if (-1 == headClass.indexOf(h))
-                nonexistentHeads.add(h);
-        });
+        //导入类的表头 E 类来自于BatchUpdateVO，此类字段比较多
+        List<String> headExcelClass = AnnotationUtils.getExcelPropertyNames(excel, "错误信息");
+        //来自多字段表头如何查找出不包含的少表头字段，则说明模板不对
+        List<String> nonexistentHeads = headExcelFile.stream().filter(h ->
+                !headExcelClass.contains(h)).collect(Collectors.toList());
+
         if (nonexistentHeads.size() > 0)
-            throw new RuntimeException("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
+            throw new Exception("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
 
         Object t = null;
         try {

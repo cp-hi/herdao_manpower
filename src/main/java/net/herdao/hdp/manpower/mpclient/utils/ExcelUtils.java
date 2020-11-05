@@ -72,6 +72,17 @@ public class ExcelUtils {
         excelName = URLEncoder.encode(excelName, "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
         //response.setHeader("Content-disposition", "attachment;filename=" + new String(excelName.getBytes("utf-8"),"ISO-8859-1" ) + ExcelTypeEnum.XLSX.getValue());
+        EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName).doWrite(data);
+    }
+
+
+    public static void export2Web(HttpServletResponse response, String excelName, Class clazz, List data) throws Exception {
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码
+        excelName = URLEncoder.encode(excelName, "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
+        //response.setHeader("Content-disposition", "attachment;filename=" + new String(excelName.getBytes("utf-8"),"ISO-8859-1" ) + ExcelTypeEnum.XLSX.getValue());
 
 
         //内容样式策略
@@ -98,7 +109,7 @@ public class ExcelUtils {
         HorizontalCellStyleStrategy horizontalCellStyleStrategy =
                 new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
-        EasyExcel.write(response.getOutputStream(), clazz).sheet(sheetName)
+        EasyExcel.write(response.getOutputStream(), clazz).sheet(excelName)
                 .registerWriteHandler(horizontalCellStyleStrategy)
                 .registerWriteHandler(new ImportStyleStrategy(clazz))
                 .doWrite(data);

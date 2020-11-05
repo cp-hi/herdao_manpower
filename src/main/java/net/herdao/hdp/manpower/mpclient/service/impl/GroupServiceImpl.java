@@ -20,6 +20,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
@@ -174,12 +175,13 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         return group;
     }
 
+    @SneakyThrows
     @Override
     public Group selectByName(String groupName, boolean need) {
         StringBuffer buffer = new StringBuffer();
         Group group = this.selectByName(groupName, need, buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
         return group;
     }
 }

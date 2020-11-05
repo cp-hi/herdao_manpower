@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
@@ -138,6 +139,7 @@ public class BaseController<T, D, F, E> {
         return R.ok(p);
     }
 
+    @SneakyThrows
     @GetMapping("/form/{id}")
     @ApiOperation(value = "获取表单信息")
     @ApiImplicitParams({
@@ -146,7 +148,7 @@ public class BaseController<T, D, F, E> {
     public R<F> getFormInfo(@PathVariable Long id) throws InstantiationException,
             IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         Object from = entityService.form(id);
-        if (null == from) throw new RuntimeException("对象不存在，或已被删除");
+        if (null == from) throw new Exception("对象不存在，或已被删除");
         F f = DtoConverter.dto2vo(from, getFormClass());
         return R.ok(f);
     }
@@ -175,7 +177,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键"),
     })
-    public R<Boolean>  getStatus(@PathVariable Long id) {
+    public R<Boolean> getStatus(@PathVariable Long id) {
         return R.ok(entityService.getStatus(id));
     }
 
@@ -219,7 +221,7 @@ public class BaseController<T, D, F, E> {
                     data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
                     clazz = getBatchAddClass();
                 }
-                ExcelUtils.export2Web(response, "导入错误信息", "导入错误信息", clazz, data);
+                ExcelUtils.export2Web(response, "导入错误信息", clazz, data);
             } else {
                 throw ex;
             }
@@ -232,7 +234,7 @@ public class BaseController<T, D, F, E> {
 
     @ApiOperation("下载批量新增/编辑的模板")
 //    @SysLog("下载批量新增/编辑的模板")
-    @GetMapping("/downloadTempl")
+    @PostMapping("/downloadTempl")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
@@ -243,7 +245,7 @@ public class BaseController<T, D, F, E> {
                 templClass = getBatchUpdateClass();
 
             if (Class.class == templClass)
-                throw new RuntimeException("没有找到模板");
+                throw new Exception("没有找到模板");
             ExcelUtils.downloadTempl(response, templClass);
 
         } catch (Exception ex) {

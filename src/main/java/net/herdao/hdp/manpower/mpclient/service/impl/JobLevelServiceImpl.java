@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
@@ -63,6 +64,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         super.saveVerify(jobLevel, buffer);
     }
 
+    @SneakyThrows
     @Override
     public void addEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
@@ -75,12 +77,13 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new  Exception(buffer.toString());
 
         jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(group.getId());
     }
 
+    @SneakyThrows
     @Override
     public void updateEntity(JobLevel jobLevel, Object excelObj) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
@@ -93,7 +96,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new  Exception(buffer.toString());
 
         jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(group.getId());
