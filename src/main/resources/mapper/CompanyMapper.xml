@@ -74,10 +74,18 @@
                   c.FIELD2,
                   c.FIELD3,
                   c.FIELD4,
-                  c.FIELD5
+                  c.FIELD5,
+                  s.city_name cityName,
+                  t.label targetSysName,
+                  i.label securityStandardName,
+                  f.label cityFundName
             FROM
                 mp_company c
             LEFT JOIN mp_organization o ON c.ORG_ID = o.ID
+            left join mp_city_set s on s.id=c.CITY_ID
+            left join sys_dict_item t on t.type='MBCWXT' and t.value=c.TARGET_SYS
+            left join sys_dict_item i on i.type='BXBZ' and i.value=c.SECURITY_STANDARD
+            left join sys_dict_item f on f.type='GJJBZ' and f.value=c.CITY_FUND
             <where>
                   AND c.del_flag = 0
                   <if test="searchText != null">
