@@ -108,7 +108,8 @@ public class DtoConverter {
             fieldVal.setAccessible(true);
             Object objVal = fieldVal.get(currObj);
             String value = "";
-            if (Date.class == fieldVal.getType()) {//如果是日期则转格式
+            if (Date.class == fieldVal.getType()) {
+                //如果是日期则转格式
                 value = DateUtils.formatDate((Date) objVal, dtoField.pattern());
             } else if (Boolean.class == fieldVal.getType()) {
                 //如果设置了布尔器则转文字

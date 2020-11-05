@@ -156,7 +156,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
-    public R delete(@PathVariable Long id) {
+    public R<Boolean> delete(@PathVariable Long id) {
         return R.ok(entityService.delEntity(id));
     }
 
@@ -166,7 +166,7 @@ public class BaseController<T, D, F, E> {
             @ApiImplicitParam(name = "id", value = "主键"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
-    public R stop(@PathVariable Long id, @PathVariable boolean stop) {
+    public R<Boolean> stop(@PathVariable Long id, @PathVariable boolean stop) {
         return R.ok(entityService.stopEntity(id, stop));
     }
 
@@ -175,7 +175,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键"),
     })
-    public R getStatus(@PathVariable Long id) {
+    public R<Boolean>  getStatus(@PathVariable Long id) {
         return R.ok(entityService.getStatus(id));
     }
 
@@ -236,7 +236,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
-    public R getDownloadTempl(HttpServletResponse response, Integer importType) {
+    public R<E> getDownloadTempl(HttpServletResponse response, Integer importType) {
         try {
             Class templClass = getBatchAddClass();
             if (Integer.valueOf(1).equals(importType))
