@@ -18,6 +18,7 @@ package net.herdao.hdp.manpower.sys.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.common.core.util.R;
 import org.apache.commons.lang3.StringUtils;
@@ -56,9 +57,20 @@ public interface SysDictItemService extends IService<SysDictItem> {
         SysDictItem dictItem = this.getOne(new QueryWrapper<SysDictItem>()
                 .eq("type", type).eq("label", label));
         if (null == dictItem) {
-			buffer.append( "；不存在此字典值：" + label);
-			return null;
-		}
+            buffer.append("；不存在此字典值：" + label);
+            return null;
+        }
+        return dictItem.getValue();
+    }
+
+    default String getDictItemValue(String type, String label, boolean need, StringBuffer buffer) {
+        SysDictItem dictItem = this.getOne(new QueryWrapper<SysDictItem>()
+                .eq("type", type).eq("label", label));
+        if (null == dictItem) {
+            if (need)
+                buffer.append("；不存在此字典值：" + label);
+            return null;
+        }
         return dictItem.getValue();
     }
 
@@ -67,13 +79,21 @@ public interface SysDictItemService extends IService<SysDictItem> {
      * @param label
      * @return
      */
+    @SneakyThrows
     default String getDictItemValue(String type, String label) {
         StringBuffer buffer = new StringBuffer();
         String value = this.getDictItemValue(type, label, buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
         return value;
     }
 
-
+    @SneakyThrows
+    default String getDictItemValue(String type, String label, boolean need) {
+        StringBuffer buffer = new StringBuffer();
+        String value = this.getDictItemValue(type, label, buffer);
+        if (StringUtils.isNotBlank(buffer) && need)
+            throw new Exception(buffer.toString());
+        return value;
+    }
 }
