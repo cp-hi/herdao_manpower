@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @ClassName SectionServiceImpl
@@ -50,5 +52,10 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         section.setGroupId(group.getId());
         section.setId(tmp.getId());
+    }
+
+    @Override
+    public Function<Section, String> getNameFieldMapper() {
+        return Section::getSectionName;
     }
 }
