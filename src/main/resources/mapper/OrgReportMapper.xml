@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OrgReportMapper">
         <resultMap id="orgReportMap" type="net.herdao.hdp.manpower.mpclient.entity.OrgReport">
             <id property="orgName" column="ORG_NAME"/>
@@ -19,12 +15,8 @@
             <result property="virtualStatus" column="virtual_status"/>
             <result property="createdTime" column="CREATED_TIME"/>
         </resultMap>
-
-        <resultMap id="jobLevelMap" type="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
-        </resultMap>
-
     <!-- 组织架构预览 -->
-    <select id="findOrgReportView" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO">
+       <select id="findOrgReportView" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO">
         SELECT  org.org_name,
                 org.org_code,
                 orgp.org_name AS parent_name,
@@ -43,7 +35,6 @@
         </where>
                 LIMIT 0, 10
     </select>
-
     <!-- 组织架构导出 -->
     <select id="exportOrg" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO">
         SELECT  org.org_name,
@@ -65,10 +56,56 @@
     </select>
 
     <!-- 组织架构明细导出 -->
-    <select id="exportDetailsOrg" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO">
-
+    <select id="exportDetailsOrg" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO">
+        SELECT  org.org_name,
+                org.org_code,
+                orgp.org_name AS parent_name,
+                orgp.org_code AS parent_code,
+                dict.label AS org_type_name,
+                dicc.label AS org_level_name,
+                org.org_desc,
+                IF ( org.IS_VIRTUAL = 0, '否', '是' ) IS_VIRTUAL,
+                IF ( org.organizational = 0, '否', '是' ) organizational,
+                org.org_charge_name,
+                ps.post_name,
+                org.CREATED_TIME
+        FROM mp_organization org
+            LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+            LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ'  AND dicc.value = org.org_level AND dicc.del_flag = 0
+            LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX'  AND dict.VALUE= org.org_type  AND dict.del_flag = 0
+            LEFT JOIN mp_post ps ON ps.id = org.post_id
+        <where>
+            <if test="orgCode != null">
+                AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+        </where>
     </select>
 
+    <!-- 组织架构明细预览 -->
+    <select id="findOrgDetailsView" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO">
+        SELECT  org.org_name,
+        org.org_code,
+        orgp.org_name AS parent_name,
+        orgp.org_code AS parent_code,
+        dict.label AS org_type_name,
+        dicc.label AS org_level_name,
+        org.org_desc,
+        IF ( org.IS_VIRTUAL = 0, '否', '是' ) IS_VIRTUAL,
+        IF ( org.organizational = 0, '否', '是' ) organizational,
+        org.org_charge_name,
+        ps.post_name,
+        org.CREATED_TIME
+        FROM mp_organization org
+        LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+        LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ'  AND dicc.value = org.org_level AND dicc.del_flag = 0
+        LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX'  AND dict.VALUE= org.org_type  AND dict.del_flag = 0
+        LEFT JOIN mp_post ps ON ps.id = org.post_id
+        <where>
+            <if test="orgCode != null">
+                AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+        </where>
+    </select>
     <!-- 组织职级统计导出 -->
     <select id="exportOrgJobLevel" resultType="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
         SELECT  b.ORG_NAME orgName,

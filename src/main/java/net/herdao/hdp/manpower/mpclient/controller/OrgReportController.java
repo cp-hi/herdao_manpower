@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
 import net.herdao.hdp.manpower.mpclient.service.OrgReportService;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
@@ -48,7 +49,6 @@ public class OrgReportController {
     public R getOrgReportPage(Page page, OrgReport orgReport) {
         return R.ok(orgReportService.page(page, Wrappers.query(orgReport)));
     }
-
 
     /**
      * 通过id查询组织报表
@@ -123,7 +123,7 @@ public class OrgReportController {
     @ApiOperation(value = "导出组织架构Excel", notes = "导出组织架构Excel")
     @PostMapping("/exportOrg")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgCode", value = "组织编码")
+        @ApiImplicitParam(name = "orgCode", value = "组织编码")
     })
     public R exportOrg(HttpServletResponse response, @RequestBody OrgReport condition) {
         try {
@@ -148,14 +148,30 @@ public class OrgReportController {
         @ApiImplicitParam(name="orgCode",value="组织编码")
     })
     public R exportDetailsOrg(HttpServletResponse response,@RequestBody OrgReport condition) {
+        List<OrgReportDetailVO> list = orgReportService.exportDetailsOrg(condition);
         try {
-            ExcelUtils.export2Web(response, "组织架构明细表", "组织架构明细表", OrgReport.class, orgReportService.exportDetailsOrg(condition));
+            ExcelUtils.export2Web(response, "组织架构明细表", "组织架构明细表", OrgReportDetailVO.class, list);
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");
         }
 
         return R.ok("导出成功");
+    }
+
+    /**
+     * 导出组织架构预览
+     * @param  response
+     * @return R
+     */
+    @ApiOperation(value = "导出组织架构明细Excel", notes = "导出组织架构明细Excel")
+    @PostMapping("/findOrgDetailsView")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgCode",value="组织编码")
+    })
+    public R findOrgDetailsView(HttpServletResponse response,@RequestBody OrgReport condition) {
+        List<OrgReportDetailVO> list = orgReportService.findOrgDetailsView(condition);
+        return R.ok(list);
     }
 
     /**
@@ -172,7 +188,6 @@ public class OrgReportController {
         try {
             List<JobLevelReport> list = orgReportService.exportOrgJobLevel(condition);
             EasyExcelUtils.webWriteExcel(response, list, JobLevelReport.class, "组织职级统计表");
-            /*ExcelUtils.export2Web(response, "组织职级统计表", "组织职级统计表", JobLevelReport.class,list);*/
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");

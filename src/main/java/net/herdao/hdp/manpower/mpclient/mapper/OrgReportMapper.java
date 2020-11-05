@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -38,7 +39,7 @@ public interface OrgReportMapper extends BaseMapper<OrgReport> {
      * @param condition
      * @return
      */
-    List<OrgReport> exportDetailsOrg(OrgReport condition);
+    List<OrgReportDetailVO> exportDetailsOrg(OrgReport condition);
 
     /**
      * 组织职级统计下载
@@ -54,5 +55,12 @@ public interface OrgReportMapper extends BaseMapper<OrgReport> {
      */
     List<JobLevelReport> fetchOrgJobLevel(JobLevelReport condition);
 
+
+    /**
+     * 组织架构表明细预览
+     * @param condition
+     * @return
+     */
+    List<OrgReportDetailVO> findOrgDetailsView(OrgReport condition);
 
 }
