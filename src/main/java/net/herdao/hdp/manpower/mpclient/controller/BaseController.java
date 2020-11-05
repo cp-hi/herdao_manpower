@@ -232,7 +232,7 @@ public class BaseController<T, D, F, E> {
 
     @ApiOperation("下载批量新增/编辑的模板")
 //    @SysLog("下载批量新增/编辑的模板")
-    @PostMapping("/downloadTempl")
+    @GetMapping("/downloadTempl")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
