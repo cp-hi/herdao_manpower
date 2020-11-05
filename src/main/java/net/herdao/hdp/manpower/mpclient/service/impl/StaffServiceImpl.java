@@ -208,7 +208,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Override
 	public Map<String, Object> queryCount(){
-		int total = baseMapper.selectCount(new QueryWrapper<Staff>());
+		int total = baseMapper.selectCount(new QueryWrapper<>());
 		int jobType1 = baseMapper.selectCount(new QueryWrapper<Staff>()
 				.eq("JOB_TYPE", "1")
 		);
