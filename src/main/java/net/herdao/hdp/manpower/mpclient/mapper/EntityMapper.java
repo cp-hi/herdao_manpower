@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiModel;
+import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -29,13 +30,14 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      *
      * @return
      */
+    @SneakyThrows
     default Class<T> getEntityClass() {
         Class<T> clazz = null;
         try {
             Class cls = Class.forName(getClass().getGenericInterfaces()[0].getTypeName());
             clazz = (Class<T>) ((ParameterizedType) cls.getGenericInterfaces()[0]).getActualTypeArguments()[0];
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("EntityMapper----------找不到相应的实体类型");
+            throw new Exception("EntityMapper----------找不到相应的实体类型");
         }
         return clazz;
     }

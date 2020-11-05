@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * @ClassName PostServiceImpl
@@ -133,6 +135,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     //region 批量新增编辑
 
+    @SneakyThrows
     @Override
     public void addEntity(Post post, Object excelObj) {
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
@@ -145,7 +148,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
 
         post.setGroupId(group.getId());
         post.setSectionId(section.getId());
@@ -154,16 +157,17 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setJobLevelId1(jobLevel.getId());
     }
 
+    @SneakyThrows
     @Override
     public void updateEntity(Post post, Object excelObj) {
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        Post tmp = chkEntityExists( excel.getPostName(),group.getId(), true, buffer);
-        Section section = sectionService.chkEntityExists(  excel.getSectionName(),group.getId(), true, buffer);
-        Pipeline pipeline = pipelineService.chkEntityExists( excel.getPipelineName(),group.getId(), true, buffer);
-        PostSeq postSeq = postSeqService.chkEntityExists(  excel.getPostSeqName(),group.getId(), true, buffer);
-        JobLevel jobLevel = jobLevelService.chkEntityExists(  excel.getJobLevelName(),group.getId(), true, buffer);
+        Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
+        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
+        PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
+        JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
         post.setOrgType(sysDictItemService.getDictItemValue("GWZZLX", excel.getOrgType(), buffer));
         post.setPostLevel(sysDictItemService.getDictItemValue("XCJB", excel.getPostLevel(), buffer));
@@ -171,7 +175,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setPerforSalaryRatio(sysDictItemService.getDictItemValue("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
 
         post.setGroupId(group.getId());
         post.setSectionId(section.getId());
@@ -182,4 +186,9 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     //endregion
+
+    @Override
+    public Function<Post, String> getNameFieldMapper() {
+        return Post::getPostName;
+    }
 }

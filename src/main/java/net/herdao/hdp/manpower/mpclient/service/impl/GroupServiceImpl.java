@@ -21,11 +21,15 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+<<<<<<< HEAD
 
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+=======
+import lombok.SneakyThrows;
+>>>>>>> 6c20f868fc13cfacd1f35ca97d93535c2fc8bea5
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
@@ -211,12 +215,13 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         return group;
     }
 
+    @SneakyThrows
     @Override
     public Group selectByName(String groupName, boolean need) {
         StringBuffer buffer = new StringBuffer();
         Group group = this.selectByName(groupName, need, buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
         return group;
     }
 }
