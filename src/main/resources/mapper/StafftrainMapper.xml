@@ -109,53 +109,49 @@
     <!-- 员工培训-->
     <select id="findStaffTrain" resultType="net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO">
         SELECT  t.id,
-        t.staff_name,
-        t.staff_code,
-        t.begin_time,
-        t.end_time,
-        t.train_period,
-        t.train_learn_period,
-        t.train_learn_score,
-        t.score,
-        t.train_type,
-        t.train_company,
-        t.certificate_name,
-        t.certificate_code,
-        t.remarks,
-        CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
-        FROM
-        (
-        SELECT
-        f.id,
-        s.staff_name,
-        s.staff_code,
-        f.begin_time,
-        f.end_time,
-        f.train_period,
-        f.train_learn_period,
-        f.train_learn_score,
-        f.score,
-        dic.label train_type,
-        f.train_company,
-        f.certificate_name,
-        f.certificate_code,
-        f.remarks,
-        usr.USER_NAME modifier_name,
-        f.MODIFIED_TIME,
-        f.STAFF_ID
-        FROM
-        mp_stafftrain f
-        LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-        LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID  AND u.MAIN_POST = 1
-        LEFT JOIN sys_dict_item dic ON dic.value = f.train_type AND dic.type = 'TRAIN_TYPE'
-        LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
-        WHERE
-        1 = 1
-        AND f.del_flag = 0
-        ORDER BY f.CREATED_TIME desc
+                t.staff_name,
+                t.staff_code,
+                t.begin_time,
+                t.end_time,
+                t.train_period,
+                t.train_learn_period,
+                t.train_learn_score,
+                t.score,
+                t.train_type,
+                t.train_company,
+                t.certificate_name,
+                t.certificate_code,
+                t.remarks,
+                CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+         FROM
+          (
+                SELECT  f.id,
+                        s.staff_name,
+                        s.staff_code,
+                        f.begin_time,
+                        f.end_time,
+                        f.train_period,
+                        f.train_learn_period,
+                        f.train_learn_score,
+                        f.score,
+                        dic.label train_type,
+                        f.train_company,
+                        f.certificate_name,
+                        f.certificate_code,
+                        f.remarks,
+                        usr.USER_NAME modifier_name,
+                        f.MODIFIED_TIME,
+                        f.STAFF_ID
+                FROM  mp_stafftrain f
+                    LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+                    LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID  AND u.MAIN_POST = 1
+                    LEFT JOIN sys_dict_item dic ON dic.value = f.train_type AND dic.type = 'TRAIN_TYPE'
+                    LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
+                WHERE  1 = 1
+                AND f.del_flag = 0
+                ORDER BY f.CREATED_TIME desc
         ) t
-        WHERE
-        1 =1
+        WHERE  1 =1
         <if test="searchText != null">
             and CONCAT(
                 IFNULL(t.staff_name,''),
