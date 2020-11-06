@@ -22,7 +22,7 @@ public class StaffSecurityDTO {
     private String securityType;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value="社保封存时间")
     private LocalDateTime securityArchiveTime;
 
