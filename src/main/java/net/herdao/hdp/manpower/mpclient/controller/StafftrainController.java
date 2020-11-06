@@ -189,7 +189,6 @@ public class StafftrainController extends HdpBaseController {
     @SysLog("新增员工培训" )
     @PostMapping("/saveStaffTrain" )
     public R saveStaffTrain(@RequestBody Stafftrain staffTrain) {
-
         SysUser sysUser = SysUserUtils.getSysUser();
         staffTrain.setCreatorName(sysUser.getAliasName());
         staffTrain.setCreatedTime(new Date());

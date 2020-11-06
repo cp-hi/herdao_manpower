@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffcontractMapper">
@@ -39,7 +36,7 @@
               <result property="modifierName" column="modifier_name"/>
               <result property="creatorId" column="creator_id"/>
               <result property="creatorName" column="creator_name"/>
-        </resultMap>
+         </resultMap>
 
      <!-- 员工合同签订分页 -->
      <select id="findStaffContractPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffcontractDTO">
@@ -106,7 +103,7 @@
                     t.MODIFIED_TIME,
                     t.contract_status,
                     CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
-                    from (
+             from (
                     SELECT
                     f.id,
                     s.staff_name,

@@ -5,31 +5,31 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.FamilystatusMapper">
 
       <resultMap id="familystatusMap" type="net.herdao.hdp.manpower.mpclient.entity.Familystatus">
-            <id property="id" column="id"/>
-                  <result property="oid" column="OID"/>
-                  <result property="name" column="NAME"/>
-                  <result property="relations" column="RELATIONS"/>
-                  <result property="age" column="AGE"/>
-                  <result property="professional" column="PROFESSIONAL"/>
-                  <result property="workUnit" column="WORK_UNIT"/>
-                  <result property="creatorCode" column="CREATOR_CODE"/>
-                  <result property="createdTime" column="CREATED_TIME"/>
-                  <result property="modifierCode" column="MODIFIER_CODE"/>
-                  <result property="modifiedTime" column="MODIFIED_TIME"/>
-                  <result property="staffOid" column="STAFF_OID"/>
-                  <result property="staffId" column="STAFF_ID"/>
-                  <result property="birthday" column="BIRTHDAY"/>
-                  <result property="tenantId" column="TENANT_ID"/>
-                  <result property="field1" column="FIELD1"/>
-                  <result property="field2" column="FIELD2"/>
-                  <result property="field3" column="FIELD3"/>
-                  <result property="field4" column="FIELD4"/>
-                  <result property="field5" column="FIELD5"/>
-                  <result property="delFlag" column="DEL_FLAG"/>
-                  <result property="address" column="address"/>
-                  <result property="modifierName" column="modifier_name"/>
-                  <result property="staffName" column="staff_name"/>
-                  <result property="staffCode" column="staff_code"/>
+              <id property="id" column="id"/>
+              <result property="oid" column="OID"/>
+              <result property="name" column="NAME"/>
+              <result property="relations" column="RELATIONS"/>
+              <result property="age" column="AGE"/>
+              <result property="professional" column="PROFESSIONAL"/>
+              <result property="workUnit" column="WORK_UNIT"/>
+              <result property="creatorCode" column="CREATOR_CODE"/>
+              <result property="createdTime" column="CREATED_TIME"/>
+              <result property="modifierCode" column="MODIFIER_CODE"/>
+              <result property="modifiedTime" column="MODIFIED_TIME"/>
+              <result property="staffOid" column="STAFF_OID"/>
+              <result property="staffId" column="STAFF_ID"/>
+              <result property="birthday" column="BIRTHDAY"/>
+              <result property="tenantId" column="TENANT_ID"/>
+              <result property="field1" column="FIELD1"/>
+              <result property="field2" column="FIELD2"/>
+              <result property="field3" column="FIELD3"/>
+              <result property="field4" column="FIELD4"/>
+              <result property="field5" column="FIELD5"/>
+              <result property="delFlag" column="DEL_FLAG"/>
+              <result property="address" column="address"/>
+              <result property="modifierName" column="modifier_name"/>
+              <result property="staffName" column="staff_name"/>
+              <result property="staffCode" column="staff_code"/>
       </resultMap>
 
       <!-- 员工家庭情况分页 -->
@@ -61,13 +61,10 @@
                   FROM
                   mp_familystatus f
                   LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                  LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-                  AND u.MAIN_POST = 1
                   LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
                   AND dic.`value` = f.RELATIONS
-                  WHERE 1 = 1
-                  AND f.del_flag = 0
-                  ORDER BY f.CREATED_TIME desc
+                  WHERE 1 = 1   AND f.del_flag = 0
+                   ORDER BY f.CREATED_TIME desc
           ) t WHERE  1 =1
           <if test="searchText != null">
               and CONCAT(
@@ -107,12 +104,9 @@
                 FROM
                 mp_familystatus f
                 LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-                AND u.MAIN_POST = 1
                 LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
                 AND dic.`value` = f.RELATIONS
-                WHERE 1 = 1
-                AND f.del_flag = 0
+                WHERE 1 = 1  AND f.del_flag = 0
                 ORDER BY f.CREATED_TIME desc
         ) t WHERE  1 =1
         <if test="searchText != null">

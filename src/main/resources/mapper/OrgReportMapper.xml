@@ -124,13 +124,14 @@
         FROM
         (
                 SELECT 	a.ORG_NAME,
-                a.ORG_CODE,
-                lev.JOB_LEVEL_NAME,
-                lev.JOB_LEVEL_CODE
+                        a.ORG_CODE,
+                        lev.JOB_LEVEL_NAME,
+                        lev.JOB_LEVEL_CODE
                 FROM mp_organization a
-                LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+                LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
                 LEFT JOIN mp_job_level lev ON lev.ID = u.JOB_LEVEL_ID
                 WHERE 1=1
+                 AND u.MAIN_POST = 1
                 <if test="orgCode != null">
                     AND org.ORG_CODE LIKE concat(#{orgCode},'%')
                 </if>
@@ -162,13 +163,14 @@
             FROM
             (
                     SELECT 	a.ORG_NAME,
-                    a.ORG_CODE,
-                    lev.JOB_LEVEL_NAME,
-                    lev.JOB_LEVEL_CODE
+                            a.ORG_CODE,
+                            lev.JOB_LEVEL_NAME,
+                            lev.JOB_LEVEL_CODE
                     FROM mp_organization a
-                    LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+                    LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
                     LEFT JOIN mp_job_level lev ON lev.ID = u.JOB_LEVEL_ID
                     WHERE 1=1
+                     AND u.MAIN_POST = 1
                     <if test="orgCode != null">
                         AND a.ORG_CODE LIKE concat(#{orgCode},'%')
                     </if>

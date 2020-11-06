@@ -35,8 +35,8 @@
                   <result property="modifierCode" column="MODIFIER_CODE"/>
       </resultMap>
 
-    <!-- 历史任职情况分页 -->
-    <select id="findUserPostHistoryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
+      <!-- 历史任职情况分页 -->
+      <select id="findUserPostHistoryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
            SELECT   t.id,
                     t.staffName,
                     t.staffCode,
@@ -76,6 +76,7 @@
                     LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
                     WHERE 1 = 1
                     AND u.del_flag = 0
+                    AND u.MAIN_POST = 1
             )t where 1=1
         <if test="searchText != null">
             and CONCAT(
@@ -126,6 +127,7 @@
                 LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
                 WHERE 1 = 1
                 AND u.del_flag = 0
+                AND u.MAIN_POST = 1
         )t where 1=1
         <if test="searchText != null">
             and CONCAT(

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OrgModifyRecordMapper">
-
   <resultMap id="orgModifyRecordMap" type="net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord">
             <id property="id" column="id"/>
             <result property="curOrgId" column="cur_org_id"/>

@@ -69,62 +69,60 @@
                   FROM
                   mp_stafftransaction f
                   LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                  LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID AND u.MAIN_POST = 1
                   LEFT JOIN mp_user usr ON usr.id = f.MODIFIED_CODE
                   LEFT JOIN sys_dict_item dic on dic.`value`=f.TRAN_TYPE and dic.type='YDLX'
                   WHERE
                   1 = 1
                   AND f.DEL_FLAG =0
-             ) t where 1=1
+              ) t where 1=1
             <if test="staffId != null">
                  AND t.staffId=#{staffId}
             </if>
             <if test="searchText != null">
                   and CONCAT(
-                  IFNULL(t.staff_name,'') , IFNULL(t.staff_code,''),IFNULL(t.TRAN_TIME,'') ,
-                  IFNULL(t.TRAN_TYPE,'') ,IFNULL(t.TRAN_REASON,'') , IFNULL(t.OUT_UNIT_NAME,'') ,
-                  IFNULL(t.COME_UNIT_NAME,''),IFNULL(t.MODIFIEd_NAME,''), IFNULL(t.MODIFIED_TIME,'')
+                      IFNULL(t.staff_name,'') , IFNULL(t.staff_code,''),IFNULL(t.TRAN_TIME,'') ,
+                      IFNULL(t.TRAN_TYPE,'') ,IFNULL(t.TRAN_REASON,'') , IFNULL(t.OUT_UNIT_NAME,'') ,
+                      IFNULL(t.COME_UNIT_NAME,''),IFNULL(t.MODIFIEd_NAME,''), IFNULL(t.MODIFIED_TIME,'')
                   ) LIKE concat('%',#{searchText},'%')
             </if>
        </select>
 
       <!-- 员工异动情况-->
       <select id="findStaffTrans" resultType="net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO">
-          SELECT t.id,
-          t.staff_name,
-          t.staff_code,
-          t.TRAN_TIME,
-          t.TRAN_TYPE,
-          t.TRAN_REASON,
-          t.OUT_UNIT_NAME,
-          t.COME_UNIT_NAME,
-          t.MODIFIEd_NAME,
-          t.MODIFIED_TIME,
-          t.STAFF_ID,
-          CONCAT(t.MODIFIEd_NAME, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+          SELECT  t.id,
+                  t.staff_name,
+                  t.staff_code,
+                  t.TRAN_TIME,
+                  t.TRAN_TYPE,
+                  t.TRAN_REASON,
+                  t.OUT_UNIT_NAME,
+                  t.COME_UNIT_NAME,
+                  t.MODIFIEd_NAME,
+                  t.MODIFIED_TIME,
+                  t.STAFF_ID,
+                  CONCAT(t.MODIFIEd_NAME, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
           from (
-          SELECT
-          f.id,
-          s.staff_name,
-          s.staff_code,
-          f.TRAN_TIME,
-          dic.label TRAN_TYPE,
-          f.TRAN_REASON,
-          f.OUT_UNIT_NAME,
-          f.COME_UNIT_NAME,
-          usr.USER_NAME MODIFIEd_NAME,
-          f.MODIFIED_TIME,
-          f.STAFF_ID
-          FROM
-          mp_stafftransaction f
-          LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-          LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID AND u.MAIN_POST = 1
-          LEFT JOIN mp_user usr ON usr.id = f.MODIFIED_CODE
-          LEFT JOIN sys_dict_item dic on dic.`value`=f.TRAN_TYPE and dic.type='YDLX'
-          WHERE
-          1 = 1
-          AND f.DEL_FLAG =0
-          ) t where 1=1
+              SELECT
+              f.id,
+              s.staff_name,
+              s.staff_code,
+              f.TRAN_TIME,
+              dic.label TRAN_TYPE,
+              f.TRAN_REASON,
+              f.OUT_UNIT_NAME,
+              f.COME_UNIT_NAME,
+              usr.USER_NAME MODIFIEd_NAME,
+              f.MODIFIED_TIME,
+              f.STAFF_ID
+              FROM
+              mp_stafftransaction f
+              LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+              LEFT JOIN mp_user usr ON usr.id = f.MODIFIED_CODE
+              LEFT JOIN sys_dict_item dic on dic.`value`=f.TRAN_TYPE and dic.type='YDLX'
+              WHERE
+              1 = 1
+              AND f.DEL_FLAG =0
+           ) t where 1=1
           <if test="staffId != null">
               AND t.staffId=#{staffId}
           </if>
@@ -148,15 +146,15 @@
             f.COME_UNIT_NAME,
             CONCAT(f.MODIFIED_NAME,'(',f.MODIFIED_CODE,')') MODIFIED_NAME,
             f.MODIFIED_TIME,
-						f.FIELD1,
-						f.FIELD2,
-						f.FIELD3,
-						f.FIELD4,
-						f.FIELD5
+            f.FIELD1,
+            f.FIELD2,
+            f.FIELD3,
+            f.FIELD4,
+            f.FIELD5
             FROM   mp_stafftransaction f
-						left join sys_dict_item dic on f.TRAN_TYPE=dic.value and dic.type='YDLX'
+		   left join sys_dict_item dic on f.TRAN_TYPE=dic.value and dic.type='YDLX'
             <where> 
-            and f.DEL_FLAG=0
+                 and f.DEL_FLAG=0
 	            <if test="staffid != null">
 	            and f.STAFF_ID = #{staffid}
 	            </if>

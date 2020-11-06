@@ -29,7 +29,6 @@
                     <result property="largeThan40Zb" column="large_than_40_zb"/>
         </resultMap>
 
-
       <!-- 获取组织概况 -->
       <select id="fetchOrgSituation" resultMap="orgSituationMap">
           SELECT  sum(
@@ -51,9 +50,10 @@
                       0 trail_count,
                       0 establish_count
                   FROM mp_organization a
-                  INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+                  INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
                   INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
                   WHERE 1 =1
+                  AND u.MAIN_POST = 1
                   <if test="orgCode != null">
                       AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
                   </if>
@@ -95,9 +95,10 @@
                       (
                          SELECT  s.JOB_TYPE
                                FROM mp_organization a
-                            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+                            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
                             INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
                             WHERE  1 =1
+                             AND u.MAIN_POST = 1
                              <if test="orgCode != null">
                                 AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
                             </if>
@@ -127,12 +128,13 @@
                 SELECT  s.id staff_id,
                         DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(s.BIRTHDAY)), '%Y')+0 AS age
                         FROM  mp_organization a
-                        INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID AND u.MAIN_POST = 1
+                        INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
                         INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
                         WHERE 1=1
-                <if test="orgCode != null">
-                    AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
-                </if>
+                        AND u.MAIN_POST = 1
+                        <if test="orgCode != null">
+                            AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+                        </if>
             ) t
          )t
      </select>
@@ -151,19 +153,21 @@
                     count(s.id) post_total
                     FROM
                     mp_post p
-                    INNER JOIN mp_userpost up ON p.id = up.POST_ID  AND up.MAIN_POST = 1
+                    INNER JOIN mp_userpost up ON p.id = up.POST_ID
                     INNER JOIN mp_staff s ON s.user_id = up.USER_ID
                     INNER JOIN mp_organization o ON up.ORG_DEPT_ID = o.id
-                    where  1=1
+                    where 1=1
+                     AND up.MAIN_POST = 1
                     <if test="orgCode != null">
                         AND   o.ORG_CODE LIKE concat(#{orgCode},'%')
                     </if>
                 ) post_total
         FROM  mp_post p
-                INNER JOIN mp_userpost up ON p.id = up.POST_ID  AND up.MAIN_POST = 1
+                INNER JOIN mp_userpost up ON p.id = up.POST_ID
                 INNER JOIN mp_staff s ON s.user_id = up.USER_ID
                 INNER JOIN mp_organization o ON up.ORG_DEPT_ID = o.id
                 where  1=1
+                 AND up.MAIN_POST = 1
                  <if test="orgCode != null">
                     AND   o.ORG_CODE LIKE concat(#{orgCode},'%')
                 </if>

@@ -63,7 +63,6 @@
                     f.staff_id
             FROM   mp_staff_rewards_pulishments f
             LEFT JOIN mp_staff s ON s.ID = f.staff_id
-            LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
             LEFT JOIN sys_dict_item dic on dic.`value`=f.type and dic.type='YGJCLB'
             LEFT JOIN mp_user usr on usr.id=f.MODIFIER_CODE
             where f.del_flag=0
@@ -115,7 +114,6 @@
                 f.staff_id
                 FROM   mp_staff_rewards_pulishments f
                 LEFT JOIN mp_staff s ON s.ID = f.staff_id
-                LEFT JOIN mp_userpost u on u.USER_ID =s.USER_ID AND u.MAIN_POST = 1
                 LEFT JOIN sys_dict_item dic on dic.`value`=f.type and dic.type='YGJCLB'
                 LEFT JOIN mp_user usr on usr.id=f.MODIFIER_CODE
                 where f.del_flag=0

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffeducationMapper">
             <resultMap id="staffEducationMap" type="net.herdao.hdp.manpower.mpclient.entity.Staffeducation">
-                  <id property="id" column="id"/>
+                        <id property="id" column="id"/>
                         <result property="oid" column="OID"/>
                         <result property="period" column="PERIOD"/>
                         <result property="schoolName" column="SCHOOL_NAME"/>
@@ -64,8 +64,6 @@
                   e.MODIFIED_TIME
               FROM mp_staffeducation e
                   LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-                  LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-                  AND u.MAIN_POST = 1
                   LEFT JOIN sys_dict_item dic ON dic.type = 'EDUCATION_DEGREE_TYPE'
                   AND dic.`value` = e.EDUCATION_DEGREE
                   LEFT JOIN sys_dict_item di ON di.type = 'EDUCATION_QUA_TYPE'
@@ -73,10 +71,9 @@
                   LEFT JOIN sys_dict_item dd ON dd.type = 'XXXS'
                   AND dd.`value` = e.LEARN_FORM
                   LEFT JOIN mp_user usr ON usr.id = e.MODIFIER_CODE
-                  WHERE
-                  1 = 1
+                  WHERE   1 = 1
                   AND e.del_flag = 0
-                  <if test="staffId != null">
+                 <if test="staffId != null">
                       and t.staff_id = #{staffId}
                   </if>
                   ORDER BY e.CREATED_TIME desc
@@ -124,11 +121,8 @@
                 dd.label LEARN_FORM,
                 usr.USER_NAME modifier_name,
                 e.MODIFIED_TIME
-                FROM
-                mp_staffeducation e
+          FROM   mp_staffeducation e
                 LEFT JOIN mp_staff s ON s.ID = e.STAFF_ID
-                LEFT JOIN mp_userpost u ON u.USER_ID = s.USER_ID
-                AND u.MAIN_POST = 1
                 LEFT JOIN sys_dict_item dic ON dic.type = 'EDUCATION_DEGREE_TYPE'
                 AND dic.`value` = e.EDUCATION_DEGREE
                 LEFT JOIN sys_dict_item di ON di.type = 'EDUCATION_QUA_TYPE'
@@ -147,10 +141,10 @@
         WHERE  1 = 1
         <if test="searchText != null">
             and CONCAT(
-            IFNULL(t.staff_name,''), IFNULL(t.staff_code,''),IFNULL(t.BEGIN_DATE,'') ,IFNULL(t.END_DATE,''),
-            IFNULL(t.SCHOOL_NAME,'') ,IFNULL(t.PROFESSIONAL,'') ,IFNULL(t.EDUCATION_DEGREE,'') ,
-            IFNULL(t.LEARN_FORM,'') ,IFNULL(t.EDUCATION_QUA,'') ,IFNULL(t.modifier_name,''),
-            IFNULL(t.modifier_name,''), IFNULL(t.MODIFIED_TIME,'')
+                IFNULL(t.staff_name,''), IFNULL(t.staff_code,''),IFNULL(t.BEGIN_DATE,'') ,IFNULL(t.END_DATE,''),
+                IFNULL(t.SCHOOL_NAME,'') ,IFNULL(t.PROFESSIONAL,'') ,IFNULL(t.EDUCATION_DEGREE,'') ,
+                IFNULL(t.LEARN_FORM,'') ,IFNULL(t.EDUCATION_QUA,'') ,IFNULL(t.modifier_name,''),
+                IFNULL(t.modifier_name,''), IFNULL(t.MODIFIED_TIME,'')
             ) LIKE concat('%',#{searchText},'%')
         </if>
     </select>

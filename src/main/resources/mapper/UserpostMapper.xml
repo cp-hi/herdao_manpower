@@ -4,7 +4,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper">
 
-  <resultMap id="userpostMap" type="net.herdao.hdp.manpower.mpclient.entity.Userpost">
+      <resultMap id="userpostMap" type="net.herdao.hdp.manpower.mpclient.entity.Userpost">
           <id property="id" column="id"/>
           <result property="oid" column="OID"/>
           <result property="userOid" column="USER_OID"/>
@@ -27,7 +27,7 @@
           <result property="administrativeLevel" column="ADMINISTRATIVE_LEVEL"/>
           <result property="tenantId" column="TENANT_ID"/>
           <result property="officePostType" column="office_post_type"/>
-  </resultMap>
+      </resultMap>
 
       <!-- 现任职情况 -->
       <select id="findUserPostNowPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
@@ -70,7 +70,7 @@
                   WHERE
                   1 = 1
                   AND u.del_flag = 0
-          ) t where 1=1
+           ) t where 1=1
           <if test="searchText != null">
               and CONCAT(
                   IFNULL( t.staffName,''), IFNULL( t.staffCode,''),IFNULL( t.startDate,'') ,IFNULL( t.orgName,''),
@@ -97,17 +97,17 @@
                 CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
         FROM (
             SELECT  U.ID,
-            S.STAFF_NAME staffName,
-            S.STAFF_CODE staffCode,
-            u.START_DATE startDate,
-            a.ORG_NAME orgName,
-            sec.SECTION_NAME sectionName,
-            pi.PIPELINE_NAME pipelineName,
-            p.POST_NAME postName,
-            CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) jobLevelName,
-            di.label customPost,
-            usr.USER_NAME modifier_name,
-            u.MODIFIED_TIME
+                    S.STAFF_NAME staffName,
+                    S.STAFF_CODE staffCode,
+                    u.START_DATE startDate,
+                    a.ORG_NAME orgName,
+                    sec.SECTION_NAME sectionName,
+                    pi.PIPELINE_NAME pipelineName,
+                    p.POST_NAME postName,
+                    CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) jobLevelName,
+                    di.label customPost,
+                    usr.USER_NAME modifier_name,
+                    u.MODIFIED_TIME
             FROM  mp_userpost u
             LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
             LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
@@ -145,7 +145,7 @@
                 di.label customPost,
                 pt.label officePostTypeName
         FROM  mp_userpost u
-                INNER JOIN mp_staff st ON st.user_id = u.USER_ID AND u.MAIN_POST=1
+                LEFT JOIN mp_staff st ON st.user_id = u.USER_ID AND
                 LEFT JOIN mp_organization a ON a.id = u.ORG_DEPT_ID
                 LEFT JOIN mp_post p on p.ID=u.POST_ID
                 LEFT JOIN mp_section sec on sec.id=p.SECTION_ID
