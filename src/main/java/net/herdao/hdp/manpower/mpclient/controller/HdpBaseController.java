@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -120,6 +123,16 @@ public abstract class HdpBaseController {
 	public List getDownloadUpdateTemplateList() {
 		return null;
 	}
+	
+	/**
+	 * 批量编辑模板导出数据集合（根据查询条件导出, 该方法需要在子类单独重写）
+	 * 
+	 * @return
+	 */
+	public List getDownloadUpdateTemplateList(Map<String, Object> searchParams) {
+		return null;
+	}
+	
 	
 	/**
 	 * 批量新增、编辑说明信息 需要调整请重写该方法
@@ -261,7 +274,7 @@ public abstract class HdpBaseController {
 	 */
 	@ApiOperation(value = "批量新增、编辑")
     @PostMapping("/importData")
-	public synchronized Object importData(HttpServletResponse response, ImportDataVO importDataVO) {
+	public Object importData(HttpServletResponse response, ImportDataVO importDataVO) {
 		try {
 			// 导入类型
 			int importType = importDataVO.getImportType();
@@ -339,8 +352,12 @@ public abstract class HdpBaseController {
 		int importType = exportDataVO.getImportType();
 		// 获取初始化参数
 		getInitEasyExcelArgs(importType);
+		// 查询条件
+		String searchParams = exportDataVO.getSearchParams();
+		// 转 map 
+		Map<String, Object> paramMap = JSONObject.parseObject(searchParams, new TypeReference<Map<String, Object>>(){});
 		// 数据集
-		List dataList = (importType == 0 ? null : downloadUpdateTemplateList);
+		List dataList = (importType == 0 ? null : (StrUtil.isBlank(searchParams) ? downloadUpdateTemplateList : getDownloadUpdateTemplateList(paramMap)));
 		try {
 			EasyExcelUtils.webWriteExcel(response, dataList, excelCls, "批量" + ManpowerContants.ImportTypeEnum.getInstance(importType) + templateName,
 					                     new EasyExcelSheetWriteHandler(excelCls, excelDescription));

@@ -107,6 +107,12 @@ public class OrganizationFormVO {
 	@ApiModelProperty(value = "福利类型")
 	private String welfareType;
 	/**
+	 * 福利类型名称
+	 */
+	@ApiModelProperty(value = "福利类型名称")
+	private String welfareTypeName;
+	
+	/**
 	 * 组织描述
 	 */
 	@ApiModelProperty(value = "组织描述")

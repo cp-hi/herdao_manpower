@@ -14,4 +14,6 @@ public class ExportDataVO {
 	@ApiModelProperty(value = "下载导入类型模板，值： 0  批量新增模板； 值 1 批量编辑模板")
 	Integer importType;
 
+	@ApiModelProperty(value = "查询条件，json 格式字符串，例如：{\"orgName\" : \"广州\"}")
+	String searchParams;
 }

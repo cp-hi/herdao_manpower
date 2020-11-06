@@ -544,6 +544,7 @@
 			0 staff_total,
 	        org.organizational,
 	        org.welfare_type,
+	        ws.version AS welfare_type_name,
 	        org.org_desc,
 	        org.is_stop,
 	        org.start_date,
@@ -556,6 +557,7 @@
          LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
          LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ' AND dicc.value = org.org_level AND dicc.del_flag = 0
          LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
+         LEFT JOIN mp_welfare_standards ws ON org.welfare_type = ws.welfarestandards_oid
          <where>
           <if test="id != null">
               AND  org.id = #{id}
