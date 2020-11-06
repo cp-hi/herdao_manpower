@@ -143,7 +143,6 @@ public class WorkexperienceController extends HdpBaseController {
      */
     @ApiOperation(value = "员工工作经历分页", notes = "员工工作经历分页")
     @GetMapping("/findStaffWorkPage")
-    @OperationEntity(operation = "员工工作经历分页" ,clazz = Workexperience.class )
     @ApiImplicitParams({
           @ApiImplicitParam(name="searchText",value="关键字搜索"),
           @ApiImplicitParam(name="staffId",value="员工工号")

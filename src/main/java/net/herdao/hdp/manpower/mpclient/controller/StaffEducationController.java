@@ -174,8 +174,7 @@ public class StaffEducationController extends HdpBaseController {
      */
     @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
     @GetMapping("/findStaffEducationPage")
-    @OperationEntity(operation = "员工教育经历分页" ,clazz = Staffeducation.class )
-    @ApiImplicitParams({
+     @ApiImplicitParams({
             @ApiImplicitParam(name="searchText",value="关键字搜索"),
             @ApiImplicitParam(name="staffId",value="员工工号")
     })

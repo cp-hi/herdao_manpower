@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.Company;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 /**
  * 部门/组织VO
@@ -17,7 +19,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "组织VO")
-public class OrganizationVO {
+public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	/**
 	 * 主键ID
 	 */

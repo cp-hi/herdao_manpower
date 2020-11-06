@@ -152,7 +152,7 @@ public interface OrganizationService extends HdpService<Organization>{
      * @param organization 组织信息
      * @return
      */
-    R<Organization> saveOrUpdateOrganization(OrganizationVO organizationVO);
+    R<Organization> saveOrUpdate(OrganizationVO organizationVO);
 
     /**
      * 查询组织架构详情

@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -98,7 +99,7 @@ public class OrganizationController extends HdpBaseController{
 	@SysLog("新增组织信息")
 	@PostMapping
 	public R<Organization> save(@RequestBody OrganizationVO organizationVO) {
-		return orgService.saveOrUpdateOrganization(organizationVO);
+		return orgService.saveOrUpdate(organizationVO);
 	}
 
 	 /**
@@ -112,7 +113,7 @@ public class OrganizationController extends HdpBaseController{
 	@SysLog("修改组织信息")
 	@PutMapping
 	public R<Organization> updateById(@RequestBody OrganizationVO organizationVO) {
-		return orgService.saveOrUpdateOrganization(organizationVO);
+		return orgService.saveOrUpdate(organizationVO);
 	}
 
     /**
@@ -123,7 +124,7 @@ public class OrganizationController extends HdpBaseController{
     @SysLog("修改组织信息")
     @PutMapping("/updateOrg")
     public R<Organization> updateOrg(@RequestBody OrganizationVO organizationVO) {
-        return orgService.saveOrUpdateOrganization(organizationVO);
+        return orgService.saveOrUpdate(organizationVO);
     }
 
     /**
@@ -145,7 +146,6 @@ public class OrganizationController extends HdpBaseController{
      */
     @ApiOperation(value = "查询部门结构树", notes = "查询部门结构树")
     @PostMapping("/fetchDeptTree")
-    @OperationEntity(operation = "查询部门结构树" ,clazz = Organization.class )
     public R fetchDeptTree(@RequestBody Organization condition) {
         List<Organization> list = orgService.fetchDeptTree(condition);
         return R.ok(list);
@@ -160,8 +160,7 @@ public class OrganizationController extends HdpBaseController{
      */
     @ApiOperation(value = "查询组织树", notes = "查询组织树")
     @GetMapping("/findAllOrganizations")
-    @OperationEntity(operation = "查询根组织架，默认展示两级架构", clazz = Organization.class)
-    @ApiImplicitParams({ @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
+     @ApiImplicitParams({ @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
 			        	 @ApiImplicitParam(name="searchText",value="模糊查询内容") })
 	public R<List<OrganizationTreeVO>> findAllOrganizations(String orgCode, Integer stop, String searchText) {
 		// 默认查询组织层级二级
@@ -218,7 +217,6 @@ public class OrganizationController extends HdpBaseController{
         return R.ok(list);
     }
 
-
     /**
      * 根据当前登录租户的租户ID 查询该组织架构和二级组织架构 存在多个根组织架构的情况
      * 默认加载展示2级组织架构
@@ -264,7 +262,6 @@ public class OrganizationController extends HdpBaseController{
             @ApiImplicitParam(name="isStop",value="是否停用 ：值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部"),
             @ApiImplicitParam(name="orgTreeLevel",value="组织结构数层级(默认2级) （可选参数）"),
     })
-    @OperationEntity(operation = "点击展开组织架构树（默认两级）" ,clazz = Organization.class )
     public R getRecursionOrgByLevel(@RequestBody Organization condition) {
         return orgService.getRecursionOrgByLevel(condition);
     }
@@ -323,8 +320,7 @@ public class OrganizationController extends HdpBaseController{
      */
 	@ApiOperation(value = "组织列表分页查询", notes = "组织列表分页查询")
 	@GetMapping("/findOrgPage")
-	@OperationEntity(operation = "组织列表分页查询", clazz = Organization.class)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码（通过组织树查询传递）"),
+ 	@ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码（通过组织树查询传递）"),
 						 @ApiImplicitParam(name = "stop", value = "是否停用 （值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）"),
 						 @ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
 	public R<Page<OrganizationVO>> findOrgPage(Page page, String orgCode, Integer stop, String searchText) {
@@ -347,8 +343,9 @@ public class OrganizationController extends HdpBaseController{
 
     @ApiOperation(value = "获取组织操作日志")
     @GetMapping("/getOrgLog/{objId}")
-    public R getOrgLog(@PathVariable Long objId) {
-        return R.ok(operationLogService.findByEntity(objId, Organization.class.getName()));
+    public R getOrgLog(Page page,@PathVariable Long objId) {
+        IPage pageResult = operationLogService.page(page, objId, OrganizationVO.class.getName());
+        return R.ok(pageResult);
     }
 
     /**

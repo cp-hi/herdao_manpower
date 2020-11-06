@@ -439,7 +439,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @SysLog("新增、修改组织信息")
     @OperationEntity(operation = "新增、修改组织信息", clazz = Organization.class)
     @Transactional(rollbackFor = Exception.class)
-    public synchronized R<Organization> saveOrUpdateOrganization(OrganizationVO organizationVO) {
+    public synchronized R<Organization> saveOrUpdate(OrganizationVO organizationVO) {
     	
     	Organization organization = new Organization();
     	
@@ -536,7 +536,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	if(ObjectUtil.isNotNull(id)) {
     		orgModifyRecordService.saveOrgModifyRecord(organization, tpOrganization);
     	}
-    	
+
+    	BeanUtils.copyProperties(organization,organizationVO);
     	return R.ok(organization);
     }
     
