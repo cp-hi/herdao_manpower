@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -77,8 +79,14 @@ public class StafftrainController extends HdpBaseController {
     }
 
     @Override
-    public List getDownloadUpdateTemplateList() {
-        List<StafftrainDTO> list = this.stafftrainService.findStaffTrain(null);
+    public List getDownloadUpdateTemplateList(Map<String, Object> searchParams) {
+        List<StafftrainDTO> list=null;
+        if (ObjectUtil.isNotNull(searchParams)){
+            String searchText = searchParams.get("searchText").toString();
+            list = this.stafftrainService.findStaffTrain(searchText);
+        }else{
+            list = this.stafftrainService.findStaffTrain(null);
+        }
         return list;
     }
 
