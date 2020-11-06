@@ -544,6 +544,7 @@
 			0 staff_total,
 	        org.organizational,
 	        org.welfare_type,
+	        org.sort_no,
 	        ws.version AS welfare_type_name,
 	        org.org_desc,
 	        org.is_stop,
