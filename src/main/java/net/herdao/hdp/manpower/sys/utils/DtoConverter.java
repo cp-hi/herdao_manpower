@@ -73,9 +73,6 @@ public class DtoConverter {
                 value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
-            } else {
-//                if (StringUtils.isBlank((String) field.get(target)))
-//                    value = dtoField.nullValue();
             }
             field.set(target, value);
         }
@@ -125,21 +122,19 @@ public class DtoConverter {
             } else {
                 value = String.valueOf(objVal);
             }
-            if (StringUtils.isNotBlank(value)
-                    && !"null".equals(value))
+            if (StringUtils.isNotBlank(value) && !"null".equals(value)) {
+                if (StringUtils.isNotBlank(dtoField.delFix())) {
+                    Field delField = AnnotationUtils.getFieldByName(currObj, "delFlag");
+                    if (null != delField) {
+                        //被删除了则用设置的规则替换
+                        delField.setAccessible(true);
+                        Object del = delField.get(currObj);
+                        if ((Boolean) del) value = dtoField.delFix();
+                    }
+                }
                 values.add(value);
+            }
         }
-
-//        boolean isEmpty = values.stream().map(StringUtils::isBlank).reduce(false, (a, b) -> a || b);
-
-//        AtomicReference<Boolean> isEmpty = new AtomicReference<>(false);
-//
-//        values.forEach(v -> {
-//            if (StringUtils.isBlank(v))
-//                isEmpty.set(true);
-//        });
-//
-//        if (isEmpty.get()) return "";
 
         //如果有插值map则插值， 一般用于 xx于 xx创建 xx于 xx更新
         if (StringUtils.isNotBlank(dtoField.mapFix())) {

@@ -35,7 +35,7 @@ public class PostListVO {
     @ExcelProperty("岗位序列")
     @ApiModelProperty("岗位序列")
     @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
-            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-",delFix = "未分类")
     private String postSeqName;
 
     @ExcelProperty("所属集团")

@@ -20,6 +20,5 @@ public interface PostSeqMapper extends EntityMapper<PostSeq> {
 
     PostSeqDTO getPostSeqDTO(Long id);
 
-    @Select("SELECT  IFNULL(POST_SEQ_NAME,'未分类')  FROM MP_POST_SEQ WHERE id=#{id} and del_flag !=1")
     String selectEntityName(Long id);
 }
