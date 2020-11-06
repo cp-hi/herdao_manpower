@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -72,6 +73,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public Class<T> getEntityClass() {
         return baseMapper.getEntityClass();
     }
+
     @Override
     public String getEntityName() {
         return baseMapper.getEntityName();
@@ -167,7 +169,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void saveVerify(T t, StringBuffer buffer) {
         Long groupId = this.getGroupIdMapper().apply(t);
-        if(null == groupId) buffer.append("集团ID为空不能保存");
+        if (null == groupId) buffer.append("集团ID为空不能保存");
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
     }
@@ -231,7 +233,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public void saveList(List<T> dataList, Integer importType) {
         // 验证批次内是否有重名，以及不同集团
-        //选名称加入集合
+        // getNameMapper()作用是选名称加入集合
         List<String> names = dataList.stream().map(getNameMapper()).collect(
                 //根据重复数据统计数量
                 Collectors.groupingBy(Function.identity(), Collectors.counting()))
@@ -243,23 +245,24 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (names.size() > 0)
             throw new Exception("此批次数据中出现重复的名称:" + StringUtils.join(names));
 
-        //新增时根据不同集团添加编号
+        //新增时先设置编号
         if (0 == importType) {
+            //根据不同集团分类
             Map<Long, List<T>> subData = dataList.stream().collect(
                     Collectors.groupingBy(getGroupIdMapper()));
             for (List<T> entities : subData.values()) {
                 //TODO 批量新增比较费时，要考虑生成的编码这段期间会不会被占用
                 String lastEntityCode = baseMapper.getLastEntityCode(entities.get(0));
                 if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
-                for (T entity : entities) {
+                for (T t : entities) {
                     String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
-                    Field field = AnnotationUtils.getFieldByName(entity, baseMapper.getEntityCodeField());
+                    Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
                     field.setAccessible(true);
-                    field.set(entity, entityCode);
+                    field.set(t, entityCode);
                 }
             }
         }
-        List<List<T>> batch = Lists.partition(dataList, 50);
+        List<List<T>> batch = Lists.partition(dataList, 100);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }

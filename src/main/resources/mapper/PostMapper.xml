@@ -42,6 +42,7 @@
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where del_flag !=1
+        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
         <if test="t.groupId != null">
             and group_id = #{t.groupId}
         </if>
