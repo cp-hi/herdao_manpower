@@ -21,9 +21,8 @@ import java.util.stream.Collectors;
 public class SelectEntityCode extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f -> {
-            return f.getEl().contains("Code");
-        }).collect(Collectors.toList());
+        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
+                f.getEl().contains("Code")).collect(Collectors.toList());
         String code = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ",
                 code, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);

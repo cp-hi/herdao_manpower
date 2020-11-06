@@ -625,6 +625,8 @@
         LEFT JOIN mp_job_level lv1 ON p.job_level_id1 = lv1.id
         LEFT JOIN mp_job_level lv2 ON p.job_level_id2 = lv2.id
         WHERE o.org_code LIKE CONCAT(#{orgCode},'%')
+        AND u.del_flag = 0
+        AND f.del_flag = 0
     </select>
 
     <!-- 查询组织架构图根节点 -->
@@ -675,6 +677,7 @@
         WHERE
             o.PARENT_ID = #{id}
         AND o.IS_STOP = 0
+        AND o.del_flag = 0
     </select>
     
     <!-- 获取组织编码 -->

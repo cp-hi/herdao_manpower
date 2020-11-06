@@ -1,11 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
@@ -15,6 +15,7 @@ import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName EntityServiceImpl
@@ -148,13 +150,14 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return result;
     }
 
+    @SneakyThrows
     @Override
     public boolean getStatus(Serializable id) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("is_stop").eq("id", id);
         List<Object> objs = baseMapper.selectObjs(queryWrapper);
         if (objs.size() > 0) return (Boolean) objs.get(0);
-        throw new RuntimeException("找不到此对象，或已被删除");
+        throw new Exception("找不到此对象，或已被删除");
     }
 
     @Override
@@ -172,16 +175,19 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     /**
      * 处理异常信息
+     *
      * @param buffer
      */
+    @SneakyThrows
     protected void handleErrMsg(StringBuffer buffer) {
         String errMsg = buffer.toString();
         if (null != errMsg && errMsg.startsWith("；")) {
             errMsg = errMsg.replaceFirst("；", "");
-            throw new RuntimeException(errMsg);
+            throw new Exception(errMsg);
         }
     }
 
+    @SneakyThrows
     @Override
     public void importVerify(T t, Object excelObj, int type) {
         boolean add = (0 == type);
@@ -195,7 +201,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(t, buffer);
         if (StringUtils.isNotBlank(buffer))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
     }
 
     @Override
@@ -211,22 +217,64 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return t;
     }
 
+    @SneakyThrows
     @Override
     public T chkEntityExists(String name, Long groupId, boolean need) {
         StringBuffer buffer = new StringBuffer();
         T t = this.chkEntityExists(name, groupId, need, buffer);
         if (StringUtils.isNotBlank(buffer.toString()))
-            throw new RuntimeException(buffer.toString());
+            throw new Exception(buffer.toString());
         return t;
     }
 
+    @SneakyThrows
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveList(List<T> dataList, Integer batchCount) {
-        //TODO 验证批次内是否有重名，以及不同集团
-        if (0 >= batchCount) batchCount = 50;
-        List<List<T>> batch = Lists.partition(dataList, batchCount);
+    public void saveList(List<T> dataList, Integer importType) {
+        // 验证批次内是否有重名，以及不同集团
+        //选名称加入集合
+        List<String> names = dataList.stream().map(getNameMapper()).collect(
+                //根据重复数据统计数量
+                Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                //把数量大于1（重复）的加进来
+                .entrySet().stream().filter(c -> c.getValue() > 1).collect(Collectors.toList())
+                //获取map的key（名称）字段
+                .stream().map(Map.Entry::getKey).collect(Collectors.toList());
+
+        if (names.size() > 0)
+            throw new Exception("此批次数据中出现重复的名称:" + StringUtils.join(names));
+
+        //新增时根据不同集团添加编号
+        if (0 == importType) {
+            Map<Long, List<T>> subData = dataList.stream().collect(
+                    Collectors.groupingBy(getGroupIdMapper()));
+            for (List<T> entitys : subData.values()) {
+                T entity = entitys.get(0);
+                String lastEntityCode = baseMapper.getLastEntityCode(entity);
+                if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
+                for (T t : entitys) {
+                    String codeField = baseMapper.getEntityCodeField();
+                    Field field = AnnotationUtils.getFieldByName(t, codeField);
+                    String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
+                    field.setAccessible(true);
+                    field.set(t, entityCode);
+                }
+            }
+        }
+        List<List<T>> batch = Lists.partition(dataList, 50);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
+
+    //参照PostServiceImpl
+    @Override
+    public Function<T, String> getNameMapper() {
+        throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
+    }
+
+    @Override
+    public Function<T, Long> getGroupIdMapper() {
+        throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
+    }
+
 }

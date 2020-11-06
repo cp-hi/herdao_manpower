@@ -7,6 +7,8 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
 import net.herdao.hdp.manpower.mpclient.mapper.OrgReportMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgReportService;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,32 +22,38 @@ import java.util.List;
 public class OrgReportServiceImpl extends ServiceImpl<OrgReportMapper, OrgReport> implements OrgReportService {
 
     @Override
-    public List<OrgReport> findOrgReportView(OrgReport condition) {
-        List<OrgReport> list = this.baseMapper.findOrgReportView(condition);
+    public List<OrgReportVO> findOrgReportView(OrgReport condition) {
+        List<OrgReportVO> list = this.baseMapper.findOrgReportView(condition);
         return list;
     }
 
     @Override
-    public List<OrgReport> exportOrg(OrgReport condition) {
-        List<OrgReport> list = this.baseMapper.exportOrg(condition);
+    public List<OrgReportVO> exportOrg(OrgReport condition) {
+        List<OrgReportVO> list = this.baseMapper.exportOrg(condition);
         return list;
     }
 
     @Override
-    public List<OrgReport> exportDetailsOrg(OrgReport condition) {
-        List<OrgReport> list = this.baseMapper.exportDetailsOrg(condition);
+    public List<OrgReportDetailVO> exportDetailsOrg(OrgReport condition) {
+        List<OrgReportDetailVO> list = this.baseMapper.exportDetailsOrg(condition);
         return list;
     }
 
     @Override
-    public List<JobLevel> exportOrgJobLevel(JobLevelReport condition) {
-        List<JobLevel> list = this.baseMapper.exportOrgJobLevel(condition);
+    public List<JobLevelReport> exportOrgJobLevel(JobLevelReport condition) {
+        List<JobLevelReport > list = this.baseMapper.exportOrgJobLevel(condition);
         return list;
     }
 
     @Override
-    public List<JobLevel> fetchOrgJobLevel(JobLevelReport condition) {
-        List<JobLevel> list = this.baseMapper.fetchOrgJobLevel(condition);
+    public List<JobLevelReport> fetchOrgJobLevel(JobLevelReport condition) {
+        List<JobLevelReport> list = this.baseMapper.fetchOrgJobLevel(condition);
+        return list;
+    }
+
+    @Override
+    public List<OrgReportDetailVO> findOrgDetailsView(OrgReport condition) {
+        List<OrgReportDetailVO> list = this.baseMapper.findOrgDetailsView(condition);
         return list;
     }
 }

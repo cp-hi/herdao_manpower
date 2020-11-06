@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.sys.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.var;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
@@ -72,8 +73,10 @@ public class DtoConverter {
                 value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
+            } else {
+//                if (StringUtils.isBlank((String) field.get(target)))
+//                    value = dtoField.nullValue();
             }
-
             field.set(target, value);
         }
         return (T) target;
@@ -108,7 +111,8 @@ public class DtoConverter {
             fieldVal.setAccessible(true);
             Object objVal = fieldVal.get(currObj);
             String value = "";
-            if (Date.class == fieldVal.getType()) {//如果是日期则转格式
+            if (Date.class == fieldVal.getType()) {
+                //如果是日期则转格式
                 value = DateUtils.formatDate((Date) objVal, dtoField.pattern());
             } else if (Boolean.class == fieldVal.getType()) {
                 //如果设置了布尔器则转文字
@@ -146,6 +150,7 @@ public class DtoConverter {
                     values.add(index, infix.get(key).toString());
             }
         }
+
         return StringUtils.join(values, dtoField.symbol());
     }
 

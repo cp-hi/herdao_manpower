@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevelReport;
 import net.herdao.hdp.manpower.mpclient.entity.OrgReport;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO;
+import net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO;
 
 import java.util.List;
 
@@ -20,34 +22,40 @@ public interface OrgReportService extends IService<OrgReport> {
      * @param condition
      * @return
      */
-    List<OrgReport> findOrgReportView(OrgReport condition);
+    List<OrgReportVO> findOrgReportView(OrgReport condition);
 
     /**
      * 组织架构表下载
      * @param condition
      * @return
      */
-    List<OrgReport> exportOrg(OrgReport condition);
+    List<OrgReportVO> exportOrg(OrgReport condition);
 
     /**
      * 组织架构表明细下载
      * @param condition
      * @return
      */
-    List<OrgReport> exportDetailsOrg(OrgReport condition);
+    List<OrgReportDetailVO> exportDetailsOrg(OrgReport condition);
 
     /**
      * 组织职级统计下载
      * @param condition
      * @return
      */
-    List<JobLevel> exportOrgJobLevel(JobLevelReport condition);
+    List<JobLevelReport > exportOrgJobLevel(JobLevelReport condition);
 
     /**
      * 组织职级统计
      * @param condition
      * @return
      */
-    List<JobLevel> fetchOrgJobLevel(JobLevelReport condition);
+    List<JobLevelReport> fetchOrgJobLevel(JobLevelReport condition);
 
+    /**
+     * 组织架构表明细预览
+     * @param condition
+     * @return
+     */
+    List<OrgReportDetailVO> findOrgDetailsView(OrgReport condition);
 }

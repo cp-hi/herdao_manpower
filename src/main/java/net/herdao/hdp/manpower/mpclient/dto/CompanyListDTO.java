@@ -48,15 +48,27 @@ public class CompanyListDTO {
 
     @ApiModelProperty(value="所属城市ID")
     private Long cityId;
+    
+    @ApiModelProperty(value="城市名称")
+    private String cityName;
 
     @ApiModelProperty(value="目标财务系统")
     private String targetSys;
+    
+    @ApiModelProperty(value="目标财务系统名称")
+    private String targetSysName;
 
     @ApiModelProperty(value="保险标准")
     private String securityStandard;
 
+    @ApiModelProperty(value="保险标准名称")
+    private String securityStandardName;
+
     @ApiModelProperty(value="公积金标准")
     private String cityFund;
+
+    @ApiModelProperty(value="公积金标准名称")
+    private String cityFundName;
 
     @ApiModelProperty(value = "在职员工数")
     private String empInService;

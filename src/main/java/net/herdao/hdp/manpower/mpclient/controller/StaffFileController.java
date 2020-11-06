@@ -72,7 +72,6 @@ public class StaffFileController {
      * @return R
      */
     @ApiOperation(value = "新增或修改员工附件表", notes = "新增或修改员工附件表")
-    @SysLog("新增或修改员工附件表" )
     @PostMapping("/saveOrUpdate")
     //@PreAuthorize("@pms.hasPermission('mpclient_stafffile_add')" )
     public R saveOrUpdate(@RequestBody StaffFile staffFile) {

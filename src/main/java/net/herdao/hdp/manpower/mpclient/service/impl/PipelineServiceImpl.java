@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
+import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -16,6 +18,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @ClassName PipelineServiceImpl
@@ -52,4 +55,16 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         pipeline.setGroupId(group.getId());
         pipeline.setId(tmp.getId());
     }
+
+    @Override
+    public Function<Pipeline, String> getNameMapper() {
+        return Pipeline::getPipelineName;
+    }
+
+    @Override
+    public Function<Pipeline, Long> getGroupIdMapper() {
+        return Pipeline::getGroupId;
+    }
+
+
 }

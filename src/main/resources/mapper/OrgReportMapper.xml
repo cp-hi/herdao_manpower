@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.OrgReportMapper">
         <resultMap id="orgReportMap" type="net.herdao.hdp.manpower.mpclient.entity.OrgReport">
             <id property="orgName" column="ORG_NAME"/>
@@ -19,182 +15,173 @@
             <result property="virtualStatus" column="virtual_status"/>
             <result property="createdTime" column="CREATED_TIME"/>
         </resultMap>
-
-        <resultMap id="jobLevelMap" type="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
-        </resultMap>
-
     <!-- 组织架构预览 -->
-    <select id="findOrgReportView" resultMap="orgReportMap">
-        SELECT  org.ORG_NAME,
-                org.ORG_CODE,
-                ( SELECT p.ORG_NAME FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_name,
-                ( SELECT p.ORG_CODE FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_code,
-                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_level ) org_level,
-                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
-                org.org_desc,
-                CASE 	WHEN org.ORGANIZATIONAL = 0 THEN
-                        '否'
-                       when 	org.ORGANIZATIONAL = 1 THEN
-                        '是'
-                        END center_status ,
-                (
-                     SELECT u.USER_NAME FROM mp_user u WHERE u.ID=org.org_charge_work_no
-                ) charge_user_name,
-                (
-                     SELECT p.POST_NAME FROM mp_post p WHERE p.ID=org.charge_org
-                ) charge_post_name,
-               CASE WHEN org.IS_VIRTUAL = 0 THEN
-                    '否'
-                   when org.IS_VIRTUAL = 1 THEN
-                    '是'
-                    END virtual_status ,
-                    org.CREATED_TIME
-                FROM
-                    mp_organization org
-                WHERE 1=1
-                <if test="orgCode != null">
-                     AND org.ORG_CODE LIKE concat(#{orgCode},'%')
-                </if>
-                ORDER BY org.ORG_CODE ASC
-                LIMIT 0, 10
-    </select>
-
-    <!-- 组织架构导出 -->
-    <select id="exportOrg" resultMap="orgReportMap">
-        SELECT  org.ORG_NAME,
-                org.ORG_CODE,
-                ( SELECT p.ORG_NAME FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_name,
-                ( SELECT p.ORG_CODE FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_code,
-                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_level ) org_level,
-                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
+       <select id="findOrgReportView" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO">
+        SELECT  org.org_name,
+                org.org_code,
+                orgp.org_name AS parent_name,
+                orgp.org_code AS parent_code,
+                dict.label AS org_type_name,
+                dicc.label AS org_level_name,
                 org.org_desc
-          FROM  mp_organization org
-        WHERE 1=1
+        FROM mp_organization org
+        LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+        LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ' AND dicc.value = org.org_level AND dicc.del_flag = 0
+        LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
+        <where>
             <if test="orgCode != null">
                 AND org.ORG_CODE LIKE concat(#{orgCode},'%')
             </if>
+        </where>
+                LIMIT 0, 10
+    </select>
+    <!-- 组织架构导出 -->
+    <select id="exportOrg" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportVO">
+        SELECT  org.org_name,
+                org.org_code,
+                orgp.org_name AS parent_name,
+                orgp.org_code AS parent_code,
+                dict.label AS org_type_name,
+                dicc.label AS org_level_name,
+                org.org_desc
+        FROM mp_organization org
+        LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+        LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ' AND dicc.value = org.org_level AND dicc.del_flag = 0
+        LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
+        <where>
+            <if test="orgCode != null">
+                AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+        </where>
     </select>
 
     <!-- 组织架构明细导出 -->
-    <select id="exportDetailsOrg" resultMap="orgReportMap">
-        SELECT  org.ORG_NAME,
-                org.ORG_CODE,
-                ( SELECT p.ORG_NAME FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_name,
-                ( SELECT p.ORG_CODE FROM mp_organization p WHERE p.id = org.PARENT_ID ) parent_code,
-                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_level ) org_level,
-                ( SELECT s.label FROM sys_dict_item s WHERE s.id = org.org_type ) org_type,
+    <select id="exportDetailsOrg" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO">
+        SELECT  org.org_name,
+                org.org_code,
+                orgp.org_name AS parent_name,
+                orgp.org_code AS parent_code,
+                dict.label AS org_type_name,
+                dicc.label AS org_level_name,
                 org.org_desc,
-                CASE 	WHEN org.ORGANIZATIONAL = 0 THEN
-                '否'
-                when 	org.ORGANIZATIONAL = 1 THEN
-                '是'
-                END center_status ,
-                (
-                SELECT u.USER_NAME FROM mp_user u WHERE u.ID=org.org_charge_work_no
-                ) charge_user_name,
-                (
-                SELECT p.POST_NAME FROM mp_post p WHERE p.ID=org.charge_org
-                ) charge_post_name,
-                CASE WHEN org.IS_VIRTUAL = 0 THEN
-                '否'
-                when 	org.IS_VIRTUAL = 1 THEN
-                '是'
-                END virtual_status ,
+                IF ( org.IS_VIRTUAL = 0, '否', '是' ) IS_VIRTUAL,
+                IF ( org.organizational = 0, '否', '是' ) organizational,
+                org.org_charge_name,
+                ps.post_name,
                 org.CREATED_TIME
-                FROM
-                mp_organization org
-        WHERE 1=1
-        <if test="orgCode != null">
-            AND org.ORG_CODE LIKE concat(#{orgCode},'%')
-        </if>
-        ORDER BY org.ORG_CODE ASC
+        FROM mp_organization org
+            LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+            LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ'  AND dicc.value = org.org_level AND dicc.del_flag = 0
+            LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX'  AND dict.VALUE= org.org_type  AND dict.del_flag = 0
+            LEFT JOIN mp_post ps ON ps.id = org.post_id
+        <where>
+            <if test="orgCode != null">
+                AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+        </where>
     </select>
 
+    <!-- 组织架构明细预览 -->
+    <select id="findOrgDetailsView" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrgReportDetailVO">
+        SELECT  org.org_name,
+        org.org_code,
+        orgp.org_name AS parent_name,
+        orgp.org_code AS parent_code,
+        dict.label AS org_type_name,
+        dicc.label AS org_level_name,
+        org.org_desc,
+        IF ( org.IS_VIRTUAL = 0, '否', '是' ) IS_VIRTUAL,
+        IF ( org.organizational = 0, '否', '是' ) organizational,
+        org.org_charge_name,
+        ps.post_name,
+        org.CREATED_TIME
+        FROM mp_organization org
+        LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
+        LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ'  AND dicc.value = org.org_level AND dicc.del_flag = 0
+        LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX'  AND dict.VALUE= org.org_type  AND dict.del_flag = 0
+        LEFT JOIN mp_post ps ON ps.id = org.post_id
+        <where>
+            <if test="orgCode != null">
+                AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+            </if>
+        </where>
+    </select>
     <!-- 组织职级统计导出 -->
-    <select id="exportOrgJobLevel" resultMap="jobLevelMap">
-            SELECT  b.ORG_NAME,
-                    b.ORG_CODE,
-                    GROUP_CONCAT( b.JOB_LEVEL_NAME ) JOB_LEVEL_NAME ,
-                    GROUP_CONCAT( b.JOB_LEVEL_CODE ) JOB_LEVEL_CODE ,
-                    GROUP_CONCAT( b.job_level_num ) job_level_num
-            FROM
-                (
-                    SELECT
-                        t.ORG_NAME,
-                        t.ORG_CODE,
-                        t.JOB_LEVEL_NAME,
-                        t.JOB_LEVEL_CODE,
-                        count( JOB_LEVEL_CODE ) job_level_num
-                    FROM
-                        (
-                        SELECT
-                            a.ORG_NAME,
-                            a.ORG_CODE,
-                            lev.JOB_LEVEL_NAME,
-                            lev.JOB_LEVEL_CODE
-                        FROM
-                            mp_organization a
-                            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
-                            AND u.MAIN_POST = 1
-                            INNER JOIN mp_post s ON s.id = u.POST_ID
-                            INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_ID1
-                        WHERE 1=1
-                            <if test="orgCode != null">
-                                AND a.ORG_CODE LIKE concat(#{orgCode},'%')
-                            </if>
-                        ) t
-                    GROUP BY
-                        t.ORG_NAME,
-                        t.ORG_CODE,
-                        t.JOB_LEVEL_NAME,
-                        t.JOB_LEVEL_CODE
-                ) b
-            GROUP BY
-                b.ORG_NAME,
-                b.ORG_CODE
+    <select id="exportOrgJobLevel" resultType="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
+        SELECT  b.ORG_NAME orgName,
+                b.ORG_CODE orgCode,
+                GROUP_CONCAT( b.JOB_LEVEL_NAME ) jobLevelName,
+                GROUP_CONCAT( b.JOB_LEVEL_CODE ) jobLevelCode,
+                GROUP_CONCAT( b.job_level_num )  jobLevelNum
+          FROM
+        (
+                SELECT
+                t.ORG_NAME,
+                t.ORG_CODE,
+                t.JOB_LEVEL_NAME,
+                t.job_level_code,
+                count( t.JOB_LEVEL_CODE ) job_level_num
+        FROM
+        (
+                SELECT 	a.ORG_NAME,
+                a.ORG_CODE,
+                lev.JOB_LEVEL_NAME,
+                lev.JOB_LEVEL_CODE
+                FROM mp_organization a
+                LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+                LEFT JOIN mp_job_level lev ON lev.ID = u.JOB_LEVEL_ID
+                WHERE 1=1
+                <if test="orgCode != null">
+                    AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+                </if>
+        ) t
+            GROUP BY t.ORG_NAME,
+                     t.ORG_CODE,
+                     t.job_level_name,
+                     t.job_level_code
+        ) b
+        GROUP BY b.ORG_NAME,
+                 b.ORG_CODE
     </select>
 
     <!-- 组织职级统计 -->
-    <select id="fetchOrgJobLevel" resultMap="jobLevelMap">
+    <select id="fetchOrgJobLevel" resultType="net.herdao.hdp.manpower.mpclient.entity.JobLevelReport">
         SELECT  b.ORG_NAME,
-        b.ORG_CODE,
-        GROUP_CONCAT( b.JOB_LEVEL_NAME ) JOB_LEVEL_NAME ,
-        GROUP_CONCAT( b.JOB_LEVEL_CODE ) JOB_LEVEL_CODE ,
-        GROUP_CONCAT( b.job_level_num ) job_level_num
+                b.ORG_CODE,
+                GROUP_CONCAT( b.JOB_LEVEL_NAME ) JOB_LEVEL_NAME ,
+                GROUP_CONCAT( b.JOB_LEVEL_CODE ) JOB_LEVEL_CODE ,
+                GROUP_CONCAT( b.job_level_num ) job_level_num
         FROM
         (
-        SELECT
-        t.ORG_NAME,
-        t.ORG_CODE,
-        t.JOB_LEVEL_NAME,
-        t.JOB_LEVEL_CODE,
-        count( JOB_LEVEL_CODE ) job_level_num
-        FROM
-        (
-        SELECT
-        a.ORG_NAME,
-        a.ORG_CODE,
-        lev.JOB_LEVEL_NAME,
-        lev.JOB_LEVEL_CODE
-        FROM
-        mp_organization a
-        INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
-        AND u.MAIN_POST = 1
-        INNER JOIN mp_post s ON s.id = u.POST_ID
-        INNER JOIN mp_job_level lev ON lev.JOB_LEVEL_CODE = s.JOB_LEVEL_ID1
-        WHERE 1=1
-        <if test="orgCode != null">
-            AND a.ORG_CODE LIKE concat(#{orgCode},'%')
-        </if>
-        ) t
-        GROUP BY
-        t.ORG_NAME,
-        t.ORG_CODE,
-        t.JOB_LEVEL_NAME,
-        t.JOB_LEVEL_CODE
-        ) b
+                SELECT
+                t.ORG_NAME,
+                t.ORG_CODE,
+                t.JOB_LEVEL_NAME,
+                t.job_level_code,
+                count( t.JOB_LEVEL_CODE ) job_level_num
+            FROM
+            (
+                    SELECT 	a.ORG_NAME,
+                    a.ORG_CODE,
+                    lev.JOB_LEVEL_NAME,
+                    lev.JOB_LEVEL_CODE
+                    FROM mp_organization a
+                    LEFT JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID  AND u.MAIN_POST = 1
+                    LEFT JOIN mp_job_level lev ON lev.ID = u.JOB_LEVEL_ID
+                    WHERE 1=1
+                    <if test="orgCode != null">
+                        AND a.ORG_CODE LIKE concat(#{orgCode},'%')
+                    </if>
+            ) t
+             GROUP BY
+                t.ORG_NAME,
+                t.ORG_CODE,
+                t.job_level_name,
+                t.job_level_code
+         ) b
         GROUP BY
         b.ORG_NAME,
         b.ORG_CODE
+        LIMIT 0, 10
     </select>
 </mapper>

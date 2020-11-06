@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * 实体操作的基础Service
@@ -23,7 +25,7 @@ public interface EntityService<T> extends IService<T> {
 
     Object form(Long id);
 
-    IPage getOperationLogs(IPage page,Long objId);
+    IPage getOperationLogs(IPage page, Long objId);
 
     /**
      * 获取实体名
@@ -72,7 +74,7 @@ public interface EntityService<T> extends IService<T> {
      */
     void saveVerify(T t);
 
-    void saveVerify(T t,StringBuffer buffer);
+    void saveVerify(T t, StringBuffer buffer);
 
     /**
      * 导入校验
@@ -129,8 +131,10 @@ public interface EntityService<T> extends IService<T> {
      * 批量保存 可以新增/修改
      *
      * @param dataList
-     * @param batchCount
+     * @param   importType
      */
-    void saveList(List<T> dataList, Integer batchCount);
+    void saveList(List<T> dataList, Integer importType)  ;
 
+    Function<T, String> getNameMapper();
+    Function<T, Long> getGroupIdMapper();
 }

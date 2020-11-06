@@ -28,5 +28,7 @@ public @interface DtoField {
 
     String converter() default ""; //   "{true:\"已停用\",false:\"已启用\"}"
 
-    String pattern() default "yyyy-MM-dd hh:mm";
+    String pattern() default "yyyy-MM-dd HH:mm";
+
+//    String nullValue() default "";
 }
