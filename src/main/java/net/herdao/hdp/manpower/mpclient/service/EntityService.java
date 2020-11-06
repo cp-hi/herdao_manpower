@@ -2,13 +2,10 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.sys.entity.OperationLog;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 /**
  * 实体操作的基础Service
@@ -18,8 +15,17 @@ import java.util.stream.Stream;
  * @Date
  */
 public interface EntityService<T> extends IService<T> {
-
+    /**
+     * 获取实体类型
+     * @return
+     */
     Class<T> getEntityClass();
+    /**
+     * 获取实体名
+     *
+     * @return
+     */
+    String getEntityName();
 
     IPage page(IPage page, T t);
 
@@ -27,12 +33,7 @@ public interface EntityService<T> extends IService<T> {
 
     IPage getOperationLogs(IPage page, Long objId);
 
-    /**
-     * 获取实体名
-     *
-     * @return
-     */
-    String getEntityName();
+
 
     /**
      * 保存实体并自动添加日志
@@ -131,10 +132,11 @@ public interface EntityService<T> extends IService<T> {
      * 批量保存 可以新增/修改
      *
      * @param dataList
-     * @param   importType
+     * @param importType
      */
-    void saveList(List<T> dataList, Integer importType)  ;
+    void saveList(List<T> dataList, Integer importType);
 
     Function<T, String> getNameMapper();
+
     Function<T, Long> getGroupIdMapper();
 }
