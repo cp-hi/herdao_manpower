@@ -166,6 +166,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     public void saveVerify(T t, StringBuffer buffer) {
+        Long groupId = this.getGroupIdMapper().apply(t);
+        if(null == groupId) buffer.append("集团ID为空不能保存");
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
     }
