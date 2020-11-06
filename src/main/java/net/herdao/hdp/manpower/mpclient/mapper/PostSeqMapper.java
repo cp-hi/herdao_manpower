@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqListVO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -18,4 +19,7 @@ public interface PostSeqMapper extends EntityMapper<PostSeq> {
     List<Map> postSeqList(Long groupId);
 
     PostSeqDTO getPostSeqDTO(Long id);
+
+    @Select("SELECT  IFNULL(POST_SEQ_NAME,'未分类')  FROM MP_POST_SEQ WHERE id=#{id} and del_flag !=1")
+    String selectEntityName(Long id);
 }

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
@@ -248,16 +249,16 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (0 == importType) {
             Map<Long, List<T>> subData = dataList.stream().collect(
                     Collectors.groupingBy(getGroupIdMapper()));
-            for (List<T> entitys : subData.values()) {
-                T entity = entitys.get(0);
-                String lastEntityCode = baseMapper.getLastEntityCode(entity);
+            for (List<T> entities : subData.values()) {
+                //TODO 批量新增比较费时，要考虑生成的编码这段期间会不会被占用
+                String lastEntityCode = baseMapper.getLastEntityCode(entities.get(0));
                 if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
-                for (T t : entitys) {
+                for (T entity : entities) {
                     String codeField = baseMapper.getEntityCodeField();
-                    Field field = AnnotationUtils.getFieldByName(t, codeField);
+                    Field field = AnnotationUtils.getFieldByName(entity, codeField);
                     String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
                     field.setAccessible(true);
-                    field.set(t, entityCode);
+                    field.set(entity, entityCode);
                 }
             }
         }
@@ -267,6 +268,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     //参照PostServiceImpl
+
+    //region 批量导入时分类用
     @Override
     public Function<T, String> getNameMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
@@ -276,5 +279,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public Function<T, Long> getGroupIdMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
     }
+    //endregion
 
 }

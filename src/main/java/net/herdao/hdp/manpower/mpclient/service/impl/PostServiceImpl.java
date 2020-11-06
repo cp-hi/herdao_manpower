@@ -188,6 +188,8 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     //endregion
 
+
+
     @Override
     public Function<Post, String> getNameMapper() {
         return Post::getPostName;
