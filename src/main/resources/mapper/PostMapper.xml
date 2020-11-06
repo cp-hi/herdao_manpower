@@ -49,10 +49,6 @@
         <if test="t.stop != null">
             and is_stop = #{t.stop}
         </if>
-        <if test="t.postName != null">
-            <bind name="likeTxt" value="'%'+t.postName+'%'"/>
-            and (POST_CODE like #{likeTxt} or POST_NAME like #{likeTxt})
-        </if>
         <if test="t.sectionId != null">
             AND section_id = #{t.sectionId}
         </if>
@@ -60,8 +56,11 @@
             AND pipeline_id = #{t.pipelineId}
         </if>
         <if test="t.jobLevelId1 != null">
-            AND (job_level_id1 = #{t.jobLevelId1}
-            or job_level_id2 = #{t.jobLevelId1})
+            AND (job_level_id1 = #{t.jobLevelId1} or job_level_id2 = #{t.jobLevelId1})
+        </if>
+        <if test="t.postName != null">
+            <bind name="likeTxt" value="'%'+t.postName+'%'"/>
+            and (POST_CODE like #{likeTxt} or POST_NAME like #{likeTxt})
         </if>
     </select>
 
