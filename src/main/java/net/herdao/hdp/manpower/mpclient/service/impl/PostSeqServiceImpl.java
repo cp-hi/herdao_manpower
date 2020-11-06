@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
@@ -94,7 +95,12 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public Function<PostSeq, String> getNameFieldMapper() {
+    public Function<PostSeq, String> getNameMapper() {
         return PostSeq::getPostSeqName;
+    }
+
+    @Override
+    public Function<PostSeq, Long> getGroupIdMapper() {
+        return PostSeq::getGroupId;
     }
 }

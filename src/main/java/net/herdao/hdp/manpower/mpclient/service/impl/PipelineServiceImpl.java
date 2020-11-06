@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
@@ -56,7 +57,14 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     }
 
     @Override
-    public Function<Pipeline, String> getNameFieldMapper() {
+    public Function<Pipeline, String> getNameMapper() {
         return Pipeline::getPipelineName;
     }
+
+    @Override
+    public Function<Pipeline, Long> getGroupIdMapper() {
+        return Pipeline::getGroupId;
+    }
+
+
 }

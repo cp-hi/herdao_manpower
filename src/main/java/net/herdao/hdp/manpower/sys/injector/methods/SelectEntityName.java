@@ -26,8 +26,8 @@ public class SelectEntityName extends AbstractMethod {
         List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
                 f.getEl().contains("Name")).collect(Collectors.toList());
         String name = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
-        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ",
-                name, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
+        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT  IFNULL( %s,'--')  FROM %s WHERE %s=#{%s}  %s ",
+                name, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty(), tableInfo.getLogicDeleteSql(true, true)), Object.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectEntityName", sqlSource, String.class);
     }
 }

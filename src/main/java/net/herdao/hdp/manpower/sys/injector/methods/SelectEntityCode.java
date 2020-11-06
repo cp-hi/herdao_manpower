@@ -24,8 +24,8 @@ public class SelectEntityCode extends AbstractMethod {
         List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
                 f.getEl().contains("Code")).collect(Collectors.toList());
         String code = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
-        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT %s FROM %s WHERE %s=#{%s} ",
-                code, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
+        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT  IFNULL( %s,'--')  FROM %s WHERE %s=#{%s}  %s ",
+                code, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty(), tableInfo.getLogicDeleteSql(true, true)), Object.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectEntityCode", sqlSource, String.class);
     }
 }

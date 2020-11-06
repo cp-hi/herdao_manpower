@@ -51,7 +51,7 @@ public class StaffContractDetailDTO {
 
     @ApiModelProperty(value="最后修改时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedTime;
 
     @ApiModelProperty(value="最后修改人")

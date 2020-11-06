@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -187,8 +188,15 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     //endregion
 
+
+
     @Override
-    public Function<Post, String> getNameFieldMapper() {
+    public Function<Post, String> getNameMapper() {
         return Post::getPostName;
+    }
+
+    @Override
+    public Function<Post, Long> getGroupIdMapper() {
+        return Post::getGroupId;
     }
 }
