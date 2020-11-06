@@ -223,7 +223,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public T chkEntityExists(String name, Long groupId, boolean need) {
         StringBuffer buffer = new StringBuffer();
         T t = this.chkEntityExists(name, groupId, need, buffer);
-        if (StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer))
             throw new Exception(buffer.toString());
         return t;
     }

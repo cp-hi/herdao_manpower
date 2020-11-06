@@ -148,7 +148,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        if (StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer))
             throw new Exception(buffer.toString());
 
         post.setGroupId(group.getId());
@@ -175,7 +175,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setYearPayRatio(sysDictItemService.getDictItemValue("XCBL", excel.getYearPayRatio(), buffer));
         post.setPerforSalaryRatio(sysDictItemService.getDictItemValue("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
-        if (StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer))
             throw new Exception(buffer.toString());
 
         post.setGroupId(group.getId());

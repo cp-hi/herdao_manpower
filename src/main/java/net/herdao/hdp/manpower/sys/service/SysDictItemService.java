@@ -83,7 +83,7 @@ public interface SysDictItemService extends IService<SysDictItem> {
     default String getDictItemValue(String type, String label) {
         StringBuffer buffer = new StringBuffer();
         String value = this.getDictItemValue(type, label, buffer);
-        if (StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer))
             throw new Exception(buffer.toString());
         return value;
     }

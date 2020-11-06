@@ -216,7 +216,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     public Group selectByName(String groupName, boolean need) {
         StringBuffer buffer = new StringBuffer();
         Group group = this.selectByName(groupName, need, buffer);
-        if (StringUtils.isNotBlank(buffer.toString()))
+        if (StringUtils.isNotBlank(buffer))
             throw new Exception(buffer.toString());
         return group;
     }
