@@ -120,4 +120,15 @@ public class SelectController {
 		List<SelectDTO> selectDTOList = selectService.getCitySet();		
 		return R.ok(selectDTOList);
 	}
+	
+	/**
+	 * 获取福利类型
+	 * 
+	 * @return
+	 */
+	@GetMapping("/getWelfareStandard")
+	public R<List<SelectDTO>> getWelfareStandard() {
+		List<SelectDTO> selectList = selectService.getWelfareStandard();		
+		return R.ok(selectList);
+	}
 }

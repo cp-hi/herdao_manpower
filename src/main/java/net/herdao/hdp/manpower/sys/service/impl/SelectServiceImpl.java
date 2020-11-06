@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
@@ -17,14 +17,14 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
-import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
-import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
+import net.herdao.hdp.manpower.mpclient.entity.WelfareStandards;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import net.herdao.hdp.manpower.mpclient.service.WelfareStandardsService;
 import net.herdao.hdp.manpower.sys.mapper.SelectMapper;
 import net.herdao.hdp.manpower.sys.service.SelectService;
 
@@ -43,6 +43,8 @@ public class SelectServiceImpl extends ServiceImpl<SelectMapper, SelectDTO> impl
 	private final JobLevelService jobLevelService;
 	
 	private final JobGradeService jobGradeService;
+	
+	private final WelfareStandardsService welfareStandardsService;
 		
 	@Override
 	public List<SelectDTO> getGroup() {
@@ -207,4 +209,22 @@ public class SelectServiceImpl extends ServiceImpl<SelectMapper, SelectDTO> impl
 		List<SelectDTO> list = this.baseMapper.getCitySet();
 		return list;
 	}
+
+	@Override
+	public List<SelectDTO> getWelfareStandard() {
+		
+		List<SelectDTO> selectList = new ArrayList<SelectDTO>();
+		// 福利类型集合
+		List<WelfareStandards> welfareStandardList = this.welfareStandardsService.lambdaQuery()
+														 .eq(WelfareStandards::getEnabled, true).list();
+		if(ObjectUtil.isNotEmpty(welfareStandardList)) {
+			welfareStandardList.forEach(welfareStandard ->{
+				selectList.add(SelectDTO.builder()
+						       .label(welfareStandard.getVersion())
+							   .value(welfareStandard.getWelfarestandardsOid()).build());
+			});
+		}
+		return selectList;
+	}
 }
+ 

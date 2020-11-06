@@ -66,4 +66,11 @@ public interface SelectService {
 	 * @return 市配置数据
 	 */
 	List<SelectDTO> getCitySet();
+	
+	/**
+	 * 获取福利类型
+	 * 
+	 * @return
+	 */
+	List<SelectDTO> getWelfareStandard();
 }

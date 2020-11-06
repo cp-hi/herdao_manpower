@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, herdao All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the herdao.net developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: liang
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.WelfareStandardsMapper">
+
+  <resultMap id="welfareStandardsMap" type="net.herdao.hdp.manpower.mpclient.entity.WelfareStandards">
+         <id property="id" column="id"/>
+         <result property="welfarestandardsOid" column="welfarestandards_oid"/>
+         <result property="version" column="version"/>
+         <result property="enabled" column="enabled"/>
+         <result property="organizationId" column="organization_id"/>
+         <result property="organizationOid" column="organization_oid"/>
+         <result property="creatorId" column="creator_id"/>
+         <result property="creatorCode" column="creator_code"/>
+         <result property="creatorName" column="creator_name"/>
+         <result property="createdTime" column="created_time"/>
+         <result property="modifierId" column="modifier_id"/>
+         <result property="modifierCode" column="modifier_code"/>
+         <result property="modifierName" column="modifier_name"/>
+         <result property="modifiedTime" column="modified_time"/>
+   </resultMap>
+</mapper>
