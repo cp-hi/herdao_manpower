@@ -68,5 +68,10 @@
        select * from mp_post_seq WHERE id= #{id}
     </select>
 
+    <select id="selectEntityName" parameterType="long" resultMap="postSeqDTO">
+        with T as (SELECT post_seq_name as entity_code FROM MP_post_seq WHERE ID=#{id} AND del_flag!=1)
+        select case  when exists (select * from T ) then (select * from T) else '未分类' end as entity_code
+    </select>
+
 
 </mapper>

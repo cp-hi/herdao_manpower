@@ -30,5 +30,5 @@ public @interface DtoField {
 
     String pattern() default "yyyy-MM-dd HH:mm";
 
-//    String nullValue() default "";
+    String delFix() default "";
 }
