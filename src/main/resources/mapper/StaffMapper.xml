@@ -216,7 +216,7 @@
 		LEFT JOIN mp_post ps ON ps.id = ut.post_id
 		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
-			 AND ut.office_post_type = '1'
+			 AND ut.main_post = 1
 			 <choose>
 	            <when test="orgCode != null">
 	                AND org.org_code = #{orgCode}
