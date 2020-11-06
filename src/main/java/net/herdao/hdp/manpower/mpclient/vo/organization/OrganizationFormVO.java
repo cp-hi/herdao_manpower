@@ -111,6 +111,11 @@ public class OrganizationFormVO {
 	 */
 	@ApiModelProperty(value = "福利类型名称")
 	private String welfareTypeName;
+	/**
+	 * 排序
+	 */
+	@ApiModelProperty(value = "排序")
+	private Long sortNo;
 	
 	/**
 	 * 组织描述

@@ -354,10 +354,8 @@ public abstract class HdpBaseController {
 		getInitEasyExcelArgs(importType);
 		// 查询条件
 		String searchParams = exportDataVO.getSearchParams();
-		// 转 map 
-		Map<String, Object> paramMap = JSONObject.parseObject(searchParams, new TypeReference<Map<String, Object>>(){});
 		// 数据集
-		List dataList = (importType == 0 ? null : (StrUtil.isBlank(searchParams) ? downloadUpdateTemplateList : getDownloadUpdateTemplateList(paramMap)));
+		List dataList = (importType == 0 ? null : (StrUtil.isBlank(searchParams) ? downloadUpdateTemplateList : getDownloadUpdateTemplateList(JSONObject.parseObject(exportDataVO.getSearchParams(), new TypeReference<Map<String, Object>>(){}))));
 		try {
 			EasyExcelUtils.webWriteExcel(response, dataList, excelCls, "批量" + ManpowerContants.ImportTypeEnum.getInstance(importType) + templateName,
 					                     new EasyExcelSheetWriteHandler(excelCls, excelDescription));
