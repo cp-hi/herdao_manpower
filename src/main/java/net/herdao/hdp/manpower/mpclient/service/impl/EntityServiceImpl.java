@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
@@ -69,10 +68,13 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         operationLogService.saveOrUpdate(log);
     }
 
-
     @Override
     public Class<T> getEntityClass() {
         return baseMapper.getEntityClass();
+    }
+    @Override
+    public String getEntityName() {
+        return baseMapper.getEntityName();
     }
 
     @Override
@@ -83,11 +85,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public Object form(Long id) {
         return baseMapper.form(id);
-    }
-
-    @Override
-    public String getEntityName() {
-        return baseMapper.getEntityName();
     }
 
     @Override
@@ -104,8 +101,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             String lastEntityCode = baseMapper.getLastEntityCode(t);
             if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
             String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
-            String codeField = baseMapper.getEntityCodeField();
-            Field field = AnnotationUtils.getFieldByName(t, codeField);
+            Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
             field.setAccessible(true);
             field.set(t, entityCode);
         } else {
@@ -254,9 +250,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                 String lastEntityCode = baseMapper.getLastEntityCode(entities.get(0));
                 if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
                 for (T entity : entities) {
-                    String codeField = baseMapper.getEntityCodeField();
-                    Field field = AnnotationUtils.getFieldByName(entity, codeField);
                     String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
+                    Field field = AnnotationUtils.getFieldByName(entity, baseMapper.getEntityCodeField());
                     field.setAccessible(true);
                     field.set(entity, entityCode);
                 }
@@ -267,9 +262,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         dataList.clear();
     }
 
-    //参照PostServiceImpl
-
-    //region 批量导入时分类用
+    //region 批量导入时分类用 参照PostServiceImpl
     @Override
     public Function<T, String> getNameMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
