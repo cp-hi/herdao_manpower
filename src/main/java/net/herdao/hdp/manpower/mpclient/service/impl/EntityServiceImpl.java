@@ -1,6 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,12 +19,10 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.schema.Entry;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -233,10 +230,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @SneakyThrows
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveList(List<T> dataList, Integer batchCount) {
-        //TODO 验证批次内是否有重名，以及不同集团
+    public void saveList(List<T> dataList, Integer importType) {
+        // 验证批次内是否有重名，以及不同集团
         //选名称加入集合
-        List<String> names = dataList.stream().map(getNameFieldMapper()).collect(
+        List<String> names = dataList.stream().map(getNameMapper()).collect(
                 //根据重复数据统计数量
                 Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 //把数量大于1（重复）的加进来
@@ -247,15 +244,37 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (names.size() > 0)
             throw new Exception("此批次数据中出现重复的名称:" + StringUtils.join(names));
 
-        if (0 >= batchCount) batchCount = 50;
-        List<List<T>> batch = Lists.partition(dataList, batchCount);
+        //新增时根据不同集团添加编号
+        if (0 == importType) {
+            Map<Long, List<T>> subData = dataList.stream().collect(
+                    Collectors.groupingBy(getGroupIdMapper()));
+            for (List<T> entitys : subData.values()) {
+                T entity = entitys.get(0);
+                String lastEntityCode = baseMapper.getLastEntityCode(entity);
+                if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
+                for (T t : entitys) {
+                    String codeField = baseMapper.getEntityCodeField();
+                    Field field = AnnotationUtils.getFieldByName(t, codeField);
+                    String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
+                    field.setAccessible(true);
+                    field.set(t, entityCode);
+                }
+            }
+        }
+        List<List<T>> batch = Lists.partition(dataList, 50);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
 
     //参照PostServiceImpl
     @Override
-    public Function<T, String> getNameFieldMapper() {
+    public Function<T, String> getNameMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
     }
+
+    @Override
+    public Function<T, Long> getGroupIdMapper() {
+        throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
+    }
+
 }

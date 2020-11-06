@@ -5,12 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import net.herdao.hdp.manpower.mpclient.entity.Group;
-import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
+import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
-import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
@@ -106,7 +103,12 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     }
 
     @Override
-    public Function<JobLevel, String> getNameFieldMapper() {
+    public Function<JobLevel, String> getNameMapper() {
         return JobLevel::getJobLevelName;
+    }
+
+    @Override
+    public Function<JobLevel, Long> getGroupIdMapper() {
+        return JobLevel::getGroupId;
     }
 }

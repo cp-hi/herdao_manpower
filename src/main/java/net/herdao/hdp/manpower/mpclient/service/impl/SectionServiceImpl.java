@@ -55,7 +55,12 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     }
 
     @Override
-    public Function<Section, String> getNameFieldMapper() {
+    public Function<Section, String> getNameMapper() {
         return Section::getSectionName;
+    }
+
+    @Override
+    public Function<Section, Long> getGroupIdMapper() {
+        return Section::getGroupId;
     }
 }

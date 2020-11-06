@@ -121,14 +121,6 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     public void doAfterAllAnalysed(AnalysisContext context) {
         if (hasError)
             throw new Exception("导入出现错误，请查看导错误原因");
-        if (0 == importType) {
-            //TODO 添加生成编码的逻辑
-//            Integer currCode = Integer.valueOf(entityService.getCurrEntityCode());
-//            for (int i = 0; i < dataList.size(); i++) {
-//                String entityCode = String.format("%06d", ++currCode);
-//                entityService.setEntityCode(dataList.get(i), entityCode);
-//            }
-        }
-        this.entityService.saveList(dataList, BATCH_COUNT);
+        this.entityService.saveList(dataList, importType);
     }
 }

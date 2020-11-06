@@ -131,9 +131,10 @@ public interface EntityService<T> extends IService<T> {
      * 批量保存 可以新增/修改
      *
      * @param dataList
-     * @param batchCount
+     * @param   importType
      */
-    void saveList(List<T> dataList, Integer batchCount);
+    void saveList(List<T> dataList, Integer importType)  ;
 
-    Function<T, String> getNameFieldMapper();
+    Function<T, String> getNameMapper();
+    Function<T, Long> getGroupIdMapper();
 }
