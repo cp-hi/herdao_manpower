@@ -235,10 +235,15 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public void saveList(List<T> dataList, Integer batchCount) {
         //TODO 验证批次内是否有重名，以及不同集团
+        //选名称加入集合
         List<String> names = dataList.stream().map(getNameFieldMapper()).collect(
+                //根据重复数据统计数量
                 Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                //把数量大于1（重复）的加进来
                 .entrySet().stream().filter(c -> c.getValue() > 1).collect(Collectors.toList())
+                //获取map的key（名称）字段
                 .stream().map(Map.Entry::getKey).collect(Collectors.toList());
+
         if (names.size() > 0)
             throw new Exception("此批次数据中出现重复的名称:" + StringUtils.join(names));
 
@@ -248,8 +253,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         dataList.clear();
     }
 
+    //参照PostServiceImpl
     @Override
     public Function<T, String> getNameFieldMapper() {
-        throw new NotImplementedException("要使用此方法请在各自的ServiceImpl类中重写");
+        throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
     }
 }
