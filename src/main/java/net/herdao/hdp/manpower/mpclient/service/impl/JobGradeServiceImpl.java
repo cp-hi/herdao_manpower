@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper;
@@ -7,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @ClassName JobGradeServiceImpl
@@ -24,4 +26,8 @@ public class JobGradeServiceImpl extends EntityServiceImpl<JobGradeMapper, JobGr
         return baseMapper.jobGradeList(groupId);
     }
 
+    @Override
+    public Function<JobGrade, Long> getGroupIdMapper() {
+        return JobGrade::getGroupId;
+    }
 }
