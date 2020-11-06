@@ -46,11 +46,6 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="id")
     private Long id;
     /**
-     * 租户id
-     */
-    @ApiModelProperty(value="租户id",hidden=true)
-    private Long tenantId;
-    /**
      * 旧人力福利类型表id
      */
     @ApiModelProperty(value="旧人力福利类型表id")
