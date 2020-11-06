@@ -188,7 +188,7 @@
 		INNER JOIN mp_userpost ut ON sf.user_id = ut.user_id
 		INNER JOIN mp_organization org ON org.id = ut.org_dept_id
 		<where>
-			AND ut.office_post_type = '1'
+			AND ut.main_post = 1
 			<if test="orgCode != null">
 				 AND org.org_code LIKE CONCAT(#{orgCode},'%')
 			</if>
