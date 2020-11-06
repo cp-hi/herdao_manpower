@@ -127,6 +127,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     @Transactional(rollbackFor = Exception.class)
 	public R expectedDisable(Long id, String stopDateStr) {
+    	
+    	Date stopDate = DateUtil.parseDate(stopDateStr);
+    	if(DateUtil.compare(stopDate, DateUtil.date()) < 0) {
+    		return R.failed("停用日期不能小于当前日期！");
+    	}
+    	
 		Organization organization = this.getById(id);
 		
 		List<Organization> organizations = this.baseMapper.selectOrganizationByOrgCode(organization.getOrgCode());
@@ -136,14 +142,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		
 		organizations.add(organization);
 		organizations.forEach(org ->{
-			// 设置停用日期
-			org.setStopDate(DateUtil.parseDate(stopDateStr));
-			// 设置为停用 TOTO 后期关联定时任务
-			org.setIsStop(true);
+			LambdaUpdateWrapper<Organization> updateWrapper = Wrappers.lambdaUpdate();
+	        updateWrapper.set(Organization::getStopDate, stopDate)
+	        			 .set(Organization::getStartDate, null)
+	        			 .set(Organization::getIsStop, true) // 设置为启用 TOTO 后期关联定时任务
+	        			 .eq(Organization::getId, org.getId());
+	        this.update(updateWrapper);
 		});
 		
-		this.saveOrUpdateBatch(organizations);
-
 		return R.ok(null, ManpowerContants.DISABLE_SUCCESS);
 	}
     
@@ -203,17 +209,19 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Transactional(rollbackFor = Exception.class)
 	public R expectedEnable(Long id, String startDateStr) {
     	
+    	Date startDate = DateUtil.parseDate(startDateStr);
+    	if(DateUtil.compare(startDate, DateUtil.date()) < 0) {
+    		return R.failed("启用日期不能小于当前日期！");
+    	}
+    	
 		Organization organization = this.getById(id);
-
-		// 设置停用日期
-		organization.setStopDate(null);
-
-		// 设置启用
-		organization.setStopDate(DateUtil.parseDate(startDateStr));
-		// 设置为启用 TOTO 后期关联定时任务
-		organization.setIsStop(false);
 		
-		this.saveOrUpdate(organization);
+		LambdaUpdateWrapper<Organization> updateWrapper = Wrappers.lambdaUpdate();
+        updateWrapper.set(Organization::getStopDate, null)
+        			 .set(Organization::getStartDate, startDate)
+        			 .set(Organization::getIsStop, false) // 设置为启用 TOTO 后期关联定时任务
+        			 .eq(Organization::getId, organization.getId());
+        this.update(updateWrapper);
 		
 		return R.ok(null, ManpowerContants.ENABLE_SUCCESS);
 	}
