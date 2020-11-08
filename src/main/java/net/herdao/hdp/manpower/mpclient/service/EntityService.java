@@ -17,9 +17,11 @@ import java.util.function.Function;
 public interface EntityService<T> extends IService<T> {
     /**
      * 获取实体类型
+     *
      * @return
      */
     Class<T> getEntityClass();
+
     /**
      * 获取实体名
      *
@@ -33,8 +35,14 @@ public interface EntityService<T> extends IService<T> {
 
     IPage getOperationLogs(IPage page, Long objId);
 
+    /**
+     * 获取最新实体编号
+     * @param t
+     * @return
+     */
+//    String getLastEntityCode(T t);
 
-
+    Integer getEntityCode(T t,Integer count);
     /**
      * 保存实体并自动添加日志
      *

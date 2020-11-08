@@ -6,6 +6,7 @@ import lombok.var;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
+import net.herdao.hdp.manpower.sys.cache.DictCache;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Version 1.0
  */
 
-@Component
+//@Component
 public class DtoConverter {
 
     private static SysDictItemService sysDictItemService;
@@ -42,7 +43,7 @@ public class DtoConverter {
 
     /**
      * @param source dto类
-     * @param clzz   vo 类
+     * @param clazz   vo 类
      * @param <T>    vo 类
      * @return
      * @throws IllegalAccessException
@@ -50,11 +51,9 @@ public class DtoConverter {
      * @throws ClassNotFoundException
      * @throws NoSuchFieldException
      */
-    public static <T> T dto2vo(Object source, Class<? extends T> clzz)
-            throws IllegalAccessException, InstantiationException,
-            ClassNotFoundException, NoSuchFieldException {
-
-        Class clazz = Class.forName(clzz.getName());
+    public static <T> T dto2vo(Object source, Class<? extends T> clazz)
+            throws IllegalAccessException, InstantiationException {
+//        Class clazz = Class.forName(clzz.getName());
         Object target = clazz.newInstance();
         BeanUtils.copyProperties(source, target);
         Field[] fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
@@ -99,13 +98,13 @@ public class DtoConverter {
                 if (null == currObj) continue;
                 Field field = AnnotationUtils.getFieldByName(currObj, currObjName);
                 if (null == field) continue;
-                field.setAccessible(true);
+//                field.setAccessible(true);
                 currObj = field.get(currObj);
             }
             if (null == currObj) continue;
             Field fieldVal = AnnotationUtils.getFieldByName(currObj, fieldName);
             if (null == fieldVal) continue;
-            fieldVal.setAccessible(true);
+//            fieldVal.setAccessible(true);
             Object objVal = fieldVal.get(currObj);
             String value = "";
             if (Date.class == fieldVal.getType()) {
@@ -127,7 +126,7 @@ public class DtoConverter {
                     Field delField = AnnotationUtils.getFieldByName(currObj, "delFlag");
                     if (null != delField) {
                         //被删除了则用设置的规则替换
-                        delField.setAccessible(true);
+//                        delField.setAccessible(true);
                         Object del = delField.get(currObj);
                         if ((Boolean) del) value = dtoField.delFix();
                     }
@@ -175,17 +174,17 @@ public class DtoConverter {
     private static String getDictFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
         String[] dictInfo = dtoField.dictField().split("\\.");
         Field currObj = AnnotationUtils.getFieldByName(source, dictInfo[1]);
-        if (null == currObj)
-            return null;
-        currObj.setAccessible(true);
+        if (null == currObj) return null;
+//        currObj.setAccessible(true);
         Object val = currObj.get(source);
-        SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
-                Wrappers.<SysDictItem>query().lambda()
-                        .eq(SysDictItem::getType, dictInfo[0])
-                        .eq(SysDictItem::getValue, (String) val));
-
-        if (null != dictItem) return dictItem.getLabel();
-        return null;
+        return DictCache.getDictLabel(dictInfo[0], (String) val);
+//        SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
+//                Wrappers.<SysDictItem>query().lambda()
+//                        .eq(SysDictItem::getType, dictInfo[0])
+//                        .eq(SysDictItem::getValue, (String) val));
+//
+//        if (null != dictItem) return dictItem.getLabel();
+//        return null;
     }
 
     /**

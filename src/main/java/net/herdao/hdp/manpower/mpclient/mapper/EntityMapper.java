@@ -138,5 +138,14 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      */
     String getLastEntityCode(T t);
 
+    /**
+     * 校验集团状态，是否能用，
+     * 即不为空或停用、删除
+     * @param t
+     * @return
+     */
+    @Select("select count(*) from mp_group where id =#{groupId} and del_flag != 1 and is_stop != 1")
+    Boolean checkGroupStatus(T t);
+
    T getEntityByName(String name,Long groupId);
 }

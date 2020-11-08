@@ -76,8 +76,10 @@ public class AnnotationUtils {
     public static Field getFieldByName(Object object, String fieldName) {
         Field[] fields = getAllFields(object);
         for (Field field : fields) {
-            if (fieldName.equals(field.getName()))
+            if (fieldName.equals(field.getName())) {
+                field.setAccessible(true);
                 return field;
+            }
         }
         return null;
     }
@@ -124,7 +126,10 @@ public class AnnotationUtils {
     public static Field getOneAnnotationFields(Object object, Class<? extends Annotation> clazz) {
         Field[] fields = getAllFields(object);
         fields = getAllAnnotationFields(fields, clazz);
-        if (null != fields && fields.length > 0) return fields[0];
+        if (null != fields && fields.length > 0) {
+            fields[0].setAccessible(true);
+            return fields[0];
+        }
         return null;
     }
 

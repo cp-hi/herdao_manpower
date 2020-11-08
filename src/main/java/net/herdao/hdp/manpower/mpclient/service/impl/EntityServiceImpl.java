@@ -22,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -89,10 +91,41 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.form(id);
     }
 
+//    Lock lockLastEntityCode = new ReentrantLock();
+
+//    @Override
+//    public String getLastEntityCode(T t) {
+//        return baseMapper.getLastEntityCode(t);
+//    }
+
+    //    List<Long> groupIdList = new ArrayList<>();
+    Map<Long, Integer> currEntityCode = new ConcurrentHashMap<>();
+
+    @SneakyThrows
+    @Override
+    public Integer getEntityCode(T t, Integer count) {
+        Long groupId = getGroupIdMapper().apply(t);
+        Integer entityCode = null;
+        if (!currEntityCode.containsKey(groupId)) {
+            Boolean groupEnable = baseMapper.checkGroupStatus(t);
+            if (!groupEnable) throw new Exception("找不到该集团，或已被删除或停用");
+            String lastEntityCode = baseMapper.getLastEntityCode(t);
+            if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
+            entityCode = Integer.valueOf(lastEntityCode) + count;
+            currEntityCode.put(groupId, entityCode);
+        } else {
+            entityCode = currEntityCode.get(groupId) + count;
+            currEntityCode.put(groupId, entityCode);
+        }
+        return entityCode;
+    }
+
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveEntity(T t) throws IllegalAccessException {
         String operation = "";
+        boolean result = false;
         BaseEntity entity = (BaseEntity) t;
         SysUser sysUser = SysUserUtils.getSysUser();
         if (null == entity.getId() || 0 == entity.getId()) {
@@ -100,20 +133,25 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setCreatedTime(new Date());
             entity.setCreatorName(sysUser.getUsername());
             entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
-            String lastEntityCode = baseMapper.getLastEntityCode(t);
-            if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
-            String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
+//            lockLastEntityCode.lock();
+//            try {
+//            String lastEntityCode = baseMapper.getLastEntityCode(t);
+//            if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
+            String entityCode = String.format("%06d", getEntityCode(t, 1));
             Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-            field.setAccessible(true);
+//            field.setAccessible(true);
             field.set(t, entityCode);
+            result = this.saveOrUpdate(t);
+//            } finally {
+//                lockLastEntityCode.unlock();
+//            }
         } else {
             operation = "修改";
             entity.setModifiedTime(new Date());
             entity.setModifierName(sysUser.getUsername());
             entity.setModifierId(Long.valueOf(sysUser.getUserId()));
+            result = this.saveOrUpdate(t);
         }
-
-        boolean result = this.saveOrUpdate(t);
         if (result)
             addOperationLog(operation, entity.getId());
         return result;
@@ -252,12 +290,14 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                     Collectors.groupingBy(getGroupIdMapper()));
             for (List<T> entities : subData.values()) {
                 //TODO 批量新增比较费时，要考虑生成的编码这段期间会不会被占用
-                String lastEntityCode = baseMapper.getLastEntityCode(entities.get(0));
-                if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
-                for (T t : entities) {
-                    String entityCode = String.format("%06d", Integer.valueOf(lastEntityCode) + 1);
+//                String lastEntityCode = baseMapper.getLastEntityCode(entities.get(0));
+//                if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
+                Integer largestEntity = getEntityCode(entities.get(0), entities.size());
+                for (int i = entities.size() - 1; i >= 0; i--) {
+                    T t = entities.get(i);
+                    String entityCode = String.format("%06d", largestEntity - i);
                     Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-                    field.setAccessible(true);
+//                    field.setAccessible(true);
                     field.set(t, entityCode);
                 }
             }

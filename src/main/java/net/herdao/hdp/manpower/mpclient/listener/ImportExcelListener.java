@@ -89,9 +89,10 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     @SneakyThrows
     @Override
     public void invoke(E excel, AnalysisContext context) {
-        //导入类的表头 E 类来自于BatchUpdateVO，此类字段比较多，排队掉错误信息字段
+        //导入类的表头 E 类来自于BatchUpdateVO，此类字段比较多，属于大头，排队掉错误信息字段
         List<String> headExcelClass = AnnotationUtils.getExcelPropertyNames(excel, "错误信息");
         //来自多字段表头如何查找出不包含的少表头字段，则说明模板不对
+        // 小头来遍历，大头来包含，headExcelClass是大头 headExcelFile是小头
         List<String> nonexistentHeads = headExcelFile.stream().filter(h ->
                 //大表头包含小表头，并找出大表头也包含不了的部分
                 !headExcelClass.contains(h)).collect(Collectors.toList());

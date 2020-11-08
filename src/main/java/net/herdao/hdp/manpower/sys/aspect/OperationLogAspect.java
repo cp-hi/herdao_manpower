@@ -304,7 +304,7 @@ public class OperationLogAspect {
     private Object getTableIdValue(Object arg) {
         Field objId = AnnotationUtils.getOneAnnotationFields(arg, TableId.class);
         if (null == objId) return null;
-        objId.setAccessible(true);
+//        objId.setAccessible(true);
         Object val = null;
         try {
             val = objId.get(arg);
