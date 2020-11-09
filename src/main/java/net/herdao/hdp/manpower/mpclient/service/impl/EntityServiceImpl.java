@@ -301,6 +301,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (names.size() > 0)
             throw new Exception("此批次数据中出现重复的名称:" + StringUtils.join(names));
 
+        SysUser sysUser = SysUserUtils.getSysUser();
         //新增时先设置编号
         if (0 == importType) {
             //根据不同集团分类
@@ -310,11 +311,22 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                 Integer largestEntity = getEntityCode(entities.get(0), entities.size());
                 for (int i = entities.size() - 1; i >= 0; i--) {
                     T t = entities.get(i);
+                    BaseEntity entity = (BaseEntity) t;
+                    entity.setCreatedTime(new Date());
+                    entity.setCreatorName(sysUser.getUsername());
+                    entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
                     Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
                     String entityCode = this.generateEntityCodeLen(largestEntity - i);
                     field.set(t, entityCode);
                 }
             }
+        }else {
+            dataList.forEach(t->{
+                BaseEntity entity = (BaseEntity) t;
+                entity.setModifiedTime(new Date());
+                entity.setModifierName(sysUser.getUsername());
+                entity.setModifierId(Long.valueOf(sysUser.getUserId()));
+            });
         }
         List<List<T>> batch = Lists.partition(dataList, 100);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
@@ -322,6 +334,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     //region 批量导入时分类用 参照PostServiceImpl
+
+
     @Override
     public Function<T, String> getNameMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");

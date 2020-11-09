@@ -147,7 +147,11 @@ public interface EntityService<T> extends IService<T> {
      */
     void saveList(List<T> dataList, Integer importType);
 
+    //region 设置实体属性
+
     Function<T, String> getNameMapper();
 
     Function<T, Long> getGroupIdMapper();
+
+    //endregion
 }
