@@ -77,12 +77,17 @@ public interface EntityService<T> extends IService<T> {
     boolean getStatus(Serializable id);
 
     /**
-     * 保存核验
+     * 保存核验，有错误则抛异常
      *
      * @param t
      */
     void saveVerify(T t);
 
+    /**
+     * 保存核验，有错误则加进buffer
+     *
+     * @param t
+     */
     void saveVerify(T t, StringBuffer buffer);
 
     /**
@@ -98,8 +103,7 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @param excelObj
      */
-   default   void addEntity(T t, Object excelObj)
-   {}
+   default void addEntity(T t, Object excelObj){}
 
     /**
      * 编辑核验
