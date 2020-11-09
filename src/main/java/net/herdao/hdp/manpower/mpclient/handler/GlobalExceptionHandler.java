@@ -41,8 +41,8 @@ public class GlobalExceptionHandler {
 			if (ObjectUtil.isNotEmpty(errors)) {
 				errors.forEach(p -> {
 					FieldError fieldError = (FieldError) p;
-					log.error("Data check failure : object{" + fieldError.getObjectName() + "},"
-							  + "field{" + fieldError.getField() + "},errorMessage{" + fieldError.getDefaultMessage() + "}");
+					log.error("校验异常信息：{" + fieldError.getObjectName() + "},"
+							  + "属性：field{" + fieldError.getField() + "},异常信息：errorMessage{" + fieldError.getDefaultMessage() + "}");
 					errMsg.append(errMsg.length() > 0 ? "，" + fieldError.getDefaultMessage() : fieldError.getDefaultMessage());
 				});
 			}
