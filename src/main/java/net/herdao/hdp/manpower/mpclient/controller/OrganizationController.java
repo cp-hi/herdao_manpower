@@ -2,9 +2,8 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.util.List;
-import java.util.Map;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.util.StrUtil;
@@ -37,7 +37,6 @@ import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 
 
@@ -99,7 +98,7 @@ public class OrganizationController extends HdpBaseController{
 	@ApiOperation(value = "组织信息", notes = "新增组织信息")
 	@SysLog("新增组织信息")
 	@PostMapping
-	public R<Organization> save(@RequestBody OrganizationVO organizationVO) {
+	public R<Organization> save(@Validated @RequestBody OrganizationVO organizationVO) {
 		return orgService.saveOrUpdate(organizationVO);
 	}
 
@@ -113,7 +112,7 @@ public class OrganizationController extends HdpBaseController{
 	@ApiOperation(value = "组织信息", notes = "修改组织信息")
 	@SysLog("修改组织信息")
 	@PutMapping
-	public R<Organization> updateById(@RequestBody OrganizationVO organizationVO) {
+	public R<Organization> updateById(@Validated @RequestBody OrganizationVO organizationVO) {
 		return orgService.saveOrUpdate(organizationVO);
 	}
 
@@ -124,7 +123,7 @@ public class OrganizationController extends HdpBaseController{
     @ApiOperation(value = "组织信息", notes = "修改组织信息")
     @SysLog("修改组织信息")
     @PutMapping("/updateOrg")
-    public R<Organization> updateOrg(@RequestBody OrganizationVO organizationVO) {
+    public R<Organization> updateOrg(@Validated @RequestBody OrganizationVO organizationVO) {
         return orgService.saveOrUpdate(organizationVO);
     }
 
