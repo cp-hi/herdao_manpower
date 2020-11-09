@@ -24,8 +24,8 @@ public class CompanyAddVM {
     @ApiModelProperty(value="公司编码")
     private String companyCode;
 
+    @ExcelProperty(value = "公司名称", index = 0)
     @ApiModelProperty(value="公司名称")
-    @ExcelProperty(value = "对应组织编码", index = 0)
     private String companyName;
 
     @ApiModelProperty(value="对应组织主键")
@@ -35,43 +35,43 @@ public class CompanyAddVM {
     @ApiModelProperty(value="对应组织编码")
     private String orgCode;
 
-    @ExcelProperty(value = "对应组织编码", index = 2)
+    @ExcelProperty(value = "目标系统", index = 2)
     @ApiModelProperty(value="目标系统")
     private String targetSys;
 
-    @ExcelProperty(value = "对应组织编码", index = 3)
+    @ExcelProperty(value = "保险标准", index = 3)
     @ApiModelProperty(value="保险标准")
     private String securityStandard;
 
-    @ExcelProperty(value = "对应组织编码", index = 4)
+    @ExcelProperty(value = "所在城市ID", index = 4)
     @ApiModelProperty(value="所在城市ID")
     private Long cityId;
 
-    @ExcelProperty(value = "对应组织编码", index = 5)
+    @ExcelProperty(value = "公积金标准", index = 5)
     @ApiModelProperty(value="公积金标准")
     private String cityFund;
 
-    @ExcelProperty(value = "对应组织编码", index = 6)
+    @ExcelProperty(value = "工会费比例", index = 6)
     @ApiModelProperty(value="工会费比例")
     private BigDecimal lohnkostenRate;
 
-    @ExcelProperty(value = "对应组织编码", index = 7)
+    @ExcelProperty(value = "保险科目", index = 7)
     @ApiModelProperty(value="保险科目")
     private String securitySubject;
 
-    @ExcelProperty(value = "对应组织编码", index = 8)
+    @ExcelProperty(value = "支付公司账号", index = 8)
     @ApiModelProperty(value="支付公司账号")
     private String payAcctNo;
 
-    @ExcelProperty(value = "对应组织编码", index = 9)
+    @ExcelProperty(value = "纳税人识别码", index = 9)
     @ApiModelProperty(value="纳税人识别码")
     private String taxerNo;
 
-    @ExcelProperty(value = "对应组织编码", index = 10)
+    @ExcelProperty(value = "排序", index = 10)
     @ApiModelProperty(value="排序")
     private Long sort;
 
-    @ExcelProperty(value = "对应组织编码", index = 11)
+    @ExcelProperty(value = "备注", index = 11)
     @ApiModelProperty(value="备注")
     private String remark;
 
