@@ -45,7 +45,4 @@ public interface GroupMapper extends BaseMapper<Group> {
      * @return
      */
     List<GroupListDTO> groupPage(Map<String, Object> map);
-
-    @Select("select * from mp_group where group_name = #{name, jdbcType=VARCHAR}")
-    Group selectByName(String name);
 }
