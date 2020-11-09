@@ -24,9 +24,12 @@ import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyAddVM;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyUpdateVM;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.mapper.CompanyMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
+import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Autowired
     private SysSequenceService sysSequenceService;
 
+    @Autowired
+    private OrganizationService organizationService;
+
     @Override
     @SuppressWarnings("all")
     @Transactional(rollbackFor = Exception.class)
@@ -61,17 +67,48 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         // 批量新增、编辑组织信息
         List<Company> companyList = new ArrayList<>();
 
+        List<OrganizationImportDTO> orgList = organizationService.selectAllOrganization();
+        Map<String, Long> renderMap = new HashMap<>();
+        if(ObjectUtil.isNotEmpty(orgList)) {
+            orgList.forEach(org ->{
+                renderMap.put(org.getOrgCode(), org.getId());
+            });
+        }
+
         if (importType == 0) {
+            long code = sysSequenceService.getNext("company_code");
             for(int i=0;i<excelList.size();i++){
                 CompanyAddVM entity = (CompanyAddVM)excelList.get(i);
                 Company company = new Company();
                 BeanUtils.copyProperties(entity, company);
+                String companyCode = "GS" + code;
+                company.setCompanyCode(companyCode);
+                Long OrgId = renderMap.get(entity.getOrgCode());
+                company.setOrgId(OrgId);
+                code++;
                 companyList.add(company);
             }
+            sysSequenceService.updateSeq("company_code", code-1);
             //add
         }else {
             //update
-            return errList;
+            List<Company> companyAllList = this.list();
+            Map<String, Long> renderGroupMap = new HashMap<>();
+            if(ObjectUtil.isNotEmpty(companyAllList)) {
+                companyAllList.forEach(company ->{
+                    renderGroupMap.put(company.getCompanyCode(), company.getId());
+                });
+            }
+            for(int i=0;i<excelList.size();i++){
+                CompanyUpdateVM entity = (CompanyUpdateVM)excelList.get(i);
+                Company company = new Company();
+                BeanUtils.copyProperties(entity, company);
+                Long OrgId = renderMap.get(entity.getOrgCode());
+                company.setOrgId(OrgId);
+                Long id = renderGroupMap.get(company.getCompanyCode());
+                company.setId(id);
+                companyList.add(company);
+            }
         }
         // 保存新增、修改组织信息
         if(ObjectUtil.isEmpty(errList)) {

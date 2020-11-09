@@ -452,7 +452,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	Organization organization = new Organization();
     	
     	BeanUtils.copyProperties(organizationVO, organization);
-    	
+    	// 获取排序
+    	String sortNo = organizationVO.getSortNo();
+    	organization.setSortNo(StrUtil.isBlank(sortNo) ? null : Long.parseLong(sortNo));
     	// 组织id
     	Long id = organizationVO.getId();
     	
@@ -532,10 +534,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	// 保存组织
     	this.saveOrUpdate(organization);
     	
-    	// 更新上级组织为NULL
-    	if(ObjectUtil.isNull(parentId)) {
+    	// 单独更新值可能为： NULL 的属性 
+    	if(ObjectUtil.isAllEmpty(parentId, sortNo, organization.getOrgDesc())) {
     		LambdaUpdateWrapper<Organization> updateWrapper = Wrappers.lambdaUpdate();
             updateWrapper.set(Organization::getParentId, null)
+                         .set(Organization::getSortNo, organization.getSortNo())
+                         .set(Organization::getOrgDesc, organization.getOrgDesc())
             			 .eq(Organization::getId, organization.getId());
             this.update(updateWrapper);
     	}

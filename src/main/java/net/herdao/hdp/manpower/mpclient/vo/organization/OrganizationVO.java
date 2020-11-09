@@ -3,12 +3,17 @@ package net.herdao.hdp.manpower.mpclient.vo.organization;
 
 import java.util.Date;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.entity.Company;
+import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 /**
@@ -18,8 +23,12 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
  * @date 2020-10-18 10:37:22
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "组织VO")
 public class OrganizationVO extends BaseEntity<OrganizationVO> {
+	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 主键ID
 	 */
@@ -29,6 +38,8 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	/**
 	 * 组织名称
 	 */
+	@Valid
+	@NotBlank(message = "组织名称不能为空")
 	@ApiModelProperty(value = "组织名称")
 	private String orgName;
 
@@ -85,7 +96,9 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 * 排序
 	 */
 	@ApiModelProperty(value = "排序")
-	private Long sortNo;
+	@Valid
+	@Pattern(regexp = ExcelPatternMsgContants.NUMBER,message = "排序" + ExcelPatternMsgContants.NUMBER_MSG)
+	private String sortNo;
 
 	/**
 	 * 是否停用（值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）
