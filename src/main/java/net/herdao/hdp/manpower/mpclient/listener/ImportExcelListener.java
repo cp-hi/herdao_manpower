@@ -40,7 +40,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
     List dataList = null;
 
-    Integer BATCH_COUNT = 0;
+//    Integer BATCH_COUNT = 0;
 
     boolean hasError = false;
 
@@ -66,7 +66,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
-        this.BATCH_COUNT = batchCount;
+//        this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
     }

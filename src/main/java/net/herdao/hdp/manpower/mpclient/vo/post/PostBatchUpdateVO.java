@@ -30,7 +30,7 @@ import lombok.Data;
 )
 public class PostBatchUpdateVO extends PostBatchAddVO {
     @HeadFontStyle
-    @ExcelProperty(value = "错误信息")
+    @ExcelProperty({"", "错误信息"})
     private String errMsg;
 
     @ExcelProperty({"", "岗位名称"})

@@ -24,6 +24,13 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
 
     Field[] fields = null;
 
+    Integer type = 0;
+
+    public ImportStyleStrategy(Class clazz, Integer type) {
+        this(clazz);
+        this.type = type;
+    }
+
     public ImportStyleStrategy(Class clazz) {
 //        this.templClass = clazz;
 //        fieldMap = new LinkedHashMap<>();
@@ -38,13 +45,12 @@ public class ImportStyleStrategy extends AbstractColumnWidthStyleStrategy {
     }
 
 
-
     @Override
     protected void setColumnWidth(WriteSheetHolder writeSheetHolder, List<CellData> list, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
         if (isHead) {
             Workbook workbook = writeSheetHolder.getSheet().getWorkbook();
 //            Integer length = cell.getStringCellValue().length();
-            if (0 == relativeRowIndex) {
+            if (0 == relativeRowIndex && 0 == this.type) {
                 CellStyle cellStyle = workbook.createCellStyle();
                 cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
                 cellStyle.setAlignment(HorizontalAlignment.LEFT);

@@ -29,7 +29,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 )
 public class SectionBatchAddVO implements ExcelMsg {
     @HeadFontStyle
-    @ExcelProperty("错误信息")
+    @ExcelProperty({"", "错误信息"})
     private String errMsg;
     @HeadFontStyle(color = 10)
     @ExcelProperty({"", "板块名称"})

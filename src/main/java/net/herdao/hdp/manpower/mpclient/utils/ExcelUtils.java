@@ -111,7 +111,7 @@ public class ExcelUtils {
 
         EasyExcel.write(response.getOutputStream(), clazz).sheet(excelName)
                 .registerWriteHandler(horizontalCellStyleStrategy)
-                .registerWriteHandler(new ImportStyleStrategy(clazz))
+                .registerWriteHandler(new ImportStyleStrategy(clazz,1))
                 .doWrite(data);
     }
 
