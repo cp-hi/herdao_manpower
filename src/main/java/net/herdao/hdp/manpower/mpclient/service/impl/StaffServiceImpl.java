@@ -216,7 +216,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				.eq("JOB_TYPE", "2")
 		);
 		int jobType3 = baseMapper.selectCount(new QueryWrapper<Staff>()
-				.eq("JOB_TYPE", "3")
+				.eq("JOB_TYPE", "7")
 		);
 		int toJoin = 0;
 		int toLeave = 0;
