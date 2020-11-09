@@ -22,7 +22,7 @@ public class StaffFundDTO {
     @ApiModelProperty(value="实际公积金支付单位")
     private String payFundUnit;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value="公积金封存时间")
     private LocalDateTime fundArchiveTime;

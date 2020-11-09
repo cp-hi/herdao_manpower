@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 /**
  * @author yangrr
  */
@@ -21,7 +22,7 @@ public class StaffSecurityDTO {
     @ApiModelProperty(value="社保类型")
     private String securityType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value="社保封存时间")
     private LocalDateTime securityArchiveTime;
