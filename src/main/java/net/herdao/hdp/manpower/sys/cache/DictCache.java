@@ -5,7 +5,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
-import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

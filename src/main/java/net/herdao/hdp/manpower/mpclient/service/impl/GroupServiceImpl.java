@@ -19,9 +19,11 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
@@ -63,7 +65,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Autowired
     private OrganizationService organizationService;
-    
+
     @Autowired
     private RemoteUserService remoteUserService;
 
@@ -80,8 +82,8 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
         List<OrganizationImportDTO> orgList = organizationService.selectAllOrganization();
         Map<String, Long> renderMap = new HashMap<>();
-        if(ObjectUtil.isNotEmpty(orgList)) {
-            orgList.forEach(org ->{
+        if (ObjectUtil.isNotEmpty(orgList)) {
+            orgList.forEach(org -> {
                 renderMap.put(org.getOrgCode(), org.getId());
             });
         }
@@ -98,18 +100,18 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
                 code++;
                 groupList.add(group);
             }
-            sysSequenceService.updateSeq("group_code", code-1);
+            sysSequenceService.updateSeq("group_code", code - 1);
             //add
-        }else {
+        } else {
             List<Group> groupAllList = this.list();
             Map<String, Long> renderGroupMap = new HashMap<>();
-            if(ObjectUtil.isNotEmpty(groupAllList)) {
-                groupAllList.forEach(group ->{
+            if (ObjectUtil.isNotEmpty(groupAllList)) {
+                groupAllList.forEach(group -> {
                     renderGroupMap.put(group.getGroupCode(), group.getId());
                 });
             }
-            for(int i=0;i<excelList.size();i++){
-                GroupUpdateVM entity = (GroupUpdateVM)excelList.get(i);
+            for (int i = 0; i < excelList.size(); i++) {
+                GroupUpdateVM entity = (GroupUpdateVM) excelList.get(i);
                 Group group = new Group();
                 BeanUtils.copyProperties(entity, group);
                 Long OrgId = renderMap.get(group.getOrgCode());
@@ -120,8 +122,8 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
             }
         }
         // 保存新增、修改组织信息
-        if(ObjectUtil.isEmpty(errList)) {
-            if(groupList.size()!=0){
+        if (ObjectUtil.isEmpty(errList)) {
+            if (groupList.size() != 0) {
                 this.saveOrUpdateBatch(groupList, 200);
             }
         } else {
@@ -148,18 +150,18 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Override
     public boolean groupSave(GroupDetailDTO groupForm) {
-    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        String userName=userInfo.getSysUser().getAliasName();
-        String loginCode=userInfo.getSysUser().getUsername();
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName = userInfo.getSysUser().getAliasName();
+        String loginCode = userInfo.getSysUser().getUsername();
         Long userId = userInfo.getSysUser().getUserId();
-        
+
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
         long code = sysSequenceService.getNext("group_code");
         String groupCode = "JT" + code;
         group.setGroupCode(groupCode);
 
-      //创建人工号、姓名、时间；修改人工号、姓名、时间
+        //创建人工号、姓名、时间；修改人工号、姓名、时间
         DateTime now = DateTime.now();//LocalDateTime.now();
         group.setCreatorId(userId);
         group.setCreatorName(userName);
@@ -167,26 +169,26 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         group.setModifierId(userId);
         group.setModifierName(userName);
         group.setModifiedTime(now);
-        
+
         return this.save(group);
     }
 
     @Override
     public boolean groupUpdate(GroupDetailDTO groupForm) {
-    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        String userName=userInfo.getSysUser().getAliasName();
-        String loginCode=userInfo.getSysUser().getUsername();
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName = userInfo.getSysUser().getAliasName();
+        String loginCode = userInfo.getSysUser().getUsername();
         Long userId = userInfo.getSysUser().getUserId();
-        
+
         Group group = new Group();
         BeanUtils.copyProperties(groupForm, group);
 
         //修改人工号、姓名、时间
-	    DateTime now = DateTime.now();
-	    group.setModifierId(userId);
-	    group.setModifierName(userName);
-	    group.setModifiedTime(now);
-          
+        DateTime now = DateTime.now();
+        group.setModifierId(userId);
+        group.setModifierName(userName);
+        group.setModifiedTime(now);
+
         return this.updateById(group);
     }
 
@@ -200,7 +202,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Override
     public Group selectByName(String groupName, boolean need, StringBuffer buffer) {
-        Group group = baseMapper.selectByName(groupName);
+        Group group = getOne(Wrappers.<Group>query().lambda().eq(Group::getGroupName, groupName));
         String errMsg = "";
         if (!need && null != group)  //不需要它但它不为空
             //添加分号，因为批量导入需要所有错误信息
