@@ -72,8 +72,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (!group.getId().equals(jobGrade.getGroupId()))
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
-        if (StringUtils.isNotBlank(buffer))
-            throw new  Exception(buffer.toString());
+        handleErrMsg(buffer);
 
         jobLevel.setGroupId(group.getId());
     }
@@ -91,8 +90,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (!group.getId().equals(jobGrade.getGroupId()))
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
-        if (StringUtils.isNotBlank(buffer))
-            throw new  Exception(buffer.toString());
+        handleErrMsg(buffer);
 
         jobLevel.setGroupId(group.getId());
         jobLevel.setId(tmp.getId());

@@ -55,8 +55,8 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
             chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
-        if (StringUtils.isNotBlank(buffer))
-            throw new Exception(buffer.toString());
+
+        handleErrMsg(buffer);
     }
 
     @SneakyThrows
