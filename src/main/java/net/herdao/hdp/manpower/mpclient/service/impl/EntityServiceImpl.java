@@ -195,7 +195,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public void saveVerify(T t) {
         StringBuffer buffer = new StringBuffer();
         this.saveVerify(t, buffer);
-        this.handleErrMsg(buffer);
+        handleErrMsg(buffer);
     }
 
     @Override
@@ -209,11 +209,11 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     /**
      * 处理异常信息
      *
-     * @param buffer
+     * @param errBuffer 异常信息
      */
     @SneakyThrows
-    protected void handleErrMsg(StringBuffer buffer) {
-        String errMsg = buffer.toString();
+    protected void handleErrMsg(StringBuffer errBuffer) {
+        String errMsg = errBuffer.toString();
         if (null != errMsg && errMsg.startsWith("；")) {
             errMsg = errMsg.replaceFirst("；", "");
             throw new Exception(errMsg);
@@ -234,7 +234,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
             field.setAccessible(true);
             Object val = field.get(excelObj);
-            if (null == val)
+            if (null == val || StringUtils.isEmpty(val.toString()))
                 buffer.append(String.format("；%s不能为空", excelProperty.value()[1]));
         }
         handleErrMsg(buffer);
@@ -254,8 +254,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         }
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(t, buffer);
-        if (StringUtils.isNotBlank(buffer))
-            throw new Exception(buffer.toString());
+        handleErrMsg(buffer);
     }
 
     @Override

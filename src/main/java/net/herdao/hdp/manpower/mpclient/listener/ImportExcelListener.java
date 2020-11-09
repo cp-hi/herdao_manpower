@@ -10,14 +10,9 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -34,13 +29,10 @@ import java.util.stream.Collectors;
 
 public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
-
     @Getter
     List<E> excelList = null;
 
     List dataList = null;
-
-//    Integer BATCH_COUNT = 0;
 
     boolean hasError = false;
 
@@ -54,19 +46,9 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
      * @param importType 导入类型 0: 新增 1: 保存
      */
     public ImportExcelListener(EntityService service, Integer importType) {
-        this(service, 50, null == importType ? 0 : importType);
-    }
-
-    /**
-     * @param service
-     * @param batchCount 批量导入条数
-     * @param importType
-     */
-    public ImportExcelListener(EntityService service, Integer batchCount, Integer importType) {
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
-//        this.BATCH_COUNT = batchCount;
         this.importType = importType;
         this.hasError = false;
     }

@@ -1,6 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeShortVO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper;
