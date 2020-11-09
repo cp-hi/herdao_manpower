@@ -37,16 +37,16 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     public void addEntity(Pipeline pipeline, Object excelObj) {
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        chkEntityExists(excel.getPipelineName(), group.getId(), false);
         if(null != group)  pipeline.setGroupId(group.getId());
+        chkEntityExists(excel.getPipelineName(), group.getId(), false);
     }
 
     @Override
     public void updateEntity(Pipeline pipeline, Object excelObj) {
         PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true);
         if(null != group)  pipeline.setGroupId(group.getId());
+        Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true);
         pipeline.setId(tmp.getId());
     }
 

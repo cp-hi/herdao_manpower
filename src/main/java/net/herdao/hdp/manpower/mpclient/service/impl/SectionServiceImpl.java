@@ -36,16 +36,16 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     public void addEntity(Section section, Object excelObj) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        chkEntityExists(excel.getSectionName(), group.getId(), false);
         if(null != group)  section.setGroupId(group.getId());
+        chkEntityExists(excel.getSectionName(), group.getId(), false);
     }
 
     @Override
     public void updateEntity(Section section, Object excelObj) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         if(null != group)  section.setGroupId(group.getId());
+        Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         section.setId(tmp.getId());
     }
 

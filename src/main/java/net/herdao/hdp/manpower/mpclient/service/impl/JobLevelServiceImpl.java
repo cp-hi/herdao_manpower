@@ -65,8 +65,9 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        chkEntityExists(excel.getJobLevelName(), group.getId(), false);
         if(null != group)  jobLevel.setGroupId(group.getId());
+
+        chkEntityExists(excel.getJobLevelName(), group.getId(), false);
         JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
 
         if (!group.getId().equals(jobGrade.getGroupId()))
@@ -83,8 +84,9 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true);
         if(null != group)  jobLevel.setGroupId(group.getId());
+
+        JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true);
         JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
 
         if (!group.getId().equals(jobGrade.getGroupId()))

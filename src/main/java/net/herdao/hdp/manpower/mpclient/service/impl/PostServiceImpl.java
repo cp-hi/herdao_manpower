@@ -138,9 +138,9 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        chkEntityExists(excel.getPostName(), group.getId(), false);
-        if (null != group) post.setGroupId(group.getId());
+        if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
 
+        chkEntityExists(excel.getPostName(), group.getId(), false);
         Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
         Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
@@ -160,8 +160,9 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
         if (null != group) post.setGroupId(group.getId());
+
+        Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 
         Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
         Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
