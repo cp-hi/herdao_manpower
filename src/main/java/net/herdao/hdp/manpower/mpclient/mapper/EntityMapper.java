@@ -144,7 +144,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
      * @param t
      * @return
      */
-    @Select("select count(*) from mp_group where id =#{groupId} and del_flag != 1 and is_stop != 1")
+    @Select("select count(*) from mp_group where id =#{groupId} and del_flag != 1 ")
     Boolean checkGroupStatus(T t);
 
    T getEntityByName(String name,Long groupId);
