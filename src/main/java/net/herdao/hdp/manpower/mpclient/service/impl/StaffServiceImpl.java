@@ -1,12 +1,17 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,16 +64,6 @@ import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
-import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
-import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
-import net.herdao.hdp.manpower.mpclient.service.StaffService;
-import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
-import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
-import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.service.UserpostService;
-import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -116,6 +111,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private OrganizationService organizationService;
+
+	private final static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 	@Override
 	@SuppressWarnings("all")
 	@Transactional(rollbackFor = Exception.class)
@@ -126,18 +126,87 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 		// 批量新增、编辑组织信息
 		List<Staff> staffList = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+
+		List<OrganizationImportDTO> orgList = organizationService.selectAllOrganization();
+		Map<String, Long> renderMap = new HashMap<>();
+		if(ObjectUtil.isNotEmpty(orgList)) {
+			orgList.forEach(org ->{
+				renderMap.put(org.getOrgCode(), org.getId());
+			});
+		}
 
 		if (importType == 0) {
+			long code = sysSequenceService.getNext("staff_code");
 			for(int i=0;i<excelList.size();i++){
 				StaffAddVM entity = (StaffAddVM)excelList.get(i);
+				if(entity.getEntryTimeStr()!=null){
+					LocalDate entryTime = LocalDate.parse(entity.getEntryTimeStr(), fmt);
+					entity.setEntryTime(entryTime);
+				}
 				Staff staff = new Staff();
 				BeanUtils.copyProperties(entity, staff);
+				String staffCode = code + "";
+				Long OrgId = renderMap.get(entity.getOrgCode());
+
+				User user = new User();
+				user.setLoginCode(staffCode);
+				user.setUserName(entity.getStaffName());
+				user.setOrgDeptId(OrgId);
+				userList.add(user);
+
+				staff.setStaffCode(staffCode);
 				staffList.add(staff);
+				code++;
 			}
+			sysSequenceService.updateSeq("staff_code", code-1);
+			userService.saveOrUpdateBatch(userList, 200);
+			List<Staff> staffListNew = new ArrayList<>();
+			Staff staff;
+			for(int i=0;i<staffList.size();i++){
+				staff = staffList.get(i);
+				staff.setUserId(userList.get(i).getId());
+				staffListNew.add(staff);
+			}
+			staffList = staffListNew;
 			//add
 		}else {
 			//update
-			return errList;
+			List<Staff> staffAllList = this.list();
+			Map<String, Long> renderStaffMap = new HashMap<>();
+			if(ObjectUtil.isNotEmpty(staffAllList)) {
+				staffAllList.forEach(staff ->{
+					renderStaffMap.put(staff.getStaffCode(), staff.getId());
+				});
+			}
+			List<User> userAllList = userService.list();
+			Map<String, Long> renderUserMap = new HashMap<>();
+			if(ObjectUtil.isNotEmpty(userAllList)) {
+				userAllList.forEach(user ->{
+					renderUserMap.put(user.getLoginCode(), user.getId());
+				});
+			}
+			for(int i=0;i<excelList.size();i++){
+				StaffUpdateVM entity = (StaffUpdateVM)excelList.get(i);
+				if(entity.getEntryTimeStr()!=null){
+					LocalDate entryTime = LocalDate.parse(entity.getEntryTimeStr(), fmt);
+					entity.setEntryTime(entryTime);
+				}
+				Staff staff = new Staff();
+				BeanUtils.copyProperties(entity, staff);
+				Long id = renderStaffMap.get(entity.getStaffCode());
+				staff.setId(id);
+				staffList.add(staff);
+
+				Long OrgId = renderMap.get(entity.getOrgCode());
+				User user = new User();
+				user.setUserName(entity.getStaffName());
+				user.setOrgDeptId(OrgId);
+				Long userId = renderUserMap.get(entity.getStaffCode());
+				user.setId(userId);
+				userList.add(user);
+			}
+			userService.saveOrUpdateBatch(userList, 200);
 		}
 		// 保存新增、修改组织信息
 		if(ObjectUtil.isEmpty(errList)) {

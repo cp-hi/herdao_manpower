@@ -93,10 +93,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }else {
             //update
             List<Company> companyAllList = this.list();
-            Map<String, Long> renderGroupMap = new HashMap<>();
+            Map<String, Long> renderCompanyMap = new HashMap<>();
             if(ObjectUtil.isNotEmpty(companyAllList)) {
                 companyAllList.forEach(company ->{
-                    renderGroupMap.put(company.getCompanyCode(), company.getId());
+                    renderCompanyMap.put(company.getCompanyCode(), company.getId());
                 });
             }
             for(int i=0;i<excelList.size();i++){
@@ -105,7 +105,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 BeanUtils.copyProperties(entity, company);
                 Long OrgId = renderMap.get(entity.getOrgCode());
                 company.setOrgId(OrgId);
-                Long id = renderGroupMap.get(company.getCompanyCode());
+                Long id = renderCompanyMap.get(company.getCompanyCode());
                 company.setId(id);
                 companyList.add(company);
             }
