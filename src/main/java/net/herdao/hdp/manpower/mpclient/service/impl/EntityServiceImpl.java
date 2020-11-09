@@ -87,14 +87,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.form(id);
     }
 
-//    Lock lockLastEntityCode = new ReentrantLock();
-
-//    @Override
-//    public String getLastEntityCode(T t) {
-//        return baseMapper.getLastEntityCode(t);
-//    }
-
-    //    List<Long> groupIdList = new ArrayList<>();
     Map<Long, Integer> currEntityCode = new ConcurrentHashMap<>();
 
     @SneakyThrows
@@ -102,6 +94,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public Integer getEntityCode(T t, Integer count) {
         Long groupId = getGroupIdMapper().apply(t);
         Integer entityCode = null;
+        //TODO 线程安全，能否锁住单个groupId下的value
         if (!currEntityCode.containsKey(groupId)) {
             Boolean groupEnable = baseMapper.checkGroupStatus(t);
             if (!groupEnable) throw new Exception("找不到该集团，或已被删除或停用");
@@ -116,6 +109,16 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return entityCode;
     }
 
+    /**
+     * 生成编码
+     *这里传入种子，子类可根据需求改变长度，
+     *          这里默认6位数字，不足补0
+     * @param seed 种子数字，用于填充0
+     * @return
+     */
+    protected String generateEntityCodeLen(Integer seed) {
+        return String.format("%06d", seed);
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -129,18 +132,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setCreatedTime(new Date());
             entity.setCreatorName(sysUser.getUsername());
             entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
-//            lockLastEntityCode.lock();
-//            try {
-//            String lastEntityCode = baseMapper.getLastEntityCode(t);
-//            if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
-            String entityCode = String.format("%06d", getEntityCode(t, 1));
             Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-//            field.setAccessible(true);
+            String entityCode = this.generateEntityCodeLen(getEntityCode(t, 1));
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
-//            } finally {
-//                lockLastEntityCode.unlock();
-//            }
         } else {
             operation = "修改";
             entity.setModifiedTime(new Date());
@@ -285,15 +280,11 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             Map<Long, List<T>> subData = dataList.stream().collect(
                     Collectors.groupingBy(getGroupIdMapper()));
             for (List<T> entities : subData.values()) {
-                //TODO 批量新增比较费时，要考虑生成的编码这段期间会不会被占用
-//                String lastEntityCode = baseMapper.getLastEntityCode(entities.get(0));
-//                if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
                 Integer largestEntity = getEntityCode(entities.get(0), entities.size());
                 for (int i = entities.size() - 1; i >= 0; i--) {
                     T t = entities.get(i);
-                    String entityCode = String.format("%06d", largestEntity - i);
                     Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-//                    field.setAccessible(true);
+                    String entityCode = this.generateEntityCodeLen(largestEntity - i);
                     field.set(t, entityCode);
                 }
             }

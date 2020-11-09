@@ -1,25 +1,18 @@
 package net.herdao.hdp.manpower.sys.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import lombok.var;
-import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
-import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @ClassName DtoConverter
@@ -45,7 +38,6 @@ public class DtoConverter {
      */
     public static <T> T dto2vo(Object source, Class<? extends T> clazz)
             throws IllegalAccessException, InstantiationException {
-//        Class clazz = Class.forName(clzz.getName());
         Object target = clazz.newInstance();
         BeanUtils.copyProperties(source, target);
         Field[] fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
@@ -90,13 +82,11 @@ public class DtoConverter {
                 if (null == currObj) continue;
                 Field field = AnnotationUtils.getFieldByName(currObj, currObjName);
                 if (null == field) continue;
-//                field.setAccessible(true);
                 currObj = field.get(currObj);
             }
             if (null == currObj) continue;
             Field fieldVal = AnnotationUtils.getFieldByName(currObj, fieldName);
             if (null == fieldVal) continue;
-//            fieldVal.setAccessible(true);
             Object objVal = fieldVal.get(currObj);
             String value = "";
             if (Date.class == fieldVal.getType()) {
@@ -118,7 +108,6 @@ public class DtoConverter {
                     Field delField = AnnotationUtils.getFieldByName(currObj, "delFlag");
                     if (null != delField) {
                         //被删除了则用设置的规则替换
-//                        delField.setAccessible(true);
                         Object del = delField.get(currObj);
                         if ((Boolean) del) value = dtoField.delFix();
                     }
@@ -167,16 +156,8 @@ public class DtoConverter {
         String[] dictInfo = dtoField.dictField().split("\\.");
         Field currObj = AnnotationUtils.getFieldByName(source, dictInfo[1]);
         if (null == currObj) return null;
-//        currObj.setAccessible(true);
         Object val = currObj.get(source);
         return DictCache.getDictLabel(dictInfo[0], (String) val);
-//        SysDictItem dictItem = DtoConverter.sysDictItemService.getOne(
-//                Wrappers.<SysDictItem>query().lambda()
-//                        .eq(SysDictItem::getType, dictInfo[0])
-//                        .eq(SysDictItem::getValue, (String) val));
-//
-//        if (null != dictItem) return dictItem.getLabel();
-//        return null;
     }
 
     /**
@@ -190,8 +171,7 @@ public class DtoConverter {
      * @throws IllegalAccessException
      */
     public static <T> List<T> dto2vo(List source, Class<? extends T> clzz)
-            throws ClassNotFoundException, NoSuchFieldException,
-            InstantiationException, IllegalAccessException {
+            throws  InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         for (Object o : source) {
             T t = dto2vo(o, clzz);

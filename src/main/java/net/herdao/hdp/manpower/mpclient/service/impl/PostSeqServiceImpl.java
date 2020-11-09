@@ -49,6 +49,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         chkEntityExists(excel.getPostSeqName(), group.getId(), false);
+        if(null != group)  postSeq.setGroupId(group.getId());
         PostSeq parent = this.chkEntityExists(excel.getParentName(), group.getId(), true, buffer);
         if (null != parent) {
             chkParent(parent.getId(), buffer);
@@ -56,8 +57,6 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         }
         if (StringUtils.isNotBlank(buffer))
             throw new Exception(buffer.toString());
-
-        postSeq.setGroupId(group.getId());
     }
 
     @SneakyThrows
@@ -67,6 +66,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         PostSeq tmp = chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
+        if(null != group)  postSeq.setGroupId(group.getId());
         PostSeq parent = this.chkEntityExists(excel.getParentName(), group.getId(), true, buffer);
 
         if (null != parent) {
@@ -75,8 +75,6 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         }
         if (StringUtils.isNotBlank(buffer))
             throw new  Exception(buffer.toString());
-
-        postSeq.setGroupId(group.getId());
         postSeq.setId(tmp.getId());
     }
 

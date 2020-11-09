@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
             entityService.importVerify(t, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
-            String errMsg = ex.getMessage();
+            String errMsg = ex.getCause().getMessage();
             if (null != errMsg && errMsg.startsWith("；"))
                 errMsg = errMsg.replaceFirst("；", "");
             ((ExcelMsg) excel).setErrMsg(errMsg);

@@ -38,7 +38,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
         chkEntityExists(excel.getPipelineName(), group.getId(), false);
-        pipeline.setGroupId(group.getId());
+        if(null != group)  pipeline.setGroupId(group.getId());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true);
-        pipeline.setGroupId(group.getId());
+        if(null != group)  pipeline.setGroupId(group.getId());
         pipeline.setId(tmp.getId());
     }
 

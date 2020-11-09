@@ -139,15 +139,15 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         chkEntityExists(excel.getPostName(), group.getId(), false);
+        if(null != group)  post.setGroupId(group.getId());
+
         Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
         Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        if (StringUtils.isNotBlank(buffer))
-            throw new Exception(buffer.toString());
+        if (StringUtils.isNotBlank(buffer)) throw new Exception(buffer.toString());
 
-        post.setGroupId(group.getId());
         post.setSectionId(section.getId());
         post.setPipelineId(pipeline.getId());
         post.setPostSeqId(postSeq.getId());
@@ -161,6 +161,8 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
+        if(null != group)  post.setGroupId(group.getId());
+
         Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
         Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
@@ -171,10 +173,8 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setYearPayRatio(sysDictItemService.getDictItemValue("XCBL", excel.getYearPayRatio(), buffer));
         post.setPerforSalaryRatio(sysDictItemService.getDictItemValue("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
-        if (StringUtils.isNotBlank(buffer))
-            throw new Exception(buffer.toString());
+        if (StringUtils.isNotBlank(buffer)) throw new Exception(buffer.toString());
 
-        post.setGroupId(group.getId());
         post.setSectionId(section.getId());
         post.setPipelineId(pipeline.getId());
         post.setPostSeqId(postSeq.getId());

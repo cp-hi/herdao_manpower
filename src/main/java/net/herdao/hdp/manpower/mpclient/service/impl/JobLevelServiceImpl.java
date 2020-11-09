@@ -66,6 +66,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         chkEntityExists(excel.getJobLevelName(), group.getId(), false);
+        if(null != group)  jobLevel.setGroupId(group.getId());
         JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
 
         if (!group.getId().equals(jobGrade.getGroupId()))
@@ -74,7 +75,6 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (StringUtils.isNotBlank(buffer))
             throw new  Exception(buffer.toString());
 
-        jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(group.getId());
     }
 
@@ -85,6 +85,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true);
+        if(null != group)  jobLevel.setGroupId(group.getId());
         JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
 
         if (!group.getId().equals(jobGrade.getGroupId()))
@@ -93,7 +94,6 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (StringUtils.isNotBlank(buffer))
             throw new  Exception(buffer.toString());
 
-        jobLevel.setJobGradeId(jobGrade.getId());
         jobLevel.setGroupId(group.getId());
         jobLevel.setId(tmp.getId());
     }
