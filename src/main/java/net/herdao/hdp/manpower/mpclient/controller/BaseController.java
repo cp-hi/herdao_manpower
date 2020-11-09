@@ -104,11 +104,6 @@ public class BaseController<T, D, F, E> {
 
     //endregion
 
-
-    @Autowired
-    OperationLogService operationLogService;
-
-
     @ApiOperation(value = "获取操作记录")
     @GetMapping("/operationLog")
     @ApiImplicitParams({
@@ -145,8 +140,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id"),
     })
-    public R<F> getFormInfo(@PathVariable Long id) throws InstantiationException,
-            IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+    public R<F> getFormInfo(@PathVariable Long id) {
         Object from = entityService.form(id);
         if (null == from) throw new Exception("对象不存在，或已被删除");
         F f = DtoConverter.dto2vo(from, getFormClass());

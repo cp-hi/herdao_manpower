@@ -31,15 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Version 1.0
  */
 
-//@Component
 public class DtoConverter {
-
-    private static SysDictItemService sysDictItemService;
-
-    @Autowired
-    public void setSysDictItemService(SysDictItemService dictItemService) {
-        DtoConverter.sysDictItemService = dictItemService;
-    }
 
     /**
      * @param source dto类
