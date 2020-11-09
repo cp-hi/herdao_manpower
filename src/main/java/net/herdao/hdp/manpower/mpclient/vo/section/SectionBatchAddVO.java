@@ -7,7 +7,9 @@ import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.ToString;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
+import net.herdao.hdp.manpower.sys.annotation.FieldValid;
 
 /**
  * @ClassName SectionBatchAddDTO
@@ -18,6 +20,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
  * @Version 1.0
  */
 //版块名称、所属集团、排序、备注
+@FieldValid
 @Data
 @HeadRowHeight(30)
 @ContentRowHeight(20)
@@ -31,6 +34,7 @@ public class SectionBatchAddVO implements ExcelMsg {
     @HeadFontStyle
     @ExcelProperty({"", "错误信息"})
     private String errMsg;
+
     @HeadFontStyle(color = 10)
     @ExcelProperty({"", "板块名称"})
     private String sectionName;

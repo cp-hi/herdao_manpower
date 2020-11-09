@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,6 +11,7 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.sys.annotation.FieldValid;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
@@ -111,8 +113,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     /**
      * 生成编码
-     *这里传入种子，子类可根据需求改变长度，
-     *          这里默认6位数字，不足补0
+     * 这里传入种子，子类可根据需求改变长度，
+     * 这里默认6位数字，不足补0
+     *
      * @param seed 种子数字，用于填充0
      * @return
      */
@@ -198,7 +201,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void saveVerify(T t, StringBuffer buffer) {
         Long groupId = this.getGroupIdMapper().apply(t);
-        if (null == groupId) buffer.append("集团ID为空不能保存");
+        if (null == groupId) buffer.append("；集团ID为空不能保存");
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
     }
@@ -218,11 +221,32 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @SneakyThrows
+    protected void validExcelObj(Object excelObj) {
+        Class clazz = excelObj.getClass();
+        FieldValid fieldValid = (FieldValid) clazz.getAnnotation(FieldValid.class);
+        if (null == fieldValid) return;
+        List<String> exclude = Arrays.asList(fieldValid.exclude());
+        Field[] fields = clazz.getDeclaredFields();
+        StringBuffer buffer = new StringBuffer();
+        for (Field field : fields) {
+            if (exclude.contains(field.getName())) continue;
+
+            ExcelProperty excelProperty = field.getAnnotation(ExcelProperty.class);
+            field.setAccessible(true);
+            Object val = field.get(excelObj);
+            if (null == val)
+                buffer.append(String.format("；%s不能为空", excelProperty.value()[1]));
+        }
+        handleErrMsg(buffer);
+    }
+
+    @SneakyThrows
     @Override
     public void importVerify(T t, Object excelObj, int type) {
         boolean add = (0 == type);
         StringBuffer buffer = new StringBuffer();
         try {
+//            this.validExcelObj(excelObj);
             if (add) addEntity(t, excelObj);
             else updateEntity(t, excelObj);
         } catch (Exception ex) {
@@ -236,6 +260,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     public T chkEntityExists(String name, Long groupId, boolean need, StringBuffer buffer) {
+        if (StringUtils.isBlank(name)) {
+            if (need) buffer.append("；" + getEntityName() + "名称不能为空");
+            return null;
+        }
         T t = baseMapper.getEntityByName(name, groupId);
         String errMsg = "";
         if (!need && null != t)  //不需要它但它不为空

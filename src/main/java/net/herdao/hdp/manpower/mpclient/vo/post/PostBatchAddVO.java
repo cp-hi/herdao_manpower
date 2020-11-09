@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
+import net.herdao.hdp.manpower.sys.annotation.FieldValid;
 
 /**
  * @ClassName PostBatchAddDTO
@@ -21,6 +22,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 //    岗位名称、所属集团、所属板块、所属管线、岗位类别、职级、备注
 
 @Data
+@FieldValid
 @HeadRowHeight(30)
 @ContentRowHeight(20)
 @ExcelIgnoreUnannotated
