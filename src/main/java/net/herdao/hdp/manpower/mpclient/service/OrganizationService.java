@@ -39,17 +39,7 @@ public interface OrganizationService extends HdpService<Organization>{
      * @param stop 
      * @return
      */
-    List<OrganizationTreeVO> selectOrganizationTree(Integer stop);
-    
-    /**
-     * 模糊查询组织树
-     * 
-     * @param orgCode
-     * @param stop
-     * @param searchText
-     * @return
-     */
-    List<OrganizationTreeVO> organizationTreeList(String orgCode, Integer stop, String searchText);
+    List<OrganizationTreeVO> selectOrganizationTree(String orgCode, Integer stop, String searchText);
 
     /**
      * 查询部门结构树

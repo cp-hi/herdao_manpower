@@ -160,14 +160,11 @@ public class OrganizationController extends HdpBaseController{
      */
     @ApiOperation(value = "查询组织树", notes = "查询组织树")
     @GetMapping("/findAllOrganizations")
-     @ApiImplicitParams({ @ApiImplicitParam(name="orgCode",value="组织编码（查询子组织）"),
-			        	 @ApiImplicitParam(name="searchText",value="模糊查询内容") })
+    @ApiImplicitParams({ @ApiImplicitParam(name="orgCode", value="组织编码（查询子组织）"),
+    	                 @ApiImplicitParam(name="stop", value="查询状态；值 0 查询已启用的组织信息，值 3查询全部组织信息"),
+			        	 @ApiImplicitParam(name="searchText", value="模糊查询内容") })
 	public R<List<OrganizationTreeVO>> findAllOrganizations(String orgCode, Integer stop, String searchText) {
-		// 默认查询组织层级二级
-		if (StrUtil.isBlank(orgCode) && StrUtil.isBlank(searchText)) {
-			return R.ok(orgService.selectOrganizationTree(stop));
-		}
-		return R.ok(orgService.organizationTreeList(orgCode, stop, searchText));
+    	return R.ok(orgService.selectOrganizationTree(orgCode, stop, searchText));
 	}
 
     /**

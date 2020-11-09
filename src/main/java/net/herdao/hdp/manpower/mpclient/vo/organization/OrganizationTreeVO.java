@@ -38,10 +38,5 @@ public class OrganizationTreeVO {
 	 */
 	@ApiModelProperty(value = "是否叶子节点（值： true 是、 值： false 否）")
 	private Boolean leafNode;
-	
-	/**
-	 * 子组织信息
-	 */
-	@ApiModelProperty(value = "子组织信息")
-	List<OrganizationTreeVO> organizationChildrens;
+
 }

@@ -199,15 +199,6 @@
 		<result column="orgName" property="org_name" />
 		<result column="orgCode" property="org_code" />
 		<result column="leafNode" property="leaf_node" />
-		<collection column="{id=id,stop=is_stop}" property="organizationChildrens" ofType="OrganizationTreeVO" javaType="java.util.ArrayList" select="selectSecondOrganization"/>
-	</resultMap>
-	
-	<!-- 组织树 模糊查询vo -->
-	<resultMap type="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO" id="organizationTreeListMap">
-		<result column="id" property="id" />
-		<result column="orgName" property="org_name" />
-		<result column="orgCode" property="org_code" />
-		<result column="leafNode" property="leaf_node" />
 	</resultMap>
 
     <!-- 查询类型是部门的组织架构树 -->
@@ -295,20 +286,11 @@
      	<if test="stop != null and stop != 3">
           AND org.is_stop = #{stop}
         </if>
-        ORDER BY org.sort_no
-    </select>
-     
-    <!-- 递归查询二级组织树 -->
-    <select id="selectSecondOrganization" resultMap="organizationTreeMap">
-       <include refid="organizationTreeSQL"></include>
-           AND org.parent_id = #{id} AND org.org_tree_level &lt;= 2
-        <if test="stop != null and stop != 3">
-           AND org.is_stop = #{stop}
-        </if>
+        ORDER BY org.sort_no ASC
     </select>
     
     <!-- 组织树模糊查询 -->
-    <select id="organizationTreeList" resultMap="organizationTreeListMap">
+    <select id="organizationTreeList" resultMap="organizationTreeMap">
        <include refid="organizationTreeSQL"></include>
         <if test="orgCode != null">
         	AND org.org_code != #{orgCode} AND org.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(org.org_code) &lt;= LENGTH(#{orgCode}) + 3
@@ -522,7 +504,7 @@
 		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(orgList.org_code) &lt;= LENGTH(#{orgCode}) + 3
 		        </if>
 	        	<if test="searchText != '' and searchText != null">
-	        		AND CONCAT(orgList.org_name, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')
+	        		AND CONCAT(orgList.org_name, orgList.org_code, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')
 	        	</if>
 	        </where>
     </select>
