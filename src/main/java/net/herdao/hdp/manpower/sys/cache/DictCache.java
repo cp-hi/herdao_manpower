@@ -53,7 +53,6 @@ public class DictCache {
         return label;
     }
 
-
     public static String getDictVal(String type, String label) {
         BiMap<String, String> biMap = dictList.get(type);
         if (null != biMap) return biMap.inverse().get(label);

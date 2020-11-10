@@ -29,8 +29,8 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> implements PostService {
 
-    final PipelineMapper pipelineMapper;
-    final SectionMapper sectionMapper;
+//    final PipelineMapper pipelineMapper;
+//    final SectionMapper sectionMapper;
     final GroupService groupService;
     final SectionService sectionService;
     final PipelineService pipelineService;
