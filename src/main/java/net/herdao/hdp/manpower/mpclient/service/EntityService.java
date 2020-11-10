@@ -35,13 +35,6 @@ public interface EntityService<T> extends IService<T> {
 
     IPage getOperationLogs(IPage page, Long objId);
 
-    /**
-     * 获取最新实体编号
-     * @param t
-     * @return
-     */
-//    String getLastEntityCode(T t);
-
     Integer getEntityCode(T t,Integer count);
     /**
      * 保存实体并自动添加日志
@@ -49,7 +42,6 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @return
      */
-
     boolean saveEntity(T t) throws IllegalAccessException;
 
     /**
@@ -96,23 +88,6 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      */
     void importVerify(T t, Object excelObj, int type);
-
-    /**
-     * 新增校验
-     *
-     * @param t
-     * @param excelObj
-     */
-//   default void addEntity(T t, Object excelObj){}
-
-    /**
-     * 编辑核验
-     *
-     * @param t
-     * @param excelObj
-     */
-//     default void updateEntity(T t, Object excelObj){}
-
 
     /**
      * 根据字段名和字段值获取字段
