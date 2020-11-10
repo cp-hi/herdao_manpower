@@ -12,6 +12,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.excelud.ExportDataVO;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
@@ -176,12 +177,16 @@ public class BaseController<T, D, F, E> {
     @PostMapping
     @ApiOperation(value = "新增/修改")
     public R<F> save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        Object t = getEntityClass().newInstance();
-        BeanUtils.copyProperties(f, (T) t);
-        entityService.saveVerify((T) t);
-        entityService.saveEntity((T) t);
-        BeanUtils.copyProperties((T) t, f);
-        return R.ok(f);
+        try {
+            Object t = getEntityClass().newInstance();
+            BeanUtils.copyProperties(f, (T) t);
+            entityService.saveVerify((T) t);
+            entityService.saveEntity((T) t);
+            BeanUtils.copyProperties((T) t, f);
+            return R.ok(f);
+        } catch (Exception ex) {
+            return R.failed(ex.getCause().getMessage());
+        }
     }
 
     @ApiOperation("批量新增/编辑")
@@ -230,16 +235,16 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
-    public R<E> getDownloadTempl(HttpServletResponse response,  Integer importType) {
+    public R<E> getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
         try {
             Class templClass = getBatchAddClass();
-            if (Integer.valueOf(1).equals(importType))
+            if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
                 templClass = getBatchUpdateClass();
 
             if (Class.class == templClass)
                 throw new Exception("没有找到模板");
 
-            log.info("-----------importType : {}  templClass  {} ", importType, templClass.getName());
+            log.info("-----------importType : {}  templClass  {} ", exportDataVO.getImportType(), templClass.getName());
 
             ExcelUtils.downloadTempl(response, templClass);
 
