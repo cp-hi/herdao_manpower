@@ -1,12 +1,12 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,18 +36,12 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         return baseMapper.jobLevelList(groupId);
     }
 
-    @Override
-    public void saveVerify(JobLevel jobLevel) {
-        StringBuffer buffer = new StringBuffer();
-        this.saveVerify(jobLevel, buffer);
-        throwErrMsg(buffer);
-    }
-
     /**
      * 与父类的验证方式不同，
      * 除了集团内不能同名，
      * 同职等下也不能同名，
      * 所以要覆盖父验证方法
+     *
      * @param jobLevel
      * @param buffer
      */
@@ -58,43 +52,39 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         super.saveVerify(jobLevel, buffer);
     }
 
-    @SneakyThrows
     @Override
-    public void addEntity(JobLevel jobLevel, Object excelObj) {
+    public void addEntity(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
-        StringBuffer buffer = new StringBuffer();
-        Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  jobLevel.setGroupId(group.getId());
 
-        chkEntityExists(excel.getJobLevelName(), group.getId(), false);
-        JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
+        Group group = groupService.selectByName(excel.getGroupName(), true);
+        if (null != group) jobLevel.setGroupId(group.getId());
+
+        chkEntityExists(excel.getJobLevelName(), group.getId(), false,buffer);
+        JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true,buffer);
 
         if (!group.getId().equals(jobGrade.getGroupId()))
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
-        throwErrMsg(buffer);
-
-        jobLevel.setGroupId(group.getId());
+        if (StringUtils.isNotBlank(buffer))
+            jobLevel.setGroupId(group.getId());
     }
 
-    @SneakyThrows
     @Override
-    public void updateEntity(JobLevel jobLevel, Object excelObj) {
+    public void updateEntity(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
-        StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  jobLevel.setGroupId(group.getId());
+        if (null != group) jobLevel.setGroupId(group.getId());
 
-        JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true);
-        JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true);
+        JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true,buffer);
+        JobGrade jobGrade = jobGradeService.chkEntityExists(excel.getJobGrade(), group.getId(), true,buffer);
 
         if (!group.getId().equals(jobGrade.getGroupId()))
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
-        throwErrMsg(buffer);
-
-        jobLevel.setGroupId(group.getId());
-        jobLevel.setId(tmp.getId());
+        if (StringUtils.isNotBlank(buffer)) {
+            jobLevel.setGroupId(group.getId());
+            jobLevel.setId(tmp.getId());
+        }
     }
 
     @Override

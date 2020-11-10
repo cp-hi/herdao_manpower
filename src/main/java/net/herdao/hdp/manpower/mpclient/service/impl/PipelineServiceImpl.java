@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,20 +35,20 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     }
 
     @Override
-    public void addEntity(Pipeline pipeline, Object excelObj) {
+    public void addEntity(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  pipeline.setGroupId(group.getId());
-        chkEntityExists(excel.getPipelineName(), group.getId(), false);
+        if (null != group) pipeline.setGroupId(group.getId());
+        chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
     }
 
     @Override
-    public void updateEntity(Pipeline pipeline, Object excelObj) {
+    public void updateEntity(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  pipeline.setGroupId(group.getId());
-        Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true);
-        pipeline.setId(tmp.getId());
+        if (null != group) pipeline.setGroupId(group.getId());
+        Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
+        if (StringUtils.isNotBlank(buffer)) pipeline.setId(tmp.getId());
     }
 
     @Override

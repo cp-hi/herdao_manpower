@@ -248,17 +248,19 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void importVerify(T t, Object excelObj, int type) {
         boolean add = (0 == type);
+        //this.validExcelObj(excelObj);
         StringBuffer buffer = new StringBuffer();
-        try {
-//            this.validExcelObj(excelObj);
-            if (add) addEntity(t, excelObj);
-            else updateEntity(t, excelObj);
-        } catch (Exception ex) {
-            buffer.append(ex.getCause().getMessage());
-        }
+        if (add) addEntity(t, excelObj, buffer);
+        else updateEntity(t, excelObj, buffer);
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(t, buffer);
         throwErrMsg(buffer);
+    }
+
+    protected void addEntity(T t, Object excelObj, StringBuffer buffer) {
+    }
+
+    protected void updateEntity(T t, Object excelObj, StringBuffer buffer) {
     }
 
     @Override

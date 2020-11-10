@@ -29,14 +29,11 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> implements PostService {
 
-//    final PipelineMapper pipelineMapper;
-//    final SectionMapper sectionMapper;
     final GroupService groupService;
     final SectionService sectionService;
     final PipelineService pipelineService;
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
-//    final SysDictItemService sysDictItemService;
 
     @Override
     public List<PostDTO> postList(Long groupId) {
@@ -133,37 +130,32 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     //endregion
 
     //region 批量新增编辑
-
-    @SneakyThrows
     @Override
-    public void addEntity(Post post, Object excelObj) {
+    public void addEntity(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
-        StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
+        chkEntityExists(excel.getPostName(), group.getId(), false, buffer);
 
-        chkEntityExists(excel.getPostName(), group.getId(), false);
         Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
         Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        throwErrMsg(buffer);
-
-        post.setSectionId(section.getId());
-        post.setPipelineId(pipeline.getId());
-        post.setPostSeqId(postSeq.getId());
-        post.setJobLevelId1(jobLevel.getId());
+        if (StringUtils.isNotBlank(buffer)) {
+            post.setSectionId(section.getId());
+            post.setPipelineId(pipeline.getId());
+            post.setPostSeqId(postSeq.getId());
+            post.setJobLevelId1(jobLevel.getId());
+        }
     }
 
-    @SneakyThrows
     @Override
-    public void updateEntity(Post post, Object excelObj) {
+    public void updateEntity(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
-        StringBuffer buffer = new StringBuffer();
+
         Group group = groupService.selectByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
-
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 
         Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
@@ -176,13 +168,13 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setYearPayRatio(DictCache.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
         post.setPerforSalaryRatio(DictCache.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
-        throwErrMsg(buffer);
-
-        post.setSectionId(section.getId());
-        post.setPipelineId(pipeline.getId());
-        post.setPostSeqId(postSeq.getId());
-        post.setJobLevelId1(jobLevel.getId());
-        post.setId(tmp.getId());
+        if (StringUtils.isNotBlank(buffer)) {
+            post.setSectionId(section.getId());
+            post.setPipelineId(pipeline.getId());
+            post.setPostSeqId(postSeq.getId());
+            post.setJobLevelId1(jobLevel.getId());
+            post.setId(tmp.getId());
+        }
     }
 
     //endregion

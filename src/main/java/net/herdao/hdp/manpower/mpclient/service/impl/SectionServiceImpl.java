@@ -7,6 +7,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,20 +34,20 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     }
 
     @Override
-    public void addEntity(Section section, Object excelObj) {
+    public void addEntity(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  section.setGroupId(group.getId());
-        chkEntityExists(excel.getSectionName(), group.getId(), false);
+        if (null != group) section.setGroupId(group.getId());
+        chkEntityExists(excel.getSectionName(), group.getId(), false,buffer);
     }
 
     @Override
-    public void updateEntity(Section section, Object excelObj) {
+    public void updateEntity(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  section.setGroupId(group.getId());
+        if (null != group) section.setGroupId(group.getId());
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
-        section.setId(tmp.getId());
+        if (StringUtils.isNotBlank(buffer)) section.setId(tmp.getId());
     }
 
     @Override

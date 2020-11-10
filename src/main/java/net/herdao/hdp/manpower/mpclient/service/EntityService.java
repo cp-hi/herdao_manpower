@@ -103,7 +103,7 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @param excelObj
      */
-   default void addEntity(T t, Object excelObj){}
+//   default void addEntity(T t, Object excelObj){}
 
     /**
      * 编辑核验
@@ -111,7 +111,7 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      * @param excelObj
      */
-     default void updateEntity(T t, Object excelObj){}
+//     default void updateEntity(T t, Object excelObj){}
 
 
     /**

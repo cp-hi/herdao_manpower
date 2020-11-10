@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,27 +42,23 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         throwErrMsg(buffer);
     }
 
-    @SneakyThrows
     @Override
-    public void addEntity(PostSeq postSeq, Object excelObj) {
+    public void addEntity(PostSeq postSeq, Object excelObj,StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
-        StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
         if(null != group)  postSeq.setGroupId(group.getId());
-        chkEntityExists(excel.getPostSeqName(), group.getId(), false);
+        chkEntityExists(excel.getPostSeqName(), group.getId(), false,buffer);
         PostSeq parent = this.chkEntityExists(excel.getParentName(), group.getId(), true, buffer);
         if (null != parent) {
             chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
-        throwErrMsg(buffer);
     }
 
-    @SneakyThrows
     @Override
-    public void updateEntity(PostSeq postSeq, Object excelObj) {
+    public void updateEntity(PostSeq postSeq, Object excelObj,  StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
-        StringBuffer buffer = new StringBuffer();
+
         Group group = groupService.selectByName(excel.getGroupName(), true);
         if(null != group)  postSeq.setGroupId(group.getId());
         PostSeq tmp = chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
@@ -71,8 +68,8 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
             chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
-        throwErrMsg(buffer);
-        postSeq.setId(tmp.getId());
+        if (StringUtils.isNotBlank(buffer))
+            postSeq.setId(tmp.getId());
     }
 
     private void chkParent(Long parentId, StringBuffer buffer) {
