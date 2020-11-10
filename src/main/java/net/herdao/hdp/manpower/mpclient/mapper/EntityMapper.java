@@ -10,8 +10,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @ClassName EntityMapper

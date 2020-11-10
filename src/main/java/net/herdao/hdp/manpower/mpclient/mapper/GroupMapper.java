@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
