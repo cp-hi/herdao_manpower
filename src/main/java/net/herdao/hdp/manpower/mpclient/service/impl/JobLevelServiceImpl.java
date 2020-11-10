@@ -41,7 +41,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     public void saveVerify(JobLevel jobLevel) {
         StringBuffer buffer = new StringBuffer();
         this.saveVerify(jobLevel, buffer);
-        super.handleErrMsg(buffer);
+        handleErrMsg(buffer);
     }
 
     /**

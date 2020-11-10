@@ -39,7 +39,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         StringBuffer buffer = new StringBuffer();
         chkParent(postSeq.getParentId(), buffer);
         super.saveVerify(postSeq, buffer);
-        super.handleErrMsg(buffer);
+        handleErrMsg(buffer);
     }
 
     @SneakyThrows

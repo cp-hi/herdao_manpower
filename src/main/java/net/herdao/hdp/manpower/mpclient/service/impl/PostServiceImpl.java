@@ -43,6 +43,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         return baseMapper.postList(groupId);
     }
 
+    //region 报表
     @Override
     public Map getPostStaffInfo(Long postId) {
         Map map = new LinkedHashMap();
@@ -129,6 +130,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         }
         return baseMapper.getPostStaffs(postId, limit);
     }
+    //endregion
 
     //region 批量新增编辑
 
@@ -160,7 +162,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
         StringBuffer buffer = new StringBuffer();
         Group group = groupService.selectByName(excel.getGroupName(), true);
-        if (null != group) post.setGroupId(group.getId());
+        if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
 
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 

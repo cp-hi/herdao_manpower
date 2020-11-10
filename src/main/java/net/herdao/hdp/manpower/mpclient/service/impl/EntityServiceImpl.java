@@ -89,6 +89,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return baseMapper.form(id);
     }
 
+    /**
+     * 保存不同集团ID下实体数据最新的编号
+     */
     Map<Long, Integer> currEntityCode = new ConcurrentHashMap<>();
 
     @SneakyThrows
@@ -212,7 +215,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      * @param errBuffer 异常信息
      */
     @SneakyThrows
-    protected void handleErrMsg(StringBuffer errBuffer) {
+    protected final void handleErrMsg(StringBuffer errBuffer) {
         String errMsg = errBuffer.toString();
         if (null != errMsg && errMsg.startsWith("；")) {
             errMsg = errMsg.replaceFirst("；", "");
@@ -250,7 +253,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             if (add) addEntity(t, excelObj);
             else updateEntity(t, excelObj);
         } catch (Exception ex) {
-            buffer.append(ex.getMessage());
+            buffer.append(ex.getCause().getMessage());
         }
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(t, buffer);
@@ -279,8 +282,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public T chkEntityExists(String name, Long groupId, boolean need) {
         StringBuffer buffer = new StringBuffer();
         T t = this.chkEntityExists(name, groupId, need, buffer);
-        if (StringUtils.isNotBlank(buffer))
-            throw new Exception(buffer.toString());
+        handleErrMsg(buffer);
         return t;
     }
 
@@ -310,7 +312,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             for (List<T> entities : subData.values()) {
                 Integer largestEntity = getEntityCode(entities.get(0), entities.size());
                 for (int i = entities.size() - 1; i >= 0; i--) {
-                    T t = entities.get(i);
+                    T t = entities.get((entities.size() - 1) - i);
                     BaseEntity entity = (BaseEntity) t;
                     entity.setCreatedTime(new Date());
                     entity.setCreatorName(sysUser.getUsername());
@@ -320,8 +322,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                     field.set(t, entityCode);
                 }
             }
-        }else {
-            dataList.forEach(t->{
+        } else {
+            dataList.forEach(t -> {
                 BaseEntity entity = (BaseEntity) t;
                 entity.setModifiedTime(new Date());
                 entity.setModifierName(sysUser.getUsername());
@@ -334,8 +336,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     //region 批量导入时分类用 参照PostServiceImpl
-
-
     @Override
     public Function<T, String> getNameMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
