@@ -102,7 +102,7 @@ public class FamilystatusController extends HdpBaseController  {
     }
 
     @Override
-    public String getTemplateName() {
+    public String getExcelName() {
         return "员工家庭情况";
     }
 

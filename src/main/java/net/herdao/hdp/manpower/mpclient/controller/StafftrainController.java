@@ -91,7 +91,7 @@ public class StafftrainController extends HdpBaseController {
     }
 
     @Override
-    public String getTemplateName() {
+    public String getExcelName() {
         return "员工培训";
     }
 

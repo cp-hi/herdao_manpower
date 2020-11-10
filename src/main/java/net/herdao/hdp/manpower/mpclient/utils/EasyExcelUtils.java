@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.utils;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
 
 import cn.hutool.core.util.ObjectUtil;
+import io.swagger.annotations.ApiModel;
 
 /**
  * @description: easyExcel工具类
@@ -26,7 +28,7 @@ import cn.hutool.core.util.ObjectUtil;
  * @author shuling
  * @date 2020-10-20 11:37:27
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("all")
 public class EasyExcelUtils {
 
     private EasyExcelUtils(){}
@@ -85,5 +87,16 @@ public class EasyExcelUtils {
             outputStream.close();
         }
     }
+	
+	public static String getApiModelValue(Class cls) {
+		 // 获取类上注解
+		Annotation classAnnotation = cls.getAnnotation(ApiModel.class);
+        if (classAnnotation != null) {
+            ApiModel apiModel = (ApiModel) classAnnotation;
+            // 对象名称取实体备注信息
+            return apiModel.value();
+        }
+        return null;
+	}
 
 }

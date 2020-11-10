@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -37,6 +36,7 @@ import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 
 
@@ -62,14 +62,14 @@ public class OrganizationController extends HdpBaseController{
     
     @Override
 	public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex, 
-								  Integer headRowNumber, List downloadUpdateTemplateList, String excelDescription, String templateName) {
+								  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
     	this.importAddCls = OrganizationAddDTO.class;
     	this.importAddErrCls = OrganizationAddErrDTO.class; 
     	this.importUpdateCls = OrganizationUpdateDTO.class;
     	this.importUpdateErrCls = OrganizationUpdateErrDTO.class;
     	this.downloadUpdateTemplateList = this.orgService.selectAllOrganization();
     	this.excelDescription = ExcelDescriptionContants.getOrganizationExcelDescription();
-    	this.templateName = "组织模板";
+    	this.excelName = "组织";
 	}
     
     /**
@@ -340,9 +340,8 @@ public class OrganizationController extends HdpBaseController{
 
     @ApiOperation(value = "获取组织操作日志")
     @GetMapping("/getOrgLog/{objId}")
-    public R getOrgLog(Page page,@PathVariable Long objId) {
-        IPage pageResult = operationLogService.page(page, objId, OrganizationVO.class.getName());
-        return R.ok(pageResult);
+    public R getOrgLog(Page page,@PathVariable Long objId, String searchText) {
+    	return R.ok(operationLogService.page(page, objId, OrganizationVO.class.getName()));
     }
 
     /**

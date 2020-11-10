@@ -87,7 +87,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     }
 
     @Override
-    public String getTemplateName() {
+    public String getExcelName() {
         return "员工奖惩";
     }
 

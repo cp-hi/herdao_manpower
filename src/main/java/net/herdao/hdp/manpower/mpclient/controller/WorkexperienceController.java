@@ -89,7 +89,7 @@ public class WorkexperienceController extends HdpBaseController {
     }
 
     @Override
-    public String getTemplateName() {
+    public String getExcelName() {
         return "员工工作经历";
     }
 

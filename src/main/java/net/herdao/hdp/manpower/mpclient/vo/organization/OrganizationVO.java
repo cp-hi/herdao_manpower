@@ -17,7 +17,7 @@ import net.herdao.hdp.manpower.mpclient.constant.ExcelPatternMsgContants;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 /**
- * 部门/组织VO
+ * 组织VO
  *
  * @author shuling
  * @date 2020-10-18 10:37:22
