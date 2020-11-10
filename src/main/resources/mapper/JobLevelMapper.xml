@@ -14,8 +14,11 @@
     </resultMap>
 
     <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
-        select * from mp_job_level where del_flag !=1 and job_grade_id = #{t.jobGradeId}
+        select * from mp_job_level where del_flag !=1
         and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
+        <if test="t.jobGradeId != null">
+            and job_grade_id = #{t.jobGradeId}
+        </if>
         <if test="t.jobLevelName != null">
             <bind name="likeTxt" value="'%'+t.jobLevelName+'%'"/>
             and(job_level_code like #{likeTxt} or job_level_name like #{likeTxt})
@@ -37,7 +40,6 @@
       SELECT IFNULL(job_level_code,'000000') FROM mp_job_level
       WHERE id=(select max(id) from mp_job_level where job_grade_id=#{jobGradeId})
     </select>
-
 
     <select id="getOnJobStaffs" parameterType="long" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s
