@@ -7,7 +7,6 @@ import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     public void saveVerify(JobLevel jobLevel) {
         StringBuffer buffer = new StringBuffer();
         this.saveVerify(jobLevel, buffer);
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
     }
 
     /**
@@ -73,7 +72,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (!group.getId().equals(jobGrade.getGroupId()))
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
 
         jobLevel.setGroupId(group.getId());
     }
@@ -92,7 +91,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (!group.getId().equals(jobGrade.getGroupId()))
             buffer.append("根据名称查找的集团与职等所属集团不匹配");
 
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
 
         jobLevel.setGroupId(group.getId());
         jobLevel.setId(tmp.getId());

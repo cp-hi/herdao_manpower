@@ -10,7 +10,6 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
-import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -149,7 +148,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
 
         post.setSectionId(section.getId());
         post.setPipelineId(pipeline.getId());
@@ -177,7 +176,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setYearPayRatio(DictCache.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
         post.setPerforSalaryRatio(DictCache.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
 
         post.setSectionId(section.getId());
         post.setPipelineId(pipeline.getId());
@@ -187,7 +186,6 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     //endregion
-
 
     @Override
     public Function<Post, String> getNameMapper() {

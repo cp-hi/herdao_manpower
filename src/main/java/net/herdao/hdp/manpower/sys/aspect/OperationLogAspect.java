@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.sys.annotation.ImportDescription;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -54,12 +53,7 @@ public class OperationLogAspect {
     /**
      * 保存时设置操作人信息的切入点
      */
-    @Pointcut(
-//            "execution(public * com.baomidou.mybatisplus.extension.service..*.saveOrUpdate(..))" +
-            "execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))"
-//            "||execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveEntity(..))" +
-//            "||execution(public * net.herdao.hdp.manpower.mpclient.service.impl..*.saveEntity(..))"
-    )
+    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))")
     public void pointCutSave() {
         System.out.println("pointCutSave");
     }
@@ -74,15 +68,10 @@ public class OperationLogAspect {
         System.out.println("pointDelete");
     }
 
-    @Pointcut("@annotation(net.herdao.hdp.manpower.sys.annotation.ImportDescription)")
-    public void pointImport(){
-        System.out.println("pointImport");
-    }
-
     //region 保存实体 设置操作人信息以及实体主键
 
     @Before("pointCutSave()")
-    public void beforeSave(JoinPoint point) throws IllegalAccessException {
+    public void beforeSave(JoinPoint point) {
         Method method = getJoinPointMethod(point);
         OperationEntity operation = getOperationEntity(method);
         if (0 == point.getArgs().length || null == operation)
@@ -101,7 +90,6 @@ public class OperationLogAspect {
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
                     AnnotationUtils.setAnnotationInfo(operation, "operation", "新增");
-//                    ((EntityService) point.getTarget()).setEntityCode(arg);
                     if (StringUtils.isBlank(operation.content()))
                         AnnotationUtils.setAnnotationInfo(operation, "content", "新增" + model.value());
                 } else {
@@ -206,6 +194,8 @@ public class OperationLogAspect {
     @After("pointCutStop()")
     public void afterStop(JoinPoint point) {
         OperationEntity operation = getOperationEntity(point);
+        if (null == operation || 0 == point.getArgs().length)
+            return;
         Object target = point.getTarget();
         Class entityClass = null;
         if (target instanceof EntityService)
@@ -230,6 +220,8 @@ public class OperationLogAspect {
     public void afterOperate(JoinPoint point) {
         //TODO 解决前面验证报错了，还会往下执行这个日志保存
         OperationEntity operation = getOperationEntity(point);
+        if (null == operation || 0 == point.getArgs().length)
+            return;
         if (StringUtils.isNotBlank(operation.exception()) ||
                 StringUtils.isBlank(operation.clazz().getName()) ||
                 Class.class.getName().equals(operation.clazz().getName()))

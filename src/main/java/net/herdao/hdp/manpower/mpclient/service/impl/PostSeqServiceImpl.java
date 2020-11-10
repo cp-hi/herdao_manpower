@@ -8,7 +8,6 @@ import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         StringBuffer buffer = new StringBuffer();
         chkParent(postSeq.getParentId(), buffer);
         super.saveVerify(postSeq, buffer);
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
     }
 
     @SneakyThrows
@@ -55,7 +54,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
             chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
     }
 
     @SneakyThrows
@@ -72,7 +71,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
             chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
         }
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
         postSeq.setId(tmp.getId());
     }
 

@@ -198,7 +198,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public void saveVerify(T t) {
         StringBuffer buffer = new StringBuffer();
         this.saveVerify(t, buffer);
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
     }
 
     @Override
@@ -215,9 +215,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      * @param errBuffer 异常信息
      */
     @SneakyThrows
-    protected final void handleErrMsg(StringBuffer errBuffer) {
+    protected final void throwErrMsg(StringBuffer errBuffer) {
         String errMsg = errBuffer.toString();
-        if (null != errMsg && errMsg.startsWith("；")) {
+        if (StringUtils.isNotBlank(errMsg)
+                && errMsg.startsWith("；")) {
             errMsg = errMsg.replaceFirst("；", "");
             throw new Exception(errMsg);
         }
@@ -240,7 +241,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             if (null == val || StringUtils.isEmpty(val.toString()))
                 buffer.append(String.format("；%s不能为空", excelProperty.value()[1]));
         }
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
     }
 
     @SneakyThrows
@@ -257,7 +258,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         }
         //这个验证要放 最后，因为前面要给ID赋值
         this.saveVerify(t, buffer);
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
     }
 
     @Override
@@ -282,7 +283,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public T chkEntityExists(String name, Long groupId, boolean need) {
         StringBuffer buffer = new StringBuffer();
         T t = this.chkEntityExists(name, groupId, need, buffer);
-        handleErrMsg(buffer);
+        throwErrMsg(buffer);
         return t;
     }
 
