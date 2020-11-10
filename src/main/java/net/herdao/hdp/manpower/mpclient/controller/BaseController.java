@@ -206,7 +206,6 @@ public class BaseController<T, D, F, E> {
             inputStream = file.getInputStream();
             listener = new ImportExcelListener(entityService, importType);
             EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().headRowNumber(2).doRead();
-
         } catch (Exception ex) {
             if (Integer.valueOf(1).equals(downloadErrMsg)) {
                 List data = null;
@@ -220,13 +219,12 @@ public class BaseController<T, D, F, E> {
                 }
                 ExcelUtils.export2Web(response, "导入错误信息", clazz, data);
             } else {
-                throw ex;
+                return R.failed(ex.getCause().getMessage());
             }
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
         return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
-
     }
 
     @ApiOperation("下载批量新增/编辑的模板")
