@@ -458,6 +458,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				.last("limit 1")
 		);
 		StaffEducationLastDTO educationLast = baseMapper.getStaffEducationLast(id);
+		if(educationLast==null){
+			educationLast = new StaffEducationLastDTO();
+		}
 		if(eduList!=null && eduList.size()!=0){
 			Staffeducation staffeducation = eduList.get(0);
 			BeanUtils.copyProperties(staffeducation, educationLast);
