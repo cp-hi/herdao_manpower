@@ -7,8 +7,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
@@ -24,6 +28,8 @@ import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +57,8 @@ import java.util.stream.Collectors;
 public class FamilystatusController extends HdpBaseController  {
 
     private FamilystatusService familystatusService;
+    
+    private RemoteUserService remoteUserService;
 
     @Override
     public HdpService getHdpService() {
@@ -158,6 +167,23 @@ public class FamilystatusController extends HdpBaseController  {
     @ApiOperation(value = "新增或修改家庭情况", notes = "新增或修改家庭情况")
     @PostMapping("/saveOrUpdate")
     public R saveOrUpdate(@RequestBody Familystatus familystatus) {
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getAliasName();
+        String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
+        LocalDateTime now = LocalDateTime.now();
+    	
+    	if(familystatus.getId()!=null){
+    		familystatus.setCreatorId(userId);
+    		familystatus.setCreatorCode(loginCode);
+    		familystatus.setCreatorName(userName);
+    		familystatus.setCreatedTime(now);
+    	}
+		familystatus.setModifierId(userId);
+		familystatus.setModifierCode(loginCode);
+		familystatus.setModifierName(userName);
+		familystatus.setModifiedTime(now);
+    	
         boolean status = familystatusService.saveOrUpdate(familystatus);
         return R.ok(status);
     }

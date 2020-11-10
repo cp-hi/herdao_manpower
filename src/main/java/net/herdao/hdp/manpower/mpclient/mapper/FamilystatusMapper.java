@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
@@ -35,5 +37,10 @@ public interface FamilystatusMapper extends BaseMapper<Familystatus> {
      */
     List<FamilyStatusVO> findFamilyStatus(@Param("searchText") String searchText);
 
-
+    /**
+     * 花名册-家庭情况
+     * @param staffid
+     * @return
+     */
+    List<StaffFamilyDTO> findStaffFamilyStatus(String staffid);
 }

@@ -118,4 +118,31 @@
         </if>
     </select>
 
+	
+    <!-- 员工家庭情况 -->
+    <select id="findStaffFamilyStatus" resultType="net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO">
+    	SELECT
+        	f.id,
+        	s.staff_name,
+        	s.staff_code,
+        	f.NAME,
+        	f.RELATIONS,
+        	dic.label RELATIONSName,
+        	f.age,
+        	f.PROFESSIONAL,
+        	f.WORK_UNIT,
+        	f.address,
+        	f.modifier_name,
+        	f.MODIFIED_TIME,
+            CONCAT( f.modifier_name, " 于 ", f.MODIFIED_TIME, " 更新" ) updateDesc,
+            f.STAFF_ID staffId
+        FROM mp_familystatus f
+        LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
+        LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE' AND dic.`value` = f.RELATIONS
+        WHERE 1 = 1  AND f.del_flag = 0
+        <if test="staffid != null">
+            and f.STAFF_ID = #{staffid}
+        </if> 
+        ORDER BY f.CREATED_TIME desc
+    </select>
 </mapper>

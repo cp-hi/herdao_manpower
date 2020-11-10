@@ -369,17 +369,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("staffInfoOtherDTO", infoOther);
 		map.put("staffEmergencyDTO", emergency);
 
-		List<Familystatus> familyList = familystatusService.list(new QueryWrapper<Familystatus>()
-				.eq("STAFF_ID", staff.getId())
-				.orderByDesc("MODIFIED_TIME")
-		);
-		List<StaffFamilyDTO> familyDtoList = new ArrayList<>();
-		StaffFamilyDTO familyDto;
-		for(int i=0;i<familyList.size();i++){
-			familyDto = new StaffFamilyDTO();
-			BeanUtils.copyProperties(familyList.get(i), familyDto);
-			familyDtoList.add(familyDto);
-		}
+		List<StaffFamilyDTO> familyDtoList = familystatusService.findStaffFamilyStatus(id.toString());
 		map.put("staffFamilyDTO", familyDtoList);
 
 		List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateDTO;
@@ -50,6 +51,12 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     @Override
     public List<FamilyStatusVO> findFamilyStatus(String searchText) {
         List<FamilyStatusVO> list = this.baseMapper.findFamilyStatus(searchText);
+        return list;
+    }
+
+    @Override
+    public List<StaffFamilyDTO> findStaffFamilyStatus(String staffid) {
+        List<StaffFamilyDTO> list = this.baseMapper.findStaffFamilyStatus(staffid);
         return list;
     }
 
