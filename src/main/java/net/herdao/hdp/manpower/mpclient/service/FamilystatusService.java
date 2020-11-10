@@ -2,6 +2,8 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.FamilyStatusListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
@@ -29,6 +31,13 @@ public interface FamilystatusService extends HdpService<Familystatus> {
      * @return
      */
     List<FamilyStatusVO> findFamilyStatus(String searchText);
+
+    /**
+     * 花名册-家庭情况
+     * @param staffid
+     * @return
+     */
+    List<StaffFamilyDTO> findStaffFamilyStatus(String staffid);
 
     @Override
     boolean saveOrUpdate(Familystatus familystatus);

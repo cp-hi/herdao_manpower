@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
@@ -15,7 +19,11 @@ import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
+
+import java.time.LocalDateTime;
+
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -37,6 +45,8 @@ public class StaffEditController {
     private final FamilystatusService familystatusService;
 
     private final StaffcontractService staffcontractService;
+    
+    private RemoteUserService remoteUserService;
 
     @ApiOperation(value = "停用员工", notes = "通过工号停用员工")
     @GetMapping("/stop/{staffCode}" )
@@ -134,8 +144,19 @@ public class StaffEditController {
     @SysLog("修改家庭情况" )
     @PutMapping("/stafffamily" )
     public R<Boolean> updateById(@RequestBody StaffFamilyDTO staffFamily) {
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getAliasName();
+        String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
+        LocalDateTime now = LocalDateTime.now();
         Familystatus family = new Familystatus();
         BeanUtils.copyProperties(staffFamily, family);
+
+        family.setCreatorCode(loginCode);
+        family.setCreatorName(userName);
+        family.setCreatedTime(now);
+        family.setCreatorId(userId);
+        
         return R.ok(familystatusService.updateById(family));
     }
 
@@ -143,8 +164,22 @@ public class StaffEditController {
     @SysLog("新增家庭情况" )
     @PostMapping("/stafffamily" )
     public R<Boolean> save(@RequestBody StaffFamilyDTO staffFamily) {
+    	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        String userName=userInfo.getSysUser().getAliasName();
+        String loginCode=userInfo.getSysUser().getUsername();
+        Long userId = userInfo.getSysUser().getUserId();
+        LocalDateTime now = LocalDateTime.now();
         Familystatus family = new Familystatus();
         BeanUtils.copyProperties(staffFamily, family);
+
+        family.setCreatorCode(loginCode);
+        family.setCreatorName(userName);
+        family.setCreatedTime(now);
+        family.setCreatorId(userId);
+        family.setModifierCode(loginCode);
+        family.setModifierName(userName);
+        family.setModifiedTime(now);
+        family.setModifierId(userId);
         return R.ok(familystatusService.save(family));
     }
 
