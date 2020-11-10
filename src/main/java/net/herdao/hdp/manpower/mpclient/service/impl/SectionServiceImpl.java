@@ -47,7 +47,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
         Group group = groupService.selectByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
-        if (StringUtils.isNotBlank(buffer)) section.setId(tmp.getId());
+        if (StringUtils.isBlank(buffer)) section.setId(tmp.getId());
     }
 
     @Override

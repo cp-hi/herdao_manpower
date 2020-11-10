@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +31,15 @@ import java.util.stream.Collectors;
 public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
     @Getter
+    Class<E> batchClass;
+
+    @Getter
     List<E> excelList = null;
 
     List dataList = null;
 
     boolean hasError = false;
 
-    @Setter
     EntityService entityService;
 
     Integer importType = 0;
@@ -45,12 +48,17 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
      * @param service    服务类
      * @param importType 导入类型 0: 新增 1: 保存
      */
-    public ImportExcelListener(EntityService service, Integer importType) {
+    public ImportExcelListener(EntityService service,  Integer importType) {
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
         this.importType = importType;
+//        this.batchClass = clazz;
         this.hasError = false;
+    }
+    @Override
+    public void onException(Exception exception, AnalysisContext context)   {
+        System.out.println(exception.getMessage());
     }
 
     /**

@@ -48,7 +48,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         Group group = groupService.selectByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
-        if (StringUtils.isNotBlank(buffer)) pipeline.setId(tmp.getId());
+        if (StringUtils.isBlank(buffer)) pipeline.setId(tmp.getId());
     }
 
     @Override

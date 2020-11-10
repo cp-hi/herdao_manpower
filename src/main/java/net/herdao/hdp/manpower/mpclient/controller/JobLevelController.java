@@ -38,7 +38,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends BaseController<JobLevel, JobLevelListVO, JobLevelFormVO, JobLevelBatchVO> {
+public class JobLevelController extends BaseController<JobLevel, JobLevelListVO, JobLevelFormVO, JobLevelBatchVO, JobLevelBatchVO> {
 
     @Autowired
     private JobLevelService jobLevelService;

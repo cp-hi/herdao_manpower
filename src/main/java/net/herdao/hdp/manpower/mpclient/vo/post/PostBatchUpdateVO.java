@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.annotation.FieldValid;
 
 /**
@@ -30,7 +31,7 @@ import net.herdao.hdp.manpower.sys.annotation.FieldValid;
         "1、标红字段为必填\r\n" +
         "2、操作导入前请删除示例数据\r\n"
 )
-public class PostBatchUpdateVO extends PostBatchAddVO {
+public class PostBatchUpdateVO implements ExcelMsg {
     @HeadFontStyle
     @ExcelProperty({"", "错误信息"})
     private String errMsg;

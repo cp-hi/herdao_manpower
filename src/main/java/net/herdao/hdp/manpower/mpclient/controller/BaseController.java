@@ -30,7 +30,8 @@ import java.util.List;
  * @param <T> 实体类Entity类型
  * @param <D> 分页类VO，用于列表展示及列表导出
  * @param <F> 表单页Form类型，用于新增修改
- * @param <E> excel导入类，注意，批量新增批量修改所用字段有可能不同，
+ * @param <A> 批量新增类
+ * @param <U> excel导入类，注意，批量新增批量修改所用字段有可能不同，
  *            所以可能会有不同的类，一般用大类继承小类，然后把大类填
  *            到这泛型参数上
  * @ClassName NewBaseController
@@ -41,7 +42,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Slf4j
-public class BaseController<T, D, F, E> {
+public class BaseController<T, D, F, A, U> {
 
     EntityService entityService;
 
@@ -81,25 +82,27 @@ public class BaseController<T, D, F, E> {
     }
 
     /**
-     * 批量导入、修改所用的类
-     *
-     * @return
-     * @Author ljan
-     */
-    protected Class getBatchUpdateClass() {
-        Class<E> clazz = (Class<E>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[3];
-        return clazz;
-    }
-
-    /**
      * 批量新增的类，默认返回批量编辑的类，
      * 如果字段不一样，可以在子类覆盖此方法
      *
      * @return
      */
     protected Class getBatchAddClass() {
-        return getBatchUpdateClass();
+        Class<A> clazz = (Class<A>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[3];
+        return clazz;
+    }
+
+    /**
+     * 批量导入、修改所用的类
+     *
+     * @return
+     * @Author ljan
+     */
+    protected Class getBatchUpdateClass() {
+        Class<U> clazz = (Class<U>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[4];
+        return clazz;
     }
 
     //endregion
@@ -190,7 +193,6 @@ public class BaseController<T, D, F, E> {
     }
 
     @ApiOperation("批量新增/编辑")
-//    @SysLog("批量新增/编辑")
     @PostMapping("/import")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "要导入的文件"),
@@ -200,27 +202,23 @@ public class BaseController<T, D, F, E> {
     public R importData(HttpServletResponse response,
                         @RequestParam(value = "file") MultipartFile file,
                         Integer importType, Integer downloadErrMsg) throws Exception {
-        ImportExcelListener<E> listener = null;
         InputStream inputStream = null;
+        ImportExcelListener listener = null;
+        Class clazz = null;
         try {
             inputStream = file.getInputStream();
-            listener = new ImportExcelListener(entityService, importType);
-            EasyExcel.read(inputStream, getBatchUpdateClass(), listener).sheet().headRowNumber(2).doRead();
-        } catch (Exception ex) {
-            if (Integer.valueOf(1).equals(downloadErrMsg)) {
-                List data = null;
-                Class clazz = null;
-                if (Integer.valueOf(1).equals(importType)) {
-                    data = listener.getExcelList();
-                    clazz = getBatchUpdateClass();
-                } else {
-                    data = DtoConverter.dto2vo(listener.getExcelList(), getBatchAddClass());
-                    clazz = getBatchAddClass();
-                }
-                ExcelUtils.export2Web(response, "导入错误信息", clazz, data);
+            if (!Integer.valueOf(1).equals(importType)) {
+                clazz = getBatchAddClass();
+                listener = new ImportExcelListener<A>(entityService, importType);
             } else {
-                return R.failed(ex.getCause().getMessage());
+                clazz = getBatchUpdateClass();
+                listener = new ImportExcelListener<U>(entityService, importType);
             }
+            EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
+        } catch (Exception ex) {
+            if (Integer.valueOf(1).equals(downloadErrMsg))
+                ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
+            return R.failed(ex.getCause().getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
@@ -228,12 +226,11 @@ public class BaseController<T, D, F, E> {
     }
 
     @ApiOperation("下载批量新增/编辑的模板")
-//    @SysLog("下载批量新增/编辑的模板")
     @PostMapping("/downloadTempl")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
-    public R<E> getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
+    public R getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
         try {
             Class templClass = getBatchAddClass();
             if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
@@ -242,12 +239,9 @@ public class BaseController<T, D, F, E> {
             if (Class.class == templClass)
                 throw new Exception("没有找到模板");
 
-            log.info("-----------importType : {}  templClass  {} ", exportDataVO.getImportType(), templClass.getName());
-
             ExcelUtils.downloadTempl(response, templClass);
-
         } catch (Exception ex) {
-            return R.failed(ex.getMessage());
+            return R.failed(ex.getCause().getMessage());
         }
         return R.ok();
     }

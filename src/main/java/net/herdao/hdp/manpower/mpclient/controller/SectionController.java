@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends BaseController<Section, SectionListVO, SectionFormVO, SectionBatchUpdateVO> {
+public class SectionController extends BaseController<Section, SectionListVO, SectionFormVO, SectionBatchAddVO, SectionBatchUpdateVO> {
 
     @Autowired
     private SectionService sectionService;

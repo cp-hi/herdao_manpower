@@ -31,12 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post, PostListVO, PostFormVO, PostBatchUpdateVO> {
-
-    @Override
-    protected Class getBatchAddClass() {
-        return PostBatchAddVO.class;
-    }
+public class PostController extends BaseController<Post, PostListVO, PostFormVO, PostBatchAddVO, PostBatchUpdateVO> {
 
     @Autowired
     private PostService postService;
@@ -86,7 +81,7 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO,
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "集团ID"),
     })
-    public R<List<PostShortVO>> list(Long groupId) throws  InstantiationException, IllegalAccessException {
+    public R<List<PostShortVO>> list(Long groupId) throws InstantiationException, IllegalAccessException {
         List<PostDTO> list = postService.postList(groupId);
         List<PostShortVO> vos = DtoConverter.dto2vo(list, PostShortVO.class);
         return R.ok(vos);
@@ -141,4 +136,6 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO,
         }
         return R.ok(data);
     }
+
+
 }

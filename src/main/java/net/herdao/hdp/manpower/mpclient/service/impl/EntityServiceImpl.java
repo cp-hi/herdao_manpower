@@ -122,7 +122,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      * @param seed 种子数字，用于填充0
      * @return
      */
-    protected String generateEntityCodeLen(Integer seed) {
+    protected String generateEntityCode(Integer seed) {
         return String.format("%06d", seed);
     }
 
@@ -139,7 +139,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setCreatorName(sysUser.getUsername());
             entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
             Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-            String entityCode = this.generateEntityCodeLen(getEntityCode(t, 1));
+            String entityCode = this.generateEntityCode(getEntityCode(t, 1));
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
         } else {
@@ -321,7 +321,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                     entity.setCreatorName(sysUser.getUsername());
                     entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
                     Field field = AnnotationUtils.getFieldByName(t, baseMapper.getEntityCodeField());
-                    String entityCode = this.generateEntityCodeLen(largestEntity - i);
+                    String entityCode = this.generateEntityCode(largestEntity - i);
                     field.set(t, entityCode);
                 }
             }

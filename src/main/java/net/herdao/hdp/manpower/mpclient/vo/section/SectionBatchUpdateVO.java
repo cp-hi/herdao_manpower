@@ -27,7 +27,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
         "1、标红字段为必填\r\n" +
         "2、操作导入前请删除示例数据\r\n"
 )
-public class SectionBatchUpdateVO extends SectionBatchAddVO implements ExcelMsg {
+public class SectionBatchUpdateVO  implements ExcelMsg {
     @HeadFontStyle
     @ExcelProperty({"", "错误信息"})
     private String errMsg;
