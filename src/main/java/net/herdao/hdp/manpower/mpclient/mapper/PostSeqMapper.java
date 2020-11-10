@@ -13,4 +13,6 @@ public interface PostSeqMapper extends EntityMapper<PostSeq> {
     List<Map> postSeqList(Long groupId);
 
     PostSeqDTO getPostSeqDTO(Long id);
+
+    String selectEntityName(Long id);
 }

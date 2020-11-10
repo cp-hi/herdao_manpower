@@ -1,6 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
@@ -41,6 +42,7 @@ import java.util.List;
  * @Date 2020/10/19 18:10
  * @Version 1.0
  */
+@Slf4j
 public class BaseController<T, D, F, E> {
 
     EntityService entityService;
@@ -240,6 +242,9 @@ public class BaseController<T, D, F, E> {
 
             if (Class.class == templClass)
                 throw new Exception("没有找到模板");
+
+            log.info("-----------importType : %s  templClass  %s ", importType, templClass.getName());
+
             ExcelUtils.downloadTempl(response, templClass);
 
         } catch (Exception ex) {
