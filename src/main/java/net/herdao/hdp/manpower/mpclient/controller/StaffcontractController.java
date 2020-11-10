@@ -170,8 +170,8 @@ public class StaffcontractController extends HdpBaseController {
         @ApiImplicitParam(name="searchText",value="搜索关键词")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffContractPage(Page page, String searchText) {
-        Page pageResult = staffcontractService.findStaffContractPage(page, searchText);
+    public R findStaffContractPage(Page page,StaffcontractDTO staffcontractDTO, String searchText) {
+        Page pageResult = staffcontractService.findStaffContractPage(page,staffcontractDTO, searchText);
         return R.ok(pageResult);
     }
 
@@ -186,9 +186,12 @@ public class StaffcontractController extends HdpBaseController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键词")
     })
-    public R exportStaffContact(HttpServletResponse response, String searchText) {
+    public R exportStaffContact(HttpServletResponse response,StaffcontractDTO staffcontractDTO,String searchText) {
         try {
-             ExcelUtils.export2Web(response, "导出员工合同表", "员工合同签订表", StaffcontractDTO.class, staffcontractService.findStaffContract(searchText));
+            Page page =new Page();
+            page.setSize(-1);
+            Page pageResult = staffcontractService.findStaffContractPage(page,staffcontractDTO, searchText);
+             ExcelUtils.export2Web(response, "导出员工合同表", "员工合同签订表", StaffcontractDTO.class, pageResult.getRecords());
         } catch (Exception e) {
              log.error("导出员工合同Excel失败",e.getMessage());
              return R.failed("导出员工合同Excel失败");

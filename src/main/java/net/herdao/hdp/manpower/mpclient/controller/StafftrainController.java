@@ -134,8 +134,8 @@ public class StafftrainController extends HdpBaseController {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffTrainPage(Page page, String searchText) {
-        Page pageResult = stafftrainService.findStaffTrainPage(page,searchText);
+    public R findStaffTrainPage(Page page, StafftrainDTO stafftrainDTO,String searchText) {
+        Page pageResult = stafftrainService.findStaffTrainPage(page,stafftrainDTO,searchText);
         return R.ok(pageResult);
     }
 
@@ -150,10 +150,12 @@ public class StafftrainController extends HdpBaseController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
-    public void exportTrain(HttpServletResponse response,String searchText) {
+    public void exportTrain(HttpServletResponse response,StafftrainDTO stafftrainDTO,String searchText) {
         try {
-            List<StafftrainDTO> list = stafftrainService.findStaffTrain(searchText);
-            ExcelUtils.export2Web(response, "员工培训表", "员工培训表", StafftrainDTO.class,list);
+            Page page =new Page();
+            page.setSize(-1);
+            Page pageResult = stafftrainService.findStaffTrainPage(page,stafftrainDTO,searchText);
+            ExcelUtils.export2Web(response, "员工培训表", "员工培训表", StafftrainDTO.class,pageResult.getRecords());
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");

@@ -169,7 +169,6 @@ public class StaffEducationController extends HdpBaseController {
      * 员工教育经历分页
      * @param page 分页对象
      * @param searchText 关键字搜索
-     * @param staffId 员工工号
      * @return
      */
     @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
@@ -179,15 +178,14 @@ public class StaffEducationController extends HdpBaseController {
             @ApiImplicitParam(name="staffId",value="员工工号")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffEducationPage(Page page, String searchText,String staffId) {
-        Page pageResult = staffeducationService.findStaffEducationPage(page, searchText, staffId);
+    public R findStaffEducationPage(Page page,StaffEducationDTO staffEducationDTO, String searchText) {
+        Page pageResult = staffeducationService.findStaffEducationPage(page, staffEducationDTO,searchText);
         return R.ok(pageResult);
     }
 
     /**
      * 导出员工教育经历Excel
      * @param searchText 关键字搜索
-     * @param staffId 员工工号
      * @param response
      * @return R
      */
@@ -197,10 +195,12 @@ public class StaffEducationController extends HdpBaseController {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
         @ApiImplicitParam(name="staffId",value="员工工号")
     })
-    public void exportStaffEdu(HttpServletResponse response, String searchText,String staffId) {
+    public void exportStaffEdu(HttpServletResponse response,StaffEducationDTO staffEducationDTO, String searchText) {
         try {
-            List<StaffEducationDTO> list = staffeducationService.findStaffEducation(searchText,staffId);
-            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffEducationDTO.class,list);
+            Page page =new Page();
+            page.setSize(-1);
+            Page pageResult = staffeducationService.findStaffEducationPage(page, staffEducationDTO,searchText);
+            ExcelUtils.export2Web(response, "员工教育经历表", "员工教育经历表", StaffEducationDTO.class,pageResult.getRecords());
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");

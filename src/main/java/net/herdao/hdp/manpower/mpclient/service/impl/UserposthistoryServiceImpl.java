@@ -39,8 +39,8 @@ import java.util.List;
 public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMapper, Userposthistory> implements UserposthistoryService {
 
     @Override
-    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, String searchText) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page, searchText);
+    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, String searchText) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page,userpostDTO, searchText);
         return pageResult;
     }
 

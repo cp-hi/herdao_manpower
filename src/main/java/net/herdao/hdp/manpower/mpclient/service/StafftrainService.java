@@ -37,7 +37,7 @@ public interface StafftrainService extends HdpService<Stafftrain> {
      * @param searchText
      * @return
      */
-    Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page, String searchText);
+    Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page,StafftrainDTO stafftrainDTO, String searchText);
 
 
     /**

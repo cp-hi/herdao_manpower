@@ -34,10 +34,9 @@ public interface StaffeducationService extends HdpService<Staffeducation> {
      * 员工家庭情况分页
      * @param page 分页对象
      * @param searchText 关键字搜索
-     * @param staffId 员工工号
      * @return
      */
-    Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page, String searchText, String staffId);
+    Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page,StaffEducationDTO staffEducationDTO, String searchText);
 
     /**
      * 员工教育经历

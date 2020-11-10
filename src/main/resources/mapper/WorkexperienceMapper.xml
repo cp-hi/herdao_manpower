@@ -47,7 +47,10 @@
                   t.ROLE,
                   t.SUBORDINATES,
                   t.BACKGROUND_CHECKS,
-                  CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+                  CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc,
+                    t.staff_id,
+                  t.group_id,
+                  t.GROUP_NAME
           from (
               SELECT  f.id,
                       s.staff_name,
@@ -62,24 +65,35 @@
                       f.SUBORDINATES,
                       f.BACKGROUND_CHECKS,
                       f.modifier_name,
-                      f.MODIFIED_TIME
+                      f.MODIFIED_TIME,
+                        f.staff_id,
+                      g.ID group_id,
+                      g.GROUP_NAME
                 FROM  mp_workexperience f
                       LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-               where 1=1
-                    AND f.DEL_FLAG = 0
-                  <if test="staffId != null">
-                      and f.staff_id = #{staffId}
+                      LEFT JOIN mp_userpost up ON s.ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+                      LEFT JOIN mp_post p ON p.ID = up.POST_ID
+                      LEFT JOIN mp_group g on p.GROUP_ID=g.ID
+               where
+                    f.DEL_FLAG = 0
+                  <if test="query.groupId != null">
+                      and p.GROUP_ID = #{query.groupId}
+                  </if>
+                  <if test="query.staffId != null">
+                      and f.staff_id = #{query.staffId}
                   </if>
                   ORDER BY f.CREATED_TIME desc
-          )t where 1=1
-          <if test="searchText != null">
-              and CONCAT(
+          )t
+          <where>
+              <if test="searchText != null">
+                  and CONCAT(
                   IFNULL(t.staff_name,''), IFNULL(t.staff_code,''), IFNULL(t.BEGIN_DATE,''),IFNULL(t.END_DATE,''),
                   IFNULL(t.COMPANY_NAME,'') , IFNULL(t.ORG_NAME,''), IFNULL(t.POST,'') ,IFNULL(t.MAIN_PERFORMANCE,''),
                   IFNULL(t.ROLE,'') ,IFNULL(t.SUBORDINATES,''),IFNULL(t.BACKGROUND_CHECKS,''),
                   IFNULL(t.modifier_name,''),IFNULL(t.MODIFIED_TIME,'')
-              ) LIKE concat('%',#{searchText},'%')
-          </if>
+                  ) LIKE concat('%',#{searchText},'%')
+              </if>
+          </where>
       </select>
 
     <!-- 员工工作经历-->

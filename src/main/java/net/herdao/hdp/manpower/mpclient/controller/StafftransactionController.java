@@ -65,8 +65,8 @@ public class StafftransactionController extends HdpBaseController  {
         @ApiImplicitParam(name="staffId",value="员工ID")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffTransPage(Page page, String searchText,String staffId) {
-        Page pageResult = stafftransactionService.findStaffTransPage(page, searchText,staffId);
+    public R findStaffTransPage(Page page, StafftransDTO stafftransDTO,String searchText) {
+        Page pageResult = stafftransactionService.findStaffTransPage(page,stafftransDTO, searchText);
         return R.ok(pageResult);
     }
 
@@ -81,10 +81,12 @@ public class StafftransactionController extends HdpBaseController  {
         @ApiImplicitParam(name="searchText",value="搜索关键字"),
         @ApiImplicitParam(name="staffId",value="员工ID")
     })
-    public void exportTrans(HttpServletResponse response, String searchText,String staffId) {
+    public void exportTrans(HttpServletResponse response,StafftransDTO stafftransDTO, String searchText) {
         try {
-            List<StafftransDTO> list = stafftransactionService.findStaffTrans(searchText,staffId);
-            ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", StafftransDTO.class,list);
+            Page page =new Page();
+            page.setSize(-1);
+            Page pageResult = stafftransactionService.findStaffTransPage(page,stafftransDTO, searchText);
+            ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", StafftransDTO.class,pageResult.getRecords());
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");

@@ -20,10 +20,9 @@ public interface StafftransactionService extends HdpService<Stafftransaction> {
      * 员工异动情况分页
      * @param page 分页对象
      * @param searchText 关键字搜索
-     * @param staffId 员工ID
      * @return
      */
-    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page, String searchText,String staffId);
+    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page,StafftransDTO stafftransDTO, String searchText);
 
     /**
      * 员工异动情况分页

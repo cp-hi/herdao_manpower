@@ -43,7 +43,7 @@ public interface UserpostService extends HdpService<Userpost> {
      * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,UserpostDTO userpostDTO,  @Param("searchText") String searchText);
 
     /**
      * 现任职情况

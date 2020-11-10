@@ -52,7 +52,9 @@
                   t.certificate_name,
                   t.certificate_code,
                   t.remarks,
-                  CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc
+                  CONCAT( t.modifier_name, " 于 ", t.MODIFIED_TIME, " 更新" ) updateDesc,
+                  t.group_id,
+                  t.GROUP_NAME
           FROM
           (
               SELECT  f.id,
@@ -71,17 +73,26 @@
                       f.remarks,
                       usr.USER_NAME modifier_name,
                       f.MODIFIED_TIME,
-                      f.STAFF_ID
+                      f.STAFF_ID,
+                      g.ID group_id,
+                      g.GROUP_NAME
               FROM  mp_stafftrain f
               LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
               LEFT JOIN sys_dict_item dic ON dic.value = f.train_type AND dic.type = 'TRAIN_TYPE'
               LEFT JOIN mp_user usr ON usr.id = f.MODIFIER_CODE
-              WHERE   1 = 1
-              AND f.del_flag = 0
+              LEFT JOIN mp_userpost up ON s.ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+              LEFT JOIN mp_post p ON p.ID = up.POST_ID
+              LEFT JOIN mp_group g on p.GROUP_ID=g.ID
+              WHERE
+              f.del_flag = 0
+              <if test="query.groupId != null">
+                  and p.GROUP_ID = #{query.groupId}
+              </if>
               ORDER BY f.CREATED_TIME desc
-          ) t  WHERE 1 =1
-          <if test="searchText != null">
-              and CONCAT(
+          ) t
+          <where>
+              <if test="searchText != null">
+                  and CONCAT(
                   IFNULL(t.staff_name,''),
                   IFNULL(t.staff_code,''),
                   IFNULL(t.begin_time,''),
@@ -95,8 +106,9 @@
                   IFNULL(t.certificate_name,''),
                   IFNULL(t.certificate_code,''),
                   IFNULL(t.remarks,'')
-               )  LIKE concat('%',#{searchText},'%')
-          </if>
+                  )  LIKE concat('%',#{searchText},'%')
+              </if>
+          </where>
     </select>
 
     <!-- 员工培训-->

@@ -39,7 +39,7 @@ public interface StaffcontractMapper extends BaseMapper<Staffcontract> {
      * @param searchText
      * @return
      */
-    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page, @Param("searchText") String searchText);
+    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,@Param("query") StaffcontractDTO staffcontractDTO, @Param("searchText") String searchText);
 
     /**
      * 员工合同签订分页

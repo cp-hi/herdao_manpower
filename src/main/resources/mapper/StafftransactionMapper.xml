@@ -52,7 +52,9 @@
                   t.MODIFIEd_NAME,
                   t.MODIFIED_TIME,
                   t.STAFF_ID,
-                  CONCAT(t.MODIFIEd_NAME, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+                  CONCAT(t.MODIFIEd_NAME, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc,
+                  t.group_id,
+                  t.GROUP_NAME
             from (
                   SELECT
                   f.id,
@@ -65,26 +67,35 @@
                   f.COME_UNIT_NAME,
                   usr.USER_NAME MODIFIEd_NAME,
                   f.MODIFIED_TIME,
-                  f.STAFF_ID
+                  f.STAFF_ID,
+                  g.ID group_id,
+                  g.GROUP_NAME
                   FROM
                   mp_stafftransaction f
                   LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
                   LEFT JOIN mp_user usr ON usr.id = f.MODIFIED_CODE
                   LEFT JOIN sys_dict_item dic on dic.`value`=f.TRAN_TYPE and dic.type='YDLX'
+                  LEFT JOIN mp_userpost up ON s.ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+                  LEFT JOIN mp_post p ON p.ID = up.POST_ID
+                  LEFT JOIN mp_group g on p.GROUP_ID=g.ID
                   WHERE
-                  1 = 1
-                  AND f.DEL_FLAG =0
-              ) t where 1=1
-            <if test="staffId != null">
-                 AND t.staffId=#{staffId}
-            </if>
-            <if test="searchText != null">
-                  and CONCAT(
+                  f.DEL_FLAG =0
+                  <if test="query.groupId != null">
+                      and p.GROUP_ID = #{query.groupId}
+                  </if>
+              ) t
+              <where>
+                  <if test="query.staffId != null">
+                      AND t.staffId=#{query.staffId}
+                  </if>
+                  <if test="searchText != null">
+                      and CONCAT(
                       IFNULL(t.staff_name,'') , IFNULL(t.staff_code,''),IFNULL(t.TRAN_TIME,'') ,
                       IFNULL(t.TRAN_TYPE,'') ,IFNULL(t.TRAN_REASON,'') , IFNULL(t.OUT_UNIT_NAME,'') ,
                       IFNULL(t.COME_UNIT_NAME,''),IFNULL(t.MODIFIEd_NAME,''), IFNULL(t.MODIFIED_TIME,'')
-                  ) LIKE concat('%',#{searchText},'%')
-            </if>
+                      ) LIKE concat('%',#{searchText},'%')
+                  </if>
+              </where>
        </select>
 
       <!-- 员工异动情况-->

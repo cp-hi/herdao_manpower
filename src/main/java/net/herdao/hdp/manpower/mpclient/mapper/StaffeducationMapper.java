@@ -38,10 +38,9 @@ public interface StaffeducationMapper extends BaseMapper<Staffeducation> {
      * 员工家庭情况分页
      * @param page 分页对象
      * @param searchText 关键字搜索
-     * @param staffId 员工工号
      * @return
      */
-    Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page, @Param("searchText") String searchText, @Param("staffId") String staffId);
+    Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page,@Param("query") StaffEducationDTO staffEducationDTO, @Param("searchText") String searchText);
 
     /**
      * 员工教育经历
