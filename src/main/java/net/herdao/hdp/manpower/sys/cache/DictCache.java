@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.sys.cache;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -45,6 +46,14 @@ public class DictCache {
         return biMap.get(val);
     }
 
+    public static String getDictLabel(String type, String val, StringBuffer buffer) {
+        String label = getDictLabel(type, val);
+        if (StringUtils.isBlank(label))
+            buffer.append("；不存在此字典值：" + val);
+        return label;
+    }
+
+
     public static String getDictVal(String type, String label) {
         BiMap<String, String> biMap = dictList.get(type);
         if (null != biMap) return biMap.inverse().get(label);
@@ -56,5 +65,12 @@ public class DictCache {
             biMap.put(item.getValue(), item.getLabel());
         dictList.put(type, biMap);
         return biMap.inverse().get(label);
+    }
+
+    public static String getDictVal(String type, String label, StringBuffer buffer) {
+        String val = getDictVal(type, label);
+        if (StringUtils.isBlank(val))
+            buffer.append("；不存在此字典：" + label);
+        return val;
     }
 }

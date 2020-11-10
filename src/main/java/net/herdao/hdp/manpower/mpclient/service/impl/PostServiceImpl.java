@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
+import net.herdao.hdp.manpower.sys.cache.DictCache;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     final PipelineService pipelineService;
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
-    final SysDictItemService sysDictItemService;
+//    final SysDictItemService sysDictItemService;
 
     @Override
     public List<PostDTO> postList(Long groupId) {
@@ -171,10 +172,10 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        post.setOrgType(sysDictItemService.getDictItemValue("GWZZLX", excel.getOrgType(), buffer));
-        post.setPostLevel(sysDictItemService.getDictItemValue("XCJB", excel.getPostLevel(), buffer));
-        post.setYearPayRatio(sysDictItemService.getDictItemValue("XCBL", excel.getYearPayRatio(), buffer));
-        post.setPerforSalaryRatio(sysDictItemService.getDictItemValue("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
+        post.setOrgType(DictCache.getDictVal("GWZZLX", excel.getOrgType(), buffer));
+        post.setPostLevel(DictCache.getDictVal("XCJB", excel.getPostLevel(), buffer));
+        post.setYearPayRatio(DictCache.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
+        post.setPerforSalaryRatio(DictCache.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
         handleErrMsg(buffer);
 
