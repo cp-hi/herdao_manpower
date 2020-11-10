@@ -34,7 +34,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
-public class JobGradeController extends BaseController<JobGrade, JobGradeListVO, JobGradeFormVO,Class> {
+public class JobGradeController extends BaseController<JobGrade, JobGradeListVO, JobGradeFormVO, Class> {
 
     private JobGradeService jobGradeService;
 
@@ -47,9 +47,13 @@ public class JobGradeController extends BaseController<JobGrade, JobGradeListVO,
     @ApiOperation(value = "职等列表", notes = "用于下拉列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "集团id"),
+            @ApiImplicitParam(name = "needBlank", value = "需要添加一个全部，1为需要，不填或0则不需要"),
     })
-    public R<List<JobGradeShortVO>> list(Long groupId) {
-        return R.ok(jobGradeService.jobGradeList(  groupId));
+    public R<List<JobGradeShortVO>> list(Long groupId, Integer needBlank) {
+        List<JobGradeShortVO> list = jobGradeService.jobGradeList(groupId);
+        if (Integer.valueOf(1).equals(needBlank))
+            list.add(0, new JobGradeShortVO("全部"));
+        return R.ok(list);
     }
 
     @Override
@@ -63,6 +67,6 @@ public class JobGradeController extends BaseController<JobGrade, JobGradeListVO,
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<JobGradeListVO>> page(HttpServletResponse response, @ApiIgnore Page page, JobGrade jobGrade, Integer type)
             throws Exception {
-        return super.page(response,page,jobGrade,type);
+        return super.page(response, page, jobGrade, type);
     }
 }

@@ -9,16 +9,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
-import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -30,7 +27,7 @@ import java.util.List;
 
 /**
  * @param <T> 实体类Entity类型
- * @param <D> 分页类DTO，用于列表展示及列表导出
+ * @param <D> 分页类VO，用于列表展示及列表导出
  * @param <F> 表单页Form类型，用于新增修改
  * @param <E> excel导入类，注意，批量新增批量修改所用字段有可能不同，
  *            所以可能会有不同的类，一般用大类继承小类，然后把大类填
@@ -113,7 +110,6 @@ public class BaseController<T, D, F, E> {
             @ApiImplicitParam(name = "current", value = "当前页"),
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
-
     })
     public R<IPage<OperationLog>> getOperationLogs(HttpServletResponse response, @ApiIgnore Page page, Long objId, Integer type) throws Exception {
         IPage p = entityService.getOperationLogs(page, objId);
@@ -234,7 +230,7 @@ public class BaseController<T, D, F, E> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
-    public R<E> getDownloadTempl(HttpServletResponse response, Integer importType) {
+    public R<E> getDownloadTempl(HttpServletResponse response,  Integer importType) {
         try {
             Class templClass = getBatchAddClass();
             if (Integer.valueOf(1).equals(importType))
@@ -243,7 +239,7 @@ public class BaseController<T, D, F, E> {
             if (Class.class == templClass)
                 throw new Exception("没有找到模板");
 
-            log.info("-----------importType : %s  templClass  %s ", importType, templClass.getName());
+            log.info("-----------importType : {}  templClass  {} ", importType, templClass.getName());
 
             ExcelUtils.downloadTempl(response, templClass);
 

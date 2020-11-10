@@ -24,9 +24,9 @@ public @interface DtoField {
 
     String symbol() default " ";
 
-    String mapFix() default "";//   "{1:\"于\",3:\"创建\"}"    "{1:\"于\",3:\"更新\"}"
+    String mapFix() default "";//example  "{1:\"于\",3:\"创建\"}"    "{1:\"于\",3:\"更新\"}"
 
-    String converter() default ""; //   "{true:\"已停用\",false:\"已启用\"}"
+    String converter() default ""; //example   "{true:\"已停用\",false:\"已启用\"}"
 
     String pattern() default "yyyy-MM-dd HH:mm";
 

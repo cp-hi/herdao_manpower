@@ -43,7 +43,6 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
     @Autowired
     private JobLevelService jobLevelService;
 
-
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
         super.entityService = jobLevelService;
