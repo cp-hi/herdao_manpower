@@ -145,7 +145,7 @@
                 di.label customPost,
                 pt.label officePostTypeName
         FROM  mp_userpost u
-                LEFT JOIN mp_staff st ON st.user_id = u.USER_ID AND
+                LEFT JOIN mp_staff st ON st.user_id = u.USER_ID
                 LEFT JOIN mp_organization a ON a.id = u.ORG_DEPT_ID
                 LEFT JOIN mp_post p on p.ID=u.POST_ID
                 LEFT JOIN mp_section sec on sec.id=p.SECTION_ID
@@ -157,6 +157,7 @@
 	        <if test="staffId != null">
 	            and st.id = #{staffId}
 	        </if>
+	        and u.MAIN_POST=1
 		</where>
     </select>
 
