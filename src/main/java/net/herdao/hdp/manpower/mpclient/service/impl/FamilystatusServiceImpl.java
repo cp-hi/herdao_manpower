@@ -43,8 +43,8 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     private SysDictItemService itemService;
 
     @Override
-    public Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, String searchText) {
-        Page<FamilyStatusListDTO> pageResult = this.baseMapper.findFamilyStatusPage(page, searchText);
+    public Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page,FamilyStatusListDTO familyStatusListDTO, String searchText) {
+        Page<FamilyStatusListDTO> pageResult = this.baseMapper.findFamilyStatusPage(page, familyStatusListDTO,searchText);
         return pageResult;
     }
 

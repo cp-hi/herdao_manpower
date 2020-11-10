@@ -21,7 +21,7 @@ public interface StaffcontractService extends HdpService<Staffcontract> {
      * @param searchText
      * @return
      */
-    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page, String searchText);
+    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText);
 
     /**
      * 员工合同签订

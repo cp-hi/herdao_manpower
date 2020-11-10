@@ -23,7 +23,7 @@ public interface FamilystatusService extends HdpService<Familystatus> {
      * @param searchText
      * @return
      */
-    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, String searchText);
+    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page,FamilyStatusListDTO familyStatusListDTO, String searchText);
 
     /**
      * 员工家庭情况

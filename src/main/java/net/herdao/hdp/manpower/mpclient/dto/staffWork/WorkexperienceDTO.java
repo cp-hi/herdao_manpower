@@ -113,4 +113,22 @@ public class WorkexperienceDTO {
     @ExcelProperty(value = "最近更新情况")
     @ExcelIgnore
     private String updateDesc;
+    /**
+     * 集团id
+     */
+    @ApiModelProperty(value="集团id")
+    @ExcelProperty(value = "集团id")
+    private String groupId;
+    /**
+     * 集团名
+     */
+    @ApiModelProperty(value="集团名")
+    @ExcelProperty(value = "集团名")
+    private String groupName;
+    /**
+     * 员工工号
+     */
+    @ApiModelProperty(value="员工工号")
+    @ExcelIgnore
+    private String staffId;
 }

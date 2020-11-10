@@ -46,8 +46,8 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
-    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, String searchText) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page, searchText);
+    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,UserpostDTO userpostDTO,  String searchText) {
+        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page,userpostDTO, searchText);
         return pageResult;
     }
 

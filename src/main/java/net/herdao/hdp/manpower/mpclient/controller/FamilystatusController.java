@@ -16,10 +16,7 @@ import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
-import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.*;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
 import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
@@ -28,8 +25,6 @@ import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,7 +52,7 @@ import java.util.stream.Collectors;
 public class FamilystatusController extends HdpBaseController  {
 
     private FamilystatusService familystatusService;
-    
+
     private RemoteUserService remoteUserService;
 
     @Override
@@ -125,14 +120,14 @@ public class FamilystatusController extends HdpBaseController  {
      * @param searchText 关键字搜索
      * @return
      */
-    @ApiOperation(value = "员工教育经历分页", notes = "员工教育经历分页")
+    @ApiOperation(value = "员工家庭情况分页", notes = "员工家庭情况分页")
     @GetMapping("/findFamilyStatusPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findFamilyStatusPage(Page page, String searchText) {
-        Page pageResult = familystatusService.findFamilyStatusPage(page, searchText);
+    public R findFamilyStatusPage(Page page, FamilyStatusListDTO familyStatusListDTO, String searchText) {
+        Page pageResult = familystatusService.findFamilyStatusPage(page,familyStatusListDTO, searchText);
         return R.ok(pageResult);
     }
 
@@ -143,14 +138,16 @@ public class FamilystatusController extends HdpBaseController  {
      * @return R
      */
     @ApiOperation(value = "导出家庭情况Excel", notes = "导出家庭情况Excel")
-    @PostMapping("/exportFamily")
+    @GetMapping("/exportFamily")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
-    public void exportFamily(HttpServletResponse response, String searchText) {
+    public void exportFamily(HttpServletResponse response, FamilyStatusListDTO familyStatusListDTO, String searchText) {
         try {
-            List<FamilyStatusVO> list = familystatusService.findFamilyStatus(searchText);
-            ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusVO.class,list);
+            Page page =new Page();
+            page.setSize(-1);
+            Page familyStatusPage = familystatusService.findFamilyStatusPage(page, familyStatusListDTO, searchText);
+            ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusListDTO.class,familyStatusPage.getRecords());
         } catch (Exception e) {
             e.printStackTrace();
             R.ok("导出失败");
@@ -172,7 +169,7 @@ public class FamilystatusController extends HdpBaseController  {
         String loginCode=userInfo.getSysUser().getUsername();
         Long userId = userInfo.getSysUser().getUserId();
         LocalDateTime now = LocalDateTime.now();
-    	
+
     	if(familystatus.getId()!=null){
     		familystatus.setCreatorId(userId);
     		familystatus.setCreatorCode(loginCode);
@@ -183,7 +180,7 @@ public class FamilystatusController extends HdpBaseController  {
 		familystatus.setModifierCode(loginCode);
 		familystatus.setModifierName(userName);
 		familystatus.setModifiedTime(now);
-    	
+
         boolean status = familystatusService.saveOrUpdate(familystatus);
         return R.ok(status);
     }

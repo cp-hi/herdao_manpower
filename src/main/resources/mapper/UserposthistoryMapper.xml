@@ -49,7 +49,10 @@
                     t.customPost,
                     t.modifier_name,
                     t.MODIFIED_TIME,
-                    CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc
+                    CONCAT(t.modifier_name, " 于 " ,t.MODIFIED_TIME," 更新") updateDesc,
+                    t.staff_id,
+                  t.group_id,
+                  t.GROUP_NAME
            FROM
                (
                     SELECT u.id,
@@ -63,7 +66,10 @@
                     CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) jobLevelName,
                     di.label customPost,
                     usr.USER_NAME modifier_name,
-                    u.MODIFIED_TIME
+                    u.MODIFIED_TIME,
+                    s.id staff_id,
+                      g.ID group_id,
+                      g.GROUP_NAME
                     FROM  mp_userposthistory u
                     LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
                     LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
@@ -74,16 +80,26 @@
                     LEFT JOIN mp_job_level j1 ON j1.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
                     LEFT JOIN mp_job_level j2 ON j2.JOB_LEVEL_CODE = P.JOB_LEVEL_ID2
                     LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
-                    WHERE 1 = 1
-                    AND u.del_flag = 0
+                      LEFT JOIN mp_userpost up ON s.ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+                      LEFT JOIN mp_group g on p.GROUP_ID=g.ID
+                    WHERE
+                    u.del_flag = 0
                     AND u.MAIN_POST = 1
-            )t where 1=1
-        <if test="searchText != null">
-            and CONCAT(
-                IFNULL( t.staffName,''), IFNULL( t.staffCode,''),IFNULL( t.startDate,''),IFNULL( t.orgName,''),IFNULL( t.sectionName,''),
-                IFNULL( t.pipelineName,''),IFNULL( t.postName,''), IFNULL( t.jobLevelName,''), IFNULL( t.customPost,''),IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
-            ) LIKE concat('%',#{searchText},'%')
-        </if>
+                      <if test="query.staffId != null">
+                          and s.id = #{query.staffId}
+                      </if>
+                      <if test="query.groupId != null">
+                          and p.GROUP_ID = #{query.groupId}
+                      </if>
+            )t
+          <where>
+              <if test="searchText != null">
+                  and CONCAT(
+                  IFNULL( t.staffName,''), IFNULL( t.staffCode,''),IFNULL( t.startDate,''),IFNULL( t.orgName,''),IFNULL( t.sectionName,''),
+                  IFNULL( t.pipelineName,''),IFNULL( t.postName,''), IFNULL( t.jobLevelName,''), IFNULL( t.customPost,''),IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')
+                  ) LIKE concat('%',#{searchText},'%')
+              </if>
+          </where>
     </select>
 
     <!-- 历史任职情况 -->

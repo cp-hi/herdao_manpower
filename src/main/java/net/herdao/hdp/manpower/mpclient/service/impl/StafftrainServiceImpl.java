@@ -41,8 +41,8 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
     private SysDictItemServiceImpl itemService;
 
     @Override
-    public Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page, String searchText) {
-        Page<StafftrainDTO> list = this.baseMapper.findStaffTrainPage(page, searchText);
+    public Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page,StafftrainDTO stafftrainDTO, String searchText) {
+        Page<StafftrainDTO> list = this.baseMapper.findStaffTrainPage(page,stafftrainDTO, searchText);
         return list;
     }
 

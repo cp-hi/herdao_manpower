@@ -46,8 +46,8 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
     private CompanyService companyService;
 
     @Override
-    public Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page, String searchText) {
-        Page<StaffcontractDTO> list = this.baseMapper.findStaffContractPage(page, searchText);
+    public Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText) {
+        Page<StaffcontractDTO> list = this.baseMapper.findStaffContractPage(page,staffcontractDTO, searchText);
         return list;
     }
 

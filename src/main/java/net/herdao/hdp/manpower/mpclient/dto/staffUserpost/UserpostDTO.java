@@ -93,5 +93,16 @@ public class UserpostDTO {
     @ApiModelProperty(value="最近更新情况")
     @ExcelProperty(value = "最近更新情况")
     private String updateDesc;
-
+    /**
+     * 集团id
+     */
+    @ApiModelProperty(value="集团id")
+    @ExcelProperty(value = "集团id")
+    private String groupId;
+    /**
+     * 员工工号
+     */
+    @ApiModelProperty(value="员工工号")
+    @ExcelIgnore
+    private String staffId;
 }

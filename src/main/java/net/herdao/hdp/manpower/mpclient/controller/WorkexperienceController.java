@@ -148,8 +148,8 @@ public class WorkexperienceController extends HdpBaseController {
           @ApiImplicitParam(name="staffId",value="员工工号")
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffWorkPage(Page page, String searchText,String staffId) {
-        Page pageResult = workexperienceService.findStaffWorkPage(page, searchText,staffId);
+    public R findStaffWorkPage(Page page,WorkexperienceDTO workexperienceDTO, String searchText) {
+        Page pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO,searchText);
         return R.ok(pageResult);
     }
 
@@ -192,10 +192,12 @@ public class WorkexperienceController extends HdpBaseController {
         @ApiImplicitParam(name="searchText",value="搜索关键字"),
         @ApiImplicitParam(name="staffId",value="员工工号")
     })
-    public R exportStaffWork(HttpServletResponse response, String searchText,String staffId) {
+    public R exportStaffWork(HttpServletResponse response,WorkexperienceDTO workexperienceDTO, String searchText) {
         try {
-            List<WorkexperienceDTO> list = workexperienceService.findStaffWork(searchText,staffId);
-            ExcelUtils.export2Web(response, "员工工作经历", "员工工作经历表", WorkexperienceDTO.class,list);
+            Page page =new Page();
+            page.setSize(-1);
+            Page pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO,searchText);
+            ExcelUtils.export2Web(response, "员工工作经历", "员工工作经历表", WorkexperienceDTO.class,pageResult.getRecords());
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");

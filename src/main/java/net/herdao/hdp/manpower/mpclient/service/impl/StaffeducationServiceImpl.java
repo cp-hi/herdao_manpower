@@ -66,8 +66,8 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     }
 
     @Override
-    public Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page, String searchText, String staffId) {
-        Page<StaffEducationDTO> pageResult = this.baseMapper.findStaffEducationPage(page, searchText, staffId);
+    public Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page,StaffEducationDTO staffEducationDTO, String searchText) {
+        Page<StaffEducationDTO> pageResult = this.baseMapper.findStaffEducationPage(page,staffEducationDTO, searchText);
         return pageResult;
     }
 

@@ -45,8 +45,8 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
     private StaffService staffService;
 
     @Override
-    public Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page, String searchText) {
-        Page<StaffRpDTO> list = this.baseMapper.findStaffRpPage(page, searchText);
+    public Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page,StaffRpDTO staffRpDTO, String searchText) {
+        Page<StaffRpDTO> list = this.baseMapper.findStaffRpPage(page,staffRpDTO, searchText);
         return list;
     }
 

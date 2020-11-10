@@ -40,7 +40,7 @@ public interface StaffRewardsPulishmentsMapper extends BaseMapper<StaffRewardsPu
      * @param searchText
      * @return
      */
-    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page,  @Param("searchText") String searchText);
+    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page,@Param("query") StaffRpDTO staffRpDTO,  @Param("searchText") String searchText);
 
     /**
      * 员工奖惩

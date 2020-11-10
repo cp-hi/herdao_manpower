@@ -40,7 +40,7 @@ public interface StafftrainMapper extends BaseMapper<Stafftrain> {
      * @param searchText
      * @return
      */
-    Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page, @Param("searchText") String searchText);
+    Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page,@Param("query") StafftrainDTO stafftrainDTO, @Param("searchText") String searchText);
 
 
     /**

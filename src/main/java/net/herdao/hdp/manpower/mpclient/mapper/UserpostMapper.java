@@ -33,7 +33,7 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      * @param searchText
       * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
+    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,@Param("query") UserpostDTO userpostDTO,  @Param("searchText") String searchText);
 
     /**
      * 现任职情况

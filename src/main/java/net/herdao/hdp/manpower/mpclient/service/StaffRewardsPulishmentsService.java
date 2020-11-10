@@ -37,7 +37,7 @@ public interface StaffRewardsPulishmentsService extends HdpService<StaffRewardsP
      * @param searchText
      * @return
      */
-    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page, String searchText);
+    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page,StaffRpDTO staffRpDTO, String searchText);
 
     /**
      * 员工奖惩

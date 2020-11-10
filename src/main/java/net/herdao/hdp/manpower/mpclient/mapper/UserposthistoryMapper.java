@@ -24,7 +24,7 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
      * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page, @Param("searchText") String searchText);
+    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page,@Param("query") UserpostDTO userpostDTO, @Param("searchText") String searchText);
 
     /**
      * 历史任职情况分页

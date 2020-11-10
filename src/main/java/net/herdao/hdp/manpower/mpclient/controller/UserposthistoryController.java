@@ -68,8 +68,8 @@ public class UserposthistoryController extends HdpBaseController {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findUserPostHistoryPage(Page page, String searchText) {
-        Page pageResult = userposthistoryService.findUserPostHistoryPage(page, searchText);
+    public R findUserPostHistoryPage(Page page,UserpostDTO userpostDTO, String searchText) {
+        Page pageResult = userposthistoryService.findUserPostHistoryPage(page,userpostDTO, searchText);
         return R.ok(pageResult);
     }
 
@@ -83,10 +83,12 @@ public class UserposthistoryController extends HdpBaseController {
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    public R exportStaffJobHis(HttpServletResponse response, String searchText) {
+    public R exportStaffJobHis(HttpServletResponse response,UserpostDTO userpostDTO,  String searchText) {
         try {
-            List<UserpostDTO> list = userposthistoryService.findUserPostHistory(searchText);
-            ExcelUtils.export2Web(response, "历史任职情况", "历史任职情况", UserpostDTO.class,list);
+            Page page =new Page();
+            page.setSize(-1);
+            Page pageResult = userposthistoryService.findUserPostHistoryPage(page,userpostDTO, searchText);
+            ExcelUtils.export2Web(response, "历史任职情况", "历史任职情况", UserpostDTO.class,pageResult.getRecords());
         } catch (Exception e) {
             e.printStackTrace();
             return R.ok("导出失败");

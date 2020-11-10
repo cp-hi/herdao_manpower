@@ -27,7 +27,7 @@ public interface FamilystatusMapper extends BaseMapper<Familystatus> {
      * @param searchText
      * @return
      */
-    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page, @Param("searchText") String searchText);
+    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page,@Param("query") FamilyStatusListDTO familyStatusListDTO, @Param("searchText") String searchText);
 
 
     /**

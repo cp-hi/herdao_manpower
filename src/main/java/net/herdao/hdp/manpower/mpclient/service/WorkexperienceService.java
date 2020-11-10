@@ -35,10 +35,9 @@ public interface WorkexperienceService extends HdpService<Workexperience> {
      * 员工工作经历分页
      * @param page 分页对象
      * @param searchText 关键字搜索
-     * @param staffId 员工ID
      * @return
      */
-    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page, String searchText,String staffId);
+    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page,WorkexperienceDTO workexperienceDTO, String searchText);
 
 
     /**
