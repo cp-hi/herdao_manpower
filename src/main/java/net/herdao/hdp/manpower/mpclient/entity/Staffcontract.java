@@ -31,12 +31,12 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="id")
     private Long id;
-
-    /**
-     * 员工合同管理OID(旧平台)
-     */
-    @ApiModelProperty(value="员工合同管理OID(旧平台)")
-    private String oid;
+//
+//    /**
+//     * 员工合同管理OID(旧平台)
+//     */
+//    @ApiModelProperty(value="员工合同管理OID(旧平台)")
+//    private String oid;
 
     /**
      * 合同开始日期
@@ -53,10 +53,10 @@ private static final long serialVersionUID = 1L;
     private Date endDate;
 
     /**
-     * 劳动合同签订主体
+     * 劳动合同签订主体id
      */
-    @ApiModelProperty(value="劳动合同签订主体")
-    private String companyCode;
+    @ApiModelProperty(value="劳动合同签订主体id")
+    private String companyId;
 
     /**
      * 合同编号(旧平台)
@@ -116,11 +116,11 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="解除劳动合同证明编号(旧平台)")
     private String removeOid;
-    /**
-     * 员工外键(旧平台)
-     */
-    @ApiModelProperty(value="员工外键(旧平台)")
-    private String staffOid;
+//    /**
+//     * 员工外键(旧平台)
+//     */
+//    @ApiModelProperty(value="员工外键(旧平台)")
+//    private String staffOid;
 
     /**
      * 解除劳动合同证明编号

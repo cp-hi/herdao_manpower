@@ -36,6 +36,7 @@
               <result property="modifierName" column="modifier_name"/>
               <result property="creatorId" column="creator_id"/>
               <result property="creatorName" column="creator_name"/>
+              <result property="companyId" column="COMPANY_ID"/>
          </resultMap>
 
      <!-- 员工合同签订分页 -->
@@ -71,7 +72,7 @@
                      IF(f.NEWEST=0,'否','是') contract_status
                      FROM  mp_staffcontract f
                      LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
-                     LEFT JOIN mp_company c ON  c.COMPANY_CODE=f.COMPANY_CODE
+                     LEFT JOIN mp_company c ON  c.Id=f.COMPANY_ID
                      LEFT JOIN sys_dict_item dic ON dic.value = f.CONTRACT_TYPE and dic.type='HTQXLX'
                      LEFT JOIN mp_user u ON  u.id = f.modifier_id
                      where f.del_flag = 0
@@ -120,7 +121,7 @@
                     IF(f.NEWEST=0,'否','是') contract_status
                     FROM  mp_staffcontract f
                     LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
-                    LEFT JOIN mp_company c ON  c.COMPANY_CODE=f.COMPANY_CODE
+                    LEFT JOIN mp_company c ON  c.Id=f.COMPANY_ID
                     LEFT JOIN sys_dict_item dic ON dic.value = f.CONTRACT_TYPE and dic.type='HTQXLX'
                     LEFT JOIN mp_user u ON  u.id = f.modifier_id
                     where f.del_flag = 0
