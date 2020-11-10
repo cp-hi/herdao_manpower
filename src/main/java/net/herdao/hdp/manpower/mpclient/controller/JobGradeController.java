@@ -52,7 +52,7 @@ public class JobGradeController extends BaseController<JobGrade, JobGradeListVO,
     public R<List<JobGradeShortVO>> list(Long groupId, Integer needBlank) {
         List<JobGradeShortVO> list = jobGradeService.jobGradeList(groupId);
         if (Integer.valueOf(1).equals(needBlank))
-            list.add(0, new JobGradeShortVO("全部"));
+            list.add(0, new JobGradeShortVO("全部",groupId));
         return R.ok(list);
     }
 

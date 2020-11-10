@@ -16,8 +16,9 @@ import lombok.Data;
 @Data
 @ApiModel(value = "职等管理-下拉列表")
 public class JobGradeShortVO {
-    public JobGradeShortVO(String name){
+    public JobGradeShortVO(String name,Long groupId){
         setJobGradeName(name);
+        setGroupId(groupId);
     }
     @ApiModelProperty("id")
     private Long id;
