@@ -44,4 +44,6 @@ public class StaffFamilyDTO {
     @ApiModelProperty(value="最后修改时间")
     private LocalDateTime modifiedTime;
 
+    @ApiModelProperty(value="最近更新情况")
+    private String updateDesc;
 }
