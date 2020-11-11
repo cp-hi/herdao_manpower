@@ -1,11 +1,9 @@
 package net.herdao.hdp.manpower.sys.cache;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.google.common.collect.BiMap;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
-import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +30,6 @@ public class GroupCache {
     }
 
     private static Map<String, Group> groupMap = new HashMap<>();
-
 
     public static Group getGroupByName(String groupName, boolean need, StringBuffer buffer) {
         Group group = groupMap.get(groupName);

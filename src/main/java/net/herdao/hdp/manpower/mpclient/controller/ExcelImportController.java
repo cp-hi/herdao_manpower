@@ -74,10 +74,10 @@ public interface ExcelImportController<A, U> {
             inputStream = file.getInputStream();
             if (!Integer.valueOf(1).equals(importType)) {
                 clazz = getBatchAddClass();
-                listener = new ImportExcelListener<A>(getEntityService(), importType);
+                listener = new ImportExcelListener<A>(getEntityService(),clazz, importType);
             } else {
                 clazz = getBatchUpdateClass();
-                listener = new ImportExcelListener<U>(getEntityService(), importType);
+                listener = new ImportExcelListener<U>(getEntityService(),clazz, importType);
             }
             EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
         } catch (Exception ex) {

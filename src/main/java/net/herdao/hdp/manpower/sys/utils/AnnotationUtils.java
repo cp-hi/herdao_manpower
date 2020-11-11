@@ -94,13 +94,14 @@ public class AnnotationUtils {
         return getExcelPropertyNames(object.getClass());
     }
 
-    public static List<String> getExcelPropertyNames(Class clazz) {
+    public static List<String> getExcelPropertyNames(Class clazz, String... excludeColumn) {
         Field[] fields = clazz.getDeclaredFields();
         List<String> names = new ArrayList<>();
         for (Field field : fields) {
             ExcelProperty property = field.getAnnotation(ExcelProperty.class);
             if (null != property) names.add(property.value()[property.value().length - 1]);
         }
+        names.removeAll(Arrays.asList(excludeColumn));
         return names;
     }
 
