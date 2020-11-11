@@ -70,6 +70,19 @@ public class OrganizationFormVO {
 	
 	@ApiModelProperty(value = "组织类型名称")
 	private String orgTypeName;
+	
+	/**
+	 * 组织负责人姓名
+	 */
+	@ApiModelProperty(value = "组织负责人姓名")
+	private String orgChargeWorkName;
+
+	/**
+	 * 组织负责人工号
+	 */
+	@ApiModelProperty(value = "组织负责人工号")
+	private String orgChargeWorkNo;
+	
 	/**
 	 * 负责岗位id
 	 */

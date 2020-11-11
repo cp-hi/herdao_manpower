@@ -68,7 +68,7 @@ public class StaffListDTO {
     private Long probPeriod;
 
     @ApiModelProperty(value = "直属主管")
-    private String orgChargeName;
+    private String orgChargeWorkName;
 
     @ApiModelProperty(value="移动电话")
     private String mobile;

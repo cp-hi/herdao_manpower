@@ -79,7 +79,7 @@ public class OrgReportDetailVO {
 	 */
 	@ApiModelProperty(value = "组织负责人姓名")
 	@ExcelProperty(value = "组织负责人姓名")
-	private String orgChargeName;
+	private String orgChargeWorkName;
 
 	/**
 	 * 负责岗位

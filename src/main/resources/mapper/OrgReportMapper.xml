@@ -66,7 +66,7 @@
                 org.org_desc,
                 IF ( org.IS_VIRTUAL = 0, '否', '是' ) IS_VIRTUAL,
                 IF ( org.organizational = 0, '否', '是' ) organizational,
-                org.org_charge_name,
+                org.org_charge_work_name,
                 ps.post_name,
                 org.CREATED_TIME
         FROM mp_organization org
@@ -92,7 +92,7 @@
         org.org_desc,
         IF ( org.IS_VIRTUAL = 0, '否', '是' ) IS_VIRTUAL,
         IF ( org.organizational = 0, '否', '是' ) organizational,
-        org.org_charge_name,
+        org.org_charge_work_name,
         ps.post_name,
         org.CREATED_TIME
         FROM mp_organization org

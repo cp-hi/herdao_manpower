@@ -27,6 +27,6 @@ public interface OrgModifyRecordMapper extends BaseMapper<OrgModifyRecord> {
 	 * @param searchText
 	 * @return
 	 */
-	Page<OrgModifyRecordDTO> getPage(Page<OrgModifyRecordDTO> page, @Param("orgCode")String orgCode, @Param("searchText")String searchText);
+	Page<OrgModifyRecordDTO> getPage(Page page, @Param("orgCode")String orgCode, @Param("searchText")String searchText);
 
 }

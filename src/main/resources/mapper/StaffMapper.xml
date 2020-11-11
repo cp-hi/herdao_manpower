@@ -453,7 +453,7 @@
             f.ENTRY_TIME,
             f.regular_time,
             f.prob_period,
-            o.org_charge_name,
+            o.org_charge_work_name,
             f.MOBILE,
             f.ID_NUMBER,
             f.NATION,

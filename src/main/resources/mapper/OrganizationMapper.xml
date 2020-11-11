@@ -24,10 +24,10 @@
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
         <result property="orgDesc" column="org_desc"/>
-        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkId" column="org_charge_work_id"/>
+        <result property="orgChargeWorkName" column="org_charge_work_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
         <result property="orgSimpleDesc" column="org_simple_desc"/>
-        <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
         <result property="startDate" column="start_date"/>
@@ -60,10 +60,10 @@
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
         <result property="orgDesc" column="org_desc"/>
-        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkId" column="org_charge_work_id"/>
+        <result property="orgChargeWorkName" column="org_charge_work_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
         <result property="orgSimpleDesc" column="org_simple_desc"/>
-        <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
         <result property="startDate" column="start_date"/>
@@ -95,10 +95,10 @@
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
         <result property="orgDesc" column="org_desc"/>
-        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkId" column="org_charge_work_id"/>
+        <result property="orgChargeWorkName" column="org_charge_work_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
         <result property="orgSimpleDesc" column="org_simple_desc"/>
-        <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
         <result property="startDate" column="start_date"/>
@@ -131,10 +131,10 @@
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
         <result property="orgDesc" column="org_desc"/>
-        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkId" column="org_charge_work_id"/>
+        <result property="orgChargeWorkName" column="org_charge_work_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
         <result property="orgSimpleDesc" column="org_simple_desc"/>
-        <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
         <result property="startDate" column="start_date"/>
@@ -168,10 +168,10 @@
         <result property="isVirtual" column="IS_VIRTUAL"/>
         <result property="orgType" column="ORG_TYPE"/>
         <result property="orgDesc" column="org_desc"/>
-        <result property="orgChargeName" column="org_charge_name"/>
+        <result property="orgChargeWorkId" column="org_charge_work_id"/>
+        <result property="orgChargeWorkName" column="org_charge_work_name"/>
         <result property="orgChargeWorkNo" column="org_charge_work_no"/>
         <result property="orgSimpleDesc" column="org_simple_desc"/>
-        <result property="chargeOrg" column="charge_org"/>
         <result property="staff" column="staff"/>
         <result property="empInService" column="emp_in_service"/>
         <result property="startDate" column="start_date"/>
@@ -466,7 +466,7 @@
                 orgList.org_code,
                 orgList.org_type,
                 orgList.org_type_name,
-                orgList.org_charge_name,
+                orgList.org_charge_work_name,
                 orgList.post_name,
                 orgList.del_flag,
                 orgList.staff_total,
@@ -480,7 +480,7 @@
 			        org.org_code,
 			       	org.org_type,
 			       	dict.label AS org_type_name,
-			        org.org_charge_name,
+			        org.org_charge_work_name,
 			        org.is_stop,
 			        0 staff_total,
 			        ps.post_name,
@@ -504,7 +504,7 @@
 		            AND orgList.org_code != #{orgCode} AND orgList.org_code LIKE CONCAT(#{orgCode},'%') AND LENGTH(orgList.org_code) &lt;= LENGTH(#{orgCode}) + 3
 		        </if>
 	        	<if test="searchText != '' and searchText != null">
-	        		AND CONCAT(orgList.org_name, orgList.org_code, IFNULL(orgList.org_charge_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')
+	        		AND CONCAT(orgList.org_name, orgList.org_code, IFNULL(orgList.org_charge_work_name, ''), IFNULL(orgList.create_desc, ''), IFNULL(orgList.update_desc, '')) LIKE CONCAT('%',#{searchText},'%')
 	        	</if>
 	        </where>
     </select>
@@ -523,6 +523,8 @@
 			dicc.label AS org_level_name,
 			org.org_type,
 			dict.label AS org_type_name,
+			org.org_charge_work_name,
+			org.org_charge_work_no,
 			0 staff_total,
 	        org.organizational,
 	        org.welfare_type,
@@ -618,7 +620,7 @@
             o.ID,
             o.ORG_CODE,
             o.ORG_NAME,
-            o.org_charge_name,
+            o.org_charge_work_name,
             o.org_charge_work_no,
             f.MOBILE
         FROM
@@ -636,7 +638,7 @@
             o.ID,
             o.ORG_CODE,
             o.ORG_NAME,
-            o.org_charge_name,
+            o.org_charge_work_name,
             o.org_charge_work_no,
             f.MOBILE,
             	CASE (

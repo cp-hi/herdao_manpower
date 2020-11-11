@@ -120,7 +120,7 @@ public class OrgModifyRecordController {
             @ApiImplicitParam(name = "orgCode", value = "组织编码"),
             @ApiImplicitParam(name = "searchText", value = "模糊查询内容")
     })
-    public R getOrgChangeRecordPage(Page<OrgModifyRecordDTO> page, String orgCode, String searchText) {
+    public R<Page<OrgModifyRecordDTO>> getOrgChangeRecordPage(Page page, String orgCode, String searchText) {
         return R.ok(orgModifyRecordService.getPage(page, orgCode, searchText));
     }
 

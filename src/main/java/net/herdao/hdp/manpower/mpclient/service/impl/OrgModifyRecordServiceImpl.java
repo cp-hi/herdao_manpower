@@ -105,7 +105,7 @@ public class OrgModifyRecordServiceImpl extends ServiceImpl<OrgModifyRecordMappe
 	}
 
 	@Override
-	public Page<OrgModifyRecordDTO> getPage(Page<OrgModifyRecordDTO> page, String orgCode, String searchText) {
+	public Page<OrgModifyRecordDTO> getPage(Page page, String orgCode, String searchText) {
 		return this.baseMapper.getPage(page, orgCode, searchText);
 	}
 

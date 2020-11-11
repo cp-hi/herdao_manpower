@@ -40,10 +40,10 @@ public class OrganizationImportDTO {
 	private String parentOrgCode;
 
 	@ApiModelProperty(value = "组织负责人id")
-	private String orgChargeId;
+	private String orgChargeWorkId;
 
 	@ApiModelProperty(value = "组织负责人姓名")
-	private String orgChargeName;
+	private String orgChargeWorkName;
 	
 	@ApiModelProperty(value = "组织负责人工号")
 	private String orgChargeWorkNo;

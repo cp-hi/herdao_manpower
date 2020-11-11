@@ -40,11 +40,13 @@ import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
@@ -66,6 +68,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private PostService postService;
 	@Autowired
     private UserService userService;
+	@Autowired
+	private StaffService staffService;
 	@Autowired
     private UserpostService userpostService;
 	@Autowired
@@ -530,6 +534,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		}
     	}
     	
+    	// 前期联调的时候使用的是工号作为员工组件的value值
+    	String orgChargeWorkNo = organization.getOrgChargeWorkNo();
+    	if(StrUtil.isNotBlank(orgChargeWorkNo)) {
+    		Staff staff = staffService.lambdaQuery().eq(Staff::getStaffCode, orgChargeWorkNo).one();
+    		organization.setOrgChargeWorkId(staff.getId());
+    		organization.setOrgChargeWorkName(staff.getStaffName());
+    	}
+    	
     	// 保存组织
     	this.saveOrUpdate(organization);
     	
@@ -671,8 +683,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		// 组织类型
 		List<SysDictItem> orgTypeList = sysDictItemService.list(Wrappers.<SysDictItem>query().lambda().eq(SysDictItem::getType, "ZZLX"));
 
-		// 用户信息
-		Map<String, User> userMap = getUserMap(userService.lambdaQuery().eq(User::getIsStop, false).list());
+		// 员工信息
+		Map<String, Staff> staffMap = getUserMap(staffService.lambdaQuery().list());
 
 		// 岗位信息
 		Map<String, Post> postMap = getPostMap(postService.lambdaQuery().eq(Post::getStop, false).list());
@@ -687,9 +699,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 		Map<String, OrganizationImportDTO> organizationValiMap = getOrganizationMap();
 		
 		if (importType == 0) {
-			importAddOrganization(excelList, parentOrganizationMap, organizationValiMap, orgTypeList, userMap, postMap, errList, organizationList);
+			importAddOrganization(excelList, parentOrganizationMap, organizationValiMap, orgTypeList, staffMap, postMap, errList, organizationList);
 		}else {
-			importUpdateOrganization(excelList, parentOrganizationMap, organizationValiMap, orgTypeList, userMap, postMap, errList, organizationList);
+			importUpdateOrganization(excelList, parentOrganizationMap, organizationValiMap, orgTypeList, staffMap, postMap, errList, organizationList);
 		}
 		// 保存新增、修改组织信息
 		if(ObjectUtil.isEmpty(errList)) {
@@ -706,13 +718,13 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 * @param parentOrganizationMap
 	 * @param organizationValiMap
 	 * @param orgTypeList
-	 * @param userMap
+	 * @param staffMap
 	 * @param postMap
 	 * @param errList
 	 * @param organizationList
 	 */
 	@SuppressWarnings("all")
-	public void importAddOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, Map<String, OrganizationImportDTO> organizationValiMap, List<SysDictItem> orgTypeList, Map<String, User> userMap,
+	public void importAddOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap, Map<String, OrganizationImportDTO> organizationValiMap, List<SysDictItem> orgTypeList, Map<String, Staff> staffMap,
 			Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
 		// 导入校验
 		for (int i = 0; i < excelList.size(); i++) {
@@ -759,12 +771,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				// 转字典value
 				organization.setOrgType(orgType);
 			}
-			// 用户信息
-			User user = userMap.get(orgDto.getOrgChargeWorkNo());
-			if (ObjectUtil.isNotNull(user)) {
-				organization.setOrgChargeId(StrUtil.toString(user.getId()));
-				organization.setOrgChargeName(user.getUserName());
-				organization.setOrgChargeWorkNo(user.getLoginCode());
+			// 员工信息
+			Staff staff = staffMap.get(orgDto.getOrgChargeWorkNo());
+			if (ObjectUtil.isNotNull(staff)) {
+				organization.setOrgChargeWorkId(staff.getId());
+				organization.setOrgChargeWorkName(staff.getStaffName());
+				organization.setOrgChargeWorkNo(staff.getStaffCode());
 			}
 			
 			// 岗位信息
@@ -807,7 +819,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	 */
 	@SuppressWarnings("all")
 	public void importUpdateOrganization(List excelList, Map<String, OrganizationImportDTO> parentOrganizationMap,  Map<String, OrganizationImportDTO> organizationValiMap, List<SysDictItem> orgTypeList,
-			Map<String, User> userMap, Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
+			Map<String, Staff> staffMap, Map<String, Post> postMap, List<ExcelCheckErrDTO> errList, List<Organization> organizationList) {
 		// 导入校验
 		for (int i = 0; i < excelList.size(); i++) {
 
@@ -857,12 +869,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 				// 转字典value
 				organization.setOrgType(orgType);
 			}
-			// 用户信息
-			User user = userMap.get(orgDto.getOrgChargeWorkNo());
-			if (ObjectUtil.isNotNull(user)) {
-				organization.setOrgChargeId(StrUtil.toString(user.getId()));
-				organization.setOrgChargeName(user.getUserName());
-				organization.setOrgChargeWorkNo(user.getLoginCode());
+			// 员工信息
+			Staff staff = staffMap.get(orgDto.getOrgChargeWorkNo());
+			if (ObjectUtil.isNotNull(staff)) {
+				organization.setOrgChargeWorkId(staff.getId());
+				organization.setOrgChargeWorkName(staff.getStaffName());
+				organization.setOrgChargeWorkNo(staff.getStaffCode());
 			}
 			
 			// 岗位信息
@@ -935,15 +947,15 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 	}
 	
 	/**
-	 * 用户信息
+	 * 员工信息
 	 * 
 	 * @return
 	 */
-	public Map<String, User> getUserMap(List<User> userList){
-		Map<String, User> renderMap = new HashMap<String, User>();
+	public Map<String, Staff> getUserMap(List<Staff> userList){
+		Map<String, Staff> renderMap = new HashMap<String, Staff>();
 		if(ObjectUtil.isNotEmpty(userList)) {
 			userList.forEach(us ->{
-				renderMap.put(us.getLoginCode(), us);
+				renderMap.put(us.getStaffCode(), us);
 			});
 		}
 		return renderMap;

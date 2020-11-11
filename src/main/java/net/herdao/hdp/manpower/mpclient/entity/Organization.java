@@ -4,7 +4,6 @@ package net.herdao.hdp.manpower.mpclient.entity;
 import java.util.Date;
 import java.util.List;
 
-import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -44,7 +43,6 @@ public class Organization extends BaseEntity<Organization> {
 	/**
 	 * 组织名称
 	 */
-	@ExcelProperty(value = "组织名称", index = 0)
 	@ApiModelProperty(value = "组织名称")
 	private String orgName;
 
@@ -74,7 +72,6 @@ public class Organization extends BaseEntity<Organization> {
 	/**
 	 * 父ID
 	 */
-	@ExcelProperty(value = "上级组织编字符串传参", index = 1)
 	@ApiModelProperty(value = "父ID")
 	@TableField(exist = false)
 	private String parentIdStr;
@@ -145,18 +142,17 @@ public class Organization extends BaseEntity<Organization> {
 	 * 组织负责人id
 	 */
 	@ApiModelProperty(value = "组织负责人id")
-	private String orgChargeId;
+	private Long orgChargeWorkId;
 
 	/**
 	 * 组织负责人姓名
 	 */
 	@ApiModelProperty(value = "组织负责人姓名")
-	private String orgChargeName;
+	private String orgChargeWorkName;
 
 	/**
 	 * 组织负责人工号
 	 */
-	@ExcelProperty(value = "组织负责人", index = 3)
 	@ApiModelProperty(value = "组织负责人工号")
 	private String orgChargeWorkNo;
 
@@ -165,13 +161,6 @@ public class Organization extends BaseEntity<Organization> {
 	 */
 	@ApiModelProperty(value = "组织简称")
 	private String orgSimpleDesc;
-
-	/**
-	 * 部门负责人岗位（负责岗位）
-	 */
-	@ExcelProperty(value = "负责岗位", index = 4)
-	@ApiModelProperty(value = "部门负责人岗位（负责岗位）")
-	private String chargeOrg;
 
 	/**
 	 * 人员编制 组织编制
