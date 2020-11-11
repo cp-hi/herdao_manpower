@@ -30,6 +30,6 @@ public interface PostMapper extends EntityMapper<Post> {
      * @param post
      * @return
      */
-    @Override
-    Boolean checkDuplicateName(@Param("post")Post post);
+//    @Override
+//    Boolean checkDuplicateName(@Param("post")Post post);
 }
