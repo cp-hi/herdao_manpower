@@ -116,7 +116,6 @@ public class OrgModifyRecordController {
             @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
             @ApiImplicitParam(name = "operatorId", value = "操作人ID(当前登录用户ID)")
     })
-    //@PreAuthorize("@pms.hasPermission('mpclient_orgmodifyrecord_view')" )
     public R getOrgChangeRecordPage(Page page, String operatorId, String searchText) {
         OrgModifyRecord entity = new OrgModifyRecord();
         QueryWrapper<OrgModifyRecord> wrapper = Wrappers.query(entity);
@@ -127,7 +126,7 @@ public class OrgModifyRecordController {
         }
 
         if (searchText != null && !"".equals(searchText)) {
-            wrapper.like("CONCAT(operator_id)", searchText);
+            wrapper.like("CONCAT(operator_id, cur_org_name, cur_org_code, old_org_parent_name, cur_org_parent_name, old_org_name, effect_time, operator_time)", searchText);
         }
 
         Page<OrgModifyRecord> pageResult = orgModifyRecordService.page(page, wrapper);

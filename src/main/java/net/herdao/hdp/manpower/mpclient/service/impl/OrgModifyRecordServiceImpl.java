@@ -65,7 +65,7 @@ public class OrgModifyRecordServiceImpl extends ServiceImpl<OrgModifyRecordMappe
 			orgModifyRecord.setCurOrgId(newOrg.getId());
 			orgModifyRecord.setCurOrgName(newOrg.getOrgName());
 			orgModifyRecord.setCurOrgCode(newOrg.getOrgCode());
-			orgModifyRecord.setCurOrgTreeLevel(newOrg.getOrgTreeLevel());
+			orgModifyRecord.setCurOrgLevel(newOrg.getOrgLevel());
 			// 新上级组织信息
 			Long newParentId = newOrg.getParentId();
 			if (ObjectUtil.isNotNull(newParentId)) {
@@ -77,7 +77,7 @@ public class OrgModifyRecordServiceImpl extends ServiceImpl<OrgModifyRecordMappe
 			// 原组织信息
 			orgModifyRecord.setOldOrgCode(oldOrg.getOrgCode());
 			orgModifyRecord.setOldOrgName(oldOrg.getOrgName());
-			orgModifyRecord.setOldOrgTreeLevel(oldOrg.getOrgTreeLevel());
+			orgModifyRecord.setOldOrgLevel(oldOrg.getOrgLevel());
 
 			// 原上级组织信息
 			Long oldParentId = oldOrg.getParentId();

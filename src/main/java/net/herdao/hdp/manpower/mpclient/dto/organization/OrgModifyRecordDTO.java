@@ -1,44 +1,22 @@
 
 
-package net.herdao.hdp.manpower.mpclient.entity;
-
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+package net.herdao.hdp.manpower.mpclient.dto.organization;
 
 import java.util.Date;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 /**
- * 
- *
- * @author Andy
- * @date 2020-09-17 11:03:56
- */
+* @description:    组织变更记录（需求待细化TODO）
+* @author:         shuling
+* @date            2020-11-11 12:16:37
+* @version:        1.0
+*/
 @Data
-@TableName("mp_org_modify_record")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
-public class OrgModifyRecord extends Model<OrgModifyRecord> {
-private static final long serialVersionUID = 1L;
-
-    /**
-     * ID
-     */
-    @TableId
-    @ApiModelProperty(value="ID")
-    private Long id;
-
-
-    /**
-     * 现组织ID
-     */
-    @ApiModelProperty(value="现组织ID")
-    private Long curOrgId;
-
+@ApiModel(value = "组织变更记录")
+public class OrgModifyRecordDTO {
     /**
      * 现组织名称
      */
@@ -49,11 +27,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="现组织编码")
     private String curOrgCode;
-    /**
-     * 现上级组织id
-     */
-    @ApiModelProperty(value="现上级组织id")
-    private Long curOrgParentId;
+    
     /**
      * 现上级组织名称
      */
@@ -70,11 +44,6 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="原组织名称")
     private String oldOrgName;
     /**
-     * 原上级组织ID
-     */
-    @ApiModelProperty(value="原上级组织ID")
-    private Long oldOrgParentId;
-    /**
      * 原上级组织名称
      */
     @ApiModelProperty(value="原上级组织名称")
@@ -89,11 +58,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="生效日期")
     private Date effectTime;
-    /**
-     * 操作人id
-     */
-    @ApiModelProperty(value="操作人id")
-    private String operatorId;
+
     /**
      * 操作人名称
      */
@@ -104,12 +69,6 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="操作时间")
     private Date operatorTime;
-
-    /**
-     * 原组织编码
-     */
-    @ApiModelProperty(value="原组织编码")
-    private String oldOrgCode;
 
     /**
      * 操作简述
