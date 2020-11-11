@@ -29,7 +29,7 @@
     <select id="getOnJobStaffs" parameterType="long" resultType="int">
         select count(*) from mp_post p, mp_userpost up , mp_staff s
         where p.id = up.POST_ID and s.user_id = up.USER_ID and up.USER_ID = s.user_id
-        and s.STAFF_SCOPE = '1' and p.id  in (select id from mp_post where
+        and s.STAFF_SCOPE = '1' and p.del_flag !=1 and p.id  in (select id from mp_post where
         JOB_LEVEL_ID1 in (select id from mp_job_level g where g.job_grade_id = #{id}) or
         JOB_LEVEL_ID2 in (select id from mp_job_level g where g.job_grade_id = #{id}) )
     </select>
