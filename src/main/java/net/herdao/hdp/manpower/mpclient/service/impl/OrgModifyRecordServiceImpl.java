@@ -9,11 +9,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrgModifyRecordDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.mapper.OrgModifyRecordMapper;
@@ -100,6 +102,11 @@ public class OrgModifyRecordServiceImpl extends ServiceImpl<OrgModifyRecordMappe
 			return orgModifyRecord;
 		}
 		return null;
+	}
+
+	@Override
+	public Page<OrgModifyRecordDTO> getPage(Page<OrgModifyRecordDTO> page, String orgCode, String searchText) {
+		return this.baseMapper.getPage(page, orgCode, searchText);
 	}
 
 }

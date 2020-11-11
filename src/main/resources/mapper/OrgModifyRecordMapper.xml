@@ -20,4 +20,49 @@
       <result property="oldOrgCode" column="old_org_code"/>
       <result property="operateDesc" column="operate_desc"/>
   </resultMap>
+  
+  
+  <resultMap id="pageMap" type="net.herdao.hdp.manpower.mpclient.dto.organization.OrgModifyRecordDTO">
+      <result property="curOrgName" column="cur_org_name"/>
+      <result property="curOrgCode" column="cur_org_code"/>
+      <result property="curOrgParentName" column="cur_org_parent_name"/>
+      <result property="curOrgLevel" column="cur_org_level"/>
+      <result property="oldOrgName" column="old_org_name"/>
+      <result property="oldOrgParentName" column="old_org_parent_name"/>
+      <result property="oldOrgLevel" column="old_org_level"/>
+      <result property="effectTime" column="effect_time"/>
+      <result property="operatorName" column="operator_name"/>
+      <result property="operatorTime" column="operator_time"/>
+  </resultMap>
+  
+  <select id="getPage" resultMap="pageMap">
+  		SELECT 
+  			mr.cur_org_name,
+  			mr.cur_org_code,
+  			mr.cur_org_parent_name,
+  			dicc.label AS cur_org_level,
+  			mr.old_org_name,
+  			mr.old_org_parent_name,
+  			dico.label AS old_org_level,
+  			mr.effect_time,
+  			mr.operator_name,
+  			mr.operator_time
+  		FROM mp_org_modify_record mr 
+  		LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ' AND dicc.value = mr.cur_org_level AND dicc.del_flag = 0
+        LEFT JOIN sys_dict_item dico ON dico.type = 'ZZCJ' AND dico.value = mr.old_org_level AND dico.del_flag = 0
+        <where>
+          <if test="orgCode !=null">
+        	AND  mr.cur_org_code = #{orgCode}
+          </if>
+          <if test="searchText != '' and searchText != null">
+       		AND CONCAT( IFNULL(mr.cur_org_name, ''), IFNULL(mr.cur_org_code, ''), 
+	       			    IFNULL(mr.old_org_parent_name, ''), IFNULL(mr.cur_org_parent_name, ''), 
+	       			    IFNULL(mr.old_org_name, ''), IFNULL(mr.operator_name, ''), IFNULL(mr.operator_time, ''),
+	       			    IFNULL(dicc.label, ''), IFNULL(dico.label, '')
+       			      ) LIKE CONCAT('%',#{searchText},'%')
+          </if>
+        </where>
+       
+  </select>
+  
 </mapper>

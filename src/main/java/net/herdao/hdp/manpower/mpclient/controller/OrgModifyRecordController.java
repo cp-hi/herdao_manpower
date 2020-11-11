@@ -2,24 +2,28 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrgModifyRecordDTO;
+import net.herdao.hdp.manpower.mpclient.entity.OrgModifyRecord;
+import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
 
 
 /**
@@ -110,27 +114,14 @@ public class OrgModifyRecordController {
      * @param searchText 关键字搜索
      * @return
      */
-    @ApiOperation(value = "组织变更记录查询", notes = "组织变更记录查询")
+    @ApiOperation(value = "组织变更记录", notes = "组织变更记录")
     @GetMapping("/getOrgChangeRecordPage")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
-            @ApiImplicitParam(name = "operatorId", value = "操作人ID(当前登录用户ID)")
+            @ApiImplicitParam(name = "orgCode", value = "组织编码"),
+            @ApiImplicitParam(name = "searchText", value = "模糊查询内容")
     })
-    public R getOrgChangeRecordPage(Page page, String operatorId, String searchText) {
-        OrgModifyRecord entity = new OrgModifyRecord();
-        QueryWrapper<OrgModifyRecord> wrapper = Wrappers.query(entity);
-
-        if (StringUtils.isNotBlank(operatorId)) {
-            entity.setOperatorId(operatorId);
-            wrapper.eq("operator_id", operatorId);
-        }
-
-        if (searchText != null && !"".equals(searchText)) {
-            wrapper.like("CONCAT(operator_id, cur_org_name, cur_org_code, old_org_parent_name, cur_org_parent_name, old_org_name, effect_time, operator_time)", searchText);
-        }
-
-        Page<OrgModifyRecord> pageResult = orgModifyRecordService.page(page, wrapper);
-        return R.ok(pageResult);
+    public R getOrgChangeRecordPage(Page<OrgModifyRecordDTO> page, String orgCode, String searchText) {
+        return R.ok(orgModifyRecordService.getPage(page, orgCode, searchText));
     }
 
 

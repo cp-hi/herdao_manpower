@@ -70,11 +70,5 @@ public class OrgModifyRecordDTO {
     @ApiModelProperty(value="操作时间")
     private Date operatorTime;
 
-    /**
-     * 操作简述
-     */
-    @ApiModelProperty(value="操作简述")
-    private String operateDesc;
-
  }
 
