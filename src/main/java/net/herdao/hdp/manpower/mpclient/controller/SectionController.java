@@ -35,10 +35,10 @@ public class SectionController extends BaseController<Section, SectionListVO, Se
     @Autowired
     private SectionService sectionService;
 
-    @Override
-    protected Class getBatchAddClass() {
-        return SectionBatchAddVO.class;
-    }
+//    @Override
+//    protected Class getBatchAddClass() {
+//        return SectionBatchAddVO.class;
+//    }
 
     @Autowired
     public void setEntityService(SectionService sectionService) {

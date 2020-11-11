@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineFormVO;
@@ -30,15 +31,21 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
-public class PipelineController extends BaseController<Pipeline, PipelineListVO, PipelineFormVO, PipelineBatchAddVO, PipelineBatchUpdateVO> {
+public class PipelineController extends BaseController<Pipeline, PipelineListVO, PipelineFormVO>
+implements ExcelImportController<PipelineBatchAddVO, PipelineBatchUpdateVO>{
 
-    @Override
-    protected Class getBatchAddClass() {
-        return PipelineBatchAddVO.class;
-    }
+//    @Override
+//    protected Class getBatchAddClass() {
+//        return PipelineBatchAddVO.class;
+//    }
 
     @Autowired
     private PipelineService pipelineService;
+
+    @Override
+    public EntityService getEntityService() {
+        return pipelineService;
+    }
 
     @Autowired
     public void setEntityService(PipelineService pipelineService) {

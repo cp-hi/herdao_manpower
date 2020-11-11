@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
@@ -31,10 +32,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/post")
 @Api(tags = "岗位管理")
-public class PostController extends BaseController<Post, PostListVO, PostFormVO, PostBatchAddVO, PostBatchUpdateVO> {
+public class PostController extends BaseController<Post, PostListVO, PostFormVO>
+        implements ExcelImportController<PostBatchAddVO, PostBatchUpdateVO> {
 
     @Autowired
     private PostService postService;
+
+    @Override
+    public EntityService getEntityService() {
+        return postService;
+    }
 
     @Autowired
     public void setEntityService(PostService postService) {

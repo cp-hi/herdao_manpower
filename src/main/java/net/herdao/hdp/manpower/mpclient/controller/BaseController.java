@@ -42,7 +42,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Slf4j
-public class BaseController<T, D, F, A, U> {
+public class BaseController<T, D, F> {
 
     EntityService entityService;
 
@@ -87,11 +87,11 @@ public class BaseController<T, D, F, A, U> {
      *
      * @return
      */
-    protected Class getBatchAddClass() {
-        Class<A> clazz = (Class<A>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[3];
-        return clazz;
-    }
+//    protected Class getBatchAddClass() {
+//        Class<A> clazz = (Class<A>) ((ParameterizedType) getClass()
+//                .getGenericSuperclass()).getActualTypeArguments()[3];
+//        return clazz;
+//    }
 
     /**
      * 批量导入、修改所用的类
@@ -99,11 +99,11 @@ public class BaseController<T, D, F, A, U> {
      * @return
      * @Author ljan
      */
-    protected Class getBatchUpdateClass() {
-        Class<U> clazz = (Class<U>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[4];
-        return clazz;
-    }
+//    protected Class getBatchUpdateClass() {
+//        Class<U> clazz = (Class<U>) ((ParameterizedType) getClass()
+//                .getGenericSuperclass()).getActualTypeArguments()[4];
+//        return clazz;
+//    }
 
     //endregion
 
@@ -192,58 +192,58 @@ public class BaseController<T, D, F, A, U> {
         }
     }
 
-    @ApiOperation("批量新增/编辑")
-    @PostMapping("/import")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "要导入的文件"),
-            @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
-            @ApiImplicitParam(name = "downloadErrMsg", value = "下载错误信息，0或空不下载 1:下载"),
-    })
-    public R importData(HttpServletResponse response,
-                        @RequestParam(value = "file") MultipartFile file,
-                        Integer importType, Integer downloadErrMsg) throws Exception {
-        InputStream inputStream = null;
-        ImportExcelListener listener = null;
-        Class clazz = null;
-        try {
-            inputStream = file.getInputStream();
-            if (!Integer.valueOf(1).equals(importType)) {
-                clazz = getBatchAddClass();
-                listener = new ImportExcelListener<A>(entityService, importType);
-            } else {
-                clazz = getBatchUpdateClass();
-                listener = new ImportExcelListener<U>(entityService, importType);
-            }
-            EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
-        } catch (Exception ex) {
-            if (Integer.valueOf(1).equals(downloadErrMsg))
-                ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
-            return R.failed(ex.getCause().getMessage());
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-        return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
-    }
-
-    @ApiOperation("下载批量新增/编辑的模板")
-    @PostMapping("/downloadTempl")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
-    })
-    public R getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
-        try {
-            Class templClass = getBatchAddClass();
-            if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
-                templClass = getBatchUpdateClass();
-
-            if (Class.class == templClass)
-                throw new Exception("没有找到模板");
-
-            ExcelUtils.downloadTempl(response, templClass);
-        } catch (Exception ex) {
-            return R.failed(ex.getCause().getMessage());
-        }
-        return R.ok();
-    }
+//    @ApiOperation("批量新增/编辑")
+//    @PostMapping("/import")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "file", value = "要导入的文件"),
+//            @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
+//            @ApiImplicitParam(name = "downloadErrMsg", value = "下载错误信息，0或空不下载 1:下载"),
+//    })
+//    public R importData(HttpServletResponse response,
+//                        @RequestParam(value = "file") MultipartFile file,
+//                        Integer importType, Integer downloadErrMsg) throws Exception {
+//        InputStream inputStream = null;
+//        ImportExcelListener listener = null;
+//        Class clazz = null;
+//        try {
+//            inputStream = file.getInputStream();
+//            if (!Integer.valueOf(1).equals(importType)) {
+//                clazz = getBatchAddClass();
+//                listener = new ImportExcelListener<A>(entityService, importType);
+//            } else {
+//                clazz = getBatchUpdateClass();
+//                listener = new ImportExcelListener<U>(entityService, importType);
+//            }
+//            EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
+//        } catch (Exception ex) {
+//            if (Integer.valueOf(1).equals(downloadErrMsg))
+//                ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
+//            return R.failed(ex.getCause().getMessage());
+//        } finally {
+//            IOUtils.closeQuietly(inputStream);
+//        }
+//        return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
+//    }
+//
+//    @ApiOperation("下载批量新增/编辑的模板")
+//    @PostMapping("/downloadTempl")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
+//    })
+//    public R getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
+//        try {
+//            Class templClass = getBatchAddClass();
+//            if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
+//                templClass = getBatchUpdateClass();
+//
+//            if (Class.class == templClass)
+//                throw new Exception("没有找到模板");
+//
+//            ExcelUtils.downloadTempl(response, templClass);
+//        } catch (Exception ex) {
+//            return R.failed(ex.getCause().getMessage());
+//        }
+//        return R.ok();
+//    }
 
 }

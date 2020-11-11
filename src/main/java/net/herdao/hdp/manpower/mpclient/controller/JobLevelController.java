@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.*;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,20 +39,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/jobLevel")
 @Api(tags = "职级管理")
-public class JobLevelController extends BaseController<JobLevel, JobLevelListVO, JobLevelFormVO, JobLevelBatchVO, JobLevelBatchVO> {
+public class JobLevelController extends BaseController<JobLevel, JobLevelListVO, JobLevelFormVO>
+        implements ExcelImportController<JobLevelBatchVO, JobLevelBatchVO> {
 
     @Autowired
     private JobLevelService jobLevelService;
+
+    @Override
+    public EntityService getEntityService() {
+        return jobLevelService;
+    }
 
     @Autowired
     public void setEntityService(JobLevelService jobLevelService) {
         super.entityService = jobLevelService;
     }
 
-    @Override
-    protected Class getBatchUpdateClass() {
-        return JobLevelBatchVO.class;
-    }
+//    @Override
+//    protected Class getBatchUpdateClass() {
+//        return JobLevelBatchVO.class;
+//    }
 
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
@@ -110,7 +117,7 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "职级体系ID"),
     })
-    public R okCreateJobLevel( Long id) {
+    public R okCreateJobLevel(Long id) {
         try {
             okJobLevleSysService.okCreateJobLevel(id);
         } catch (Exception ex) {
@@ -118,4 +125,6 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
         }
         return R.ok();
     }
+
+
 }
