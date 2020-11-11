@@ -17,7 +17,6 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
@@ -36,20 +35,6 @@ import java.util.Map;
 public interface GroupService extends HdpService<Group> {
     List<Map<String, String>> groupList();
 
-    /**
-     *      * 通过名称查找集团
-     * @Author ljan
-     * @param groupName
-     * @return
-     */
-    Group selectByName(String groupName,boolean need,StringBuffer buffer) ;
-    /**
-     * 通过名称查找集团
-     * @Author ljan
-     * @param groupName
-     * @return
-     */
-    Group selectByName(String groupName,boolean need) ;
 
     IPage groupPage(Page page, GroupListDTO group, String searchText);
 

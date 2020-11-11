@@ -1,11 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +27,6 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
 
     @Autowired
     JobGradeService jobGradeService;
-
-    @Autowired
-    GroupService groupService;
 
     @Override
     public List<Map> jobLevelList(Long groupId) {
@@ -56,7 +53,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     public void addEntity(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
 
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) jobLevel.setGroupId(group.getId());
 
         chkEntityExists(excel.getJobLevelName(), group.getId(), false,buffer);
@@ -72,7 +69,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     @Override
     public void updateEntity(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) jobLevel.setGroupId(group.getId());
 
         JobLevel tmp = chkEntityExists(excel.getJobLevelName(), group.getId(), true,buffer);

@@ -4,11 +4,10 @@ import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
+import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +24,6 @@ import java.util.function.Function;
  */
 @Service
 public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
-    @Autowired
-    GroupService groupService;
 
     @Override
     public List<Map> postSeqList(Long groupId) {
@@ -42,12 +39,12 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public void addEntity(PostSeq postSeq, Object excelObj,StringBuffer buffer) {
+    public void addEntity(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  postSeq.setGroupId(group.getId());
-        chkEntityExists(excel.getPostSeqName(), group.getId(), false,buffer);
-        PostSeq parent = this.chkEntityExists(excel.getParentName(), group.getId(), true, buffer);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        if (null != group) postSeq.setGroupId(group.getId());
+        chkEntityExists(excel.getPostSeqName(), group.getId(), false, buffer);
+        PostSeq parent = this.getParent(excel.getParentName(), group.getId(), false, buffer);
         if (null != parent) {
             chkParent(parent.getId(), buffer);
             postSeq.setParentId(parent.getId());
@@ -55,13 +52,13 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public void updateEntity(PostSeq postSeq, Object excelObj,  StringBuffer buffer) {
+    public void updateEntity(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
 
-        Group group = groupService.selectByName(excel.getGroupName(), true);
-        if(null != group)  postSeq.setGroupId(group.getId());
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        if (null != group) postSeq.setGroupId(group.getId());
         PostSeq tmp = chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
-        PostSeq parent = this.chkEntityExists(excel.getParentName(), group.getId(), true, buffer);
+        PostSeq parent = this.getParent(excel.getParentName(), group.getId(), false, buffer);
 
         if (null != parent) {
             chkParent(parent.getId(), buffer);
@@ -69,6 +66,19 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         }
         if (StringUtils.isBlank(buffer))
             postSeq.setId(tmp.getId());
+    }
+
+    private PostSeq getParent(String name, Long groupId, boolean need, StringBuffer buffer) {
+        if (StringUtils.isBlank(name)) {
+            if (need) buffer.append("；岗位序列父节点名称不能为空");
+            return null;
+        }
+        PostSeq t = baseMapper.getEntityByName(name, groupId);
+        String errMsg = "";
+        if (need && null == t)  //需要它但它为空
+            errMsg = "；该集团下不存在此父节点：" + name;
+        buffer.append(errMsg);
+        return t;
     }
 
     private void chkParent(Long parentId, StringBuffer buffer) {

@@ -7,6 +7,7 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
+import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -130,7 +131,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     @Override
     public void addEntity(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         chkEntityExists(excel.getPostName(), group.getId(), false, buffer);
 
@@ -151,7 +152,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     public void updateEntity(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
 
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 

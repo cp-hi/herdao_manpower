@@ -6,8 +6,8 @@ import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
 import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
+import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +27,6 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
 
-    final GroupService groupService;
-
     @Override
     public List<Map> pipelineList(Long groupId) {
         return baseMapper.pipelineList(groupId);
@@ -37,7 +35,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     @Override
     public void addEntity(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());
         chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
     }
@@ -45,7 +43,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     @Override
     public void updateEntity(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         if (StringUtils.isBlank(buffer)) pipeline.setId(tmp.getId());

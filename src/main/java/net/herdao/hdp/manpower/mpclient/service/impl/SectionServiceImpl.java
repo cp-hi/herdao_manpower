@@ -5,10 +5,9 @@ import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +24,6 @@ import java.util.function.Function;
  */
 @Service
 public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section> implements SectionService {
-    @Autowired
-    GroupService groupService;
 
     @Override
     public List<Map> sectionList(Long groupId) {
@@ -36,7 +33,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     @Override
     public void addEntity(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
         chkEntityExists(excel.getSectionName(), group.getId(), false,buffer);
     }
@@ -44,7 +41,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     @Override
     public void updateEntity(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
-        Group group = groupService.selectByName(excel.getGroupName(), true);
+        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         if (StringUtils.isBlank(buffer)) section.setId(tmp.getId());

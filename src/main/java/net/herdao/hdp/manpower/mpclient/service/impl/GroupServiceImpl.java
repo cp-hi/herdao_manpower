@@ -200,26 +200,4 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         return form;
     }
 
-    @Override
-    public Group selectByName(String groupName, boolean need, StringBuffer buffer) {
-        Group group = getOne(Wrappers.<Group>query().lambda().eq(Group::getGroupName, groupName));
-        String errMsg = "";
-        if (!need && null != group)  //不需要它但它不为空
-            //添加分号，因为批量导入需要所有错误信息
-            errMsg = "；已存在此集团" + groupName;
-        if (need && null == group)  //需要它但它为空
-            errMsg = "；不存在此集团" + groupName;
-        buffer.append(errMsg);
-        return group;
-    }
-
-    @SneakyThrows
-    @Override
-    public Group selectByName(String groupName, boolean need) {
-        StringBuffer buffer = new StringBuffer();
-        Group group = this.selectByName(groupName, need, buffer);
-        if (StringUtils.isNotBlank(buffer))
-            throw new Exception(buffer.toString());
-        return group;
-    }
 }
