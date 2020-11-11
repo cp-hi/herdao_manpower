@@ -34,11 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 public class PipelineController extends BaseController<Pipeline, PipelineListVO, PipelineFormVO>
 implements ExcelImportController<PipelineBatchAddVO, PipelineBatchUpdateVO>{
 
-//    @Override
-//    protected Class getBatchAddClass() {
-//        return PipelineBatchAddVO.class;
-//    }
-
     @Autowired
     private PipelineService pipelineService;
 

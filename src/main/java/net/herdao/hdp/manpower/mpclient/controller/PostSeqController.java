@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.OKPostSeqSysService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqFormVO;
@@ -41,13 +42,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/client/postSeq")
 @Api(tags = "岗位序列管理")
-public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, PostSeqFormVO, PostSeqBatchVO, PostSeqBatchVO> {
+public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, PostSeqFormVO>
+implements ExcelImportController< PostSeqBatchVO, PostSeqBatchVO>{
 
     @Autowired
     private PostSeqService postSeqService;
 
     @Autowired
     private OKPostSeqSysService okPostSeqSysService;
+
+    @Override
+    public EntityService getEntityService() {
+        return postSeqService;
+    }
 
     @Autowired
     public void setEntityService(PostSeqService postSeqService) {

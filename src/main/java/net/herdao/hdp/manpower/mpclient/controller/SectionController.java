@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionFormVO;
@@ -30,15 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
-public class SectionController extends BaseController<Section, SectionListVO, SectionFormVO, SectionBatchAddVO, SectionBatchUpdateVO> {
+public class SectionController extends BaseController<Section, SectionListVO, SectionFormVO>
+implements ExcelImportController<SectionBatchAddVO, SectionBatchUpdateVO>{
 
     @Autowired
     private SectionService sectionService;
 
-//    @Override
-//    protected Class getBatchAddClass() {
-//        return SectionBatchAddVO.class;
-//    }
+    @Override
+    public EntityService getEntityService() {
+        return sectionService;
+    }
 
     @Autowired
     public void setEntityService(SectionService sectionService) {
