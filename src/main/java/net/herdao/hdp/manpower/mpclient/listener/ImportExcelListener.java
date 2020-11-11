@@ -51,13 +51,9 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
         this.excelList = new ArrayList<>();
         this.entityService = service;
         this.importType = importType;
-//        this.batchClass = clazz;
         this.hasError = false;
     }
-    @Override
-    public void onException(Exception exception, AnalysisContext context)   {
-        System.out.println(exception.getMessage());
-    }
+
 
     /**
      * 来自excel文件表头，

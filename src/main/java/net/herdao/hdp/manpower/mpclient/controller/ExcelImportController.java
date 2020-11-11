@@ -81,7 +81,7 @@ public interface ExcelImportController<A, U> {
             }
             EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
         } catch (Exception ex) {
-            if (Integer.valueOf(1).equals(downloadErrMsg))
+            if (Integer.valueOf(1).equals(downloadErrMsg) && listener.getExcelList().size() > 0)
                 ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
             return R.failed(ex.getCause().getMessage());
         } finally {
