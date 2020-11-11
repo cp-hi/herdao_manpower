@@ -85,7 +85,7 @@
          FROM
          mp_staffcontract f
          LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
-         LEFT JOIN mp_company c ON c.COMPANY_CODE = f.COMPANY_CODE
+         LEFT JOIN mp_company c ON c.Id=f.COMPANY_ID
          LEFT JOIN sys_dict_item dic ON dic.
          VALUE
          = f.CONTRACT_TYPE
