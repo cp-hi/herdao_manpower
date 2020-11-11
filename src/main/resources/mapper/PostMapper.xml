@@ -175,10 +175,10 @@
     <select id="checkDuplicateName" resultType="boolean" parameterType="post">
          select case when  exists ( SELECT * FROM mp_post
                                         WHERE del_flag != 1
-                                        and post_name=#{post_name}
-                                        and group_id = #{groupId}
-                                        and post_code = #{postCode}
-                                        and (id != #{id} or #{id} is null)
+                                        and post_name=#{post.post_name}
+                                        and group_id = #{post.groupId}
+                                        and post_code = #{post.postCode}
+                                        and (id != #{post.id} or #{post.id} is null)
                                     ) then 1 else 0 end  as duplicateName
     </select>
 
