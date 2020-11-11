@@ -211,7 +211,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         Long groupId = this.getGroupIdMapper().apply(t);
         if (null == groupId) buffer.append("；集团ID为空不能保存");
         Boolean result = baseMapper.checkDuplicateName(t);
-        if (result) buffer.append("；该集团下已经有相同名称的" + getEntityName());
+        if (result)
+            buffer.append("；该集团下已经有相同名称的" + getEntityName());
     }
 
     /**
@@ -258,7 +259,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (add) addEntity(t, excelObj, buffer);
         else updateEntity(t, excelObj, buffer);
         //这个验证要放 最后，因为前面要给ID赋值
-        this.saveVerify(t, buffer);
+//        this.saveVerify(t, buffer);
         throwErrMsg(buffer);
     }
 

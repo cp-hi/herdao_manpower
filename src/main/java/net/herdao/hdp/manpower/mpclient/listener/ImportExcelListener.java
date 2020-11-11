@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
  * @Date 2020/10/19 20:57
  * @Version 1.0
  */
-
-
 public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
     @Getter
