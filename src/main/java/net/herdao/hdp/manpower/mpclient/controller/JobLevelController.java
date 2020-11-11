@@ -50,16 +50,6 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
         return jobLevelService;
     }
 
-    @Autowired
-    public void setEntityService(JobLevelService jobLevelService) {
-        super.entityService = jobLevelService;
-    }
-
-//    @Override
-//    protected Class getBatchUpdateClass() {
-//        return JobLevelBatchVO.class;
-//    }
-
     @GetMapping("/list")
     @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
     public R list(Long groupId) {

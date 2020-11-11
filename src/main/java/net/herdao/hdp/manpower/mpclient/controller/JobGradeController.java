@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobGradeListVO;
@@ -31,16 +32,16 @@ import java.util.List;
 
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/client/jobGrade")
 @Api(tags = "职等管理")
 public class JobGradeController extends BaseController<JobGrade, JobGradeListVO, JobGradeFormVO> {
 
-    private JobGradeService jobGradeService;
-
     @Autowired
-    public void setEntityService(JobGradeService jobGradeService) {
-        super.entityService = jobGradeService;
+    JobGradeService jobGradeService;
+
+    @Override
+    protected EntityService getEntityService() {
+        return jobGradeService;
     }
 
     @GetMapping("/list")
@@ -52,7 +53,7 @@ public class JobGradeController extends BaseController<JobGrade, JobGradeListVO,
     public R<List<JobGradeShortVO>> list(Long groupId, Integer needBlank) {
         List<JobGradeShortVO> list = jobGradeService.jobGradeList(groupId);
         if (Integer.valueOf(1).equals(needBlank))
-            list.add(0, new JobGradeShortVO("全部",groupId));
+            list.add(0, new JobGradeShortVO("全部", groupId));
         return R.ok(list);
     }
 

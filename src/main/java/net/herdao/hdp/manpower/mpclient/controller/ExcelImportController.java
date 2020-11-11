@@ -22,7 +22,6 @@ import java.lang.reflect.ParameterizedType;
 /**
  * @param <A> 批量新增类
  * @param <U> 批量导入类
- *
  * @ClassName ExcelImportController
  * @Description ExcelImportController
  * @Author ljan
@@ -111,5 +110,4 @@ public interface ExcelImportController<A, U> {
         }
         return R.ok();
     }
-
 }

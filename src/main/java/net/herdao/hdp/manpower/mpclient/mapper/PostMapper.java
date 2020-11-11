@@ -6,6 +6,7 @@ import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,4 +25,11 @@ public interface PostMapper extends EntityMapper<Post> {
 
     List<PostStaffVO> getPostStaffs(@Param("postId") Long postId, @Param("limit") String limit);
 
+    /**
+     * 校验重复名称
+     * @param post
+     * @return
+     */
+    @Override
+    Boolean checkDuplicateName(@Param("post")Post post);
 }

@@ -43,11 +43,6 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
         return postService;
     }
 
-    @Autowired
-    public void setEntityService(PostService postService) {
-        super.entityService = postService;
-    }
-
     @Override
     @GetMapping("/page")
     @ApiImplicitParams({

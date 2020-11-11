@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/client/section")
 @Api(tags = "板块管理")
 public class SectionController extends BaseController<Section, SectionListVO, SectionFormVO>
-implements ExcelImportController<SectionBatchAddVO, SectionBatchUpdateVO>{
+        implements ExcelImportController<SectionBatchAddVO, SectionBatchUpdateVO> {
 
     @Autowired
     private SectionService sectionService;
@@ -40,11 +40,6 @@ implements ExcelImportController<SectionBatchAddVO, SectionBatchUpdateVO>{
     @Override
     public EntityService getEntityService() {
         return sectionService;
-    }
-
-    @Autowired
-    public void setEntityService(SectionService sectionService) {
-        super.entityService = sectionService;
     }
 
     @GetMapping("/list")

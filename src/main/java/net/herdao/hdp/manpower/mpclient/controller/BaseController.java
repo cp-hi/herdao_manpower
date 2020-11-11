@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -34,7 +35,9 @@ import java.util.List;
 @Slf4j
 public class BaseController<T, D, F> {
 
-    EntityService entityService;
+    protected EntityService getEntityService() {
+        throw new NotImplementedException("此方法未实现，请在各自的Controller中实现此方法");
+    }
 
     //region 各种Class
 
@@ -82,9 +85,9 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
     public R<IPage<OperationLog>> getOperationLogs(HttpServletResponse response, @ApiIgnore Page page, Long objId, Integer type) throws Exception {
-        IPage p = entityService.getOperationLogs(page, objId);
+        IPage p = getEntityService().getOperationLogs(page, objId);
         if (null != type && Integer.valueOf(1).equals(type)) {
-            String excelName = this.entityService.getEntityName() + "操作记录列表下载";
+            String excelName = this.getEntityService().getEntityName() + "操作记录列表下载";
             ExcelUtils.export2Web(response, excelName, excelName, OperationLog.class, p.getRecords());
         }
         return R.ok(p);
@@ -92,11 +95,11 @@ public class BaseController<T, D, F> {
 
     protected R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
-        IPage p = entityService.page(page, t);
+        IPage p = getEntityService().page(page, t);
         List<D> vos = DtoConverter.dto2vo(p.getRecords(), getListVOClass());
         p.setRecords(vos);
         if (null != type && Integer.valueOf(1).equals(type)) {
-            String excelName = this.entityService.getEntityName() + "列表下载";
+            String excelName = this.getEntityService().getEntityName() + "列表下载";
             ExcelUtils.export2Web(response, excelName, excelName, getListVOClass(), vos);
         }
         return R.ok(p);
@@ -109,7 +112,7 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "id"),
     })
     public R<F> getFormInfo(@PathVariable Long id) {
-        Object from = entityService.form(id);
+        Object from = getEntityService().form(id);
         if (null == from) throw new Exception("对象不存在，或已被删除");
         F f = DtoConverter.dto2vo(from, getFormVOClass());
         return R.ok(f);
@@ -121,7 +124,7 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R<Boolean> delete(@PathVariable Long id) {
-        return R.ok(entityService.delEntity(id));
+        return R.ok(getEntityService().delEntity(id));
     }
 
     @ApiOperation(value = "启用/停用")
@@ -131,7 +134,7 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
     public R<Boolean> stop(@PathVariable Long id, @PathVariable boolean stop) {
-        return R.ok(entityService.stopEntity(id, stop));
+        return R.ok(getEntityService().stopEntity(id, stop));
     }
 
     @ApiOperation(value = "查看是否停用，返回true是停用，false启用")
@@ -140,7 +143,7 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "主键"),
     })
     public R<Boolean> getStatus(@PathVariable Long id) {
-        return R.ok(entityService.getStatus(id));
+        return R.ok(getEntityService().getStatus(id));
     }
 
     @PostMapping
@@ -149,8 +152,8 @@ public class BaseController<T, D, F> {
         try {
             Object t = getEntityClass().newInstance();
             BeanUtils.copyProperties(f, (T) t);
-            entityService.saveVerify((T) t);
-            entityService.saveEntity((T) t);
+            getEntityService().saveVerify((T) t);
+            getEntityService().saveEntity((T) t);
             BeanUtils.copyProperties((T) t, f);
             return R.ok(f);
         } catch (Exception ex) {

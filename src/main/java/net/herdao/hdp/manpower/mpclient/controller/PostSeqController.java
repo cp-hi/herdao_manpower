@@ -43,7 +43,7 @@ import java.util.List;
 @RequestMapping("/client/postSeq")
 @Api(tags = "岗位序列管理")
 public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, PostSeqFormVO>
-implements ExcelImportController< PostSeqBatchVO, PostSeqBatchVO>{
+        implements ExcelImportController<PostSeqBatchVO, PostSeqBatchVO> {
 
     @Autowired
     private PostSeqService postSeqService;
@@ -54,11 +54,6 @@ implements ExcelImportController< PostSeqBatchVO, PostSeqBatchVO>{
     @Override
     public EntityService getEntityService() {
         return postSeqService;
-    }
-
-    @Autowired
-    public void setEntityService(PostSeqService postSeqService) {
-        super.entityService = postSeqService;
     }
 
     @GetMapping("/list")

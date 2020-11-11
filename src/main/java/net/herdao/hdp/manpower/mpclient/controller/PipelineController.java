@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(tags = "管线管理")
 @RequestMapping("/client/pipeline")
 public class PipelineController extends BaseController<Pipeline, PipelineListVO, PipelineFormVO>
-implements ExcelImportController<PipelineBatchAddVO, PipelineBatchUpdateVO>{
+        implements ExcelImportController<PipelineBatchAddVO, PipelineBatchUpdateVO> {
 
     @Autowired
     private PipelineService pipelineService;
@@ -40,11 +40,6 @@ implements ExcelImportController<PipelineBatchAddVO, PipelineBatchUpdateVO>{
     @Override
     public EntityService getEntityService() {
         return pipelineService;
-    }
-
-    @Autowired
-    public void setEntityService(PipelineService pipelineService) {
-        super.entityService = pipelineService;
     }
 
     @GetMapping("/list")
