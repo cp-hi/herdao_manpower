@@ -35,7 +35,7 @@
     </select>
 
     <select id="getJobLevels" parameterType="long" resultType="int">
-        select count(*) from mp_job_level g where g.job_grade_id = #{id}
+        select count(*) from mp_job_level g where g.job_grade_id = #{id} and  del_flag !=1
     </select>
 
     <select id="jobGradeList" parameterType="long"

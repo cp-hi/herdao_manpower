@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import net.herdao.hdp.manpower.sys.vo.OperationLogVO;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -84,8 +85,10 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "size", value = "每页条数"),
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
-    public R<IPage<OperationLog>> getOperationLogs(HttpServletResponse response, @ApiIgnore Page page, Long objId, Integer type) throws Exception {
+    public R<IPage<OperationLogVO>> getOperationLogs(HttpServletResponse response, @ApiIgnore Page page, Long objId, Integer type) throws Exception {
         IPage p = getEntityService().getOperationLogs(page, objId);
+        List<OperationLogVO> operationLogVOList = DtoConverter.dto2vo(p.getRecords(), OperationLogVO.class);
+        p.setRecords(operationLogVOList);
         if (null != type && Integer.valueOf(1).equals(type)) {
             String excelName = this.getEntityService().getEntityName() + "操作记录列表下载";
             ExcelUtils.export2Web(response, excelName, excelName, OperationLog.class, p.getRecords());

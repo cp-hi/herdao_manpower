@@ -1,6 +1,6 @@
 package net.herdao.hdp.manpower.sys.injector.methods;
 
-import com.baomidou.mybatisplus.core.enums.SqlMethod;
+
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import org.apache.ibatis.mapping.MappedStatement;

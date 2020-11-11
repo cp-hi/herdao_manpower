@@ -56,13 +56,13 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      * @param operation
      * @param objId
      */
-    private void addOperationLog(String operation, Long objId) {
+    private void addOperationLog(String operation, Long objId, String objName) {
         SysUser sysUser = SysUserUtils.getSysUser();
         OperationLog log = new OperationLog();
         log.setOperation(operation);
         log.setOperatorId(sysUser.getUserId());
         log.setOperator(sysUser.getUsername());
-        log.setContent(operation + getEntityName());
+        log.setContent(operation + "了" + getEntityName() + ":" + objName);
         log.setEntityClass(baseMapper.getEntityClass().getName());
         log.setOperatedTime(new Date());
         log.setObjId(objId);
@@ -143,14 +143,14 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
         } else {
-            operation = "修改";
+            operation = "编辑";
             entity.setModifiedTime(new Date());
             entity.setModifierName(sysUser.getUsername());
             entity.setModifierId(Long.valueOf(sysUser.getUserId()));
             result = this.saveOrUpdate(t);
         }
         if (result)
-            addOperationLog(operation, entity.getId());
+            addOperationLog(operation, entity.getId(), getNameMapper().apply(t));
         return result;
     }
 
@@ -158,8 +158,11 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public boolean delEntity(Serializable id) {
         boolean result = this.removeById(id);
-        if (result)
-            addOperationLog("删除", (Long) id);
+        if (result) {
+            T t = baseMapper.selectIgnoreDel((Long) id);
+            String objName = getNameMapper().apply(t);
+            addOperationLog("删除", (Long) id, objName);
+        }
         return result;
     }
 
@@ -179,7 +182,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         boolean result = this.update(updateWrapper);
         if (result) {
             String operation = isStop ? "停用" : "启用";
-            addOperationLog(operation, (Long) id);
+            T t = baseMapper.selectIgnoreDel((Long) id);
+            String objName = getNameMapper().apply(t);
+            addOperationLog(operation, (Long) id, objName);
         }
         return result;
     }

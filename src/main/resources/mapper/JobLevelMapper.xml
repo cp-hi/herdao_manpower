@@ -14,7 +14,7 @@
     </resultMap>
 
     <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
-        select * from mp_job_level where del_flag !=1
+        select * from mp_job_level where del_flag !=1 and group_id = #{groupId}
         and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
         <if test="t.jobGradeId != null">
             and job_grade_id = #{t.jobGradeId}

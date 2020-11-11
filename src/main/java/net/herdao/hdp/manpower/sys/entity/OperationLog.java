@@ -26,7 +26,7 @@ import java.util.Date;
 @Data
 @ExcelIgnoreUnannotated
 @TableName("SYS_OPERATION_LOG")
-@ApiModel(value = "岗位实体类")
+@ApiModel(value = "操作记录")
 public class OperationLog {
     private static final long serialVersionUID = 1L;
 
@@ -48,6 +48,10 @@ public class OperationLog {
     @ApiModelProperty(value = "操作者名称")
     private String operator;
 
+    @ExcelProperty(value = {"", "操作者名称编号"})
+    @ApiModelProperty(value = "操作者名称编号")
+    private String operatorCode;
+
     @ExcelProperty(value = {"", "操作时间"})
     @ApiModelProperty(value = "操作时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -56,6 +60,12 @@ public class OperationLog {
 
     @ApiModelProperty(value = "被操作的实体类", hidden = true)
     private String entityClass;
+
+    @ApiModelProperty(value = "IP地址", hidden = true)
+    private String ipAddr;
+
+    @ApiModelProperty(value = "mac地址", hidden = true)
+    private String mac;
 
     @ApiModelProperty(value = "被操作的实体类主键", hidden = true)
     private Long objId;
