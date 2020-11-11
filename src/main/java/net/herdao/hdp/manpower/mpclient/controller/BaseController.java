@@ -1,6 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -9,20 +8,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.excelud.ExportDataVO;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -30,10 +24,6 @@ import java.util.List;
  * @param <T> 实体类Entity类型
  * @param <D> 分页类VO，用于列表展示及列表导出
  * @param <F> 表单页Form类型，用于新增修改
- * @param <A> 批量新增类
- * @param <U> excel导入类，注意，批量新增批量修改所用字段有可能不同，
- *            所以可能会有不同的类，一般用大类继承小类，然后把大类填
- *            到这泛型参数上
  * @ClassName NewBaseController
  * @Description NewBaseController
  * @Author ljan
@@ -64,7 +54,7 @@ public class BaseController<T, D, F> {
      *
      * @return
      */
-    protected Class<D> getDTOClass() {
+    protected Class<D> getListVOClass() {
         Class<D> clazz = (Class<D>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[1];
         return clazz;
@@ -75,35 +65,11 @@ public class BaseController<T, D, F> {
      *
      * @return
      */
-    protected Class<F> getFormClass() {
+    protected Class<F> getFormVOClass() {
         Class<F> clazz = (Class<F>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[2];
         return clazz;
     }
-
-    /**
-     * 批量新增的类，默认返回批量编辑的类，
-     * 如果字段不一样，可以在子类覆盖此方法
-     *
-     * @return
-     */
-//    protected Class getBatchAddClass() {
-//        Class<A> clazz = (Class<A>) ((ParameterizedType) getClass()
-//                .getGenericSuperclass()).getActualTypeArguments()[3];
-//        return clazz;
-//    }
-
-    /**
-     * 批量导入、修改所用的类
-     *
-     * @return
-     * @Author ljan
-     */
-//    protected Class getBatchUpdateClass() {
-//        Class<U> clazz = (Class<U>) ((ParameterizedType) getClass()
-//                .getGenericSuperclass()).getActualTypeArguments()[4];
-//        return clazz;
-//    }
 
     //endregion
 
@@ -127,11 +93,11 @@ public class BaseController<T, D, F> {
     protected R<IPage<D>> page(HttpServletResponse response, Page page, T t, Integer type)
             throws Exception {
         IPage p = entityService.page(page, t);
-        List<D> vos = DtoConverter.dto2vo(p.getRecords(), getDTOClass());
+        List<D> vos = DtoConverter.dto2vo(p.getRecords(), getListVOClass());
         p.setRecords(vos);
         if (null != type && Integer.valueOf(1).equals(type)) {
             String excelName = this.entityService.getEntityName() + "列表下载";
-            ExcelUtils.export2Web(response, excelName, excelName, getDTOClass(), vos);
+            ExcelUtils.export2Web(response, excelName, excelName, getListVOClass(), vos);
         }
         return R.ok(p);
     }
@@ -145,7 +111,7 @@ public class BaseController<T, D, F> {
     public R<F> getFormInfo(@PathVariable Long id) {
         Object from = entityService.form(id);
         if (null == from) throw new Exception("对象不存在，或已被删除");
-        F f = DtoConverter.dto2vo(from, getFormClass());
+        F f = DtoConverter.dto2vo(from, getFormVOClass());
         return R.ok(f);
     }
 
@@ -191,59 +157,4 @@ public class BaseController<T, D, F> {
             return R.failed(ex.getCause().getMessage());
         }
     }
-
-//    @ApiOperation("批量新增/编辑")
-//    @PostMapping("/import")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "file", value = "要导入的文件"),
-//            @ApiImplicitParam(name = "importType", value = "操作类型，0:批量新增 1:批量修改"),
-//            @ApiImplicitParam(name = "downloadErrMsg", value = "下载错误信息，0或空不下载 1:下载"),
-//    })
-//    public R importData(HttpServletResponse response,
-//                        @RequestParam(value = "file") MultipartFile file,
-//                        Integer importType, Integer downloadErrMsg) throws Exception {
-//        InputStream inputStream = null;
-//        ImportExcelListener listener = null;
-//        Class clazz = null;
-//        try {
-//            inputStream = file.getInputStream();
-//            if (!Integer.valueOf(1).equals(importType)) {
-//                clazz = getBatchAddClass();
-//                listener = new ImportExcelListener<A>(entityService, importType);
-//            } else {
-//                clazz = getBatchUpdateClass();
-//                listener = new ImportExcelListener<U>(entityService, importType);
-//            }
-//            EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
-//        } catch (Exception ex) {
-//            if (Integer.valueOf(1).equals(downloadErrMsg))
-//                ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
-//            return R.failed(ex.getCause().getMessage());
-//        } finally {
-//            IOUtils.closeQuietly(inputStream);
-//        }
-//        return R.ok(" easyexcel读取上传文件成功，上传了" + listener.getExcelList().size() + "条数据");
-//    }
-//
-//    @ApiOperation("下载批量新增/编辑的模板")
-//    @PostMapping("/downloadTempl")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
-//    })
-//    public R getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
-//        try {
-//            Class templClass = getBatchAddClass();
-//            if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
-//                templClass = getBatchUpdateClass();
-//
-//            if (Class.class == templClass)
-//                throw new Exception("没有找到模板");
-//
-//            ExcelUtils.downloadTempl(response, templClass);
-//        } catch (Exception ex) {
-//            return R.failed(ex.getCause().getMessage());
-//        }
-//        return R.ok();
-//    }
-
 }

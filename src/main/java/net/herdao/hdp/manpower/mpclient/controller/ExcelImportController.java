@@ -9,7 +9,6 @@ import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.excelud.ExportDataVO;
-import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 
 /**
- * * @param <A> 批量新增实体类
- * * @param <E> 批量编辑实体类
+ * @param <A> 批量新增类
+ * @param <U> 批量导入类
  *
  * @ClassName ExcelImportController
  * @Description ExcelImportController
@@ -37,8 +35,7 @@ public interface ExcelImportController<A, U> {
     EntityService getEntityService();
 
     /**
-     * 批量新增的类，默认返回批量编辑的类，
-     * 如果字段不一样，可以在子类覆盖此方法
+     * 批量新增的类
      *
      * @return
      */
