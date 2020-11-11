@@ -1,10 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
 import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
@@ -39,6 +39,11 @@ public class JobLevelListVO {
     @ApiModelProperty("职等名称")
     @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
+
+    @ExcelIgnore
+    @ApiModelProperty("职等id")
+    @DtoField(objField = "jobGrade.id")
+    private String jobGradeId;
 
     @ExcelProperty("排序")
     @ApiModelProperty("排序")
