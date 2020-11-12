@@ -24,5 +24,5 @@ public interface OKPostSeqSysService extends IService<OKPostSeqSys> {
      * 一键创建岗位序列
      * @param okPostSeqSysId
      */
-    void okCreatePostSeq(Long okPostSeqSysId);
+    void okCreatePostSeq(Long okPostSeqSysId,Long groupId) throws IllegalAccessException;
 }

@@ -16,6 +16,6 @@ import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 public interface OKJobLevleSysService extends IService<OKJobLevleSys> {
     OKJobLevleSysDTO findDetail(Long id);
 
-    void okCreateJobLevel(Long okJobLevleSysId);
+    void okCreateJobLevel(Long okJobLevleSysId,Long groupId) throws IllegalAccessException;
 
 }

@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobGradeDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
@@ -38,21 +39,25 @@ public class OKJobLevleSysServiceImpl extends ServiceImpl<OKJobLevleSysMapper, O
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void okCreateJobLevel(Long okJobLevleSysId) {
+    public void okCreateJobLevel(Long okJobLevleSysId, Long groupId)
+            throws IllegalAccessException {
         OKJobLevleSysDTO jobLevleSys = findDetail(okJobLevleSysId);
-        jobLevleSys.getOkJobGradeDTOList().forEach(okJobGrade -> {
+        for (OKJobGradeDTO okJobGrade : jobLevleSys.getOkJobGradeDTOList()) {
             JobGrade jobGrade = okJobGrade;
             jobGrade.setId(null);
-            jobGradeService.saveVerify(jobGrade);//TODO 校验
-            jobGradeService.save(jobGrade);
+            jobGrade.setGroupId(groupId);
+            jobGradeService.saveVerify(jobGrade);
+            jobGradeService.saveEntity(jobGrade);
             List<? extends JobLevel> jobLevels = okJobGrade.getOkJobLevelDTOList();
-            jobLevels.forEach(jobLevel -> {
+            for (JobLevel jobLevel : jobLevels) {
                 jobLevel.setId(null);
+                jobLevel.setGroupId(groupId);
                 jobLevel.setJobGradeId(jobGrade.getId());
-                jobLevelService.saveVerify(jobLevel);  // TODO 校验
-                jobLevelService.saveOrUpdate(jobLevel);
-            });
-        });
+                jobLevelService.saveVerify(jobLevel);
+                jobLevelService.saveEntity(jobLevel);
+                System.out.println(jobLevel.getId());
+            }
+        }
     }
 
     public IPage page(IPage page, OKJobLevleSys okJobLevleSys) {

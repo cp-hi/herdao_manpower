@@ -105,11 +105,12 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
     @GetMapping("/okCreateJobLevel")
     @ApiOperation(value = "一键创建职级系统", notes = "一键创建职级系统")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "职级体系ID"),
+            @ApiImplicitParam(name = "id", value = "职级体系ID",required = true),
+            @ApiImplicitParam(name = "groupId", value = "集团ID",required = true),
     })
-    public R okCreateJobLevel(Long id) {
+    public R okCreateJobLevel(Long id, Long groupId) {
         try {
-            okJobLevleSysService.okCreateJobLevel(id);
+            okJobLevleSysService.okCreateJobLevel(id, groupId);
         } catch (Exception ex) {
             return R.failed(ex.getMessage());
         }

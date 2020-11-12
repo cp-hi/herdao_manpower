@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.OKPostSeqSysMapper;
@@ -10,6 +11,7 @@ import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,20 +37,24 @@ public class OKPostSeqSysServiceImpl extends ServiceImpl<OKPostSeqSysMapper, OKP
     }
 
     @Override
-    public void okCreatePostSeq(Long okPostSeqSysId) {
-        OKPostSeqSysDTO postSeqSys  = findDetail(okPostSeqSysId);
-        postSeqSys.getOkPostSeqDTOList().forEach(okPostSeq  -> {
+    @Transactional(rollbackFor = Exception.class)
+    public void okCreatePostSeq(Long okPostSeqSysId, Long groupId)
+            throws IllegalAccessException {
+        OKPostSeqSysDTO postSeqSys = findDetail(okPostSeqSysId);
+        for (OKPostSeqDTO okPostSeq : postSeqSys.getOkPostSeqDTOList()) {
             PostSeq postSeq = okPostSeq;
             postSeq.setId(null);
-            postSeqService.saveVerify(postSeq);//TODO 校验
-            postSeqService.save(postSeq);
+            postSeq.setGroupId(groupId);
+            postSeqService.saveVerify(postSeq);
+            postSeqService.saveEntity(postSeq);
             List<? extends Post> posts = okPostSeq.getOkPostDTOList();
-            posts.forEach(post -> {
+            for (Post post : posts) {
                 post.setId(null);
+                post.setGroupId(groupId);
                 post.setPostSeqId(postSeq.getId());
-                postService.saveVerify(post);  // TODO 校验
-                postService.saveOrUpdate(post);
-            });
-        });
+                postService.saveVerify(post);
+                postService.saveEntity(post);
+            }
+        }
     }
 }
