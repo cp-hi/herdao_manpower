@@ -56,7 +56,6 @@ public interface ExcelImportController<A, U> {
         return clazz;
     }
 
-
     @ApiOperation("批量新增/编辑")
     @PostMapping("/import")
     @ApiImplicitParams({
@@ -74,10 +73,10 @@ public interface ExcelImportController<A, U> {
             inputStream = file.getInputStream();
             if (!Integer.valueOf(1).equals(importType)) {
                 clazz = getBatchAddClass();
-                listener = new ImportExcelListener<A>(getEntityService(),clazz, importType);
+                listener = new ImportExcelListener<A>(getEntityService(), importType);
             } else {
                 clazz = getBatchUpdateClass();
-                listener = new ImportExcelListener<U>(getEntityService(),clazz, importType);
+                listener = new ImportExcelListener<U>(getEntityService(),  importType);
             }
             EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
         } catch (Exception ex) {
@@ -100,10 +99,6 @@ public interface ExcelImportController<A, U> {
             Class templClass = getBatchAddClass();
             if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
                 templClass = getBatchUpdateClass();
-
-            if (Class.class == templClass)
-                throw new Exception("没有找到模板");
-
             ExcelUtils.downloadTempl(response, templClass);
         } catch (Exception ex) {
             return R.failed(ex.getCause().getMessage());

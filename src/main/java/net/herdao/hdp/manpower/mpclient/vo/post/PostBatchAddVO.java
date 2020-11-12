@@ -44,19 +44,19 @@ public class PostBatchAddVO implements ExcelMsg {
     @HeadFontStyle(color = 10)
     private String groupName;
 
-    @HeadFontStyle
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "所属板块"})
     private String sectionName;
 
-    @HeadFontStyle
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "所属管线"})
     private String pipelineName;
 
-    @HeadFontStyle
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "岗位序列"})
     private String postSeqName;
 
-    @HeadFontStyle
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "职级"})
     private String jobLevelName;
 

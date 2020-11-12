@@ -43,33 +43,42 @@ public class PostBatchUpdateVO implements ExcelMsg {
     @ExcelProperty({"", "所属集团"})
     @HeadFontStyle(color = 10)
     private String groupName;
-    @HeadFontStyle
+
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "所属板块"})
     private String sectionName;
-    @HeadFontStyle
+
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "所属管线"})
     private String pipelineName;
-    @HeadFontStyle
+
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "岗位序列"})
     private String postSeqName;
-    @HeadFontStyle
+
+    @HeadFontStyle(color = 10)
     @ExcelProperty({"", "职级"})
     private String jobLevelName;
+
     @HeadFontStyle
     @ExcelProperty(value = {"", "备注"})
     private String description;
+
     @HeadFontStyle
     @ExcelProperty(value = {"", "岗位组织类型"})
     @ApiModelProperty(value = "岗位组织类型", example = "GWZZLX")
     private String orgType;
+
     @HeadFontStyle
     @ExcelProperty(value = {"", "岗位薪酬级别"})
     @ApiModelProperty(value = "岗位薪酬级别", example = "XCJB")
     private String postLevel;
+
     @HeadFontStyle
     @ExcelProperty(value = {"", "年终奖比例"})
     @ApiModelProperty(value = "年终奖比例", example = "XCBL")
     private String yearPayRatio;
+    
     @HeadFontStyle
     @ExcelProperty(value = {"", "月度绩效工资比例"})
     @ApiModelProperty(value = "月度绩效工资比例", example = "YDJXGZBL")

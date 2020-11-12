@@ -29,8 +29,6 @@ import java.util.stream.Collectors;
  */
 public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
-    Class<E> excelClass;
-
     @Getter
     List<E> excelList = null;
 
@@ -46,36 +44,42 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
      * @param service    服务类
      * @param importType 导入类型 0: 新增 1: 保存
      */
-    public ImportExcelListener(EntityService service,Class<E> clazz,  Integer importType) {
+    public ImportExcelListener(EntityService service, Integer importType) {
         this.dataList = new ArrayList<>();
         this.excelList = new ArrayList<>();
         this.entityService = service;
-        this.excelClass = clazz;
         this.importType = importType;
         this.hasError = false;
     }
-    @SneakyThrows
+
+    /**
+     * 来自ExcelFile文件的表头，由于是用户上传行为，
+     * 有可能用户会非法上传不符合表头的ExcelFile
+     */
+    List<String> headExcelFile = new ArrayList<>();
+
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         if (context.readRowHolder().getRowIndex() > 0) {
-            List<String> headExcelFile = new ArrayList<>(headMap.values());
-            headExcelFile.remove("错误信息"); //排除掉错误信息字段
-
-            //导入类的表头 E 类来自于ExcelClass的头部,headExcelClass的表头一定是正确的，排除"错误信息"字段
-            List<String> headExcelClass = AnnotationUtils.getExcelPropertyNames(excelClass, "错误信息");
-            //来自ExcelClass及ExcelFile应该一样
-            //把两者进行比较，如果存在交集以外的字段，则说明模板不对应ExcelClass的头部
-            //ExcelFile是用户随意上传的，所以ExcelClass不包含的ExcelFile字段就是非法字段
-            List<String> nonexistentHeads = headExcelFile.stream().filter(h ->
-                    !headExcelClass.contains(h)).collect(Collectors.toList());
-
-            if (nonexistentHeads.size() > 0)
-                throw new Exception("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
+            headExcelFile.addAll(headMap.values());
+            //排除掉错误信息字段
+            headExcelFile.remove("错误信息");
         }
     }
 
+    @SneakyThrows
     @Override
     public void invoke(E excel, AnalysisContext context) {
+        //导入类的表头 E 类来自于ExcelClass的头部,headExcelClass的表头一定是正确的，排除"错误信息"字段
+        List<String> headExcelClass = AnnotationUtils.getExcelPropertyNames(excel, "错误信息");
+        //来自ExcelClass及ExcelFile应该一样
+        //把两者进行比较，如果存在交集以外的字段，则说明模板不对应ExcelClass的头部
+        //ExcelFile是用户随意上传的，所以ExcelClass不包含的ExcelFile字段就是非法字段
+        List<String> nonexistentHeads = headExcelFile.stream().filter(h ->
+                !headExcelClass.contains(h)).collect(Collectors.toList());
+
+        if (nonexistentHeads.size() > 0)
+            throw new Exception("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
 
         Object t = null;
         try {
