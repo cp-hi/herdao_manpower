@@ -212,7 +212,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (null == groupId) buffer.append("；集团ID为空不能保存");
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result)
-            buffer.append("；该集团下已经有相同名称的" + getEntityName());
+            buffer.append("；该集团下已经有相同名称的" + getEntityName()+"：" +getNameMapper().apply(t));
     }
 
     /**

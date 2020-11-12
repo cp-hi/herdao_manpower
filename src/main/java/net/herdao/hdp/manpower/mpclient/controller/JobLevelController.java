@@ -112,7 +112,7 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
         try {
             okJobLevleSysService.okCreateJobLevel(id, groupId);
         } catch (Exception ex) {
-            return R.failed(ex.getMessage());
+            return R.failed(ex.getCause().getMessage());
         }
         return R.ok();
     }
