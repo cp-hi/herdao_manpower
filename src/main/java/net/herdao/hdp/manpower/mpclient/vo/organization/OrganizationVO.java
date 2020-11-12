@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
@@ -25,6 +27,7 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "组织VO")
+@ColumnWidth(30)
 public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	
 	private static final long serialVersionUID = 1L;
@@ -40,6 +43,7 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 */
 	@Valid
 	@NotBlank(message = "组织名称不能为空")
+	@ExcelProperty(value = "组织名称", index = 0)
 	@ApiModelProperty(value = "组织名称")
 	private String orgName;
 
@@ -53,6 +57,7 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 * 组织编码
 	 */
 	@ApiModelProperty(value = "组织编码")
+	@ExcelProperty(value = "组织编码", index = 1)
 	private String orgCode;
 
 	/**
@@ -119,6 +124,7 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	private String orgType;
 	
 	@ApiModelProperty(value = "组织类型名称")
+	@ExcelProperty(value = "组织类型名称", index = 2)
 	private String orgTypeName;
 
 	/**
@@ -143,15 +149,23 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	private String orgSimpleDesc;
 
 	/**
+	 * 负责岗位
+	 */
+	@ApiModelProperty(value = "负责岗位")
+	@ExcelProperty(value = "负责岗位", index = 3)
+	private String postName;
+	
+	/**
 	 * 组织负责人id
 	 */
 	@ApiModelProperty(value = "组织负责人id")
 	private String orgChargeWorkId;
-
+	
 	/**
 	 * 组织负责人姓名
 	 */
 	@ApiModelProperty(value = "组织负责人姓名")
+	@ExcelProperty(value = "组织负责人", index = 4)
 	private String orgChargeWorkName;
 
 	/**
@@ -159,18 +173,12 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 */
 	@ApiModelProperty(value = "组织负责人工号")
 	private String orgChargeWorkNo;
-
+	
 	/**
 	 * 负责岗位id
 	 */
 	@ApiModelProperty(value = "负责岗位id")
 	private Long postId;
-	
-	/**
-	 * 负责岗位
-	 */
-	@ApiModelProperty(value = "负责岗位")
-	private String postName;
 
 	/**
 	 * 组织描述
@@ -182,11 +190,13 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 * 人员编制（编制人员数）
 	 */
 	@ApiModelProperty(value = "人员编制")
+	@ExcelProperty(value = "人员编制", index = 5)
 	private Integer staffTotal;
 	/**
 	 * 在职员工数
 	 */
 	@ApiModelProperty(value = "在职员工数")
+	@ExcelProperty(value = "在职员工数", index = 6)
 	private Integer workforceTotal;
 
 	/**
@@ -213,5 +223,6 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 * 最近更新情况
 	 */
 	@ApiModelProperty(value = "最近更新情况")
+	@ExcelProperty(value = "最近更新情况", index = 7)
 	private String updateDesc;
 }

@@ -202,10 +202,10 @@ public abstract class HdpBaseController {
 	/**
 	 * 列表数据集合
 	 * 
-	 * @param searchObject
+	 * @param json
 	 * @return
 	 */
-	public List getPageAllData(Object searchObject) {
+	public List getPageAllData(Map<String, Object> searchParams) {
 		return null;
 	}
 	
@@ -374,25 +374,6 @@ public abstract class HdpBaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.failed("下载模板异常：" + e.getMessage());
-		}
-		return null;
-	}
-	
-	@ApiOperation(value = "导出列表数据")
-	@PostMapping("/exportPageAllData")
-	public Object exportPageAllData(HttpServletResponse response, @RequestBody Object searchObject) {
-		try {
-			List dataList = getPageAllData(searchObject);
-			if(ObjectUtil.isEmpty(dataList)) {
-				return R.failed("请选择要导出的数据！");
-			}
-			// 获取导出处理 class
-			Class exportCls = dataList.get(0).getClass();
-			// 导出列表数据
-			EasyExcelUtils.webWriteExcel(response, dataList, exportCls, excelName, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return R.failed("导出异常：" + e.getMessage());
 		}
 		return null;
 	}

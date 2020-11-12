@@ -3,6 +3,8 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,11 +35,12 @@ import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDT
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
+import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
-import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 
 
@@ -357,5 +361,39 @@ public class OrganizationController extends HdpBaseController{
         page = page.setRecords(orgService.selectOrgStaffAll(page, orgCode));
         return R.ok(page);
     }
+    
+    /**
+     * 导出组织数据（待优化）
+     * 
+     * @param response
+     * @param orgCode
+     * @param stop
+     * @param searchText
+     * @return
+     */
+    @ApiOperation(value = "导出组织Excel", notes = "导出组织Excel")
+    @ApiImplicitParams({ @ApiImplicitParam(name = "orgCode", value = "组织编码（通过组织树查询传递）"),
+	@ApiImplicitParam(name = "stop", value = "是否停用 （值：0 启用 、值：1 停用 、值：3 或者 NULL 查询全部）"),
+	@ApiImplicitParam(name = "searchText", value = "模糊查询内容") })
+    @GetMapping("/exportOrganization")
+	public Object exportOrganization(HttpServletResponse response, String orgCode, Integer stop, String searchText) {
+		try {
+			// 导出列表数据
+			Page page = new Page();
+			page.setSize(-1);
+			Page pageResult = orgService.findOrgPage(page, orgCode, stop, searchText);
+			List<OrganizationVO> dataList = pageResult.getRecords();
+			dataList.forEach(o -> o.setOrgCode("'" + o.getOrgCode()));
+			if (ObjectUtil.isEmpty(dataList)) {
+				return R.failed("请选择要导出的数据！");
+			}
+			EasyExcelUtils.webWriteExcel(response, dataList, OrganizationVO.class, "组织列表" + DateUtil.today(), "组织列表", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return R.failed("导出异常：" + e.getMessage());
+		}
+		return null;
+	}
+    
 }
 
