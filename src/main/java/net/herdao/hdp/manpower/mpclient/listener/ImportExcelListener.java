@@ -81,7 +81,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
         if (nonexistentHeads.size() > 0) {
             errType = 2;
-            throw new  Exception("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
+            throw new  Exception("模板错误，导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
         }
 
         Object t = null;
