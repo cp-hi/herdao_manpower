@@ -90,9 +90,9 @@ public class AnnotationUtils {
         return propertyNames;
     }
 
-    public static List<String> getExcelPropertyNames(Object object) {
-        return getExcelPropertyNames(object.getClass());
-    }
+//    public static List<String> getExcelPropertyNames(Object object) {
+//        return getExcelPropertyNames(object.getClass());
+//    }
 
     public static List<String> getExcelPropertyNames(Class clazz, String... excludeColumn) {
         Field[] fields = clazz.getDeclaredFields();
