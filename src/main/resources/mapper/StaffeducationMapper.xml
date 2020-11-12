@@ -75,7 +75,7 @@
                   LEFT JOIN sys_dict_item dd ON dd.type = 'XXXS'
                   AND dd.`value` = e.LEARN_FORM
                   LEFT JOIN mp_user usr ON usr.id = e.MODIFIER_CODE
-                  LEFT JOIN mp_userpost up ON s.ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+                  LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
                   LEFT JOIN mp_post p ON p.ID = up.POST_ID
                   LEFT JOIN mp_group g on p.GROUP_ID=g.ID
                   WHERE

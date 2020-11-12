@@ -91,7 +91,7 @@
          = f.CONTRACT_TYPE
          AND dic.type = 'HTQXLX'
          LEFT JOIN mp_user u ON u.id = f.modifier_id
-         LEFT JOIN mp_userpost up ON s.ID = up.USER_ID
+         LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID
          AND up.OFFICE_POST_TYPE = '1'
          LEFT JOIN mp_post p ON p.ID = up.POST_ID
          LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
