@@ -2,8 +2,11 @@ package net.herdao.hdp.manpower.mpclient.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import lombok.Data;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.herdao.hdp.manpower.mpclient.exception.WrongDataException;
+import net.herdao.hdp.manpower.mpclient.exception.WrongHeadException;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
@@ -39,6 +42,10 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     EntityService entityService;
 
     Integer importType = 0;
+
+    //错误类型，1为数据错误，2为模板错误
+    @Getter
+    Integer errType = 1;
 
     /**
      * @param service    服务类
@@ -78,8 +85,10 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
         List<String> nonexistentHeads = headExcelFile.stream().filter(h ->
                 !headExcelClass.contains(h)).collect(Collectors.toList());
 
-        if (nonexistentHeads.size() > 0)
-            throw new Exception("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
+        if (nonexistentHeads.size() > 0) {
+            errType = 2;
+            throw new WrongHeadException("导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
+        }
 
         Object t = null;
         try {
@@ -97,8 +106,10 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     @SneakyThrows
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        if (hasError)
-            throw new Exception("导入出现错误，请查看导错误原因");
+        if (hasError) {
+            errType = 1;
+            throw new WrongDataException("导入出现错误，请查看导错误原因");
+        }
         this.entityService.saveList(dataList, importType);
     }
 }

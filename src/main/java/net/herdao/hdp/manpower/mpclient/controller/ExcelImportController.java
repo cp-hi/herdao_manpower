@@ -4,7 +4,10 @@ import com.alibaba.excel.EasyExcel;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.exception.WrongDataException;
+import net.herdao.hdp.manpower.mpclient.exception.WrongHeadException;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -56,6 +59,7 @@ public interface ExcelImportController<A, U> {
         return clazz;
     }
 
+    @SneakyThrows
     @ApiOperation("批量新增/编辑")
     @PostMapping("/import")
     @ApiImplicitParams({
@@ -65,7 +69,7 @@ public interface ExcelImportController<A, U> {
     })
     default R importData(HttpServletResponse response,
                          @RequestParam(value = "file") MultipartFile file,
-                         Integer importType, Integer downloadErrMsg) throws Exception {
+                         Integer importType, Integer downloadErrMsg) {
         InputStream inputStream = null;
         ImportExcelListener listener = null;
         Class clazz = null;
@@ -76,13 +80,13 @@ public interface ExcelImportController<A, U> {
                 listener = new ImportExcelListener<A>(getEntityService(), importType);
             } else {
                 clazz = getBatchUpdateClass();
-                listener = new ImportExcelListener<U>(getEntityService(),  importType);
+                listener = new ImportExcelListener<U>(getEntityService(), importType);
             }
             EasyExcel.read(inputStream, clazz, listener).sheet().headRowNumber(2).doRead();
         } catch (Exception ex) {
             if (Integer.valueOf(1).equals(downloadErrMsg) && listener.getExcelList().size() > 0)
                 ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
-            return R.failed(ex.getCause().getMessage());
+            return R.failed(listener.getErrType(), ex.getCause().getMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
