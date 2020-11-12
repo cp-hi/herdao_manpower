@@ -170,7 +170,7 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 * 负责岗位
 	 */
 	@ApiModelProperty(value = "负责岗位")
-	private Long postName; 
+	private String postName;
 
 	/**
 	 * 组织描述

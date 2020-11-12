@@ -160,6 +160,7 @@ public class BaseController<T, D, F> {
             BeanUtils.copyProperties((T) t, f);
             return R.ok(f);
         } catch (Exception ex) {
+            log.error("save异常",ex);
             return R.failed(ex.getCause().getMessage());
         }
     }
