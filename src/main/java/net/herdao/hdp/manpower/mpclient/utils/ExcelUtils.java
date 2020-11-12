@@ -111,7 +111,7 @@ public class ExcelUtils {
 
         EasyExcel.write(response.getOutputStream(), clazz).sheet(excelName)
                 .registerWriteHandler(horizontalCellStyleStrategy)
-                .registerWriteHandler(new ImportStyleStrategy(clazz,1))
+                .registerWriteHandler(new ImportStyleStrategy(clazz, 1))
                 .doWrite(data);
     }
 
@@ -138,12 +138,10 @@ public class ExcelUtils {
 //        EasyExcel.write(response.getOutputStream()).sheet(excelName).head(headList).doWrite(dataList);
 //    }
 
-    public static void downloadTempl(HttpServletResponse response, Class templClass) throws Exception {
-        ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);
-
+    public static void downloadTempl(HttpServletResponse response, Class templClass, String excelName) throws Exception {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
-        String excelName = URLEncoder.encode(apiModel.value(), "UTF-8");
+        excelName = URLEncoder.encode(excelName, "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelName + ExcelTypeEnum.XLSX.getValue());
 
         //内容样式策略

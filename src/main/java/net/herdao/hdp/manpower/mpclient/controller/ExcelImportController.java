@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.alibaba.excel.EasyExcel;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
@@ -99,9 +100,13 @@ public interface ExcelImportController<A, U> {
     default R getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
         try {
             Class templClass = getBatchAddClass();
-            if (Integer.valueOf(1).equals(exportDataVO.getImportType()))
+            ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);
+            String excelName = apiModel.value();
+            if (Integer.valueOf(1).equals(exportDataVO.getImportType())) {
                 templClass = getBatchUpdateClass();
-            ExcelUtils.downloadTempl(response, templClass);
+                excelName = apiModel.value().replaceFirst("批量新增", "批量编辑");
+            }
+            ExcelUtils.downloadTempl(response, templClass, excelName);
         } catch (Exception ex) {
             return R.failed(ex.getCause().getMessage());
         }
