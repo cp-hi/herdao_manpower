@@ -92,12 +92,12 @@ public class OrganizationFormVO {
 	 * 负责岗位
 	 */
 	@ApiModelProperty(value = "负责岗位名称")
-	private Long postName;
+	private String postName;
 	/**
 	 * 负责岗位
 	 */
 	@ApiModelProperty(value = "负责岗位编码")
-	private Long postCode;
+	private String postCode;
 	/**
 	 * 是否虚拟组织（取值待确认）
 	 */
