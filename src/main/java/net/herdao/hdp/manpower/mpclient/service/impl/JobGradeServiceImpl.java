@@ -29,4 +29,9 @@ public class JobGradeServiceImpl extends EntityServiceImpl<JobGradeMapper, JobGr
     public Function<JobGrade, Long> getGroupIdMapper() {
         return JobGrade::getGroupId;
     }
+
+    @Override
+    public Function<JobGrade, String> getNameMapper() {
+        return JobGrade::getJobGradeName;
+    }
 }
