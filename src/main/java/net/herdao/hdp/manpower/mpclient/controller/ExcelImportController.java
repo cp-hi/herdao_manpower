@@ -6,8 +6,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.exception.WrongDataException;
-import net.herdao.hdp.manpower.mpclient.exception.WrongHeadException;
 import net.herdao.hdp.manpower.mpclient.listener.ImportExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
