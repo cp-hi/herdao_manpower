@@ -560,7 +560,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		orgModifyRecordService.saveOrgModifyRecord(organization, tpOrganization);
     	}
 
-    	BeanUtils.copyProperties(organization,organizationVO);
     	return R.ok(organization);
     }
     

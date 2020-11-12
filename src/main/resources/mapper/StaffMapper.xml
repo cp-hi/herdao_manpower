@@ -162,7 +162,7 @@
 			orgp.org_code AS parent_org_code
 		FROM mp_organization org LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		LEFT JOIN ( SELECT COUNT(1) nbs, orgd.parent_id FROM mp_organization orgd WHERE orgd.is_stop = 0 GROUP BY orgd.parent_id ) corg ON corg.parent_id = org.id 
-		WHERE org.is_stop = 0
+		WHERE org.is_stop = 0 AND org.del_flag = 0
 	</sql>
 	
 	<!-- 查询部门信息组件  -->
@@ -189,6 +189,7 @@
 		INNER JOIN mp_organization org ON org.id = ut.org_dept_id
 		<where>
 			AND ut.main_post = 1
+			AND org.del_flag = 0
 			<if test="orgCode != null">
 				 AND org.org_code LIKE CONCAT(#{orgCode},'%')
 			</if>
@@ -217,6 +218,7 @@
 		LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
 		<where>
 			 AND ut.main_post = 1
+			 AND org.del_flag = 0
 			 <choose>
 	            <when test="orgCode != null">
 	                AND org.org_code = #{orgCode}
