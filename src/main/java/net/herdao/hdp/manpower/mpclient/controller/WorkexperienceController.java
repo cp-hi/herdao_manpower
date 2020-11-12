@@ -1,39 +1,26 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcelFactory;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
-import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
-import net.herdao.hdp.manpower.mpclient.service.HdpService;
-import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
-import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -213,7 +200,7 @@ public class WorkexperienceController extends HdpBaseController {
      */
     @ApiOperation(value = "通过id删除", notes = "通过id删除")
     @SysLog("通过id删除" )
-    @PostMapping("/{id}" )
+    @DeleteMapping("/{id}" )
     public R removeById(@PathVariable Long id) {
         return R.ok(workexperienceService.removeById(id));
     }
