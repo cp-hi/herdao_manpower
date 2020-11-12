@@ -534,10 +534,9 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     		}
     	}
     	
-    	// 前期联调的时候使用的是工号作为员工组件的value值
-    	String orgChargeWorkNo = organization.getOrgChargeWorkNo();
-    	if(StrUtil.isNotBlank(orgChargeWorkNo)) {
-    		Staff staff = staffService.lambdaQuery().eq(Staff::getStaffCode, orgChargeWorkNo).one();
+    	Long orgChargeWorkId = organization.getOrgChargeWorkId();
+    	if(ObjectUtil.isNotNull(orgChargeWorkId)) {
+    		Staff staff = staffService.getById(orgChargeWorkId);
     		organization.setOrgChargeWorkId(staff.getId());
     		organization.setOrgChargeWorkName(staff.getStaffName());
     	}
