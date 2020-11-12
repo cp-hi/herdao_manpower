@@ -120,7 +120,7 @@ public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, Po
         try {
             okPostSeqSysService.okCreatePostSeq(id,  groupId);
         } catch (Exception ex) {
-            return R.failed(ex.getMessage());
+            return R.failed(ex.getCause().getMessage());
         }
         return R.ok();
     }
