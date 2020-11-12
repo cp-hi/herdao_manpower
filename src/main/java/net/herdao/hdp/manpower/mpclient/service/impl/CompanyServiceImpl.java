@@ -20,6 +20,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.admin.api.dto.UserInfo;
+import net.herdao.hdp.admin.api.feign.RemoteUserService;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
@@ -36,10 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 注册公司
@@ -55,6 +56,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     @Autowired
     private OrganizationService organizationService;
+
+    @Autowired
+    private RemoteUserService remoteUserService;
 
     @Override
     @SuppressWarnings("all")
@@ -134,6 +138,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         long code = sysSequenceService.getNext("company_code");
         String companyCode = "GS" + code;
         company.setCompanyCode(companyCode);
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        company.setCreatorId(userInfo.getSysUser().getUserId());
+        company.setCreatorName(userInfo.getSysUser().getAliasName());
+        company.setCreatedTime(new Date());
         return this.save(company);
     }
 
@@ -141,6 +149,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     public boolean companyUpdate(CompanyDetailDTO companyForm){
         Company company = new Company();
         BeanUtils.copyProperties(companyForm, company);
+        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+        company.setModifierId(userInfo.getSysUser().getUserId());
+        company.setModifierName(userInfo.getSysUser().getAliasName());
+        company.setModifiedTime(new Date());
         return this.updateById(company);
     }
 
