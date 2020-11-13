@@ -71,7 +71,7 @@
                   LEFT JOIN mp_job_level j1 ON j1.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
                   LEFT JOIN mp_job_level j2 ON j2.JOB_LEVEL_CODE = P.JOB_LEVEL_ID2
                   LEFT JOIN mp_user usr on usr.id=u.MODIFIER_CODE
-                  LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+                  LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.MAIN_POST=1
                   LEFT JOIN mp_group g on p.GROUP_ID=g.ID
                   WHERE
                   u.del_flag = 0
