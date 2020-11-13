@@ -298,7 +298,7 @@ public abstract class HdpBaseController {
 			String templateDp = ManpowerContants.ImportTypeEnum.getInstance(importType) + ( StrUtil.isBlank(excelName) ? EasyExcelUtils.getApiModelValue(excelCls) : excelName);
 			List excelList = easyExcelListener.getExcelList();
 			if(ObjectUtil.isEmpty(excelList) && !importDataVO.getDownloadErrMsg().equals(1)) {
-				return R.failed("批量" + templateDp + "失败，模板数据为空！");
+				return R.failed("2", "批量" + templateDp + "失败，模板数据为空！");
 			}
 			// 导入异常信息集合
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
@@ -320,13 +320,13 @@ public abstract class HdpBaseController {
 							errMsgMethod.invoke(excelErrDto, excelCheckErrDto.getErrMsg());
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 							e.printStackTrace();
-							return R.failed("导入异常：" + e.getMessage());
+							return R.failed("2", "导入异常：" + e.getMessage());
 						}
 						return excelErrDto;
 					}).collect(Collectors.toList());
 
 				}else {
-					return R.failed("导入异常，是否下载错误文件？");
+					return R.failed("1", "导入异常，是否下载错误文件？");
 				}
 			}
 			// 当前情况是模板为空，这种情况建议后台加一个状态标识，前端不下载异常文件，待沟通 TOTO 
@@ -343,7 +343,7 @@ public abstract class HdpBaseController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return R.failed("导入异常：" + e.getMessage());
+			return R.failed("2", "导入异常：" + e.getMessage());
 		}
 		return null;
 	}
