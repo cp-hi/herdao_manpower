@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
 
         if (nonexistentHeads.size() > 0) {
             errType = 2;
-            throw new  Exception("模板错误，导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
+            throw new Exception("模板错误，导入模板表头不存在：" + StringUtils.join(nonexistentHeads));
         }
 
         Object t = null;
@@ -100,9 +101,13 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
     @SneakyThrows
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        if (hasError) {
+        if (hasError && excelList.size() > 0) {
             errType = 1;
-            throw new  Exception("导入出现错误，请查看导错误原因");
+            throw new Exception("导入出现错误，请查看导错误原因");
+        }
+        if (dataList.size() == 0) {
+            errType = 2;
+            throw new Exception("上传文件中并无数据");
         }
         this.entityService.saveList(dataList, importType);
     }

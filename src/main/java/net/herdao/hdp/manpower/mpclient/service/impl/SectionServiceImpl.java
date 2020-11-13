@@ -31,7 +31,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     }
 
     @Override
-    public void addEntity(Section section, Object excelObj, StringBuffer buffer) {
+    public void batchAddVerify(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
@@ -39,7 +39,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     }
 
     @Override
-    public void updateEntity(Section section, Object excelObj, StringBuffer buffer) {
+    public void batchUpdateVerify(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());

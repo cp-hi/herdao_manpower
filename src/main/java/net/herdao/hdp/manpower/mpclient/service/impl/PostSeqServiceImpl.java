@@ -39,7 +39,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public void addEntity(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
+    public void batchAddVerify(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) postSeq.setGroupId(group.getId());
@@ -52,7 +52,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public void updateEntity(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
+    public void batchUpdateVerify(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
 
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);

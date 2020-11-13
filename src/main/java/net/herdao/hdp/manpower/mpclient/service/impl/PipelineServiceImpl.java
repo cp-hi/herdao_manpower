@@ -33,7 +33,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     }
 
     @Override
-    public void addEntity(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
+    public void batchAddVerify(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());
@@ -41,7 +41,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     }
 
     @Override
-    public void updateEntity(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
+    public void batchUpdateVerify(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());

@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -144,6 +145,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             result = this.saveOrUpdate(t);
         } else {
             operation = "编辑";
+//            T origin = baseMapper.selectIgnoreDel(entity.getId());
             entity.setModifiedTime(new Date());
             entity.setModifierName(sysUser.getUsername());
             entity.setModifierId(Long.valueOf(sysUser.getUserId()));
@@ -212,7 +214,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         if (null == groupId) buffer.append("；集团ID为空不能保存");
         Boolean result = baseMapper.checkDuplicateName(t);
         if (result)
-            buffer.append("；该集团下已经有相同名称的" + getEntityName()+"：" +getNameMapper().apply(t));
+            buffer.append("；该集团下已经有相同名称的" + getEntityName() + "：" + getNameMapper().apply(t));
     }
 
     /**
@@ -256,19 +258,46 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         boolean add = (0 == type);
         //this.validExcelObj(excelObj);
         StringBuffer buffer = new StringBuffer();
-        if (add) addEntity(t, excelObj, buffer);
-        else updateEntity(t, excelObj, buffer);
+        if (add) batchAddVerify(t, excelObj, buffer);
+        else batchUpdateVerify(t, excelObj, buffer);
         //这个验证要放 最后，因为前面要给ID赋值
-//        this.saveVerify(t, buffer);
+        this.saveVerify(t, buffer);
         throwErrMsg(buffer);
     }
 
-    protected void addEntity(T t, Object excelObj, StringBuffer buffer) {
+    /**
+     * 批量新增校验
+     *
+     * @param t
+     * @param excelObj
+     * @param buffer
+     */
+    protected void batchAddVerify(T t, Object excelObj, StringBuffer buffer) {
     }
 
-    protected void updateEntity(T t, Object excelObj, StringBuffer buffer) {
+    /**
+     * 批量编辑校验
+     *
+     * @param t
+     * @param excelObj
+     * @param buffer
+     */
+    protected void batchUpdateVerify(T t, Object excelObj, StringBuffer buffer) {
     }
 
+    //region 检查实体是否存在，并根据需要决定是马上抛异常还是用buffer接住异常信息
+
+    /**
+     * 根据字段名和字段值获取字段
+     * 并根据条件拼接错误信息
+     *
+     * @param name   实体名称
+     * @param need   是否需要它存在
+     * @param buffer 拼接信息的StringBuffer，
+     *               这样可以实体多数据返回，
+     *               使用StringBuffer主要是为了线程安全
+     * @return
+     */
     @Override
     public T chkEntityExists(String name, Long groupId, boolean need, StringBuffer buffer) {
         if (StringUtils.isBlank(name)) {
@@ -286,6 +315,15 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         return t;
     }
 
+    /**
+     * 根据字段名和字段值获取字段
+     * 并根据条件抛异常
+     *
+     * @param name 实体名称
+     * @param need 是否需要它存在
+     * @return
+     * @Author ljan
+     */
     @SneakyThrows
     @Override
     public T chkEntityExists(String name, Long groupId, boolean need) {
@@ -294,6 +332,43 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         throwErrMsg(buffer);
         return t;
     }
+
+    /**
+     * 根据字段上的注解自动识别是否必填字段
+     * 此方法目的是避免造成必填字段要分开维护
+     *
+     * @param excelObj
+     * @param groupId
+     * @param excelField
+     * @param buffer
+     * @return
+     */
+    @SneakyThrows
+    protected T chkEntityExists(Object excelObj, Long groupId, String excelField, StringBuffer buffer) {
+        Field nameField = AnnotationUtils.getFieldByName(excelObj, excelField);
+        HeadFontStyle fontStyle = nameField.getAnnotation(HeadFontStyle.class);
+        boolean need = (null != fontStyle && (short) 10 == fontStyle.color());
+        String nameVal = (String) nameField.get(excelObj);
+        return chkEntityExists(nameVal, groupId, need, buffer);
+    }
+
+    /**
+     * 根据字段上的注解自动识别是否必填字段
+     * 此方法目的是避免造成必填字段要分开维护
+     *
+     * @param excelObj
+     * @param groupId
+     * @param excelField
+     * @return
+     */
+    @SneakyThrows
+    protected T chkEntityExists(Object excelObj, Long groupId, String excelField) {
+        StringBuffer buffer = new StringBuffer();
+        T t = chkEntityExists(excelObj, groupId, excelField, buffer);
+        throwErrMsg(buffer);
+        return t;
+    }
+    //endregion
 
     @SneakyThrows
     @Override
@@ -332,12 +407,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                 }
             }
         } else {
-            dataList.forEach(t -> {
+            for (T t : dataList) {
                 BaseEntity entity = (BaseEntity) t;
                 entity.setModifiedTime(new Date());
                 entity.setModifierName(sysUser.getUsername());
                 entity.setModifierId(Long.valueOf(sysUser.getUserId()));
-            });
+            }
         }
         List<List<T>> batch = Lists.partition(dataList, 100);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);

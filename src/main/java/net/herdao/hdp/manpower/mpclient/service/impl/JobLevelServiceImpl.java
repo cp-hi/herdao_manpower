@@ -50,7 +50,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     }
 
     @Override
-    public void addEntity(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
+    public void batchAddVerify(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
 
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
@@ -67,7 +67,7 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     }
 
     @Override
-    public void updateEntity(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
+    public void batchUpdateVerify(JobLevel jobLevel, Object excelObj, StringBuffer buffer) {
         JobLevelBatchVO excel = (JobLevelBatchVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) jobLevel.setGroupId(group.getId());

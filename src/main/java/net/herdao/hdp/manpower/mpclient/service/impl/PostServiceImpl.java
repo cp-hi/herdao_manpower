@@ -127,9 +127,9 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
     //endregion
 
-    //region 批量新增编辑
+    //region 批量新增编辑校验
     @Override
-    public void addEntity(Post post, Object excelObj, StringBuffer buffer) {
+    public void batchAddVerify(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
@@ -149,7 +149,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     @Override
-    public void updateEntity(Post post, Object excelObj, StringBuffer buffer) {
+    public void batchUpdateVerify(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
 
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
