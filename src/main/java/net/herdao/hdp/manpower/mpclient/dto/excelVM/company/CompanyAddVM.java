@@ -26,6 +26,7 @@ public class CompanyAddVM {
 
     @ExcelProperty(value = "公司名称", index = 0)
     @ApiModelProperty(value="公司名称")
+    @HeadFontStyle(color = 10)
     private String companyName;
 
     @ApiModelProperty(value="对应组织主键")
@@ -33,6 +34,7 @@ public class CompanyAddVM {
 
     @ExcelProperty(value = "对应组织编码", index = 1)
     @ApiModelProperty(value="对应组织编码")
+    @HeadFontStyle(color = 10)
     private String orgCode;
 
     @ExcelProperty(value = "目标系统", index = 2)
