@@ -40,7 +40,7 @@ public class PipelineBatchUpdateVO implements ExcelMsg {
     private String groupName;
     @HeadFontStyle
     @ExcelProperty({"","是否停用"})
-    @DtoField(converter = "{true:\"已停用\",false:\"已启用\"}")
+    @DtoField
     private String stop;
     @HeadFontStyle
     @ExcelProperty({"","排序"})
