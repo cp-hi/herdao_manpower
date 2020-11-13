@@ -1,15 +1,22 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.section.SectionBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.cache.GroupCache;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,7 +42,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
-        chkEntityExists(excel.getSectionName(), group.getId(), false,buffer);
+        chkEntityExists(excel.getSectionName(), group.getId(), false, buffer);
     }
 
     @Override
@@ -44,7 +51,10 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
         Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
-        if (StringUtils.isBlank(buffer)) section.setId(tmp.getId());
+        if (StringUtils.isBlank(buffer)) {
+            section.setStop(DtoConverter.string2bool(excel, "stop"));
+            section.setId(tmp.getId());
+        }
     }
 
     @Override

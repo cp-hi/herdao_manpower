@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.sys.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
@@ -28,7 +31,7 @@ public class DtoConverter {
 
     /**
      * @param source dto类
-     * @param clazz   vo 类
+     * @param clazz  vo 类
      * @param <T>    vo 类
      * @return
      * @throws IllegalAccessException
@@ -171,7 +174,7 @@ public class DtoConverter {
      * @throws IllegalAccessException
      */
     public static <T> List<T> dto2vo(List source, Class<? extends T> clzz)
-            throws  InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         for (Object o : source) {
             T t = dto2vo(o, clzz);
@@ -186,5 +189,14 @@ public class DtoConverter {
 
     public static <T> List<T> vo2dto(List source, Class clzz) {
         throw new NotImplementedException("未实现此方法");
+    }
+
+
+    @SneakyThrows
+    public static Boolean string2bool(Object source, String fieldName) {
+        Field field = AnnotationUtils.getFieldByName(source, fieldName);
+        DtoField dtoField = field.getAnnotation(DtoField.class);
+        BiMap<String, String> converter = HashBiMap.create((Map) JSON.parse(dtoField.converter()));
+        return (Boolean.parseBoolean(converter.inverse().get(field.get(source))));
     }
 }

@@ -165,13 +165,14 @@ public class AnnotationUtils {
 
     public static Field getFieldByAnnotationAndName(Object object, String fieldName, Class<? extends Annotation> clazz) {
         Field[] fields = getAllAnnotationFields(object, clazz);
-        return getFieldByAnnotationAndName(fields, fieldName, clazz);
+        return getFieldByAnnotationAndName(fields, fieldName);
     }
 
-    public static Field getFieldByAnnotationAndName(Field[] fields, String fieldName, Class<? extends Annotation> clazz) {
+    public static Field getFieldByAnnotationAndName(Field[] fields, String fieldName) {
         Field field = null;
         for (Field f : fields) {
             if (fieldName.equals(f.getName())) {
+                f.setAccessible(true);
                 field = f;
                 break;
             }

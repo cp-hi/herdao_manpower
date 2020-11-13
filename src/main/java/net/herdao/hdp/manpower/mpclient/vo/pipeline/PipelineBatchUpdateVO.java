@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
  * @ClassName PipelineBatchUpdateDTO
@@ -24,7 +25,8 @@ import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 @ApiModel(value = "批量编辑管线", description = "" +
         "导入说明：\r\n" +
         "1、标红字段为必填\r\n" +
-        "2、操作导入前请删除示例数据\r\n"
+        "2、操作导入前请删除示例数据\r\n"+
+        "3、是否停用字段只能用 已停用/已启用 来表示\r\n"
 )
 public class PipelineBatchUpdateVO implements ExcelMsg {
     @HeadFontStyle
@@ -38,6 +40,7 @@ public class PipelineBatchUpdateVO implements ExcelMsg {
     private String groupName;
     @HeadFontStyle
     @ExcelProperty({"","是否停用"})
+    @DtoField(converter = "{true:\"已停用\",false:\"已启用\"}")
     private String stop;
     @HeadFontStyle
     @ExcelProperty({"","排序"})
