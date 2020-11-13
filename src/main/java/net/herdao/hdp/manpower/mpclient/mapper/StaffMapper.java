@@ -70,11 +70,11 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * 
 	 * @param orgCode
 	 * @param batchSelectOrgCodes
-	 * @param staffCodes
+	 * @param staffIds
 	 * @param searchText
 	 * @return
 	 */
-	public List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("batchSelectOrgCodes") String [] batchSelectOrgCodes, @Param("staffCodes") String [] staffCodes, @Param("searchText") String searchText);
+	public List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("batchSelectOrgCodes") String [] batchSelectOrgCodes, @Param("staffIds") String [] staffIds, @Param("searchText") String searchText);
 	
 	
 	/**

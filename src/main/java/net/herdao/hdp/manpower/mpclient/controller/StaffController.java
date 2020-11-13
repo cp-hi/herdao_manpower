@@ -359,11 +359,11 @@ public class StaffController extends HdpBaseController{
 
      * @return
      */
-    @ApiOperation(value = "根据员工工号查询员工信息", notes = "staffCodes 根据员工工号查询员工信息")
-    @GetMapping("/selectStaffByStaffCodes")
-    @ApiImplicitParam(name="staffCodes", value="工号，多个采用：“,”分隔开， 例如：1001,1002")
-    public R<List> selectStaffByStaffCodes(String staffCodes) {
-    	return staffService.selectStaffOrganizationComponent(null, null, staffCodes, null);
+    @ApiOperation(value = "根据员工ID查询员工信息", notes = "staffCodes 根据员工ID查询员工信息")
+    @GetMapping("/selectStaffByStaffIds")
+    @ApiImplicitParam(name="staffIds", value="员工ID，多个采用：“,”分隔开， 例如：1001, 1002")
+    public R<List> selectStaffByStaffIds(String staffIds) {
+    	return staffService.selectStaffOrganizationComponent(null, null, staffIds, null);
     }
     
 

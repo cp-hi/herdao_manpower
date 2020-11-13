@@ -217,13 +217,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
     
 	@SuppressWarnings("all")
 	@Override
-	public R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String staffCodes, String searchText) {
+	public R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String staffIds, String searchText) {
 		
 		// 组织、员工信息集合
 		List stfList = new ArrayList<>();
 		
 		// 默认查询一级组织信息
-		if(StrUtil.isAllBlank(orgCode, staffCodes, batchSelectOrgCodes, searchText)) {
+		if(StrUtil.isAllBlank(orgCode, staffIds, batchSelectOrgCodes, searchText)) {
 			 stfList.addAll(recursion(this.baseMapper.selectOrganizations(), null));
 		}else {
 			if(StrUtil.isNotBlank(orgCode)) {
@@ -236,7 +236,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			}
 			// 组织下员工信息
 			List<StaffComponentVO> staffs = this.baseMapper.selectStaffs(orgCode, (StrUtil.isBlank(batchSelectOrgCodes) ? null  : batchSelectOrgCodes.split(ManpowerContants.EN_SEPARATOR)), 
-					(StrUtil.isBlank(staffCodes) ? null : staffCodes.split(ManpowerContants.EN_SEPARATOR)), searchText);
+					(StrUtil.isBlank(staffIds) ? null : staffIds.split(ManpowerContants.EN_SEPARATOR)), searchText);
 			if(ObjectUtil.isNotEmpty(staffs)) {
 				stfList.addAll(staffs);
 			}
