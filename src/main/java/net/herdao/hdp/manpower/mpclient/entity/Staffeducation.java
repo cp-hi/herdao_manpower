@@ -89,7 +89,7 @@ public class Staffeducation extends BaseModel<Staffeducation> {
      * 人员外键
      */
     @ApiModelProperty(value="人员外键")
-    private String staffId;
+    private Long staffId;
     /**
      * 毕业日期
      */
