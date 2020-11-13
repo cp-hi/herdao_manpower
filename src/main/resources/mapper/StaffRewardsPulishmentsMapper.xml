@@ -69,7 +69,7 @@
             LEFT JOIN mp_staff s ON s.ID = f.staff_id
             LEFT JOIN sys_dict_item dic on dic.`value`=f.type and dic.type='YGJCLB'
             LEFT JOIN mp_user usr on usr.id=f.MODIFIER_CODE
-            LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.OFFICE_POST_TYPE='1'
+            LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.MAIN_POST=1
             LEFT JOIN mp_post p ON p.ID = up.POST_ID
             LEFT JOIN mp_group g on p.GROUP_ID=g.ID
             where f.del_flag=0
