@@ -83,4 +83,6 @@ public interface StaffService extends HdpService<Staff> {
 	Map<String, Object> getStaffWelfare(Long id);
 
 	boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO);
+
+	void updateEduLast(Long id);
 }

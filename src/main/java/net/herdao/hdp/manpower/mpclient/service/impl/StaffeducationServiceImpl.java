@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -24,6 +23,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ImportCheckUtils;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,13 +35,15 @@ import java.util.List;
  * @date 2020-09-23 17:22:28
  */
 @Service
-@AllArgsConstructor
 public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper, Staffeducation> implements StaffeducationService {
 
+    @Autowired
     private RemoteUserService remoteUserService;
 
+    @Autowired
     private SysDictItemService itemService;
 
+    @Autowired
     private StaffService staffService;
 
     @Override
@@ -52,6 +54,7 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
         staffeducation.setCreatorId(sysUser.getUserId());
         staffeducation.setCreatorName(sysUser.getAliasName());
         boolean status = super.save(staffeducation);
+        staffService.updateEduLast(staffeducation.getStaffId());
         return status;
     }
 
@@ -62,6 +65,7 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
         staffeducation.setModifierCode(userId.toString());
         staffeducation.setModifiedTime(new Date());
         boolean status = super.updateById(staffeducation);
+        staffService.updateEduLast(staffeducation.getStaffId());
         return status;
     }
 

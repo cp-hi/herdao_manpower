@@ -315,6 +315,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		return page;
 	}
 
+    @Transactional(rollbackFor = Exception.class)
 	@Override
 	public StaffDetailDTO staffSave(StaffDetailDTO staffForm){
 		Staff staff = new Staff();
@@ -339,6 +340,27 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staff, staffForm);
 		return staffForm;
 	}
+
+    @Override
+	public void updateEduLast(Long id){
+	    if(id==null){
+	        return;
+        }
+        List<Staffeducation> eduList = staffeducationService.list(new QueryWrapper<Staffeducation>()
+                .eq("STAFF_ID", id)
+                .orderByDesc("END_DATE")
+                .last("limit 1")
+        );
+        StaffEducationLastDTO educationLast = new StaffEducationLastDTO();
+        if(eduList!=null && eduList.size()!=0){
+            Staffeducation staffeducation = eduList.get(0);
+            BeanUtils.copyProperties(staffeducation, educationLast);
+        }
+        Staff staff = new Staff();
+        BeanUtils.copyProperties(educationLast, staff);
+        staff.setId(id);
+        this.updateById(staff);
+    }
 
 	@Override
     public Map<String, Object> getStaffDetail(Long id){
