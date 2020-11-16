@@ -48,6 +48,6 @@ public interface StafftrainMapper extends BaseMapper<Stafftrain> {
      * @param searchText
      * @return
      */
-    List<StafftrainDTO> findStaffTrain(@Param("searchText") String searchText);
+    List<StafftrainDTO> findStaffTrain(@Param("searchText") String searchText,@Param("query") StafftrainDTO stafftrainDTO);
 
 }

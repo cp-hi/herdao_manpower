@@ -9,11 +9,15 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
@@ -33,7 +37,6 @@ import java.util.List;
 
 /**
  * 员工奖惩
- *
  * @author andy
  * @date 2020-09-25 16:26:20
  */
@@ -42,6 +45,7 @@ import java.util.List;
 @Api(value = "staffrewardspulishments", tags = "员工奖惩管理")
 @Slf4j
 public class StaffRewardsPulishmentsController extends HdpBaseController {
+
     @Autowired
     private StaffRewardsPulishmentsService staffRpService;
 
@@ -51,23 +55,19 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     }
 
     @Override
-    public Class getImportAddCls() {
-        return StaffRpAddDTO.class;
+    public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex,
+                                  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
+        this.importAddCls = StaffRpAddDTO.class;
+        this.importAddErrCls = StaffRpAddErrDTO.class;
+        this.importUpdateCls = StaffRpUpdateDTO.class;
+        this.importUpdateErrCls = StaffRpUpdateErrDTO.class;
+        this.excelName = "员工奖惩";
     }
 
     @Override
-    public Class getImportAddErrCls() {
-        return StaffRpAddErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffRpUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffRpUpdateErrDTO.class;
+    public List getDownloadUpdateTemplateList() {
+        List<StaffRpDTO> list = this.staffRpService.findStaffRp(null);
+        return list;
     }
 
     @Override
@@ -78,17 +78,6 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     @Override
     public String getExcelUpdateDescription() {
         return ExcelDescriptionContants.getRpUpdateDesc();
-    }
-
-    @Override
-    public List getDownloadUpdateTemplateList() {
-        List<StaffRpDTO> list = this.staffRpService.findStaffRp(null);
-        return list;
-    }
-
-    @Override
-    public String getExcelName() {
-        return "员工奖惩";
     }
 
     /**
@@ -128,7 +117,6 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出员工奖惩Excel", notes = "导出员工奖惩Excel")
-    @SysLog("导出员工奖惩Excel")
     @PostMapping("/exportStaffRp")
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="搜索关键字")
@@ -211,6 +199,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     }
 
     /**
+     *
      * 通过id删除员工奖惩表
      * @param id id
      * @return R
@@ -221,6 +210,5 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     public R removeById(@PathVariable Integer id) {
         return R.ok(staffRpService.removeById(id));
     }
-
 
 }

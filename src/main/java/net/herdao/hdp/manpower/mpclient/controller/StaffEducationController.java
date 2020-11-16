@@ -10,6 +10,10 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffFamily.StaffFamilyUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -45,28 +49,13 @@ public class StaffEducationController extends HdpBaseController {
     }
 
     @Override
-    public Class getImportAddCls() {
-        return StaffEduAddDTO.class;
-    }
-
-    @Override
-    public Class getImportAddErrCls() {
-        return StaffEduAddErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffEduUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffEduUpdateErrDTO.class;
-    }
-
-    @Override
-    public String getExcelAddDescription() {
-        return ExcelDescriptionContants.getEduAddDesc();
+    public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex,
+                                  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
+        this.importAddCls = StaffEduAddDTO.class;
+        this.importAddErrCls = StaffEduAddErrDTO.class;
+        this.importUpdateCls = StaffEduUpdateDTO.class;
+        this.importUpdateErrCls = StaffEduUpdateErrDTO.class;
+        this.excelName = "员工教育";
     }
 
     @Override
@@ -76,13 +65,13 @@ public class StaffEducationController extends HdpBaseController {
     }
 
     @Override
-    public String getExcelUpdateDescription() {
-        return ExcelDescriptionContants.getEduUpdateDesc();
+    public String getExcelAddDescription() {
+        return ExcelDescriptionContants.getEduAddDesc();
     }
 
     @Override
-    public String getExcelName() {
-        return "员工教育";
+    public String getExcelUpdateDescription() {
+        return ExcelDescriptionContants.getEduUpdateDesc();
     }
 
     /**

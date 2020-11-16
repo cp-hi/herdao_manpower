@@ -1,7 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.alibaba.excel.EasyExcelFactory;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,17 +9,15 @@ import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
-import net.herdao.hdp.manpower.mpclient.listener.EasyExcelListener;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
-import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
@@ -30,14 +26,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 /**
  * 员工家庭成员
@@ -61,23 +52,19 @@ public class FamilystatusController extends HdpBaseController  {
     }
 
     @Override
-    public Class getImportAddCls() {
-        return StaffFamilyAddDTO.class;
+    public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex,
+                                  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
+        this.importAddCls = StaffFamilyAddDTO.class;
+        this.importAddErrCls = StaffFamilyAddErrDTO.class;
+        this.importUpdateCls = StaffFamilyUpdateDTO.class;
+        this.importUpdateErrCls = StaffFamilyUpdateErrDTO.class;
+        this.excelName = "员工家庭情况";
     }
 
     @Override
-    public Class getImportAddErrCls() {
-        return StaffFamilyAddErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffFamilyUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffFamilyUpdateErrDTO.class;
+    public List getDownloadUpdateTemplateList() {
+        List<FamilyStatusVO> list = this.familystatusService.findFamilyStatus(null);
+        return list;
     }
 
     @Override
@@ -90,16 +77,6 @@ public class FamilystatusController extends HdpBaseController  {
         return ExcelDescriptionContants.getFamilyUpdateDesc();
     }
 
-    @Override
-    public List getDownloadUpdateTemplateList() {
-        List<FamilyStatusVO> list = this.familystatusService.findFamilyStatus(null);
-        return list;
-    }
-
-    @Override
-    public String getExcelName() {
-        return "员工家庭情况";
-    }
 
     /**
      * 分页查询

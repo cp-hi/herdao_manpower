@@ -54,7 +54,6 @@ public class UserposthistoryController extends HdpBaseController {
         return R.ok(userposthistoryService.page(page, Wrappers.query(userposthistory)));
     }
 
-
     /**
      * 历史职情况分页
      * @param page 分页对象

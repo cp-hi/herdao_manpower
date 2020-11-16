@@ -20,6 +20,7 @@ import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ImportCheckUtils;
 import net.herdao.hdp.manpower.sys.service.impl.SysDictItemServiceImpl;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,8 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
     }
 
     @Override
-    public List<StafftrainDTO> findStaffTrain(String searchText) {
-        List<StafftrainDTO> list = this.baseMapper.findStaffTrain(searchText);
+    public List<StafftrainDTO> findStaffTrain(String searchText, StafftrainDTO stafftrainDTO) {
+        List<StafftrainDTO> list = this.baseMapper.findStaffTrain(searchText,stafftrainDTO);
         return list;
     }
 

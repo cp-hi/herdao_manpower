@@ -67,7 +67,6 @@ public class UserpostController extends HdpBaseController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键字")
     })
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findUserPostNowPage(Page page,UserpostDTO userpostDTO, String searchText) {
         Page pageResult = userpostService.findUserPostNowPage(page,userpostDTO, searchText);
         return R.ok(pageResult);

@@ -20,6 +20,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -45,6 +46,6 @@ public interface StafftrainService extends HdpService<Stafftrain> {
      * @param searchText
      * @return
      */
-    List<StafftrainDTO> findStaffTrain(String searchText);
+    List<StafftrainDTO> findStaffTrain(String searchText, StafftrainDTO stafftrainDTO);
 
 }

@@ -20,9 +20,8 @@ import java.util.Date;
 @Data
 @ApiModel(value = "员工培训list DTO")
 public class StafftrainDTO  {
+
     private static final long serialVersionUID = 1L;
-
-
 
     /**
      * 新平台新增
@@ -131,11 +130,13 @@ public class StafftrainDTO  {
      * 集团id
      */
     @ApiModelProperty(value="集团id")
+    @ExcelIgnore
     private String groupId;
     /**
      * 集团名
      */
     @ApiModelProperty(value="集团名")
+    @ExcelProperty(value = "集团名")
     private String groupName;
 
 }

@@ -10,6 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
@@ -40,28 +44,13 @@ public class WorkexperienceController extends HdpBaseController {
     }
 
     @Override
-    public Class getImportAddCls() {
-        return StaffWorkAddDTO.class;
-    }
-
-    @Override
-    public Class getImportAddErrCls() {
-        return StaffWorkAddErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffWorkUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffWorkUpdateErrDTO.class;
-    }
-
-    @Override
-    public String getExcelAddDescription() {
-        return ExcelDescriptionContants.getWorkAddDesc();
+    public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex,
+                                  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
+        this.importAddCls = StaffWorkAddDTO.class;
+        this.importAddErrCls = StaffWorkAddErrDTO.class;
+        this.importUpdateCls = StaffWorkUpdateDTO.class;
+        this.importUpdateErrCls = StaffWorkUpdateErrDTO.class;
+        this.excelName = "员工工作经历";
     }
 
     @Override
@@ -71,13 +60,13 @@ public class WorkexperienceController extends HdpBaseController {
     }
 
     @Override
-    public String getExcelUpdateDescription() {
-        return ExcelDescriptionContants.getWorkUpdateDesc();
+    public String getExcelAddDescription() {
+        return ExcelDescriptionContants.getWorkAddDesc();
     }
 
     @Override
-    public String getExcelName() {
-        return "员工工作经历";
+    public String getExcelUpdateDescription() {
+        return ExcelDescriptionContants.getWorkUpdateDesc();
     }
 
     @Autowired

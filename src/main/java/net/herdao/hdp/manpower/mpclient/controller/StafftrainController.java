@@ -10,6 +10,10 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.*;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
@@ -49,23 +53,13 @@ public class StafftrainController extends HdpBaseController {
     }
 
     @Override
-    public Class getImportAddCls() {
-        return StaffTrainAddDTO.class;
-    }
-
-    @Override
-    public Class getImportAddErrCls() {
-        return StaffTrainAddErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffTrainUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffTrainUpdateErrDTO.class;
+    public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex,
+                                  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
+        this.importAddCls = StaffTrainAddDTO.class;
+        this.importAddErrCls = StaffTrainAddErrDTO.class;
+        this.importUpdateCls = OrganizationUpdateDTO.class;
+        this.importUpdateErrCls = StaffTrainUpdateDTO.class;
+        this.excelName = "员工培训管理";
     }
 
     @Override
@@ -78,21 +72,17 @@ public class StafftrainController extends HdpBaseController {
         return ExcelDescriptionContants.getTrainUpdateDesc();
     }
 
+
     @Override
     public List getDownloadUpdateTemplateList(Map<String, Object> searchParams) {
         List<StafftrainDTO> list=null;
         if (ObjectUtil.isNotNull(searchParams)){
             String searchText = searchParams.get("searchText").toString();
-            list = this.stafftrainService.findStaffTrain(searchText);
+            list = this.stafftrainService.findStaffTrain(searchText,null);
         }else{
-            list = this.stafftrainService.findStaffTrain(null);
+            list = this.stafftrainService.findStaffTrain(null,null);
         }
         return list;
-    }
-
-    @Override
-    public String getExcelName() {
-        return "员工培训";
     }
 
     /**
@@ -114,7 +104,6 @@ public class StafftrainController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "通过id删除员工培训", notes = "通过id删除员工培训")
-    @SysLog("通过id删除员工培训" )
     @DeleteMapping("/del/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_stafftrain_del')" )
     public R removeById(@PathVariable Long id) {
@@ -145,7 +134,6 @@ public class StafftrainController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出员工培训Excel", notes = "导出员工培训Excel")
-    @SysLog("导出员工培训Excel")
     @PostMapping("/exportTrain")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索")

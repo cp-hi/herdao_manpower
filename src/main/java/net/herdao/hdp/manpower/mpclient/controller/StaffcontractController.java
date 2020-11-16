@@ -10,6 +10,10 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
@@ -53,23 +57,19 @@ public class StaffcontractController extends HdpBaseController {
     }
 
     @Override
-    public Class getImportAddCls() {
-        return StaffContractAddDTO.class;
+    public void initEasyExcelArgs(Class importAddCls, Class importAddErrCls, Class importUpdateCls, Class importUpdateErrCls, Integer excelIndex,
+                                  Integer headRowNumber, List downloadUpdateTemplateList, String templateName, String excelDescription) {
+        this.importAddCls = StaffContractAddDTO.class;
+        this.importAddErrCls = StaffContractAddlErrDTO.class;
+        this.importUpdateCls = StaffContractUpdateDTO.class;
+        this.importUpdateErrCls = StaffContractUpdatelErrDTO.class;
+        this.excelName = "员工签订";
     }
 
     @Override
-    public Class getImportAddErrCls() {
-        return StaffContractAddlErrDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateCls() {
-        return StaffContractUpdateDTO.class;
-    }
-
-    @Override
-    public Class getImportUpdateErrCls() {
-        return StaffContractUpdatelErrDTO.class;
+    public List getDownloadUpdateTemplateList() {
+        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null);
+        return list;
     }
 
     @Override
@@ -80,17 +80,6 @@ public class StaffcontractController extends HdpBaseController {
     @Override
     public String getExcelUpdateDescription() {
         return ExcelDescriptionContants.getContractUpdateDesc();
-    }
-
-    @Override
-    public List getDownloadUpdateTemplateList() {
-        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null);
-        return list;
-    }
-
-    @Override
-    public String getExcelName() {
-        return "员工签订";
     }
 
     /**
@@ -142,7 +131,6 @@ public class StaffcontractController extends HdpBaseController {
         return R.ok(staffcontractService.removeById(id));
     }
 
-
     /**
      * 分页查询
      * @param page 分页对象
@@ -155,7 +143,6 @@ public class StaffcontractController extends HdpBaseController {
     public R page(Page page, Staffcontract staffcontract) {
         return R.ok(staffcontractService.page(page, Wrappers.query(staffcontract)));
     }
-
 
     /**
      * 员工合同签订分页
