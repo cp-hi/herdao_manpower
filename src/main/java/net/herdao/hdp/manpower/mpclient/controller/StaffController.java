@@ -19,9 +19,14 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +63,8 @@ import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * 员工表
@@ -69,6 +76,7 @@ import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 @AllArgsConstructor
 @RequestMapping("/staff" )
 @Api(value = "staff", tags = "员工表管理")
+@Slf4j
 public class StaffController extends HdpBaseController{
 
     private final  StaffService staffService;
@@ -87,6 +95,14 @@ public class StaffController extends HdpBaseController{
     public Class getImportUpdateCls() {
         return StaffUpdateVM.class;
     }
+    private static final Map<String,String> jobTypeMap = new HashMap<>();
+    {
+        jobTypeMap.put("2","1");
+        jobTypeMap.put("3","2");
+        jobTypeMap.put("4","7");
+        jobTypeMap.put("5","97");
+        jobTypeMap.put("6","98");
+    }
     /**
      * 分页查询
      * @param page 分页对象
@@ -98,20 +114,18 @@ public class StaffController extends HdpBaseController{
     @GetMapping("/page" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getStaffPage(Page page, StaffListDTO staff, String tab, String searchText) {
-        if("1".equals(tab)){
-
-        }else if("2".equals(tab)){
-            staff.setJobType("1");
-        }else if("3".equals(tab)){
-            staff.setJobType("2");
-        }else if("4".equals(tab)){
-            staff.setJobType("7");
-        }else if("5".equals(tab)){
-            staff.setJobType("97");
-        }else if("6".equals(tab)){
-            staff.setJobType("98");
-        }
+        staff.setJobType(jobTypeMap.get(tab));
         return R.ok(staffService.staffPage(page, staff, searchText));
+    }
+    @ApiOperation(value = "员工花名册导出", notes = "员工花名册导出")
+    @GetMapping("/export" )
+    @SneakyThrows
+    public void export(HttpServletResponse response,StaffListDTO staff, String tab, String searchText) {
+            Page page = new Page();
+            page.setSize(-1);
+            staff.setJobType(jobTypeMap.get(tab));
+            IPage iPage = staffService.staffPage(page, staff, searchText);
+            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffListDTO.class, iPage.getRecords());
     }
 
     /**
