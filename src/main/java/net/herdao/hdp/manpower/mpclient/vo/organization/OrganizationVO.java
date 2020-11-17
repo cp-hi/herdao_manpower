@@ -159,7 +159,7 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 * 组织负责人id
 	 */
 	@ApiModelProperty(value = "组织负责人id")
-	private String orgChargeWorkId;
+	private Long orgChargeWorkId;
 	
 	/**
 	 * 组织负责人姓名

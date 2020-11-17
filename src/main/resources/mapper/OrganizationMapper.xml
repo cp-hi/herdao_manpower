@@ -525,6 +525,7 @@
 			dicc.label AS org_level_name,
 			org.org_type,
 			dict.label AS org_type_name,
+			org.org_charge_work_id,
 			org.org_charge_work_name,
 			org.org_charge_work_no,
 			org.post_id,
