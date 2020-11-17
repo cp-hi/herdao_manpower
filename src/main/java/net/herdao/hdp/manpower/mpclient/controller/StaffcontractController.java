@@ -82,6 +82,7 @@ public class StaffcontractController extends HdpBaseController {
         return ExcelDescriptionContants.getContractUpdateDesc();
     }
 
+
     /**
      * 新增员工培训
      * @param staffcontract
