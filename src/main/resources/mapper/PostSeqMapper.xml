@@ -14,6 +14,8 @@
         <id column="id" property="id"/>
         <result property="stop" column="IS_STOP"/>
         <result property="groupId" column="GROUP_ID"/>
+        <result property="parent_seq_id" column="parentSeqId"/>
+        <result property="parent_seq_name" column="parentSeqName"/>
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
         <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
         <association property="groupName" column="group_id" javaType="string"
@@ -21,23 +23,29 @@
     </resultMap>
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
-        select * from mp_post_seq where  del_flag !=1
-        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
+        select
+        ps.*,
+        pps.id parent_seq_id,
+        pps.POST_SEQ_NAME parent_seq_name
+         from mp_post_seq ps
+        left join mp_post_seq pps on ps.PARENT_ID=pps.id
+        where  ps.del_flag !=1
+        and exists (select * from mp_group g where g.id = ps.GROUP_ID and g.DEL_FLAG !=1)
         <if test="t.groupId != null">
-            and group_id = #{t.groupId}
+            and ps.group_id = #{t.groupId}
         </if>
         <if test=" t.parentId == null">
-            and parent_id is null
+            and ps.parent_id is null
         </if>
         <if test=" t.parentId != null">
-            and parent_id = #{t.parentId}
+            and ps.parent_id = #{t.parentId}
         </if>
         <if test="t.stop != null">
-            and is_stop = #{t.stop}
+            and ps.is_stop = #{t.stop}
         </if>
         <if test="t.postSeqName != null">
             <bind name="likeTxt" value="'%'+t.postSeqName+'%'"/>
-            and(post_seq_code like #{likeTxt} or post_seq_name like #{likeTxt})
+            and(ps.post_seq_code like #{likeTxt} or ps.post_seq_name like #{likeTxt})
         </if>
     </select>
 
