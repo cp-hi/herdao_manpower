@@ -538,6 +538,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     	if(ObjectUtil.isNotNull(orgChargeWorkId)) {
     		Staff staff = staffService.getById(orgChargeWorkId);
     		organization.setOrgChargeWorkId(staff.getId());
+    		organization.setOrgChargeWorkNo(staff.getStaffCode());
     		organization.setOrgChargeWorkName(staff.getStaffName());
     	}
     	

@@ -190,6 +190,7 @@
 		<where>
 			AND ut.main_post = 1
 			AND org.del_flag = 0
+			AND org.is_stop = 0
 			<if test="orgCode != null">
 				 AND org.org_code LIKE CONCAT(#{orgCode},'%')
 			</if>
