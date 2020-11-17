@@ -297,11 +297,12 @@ public abstract class HdpBaseController {
 			// 批量标识
 			String templateDp = ManpowerContants.ImportTypeEnum.getInstance(importType) + ( StrUtil.isBlank(excelName) ? EasyExcelUtils.getApiModelValue(excelCls) : excelName);
 			List excelList = easyExcelListener.getExcelList();
-			if(ObjectUtil.isEmpty(excelList) && !importDataVO.getDownloadErrMsg().equals(1)) {
-				return R.failed(2, "批量" + templateDp + "失败，模板数据为空！");
-			}
 			// 导入异常信息集合
 			List<ExcelCheckErrDTO> errList = easyExcelListener.getErrList();
+			if(ObjectUtil.isEmpty(excelList) && ObjectUtil.isEmpty(errList)  && !importDataVO.getDownloadErrMsg().equals(1)) {
+				return R.failed(2, "批量" + templateDp + "失败，模板数据为空！");
+			}
+			
 			// 获取异常信息提示方法（注：异常提示信息请使用 errMsg属性）
 			Method errMsgMethod = excelErrCls.getMethod("setErrMsg", String.class);
 			// 遍历异常信息
