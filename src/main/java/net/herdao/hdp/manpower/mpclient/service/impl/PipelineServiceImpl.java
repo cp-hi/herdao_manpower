@@ -54,9 +54,6 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         if (null != group) pipeline.setGroupId(group.getId());
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         if (StringUtils.isBlank(buffer)) {
-//            DtoField dtoField = AnnotationUtils.getAnnotationByFieldName(excelObj, "stop", DtoField.class);
-//            BiMap<String, String> converter = HashBiMap.create((Map) JSON.parse(dtoField.converter()));
-//            pipeline.setStop(Boolean.parseBoolean(converter.inverse().get(excel.getStop())));
             pipeline.setStop(DtoConverter.string2bool(excel, "stop"));
             pipeline.setId(tmp.getId());
         }

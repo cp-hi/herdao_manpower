@@ -31,7 +31,7 @@ public interface PostService extends  EntityService<Post> {
      *
      * @return
      */
-    List<PostDetailVO> getPostDetails(Long postId, String operation, String size);
+    List<PostDTO> getPostDetails(Long postId, String operation, String size);
 
     /**
      * 岗位员工

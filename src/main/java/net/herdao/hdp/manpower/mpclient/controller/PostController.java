@@ -106,8 +106,9 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条，download则返回所有"),
     })
-    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostDetailVO> data = postService.getPostDetails(postId, operation, size);
+    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) throws IllegalAccessException, InstantiationException {
+        List<PostDTO> list = postService.getPostDetails(postId, operation, size);
+        List<PostDetailVO> data = DtoConverter.dto2vo(list, PostDetailVO.class);
         if ("download".equals(operation)) {
             try {
                 ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailVO.class, data);
