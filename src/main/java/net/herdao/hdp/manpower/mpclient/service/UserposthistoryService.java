@@ -22,14 +22,14 @@ public interface UserposthistoryService extends HdpService<Userposthistory> {
      * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, @Param("searchText") String searchText);
+    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, String searchText);
 
     /**
      * 历史任职情况分页
      * @param searchText
      * @return
      */
-    List<UserpostDTO> findUserPostHistory(@Param("searchText") String searchText);
+    List<UserpostDTO> findUserPostHistory(UserpostDTO userpostDTO,  String searchText);
 
 
 }

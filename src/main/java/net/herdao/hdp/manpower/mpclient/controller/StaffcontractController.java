@@ -68,7 +68,7 @@ public class StaffcontractController extends HdpBaseController {
 
     @Override
     public List getDownloadUpdateTemplateList() {
-        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null);
+        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null,null);
         return list;
     }
 

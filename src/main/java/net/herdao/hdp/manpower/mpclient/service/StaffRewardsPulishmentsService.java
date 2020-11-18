@@ -44,6 +44,6 @@ public interface StaffRewardsPulishmentsService extends HdpService<StaffRewardsP
      * @param searchText
      * @return
      */
-    List<StaffRpDTO> findStaffRp(String searchText);
+    List<StaffRpDTO> findStaffRp(StaffRpDTO staffRpDTO,String searchText);
 
 }

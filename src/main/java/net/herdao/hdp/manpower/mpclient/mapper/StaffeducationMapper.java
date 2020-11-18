@@ -48,5 +48,5 @@ public interface StaffeducationMapper extends BaseMapper<Staffeducation> {
      * @param staffId 员工工号
      * @return
      */
-    List<StaffEducationDTO> findStaffEducation(@Param("searchText") String searchText,@Param("staffId") String staffId);
+    List<StaffEducationDTO> findStaffEducation(@Param("query") StaffEducationDTO staffEducationDTO,@Param("searchText") String searchText);
 }

@@ -63,7 +63,7 @@ public class FamilystatusController extends HdpBaseController  {
 
     @Override
     public List getDownloadUpdateTemplateList() {
-        List<FamilyStatusVO> list = this.familystatusService.findFamilyStatus(null);
+        List<FamilyStatusVO> list = this.familystatusService.findFamilyStatus(null,null);
         return list;
     }
 

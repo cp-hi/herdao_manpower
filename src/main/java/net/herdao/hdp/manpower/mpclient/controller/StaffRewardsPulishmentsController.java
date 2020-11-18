@@ -66,7 +66,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
 
     @Override
     public List getDownloadUpdateTemplateList() {
-        List<StaffRpDTO> list = this.staffRpService.findStaffRp(null);
+        List<StaffRpDTO> list = this.staffRpService.findStaffRp(null,null);
         return list;
     }
 

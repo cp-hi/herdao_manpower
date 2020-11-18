@@ -49,7 +49,7 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
      * @param staffId 员工ID
      * @return
      */
-    List<StafftransDTO> findStaffTrans(@Param("searchText") String searchText, @Param("staffId") String staffId);
+    List<StafftransDTO> findStaffTrans(@Param("query") StafftransDTO stafftransDTO, @Param("searchText") String searchText);
 
     /**
      * 员工详情-员工异动情况

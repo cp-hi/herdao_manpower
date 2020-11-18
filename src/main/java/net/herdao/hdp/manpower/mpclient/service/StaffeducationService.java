@@ -44,6 +44,6 @@ public interface StaffeducationService extends HdpService<Staffeducation> {
      * @param staffId 员工工号
      * @return
      */
-    List<StaffEducationDTO> findStaffEducation(String searchText,String staffId);
+    List<StaffEducationDTO> findStaffEducation(StaffEducationDTO staffEducationDTO, String searchText);
 
 }
