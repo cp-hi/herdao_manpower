@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class PostSeqTree extends TreeNode implements Serializable {
     @ApiModelProperty(value = "岗位序列名称")
     private String postSeqName;
+    public PostSeqTree(){};
     public PostSeqTree(PostSeq postSeq){
         this.id=postSeq.getId();
         this.postSeqName=postSeq.getPostSeqName();
