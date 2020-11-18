@@ -1,10 +1,13 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqTree;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
+import net.herdao.hdp.manpower.mpclient.utils.TreeUtil;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
 import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName PipelineServiceImpl
@@ -96,5 +100,20 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     @Override
     public Function<PostSeq, Long> getGroupIdMapper() {
         return PostSeq::getGroupId;
+    }
+
+    @Override
+    public List<PostSeqTree> getTree(Long groupId, Long parentId, Boolean lazy) {
+        Long parent = parentId==null?-1l:parentId;
+        if(lazy!=null&&lazy){
+            if(parentId==null){
+                return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId)
+                        .isNull(PostSeq::getParentId)).stream().map(PostSeqTree::new).collect(Collectors.toList()),parent);
+            }
+            return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId)
+                    .eq(PostSeq::getParentId,parentId)).stream().map(PostSeqTree::new).collect(Collectors.toList()),parent);
+        }
+        return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId))
+                .stream().map(PostSeqTree::new).collect(Collectors.toList()),parent);
     }
 }
