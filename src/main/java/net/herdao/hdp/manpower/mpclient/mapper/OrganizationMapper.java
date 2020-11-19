@@ -132,10 +132,11 @@ public interface OrganizationMapper extends BaseMapper<Organization> {
       * 查询子组织信息（组件）
       * 
       * @param orgCode
+      * @param organizationIds
       * @param searchText
       * @return
       */
-     List<OrganizationComponentVO> selectOrganizationComponentList( @Param("orgCode") String orgCode, @Param("searchText") String searchText);
+     List<OrganizationComponentVO> selectOrganizationComponentList( @Param("orgCode") String orgCode, @Param("organizationIds") String [] organizationIds, @Param("searchText") String searchText);
 
     /**
      * 查询组织下所有人员

@@ -41,7 +41,6 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StaffOrgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
 import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
@@ -613,19 +612,18 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     }
     
 	@Override
-	public R<List<OrganizationComponentVO>> selectOrganizations(String orgCode, String searchText) {
-		if(StrUtil.isBlank(searchText) && StrUtil.isBlank(orgCode)) {
+	public R<List<OrganizationComponentVO>> selectOrganizations(String orgCode, String organizationIds, String searchText) {
+		if(StrUtil.isAllBlank(orgCode, organizationIds, searchText)) {
     		return R.ok(this.baseMapper.selectOrganizations());
     	}else {
-    		return R.ok(this.baseMapper.selectOrganizationComponentList(orgCode, searchText));
+    		if(StrUtil.isNotBlank(organizationIds)) {
+    			return R.ok(this.baseMapper.selectOrganizationComponentList(null, organizationIds.split(ManpowerContants.EN_SEPARATOR), null));
+    		}else {
+    			return R.ok(this.baseMapper.selectOrganizationComponentList(orgCode, null, searchText));
+    		}
     	}
 	}
 	
-	@Override
-	public R<List<OrganizationComponentVO>> selectOrganizationComponentList(String orgCode, String searchText){
-		return R.ok(this.baseMapper.selectOrganizationComponentList(orgCode, searchText));
-	}
-
     @Override
     public List<StaffOrgDTO> selectOrgStaffAll(Page page, String orgCode) {
         Map<String, Object> map = new HashMap<>();
