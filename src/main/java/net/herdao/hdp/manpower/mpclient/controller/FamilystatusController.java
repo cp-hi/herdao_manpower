@@ -2,8 +2,12 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
@@ -11,21 +15,15 @@ import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffFamily.*;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.FamilyStatusVO;
-import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -119,18 +117,12 @@ public class FamilystatusController extends HdpBaseController  {
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
+    @SneakyThrows
     public void exportFamily(HttpServletResponse response, FamilyStatusListDTO familyStatusListDTO, String searchText) {
-        try {
-            Page page =new Page();
-            page.setSize(-1);
-            Page familyStatusPage = familystatusService.findFamilyStatusPage(page, familyStatusListDTO, searchText);
-            ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusListDTO.class,familyStatusPage.getRecords());
-        } catch (Exception e) {
-            e.printStackTrace();
-            R.ok("导出失败");
-        }
-
-        R.ok("导出成功");
+        Page page = new Page();
+        page.setSize(-1);
+        Page familyStatusPage = familystatusService.findFamilyStatusPage(page, familyStatusListDTO, searchText);
+        ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusListDTO.class, familyStatusPage.getRecords());
     }
 
     /**

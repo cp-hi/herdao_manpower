@@ -120,12 +120,12 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "员工花名册导出", notes = "员工花名册导出")
     @GetMapping("/export" )
     @SneakyThrows
-    public void export(HttpServletResponse response,StaffListDTO staff, String tab, String searchText) {
-            Page page = new Page();
-            page.setSize(-1);
-            staff.setJobType(jobTypeMap.get(tab));
-            IPage iPage = staffService.staffPage(page, staff, searchText);
-            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffListDTO.class, iPage.getRecords());
+    public void export(HttpServletResponse response, StaffListDTO staff, String tab, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        staff.setJobType(jobTypeMap.get(tab));
+        IPage iPage = staffService.staffPage(page, staff, searchText);
+        ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffListDTO.class, iPage.getRecords());
     }
 
     /**

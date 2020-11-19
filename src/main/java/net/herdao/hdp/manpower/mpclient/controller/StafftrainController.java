@@ -3,30 +3,31 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationAddErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftrain;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StafftrainService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
@@ -138,18 +139,12 @@ public class StafftrainController extends HdpBaseController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
-    public void exportTrain(HttpServletResponse response,StafftrainDTO stafftrainDTO,String searchText) {
-        try {
-            Page page =new Page();
-            page.setSize(-1);
-            Page pageResult = stafftrainService.findStaffTrainPage(page,stafftrainDTO,searchText);
-            ExcelUtils.export2Web(response, "员工培训表", "员工培训表", StafftrainDTO.class,pageResult.getRecords());
-        } catch (Exception e) {
-            e.printStackTrace();
-            R.ok("导出失败");
-        }
-
-        R.ok("导出成功");
+    @SneakyThrows
+    public void exportTrain(HttpServletResponse response, StafftrainDTO stafftrainDTO, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page pageResult = stafftrainService.findStaffTrainPage(page, stafftrainDTO, searchText);
+        ExcelUtils.export2Web(response, "员工培训表", "员工培训表", StafftrainDTO.class, pageResult.getRecords());
     }
 
     /**

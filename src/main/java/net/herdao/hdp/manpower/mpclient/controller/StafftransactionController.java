@@ -2,23 +2,25 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
-import net.herdao.hdp.manpower.mpclient.service.HdpService;
-import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.entity.Stafftransaction;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
+import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 
 /**
@@ -81,18 +83,12 @@ public class StafftransactionController extends HdpBaseController  {
         @ApiImplicitParam(name="searchText",value="搜索关键字"),
         @ApiImplicitParam(name="staffId",value="员工ID")
     })
-    public void exportTrans(HttpServletResponse response,StafftransDTO stafftransDTO, String searchText) {
-        try {
-            Page page =new Page();
-            page.setSize(-1);
-            Page pageResult = stafftransactionService.findStaffTransPage(page,stafftransDTO, searchText);
-            ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", StafftransDTO.class,pageResult.getRecords());
-        } catch (Exception e) {
-            e.printStackTrace();
-            R.ok("导出失败");
-        }
-
-        R.ok("导出成功");
+    @SneakyThrows
+    public void exportTrans(HttpServletResponse response, StafftransDTO stafftransDTO, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page pageResult = stafftransactionService.findStaffTransPage(page, stafftransDTO, searchText);
+        ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", StafftransDTO.class, pageResult.getRecords());
     }
 
 

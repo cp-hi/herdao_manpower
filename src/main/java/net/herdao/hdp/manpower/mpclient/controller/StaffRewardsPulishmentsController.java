@@ -2,23 +2,19 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StaffTrainUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffRp.*;
+import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffRewardsPulishmentsService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -27,8 +23,6 @@ import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -121,18 +115,12 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="搜索关键字")
     })
-    public R exportStaffRp(HttpServletResponse response,StaffRpDTO staffRpDTO,String searchText) {
-        try {
-            Page page =new Page();
-            page.setSize(-1);
-            Page pageResult = staffRpService.findStaffRpPage(page,staffRpDTO, searchText);
-            ExcelUtils.export2Web(response, "员工奖惩情况表", "员工奖惩情况表", StaffRpDTO.class,pageResult.getRecords());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.ok("导出失败");
-        }
-
-        return R.ok("导出成功");
+    @SneakyThrows
+    public void exportStaffRp(HttpServletResponse response, StaffRpDTO staffRpDTO, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page pageResult = staffRpService.findStaffRpPage(page, staffRpDTO, searchText);
+        ExcelUtils.export2Web(response, "员工奖惩情况表", "员工奖惩情况表", StaffRpDTO.class, pageResult.getRecords());
     }
 
     /**
