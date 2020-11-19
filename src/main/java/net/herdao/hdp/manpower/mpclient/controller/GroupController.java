@@ -17,19 +17,24 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupUpdateVM;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -82,7 +87,15 @@ public class GroupController extends HdpBaseController {
     public R getMpGroupPage(Page page, GroupListDTO group, String searchText) {
         return R.ok(groupService.groupPage(page, group, searchText));
     }
-
+    @ApiOperation(value = "导出集团", notes = "导出集团")
+    @GetMapping("/export" )
+    @SneakyThrows
+    public void export(HttpServletResponse response, GroupListDTO group, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        IPage iPage = groupService.groupPage(page, group, searchText);
+        ExcelUtils.export2Web(response, "集团", "集团", GroupListDTO.class, iPage.getRecords());
+    }
 
     /**
      * 通过id查询集团表

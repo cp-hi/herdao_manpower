@@ -17,7 +17,12 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO;
@@ -26,11 +31,11 @@ import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.company.CompanyUpdateVM;
 import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -74,7 +79,15 @@ public class CompanyController extends HdpBaseController{
     public R getCompanyPage(Page page, CompanyListDTO company, String searchText) {
         return R.ok(companyService.companyPage(page, company, searchText));
     }
-
+    @ApiOperation(value = "导出公司", notes = "导出公司")
+    @GetMapping("/export" )
+    @SneakyThrows
+    public void export(HttpServletResponse response, CompanyListDTO company, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        IPage iPage = companyService.companyPage(page, company, searchText);
+        ExcelUtils.export2Web(response, "公司", "公司", CompanyListDTO.class, iPage.getRecords());
+    }
 
     /**
      * 通过id查询注册公司
