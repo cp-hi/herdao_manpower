@@ -77,15 +77,14 @@
                     LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
                     LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
                     LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
-                    LEFT JOIN mp_job_level j1 ON j1.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
-                    LEFT JOIN mp_job_level j2 ON j2.JOB_LEVEL_CODE = P.JOB_LEVEL_ID2
+                    LEFT JOIN mp_job_level j1 ON j1.id = P.JOB_LEVEL_ID1
+                    LEFT JOIN mp_job_level j2 ON j2.id = P.JOB_LEVEL_ID2
                     LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
-                    LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.MAIN_POST=1
                     LEFT JOIN mp_group g on p.GROUP_ID=g.ID
                     WHERE
                     u.del_flag = 0
                     AND u.MAIN_POST = 1
-                  <if test="query.groupId != null">
+                   <if test="query.groupId != null">
                       and p.GROUP_ID = #{query.groupId}
                   </if>
             )t
@@ -101,7 +100,7 @@
 
     <!-- 历史任职情况 -->
     <select id="findUserPostHistory" resultType="net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO">
-        SELECT  t.id,
+        SELECT   t.id,
                 t.staffName,
                 t.staffCode,
                 t.startDate,
@@ -119,39 +118,38 @@
                 t.GROUP_NAME
         FROM
         (
-            SELECT u.id,
-            S.STAFF_NAME staffName,
-            S.STAFF_CODE staffCode,
-            u.START_DATE startDate,
-            a.ORG_NAME orgName,
-            sec.SECTION_NAME sectionName,
-            pi.PIPELINE_NAME pipelineName,
-            p.POST_NAME postName,
-            CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) jobLevelName,
-            di.label customPost,
-            usr.USER_NAME modifier_name,
-            u.MODIFIED_TIME,
-            s.id staff_id,
-            g.ID group_id,
-            g.GROUP_NAME
-            FROM  mp_userposthistory u
-            LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
-            LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
-            LEFT JOIN mp_post p ON p.ID = u.POST_ID
-            LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
-            LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
-            LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
-            LEFT JOIN mp_job_level j1 ON j1.JOB_LEVEL_CODE = P.JOB_LEVEL_ID1
-            LEFT JOIN mp_job_level j2 ON j2.JOB_LEVEL_CODE = P.JOB_LEVEL_ID2
-            LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
-            LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.MAIN_POST=1
-            LEFT JOIN mp_group g on p.GROUP_ID=g.ID
-            WHERE
-            u.del_flag = 0
-            AND u.MAIN_POST = 1
-            <if test="query.groupId != null">
-                and p.GROUP_ID = #{query.groupId}
-            </if>
+        SELECT u.id,
+        S.STAFF_NAME staffName,
+        S.STAFF_CODE staffCode,
+        u.START_DATE startDate,
+        a.ORG_NAME orgName,
+        sec.SECTION_NAME sectionName,
+        pi.PIPELINE_NAME pipelineName,
+        p.POST_NAME postName,
+        CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) jobLevelName,
+        di.label customPost,
+        usr.USER_NAME modifier_name,
+        u.MODIFIED_TIME,
+        s.id staff_id,
+        g.ID group_id,
+        g.GROUP_NAME
+        FROM  mp_userposthistory u
+        LEFT JOIN mp_staff s ON u.USER_ID = s.USER_ID
+        LEFT JOIN mp_organization a ON u.ORG_DEPT_ID = a.ID
+        LEFT JOIN mp_post p ON p.ID = u.POST_ID
+        LEFT JOIN mp_section sec ON sec.id = p.SECTION_ID
+        LEFT JOIN mp_pipeline pi ON pi.id = p.PIPELINE_ID
+        LEFT JOIN sys_dict_item di ON di.id = u.office_post_type
+        LEFT JOIN mp_job_level j1 ON j1.id = P.JOB_LEVEL_ID1
+        LEFT JOIN mp_job_level j2 ON j2.id = P.JOB_LEVEL_ID2
+        LEFT JOIN mp_user usr ON usr.id=u.MODIFIER_CODE
+        LEFT JOIN mp_group g on p.GROUP_ID=g.ID
+        WHERE
+        u.del_flag = 0
+        AND u.MAIN_POST = 1
+        <if test="query.groupId != null">
+            and p.GROUP_ID = #{query.groupId}
+        </if>
         )t
         <where>
             <if test="searchText != null">
