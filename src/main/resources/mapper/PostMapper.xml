@@ -26,7 +26,7 @@
                      select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>
 
         <association property="jobGradeName" column="job_level_id1" javaType="string"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId" />
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
 
         <association property="jobLevelName1" column="job_level_id1" javaType="jobLevel"
                      select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
@@ -41,7 +41,7 @@
     </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
-        select * from mp_post where del_flag !=1  and group_id = #{t.groupId}
+        select * from mp_post where del_flag !=1 and group_id = #{t.groupId}
         and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
         <if test="t.stop != null">
             and is_stop = #{t.stop}
@@ -90,7 +90,7 @@
                      select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>
 
         <association property="jobGradeName" column="job_level_id1" javaType="string"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId" />
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
 
         <association property="postSeqDTO" column="post_seq_id"
                      javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"
@@ -136,25 +136,22 @@
 
 
     <!-- 岗位名称、岗位编码、集团、板块、管线、职级、 创建时间  -->
-    <select id="getPostDetails" resultType="net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO">
-        SELECT
-            p.POST_NAME,
-            p.POST_CODE,
-            COALESCE(g1.GROUP_NAME, g2.GROUP_NAME ) GROUP_NAME,
-            CONCAT(j1.JOB_LEVEL_NAME,'~',j2.JOB_LEVEL_NAME) JOB_LEVEL_NAME,
-            s.SECTION_NAME,
-            pp.PIPELINE_NAME,
-            p.CREATED_TIME
-        FROM
-            mp_post p
-            LEFT JOIN mp_section s ON p.SECTION_ID = s.ID
-            LEFT JOIN mp_pipeline pp ON p.PIPELINE_ID = pp.ID
-            left join mp_job_level j1 on p.JOB_LEVEL_ID1 = j1.ID
-            left join mp_job_level j2 on p.JOB_LEVEL_ID2 = j2.ID
-            LEFT JOIN mp_job_grade jg ON j1.JOB_grade_ID = jg.ID
-            LEFT JOIN mp_group g1 ON p.GROUP_ID = g1.id
-            LEFT JOIN mp_group g2 ON pp.GROUP_ID = g2.id
-         where p.id = #{postId}  order by p.id  ${limit}
+    <resultMap id="postDetailMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
+        <association property="groupName" column="group_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectEntityName"/>
+        <association property="sectionName" column="section_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectEntityName"/>
+        <association property="pipelineName" column="pipeline_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>
+        <association property="jobLevelName1" column="job_level_id1" javaType="jobLevel"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
+        <association property="jobLevelName2" column="job_level_id2" javaType="jobLevel"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
+        <association property="jobGradeName" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
+    </resultMap>
+    <select id="getPostDetails" resultMap="postDetailMap">
+            select * from mp_post p where p.id = #{postId}  order by p.id  ${limit}
     </select>
 
     <!-- 任职岗位、员工姓名、工号、手机号码、所在部门 -->

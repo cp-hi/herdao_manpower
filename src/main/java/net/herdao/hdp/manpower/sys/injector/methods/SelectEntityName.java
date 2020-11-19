@@ -28,7 +28,7 @@ public class SelectEntityName extends AbstractMethod {
         String name = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
 
         String sql = "with T as (SELECT  %s  FROM  %s WHERE %s=#{%s} AND del_flag!=1) " +
-            " select case  when exists (select * from T ) then (select * from T) else '--' end as entity_code ";
+            " select case  when exists (select * from T ) then (select * from T) else '--' end as entity_name ";
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql,
                 name, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectEntityName", sqlSource, String.class);

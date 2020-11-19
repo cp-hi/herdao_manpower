@@ -30,7 +30,7 @@ public interface FamilystatusService extends HdpService<Familystatus> {
      * @param searchText
      * @return
      */
-    List<FamilyStatusVO> findFamilyStatus(String searchText);
+    List<FamilyStatusVO> findFamilyStatus(FamilyStatusListDTO familyStatusListDTO,String searchText);
 
     /**
      * 花名册-家庭情况

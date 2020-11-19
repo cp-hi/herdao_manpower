@@ -2,39 +2,30 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.*;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpUpdateErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.handler.EasyExcelSheetWriteHandler;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
-import net.herdao.hdp.manpower.mpclient.utils.EasyExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.utils.UserUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -68,7 +59,7 @@ public class StaffcontractController extends HdpBaseController {
 
     @Override
     public List getDownloadUpdateTemplateList() {
-        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null);
+        List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null,null);
         return list;
     }
 
@@ -81,6 +72,7 @@ public class StaffcontractController extends HdpBaseController {
     public String getExcelUpdateDescription() {
         return ExcelDescriptionContants.getContractUpdateDesc();
     }
+
 
     /**
      * 新增员工培训
@@ -169,22 +161,16 @@ public class StaffcontractController extends HdpBaseController {
      */
     @ApiOperation(value = "导出员工合同Excel", notes = "导出员工合同Excel")
     @SysLog("导出员工合同Excel" )
-    @PostMapping("/exportStaffContact")
+    @GetMapping("/exportStaffContact")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键词")
     })
-    public R exportStaffContact(HttpServletResponse response,StaffcontractDTO staffcontractDTO,String searchText) {
-        try {
-            Page page =new Page();
-            page.setSize(-1);
-            Page pageResult = staffcontractService.findStaffContractPage(page,staffcontractDTO, searchText);
-             ExcelUtils.export2Web(response, "导出员工合同表", "员工合同签订表", StaffcontractDTO.class, pageResult.getRecords());
-        } catch (Exception e) {
-             log.error("导出员工合同Excel失败",e.getMessage());
-             return R.failed("导出员工合同Excel失败");
-        }
-
-        return R.ok("导出成功");
+    @SneakyThrows
+    public void exportStaffContact(HttpServletResponse response, StaffcontractDTO staffcontractDTO, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page pageResult = staffcontractService.findStaffContractPage(page, staffcontractDTO, searchText);
+        ExcelUtils.export2Web(response, "导出员工合同表", "员工合同签订表", StaffcontractDTO.class, pageResult.getRecords());
     }
 
     /**

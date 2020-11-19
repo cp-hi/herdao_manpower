@@ -52,8 +52,8 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
-    public List<UserpostDTO> findUserPostNow(String searchText) {
-        List<UserpostDTO> list = this.baseMapper.findUserPostNow(searchText);
+    public List<UserpostDTO> findUserPostNow(UserpostDTO userpostDTO, String searchText) {
+        List<UserpostDTO> list = this.baseMapper.findUserPostNow(userpostDTO,searchText);
         return list;
     }
 

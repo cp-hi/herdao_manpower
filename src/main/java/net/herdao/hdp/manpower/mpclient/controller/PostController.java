@@ -11,6 +11,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
+import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Field;
 import java.util.List;
 
 
@@ -64,18 +66,28 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
     @Override
     @PostMapping
     @ApiOperation(value = "新增/修改")
-    public R<PostFormVO> save(@RequestBody PostFormVO f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        String[] jobLevelIds = new String[0];
-        if (StringUtils.isNotBlank(f.getJobLevelId()))
-            jobLevelIds = f.getJobLevelId().split(",");
+    public R<PostFormVO> save(@RequestBody PostFormVO f) {
+        try {
+            String[] jobLevelIds = new String[0];
+            if (StringUtils.isNotBlank(f.getJobLevelId()))
+                jobLevelIds = f.getJobLevelId().split(",");
 
-        if (jobLevelIds.length >= 1)
-            f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
-        if (jobLevelIds.length >= 2)
-            f.setJobLevelId2(Long.valueOf(jobLevelIds[1]));
+//            if (null != f.getSingleJobLevle() && f.getSingleJobLevle() && jobLevelIds.length != 1)
+//                throw new Exception("单职级的岗位选了" + jobLevelIds.length + "个职级");
+//
+//            if (null != f.getSingleJobLevle() && !f.getSingleJobLevle() && jobLevelIds.length == 1)
+//                throw new Exception("非单职级岗位选了1个职级");
 
-        f.setSingleJobLevle(1 == jobLevelIds.length);
-        return super.save(f);
+            if (jobLevelIds.length >= 1)
+                f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
+            if (jobLevelIds.length >= 2)
+                f.setJobLevelId2(Long.valueOf(jobLevelIds[1]));
+
+            f.setSingleJobLevle(1 == jobLevelIds.length);
+            return super.save(f);
+        } catch (Exception ex) {
+            return R.failed(ex.getCause().getMessage());
+        }
     }
 
     @GetMapping("/list")
@@ -106,8 +118,9 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条，download则返回所有"),
     })
-    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) {
-        List<PostDetailVO> data = postService.getPostDetails(postId, operation, size);
+    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) throws IllegalAccessException, InstantiationException {
+        List<PostDTO> list = postService.getPostDetails(postId, operation, size);
+        List<PostDetailVO> data = DtoConverter.dto2vo(list, PostDetailVO.class);
         if ("download".equals(operation)) {
             try {
                 ExcelUtils.export2Web(response, "岗位信息明细表", "岗位信息明细表", PostDetailVO.class, data);
@@ -138,6 +151,4 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
         }
         return R.ok(data);
     }
-
-
 }

@@ -6,14 +6,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ExcelDescriptionContants;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduAddErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEduUpdateErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.*;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
@@ -163,23 +160,17 @@ public class WorkexperienceController extends HdpBaseController {
      */
     @ApiOperation(value = "导出员工工作经历Excel", notes = "导出员工工作经历Excel")
     @SysLog("导出员工工作经历" )
-    @PostMapping("/exportStaffWork")
+    @GetMapping("/exportStaffWork")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键字"),
         @ApiImplicitParam(name="staffId",value="员工工号")
     })
-    public R exportStaffWork(HttpServletResponse response,WorkexperienceDTO workexperienceDTO, String searchText) {
-        try {
-            Page page =new Page();
-            page.setSize(-1);
-            Page pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO,searchText);
-            ExcelUtils.export2Web(response, "员工工作经历", "员工工作经历表", WorkexperienceDTO.class,pageResult.getRecords());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.ok("导出失败");
-        }
-
-        return R.ok("导出成功");
+    @SneakyThrows
+    public void exportStaffWork(HttpServletResponse response, WorkexperienceDTO workexperienceDTO, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO, searchText);
+        ExcelUtils.export2Web(response, "员工工作经历", "员工工作经历表", WorkexperienceDTO.class, pageResult.getRecords());
     }
 
     /**

@@ -52,8 +52,8 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
     }
 
     @Override
-    public List<StaffcontractDTO> findStaffContract(String searchText) {
-        List<StaffcontractDTO> list = this.baseMapper.findStaffContract(searchText);
+    public List<StaffcontractDTO> findStaffContract(StaffcontractDTO staffcontractDTO,String searchText) {
+        List<StaffcontractDTO> list = this.baseMapper.findStaffContract(staffcontractDTO,searchText);
         return list;
     }
 

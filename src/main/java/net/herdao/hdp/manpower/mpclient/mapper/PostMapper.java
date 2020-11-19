@@ -21,7 +21,7 @@ public interface PostMapper extends EntityMapper<Post> {
 
     List<Map<String, BigDecimal>> getPostStaffAges(Long postId);
 
-    List<PostDetailVO> getPostDetails(@Param("postId") Long postId, @Param("limit") String limit);
+    List<PostDTO> getPostDetails(@Param("postId") Long postId, @Param("limit") String limit);
 
     List<PostStaffVO> getPostStaffs(@Param("postId") Long postId, @Param("limit") String limit);
 

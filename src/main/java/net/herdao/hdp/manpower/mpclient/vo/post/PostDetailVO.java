@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 import java.util.Date;
 
@@ -38,6 +39,7 @@ public class PostDetailVO {
     private String pipelineName;
 
     @ExcelProperty("职级")
+    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, symbol = "~")
     private String jobLevelName;
 
     @ExcelIgnore

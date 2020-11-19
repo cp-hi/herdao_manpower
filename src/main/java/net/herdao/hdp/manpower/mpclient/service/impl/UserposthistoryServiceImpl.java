@@ -45,8 +45,8 @@ public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMappe
     }
 
     @Override
-    public List<UserpostDTO> findUserPostHistory(String searchText) {
-        List<UserpostDTO> pageResult = this.baseMapper.findUserPostHistory(searchText);
+    public List<UserpostDTO> findUserPostHistory(UserpostDTO userpostDTO,String searchText) {
+        List<UserpostDTO> pageResult = this.baseMapper.findUserPostHistory(userpostDTO,searchText);
         return pageResult;
     }
 

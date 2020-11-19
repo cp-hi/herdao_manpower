@@ -43,7 +43,7 @@ public class OperationLogVO {
 
     @ExcelProperty(value = {"", "操作人"})
     @ApiModelProperty(value = "操作人")
-    @DtoField(objField = {"operator", "operatorCode"}, mapFix = "{1:\"(\",3:\")\"}", symbol = "")
+//    @DtoField(objField = {"operator", "operatorCode"}, mapFix = "{1:\"(\",3:\")\"}", symbol = "")
     private String operator;
 
     @ExcelProperty(value = {"", "操作内容"})

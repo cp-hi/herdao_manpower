@@ -103,7 +103,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     @Override
-    public List<PostDetailVO> getPostDetails(Long postId, String operation, String size) {
+    public List<PostDTO> getPostDetails(Long postId, String operation, String size) {
         String limit = "";
         if (!"download".equals(operation)) {
             if (StringUtils.isBlank(size)) {

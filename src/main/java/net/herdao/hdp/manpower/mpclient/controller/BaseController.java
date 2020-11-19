@@ -115,10 +115,15 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "id"),
     })
     public R<F> getFormInfo(@PathVariable Long id) {
-        Object from = getEntityService().form(id);
-        if (null == from) throw new Exception("对象不存在，或已被删除");
-        F f = DtoConverter.dto2vo(from, getFormVOClass());
-        return R.ok(f);
+        try {
+            Object from = getEntityService().form(id);
+            if (null == from) throw new Exception("对象不存在，或已被删除");
+            F f = DtoConverter.dto2vo(from, getFormVOClass());
+            return R.ok(f);
+        }catch (Exception ex){
+            log.error("获取表单异常",ex);
+            return R.failed(ex.getCause().getMessage());
+        }
     }
 
     @ApiOperation(value = "通过id删除")

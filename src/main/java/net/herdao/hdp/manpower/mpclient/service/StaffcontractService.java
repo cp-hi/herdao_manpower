@@ -28,7 +28,7 @@ public interface StaffcontractService extends HdpService<Staffcontract> {
      * @param searchText
      * @return
      */
-    List<StaffcontractDTO> findStaffContract(String searchText);
+    List<StaffcontractDTO> findStaffContract(StaffcontractDTO staffcontractDTO,String searchText);
 
 
 }

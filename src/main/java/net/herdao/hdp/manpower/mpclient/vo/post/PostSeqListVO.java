@@ -30,6 +30,12 @@ public class PostSeqListVO {
     @ApiModelProperty("岗位序列名称")
     private String postSeqName;
 
+    @ApiModelProperty("上级岗位序列id")
+    private String parentSeqId;
+
+    @ApiModelProperty("上级岗位序列名称")
+    private String parentSeqName;
+
     @ExcelProperty("岗位序列编码")
     @ApiModelProperty("岗位序列编码")
     private String postSeqCode;

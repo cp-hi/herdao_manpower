@@ -49,8 +49,8 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     }
 
     @Override
-    public List<FamilyStatusVO> findFamilyStatus(String searchText) {
-        List<FamilyStatusVO> list = this.baseMapper.findFamilyStatus(searchText);
+    public List<FamilyStatusVO> findFamilyStatus(FamilyStatusListDTO familyStatusListDTO,String searchText) {
+        List<FamilyStatusVO> list = this.baseMapper.findFamilyStatus(familyStatusListDTO,searchText);
         return list;
     }
 

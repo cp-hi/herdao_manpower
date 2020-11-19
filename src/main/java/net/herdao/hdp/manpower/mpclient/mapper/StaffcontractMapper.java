@@ -46,5 +46,5 @@ public interface StaffcontractMapper extends BaseMapper<Staffcontract> {
      * @param searchText
      * @return
      */
-    List<StaffcontractDTO> findStaffContract( @Param("searchText") String searchText);
+    List<StaffcontractDTO> findStaffContract( @Param("query") StaffcontractDTO staffcontractDTO, @Param("searchText") String searchText);
 }

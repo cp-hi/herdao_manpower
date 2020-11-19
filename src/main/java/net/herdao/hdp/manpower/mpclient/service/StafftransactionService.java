@@ -30,7 +30,7 @@ public interface StafftransactionService extends HdpService<Stafftransaction> {
      * @param staffId 员工ID
      * @return
      */
-    List<StafftransDTO> findStaffTrans(String searchText,String staffId);
+    List<StafftransDTO> findStaffTrans(StafftransDTO stafftransDTO,String searchText);
 
     /**
      * @author lift

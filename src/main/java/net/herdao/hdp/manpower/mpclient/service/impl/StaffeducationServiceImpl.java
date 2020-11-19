@@ -76,8 +76,8 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     }
 
     @Override
-    public List<StaffEducationDTO> findStaffEducation(String searchText, String staffId) {
-        List<StaffEducationDTO> list = this.baseMapper.findStaffEducation(searchText, staffId);
+    public List<StaffEducationDTO> findStaffEducation(StaffEducationDTO staffEducationDTO,String searchText) {
+        List<StaffEducationDTO> list = this.baseMapper.findStaffEducation(staffEducationDTO, searchText);
         return list;
     }
 

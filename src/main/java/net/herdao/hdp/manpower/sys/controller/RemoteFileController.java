@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * <p>
@@ -83,7 +84,7 @@ public class RemoteFileController {
 				entity.setSecondTypeId(secondTypeId);
 
 				//获得文件后缀名 文件类型
- 				int begin = file.getOriginalFilename().indexOf(".");
+ 				int begin = Objects.requireNonNull(file.getOriginalFilename()).indexOf(".");
 				int last = file.getOriginalFilename().length();
 				String fileType = file.getOriginalFilename().substring(begin, last);
 				//保存文件后缀名 文件类型
