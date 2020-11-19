@@ -79,7 +79,7 @@ public class UserpostController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出现任职情况Excel", notes = "导出现任职情况Excel")
-    @PostMapping("/exportStaffNowJob")
+    @GetMapping("/exportStaffNowJob")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键字")
     })

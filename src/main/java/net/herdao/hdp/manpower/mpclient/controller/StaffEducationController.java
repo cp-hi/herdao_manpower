@@ -179,7 +179,7 @@ public class StaffEducationController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出员工教育经历Excel", notes = "导出员工教育经历Excel")
-    @PostMapping("/exportStaffEdu")
+    @GetMapping("/exportStaffEdu")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
         @ApiImplicitParam(name="staffId",value="员工工号")

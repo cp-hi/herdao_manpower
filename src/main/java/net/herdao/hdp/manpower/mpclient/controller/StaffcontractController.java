@@ -170,7 +170,7 @@ public class StaffcontractController extends HdpBaseController {
      */
     @ApiOperation(value = "导出员工合同Excel", notes = "导出员工合同Excel")
     @SysLog("导出员工合同Excel" )
-    @PostMapping("/exportStaffContact")
+    @GetMapping("/exportStaffContact")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键词")
     })

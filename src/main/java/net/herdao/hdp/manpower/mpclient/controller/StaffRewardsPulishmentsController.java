@@ -117,7 +117,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出员工奖惩Excel", notes = "导出员工奖惩Excel")
-    @PostMapping("/exportStaffRp")
+    @GetMapping("/exportStaffRp")
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="搜索关键字")
     })

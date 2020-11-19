@@ -78,7 +78,7 @@ public class UserposthistoryController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "导出历史任职情况Excel", notes = "导出历史任职情况Excel")
-    @PostMapping("/exportStaffJobHis")
+    @GetMapping("/exportStaffJobHis")
     @ApiImplicitParams({
          @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })

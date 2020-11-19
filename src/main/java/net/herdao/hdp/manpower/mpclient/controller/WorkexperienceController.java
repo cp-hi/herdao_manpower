@@ -163,7 +163,7 @@ public class WorkexperienceController extends HdpBaseController {
      */
     @ApiOperation(value = "导出员工工作经历Excel", notes = "导出员工工作经历Excel")
     @SysLog("导出员工工作经历" )
-    @PostMapping("/exportStaffWork")
+    @GetMapping("/exportStaffWork")
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="搜索关键字"),
         @ApiImplicitParam(name="staffId",value="员工工号")
