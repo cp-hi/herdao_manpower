@@ -142,7 +142,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         company.setCreatorId(userInfo.getSysUser().getUserId());
         company.setCreatorName(userInfo.getSysUser().getAliasName());
         company.setCreatedTime(new Date());
-        return this.save(company);
+        boolean flag = this.save(company);
+        BeanUtils.copyProperties(company,companyForm);
+        return flag;
     }
 
     @Override

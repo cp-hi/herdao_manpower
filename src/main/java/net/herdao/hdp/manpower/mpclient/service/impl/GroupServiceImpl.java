@@ -170,7 +170,10 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         group.setModifierName(userName);
         group.setModifiedTime(now);
 
-        return this.save(group);
+        boolean flag = this.save(group);
+        BeanUtils.copyProperties(group,groupForm);
+
+        return flag;
     }
 
     @Override

@@ -110,8 +110,9 @@ public class CompanyController extends HdpBaseController{
     @SysLog("新增注册公司" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('mpclient_mpcompany_add')" )
-    public R<Boolean> save(@RequestBody CompanyDetailDTO companyForm) {
-        return R.ok(companyService.companySave(companyForm));
+    public R save(@RequestBody CompanyDetailDTO companyForm) {
+        companyService.companySave(companyForm);
+        return R.ok(companyForm);
     }
 
     /**
