@@ -66,7 +66,8 @@ public class OrgChartController {
     @PostMapping("/save")
     //@PreAuthorize("@pms.hasPermission('oa_organization_edit')" )
     public R<Boolean> saveOrgChart(@RequestBody OrgChartFormDTO form) {
-        return R.ok(organizationService.saveOrgChart(form));
+        boolean flag = organizationService.saveOrgChart(form);
+        return R.ok(flag);
     }
 
     /**
