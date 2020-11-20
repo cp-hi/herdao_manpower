@@ -134,8 +134,8 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "查询员工数量", notes = "查询员工数量")
     @GetMapping("/count" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffCount() {
-        return R.ok(staffService.queryCount());
+    public R getStaffCount(Long groupId) {
+        return R.ok(staffService.queryCount(groupId));
     }
 
     /**

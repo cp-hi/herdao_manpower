@@ -163,4 +163,12 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 */
 	List<StaffListDTO> staffPage(Map<String, Object> map);
 
+	/**
+	 * 查询员工数量
+	 * @param groupId
+	 * @param jobType
+	 * @return
+	 */
+	Integer getStaffCount(@Param("groupId") Long groupId,@Param("jobType")String jobType);
+
 }

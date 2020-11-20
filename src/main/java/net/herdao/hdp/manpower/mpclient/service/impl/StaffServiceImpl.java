@@ -1,29 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
-import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
@@ -32,42 +14,31 @@ import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffArchiveDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffCarreraDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffContractDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEmergencyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFundDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoOtherDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobTravelDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWelfareDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkExpDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
+import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
+import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.entity.User;
-import net.herdao.hdp.manpower.mpclient.entity.Userpost;
-import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 员工表
@@ -276,17 +247,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public Map<String, Object> queryCount(){
-		int total = baseMapper.selectCount(new QueryWrapper<>());
-		int jobType1 = baseMapper.selectCount(new QueryWrapper<Staff>()
-				.eq("JOB_TYPE", "1")
-		);
-		int jobType2 = baseMapper.selectCount(new QueryWrapper<Staff>()
-				.eq("JOB_TYPE", "2")
-		);
-		int jobType3 = baseMapper.selectCount(new QueryWrapper<Staff>()
-				.eq("JOB_TYPE", "7")
-		);
+	public Map<String, Object> queryCount(Long groupId){
+		int total = baseMapper.getStaffCount(groupId,null);
+		int jobType1 = baseMapper.getStaffCount(groupId,"1");
+		int jobType2 = baseMapper.getStaffCount(groupId,"2");
+		int jobType3 = baseMapper.getStaffCount(groupId,"7");
 		int toJoin = 0;
 		int toLeave = 0;
 		Map<String, Object> map = new HashMap<>();

@@ -526,4 +526,22 @@
             </if>
         </where>
     </select>
+    <select id="getStaffCount" resultType="int">
+        SELECT
+            count(1)
+        FROM
+            mp_staff s
+        LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID
+        AND up.MAIN_POST = 1
+        LEFT JOIN mp_post p ON p.ID = up.POST_ID
+        LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+        <where>
+            <if test="groupId != null">
+                and p.GROUP_ID = #{groupId}
+            </if>
+            <if test="jobType != null">
+                and s.job_type = #{jobType}
+            </if>
+        </where>
+    </select>
 </mapper>
