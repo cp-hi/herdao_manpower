@@ -53,6 +53,14 @@ public interface EntityService<T> extends IService<T> {
     boolean delEntity(Serializable id);
 
     /**
+     * 逻辑删除前校验
+     *
+     * @param id
+     * @return
+     */
+    default void delVerify(Serializable id){};
+
+    /**
      * 停用/启用
      *
      * @param id
