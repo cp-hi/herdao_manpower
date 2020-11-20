@@ -133,6 +133,8 @@
                         INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
                         WHERE 1=1
                         AND u.MAIN_POST = 1
+                        AND s.JOB_TYPE = 1
+                        AND s.STAFF_SCOPE = 1
                         <if test="orgCode != null">
                             AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
                         </if>

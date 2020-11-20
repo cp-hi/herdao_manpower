@@ -42,10 +42,10 @@ public class PostDTO extends Post {
     @ApiModelProperty("职级2")
     private String jobLevelName2;
 
-    @ApiModelProperty("在职员工数")
+    @ApiModelProperty("岗位编制")
     private Integer postAuthorized;
 
-    @ApiModelProperty("岗位编制")
+    @ApiModelProperty("在职员工数")
     private Integer onJobStaffs;
 
     @ApiModelProperty("岗位序列")
