@@ -35,7 +35,7 @@ public interface FamilystatusMapper extends BaseMapper<Familystatus> {
      * @param searchText
      * @return
      */
-    List<FamilyStatusVO> findFamilyStatus(@Param("searchText") String searchText);
+    List<FamilyStatusVO> findFamilyStatus(@Param("query") FamilyStatusListDTO familyStatusListDTO, @Param("searchText") String searchText);
 
     /**
      * 花名册-家庭情况

@@ -31,6 +31,6 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
      * @param searchText
      * @return
      */
-    List<UserpostDTO> findUserPostHistory(@Param("searchText") String searchText);
+    List<UserpostDTO> findUserPostHistory(@Param("query") UserpostDTO userpostDTO,@Param("searchText") String searchText);
 
 }

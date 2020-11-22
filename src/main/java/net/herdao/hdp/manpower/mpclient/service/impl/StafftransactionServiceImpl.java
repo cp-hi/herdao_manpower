@@ -45,11 +45,11 @@ public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMap
     }
 
     @Override
-    public List<StafftransDTO> findStaffTrans(String searchText,String staffId) {
-        List<StafftransDTO> list = this.baseMapper.findStaffTrans(searchText,staffId);
+    public List<StafftransDTO> findStaffTrans(StafftransDTO stafftransDTO, String searchText) {
+        List<StafftransDTO> list = this.baseMapper.findStaffTrans(stafftransDTO,searchText);
         return list;
     }
-    
+
     @Override
     public List<StafftransactionDTO> findStafftransactionDto(Long staffid){
     	List<StafftransactionDTO> list = this.baseMapper.findStafftransactionDto(staffid);

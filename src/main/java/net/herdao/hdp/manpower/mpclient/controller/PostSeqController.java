@@ -7,10 +7,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.post.OKPostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDTO;
-import net.herdao.hdp.manpower.mpclient.dto.post.OKPostSeqSysDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.post.*;
 import net.herdao.hdp.manpower.mpclient.entity.OKPostSeqSys;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.OKPostSeqSysService;
@@ -77,6 +74,16 @@ public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, Po
             throws Exception {
         return super.page(response, page, seq, type);
     }
+
+    @GetMapping("/getTree")
+    @ApiOperation(value = "岗位序列树查询", notes = "岗位序列树查询")
+    @ApiImplicitParams({@ApiImplicitParam(name = "groupId",value = "集团id",required = true),
+            @ApiImplicitParam(name = "parentId",value = "上级id"),
+            @ApiImplicitParam(name = "lazy",value = "是否懒加载")})
+    public R<List<PostSeqTree>> getTree(Long groupId, Long parentId, Boolean lazy){
+        return R.ok(postSeqService.getTree(groupId,parentId,lazy));
+    }
+
 
 
     @GetMapping("/okpage")

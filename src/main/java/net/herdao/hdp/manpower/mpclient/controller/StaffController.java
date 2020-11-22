@@ -1,19 +1,4 @@
-/*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: hdp
- */
+
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
@@ -120,12 +105,12 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "员工花名册导出", notes = "员工花名册导出")
     @GetMapping("/export" )
     @SneakyThrows
-    public void export(HttpServletResponse response,StaffListDTO staff, String tab, String searchText) {
-            Page page = new Page();
-            page.setSize(-1);
-            staff.setJobType(jobTypeMap.get(tab));
-            IPage iPage = staffService.staffPage(page, staff, searchText);
-            ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffListDTO.class, iPage.getRecords());
+    public void export(HttpServletResponse response, StaffListDTO staff, String tab, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        staff.setJobType(jobTypeMap.get(tab));
+        IPage iPage = staffService.staffPage(page, staff, searchText);
+        ExcelUtils.export2Web(response, "员工花名册", "员工花名册", StaffListDTO.class, iPage.getRecords());
     }
 
     /**
@@ -134,8 +119,8 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "查询员工数量", notes = "查询员工数量")
     @GetMapping("/count" )
 //    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
-    public R getStaffCount() {
-        return R.ok(staffService.queryCount());
+    public R getStaffCount(Long groupId) {
+        return R.ok(staffService.queryCount(groupId));
     }
 
     /**
@@ -373,7 +358,7 @@ public class StaffController extends HdpBaseController{
 
      * @return
      */
-    @ApiOperation(value = "根据员工ID查询员工信息", notes = "staffCodes 根据员工ID查询员工信息")
+    @ApiOperation(value = "根据员工ids查询员工信息", notes = "staffIds 根据员工ids查询员工信息")
     @GetMapping("/selectStaffByStaffIds")
     @ApiImplicitParam(name="staffIds", value="员工ID，多个采用：“,”分隔开， 例如：1001, 1002")
     public R<List> selectStaffByStaffIds(String staffIds) {

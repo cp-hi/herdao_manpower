@@ -36,6 +36,9 @@ public class OrganizationUpdateDTO {
 	private String orgCode;
 
 	@ExcelProperty(value = "组织类型", index = 1)
+	@HeadFontStyle(color = 10)
+	@Valid
+	@NotBlank(message = "不能为空")
 	private String orgType;
 	
 	@ApiModelProperty(value = "组织树层级")
@@ -45,9 +48,6 @@ public class OrganizationUpdateDTO {
 	private Long parentId;
 	
 	@ExcelProperty(value = "上级组织编码", index = 2)
-	@HeadFontStyle(color = 10)
-	@Valid
-	@NotBlank(message = "不能为空")
 	private String parentOrgCode;
 
 	@ApiModelProperty(value = "组织负责人id")

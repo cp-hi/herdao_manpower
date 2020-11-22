@@ -52,9 +52,13 @@ public interface StaffService extends HdpService<Staff> {
 	 * @return
 	 */
 	R<List> selectStaffOrganizationComponent(String orgCode, String batchSelectOrgCodes, String staffCodes, String searchText);
-	
-	
-	Map<String, Object> queryCount();
+
+	/**
+	 * 查询员工数量
+	 * @param groupId
+	 * @return
+	 */
+	Map<String, Object> queryCount(Long groupId);
 
 	IPage staffPage(Page page, StaffListDTO staff, String searchText);
 

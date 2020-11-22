@@ -114,7 +114,8 @@ public class OrgSetController {
 		long code = sysSequenceService.getNext("org_set");
 		sysDictItem.setSort((int)code);
 		sysDictItem.setValue(code+"");
-		return R.ok(sysDictItemService.save(sysDictItem));
+		sysDictItemService.save(sysDictItem);
+		return R.ok(sysDictItem);
 	}
 
 	/**

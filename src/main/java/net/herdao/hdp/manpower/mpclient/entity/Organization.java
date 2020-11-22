@@ -4,6 +4,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -142,18 +143,21 @@ public class Organization extends BaseEntity<Organization> {
 	 * 组织负责人id
 	 */
 	@ApiModelProperty(value = "组织负责人id")
+	@TableField(updateStrategy=FieldStrategy.IGNORED)
 	private Long orgChargeWorkId;
 
 	/**
 	 * 组织负责人姓名
 	 */
 	@ApiModelProperty(value = "组织负责人姓名")
+	@TableField(updateStrategy=FieldStrategy.IGNORED)
 	private String orgChargeWorkName;
 
 	/**
 	 * 组织负责人工号
 	 */
 	@ApiModelProperty(value = "组织负责人工号")
+	@TableField(updateStrategy=FieldStrategy.IGNORED)
 	private String orgChargeWorkNo;
 
 	/**

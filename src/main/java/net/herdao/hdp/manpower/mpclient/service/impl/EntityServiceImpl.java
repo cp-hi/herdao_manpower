@@ -161,6 +161,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean delEntity(Serializable id) {
+        delVerify(id);
         boolean result = this.removeById(id);
         if (result) {
             T t = baseMapper.selectIgnoreDel((Long) id);

@@ -32,7 +32,6 @@ import java.util.Map;
 
 /**
  * 员工奖惩
- *
  * @author andy
  * @date 2020-09-25 16:26:20
  */
@@ -51,8 +50,8 @@ public class StaffRewardsPulishmentsServiceImpl extends ServiceImpl<StaffRewards
     }
 
     @Override
-    public List<StaffRpDTO> findStaffRp(String searchText) {
-        List<StaffRpDTO> list = this.baseMapper.findStaffRp(searchText);
+    public List<StaffRpDTO> findStaffRp(StaffRpDTO staffRpDTO,String searchText) {
+        List<StaffRpDTO> list = this.baseMapper.findStaffRp(staffRpDTO,searchText);
         return list;
     }
 
