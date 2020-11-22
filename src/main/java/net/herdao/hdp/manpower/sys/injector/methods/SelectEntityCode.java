@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.sys.injector.methods;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import net.herdao.hdp.manpower.sys.injector.utils.TableInfoUtils;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.RawSqlSource;
@@ -21,11 +22,9 @@ import java.util.stream.Collectors;
 public class SelectEntityCode extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
-                f.getEl().contains("Code")).collect(Collectors.toList());
-        String code = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
         SqlSource sqlSource = new RawSqlSource(this.configuration, String.format("SELECT  IFNULL( %s,'--')  FROM %s WHERE %s=#{%s}  %s ",
-                code, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty(), tableInfo.getLogicDeleteSql(true, true)), Object.class);
+                TableInfoUtils.getCodeColumn(tableInfo), tableInfo.getTableName(), tableInfo.getKeyColumn(),
+                tableInfo.getKeyProperty(), tableInfo.getLogicDeleteSql(true, true)), Object.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectEntityCode", sqlSource, String.class);
     }
 }

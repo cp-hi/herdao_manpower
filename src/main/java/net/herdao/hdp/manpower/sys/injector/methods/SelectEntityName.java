@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
+import net.herdao.hdp.manpower.sys.injector.utils.TableInfoUtils;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.RawSqlSource;
@@ -22,15 +23,10 @@ import java.util.stream.Collectors;
 public class SelectEntityName extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        //TODO 添加通过 TableField 注解获取 name字段名，目前就简单从表名拼接的方式
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
-                f.getEl().contains("Name")).collect(Collectors.toList());
-        String name = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
-
         String sql = "with T as (SELECT  %s  FROM  %s WHERE %s=#{%s} AND del_flag!=1) " +
-            " select case  when exists (select * from T ) then (select * from T) else '--' end as entity_name ";
-        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql,
-                name, tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
+                " select case  when exists (select * from T ) then (select * from T) else '--' end as entity_name ";
+        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql, TableInfoUtils.getNameColumn(tableInfo),
+                tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyProperty()), Object.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectEntityName", sqlSource, String.class);
     }
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.toolkit.sql.SqlScriptUtils;
+import net.herdao.hdp.manpower.sys.injector.utils.TableInfoUtils;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -26,13 +27,10 @@ import java.util.stream.Collectors;
 public class SelectNamesByIds extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        //TODO 添加通过 TableField 注解获取 name字段名，目前就简单从表名拼接的方式
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
-                f.getEl().contains("Name")).collect(Collectors.toList());
-        String name = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
         String sql = "<script> SELECT %s,(case when DEL_FLAG !=1 then %s else '--' end) entityName FROM %s WHERE %s IN (%s) </script>";
-        SqlSource sqlSource = this.languageDriver.createSqlSource(this.configuration, String.format(sql,  tableInfo.getKeyProperty(),name,
-                tableInfo.getTableName(), tableInfo.getKeyColumn(), SqlScriptUtils.convertForeach("#{item}", "coll", (String) null, "item", ",")), Map.class);
+        SqlSource sqlSource = this.languageDriver.createSqlSource(this.configuration, String.format(sql, tableInfo.getKeyProperty(),
+                TableInfoUtils.getNameColumn(tableInfo), tableInfo.getTableName(), tableInfo.getKeyColumn(),
+                SqlScriptUtils.convertForeach("#{item}", "coll", (String) null, "item", ",")), Map.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectNamesByIds", sqlSource, Map.class);
     }
 }

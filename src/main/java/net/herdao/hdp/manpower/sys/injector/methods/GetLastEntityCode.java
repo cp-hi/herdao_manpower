@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.sys.injector.methods;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import net.herdao.hdp.manpower.sys.injector.utils.TableInfoUtils;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -23,11 +24,8 @@ import java.util.stream.Collectors;
 public class GetLastEntityCode extends AbstractMethod {
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        List<TableFieldInfo> fieldInfos = tableInfo.getFieldList().stream().filter(f ->
-                f.getEl().contains("Code")).collect(Collectors.toList());
-        String code = (0 == fieldInfos.size()) ? "''" : fieldInfos.get(0).getColumn();
         String sql = "SELECT IFNULL( %s,'000000') FROM %s WHERE %s=(select max(%s) from %s where group_id=#{groupId}) ";
-        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql, code,
+        SqlSource sqlSource = new RawSqlSource(this.configuration, String.format(sql, TableInfoUtils.getCodeColumn(tableInfo),
                 tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyColumn(),
                 tableInfo.getTableName()), Object.class);
         return this.addMappedStatement(mapperClass, "getLastEntityCode", sqlSource, SqlCommandType.SELECT,
