@@ -13,7 +13,6 @@
 
     <select id="page" resultMap="pipelineDTOMap" parameterType="pipeline">
         select * from mp_pipeline where  del_flag !=1
-        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
         <if test="t.groupId != null">
         and group_id = #{t.groupId}
         </if>
@@ -21,6 +20,7 @@
             <bind name="likeTxt" value="'%'+t.pipelineName+'%'"/>
             and( pipeline_code like #{likeTxt} or pipeline_name like #{likeTxt})
         </if>
+        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
     </select>
 
     <select id="form" resultMap="pipelineDTOMap" >

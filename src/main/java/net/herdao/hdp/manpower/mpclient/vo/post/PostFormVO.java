@@ -1,10 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.vo.post;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
@@ -36,7 +33,7 @@ public class PostFormVO {
 
     @ApiModelProperty("岗位序列")
     @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
-            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, separator = "-")
     private String postSeqName;
 
     @ApiModelProperty(value = "所属集团",required = true)
@@ -71,11 +68,11 @@ public class PostFormVO {
     private Long jobLevelId2;
 
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevelId1", "jobLevelId2"}, symbol = ",")
+    @DtoField(objField = {"jobLevelId1", "jobLevelId2"}, separator = ",")
     private String jobLevelId;
 
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, symbol = "~")
+    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, separator = "~")
     private String jobLevelName;
 
     @ApiModelProperty(value = "在职员工数")

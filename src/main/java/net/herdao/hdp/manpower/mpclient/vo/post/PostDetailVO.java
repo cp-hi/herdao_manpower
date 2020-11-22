@@ -39,7 +39,7 @@ public class PostDetailVO {
     private String pipelineName;
 
     @ExcelProperty("职级")
-    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, symbol = "~")
+    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, separator = "~")
     private String jobLevelName;
 
     @ExcelIgnore

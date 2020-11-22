@@ -1,5 +1,7 @@
 package net.herdao.hdp.manpower.sys.annotation;
 
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
+
 import java.lang.annotation.*;
 
 /**
@@ -22,7 +24,7 @@ public @interface DtoField {
 
     String dictField() default "";
 
-    String symbol() default " ";
+    String separator() default " ";
 
     String mapFix() default "";//example  "{1:\"于\",3:\"创建\"}"    "{1:\"于\",3:\"更新\"}"
 
@@ -31,4 +33,8 @@ public @interface DtoField {
     String pattern() default "yyyy-MM-dd HH:mm";
 
     String delFix() default "";
+
+    Class entityService() default Class.class;
+
+    String pkField() default "";
 }

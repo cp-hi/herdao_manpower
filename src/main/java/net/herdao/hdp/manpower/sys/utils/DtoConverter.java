@@ -4,13 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.SneakyThrows;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,8 +32,15 @@ import java.util.Map;
  * @Date 2020/10/16 8:31
  * @Version 1.0
  */
-
+@Component
 public class DtoConverter {
+
+    private static ApplicationContext applicationContext;
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        DtoConverter.applicationContext = applicationContext;
+    }
 
     /**
      * @param source dto类
@@ -59,6 +72,12 @@ public class DtoConverter {
                 value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
+            } else if (dtoField.entityService() != Class.class
+                    && StringUtils.isNotBlank(dtoField.pkField())) {
+                EntityService service = (EntityService) applicationContext.getBean(dtoField.entityService());
+                Object pkValue = AnnotationUtils.getFieldValByName(source, dtoField.pkField());
+                String name = service.selectEntityName((Serializable) pkValue);
+                value = name;
             }
             field.set(target, value);
         }
@@ -129,7 +148,7 @@ public class DtoConverter {
             }
         }
 
-        return StringUtils.join(values, dtoField.symbol());
+        return StringUtils.join(values, dtoField.separator());
     }
 
     /**

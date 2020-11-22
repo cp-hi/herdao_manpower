@@ -9,7 +9,10 @@ import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName EntityMapper
@@ -117,6 +120,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
 
     /**
      * 获取表单对象
+     *
      * @param id
      * @return
      */
@@ -124,6 +128,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
 
     /**
      * 校验重复名称
+     *
      * @param t
      * @return
      */
@@ -131,6 +136,7 @@ public interface EntityMapper<T> extends BaseMapper<T> {
 
     /**
      * 获取最新的实体编码
+     *
      * @param t
      * @return
      */
@@ -139,13 +145,18 @@ public interface EntityMapper<T> extends BaseMapper<T> {
     /**
      * 校验集团状态，是否能用，
      * 即不为空或停用、删除
+     *
      * @param t
      * @return
      */
     @Select("select count(*) from mp_group where id =#{groupId} and del_flag != 1 ")
     Boolean checkGroupStatus(T t);
 
+    String selectEntityName(Serializable id);
+
     T selectIgnoreDel(Long id);
 
-   T getEntityByName(String name,Long groupId);
+    T getEntityByName(String name, Long groupId);
+
+    List<Map<Long,String>> selectNamesByIds(@Param("coll") List<Long> ids);
 }

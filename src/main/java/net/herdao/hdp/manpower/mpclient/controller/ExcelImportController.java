@@ -97,7 +97,8 @@ public interface ExcelImportController<A, U> {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "importType", value = "模板类型，0:批量新增模板 1:批量编辑模板"),
     })
-    default R getDownloadTempl(HttpServletResponse response, @RequestBody ExportDataVO exportDataVO) {
+    default R getDownloadTempl(HttpServletResponse response,
+                               @RequestBody ExportDataVO exportDataVO) {
         try {
             Class templClass = getBatchAddClass();
             ApiModel apiModel = (ApiModel) templClass.getAnnotation(ApiModel.class);

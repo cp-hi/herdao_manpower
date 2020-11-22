@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.sys.utils;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.SneakyThrows;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -73,12 +74,25 @@ public class AnnotationUtils {
         return fields;
     }
 
-    public static Field getFieldByName(Object object, String fieldName) {
-        Field[] fields = getAllFields(object);
+    public static Field getFieldByName(Object source, String fieldName) {
+        Field[] fields = getAllFields(source);
         for (Field field : fields) {
             if (fieldName.equals(field.getName())) {
                 field.setAccessible(true);
                 return field;
+            }
+        }
+        return null;
+    }
+
+    @SneakyThrows
+    public static Object getFieldValByName(Object source, String fieldName) {
+        Field[] fields = getAllFields(source);
+        for (Field field : fields) {
+            if (fieldName.equals(field.getName())) {
+                field.setAccessible(true);
+                Object val = field.get(source);
+                return val;
             }
         }
         return null;

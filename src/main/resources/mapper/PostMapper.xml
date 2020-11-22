@@ -42,7 +42,6 @@
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
         select * from mp_post where del_flag !=1 and group_id = #{t.groupId}
-        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
         <if test="t.stop != null">
             and is_stop = #{t.stop}
         </if>
@@ -59,6 +58,7 @@
             <bind name="likeTxt" value="'%'+t.postName+'%'"/>
             and (POST_CODE like #{likeTxt} or POST_NAME like #{likeTxt})
         </if>
+        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
     </select>
 
     <select id="form" resultMap="postDTOMap">

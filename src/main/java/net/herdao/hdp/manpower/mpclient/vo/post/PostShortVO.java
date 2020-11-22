@@ -41,6 +41,6 @@ public class PostShortVO {
 
     @ApiModelProperty("岗位序列")
     @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
-            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-")
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, separator = "-")
     private String postSeqName;
 }

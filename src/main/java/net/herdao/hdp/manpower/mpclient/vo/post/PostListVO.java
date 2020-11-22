@@ -5,6 +5,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.service.impl.PipelineServiceImpl;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 
@@ -35,7 +36,7 @@ public class PostListVO {
     @ExcelProperty("岗位序列")
     @ApiModelProperty("岗位序列")
     @DtoField(objField = {"postSeqDTO.parent.parent.postSeqName",
-            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, symbol = "-",delFix = "未分类")
+            "postSeqDTO.parent.postSeqName", "postSeqDTO.postSeqName"}, separator = "-", delFix = "未分类")
     private String postSeqName;
 
     @ExcelProperty("所属集团")
@@ -50,13 +51,18 @@ public class PostListVO {
     @ApiModelProperty("管线")
     private String pipelineName;
 
+    @ExcelProperty("管线")
+    @ApiModelProperty("管线")
+    @DtoField(entityService = PipelineServiceImpl.class, pkField = "pipelineId")
+    private String pipelineName1;
+
     @ExcelProperty("职等")
     @ApiModelProperty("职等")
     private String jobGradeName;
 
     @ExcelProperty("职级")
     @ApiModelProperty("职级")
-    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, symbol = "~")
+    @DtoField(objField = {"jobLevelName1", "jobLevelName2"}, separator = "~")
     private String jobLevelName;
 
     @ExcelProperty("在职员工数")

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -121,6 +122,10 @@ public interface EntityService<T> extends IService<T> {
      * @param importType
      */
     void saveList(List<T> dataList, Integer importType);
+
+    String selectEntityName(Serializable id);
+
+    List<Map<Long,String>> selectNamesByIds(List<Long> ids);
 
     //region 设置实体属性
 

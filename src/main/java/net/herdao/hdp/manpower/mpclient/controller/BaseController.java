@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.base.Joiner;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +21,9 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @param <T> 实体类Entity类型
@@ -120,8 +123,8 @@ public class BaseController<T, D, F> {
             if (null == from) throw new Exception("对象不存在，或已被删除");
             F f = DtoConverter.dto2vo(from, getFormVOClass());
             return R.ok(f);
-        }catch (Exception ex){
-            log.error("获取表单异常",ex);
+        } catch (Exception ex) {
+            log.error("获取表单异常", ex);
             return R.failed(ex.getCause().getMessage());
         }
     }
@@ -156,7 +159,7 @@ public class BaseController<T, D, F> {
 
     @PostMapping
     @ApiOperation(value = "新增/修改")
-    public R<F> save(@RequestBody F f) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public R<F> save(@RequestBody F f) {
         try {
             Object t = getEntityClass().newInstance();
             BeanUtils.copyProperties(f, (T) t);
@@ -165,8 +168,18 @@ public class BaseController<T, D, F> {
             BeanUtils.copyProperties((T) t, f);
             return R.ok(f);
         } catch (Exception ex) {
-            log.error("save异常",ex);
+            log.error("save异常", ex);
             return R.failed(ex.getCause().getMessage());
         }
+    }
+
+    @GetMapping("/selectNamesByIds")
+    @ApiOperation(value = "selectNamesByIds", hidden = true)
+    public R selectNamesByIds(String ids) {
+        String[] arr = ids.split(",");
+        List<Long> coll = new ArrayList<>();
+        for (String a : arr) coll.add(Long.valueOf(a));
+        List names = getEntityService().selectNamesByIds(coll);
+        return R.ok(names);
     }
 }

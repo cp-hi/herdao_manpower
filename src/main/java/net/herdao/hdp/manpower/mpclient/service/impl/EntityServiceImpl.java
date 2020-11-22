@@ -20,7 +20,9 @@ import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -414,10 +416,23 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                 entity.setModifierId(Long.valueOf(sysUser.getUserId()));
             }
         }
+//         CacheProperties.Caffeine caffeine
         List<List<T>> batch = Lists.partition(dataList, 100);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
     }
+
+    @Override
+    public String selectEntityName(Serializable id) {
+        return baseMapper.selectEntityName(id);
+    }
+
+    @Override
+    public List<Map<Long,String>> selectNamesByIds(List<Long> ids) {
+
+        return baseMapper.selectNamesByIds(ids);
+    }
+
 
     //region 批量导入时分类用 参照PostServiceImpl
     @Override

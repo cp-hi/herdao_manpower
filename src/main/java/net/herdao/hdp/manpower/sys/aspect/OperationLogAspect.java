@@ -143,7 +143,7 @@ public class OperationLogAspect {
     }
 
 
-    @Before("pointDelete()")
+//    @Before("pointDelete()")
     public void beforeDelete(JoinPoint point) {
         OperationEntity operation = getOperationEntity(point);
         if (null == operation || 0 == point.getArgs().length)
@@ -191,7 +191,7 @@ public class OperationLogAspect {
     //endregion
 
 
-    @After("pointCutStop()")
+//    @After("pointCutStop()")
     public void afterStop(JoinPoint point) {
         OperationEntity operation = getOperationEntity(point);
         if (null == operation || 0 == point.getArgs().length)

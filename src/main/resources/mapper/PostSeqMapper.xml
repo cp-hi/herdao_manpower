@@ -27,10 +27,10 @@
         ps.*,
         pps.id parent_seq_id,
         pps.POST_SEQ_NAME parent_seq_name
-         from mp_post_seq ps
+        from mp_post_seq ps
         left join mp_post_seq pps on ps.PARENT_ID=pps.id
         where  ps.del_flag !=1
-        and exists (select * from mp_group g where g.id = ps.GROUP_ID and g.DEL_FLAG !=1)
+
         <if test="t.groupId != null">
             and ps.group_id = #{t.groupId}
         </if>
@@ -47,6 +47,7 @@
             <bind name="likeTxt" value="'%'+t.postSeqName+'%'"/>
             and(ps.post_seq_code like #{likeTxt} or ps.post_seq_name like #{likeTxt})
         </if>
+        and exists (select * from mp_group g where g.id = ps.GROUP_ID and g.DEL_FLAG !=1)
     </select>
 
     <select id="form" resultMap="postSeqDTO" >

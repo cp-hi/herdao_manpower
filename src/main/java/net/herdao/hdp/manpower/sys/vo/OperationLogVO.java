@@ -3,9 +3,6 @@ package net.herdao.hdp.manpower.sys.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -48,6 +45,6 @@ public class OperationLogVO {
 
     @ExcelProperty(value = {"", "操作内容"})
     @ApiModelProperty(value = "操作内容")
-    @DtoField(objField = {"operator", "content"}, symbol = "")
+    @DtoField(objField = {"operator", "content"}, separator = "")
     private String content;
 }
