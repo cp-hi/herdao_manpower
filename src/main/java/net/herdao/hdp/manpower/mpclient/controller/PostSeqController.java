@@ -18,8 +18,8 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.vo.post.ShortPostSeqVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import net.herdao.hdp.manpower.sys.utils.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -128,7 +128,7 @@ public class PostSeqController extends BaseController<PostSeq, PostSeqListVO, Po
         try {
             okPostSeqSysService.okCreatePostSeq(id,  groupId);
         } catch (Exception ex) {
-            return R.failed(ExceptionUtils.getMessage(ex));
+            return R.failed(ExceptionUtils.getRealMessage(ex));
         }
         return R.ok();
     }

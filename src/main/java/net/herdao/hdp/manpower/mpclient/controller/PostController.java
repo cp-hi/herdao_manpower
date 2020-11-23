@@ -13,8 +13,8 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.vo.post.*;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
+import net.herdao.hdp.manpower.sys.utils.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -87,7 +87,7 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
             f.setSingleJobLevle(1 == jobLevelIds.length);
             return super.save(f);
         } catch (Exception ex) {
-            return R.failed(ExceptionUtils.getMessage(ex));
+            return R.failed(ExceptionUtils.getRealMessage(ex));
         }
     }
 

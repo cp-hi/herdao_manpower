@@ -18,7 +18,7 @@ import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelListVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.ShortJobLevelVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import net.herdao.hdp.manpower.sys.utils.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -113,7 +113,7 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
         try {
             okJobLevleSysService.okCreateJobLevel(id, groupId);
         } catch (Exception ex) {
-            return R.failed(ExceptionUtils.getMessage(ex));
+            return R.failed(ExceptionUtils.getRealMessage(ex));
         }
         return R.ok();
     }
