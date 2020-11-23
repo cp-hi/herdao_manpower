@@ -417,7 +417,6 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                 entity.setModifierId(Long.valueOf(sysUser.getUserId()));
             }
         }
-//         CacheProperties.Caffeine caffeine
         List<List<T>> batch = Lists.partition(dataList, 100);
         for (List<T> tmp : batch) this.saveOrUpdateBatch(tmp);
         dataList.clear();
@@ -429,8 +428,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public List<Map<Long,String>> selectNamesByIds(List<Long> ids) {
-
+    public List<Map<Long, String>> selectNamesByIds(List<Long> ids) {
         return baseMapper.selectNamesByIds(ids);
     }
 

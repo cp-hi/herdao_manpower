@@ -5,6 +5,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.mpclient.service.impl.EntityServiceImpl;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
@@ -72,9 +73,8 @@ public class DtoConverter {
                 value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
-            } else if (dtoField.entityService() != Class.class
-                    && StringUtils.isNotBlank(dtoField.pkField())) {
-                EntityService service = (EntityService) applicationContext.getBean(dtoField.entityService());
+            } else if (StringUtils.isNotBlank(dtoField.pkField())) {
+                EntityService service = applicationContext.getBean(dtoField.entityService());
                 Object pkValue = AnnotationUtils.getFieldValByName(source, dtoField.pkField());
                 String name = service.selectEntityName((Serializable) pkValue);
                 value = name;

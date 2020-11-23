@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.sys.annotation;
 
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.mpclient.service.impl.EntityServiceImpl;
 
 import java.lang.annotation.*;
 
@@ -34,7 +35,7 @@ public @interface DtoField {
 
     String delFix() default "";
 
-    Class entityService() default Class.class;
+    Class<? extends EntityServiceImpl> entityService() default EntityServiceImpl.class;
 
     String pkField() default "";
 }

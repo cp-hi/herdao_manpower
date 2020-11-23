@@ -30,10 +30,4 @@ public class PostSeqDTO extends PostSeq {
 
     @ApiModelProperty("是否最末节点")
     private Boolean isLeaf;
-
-//    @ApiModelProperty("上级岗位序列id")
-//    private String parentSeqId;
-//
-//    @ApiModelProperty("上级岗位序列名称")
-//    private String parentSeqName;
 }
