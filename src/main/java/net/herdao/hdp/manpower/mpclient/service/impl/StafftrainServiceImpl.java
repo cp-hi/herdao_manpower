@@ -176,5 +176,13 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
         }
     }
 
-
+    @Override
+    public boolean saveOrUpdate(Stafftrain entity) {
+        SysUser sysUser = SysUserUtils.getSysUser();
+        entity.setCreatorName(sysUser.getAliasName());
+        entity.setCreatedTime(new Date());
+        entity.setCreatorCode(sysUser.getUsername());
+        entity.setCreatorId(sysUser.getUserId());
+        return super.saveOrUpdate(entity);
+    }
 }

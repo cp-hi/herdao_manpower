@@ -119,7 +119,6 @@ public class StafftrainController extends HdpBaseController {
      */
     @ApiOperation(value = "员工培训分页", notes = "员工培训分页")
     @GetMapping("/findStaffTrainPage")
-    @OperationEntity(operation = "员工培训分页" ,clazz = Stafftrain.class )
     @ApiImplicitParams({
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
@@ -174,13 +173,7 @@ public class StafftrainController extends HdpBaseController {
     @SysLog("新增员工培训" )
     @PostMapping("/saveStaffTrain" )
     public R saveStaffTrain(@RequestBody Stafftrain staffTrain) {
-        SysUser sysUser = SysUserUtils.getSysUser();
-        staffTrain.setCreatorName(sysUser.getAliasName());
-        staffTrain.setCreatedTime(new Date());
-        staffTrain.setCreatorCode(sysUser.getUsername());
-        staffTrain.setCreatorId(sysUser.getUserId());
-
-        boolean status = stafftrainService.save(staffTrain);
+        boolean status = stafftrainService.saveOrUpdate(staffTrain);
         return R.ok(status);
     }
 
