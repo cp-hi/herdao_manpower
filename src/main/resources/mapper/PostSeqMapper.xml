@@ -23,13 +23,14 @@
     </resultMap>
 
     <select id="page" resultMap="postSeqDTOMap" parameterType="postSeq">
-        select
-        ps.*,
-        pps.id parent_seq_id,
-        pps.POST_SEQ_NAME parent_seq_name
-        from mp_post_seq ps
-        left join mp_post_seq pps on ps.PARENT_ID=pps.id
-        where  ps.del_flag !=1
+--         select
+--         ps.*,
+--         pps.id parent_seq_id,
+--         pps.POST_SEQ_NAME parent_seq_name
+--         from mp_post_seq ps
+--         left join mp_post_seq pps on ps.PARENT_ID=pps.id
+--         where  ps.del_flag !=1
+        select * from  mp_post_seq  where del_flag !=1
 
         <if test="t.groupId != null">
             and ps.group_id = #{t.groupId}

@@ -8,6 +8,7 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.vo.ExcelMsg;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class ImportExcelListener<E> extends AnalysisEventListener<E> {
             entityService.importVerify(t, excel, importType);
         } catch (Exception ex) {
             this.hasError = true;
-            ((ExcelMsg) excel).setErrMsg(ex.getCause().getMessage());
+            ((ExcelMsg) excel).setErrMsg(ExceptionUtils.getMessage(ex));
         }
         excelList.add(excel);
         dataList.add(t);

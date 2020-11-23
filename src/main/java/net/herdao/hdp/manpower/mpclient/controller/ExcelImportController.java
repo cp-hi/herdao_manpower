@@ -12,6 +12,7 @@ import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.excelud.ExportDataVO;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,7 +86,7 @@ public interface ExcelImportController<A, U> {
         } catch (Exception ex) {
             if (Integer.valueOf(1).equals(downloadErrMsg) && listener.getExcelList().size() > 0)
                 ExcelUtils.export2Web(response, "导入错误信息", clazz, listener.getExcelList());
-            return R.failed(listener.getErrType(), ex.getCause().getMessage());
+            return R.failed(listener.getErrType(), ExceptionUtils.getMessage(ex));
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
@@ -109,7 +110,7 @@ public interface ExcelImportController<A, U> {
             }
             ExcelUtils.downloadTempl(response, templClass, excelName);
         } catch (Exception ex) {
-            return R.failed(ex.getCause().getMessage());
+            return R.failed(ExceptionUtils.getMessage(ex));
         }
         return R.ok();
     }

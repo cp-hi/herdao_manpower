@@ -15,6 +15,7 @@ import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import net.herdao.hdp.manpower.sys.vo.OperationLogVO;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -125,7 +126,7 @@ public class BaseController<T, D, F> {
             return R.ok(f);
         } catch (Exception ex) {
             log.error("获取表单异常", ex);
-            return R.failed(ex.getCause().getMessage());
+            return R.failed(ExceptionUtils.getMessage(ex));
         }
     }
 
@@ -169,7 +170,7 @@ public class BaseController<T, D, F> {
             return R.ok(f);
         } catch (Exception ex) {
             log.error("save异常", ex);
-            return R.failed(ex.getCause().getMessage());
+            return R.failed(ExceptionUtils.getMessage(ex));
         }
     }
 
