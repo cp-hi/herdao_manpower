@@ -39,6 +39,9 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         StringBuffer buffer = new StringBuffer();
         chkParent(postSeq.getParentId(), buffer);
         super.saveVerify(postSeq, buffer);
+        PostSeq parent = baseMapper.selectById(postSeq.getParentId());
+        if (null != parent && !postSeq.getGroupId().equals(parent.getGroupId()))
+            buffer.append("；“" + postSeq.getPostSeqName() + "”与父序列“" + parent.getPostSeqName() + "”不在同一个集团");
         throwErrMsg(buffer);
     }
 
@@ -104,16 +107,16 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
 
     @Override
     public List<PostSeqTree> getTree(Long groupId, Long parentId, Boolean lazy) {
-        Long parent = parentId==null?-1l:parentId;
-        if(lazy!=null&&lazy){
-            if(parentId==null){
+        Long parent = parentId == null ? -1l : parentId;
+        if (lazy != null && lazy) {
+            if (parentId == null) {
                 return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId)
-                        .isNull(PostSeq::getParentId)).stream().map(PostSeqTree::new).collect(Collectors.toList()),parent);
+                        .isNull(PostSeq::getParentId)).stream().map(PostSeqTree::new).collect(Collectors.toList()), parent);
             }
             return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId)
-                    .eq(PostSeq::getParentId,parentId)).stream().map(PostSeqTree::new).collect(Collectors.toList()),parent);
+                    .eq(PostSeq::getParentId, parentId)).stream().map(PostSeqTree::new).collect(Collectors.toList()), parent);
         }
         return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId))
-                .stream().map(PostSeqTree::new).collect(Collectors.toList()),parent);
+                .stream().map(PostSeqTree::new).collect(Collectors.toList()), parent);
     }
 }
