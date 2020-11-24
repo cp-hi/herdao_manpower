@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
  * @author Andy
  * @date 2020-11-23 14:46:40
  */
-public interface RecruitmentService extends IService<Recruitment> {
+public interface RecruitmentService extends HdpService<Recruitment> {
     /**
      * 人才表分页
      * @param page 分页对象

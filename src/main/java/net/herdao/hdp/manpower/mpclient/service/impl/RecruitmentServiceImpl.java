@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -29,6 +30,7 @@ import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 人才表
@@ -70,5 +72,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
 
         return false;
+    }
+
+    @Override
+    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
+        return null;
     }
 }
