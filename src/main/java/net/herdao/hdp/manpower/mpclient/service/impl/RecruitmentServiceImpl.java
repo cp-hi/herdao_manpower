@@ -21,11 +21,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.stereotype.Service;
 
@@ -41,37 +39,19 @@ import java.util.List;
 @Service
 public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recruitment> implements RecruitmentService {
     @Override
-    public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, RecruitmentDTO recruitmentDTO, String searchText) {
-        Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, recruitmentDTO, searchText);
+    public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
+        Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText);
         return list;
     }
 
     @Override
-    @OperationEntity(operation = "新增、修改人才库", clazz = Organization.class)
-    public boolean saveOrUpdate(Recruitment recruitment) {
-        boolean status =false;
-        if (null != recruitment){
-            SysUser sysUser = SysUserUtils.getSysUser();
-
-            //新增
-            if (null == recruitment.getId()){
-                recruitment.setCreatorTime(LocalDateTime.now());
-                recruitment.setCreatorCode(sysUser.getUsername());
-                recruitment.setCreatorName(sysUser.getAliasName());
-                status = super.save(recruitment);
-            }
-
-            //修改
-            if (null != recruitment.getId()){
-                recruitment.setModifierTime(LocalDateTime.now());
-                recruitment.setModifierCode(sysUser.getUsername());
-                recruitment.setModifierName(sysUser.getAliasName());
-                status = super.updateById(recruitment);
-            }
-        }
-
-
-        return false;
+    public Recruitment updateRecruitment(Recruitment recruitment) {
+        SysUser sysUser = SysUserUtils.getSysUser();
+        recruitment.setModifierTime(LocalDateTime.now());
+        recruitment.setModifierCode(sysUser.getUsername());
+        recruitment.setModifierName(sysUser.getAliasName());
+        super.updateById(recruitment);
+        return recruitment;
     }
 
     @Override

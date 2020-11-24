@@ -40,6 +40,6 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param searchText 关键字
      * @return
      */
-    Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, @Param("query") RecruitmentDTO recruitmentDTO, @Param("searchText") String searchText);
+    Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
 
 }

@@ -1,17 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.controller;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,99 +30,60 @@ public class RecruitmentController extends HdpBaseController {
     }
 
     /**
-     * 分页查询
-     * @param page 分页对象
-     * @param recruitment 人才表
-     * @return
-     */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
-    public R getRecruitmentPage(Page page, Recruitment recruitment) {
-        return R.ok(recruitmentService.page(page, Wrappers.query(recruitment)));
-    }
-
-
-    /**
-     * 通过id查询人才表
-     * @param id id
+     * 快速编辑
+     * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "通过id查询人才表", notes = "通过id查询人才表")
+    @ApiOperation(value = "快速编辑", notes = "快速编辑")
     @GetMapping("/{id}" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
-    public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(recruitmentService.getById(id));
+    public R<Recruitment> getById(@PathVariable("id" ) Long id) {
+        Recruitment recruitment = recruitmentService.getById(id);
+        return R.ok(recruitment);
     }
 
     /**
-     * 新增或更新人才表
+     * 修改更新人才表
      * @param recruitment 人才表
      * @return R
      */
-    @ApiOperation(value = "新增或更新人才表", notes = "新增或更新人才表")
+    @ApiOperation(value = "修改更新人才表", notes = "修改更新人才表")
     @PostMapping
     @ApiImplicitParams({
-         @ApiImplicitParam(name="id",value="主键id"),
-         @ApiImplicitParam(name="talentName",value="姓名"),
-         @ApiImplicitParam(name="mobile",value="手机号码"),
+         @ApiImplicitParam(name="id",value="id",required = true),
+         @ApiImplicitParam(name="talentName",value="姓名",required = true),
+         @ApiImplicitParam(name="mobile",value="手机号码",required = true),
          @ApiImplicitParam(name="talentType",value="人才类别"),
          @ApiImplicitParam(name="email",value="个人邮箱"),
          @ApiImplicitParam(name="birthday",value="出生年月日"),
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_add')" )
-    public R saveOrUpdate(@RequestBody Recruitment recruitment) {
-        recruitmentService.saveOrUpdate(recruitment);
-        return R.ok();
+    public R<Recruitment> update(@RequestBody Recruitment recruitment) {
+        recruitment = recruitmentService.updateRecruitment(recruitment);
+        return R.ok(recruitment);
     }
 
     /**
-     * 修改人才表
-     * @param recruitment 人才表
-     * @return R
-     */
-    @ApiOperation(value = "修改人才表", notes = "修改人才表")
-    @SysLog("修改人才表" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('mpclient_recruitment_edit')" )
-    public R updateById(@RequestBody Recruitment recruitment) {
-        return R.ok(recruitmentService.updateById(recruitment));
-    }
-
-    /**
-     * 通过id删除人才表
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除人才表", notes = "通过id删除人才表")
-    @SysLog("通过id删除人才表" )
-    @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_recruitment_del')" )
-    public R removeById(@PathVariable Long id) {
-        return R.ok(recruitmentService.removeById(id));
-    }
-
-
-    /**
-     * 人才表分页
+     * 人才库列表
      * @param page 分页对象
-     * @param searchText
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
      * @return
      */
-    @ApiOperation(value = "人才表分页", notes = "人才表分页")
+    @ApiOperation(value = "人才库列表", notes = "人才库列表")
     @GetMapping("/findRecruitmentPage")
     @ApiImplicitParams({
-         @ApiImplicitParam(name="page",value="分页对象"),
-         @ApiImplicitParam(name="recruitmentDTO",value="人才表DTO"),
+         @ApiImplicitParam(name="page",value="分页对象",required = true),
+         @ApiImplicitParam(name="orgId",value="组织ID"),
          @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findRecruitmentPage(Page page, RecruitmentDTO recruitmentDTO, String searchText) {
-        Page pageResult = recruitmentService.findRecruitmentPage(page, recruitmentDTO, searchText);
-        return R.ok(pageResult);
+    public R<Page<RecruitmentDTO>> findRecruitmentPage(Page page, String orgId, String searchText) {
+        Page recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
+        return R.ok(recruitmentPage);
     }
 
 

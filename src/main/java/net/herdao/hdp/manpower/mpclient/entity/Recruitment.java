@@ -87,7 +87,6 @@ private static final long serialVersionUID = 1L;
     /**
      * 出生日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="出生日期")
     private Date birthday;
     /**
