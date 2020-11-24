@@ -25,6 +25,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormVO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Organization;
@@ -54,9 +55,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public R<RecruitmentUpdateFormVO> updateRecruitment(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
-        Recruitment recruitment=new Recruitment();
-        BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
-
         //校检手机号码
         if (checkMobile(recruitmentUpdateFormVO)){
             return R.failed("当前手机号码已被占用，请重新检查手机号码!");
@@ -72,6 +70,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             return R.failed("当前个人邮箱已被占用，请重新检查手机号码!");
         }
 
+        Recruitment recruitment=new Recruitment();
+        BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
+
         SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
@@ -80,6 +81,34 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
         return R.ok(recruitmentUpdateFormVO,"快速编辑-保存成功");
+    }
+
+    @Override
+    public R<RecruitmentAddFormVO> saveRecruitment(RecruitmentAddFormVO recruitmentAddFormVO) {
+        RecruitmentUpdateFormVO updateFormVO=new RecruitmentUpdateFormVO();
+        BeanUtils.copyProperties(recruitmentAddFormVO,updateFormVO);
+
+        //校检手机号码
+        if (checkMobile(updateFormVO)){
+            return R.failed("当前手机号码已被占用，请重新检查手机号码!");
+        }
+
+        //校检姓名+手机号码
+        if (checkTalentNameAndMobile(updateFormVO)){
+            return R.failed("候选人已存在!");
+        }
+
+        Recruitment recruitment=new Recruitment();
+        BeanUtils.copyProperties(recruitmentAddFormVO,recruitment);
+
+        SysUser sysUser = SysUserUtils.getSysUser();
+        recruitment.setCreatorTime(LocalDateTime.now());
+        recruitment.setCreatorCode(sysUser.getUsername());
+        recruitment.setCreatorName(sysUser.getAliasName());
+        super.save(recruitment);
+
+        BeanUtils.copyProperties(recruitment, recruitmentAddFormVO);
+        return R.ok(recruitmentAddFormVO,"新增候选人成功");
     }
 
     /**

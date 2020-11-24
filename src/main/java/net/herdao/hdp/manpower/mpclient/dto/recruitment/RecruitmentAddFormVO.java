@@ -25,6 +25,11 @@ public class RecruitmentAddFormVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
+    @ApiModelProperty(value="id")
+    private Long id;
 
     /**
      * "姓名"
@@ -74,7 +79,7 @@ public class RecruitmentAddFormVO implements Serializable {
     private String finalJobCompany;
 
     /**
-     * 最近职位
+     * 最近从事岗位
      */
     @ApiModelProperty(value="最近从事岗位")
     private String finalPostName;

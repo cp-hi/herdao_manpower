@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 /**
  * 人才表
  *
@@ -69,7 +68,8 @@ public class RecruitmentController extends HdpBaseController {
     @ApiOperation(value = "新增候选人-保存", notes = "新增候选人-保存")
     @PostMapping("/save")
     public R<RecruitmentAddFormVO> save(@Validated @RequestBody RecruitmentAddFormVO recruitmentAddFormVO) {
-        return null;
+        R<RecruitmentAddFormVO> result = recruitmentService.saveRecruitment(recruitmentAddFormVO);
+        return result;
     }
 
     /**
@@ -104,7 +104,6 @@ public class RecruitmentController extends HdpBaseController {
         return R.ok(recruitmentService.removeById(id));
     }
 
-
     /**
      * 批量邀请更新简历
      * @param page 分页对象
@@ -115,9 +114,9 @@ public class RecruitmentController extends HdpBaseController {
     @ApiOperation(value = "批量邀请更新简历", notes = "批量邀请更新简历")
     @GetMapping("/batchInvite")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="page",value="分页对象",required = true),
-            @ApiImplicitParam(name="orgId",value="组织ID"),
-            @ApiImplicitParam(name="searchText",value="关键字搜索"),
+        @ApiImplicitParam(name="page",value="分页对象",required = true),
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R<Page<RecruitmentDTO>> batchInvite(Page page, String orgId, String searchText) {
