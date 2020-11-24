@@ -25,7 +25,6 @@ public class RecruitmentDTO implements Serializable {
     /**
      * id
      */
-    @TableId
     @ApiModelProperty(value="id")
     @ExcelIgnore
     private Long id;

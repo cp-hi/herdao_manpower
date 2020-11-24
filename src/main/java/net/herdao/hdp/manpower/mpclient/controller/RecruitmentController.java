@@ -69,7 +69,8 @@ public class RecruitmentController extends HdpBaseController {
     @ApiOperation(value = "新增候选人-保存", notes = "新增候选人-保存")
     @PostMapping("/save")
     public R<RecruitmentAddFormVO> save(@Validated @RequestBody RecruitmentAddFormVO recruitmentAddFormVO) {
-        return null;
+        R<RecruitmentAddFormVO> result = recruitmentService.saveRecruitment(recruitmentAddFormVO);
+        return result;
     }
 
     /**
