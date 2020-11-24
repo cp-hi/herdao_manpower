@@ -21,10 +21,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,13 +47,16 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public Recruitment updateRecruitment(Recruitment recruitment) {
+    public RecruitmentFormVO updateRecruitment(RecruitmentFormVO recruitmentFormVO) {
+        Recruitment recruitment=new Recruitment();
+        BeanUtils.copyProperties(recruitmentFormVO,recruitment);
         SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
         recruitment.setModifierName(sysUser.getAliasName());
         super.updateById(recruitment);
-        return recruitment;
+        BeanUtils.copyProperties(recruitment,recruitmentFormVO);
+        return recruitmentFormVO;
     }
 
     @Override

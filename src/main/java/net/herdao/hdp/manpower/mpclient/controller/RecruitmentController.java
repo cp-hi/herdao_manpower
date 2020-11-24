@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
@@ -51,19 +52,11 @@ public class RecruitmentController extends HdpBaseController {
      * @return R
      */
     @ApiOperation(value = "修改更新人才表", notes = "修改更新人才表")
-    @PostMapping
-    @ApiImplicitParams({
-         @ApiImplicitParam(name="id",value="id",required = true),
-         @ApiImplicitParam(name="talentName",value="姓名",required = true),
-         @ApiImplicitParam(name="mobile",value="手机号码",required = true),
-         @ApiImplicitParam(name="talentType",value="人才类别"),
-         @ApiImplicitParam(name="email",value="个人邮箱"),
-         @ApiImplicitParam(name="birthday",value="出生年月日"),
-    })
+    @PostMapping("/update")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_add')" )
-    public R<Recruitment> update(@RequestBody Recruitment recruitment) {
-        recruitment = recruitmentService.updateRecruitment(recruitment);
-        return R.ok(recruitment);
+    public R<RecruitmentFormVO> update(@RequestBody RecruitmentFormVO recruitmentFormVO) {
+        recruitmentFormVO = recruitmentService.updateRecruitment(recruitmentFormVO);
+        return R.ok(recruitmentFormVO);
     }
 
     /**
