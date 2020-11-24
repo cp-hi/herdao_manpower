@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper">
+
+            <resultMap id="recruitmentMap" type="net.herdao.hdp.manpower.mpclient.entity.Recruitment">
+                        <id property="id" column="id"/>
+                        <result property="talentType" column="talent_type"/>
+                        <result property="fromType" column="from_type"/>
+                        <result property="talentName" column="talent_name"/>
+                        <result property="engshName" column="engsh_name"/>
+                        <result property="recruitmentPostId" column="recruitment_post_id"/>
+                        <result property="recruitmentPostOid" column="recruitment_post_oid"/>
+                        <result property="sex" column="sex"/>
+                        <result property="birthday" column="birthday"/>
+                        <result property="mobile" column="mobile"/>
+                        <result property="email" column="email"/>
+                        <result property="graduated" column="graduated"/>
+                        <result property="professional" column="professional"/>
+                        <result property="beginDate" column="begin_date"/>
+                        <result property="endDate" column="end_date"/>
+                        <result property="highestDiplomano" column="highest_diplomano"/>
+                        <result property="highestEducation" column="highest_education"/>
+                        <result property="educationDegree" column="education_degree"/>
+                        <result property="learnForm" column="learn_form"/>
+                        <result property="title" column="title"/>
+                        <result property="assessmentUnit" column="assessment_unit"/>
+                        <result property="professionalQualifications" column="professional_qualifications"/>
+                        <result property="qualificationUnit" column="qualification_unit"/>
+                        <result property="workdate" column="workdate"/>
+                        <result property="finalJobCompany" column="final_job_company"/>
+                        <result property="finalPostName" column="final_post_name"/>
+                        <result property="personRemark" column="person_remark"/>
+                        <result property="inductionTime" column="induction_time"/>
+                        <result property="isResume" column="is_resume"/>
+                        <result property="informationCreateTime" column="information_create_time"/>
+                        <result property="remark" column="remark"/>
+                        <result property="resumePath" column="resume_path"/>
+                        <result property="birthplace" column="birthplace"/>
+                        <result property="nation" column="nation"/>
+                        <result property="maritalStatus" column="marital_status"/>
+                        <result property="fertility" column="fertility"/>
+                        <result property="healthStatus" column="health_status"/>
+                        <result property="height" column="height"/>
+                        <result property="weight" column="weight"/>
+                        <result property="politicalLandscape" column="political_landscape"/>
+                        <result property="nowAddress" column="now_address"/>
+                        <result property="zipcode" column="zipcode"/>
+                        <result property="accountAddress" column="account_address"/>
+                        <result property="accountType" column="account_type"/>
+                        <result property="idnumber" column="idnumber"/>
+                        <result property="homePhone" column="home_phone"/>
+                        <result property="emergencyContacts" column="emergency_contacts"/>
+                        <result property="emergencyPhone" column="emergency_phone"/>
+                        <result property="interests" column="interests"/>
+                        <result property="specialty" column="specialty"/>
+                        <result property="characteristics" column="characteristics"/>
+                        <result property="resources" column="resources"/>
+                        <result property="advantage" column="advantage"/>
+                        <result property="shortcoming" column="shortcoming"/>
+                        <result property="professionalExperience" column="professional_experience"/>
+                        <result property="managementExperience" column="management_experience"/>
+                        <result property="realEstateExperience" column="real_estate_experience"/>
+                        <result property="writingAbility" column="writing_ability"/>
+                        <result property="professionalCompetence" column="professional_competence"/>
+                        <result property="management" column="management"/>
+                        <result property="foreignLanguages" column="foreign_languages"/>
+                        <result property="computerProficiency" column="computer_proficiency"/>
+                        <result property="minimumLevelincome" column="minimum_levelIncome"/>
+                        <result property="expectedLevelincome" column="expected_levelIncome"/>
+                        <result property="otherRequest" column="other_request"/>
+                        <result property="careerPlanning" column="career_planning"/>
+                        <result property="isRelativeCompany" column="is_relative_company"/>
+                        <result property="relativePostName" column="relative_post_name"/>
+                        <result property="isAcceptAssignment" column="is_accept_assignment"/>
+                        <result property="acceptAssignmentLocation" column="accept_assignment_location"/>
+                        <result property="creatorCode" column="creator_code"/>
+                        <result property="creatorName" column="creator_name"/>
+                        <result property="creatorTime" column="creator_time"/>
+                        <result property="modifierCode" column="modifier_code"/>
+                        <result property="modifierName" column="modifier_name"/>
+                        <result property="modifierTime" column="modifier_time"/>
+                        <result property="qualification" column="qualification"/>
+                        <result property="address" column="address"/>
+                        <result property="orgOid" column="org_oid"/>
+                        <result property="orgId" column="org_id"/>
+                        <result property="recruitJobName" column="recruit_job_name"/>
+                        <result property="oid" column="oid"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="field6" column="FIELD6"/>
+                        <result property="field7" column="FIELD7"/>
+                        <result property="field8" column="FIELD8"/>
+                        <result property="field9" column="FIELD9"/>
+                        <result property="field10" column="FIELD10"/>
+                        <result property="field11" column="FIELD11"/>
+                        <result property="field12" column="FIELD12"/>
+                        <result property="field13" column="FIELD13"/>
+                        <result property="field14" column="FIELD14"/>
+                        <result property="field15" column="FIELD15"/>
+                        <result property="field16" column="FIELD16"/>
+                        <result property="field17" column="FIELD17"/>
+                        <result property="field18" column="FIELD18"/>
+                        <result property="field19" column="FIELD19"/>
+                        <result property="field20" column="FIELD20"/>
+                        <result property="recruitStatus" column="recruit_status"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+            </resultMap>
+
+    <!-- 人才表分页-->
+    <select id="findRecruitmentPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO">
+      select * from (
+             SELECT  t.id,
+                     t.talent_name,
+                     t.mobile,
+                     t.email,
+                     t.sex_label sex,
+                     t.age,
+                     t.work_age ,
+                     t.highest_education,
+                     t.final_job_company,
+                     t.final_post_name,
+                     t.talent_label,
+                     GROUP_CONCAT(t.rc_label) rc_label,
+                     CONCAT("已邀请",t.invite_count,"次") invite_situation,
+                     t.update_desc
+            from  (
+                SELECT
+                rec.id,
+                rec.talent_name,
+                rec.mobile,
+                rec.email,
+                rec.sex sex_id,
+                disex.label sex_label,
+                TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
+                TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
+                rec.highest_education,
+                rec.final_job_company,
+                rec.final_post_name,
+                rec.talent_type talent_type,
+                dirc.label talent_label,
+                rl.`name` rc_label,
+                invr.invite_count,
+                CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
+             FROM
+                mp_recruitment rec
+                left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
+                left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
+                left join mp_recruitment_label rl on rl.recruitment_id= rec.id
+                left join
+                 (
+                     SELECT
+                        inv.recruitment_id,
+                        count( inv.recruitment_id ) invite_count
+                        FROM  mp_recruitment_invite inv GROUP BY recruitment_id
+                 ) invr on  rec.id = invr.recruitment_id
+                  <where>
+                            and rec.del_flag = 0
+                        <if test="orgId != null and orgId != '' ">
+                            and rec.org_id= #{query.orgId}
+                        </if>
+                  </where>
+            ) t
+            GROUP BY  t.id, t.talent_name
+       )t
+         <where>
+            <if test="searchText != null and searchText != '' ">
+                and CONCAT(
+                    IFNULL(t.talent_name,''),
+                    IFNULL(t.mobile,''),
+                    IFNULL(t.email,''),
+                    IFNULL(t.sex,''),
+                    IFNULL(t.age,''),
+                    IFNULL(t.work_age,''),
+                    IFNULL(t.highest_education,''),
+                    IFNULL(t.final_job_company,''),
+                    IFNULL(t.final_post_name,''),
+                    IFNULL(t.talent_label,''),
+                    IFNULL(t.rc_label,'') ,
+                    IFNULL(t.invite_situation,''),
+                    IFNULL(t.update_desc,'')
+                 )  LIKE concat('%', #{searchText} ,'%')
+            </if>
+        </where>
+    </select>
+</mapper>
