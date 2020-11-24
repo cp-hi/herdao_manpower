@@ -20,7 +20,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/staff/transfer" )
-@Api(value = "staffTransferApprove", tags = "员工异动管理-人事调动")
+@Api(value = "staffTransfer", tags = "员工异动管理-人事调动")
 public class StaffTransferController {
 
     @ApiOperation(value = "分页列表")

@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo.staff.transfer;
+package net.herdao.hdp.manpower.mpclient.vo.staff.call.in;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,11 +8,11 @@ import java.util.List;
 
 /**
  * @Author Liu Chang
- * @Date 2020/11/24 10:55 上午
+ * @Date 2020/11/24 5:59 下午
  */
 @Data
-@ApiModel(value = "人事调动详情页")
-public class StaffTransferInfoVO {
+@ApiModel(value = "调入详情页")
+public class StaffCallInInfoVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
 
@@ -22,38 +22,20 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "调动前部门 id", name = "nowOrgId", example = "1234")
     private Long nowOrgId;
 
-    @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
-    private String nowOrgName;
-
     @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345")
     private Long nowPostId;
-
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
 
     @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123")
     private Long nowJobLevelId;
 
-    @ApiModelProperty(value = "原职级名称", name = "jobLevelName", example = "M3-6")
-    private String nowJobLevelName;
-
     @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321")
     private Long transOrgId;
-
-    @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
-    private String transOrgName;
 
     @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432")
     private Long transPostId;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
-
     @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123")
     private Long transJobLevelId;
-
-    @ApiModelProperty(value = "调动后好职级名称", name = "jobLevelName", example = "M3-6")
-    private String transJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
@@ -66,9 +48,6 @@ public class StaffTransferInfoVO {
 
     @ApiModelProperty(value = "已到岗人数", name = "postHasCount", example = "5")
     private Integer postHasCount;
-
-    @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
-    private Boolean prepareChange;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;

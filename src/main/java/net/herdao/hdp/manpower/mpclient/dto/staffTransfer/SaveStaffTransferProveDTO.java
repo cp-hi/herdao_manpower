@@ -10,26 +10,20 @@ import lombok.Data;
  */
 
 @Data
-@ApiModel(value = "人事调动执行")
+@ApiModel(value = "保存人事调动执行")
 public class SaveStaffTransferProveDTO {
     private Long id;
 
-    /**
-     * TODO:: 字段类型和字段名称待确认
-     */
+    @ApiModelProperty(value = "执行类型", name = "executeType")
     private String executeType;
 
-    /**
-     * TODO:: 字段类型和字段名称待确认
-     */
-    private String releaseNote;
+    @ApiModelProperty(value = "是否发送通知", name = "releaseNote")
+    private Boolean releaseNote;
 
     @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
     private Long entryTime;
 
-    /**
-     * TODO:: 字段类型和字段名称待确认
-     */
+    @ApiModelProperty(value = "社保类型", name = "securityType", example = "20201003")
     private String securityType;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitsId")

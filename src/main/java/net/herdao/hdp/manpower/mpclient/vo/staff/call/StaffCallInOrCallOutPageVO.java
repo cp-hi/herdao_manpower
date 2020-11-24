@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo.staff.transfer;
+package net.herdao.hdp.manpower.mpclient.vo.staff.call;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,12 +6,12 @@ import lombok.Data;
 
 /**
  * @Author Liu Chang
- * @Date 2020/11/23 6:04 下午
+ * @Date 2020/11/24 5:45 下午
  */
 
 @Data
-@ApiModel(value = "人事调动分页")
-public class StaffTransferPageVO {
+@ApiModel(value = "调入调出分页列表")
+public class StaffCallInOrCallOutPageVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
 
@@ -38,6 +38,15 @@ public class StaffTransferPageVO {
 
     @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
     private String transPostName;
+
+    /**
+     * TODO:: 数据类型和字段名待修改
+     */
+    @ApiModelProperty(value = "职级变化：升职/降职", name = "levelChange")
+    private String levelChange;
+
+    @ApiModelProperty(value = "调动后职级名称", name = "transJobLevelName", example = "123")
+    private String transJobLevelName;
 
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
     private String updateInfo;
