@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/staff/level-change" )
 @Api(value = "staffLevelChange", tags = "员工异动管理-职级升降")
-public class StaffLevelChangeController {
+public class StaffChangeLevelController {
 }
