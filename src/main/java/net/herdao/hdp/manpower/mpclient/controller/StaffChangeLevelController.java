@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 public class StaffChangeLevelController {
 
     @ApiOperation(value = "分页列表")
-    @GetMapping("/page" )
+    @GetMapping("/page")
     public R<Page<StaffChangeLevelPageVO>> pageStaffChangeLevel(String searchText,
                                                                 Page page,
                                                                 Long orgId,
@@ -44,7 +44,7 @@ public class StaffChangeLevelController {
     }
 
     @ApiOperation(value = "分页列表-删除")
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public R deleteStaffChangeLevel(@PathVariable("id") Long id) {
         return null;
     }

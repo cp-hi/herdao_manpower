@@ -55,7 +55,7 @@ public class StaffTransferController {
     }
 
     @ApiOperation(value = "分页列表-删除")
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public R deleteStaffTransfer(@PathVariable("id") Long id) {
         return null;
     }
