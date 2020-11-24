@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.controller.staff.change;
+package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -37,28 +37,24 @@ public class StaffTransferController {
      * @return
      */
     @ApiOperation(value = "分页列表-流程详情")
-    @GetMapping("/page" )
-    public R getProcessDetail() {
+    @GetMapping("/process/{id}" )
+    public R getProcessDetail(@RequestParam("id") Long id) {
 
         return null;
     }
+
     /**
      * "确认发起" 对接第三方 TODO:: 待讨论
      * @return
      */
     @ApiOperation(value = "分页列表-确认发起")
-    @GetMapping("/affirm")
-    public R affirmStaffTransfer() {
+    @GetMapping("/affirm/{id}")
+    public R affirmStaffTransfer(@RequestParam("id") Long id) {
         return null;
     }
 
-    /**
-     * TODO:: 待确认是 id 还是 userId
-     * @param id
-     * @return
-     */
-    @ApiOperation(value = "分页列表-确认发起")
-    @DeleteMapping("/affirm/{id}")
+    @ApiOperation(value = "分页列表-删除")
+    @DeleteMapping
     public R deleteStaffTransfer(@PathVariable("id") Long id) {
         return null;
     }
@@ -81,18 +77,15 @@ public class StaffTransferController {
         return null;
     }
 
-    @ApiOperation(value = "获取执行调动")
-    @GetMapping("/approve/{id}")
+    @ApiOperation(value = "获取执行调动信息")
+    @GetMapping("/execution/{id}")
     public R<StaffTransferApproveVO> getStaffTransferProveInfo(@PathVariable("id") Long id) {
         return null;
     }
 
-    @ApiOperation(value = "人事调动-执行调动")
-    @PutMapping("/approve/{id}")
+    @ApiOperation(value = "确认执行")
+    @PutMapping("/execution/{id}")
     public R executeStaffTransferProve(@RequestBody(required = true) SaveStaffTransferProveDTO dto) {
         return null;
     }
-
-
-
 }
