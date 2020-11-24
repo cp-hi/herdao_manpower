@@ -79,7 +79,7 @@ public class RecruitmentController extends HdpBaseController {
      * @param searchText 关键字搜索
      * @return
      */
-    @ApiOperation(value = "人才库列表;批量新增候选人", notes = "人才库列表;批量新增候选人")
+    @ApiOperation(value = "人才库列表;批量邀请更新简历信息", notes = "人才库列表;批量邀请更新简历信息")
     @GetMapping("/findRecruitmentPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="page",value="分页对象",required = true),
