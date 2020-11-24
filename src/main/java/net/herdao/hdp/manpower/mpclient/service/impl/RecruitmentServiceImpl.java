@@ -88,6 +88,11 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         RecruitmentUpdateFormVO updateFormVO=new RecruitmentUpdateFormVO();
         BeanUtils.copyProperties(recruitmentAddFormVO,updateFormVO);
 
+        //校检手机号码
+        if (checkMobile(updateFormVO)){
+            return R.failed("当前手机号码已被占用，请重新检查手机号码!");
+        }
+
         //校检姓名+手机号码
         if (checkTalentNameAndMobile(updateFormVO)){
             return R.failed("候选人已存在!");
