@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormVO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -61,6 +62,17 @@ public class RecruitmentController extends HdpBaseController {
     }
 
     /**
+     * 新增候选人-保存
+     * @param recruitmentAddFormVO 人才表
+     * @return R
+     */
+    @ApiOperation(value = "新增候选人-保存", notes = "新增候选人-保存")
+    @PostMapping("/save")
+    public R<RecruitmentAddFormVO> save(@Validated @RequestBody RecruitmentAddFormVO recruitmentAddFormVO) {
+        return null;
+    }
+
+    /**
      * 人才库列表
      * @param page 分页对象
      * @param orgId 组织ID
@@ -80,5 +92,37 @@ public class RecruitmentController extends HdpBaseController {
         return R.ok(recruitmentPage);
     }
 
+    /**
+     * 删除候选人
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "删除候选人", notes = "删除候选人")
+    @DeleteMapping("/{id}" )
+    @ApiImplicitParam(name = "id",value = "主键ID",required = true)
+    public R removeById(@PathVariable Long id) {
+        return R.ok(recruitmentService.removeById(id));
+    }
+
+
+    /**
+     * 批量邀请更新简历
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
+     * @return
+     */
+    @ApiOperation(value = "批量邀请更新简历", notes = "批量邀请更新简历")
+    @GetMapping("/batchInvite")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="page",value="分页对象",required = true),
+            @ApiImplicitParam(name="orgId",value="组织ID"),
+            @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
+    public R<Page<RecruitmentDTO>> batchInvite(Page page, String orgId, String searchText) {
+        Page recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
+        return R.ok(recruitmentPage);
+    }
 
 }
