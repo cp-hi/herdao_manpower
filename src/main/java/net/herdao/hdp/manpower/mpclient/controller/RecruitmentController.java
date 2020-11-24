@@ -79,7 +79,7 @@ public class RecruitmentController extends HdpBaseController {
      * @param searchText 关键字搜索
      * @return
      */
-    @ApiOperation(value = "人才库列表", notes = "人才库列表")
+    @ApiOperation(value = "人才库列表;批量新增候选人", notes = "人才库列表;批量新增候选人")
     @GetMapping("/findRecruitmentPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="page",value="分页对象",required = true),
@@ -104,24 +104,6 @@ public class RecruitmentController extends HdpBaseController {
         return R.ok(recruitmentService.removeById(id));
     }
 
-    /**
-     * 批量邀请更新简历
-     * @param page 分页对象
-     * @param orgId 组织ID
-     * @param searchText 关键字搜索
-     * @return
-     */
-    @ApiOperation(value = "批量邀请更新简历", notes = "批量邀请更新简历")
-    @GetMapping("/batchInvite")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="page",value="分页对象",required = true),
-        @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="searchText",value="关键字搜索"),
-    })
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R<Page<RecruitmentDTO>> batchInvite(Page page, String orgId, String searchText) {
-        Page recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
-        return R.ok(recruitmentPage);
-    }
+
 
 }
