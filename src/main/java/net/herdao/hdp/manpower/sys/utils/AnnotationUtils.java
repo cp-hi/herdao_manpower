@@ -73,11 +73,27 @@ public class AnnotationUtils {
         }
         List<String> exclude = Arrays.asList(excludeColumn);
         fieldList = fieldList.stream().filter(f ->
-                exclude.contains(f.getName())).collect(Collectors.toList());
+                !exclude.contains(f.getName())).collect(Collectors.toList());
         Field[] fields = new Field[fieldList.size()];
         fieldList.toArray(fields);
         return fields;
     }
+
+
+    /**
+     * 获取所有字段名
+     * @param clazz 类
+     * @param excludeColumn 要排除的字段
+     * @return
+     */
+    public static List<String> getAllFieldNames(Class clazz, String... excludeColumn) {
+        List<Field> fields = Arrays.asList(getAllFields(clazz, excludeColumn));
+        List<String> exclude = Arrays.asList(excludeColumn);
+        List<String> fieldNames = fields.stream().map(Field::getName).filter(
+                n -> !exclude.contains(n)).collect(Collectors.toList());
+        return fieldNames;
+    }
+
 
     public static Field getFieldByName(Object source, String fieldName) {
         Field[] fields = getAllFields(source);

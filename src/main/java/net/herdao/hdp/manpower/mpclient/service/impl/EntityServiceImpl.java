@@ -14,7 +14,6 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
@@ -29,9 +28,7 @@ import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -73,7 +70,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         log.setOperation(operation);
         log.setOperatorId(sysUser.getUserId());
         log.setOperator(sysUser.getUsername());
-        log.setContent(operation + "了" + getEntityName() + ":" + objName);
+        log.setContent(operation + "了" + getEntityName() + ": " + objName);
         log.setEntityClass(baseMapper.getEntityClass().getName());
         log.setOperatedTime(new Date());
         log.setObjId(objId);
@@ -91,25 +88,28 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         Equator equator = new GetterBaseEquator();
         T current = baseMapper.selectIgnoreDel(((BaseEntity) origin).getId());
         //TODO 比较字段变化及排除不需要比较字段
-        List<FieldInfo> diff = equator.getDiffFields(origin, current);
+        List<String> excludeField = AnnotationUtils.getAllFieldNames(BaseEntity.class, new String[0]);
+        List<FieldInfo> diff = equator.getDiffFields(origin, current).stream().filter(
+                f -> !excludeField.contains(f.getFieldName())).collect(Collectors.toList());
         List<String> modifyField = new ArrayList<>();
+
         for (FieldInfo f : diff) {
-            Field field = origin.getClass().getField(f.getFieldName());
+            Field field = origin.getClass().getDeclaredField(f.getFieldName());
             ApiModelProperty property = field.getAnnotation(ApiModelProperty.class);
             DtoField dtoField = field.getAnnotation(DtoField.class);
-            String tmp = null;
+            String tmp = "%s从“%s”调整为“%s”";
             if (null == dtoField) {
-                tmp = String.format("%s从%s调整为%s", property.value(), f.getFirstVal(), f.getSecondVal());
+                tmp = String.format(tmp, property.value(), f.getFirstVal(), f.getSecondVal());
             } else {
                 if (null != dtoField.entityService()) {
                     EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
                     String firstVal = service.selectEntityName((Serializable) f.getFirstVal());
                     String secondVal = service.selectEntityName((Serializable) f.getSecondVal());
-                    tmp = String.format("%s从%s调整为%s", property.value(), firstVal, secondVal);
+                    tmp = String.format(tmp, property.value(), firstVal, secondVal);
                 } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                     String firstDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
                     String secondDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
-                    tmp = String.format("%s从%s调整为%s", property.value(), firstDict, secondDict);
+                    tmp = String.format(tmp, property.value(), firstDict, secondDict);
                 }
             }
             modifyField.add(tmp);
@@ -197,9 +197,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setModifierId(Long.valueOf(sysUser.getUserId()));
             result = this.saveOrUpdate(t);
             if (result) {
-//                List<String> content = getDiffEntityContent(origin);
-//                if (content.size() > 0)
-//                    addOperationLog("编辑", entity.getId(), StringUtils.join(content, "；"));
+                List<String> content = getDiffEntityContent(origin);
+                if (content.size() > 0)
+                    addOperationLog("编辑", entity.getId(), StringUtils.join(content, "；"));
             }
         }
         return result;

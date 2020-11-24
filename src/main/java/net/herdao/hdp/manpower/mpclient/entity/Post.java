@@ -28,16 +28,13 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位")
 public class Post extends BaseEntity<Post> {
-    public Post(Long id) {
-        setId(id);
-    }
 
     @ApiModelProperty(value = "岗位编码", hidden = true)
     private String postCode;
     @ApiModelProperty(value = "岗位名称", required = true)
     private String postName;
 
-    @ApiModelProperty(value = "管线ID")
+    @ApiModelProperty(value = "管线")
     @DtoField(entityService = PipelineServiceImpl.class, targetField = "pipelineName")
     private Long pipelineId;
 
@@ -66,7 +63,7 @@ public class Post extends BaseEntity<Post> {
     private Date startDate;
     @ApiModelProperty(value = "岗位组织类型", hidden = true)
     private String orgType;
-    @ApiModelProperty(value = "板块id")
+    @ApiModelProperty(value = "板块")
     private Long sectionId;
     @ApiModelProperty(value = "岗位职责", hidden = true)
     private String postDescr;
@@ -87,7 +84,7 @@ public class Post extends BaseEntity<Post> {
     private String postClan;
     @ApiModelProperty(value = "职等名称", hidden = true)
     private String gradeName;
-    @ApiModelProperty(value = "集团ID", required = true)
+    @ApiModelProperty(value = "集团", required = true)
     private Long groupId;
 
     @ApiModelProperty(value = "是否单职级", hidden = true)
