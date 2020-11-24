@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -37,6 +38,7 @@ public class RecruitmentUpdateFormVO implements Serializable {
      * "姓名"
      */
     @ApiModelProperty(value="姓名")
+    @Length(max = 20,message = "候选人不超过20个字")
     private String talentName;
 
     /**
