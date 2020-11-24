@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName AnnotationUtils
@@ -60,15 +61,19 @@ public class AnnotationUtils {
      */
     public static Field[] getAllFields(Object object) {
         Class clazz = object.getClass();
-        return getAllFields(clazz);
+        return getAllFields(clazz, new String[0]);
     }
 
-    public static Field[] getAllFields(Class clazz) {
+
+    public static Field[] getAllFields(Class clazz, String... excludeColumn) {
         List<Field> fieldList = new ArrayList<>();
         while (clazz != null) {
             fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
             clazz = clazz.getSuperclass();
         }
+        List<String> exclude = Arrays.asList(excludeColumn);
+        fieldList = fieldList.stream().filter(f ->
+                exclude.contains(f.getName())).collect(Collectors.toList());
         Field[] fields = new Field[fieldList.size()];
         fieldList.toArray(fields);
         return fields;

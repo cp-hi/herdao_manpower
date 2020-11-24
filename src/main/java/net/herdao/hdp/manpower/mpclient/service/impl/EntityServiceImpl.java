@@ -5,17 +5,26 @@ import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.dadiyang.equator.Equator;
+import com.github.dadiyang.equator.FieldInfo;
+import com.github.dadiyang.equator.GetterBaseEquator;
 import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.annotation.FieldValid;
+import net.herdao.hdp.manpower.sys.cache.DictCache;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import net.herdao.hdp.manpower.sys.utils.ApplicationContextBeanUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -47,10 +56,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     public IPage getOperationLogs(IPage page, Long objId) {
-        QueryWrapper<OperationLog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("ENTITY_CLASS", baseMapper.getEntityClass().getName());
-        queryWrapper.eq("OBJ_ID", objId).orderBy(true, false, "operated_time");
-        return operationLogService.page(page, queryWrapper);
+        return operationLogService.page(page, Wrappers.<OperationLog>query().lambda()
+                .eq(OperationLog::getEntityClass, baseMapper.getEntityClass().getName())
+                .eq(OperationLog::getObjId, objId).orderBy(true, false, OperationLog::getOperatedTime));
     }
 
     /**
@@ -70,6 +78,43 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         log.setOperatedTime(new Date());
         log.setObjId(objId);
         operationLogService.saveOrUpdate(log);
+    }
+
+    /**
+     * 获取变更字段内容
+     *
+     * @param origin
+     * @return
+     */
+    @SneakyThrows
+    private List<String> getDiffEntityContent(T origin) {
+        Equator equator = new GetterBaseEquator();
+        T current = baseMapper.selectIgnoreDel(((BaseEntity) origin).getId());
+        //TODO 比较字段变化及排除不需要比较字段
+        List<FieldInfo> diff = equator.getDiffFields(origin, current);
+        List<String> modifyField = new ArrayList<>();
+        for (FieldInfo f : diff) {
+            Field field = origin.getClass().getField(f.getFieldName());
+            ApiModelProperty property = field.getAnnotation(ApiModelProperty.class);
+            DtoField dtoField = field.getAnnotation(DtoField.class);
+            String tmp = null;
+            if (null == dtoField) {
+                tmp = String.format("%s从%s调整为%s", property.value(), f.getFirstVal(), f.getSecondVal());
+            } else {
+                if (null != dtoField.entityService()) {
+                    EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
+                    String firstVal = service.selectEntityName((Serializable) f.getFirstVal());
+                    String secondVal = service.selectEntityName((Serializable) f.getSecondVal());
+                    tmp = String.format("%s从%s调整为%s", property.value(), firstVal, secondVal);
+                } else if (StringUtils.isNotBlank(dtoField.dictField())) {
+                    String firstDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
+                    String secondDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
+                    tmp = String.format("%s从%s调整为%s", property.value(), firstDict, secondDict);
+                }
+            }
+            modifyField.add(tmp);
+        }
+        return modifyField;
     }
 
     @Override
@@ -132,12 +177,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveEntity(T t) throws IllegalAccessException {
-        String operation = "";
         boolean result = false;
         BaseEntity entity = (BaseEntity) t;
         SysUser sysUser = SysUserUtils.getSysUser();
         if (null == entity.getId() || 0 == entity.getId()) {
-            operation = "新增";
             entity.setCreatedTime(new Date());
             entity.setCreatorName(sysUser.getUsername());
             entity.setCreatorId(Long.valueOf(sysUser.getUserId()));
@@ -145,16 +188,20 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             String entityCode = this.generateEntityCode(getEntityCode(t, 1));
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
+            if (result)
+                addOperationLog("新增", entity.getId(), getNameMapper().apply(t));
         } else {
-            operation = "编辑";
-//            T origin = baseMapper.selectIgnoreDel(entity.getId());
+            T origin = baseMapper.selectIgnoreDel(entity.getId());
             entity.setModifiedTime(new Date());
             entity.setModifierName(sysUser.getUsername());
             entity.setModifierId(Long.valueOf(sysUser.getUserId()));
             result = this.saveOrUpdate(t);
+            if (result) {
+//                List<String> content = getDiffEntityContent(origin);
+//                if (content.size() > 0)
+//                    addOperationLog("编辑", entity.getId(), StringUtils.join(content, "；"));
+            }
         }
-        if (result)
-            addOperationLog(operation, entity.getId(), getNameMapper().apply(t));
         return result;
     }
 
@@ -428,10 +475,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public List<Map<Long, String>> selectNamesByIds(List<Long> ids) {
+    public List<Map<Long, String>> selectNamesByIds(List<? extends Serializable> ids) {
         return baseMapper.selectNamesByIds(ids);
     }
-
 
     //region 批量导入时分类用 参照PostServiceImpl
     @Override

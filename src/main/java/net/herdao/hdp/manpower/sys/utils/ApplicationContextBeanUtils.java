@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.sys.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * @ClassName ApplicationContextBeanUtils
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContextAware;
  * @Date 2020/11/20 13:05
  * @Version 1.0
  */
+@Component
 public class ApplicationContextBeanUtils implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
@@ -20,17 +22,21 @@ public class ApplicationContextBeanUtils implements ApplicationContextAware {
         ApplicationContextBeanUtils.applicationContext = applicationContext;
     }
 
-    public static Object getBean(String className) throws BeansException,IllegalArgumentException {
-        if(className==null || className.length()<=0) {
+    public static Object getBean(String className) throws BeansException, IllegalArgumentException {
+        if (className == null || className.length() <= 0) {
             throw new IllegalArgumentException("className为空");
         }
 
         String beanName = null;
-        if(className.length() > 1) {
+        if (className.length() > 1) {
             beanName = className.substring(0, 1).toLowerCase() + className.substring(1);
         } else {
             beanName = className.toLowerCase();
         }
         return applicationContext != null ? applicationContext.getBean(beanName) : null;
+    }
+
+    public static <T> T getBean(Class<T> clazz) {
+        return applicationContext.getBean(clazz);
     }
 }
