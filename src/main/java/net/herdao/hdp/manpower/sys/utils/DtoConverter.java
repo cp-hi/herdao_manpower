@@ -33,15 +33,15 @@ import java.util.Map;
  * @Date 2020/10/16 8:31
  * @Version 1.0
  */
-@Component
+
 public class DtoConverter {
 
-    private static ApplicationContext applicationContext;
-
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        DtoConverter.applicationContext = applicationContext;
-    }
+//    private static ApplicationContext applicationContext;
+//
+//    @Autowired
+//    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+//        DtoConverter.applicationContext = applicationContext;
+//    }
 
     /**
      * @param source dto类
@@ -53,9 +53,9 @@ public class DtoConverter {
      * @throws ClassNotFoundException
      * @throws NoSuchFieldException
      */
-    public static <T> T dto2vo(Object source, Class<? extends T> clazz)
+    public static <T> T dto2vo(Object source, Class<? extends T> targetClazz)
             throws IllegalAccessException, InstantiationException {
-        Object target = clazz.newInstance();
+        Object target = targetClazz.newInstance();
         BeanUtils.copyProperties(source, target);
         Field[] fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
         for (Field field : fields) {
@@ -73,11 +73,12 @@ public class DtoConverter {
                 value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                 value = getDictFieldVal(source, dtoField);
-            } else if (StringUtils.isNotBlank(dtoField.pkField())) {
-                EntityService service = applicationContext.getBean(dtoField.entityService());
-                Object pkValue = AnnotationUtils.getFieldValByName(source, dtoField.pkField());
-                String name = service.selectEntityName((Serializable) pkValue);
-                value = name;
+            } else if (StringUtils.isNotBlank(dtoField.targetField())) {
+                // TODO
+//                EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
+//                Object pkValue = AnnotationUtils.getFieldValByName(source, dtoField.pkField());
+//                String name = service.selectEntityName((Serializable) pkValue);
+//                value = name;
             }
             field.set(target, value);
         }
@@ -195,6 +196,11 @@ public class DtoConverter {
     public static <T> List<T> dto2vo(List source, Class<? extends T> clzz)
             throws InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
+        if (0 == source.size()) return list;
+        Field[] fields = AnnotationUtils.getAllAnnotationFields(source.get(0), DtoField.class);
+        //TODO 先获取所有标注DtoField字段的数据存入List
+        // 再把这些名称信息全部获取并存进缓存，设置有效期
+        // 首先得设计缓存框架，包括Guava和Redis等等，缓存设计是重中之重！！！
         for (Object o : source) {
             T t = dto2vo(o, clzz);
             list.add(t);

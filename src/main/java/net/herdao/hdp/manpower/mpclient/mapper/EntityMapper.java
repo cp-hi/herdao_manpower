@@ -158,5 +158,5 @@ public interface EntityMapper<T> extends BaseMapper<T> {
 
     T getEntityByName(String name, Long groupId);
 
-    List<Map<Long,String>> selectNamesByIds(@Param("coll") List<Long> ids);
+    List<Map<Long,String>> selectNamesByIds(@Param("coll") List<? extends Serializable> ids);
 }

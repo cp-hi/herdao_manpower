@@ -7,7 +7,12 @@ import java.lang.annotation.*;
 
 /**
  * @ClassName DtoField
- * @Description 读取Dto Field的数据
+ * @Description 读取Dto Field的数据，
+ * 此注解有2种用法：
+ * 1）简单获取关联实体名称，以及字典名称，
+ *      这种情况下建议把注解打在Entity 字段上
+ * 2）以一定规则拼接的组合字段，由于规则的多样性
+ *      这种情况建议把注解打在VO类字段上
  * @Author ljan
  * @mail 122092@gdpr.com
  * @Date 2020/10/16 8:31
@@ -38,4 +43,6 @@ public @interface DtoField {
     Class<? extends EntityServiceImpl> entityService() default EntityServiceImpl.class;
 
     String pkField() default "";
+
+    String targetField() default "";
 }

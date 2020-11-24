@@ -36,7 +36,8 @@ public interface EntityService<T> extends IService<T> {
 
     IPage getOperationLogs(IPage page, Long objId);
 
-    Integer getEntityCode(T t,Integer count);
+    Integer getEntityCode(T t, Integer count);
+
     /**
      * 保存实体并自动添加日志
      *
@@ -59,7 +60,10 @@ public interface EntityService<T> extends IService<T> {
      * @param id
      * @return
      */
-    default void delVerify(Serializable id){};
+    default void delVerify(Serializable id) {
+    }
+
+    ;
 
     /**
      * 停用/启用
@@ -133,7 +137,7 @@ public interface EntityService<T> extends IService<T> {
 
     String selectEntityName(Serializable id);
 
-    List<Map<Long,String>> selectNamesByIds(List<Long> ids);
+    List<Map<Long, String>> selectNamesByIds(List<? extends Serializable> ids);
 
     //region 设置实体属性
 

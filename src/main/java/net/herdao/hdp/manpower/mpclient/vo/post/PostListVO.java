@@ -53,7 +53,7 @@ public class PostListVO {
 
     @ExcelProperty("管线")
     @ApiModelProperty("管线")
-    @DtoField(entityService = PipelineServiceImpl.class, pkField = "pipelineId")
+//    @DtoField(entityService = PipelineServiceImpl.class, pkField = "pipelineId")
     private String pipelineName1;
 
     @ExcelProperty("职等")
