@@ -48,10 +48,10 @@ public class RecruitmentController extends HdpBaseController {
 
     /**
      * 修改更新人才表
-     * @param recruitment 人才表
+     * @param recruitmentFormVO 人才表
      * @return R
      */
-    @ApiOperation(value = "修改更新人才表", notes = "修改更新人才表")
+    @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
     @PostMapping("/update")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_add')" )
     public R<RecruitmentFormVO> update(@RequestBody RecruitmentFormVO recruitmentFormVO) {
