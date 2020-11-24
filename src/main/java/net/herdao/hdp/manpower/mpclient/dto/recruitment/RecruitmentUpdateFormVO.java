@@ -8,17 +8,20 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人才表单VO
+ * 人才表单编辑VO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
 @ApiModel(value = "人才表单VO")
-public class RecruitmentFormVO implements Serializable {
+public class RecruitmentUpdateFormVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,8 +29,8 @@ public class RecruitmentFormVO implements Serializable {
      * id
      */
     @TableId
-    @ApiModelProperty(value="id")
-    @ExcelIgnore
+    @ApiModelProperty(value="id",required = true)
+    @NotNull(message = "主键ID不能为空")
     private Long id;
 
     /**
@@ -40,6 +43,7 @@ public class RecruitmentFormVO implements Serializable {
      * 手机号码
      */
     @ApiModelProperty(value="手机号码")
+    @NotBlank(message = "手机号码不能为空")
     private String mobile;
 
     /**
@@ -60,4 +64,6 @@ public class RecruitmentFormVO implements Serializable {
     @ApiModelProperty(value="出生日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
+
+
 }

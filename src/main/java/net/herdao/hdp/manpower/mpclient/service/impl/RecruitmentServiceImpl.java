@@ -16,12 +16,18 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFormVO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
@@ -47,16 +53,79 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentFormVO updateRecruitment(RecruitmentFormVO recruitmentFormVO) {
+    public R<RecruitmentUpdateFormVO> updateRecruitment(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
         Recruitment recruitment=new Recruitment();
-        BeanUtils.copyProperties(recruitmentFormVO,recruitment);
+        BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
+
+        //校检手机号码
+        if (checkMobile(recruitmentUpdateFormVO)){
+            return R.failed("当前手机号码已被占用，请重新检查手机号码!");
+        }
+
+        //校检姓名+手机号码
+        if (checkTalentNameAndMobile(recruitmentUpdateFormVO)){
+            return R.failed("候选人#姓名#已存在!");
+        }
+
+        //校检邮箱
+        if (checkEmail(recruitmentUpdateFormVO)){
+            return R.failed("当前个人邮箱已被占用，请重新检查手机号码!");
+        }
+
         SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
         recruitment.setModifierName(sysUser.getAliasName());
         super.updateById(recruitment);
-        BeanUtils.copyProperties(recruitment,recruitmentFormVO);
-        return recruitmentFormVO;
+
+        BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
+        return R.ok(recruitmentUpdateFormVO,"快速编辑-保存成功");
+    }
+
+    /**
+     * 校检手机号码
+     * @param recruitmentUpdateFormVO
+     * @return
+     */
+    private boolean checkMobile(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+        if (ObjectUtil.isNotEmpty(recruitmentUpdateFormVO.getMobile())){
+            LambdaQueryWrapper<Recruitment> queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq( Recruitment::getMobile,recruitmentUpdateFormVO.getMobile());
+            List<Recruitment> list = this.list(queryWrapper);
+            return ObjectUtil.isNotEmpty(list) && list.size() >= 2;
+        }
+        return false;
+    }
+
+    /**
+     * 校检姓名+手机号码
+     * @param recruitmentUpdateFormVO
+     * @return
+     */
+    private boolean checkTalentNameAndMobile(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+        if (ObjectUtil.isAllNotEmpty(recruitmentUpdateFormVO.getTalentName(),recruitmentUpdateFormVO.getMobile())){
+            LambdaQueryWrapper<Recruitment> queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq( Recruitment::getTalentName,recruitmentUpdateFormVO.getTalentName());
+            queryWrapper.eq( Recruitment::getMobile,recruitmentUpdateFormVO.getMobile());
+            List<Recruitment> list = this.list(queryWrapper);
+            return ObjectUtil.isNotEmpty(list) && list.size() >= 2;
+        }
+        return false;
+    }
+
+    /**
+     * 校检邮箱
+     * @param recruitmentUpdateFormVO
+     * @return
+     */
+    private boolean checkEmail(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+        if (ObjectUtil.isNotEmpty(recruitmentUpdateFormVO.getEmail())){
+            LambdaQueryWrapper<Recruitment> queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq( Recruitment::getEmail,recruitmentUpdateFormVO.getEmail());
+            List<Recruitment> list = this.list(queryWrapper);
+            return ObjectUtil.isNotEmpty(list) && list.size() >= 2;
+        }
+        return false;
     }
 
     @Override

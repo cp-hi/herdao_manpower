@@ -167,12 +167,12 @@ private static final long serialVersionUID = 1L;
     /**
      * 最近工作单位名称
      */
-    @ApiModelProperty(value="最近工作单位名称")
+    @ApiModelProperty(value="最近工作单位")
     private String finalJobCompany;
     /**
      * 最近职位
      */
-    @ApiModelProperty(value="最近职位")
+    @ApiModelProperty(value="最近从事岗位")
     private String finalPostName;
     /**
      * 其他个人情况
@@ -569,4 +569,4 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="逻辑删除")
     private Boolean delFlag;
-    }
+}

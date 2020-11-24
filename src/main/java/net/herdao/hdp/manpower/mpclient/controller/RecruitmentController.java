@@ -3,11 +3,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFormVO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -48,15 +49,15 @@ public class RecruitmentController extends HdpBaseController {
 
     /**
      * 修改更新人才表
-     * @param recruitmentFormVO 人才表
+     * @param recruitmentUpdateFormVO 人才表
      * @return R
      */
     @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
     @PostMapping("/update")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_add')" )
-    public R<RecruitmentFormVO> update(@RequestBody RecruitmentFormVO recruitmentFormVO) {
-        recruitmentFormVO = recruitmentService.updateRecruitment(recruitmentFormVO);
-        return R.ok(recruitmentFormVO);
+    public R<RecruitmentUpdateFormVO> update(@Validated @RequestBody RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+        R<RecruitmentUpdateFormVO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
+        return result;
     }
 
     /**

@@ -2,8 +2,9 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFormVO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 
 /**
@@ -24,8 +25,8 @@ public interface RecruitmentService extends HdpService<Recruitment> {
 
     /**
      * 修改更新人才表
-     * @param recruitmentFormVO 人才实体
+     * @param recruitmentUpdateFormVO 人才实体
      * @return
      */
-    RecruitmentFormVO updateRecruitment(RecruitmentFormVO recruitmentFormVO);
+    R<RecruitmentUpdateFormVO> updateRecruitment(RecruitmentUpdateFormVO recruitmentUpdateFormVO);
 }
