@@ -36,16 +36,9 @@ import java.util.Map;
 
 public class DtoConverter {
 
-//    private static ApplicationContext applicationContext;
-//
-//    @Autowired
-//    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//        DtoConverter.applicationContext = applicationContext;
-//    }
-
     /**
      * @param source dto类
-     * @param clazz  vo 类
+     * @param targetClazz  vo 类
      * @param <T>    vo 类
      * @return
      * @throws IllegalAccessException

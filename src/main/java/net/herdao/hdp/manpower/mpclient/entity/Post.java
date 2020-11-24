@@ -63,7 +63,7 @@ public class Post extends BaseEntity<Post> {
     private Date startDate;
     @ApiModelProperty(value = "岗位组织类型", hidden = true)
     private String orgType;
-    @ApiModelProperty(value = "板块id")
+    @ApiModelProperty(value = "板块")
     private Long sectionId;
     @ApiModelProperty(value = "岗位职责", hidden = true)
     private String postDescr;
