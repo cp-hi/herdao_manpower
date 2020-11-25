@@ -48,7 +48,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         if (null != group) pipeline.setGroupId(group.getId());
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         if (StringUtils.isBlank(buffer)) {
-            pipeline.setStop(DtoConverter.string2bool(excel, "stop"));
+            pipeline.setIsStop(DtoConverter.string2bool(excel, "isStop"));
             pipeline.setId(tmp.getId());
         }
     }

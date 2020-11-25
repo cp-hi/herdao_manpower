@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
@@ -490,5 +491,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
     }
     //endregion
-
+    protected <E> E checkData(R<E> r){
+        return null;
+    }
 }

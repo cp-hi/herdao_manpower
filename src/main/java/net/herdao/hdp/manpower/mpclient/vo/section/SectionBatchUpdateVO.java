@@ -42,7 +42,7 @@ public class SectionBatchUpdateVO  implements ExcelMsg {
     @HeadFontStyle
     @ExcelProperty({"", "是否停用"})
     @DtoField
-    private String stop;
+    private String isStop;
     @HeadFontStyle
     @ExcelProperty({"", "排序"})
     private Integer sortNo;

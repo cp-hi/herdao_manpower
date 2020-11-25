@@ -123,7 +123,7 @@ public class PostFormVO {
     private Boolean singleJobLevle;
 
     @ApiModelProperty(value = "是否停用")
-    @DtoField(objField = "stop", converter =  "{true:\"1\",false:\"0\"}")
+    @DtoField(objField = "isStop", converter =  "{true:\"1\",false:\"0\"}")
     private String stop;
 
     @ApiModelProperty(value = "停用日期")

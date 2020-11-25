@@ -26,7 +26,7 @@ public class SectionFormVO {
     private Long groupId;
 
     @ApiModelProperty("是否停用")
-    private Boolean stop;
+    private Boolean isStop;
 
     @ApiModelProperty("排序")
     private Integer sortNo;

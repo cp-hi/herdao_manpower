@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -94,7 +95,33 @@ public interface EntityService<T> extends IService<T> {
      * @param t
      */
     void saveVerify(T t, StringBuffer buffer);
-
+    /**
+     * 是否同步平台数据开关
+     *
+     */
+    default Boolean isSync(){return Boolean.FALSE;};
+    /**
+     * 保存同步平台数据
+     *
+     * @param t
+     */
+    default Long saveSync(T t){return null;};
+    /**
+     * 更新同步平台数据
+     *
+     * @param t
+     */
+    default Boolean updateSync(T t){return null;};
+    /**
+     * 删除同步平台数据
+     *
+     */
+    default Boolean deleteSync(Serializable id){return null;};
+    /**
+     * 批量保存或更新
+     *
+     */
+    default Boolean saveOrUpdateBatchSync(Collection<T> collection){return null;};
     /**
      * 导入校验
      *

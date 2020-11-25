@@ -136,7 +136,12 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "实体ID"),
     })
     public R<Boolean> delete(@PathVariable Long id) {
-        return R.ok(getEntityService().delEntity(id));
+        try {
+            Boolean result = getEntityService().delEntity(id);
+            return R.ok(result);
+        } catch (Exception ex) {
+            return R.failed(ExceptionUtils.getRealMessage(ex));
+        }
     }
 
     @ApiOperation(value = "启用/停用")
@@ -145,8 +150,13 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "主键"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
-    public R<Boolean> stop(@PathVariable Long id, @PathVariable boolean stop) {
-        return R.ok(getEntityService().stopEntity(id, stop));
+    public R<Boolean> stop(@PathVariable Long id, @PathVariable boolean isStop) {
+        try {
+            Boolean result = getEntityService().stopEntity(id, isStop);
+            return R.ok(result);
+        } catch (Exception ex) {
+            return R.failed(ExceptionUtils.getRealMessage(ex));
+        }
     }
 
     @ApiOperation(value = "查看是否停用，返回true是停用，false启用")
@@ -155,7 +165,12 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "主键"),
     })
     public R<Boolean> getStatus(@PathVariable Long id) {
-        return R.ok(getEntityService().getStatus(id));
+        try {
+            Boolean isStop = getEntityService().getStatus(id);
+            return R.ok(isStop);
+        } catch (Exception ex) {
+            return R.failed(ExceptionUtils.getRealMessage(ex));
+        }
     }
 
     @PostMapping

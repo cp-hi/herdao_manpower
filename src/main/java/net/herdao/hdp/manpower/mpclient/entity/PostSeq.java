@@ -1,6 +1,8 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +23,8 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位序列")
 public class PostSeq extends BaseEntity<PostSeq> {
-
+    @TableId(value = "ID", type = IdType.INPUT)
+    private Long id;
     @ApiModelProperty(value = "岗位序列名称")
     private String postSeqName;
 
@@ -38,6 +41,6 @@ public class PostSeq extends BaseEntity<PostSeq> {
     private Long parentId;
 
     @ApiModelProperty(value = "是否停用" )
-    @TableField("IS_STOP")
-    private Boolean stop;
+//    @TableField("IS_STOP")
+    private Boolean isStop;
 }
