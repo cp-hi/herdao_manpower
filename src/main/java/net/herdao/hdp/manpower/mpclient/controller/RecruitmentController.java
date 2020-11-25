@@ -23,14 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/recruitment" )
 @Api(value = "recruitment", tags = "人才表管理")
-public class RecruitmentController extends HdpBaseController {
+public class RecruitmentController  {
 
     private final  RecruitmentService recruitmentService;
-
-    @Override
-    public HdpService getHdpService() {
-        return recruitmentService;
-    }
 
     /**
      * 快速编辑
