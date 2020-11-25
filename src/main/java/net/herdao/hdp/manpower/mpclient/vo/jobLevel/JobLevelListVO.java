@@ -37,12 +37,12 @@ public class JobLevelListVO {
 
     @ExcelProperty("职等名称")
     @ApiModelProperty("职等名称")
-    @DtoField(objField = "jobGrade.jobGradeName")
+//    @DtoField(objField = "jobGrade.jobGradeName")
     private String jobGradeName;
 
     @ExcelIgnore
-    @ApiModelProperty("职等id")
-    @DtoField(objField = "jobGrade.id")
+    @ApiModelProperty("职等")
+//    @DtoField(objField = "jobGrade.id")
     private String jobGradeId;
 
     @ExcelProperty("排序")

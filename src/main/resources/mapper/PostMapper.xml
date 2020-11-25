@@ -18,20 +18,16 @@
 
         <association property="sectionName" column="section_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectEntityName"/>
-
         <association property="groupName" column="group_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectEntityName"/>
-
         <association property="pipelineName" column="pipeline_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>
-
+        <association property="jobLevelName1" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
+        <association property="jobLevelName2" column="job_level_id2" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
         <association property="jobGradeName" column="job_level_id1" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
-
-        <association property="jobLevelName1" column="job_level_id1" javaType="jobLevel"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
-        <association property="jobLevelName2" column="job_level_id2" javaType="jobLevel"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
 
         <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
