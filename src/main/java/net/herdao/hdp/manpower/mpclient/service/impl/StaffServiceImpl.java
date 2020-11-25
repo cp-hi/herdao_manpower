@@ -337,28 +337,18 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private SysDictItemMapper sysDictItemMapper;
 	@Override
-	public StaffBasicVO selectBasicByName(String staffName) {
+	public StaffBasicVO selectBasicByCode(String staffCode) {
 		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
 		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
-				.eq("staff_name", staffName);
+				.eq("staff_code", staffCode);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
-		QueryWrapper<SysDictItem> dictItemQueryWrapper = new QueryWrapper<>();
-		SysDictItem staffScope = sysDictItemMapper.selectOne(dictItemQueryWrapper.eq("dict_id", 333)
+		QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
+		SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("dict_id", 333)
 				.eq("value", staff.getStaffScope()));
-		SysDictItem jobType = sysDictItemMapper.selectOne(dictItemQueryWrapper.eq("dict_id",334)
+		QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
+		SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("dict_id",334)
 				.eq("value", staff.getJobType()));
-
-		if (staffScope == null) {
-			staffScope = new SysDictItem();
-			staffScope.setDescription("人员归属范围");
-			staffScope.setDictId(333);
-		}
-		if (jobType == null) {
-			jobType = new SysDictItem();
-			jobType.setDictId(334);
-			jobType.setDescription("任职类型");
-		}
 
 		StaffBasicVO vo = new StaffBasicVO();
 		vo.setUserId(staff.getUserId());
