@@ -21,7 +21,7 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表单VO")
+@ApiModel(value = "人才表单编辑VO ")
 public class RecruitmentUpdateFormVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,5 +67,10 @@ public class RecruitmentUpdateFormVO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
 
+    /**
+     * 人才标签
+     */
+    @ApiModelProperty(value="人才标签")
+    private String talentLabel;
 
 }

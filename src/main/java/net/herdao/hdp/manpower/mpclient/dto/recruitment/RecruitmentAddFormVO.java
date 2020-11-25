@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * 人才表单编辑VO
+ * 人才表单新增VO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表单VO")
+@ApiModel(value = "人才表单新增VO")
 public class RecruitmentAddFormVO implements Serializable {
 
     private static final long serialVersionUID = 1L;

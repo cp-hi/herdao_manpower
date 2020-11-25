@@ -1,26 +1,9 @@
-/*
- *    Copyright (c) 2018-2025, herdao All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the herdao.net developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: liang
- */
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,20 +11,19 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 人才表
  *
  * @author Andy
- * @date 2020-11-23 14:46:40
+ * @date 2020-11-25 10:47:36
  */
 @Data
 @TableName("mp_recruitment")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "人才表")
 public class Recruitment extends Model<Recruitment> {
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 人才ID
@@ -88,7 +70,7 @@ private static final long serialVersionUID = 1L;
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    private Date birthday;
+    private LocalDateTime birthday;
     /**
      * 移动电话
      */
@@ -167,7 +149,7 @@ private static final long serialVersionUID = 1L;
     /**
      * 最近工作单位名称
      */
-    @ApiModelProperty(value="最近工作单位")
+    @ApiModelProperty(value="最近工作单位名称")
     private String finalJobCompany;
     /**
      * 最近从事岗位
@@ -355,14 +337,14 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="计算机能力")
     private String computerProficiency;
     /**
-     * 最低现金收入水平
+     * 最低薪资（月薪/年薪）
      */
-    @ApiModelProperty(value="最低现金收入水平")
+    @ApiModelProperty(value="最低薪资（月薪/年薪）")
     private BigDecimal minimumLevelincome;
     /**
-     * 期望现金收入水平
+     * 期望薪资（月薪/年薪）
      */
-    @ApiModelProperty(value="期望现金收入水平")
+    @ApiModelProperty(value="期望薪资（月薪/年薪）")
     private BigDecimal expectedLevelincome;
     /**
      * 其他要求
@@ -569,4 +551,54 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="逻辑删除")
     private Boolean delFlag;
+    /**
+     * 简历来源
+     */
+    @ApiModelProperty(value="简历来源")
+    private String resumeSource;
+    /**
+     * 证件类型
+     */
+    @ApiModelProperty(value="证件类型")
+    private String certificateType;
+    /**
+     * 候选人头像
+     */
+    @ApiModelProperty(value="候选人头像")
+    private String photo;
+    /**
+     * 意向岗位
+     */
+    @ApiModelProperty(value="意向岗位")
+    private String intentionPost;
+    /**
+     * 联系号码
+     */
+    @ApiModelProperty(value="联系号码")
+    private String contactNumber;
+    /**
+     * 证件号码
+     */
+    @ApiModelProperty(value="证件号码")
+    private String certificateNumber;
+    /**
+     * 应聘组织
+     */
+    @ApiModelProperty(value="应聘组织")
+    private String recruitOrgName;
+    /**
+     * 目标岗位/职业规划
+     */
+    @ApiModelProperty(value="目标岗位/职业规划")
+    private String careerPlan;
+    /**
+     * 申请人签名
+     */
+    @ApiModelProperty(value="申请人签名")
+    private String applicantSign;
+    /**
+     * 获取岗位招聘信息途径
+     */
+    @ApiModelProperty(value="获取岗位招聘信息途径")
+    private String resumeAccess;
 }

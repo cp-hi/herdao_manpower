@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +43,11 @@ public class RecruitmentController extends HdpBaseController {
         @ApiImplicitParam(name="id",value="主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
-    public R<Recruitment> getById(@PathVariable("id" ) Long id) {
+    public R<RecruitmentUpdateFormVO> getById(@PathVariable("id" ) Long id) {
         Recruitment recruitment = recruitmentService.getById(id);
-        return R.ok(recruitment);
+        RecruitmentUpdateFormVO formVO=new RecruitmentUpdateFormVO();
+        BeanUtils.copyProperties(recruitment,formVO);
+        return R.ok(formVO);
     }
 
     /**
@@ -105,5 +108,18 @@ public class RecruitmentController extends HdpBaseController {
     }
 
 
-
+    /**
+     * 人才简历-顶部
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-顶部", notes = "人才简历-顶部")
+    @GetMapping("/fetchResumeTop" )
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="主键id")
+    })
+    public R<RecruitmentUpdateFormVO> fetchResumeTop(Long id) {
+        RecruitmentUpdateFormVO entity = recruitmentService.fetchResumeTop(id);
+        return R.ok(entity);
+    }
 }

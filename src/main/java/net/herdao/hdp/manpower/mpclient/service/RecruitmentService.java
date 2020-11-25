@@ -7,6 +7,7 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormVO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 人才表
@@ -37,4 +38,13 @@ public interface RecruitmentService extends HdpService<Recruitment> {
      * @return
      */
     R<RecruitmentAddFormVO> saveRecruitment(RecruitmentAddFormVO recruitmentAddFormVO);
+
+    /**
+     * 人才简历-顶部
+     * @param id 主键ID
+     * @return
+     */
+    RecruitmentUpdateFormVO fetchResumeTop(Long id);
+
+
 }

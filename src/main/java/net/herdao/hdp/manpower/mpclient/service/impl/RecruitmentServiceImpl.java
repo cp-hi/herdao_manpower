@@ -47,6 +47,7 @@ import java.util.List;
  */
 @Service
 public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recruitment> implements RecruitmentService {
+
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
         Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText);
@@ -160,5 +161,11 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         return null;
+    }
+
+    @Override
+    public RecruitmentUpdateFormVO fetchResumeTop(Long id) {
+        RecruitmentUpdateFormVO entity = this.baseMapper.fetchResumeTop(id);
+        return entity;
     }
 }
