@@ -12,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -71,8 +70,9 @@ public class RecruitmentBaseDTO implements Serializable {
     /**
      * 出生日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="出生日期")
-    private LocalDateTime birthday;
+    private Date birthday;
 
     /**
      * 民族
@@ -295,7 +295,8 @@ public class RecruitmentBaseDTO implements Serializable {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
-    private LocalDateTime resumeAccessTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date resumeAccessTime;
 
     /**
      * 备注

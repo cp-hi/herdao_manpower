@@ -64,8 +64,8 @@ public class RecruitmentController  {
      * @return R
      */
     @ApiOperation(value = "新增候选人-保存", notes = "新增候选人-保存")
-    @PostMapping("/save")
-    public R<RecruitmentAddFormDTO> save(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
+    @PostMapping("/saveRecruitment")
+    public R<RecruitmentAddFormDTO> saveRecruitment(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
         R<RecruitmentAddFormDTO> result = recruitmentService.saveRecruitment(recruitmentAddFormDTO);
         return result;
     }
@@ -118,11 +118,11 @@ public class RecruitmentController  {
     }
 
     /**
-     * 人才简历-个人基本情况 从业情况与求职意向
+     * 获取人才简历-个人基本情况 从业情况与求职意向
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "人才简历-个人基本情况 从业情况与求职意向", notes = "人才简历-个人基本情况 从业情况与求职意向")
+    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向", notes = "人才简历-个人基本情况 从业情况与求职意向")
     @GetMapping("/fetchResumeBaseSituation" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
@@ -146,6 +146,16 @@ public class RecruitmentController  {
         return R.ok(baseDTO);
     }
 
-
+    /**
+     * 编辑更新个人简历-个人基本情况 其他个人信息
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "编辑更新个人简历-个人基本情况 其他个人信息", notes = "编辑更新个人简历-个人基本情况 其他个人信息")
+    @PostMapping("/updateBaseInfo" )
+    public R<RecruitmentBaseDTO> updateBaseInfo(@RequestBody RecruitmentBaseDTO baseDTO) {
+        RecruitmentBaseDTO result = recruitmentService.updateBaseInfo(baseDTO);
+        return R.ok(result);
+    }
 
 }

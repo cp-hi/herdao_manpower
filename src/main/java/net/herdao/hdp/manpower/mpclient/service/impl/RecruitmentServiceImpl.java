@@ -173,4 +173,17 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         RecruitmentBaseDTO entity = this.baseMapper.fetchResumeBaseSituation(id);
         return entity;
     }
+
+    @Override
+    public RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO baseDTO) {
+        Recruitment recruitment=new Recruitment();
+        BeanUtils.copyProperties(baseDTO,recruitment);
+        SysUser sysUser = SysUserUtils.getSysUser();
+        recruitment.setModifierTime(LocalDateTime.now());
+        recruitment.setModifierCode(sysUser.getUsername());
+        recruitment.setModifierName(sysUser.getAliasName());
+        super.updateById(recruitment);
+        BeanUtils.copyProperties(recruitment,baseDTO);
+        return baseDTO;
+    }
 }
