@@ -1,26 +1,22 @@
 
 package net.herdao.hdp.manpower.mpclient.dto.recruitment;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * 人才表单新增VO
+ * 人才表单新增DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表单新增VO")
+@ApiModel(value = "人才表单新增DTO")
 public class RecruitmentAddFormDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

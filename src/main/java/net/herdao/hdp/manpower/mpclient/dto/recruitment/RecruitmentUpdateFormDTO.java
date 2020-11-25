@@ -16,12 +16,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人才表单编辑VO
+ * 人才表单编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表单编辑VO ")
+@ApiModel(value = "人才表单编辑DTO")
 public class RecruitmentUpdateFormDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

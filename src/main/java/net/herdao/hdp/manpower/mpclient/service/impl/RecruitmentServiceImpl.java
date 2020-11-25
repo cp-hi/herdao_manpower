@@ -25,6 +25,7 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -164,6 +165,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     @Override
     public RecruitmentUpdateFormDTO fetchResumeTop(Long id) {
         RecruitmentUpdateFormDTO entity = this.baseMapper.fetchResumeTop(id);
+        return entity;
+    }
+
+    @Override
+    public RecruitmentBaseDTO fetchResumeBaseSituation(Long id) {
+        RecruitmentBaseDTO entity = this.baseMapper.fetchResumeBaseSituation(id);
         return entity;
     }
 }

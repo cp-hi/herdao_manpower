@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -101,7 +102,6 @@ public class RecruitmentController  {
         return R.ok(recruitmentService.removeById(id));
     }
 
-
     /**
      * 人才简历-顶部
      * @param id 主键id
@@ -116,4 +116,24 @@ public class RecruitmentController  {
         RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
         return R.ok(entity);
     }
+
+    /**
+     * 人才简历-个人基本情况 从业情况与求职意向
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-个人基本情况 从业情况与求职意向", notes = "人才简历-个人基本情况 从业情况与求职意向")
+    @GetMapping("/fetchResumeBaseSituation" )
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="主键id")
+    })
+    public R<RecruitmentBaseDTO> fetchResumeBaseSituation(Long id) {
+        RecruitmentBaseDTO entity = recruitmentService.fetchResumeBaseSituation(id);
+        return R.ok(entity);
+    }
+
+
+
+
+
 }

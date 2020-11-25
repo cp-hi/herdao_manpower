@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -47,7 +48,12 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param id 主键ID
      * @return
      */
-    RecruitmentUpdateFormDTO fetchResumeTop(@Param("id") Long id);
+    RecruitmentUpdateFormDTO fetchResumeTop(Long id);
 
-
+    /**
+     * 人才简历-个人基本情况 从业情况与求职意向
+     * @param id 主键ID
+     * @return
+     */
+    RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
 }

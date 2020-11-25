@@ -570,7 +570,7 @@ public class Recruitment extends Model<Recruitment> {
      * 意向岗位
      */
     @ApiModelProperty(value="意向岗位")
-    private String intentionPost;
+    private String intentionPostId;
     /**
      * 联系号码
      */

@@ -4,6 +4,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -44,6 +45,13 @@ public interface RecruitmentService extends HdpService<Recruitment> {
      * @return
      */
     RecruitmentUpdateFormDTO fetchResumeTop(Long id);
+
+    /**
+     * 人才简历-个人基本情况 从业情况与求职意向
+     * @param id 主键ID
+     * @return
+     */
+    RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
 
 
 }

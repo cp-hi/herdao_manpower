@@ -12,12 +12,12 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 人才表list DTO
+ * 人才列表DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表list DTO")
+@ApiModel(value = "人才列表DTO")
 public class RecruitmentDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
