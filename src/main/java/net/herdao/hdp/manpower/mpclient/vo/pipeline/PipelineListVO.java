@@ -41,8 +41,8 @@ public class PipelineListVO {
 
     @ExcelProperty("是否停用")
     @ApiModelProperty("是否停用")
-    @DtoField(objField = "stop",converter = "{true:\"已停用\",false:\"已启用\"}")
-    private String stop;
+    @DtoField(objField = "isStop")
+    private String isStop;
 
     @ExcelProperty("排序")
     @ApiModelProperty("排序")

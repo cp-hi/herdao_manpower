@@ -682,7 +682,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         Map<String, Staff> staffMap = getUserMap(staffService.lambdaQuery().list());
 
         // 岗位信息
-        Map<String, Post> postMap = getPostMap(postService.lambdaQuery().eq(Post::getStop, false).list());
+        Map<String, Post> postMap = getPostMap(postService.lambdaQuery().eq(Post::getIsStop, false).list());
 
         // 批量新增、编辑组织信息
         List<Organization> organizationList = new ArrayList<Organization>();

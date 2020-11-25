@@ -52,7 +52,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
         if (null != group) section.setGroupId(group.getId());
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         if (StringUtils.isBlank(buffer)) {
-            section.setStop(DtoConverter.string2bool(excel, "stop"));
+            section.setIsStop(DtoConverter.string2bool(excel, "isStop"));
             section.setId(tmp.getId());
         }
     }

@@ -26,7 +26,7 @@ public class PipelineFormVO {
     private Long groupId;
 
     @ApiModelProperty("是否停用")
-    private Boolean stop;
+    private Boolean isStop;
 
     @ApiModelProperty(value = "备注")
     private String remark;
