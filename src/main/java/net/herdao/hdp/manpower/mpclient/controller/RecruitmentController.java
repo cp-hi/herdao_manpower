@@ -132,7 +132,19 @@ public class RecruitmentController  {
         return R.ok(entity);
     }
 
-
+    /**
+     * 编辑个人简历-个人基本情况 其他个人信息
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "编辑个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息")
+    @GetMapping("/fetchDetails/{id}" )
+    public R<RecruitmentBaseDTO> fetchDetails(@PathVariable("id" ) Long id) {
+        RecruitmentBaseDTO baseDTO=new RecruitmentBaseDTO();
+        Recruitment recruitment = recruitmentService.getById(id);
+        BeanUtils.copyProperties(recruitment,baseDTO);
+        return R.ok(baseDTO);
+    }
 
 
 

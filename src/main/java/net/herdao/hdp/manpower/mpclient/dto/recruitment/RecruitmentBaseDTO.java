@@ -176,4 +176,131 @@ public class RecruitmentBaseDTO implements Serializable {
     @ApiModelProperty(value="可到职日期")
     private String inductionTime;
 
+    /**
+     * 性格特点
+     */
+    @ApiModelProperty(value="性格特点")
+    private String characteristics;
+
+    /**
+     * 缺点
+     */
+    @ApiModelProperty(value="缺点")
+    private String shortcoming;
+
+    /**
+     * 优点
+     */
+    @ApiModelProperty(value="优点")
+    private String advantage;
+
+    /**
+     * 特长
+     */
+    @ApiModelProperty(value="特长")
+    private String specialty;
+
+    /**
+     * 兴趣爱好
+     */
+    @ApiModelProperty(value="兴趣爱好")
+    private String interests;
+
+    /**
+     * 户口地址
+     */
+    @ApiModelProperty(value="户口地址")
+    private String accountAddress;
+
+    /**
+     * 邮政编码
+     */
+    @ApiModelProperty(value="邮政编码")
+    private String zipcode;
+
+    /**
+     * 现住址
+     */
+    @ApiModelProperty(value="现住址")
+    private String nowAddress;
+
+    /**
+     * 家庭电话
+     */
+    @ApiModelProperty(value="家庭电话")
+    private String homePhone;
+
+    /**
+     * 毕业院校
+     */
+    @ApiModelProperty(value="毕业院校")
+    private String graduated;
+
+    /**
+     * 最高学历证书号
+     */
+    @ApiModelProperty(value="最高学历证书号")
+    private String highestDiplomano;
+
+    /**
+     * 专业
+     */
+    @ApiModelProperty(value="专业")
+    private String professional;
+
+    /**
+     * 最高学历
+     */
+    @ApiModelProperty(value="最高学历")
+    private String highestEducation;
+
+    /**
+     * 是否有亲戚朋友在本公司
+     */
+    @ApiModelProperty(value="是否有亲戚朋友在本公司")
+    private Integer isRelativeCompany;
+
+    /**
+     * 是否接受外派
+     */
+    @ApiModelProperty(value="是否接受外派")
+    private Integer isAcceptAssignment;
+
+    /**
+     * 职位跟姓名
+     */
+    @ApiModelProperty(value="其职位与姓名")
+    private String relativePostName;
+
+    /**
+     * 可接受外派地点
+     */
+    @ApiModelProperty(value="可接受外派地点")
+    private String acceptAssignmentLocation;
+
+    /**
+     * 申请人签名
+     */
+    @ApiModelProperty(value="申请人签名")
+    private String applicantSign;
+
+    /**
+     * 获取岗位招聘信息途径
+     */
+    @ApiModelProperty(value="获取岗位招聘信息途径")
+    private String resumeAccess;
+
+
+    /**
+     * 简历入库时间
+     */
+    @ApiModelProperty(value="简历入库时间")
+    private LocalDateTime resumeAccessTime;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value="备注")
+    private String remarks;
+
 }

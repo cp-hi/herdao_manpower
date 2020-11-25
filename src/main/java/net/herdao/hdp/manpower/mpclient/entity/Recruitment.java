@@ -601,4 +601,16 @@ public class Recruitment extends Model<Recruitment> {
      */
     @ApiModelProperty(value="获取岗位招聘信息途径")
     private String resumeAccess;
+
+    /**
+     * 简历入库时间
+     */
+    @ApiModelProperty(value="简历入库时间")
+    private LocalDateTime resumeAccessTime;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value="备注")
+    private String remarks;
 }
