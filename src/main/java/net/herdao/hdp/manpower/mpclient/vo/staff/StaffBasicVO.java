@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.vo.staff;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 
 /**
  * @Author Liu Chang
@@ -21,17 +22,11 @@ public class StaffBasicVO {
     @ApiModelProperty(value = "员工工号", name = "staffCode", example = "123456")
     private String staffCode;
 
-    /**
-     * TODO:: 数据库中的数字代表什么含义？
-     */
-    @ApiModelProperty(value = "人员归属范围，1：，2：", name = "staffName", example = "1")
-    private String staffScope;
+    @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
+    private SysDictItem staffScope;
 
-    /**
-     * TODO:: 数据库中的数字代表什么含义？
-     */
     @ApiModelProperty(value = "任职类型", name = "jobType", example = "1")
-    private String jobType;
+    private SysDictItem jobType;
 
     @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
     private Long entryTime;

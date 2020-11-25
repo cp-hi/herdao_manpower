@@ -420,8 +420,7 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "人事异动(员工)基础信息（根据员工姓名查询基本信息）")
     @GetMapping("/basic")
     public R<StaffBasicVO> getStaffBasic(@RequestParam("staffName") String staffName) {
-
-        return null;
+        return R.ok(staffService.selectBasicByName(staffName));
     }
 
 }
