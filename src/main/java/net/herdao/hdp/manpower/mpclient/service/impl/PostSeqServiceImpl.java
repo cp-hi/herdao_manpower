@@ -1,18 +1,25 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import net.herdao.hdp.admin.api.entity.SysStationSeq;
+import net.herdao.hdp.admin.api.feign.RemoteStationSeqService;
+import net.herdao.hdp.admin.api.vo.TreeUtil;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqTree;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
-import net.herdao.hdp.manpower.mpclient.utils.TreeUtil;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
 import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,6 +36,8 @@ import java.util.stream.Collectors;
 @Service
 public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
 
+    @Autowired
+    private RemoteStationSeqService remoteStationSeqService;
     @Override
     public List<Map> postSeqList(Long groupId) {
         return baseMapper.postSeqList(groupId);
@@ -118,5 +127,44 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
         }
         return TreeUtil.build(this.list(Wrappers.<PostSeq>lambdaQuery().eq(PostSeq::getGroupId, groupId))
                 .stream().map(PostSeqTree::new).collect(Collectors.toList()), parent);
+    }
+
+    @Override
+    public Long saveSync(PostSeq postSeq) {
+        SysStationSeq stationSeq = converterValue(postSeq);
+        R<Long> r = remoteStationSeqService.save(stationSeq);
+        return checkData(r);
+    }
+
+    @Override
+    public Boolean updateSync(PostSeq postSeq) {
+        SysStationSeq stationSeq = converterValue(postSeq);
+        stationSeq.setId(postSeq.getId());
+        R<Boolean> r = remoteStationSeqService.update(stationSeq);
+        return checkData(r);
+    }
+
+    @Override
+    public Boolean deleteSync(Serializable id) {
+        R<Boolean> r = remoteStationSeqService.delete(id);
+        return checkData(r);
+    }
+
+    @Override
+    public Boolean saveOrUpdateBatchSync(Collection<PostSeq> collection) {
+        List<SysStationSeq> list = new ArrayList<>();
+        collection.forEach(postSeq->{
+            SysStationSeq stationSeq = converterValue(postSeq);
+            stationSeq.setId(postSeq.getId());
+            list.add(stationSeq);
+        });
+        R<Boolean> r = remoteStationSeqService.saveOrUpdateBatch(list);
+        return checkData(r);
+    }
+    private SysStationSeq converterValue(PostSeq postSeq){
+        SysStationSeq stationSeq = new SysStationSeq();
+        stationSeq.setName(postSeq.getPostSeqName());
+        stationSeq.setParentId(postSeq.getParentId());
+        return stationSeq;
     }
 }

@@ -1,16 +1,22 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import lombok.AllArgsConstructor;
+import net.herdao.hdp.admin.api.entity.SysStation;
+import net.herdao.hdp.admin.api.feign.RemoteStationService;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
-import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.vo.post.*;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchAddVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchUpdateVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
 import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
@@ -32,7 +38,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     final PipelineService pipelineService;
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
-
+    final RemoteStationService remoteStationService;
     @Override
     public List<PostDTO> postList(Long groupId) {
         return baseMapper.postList(groupId);
@@ -185,5 +191,53 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     @Override
     public Function<Post, Long> getGroupIdMapper() {
         return Post::getGroupId;
+    }
+
+
+
+    @Override
+    public Long saveSync(Post post) {
+        SysStation station = converterValue(post);
+        R<Long> r = remoteStationService.save(station);
+        return checkData(r);
+    }
+
+    @Override
+    public Boolean updateSync(Post post) {
+        SysStation station = converterValue(post);
+        station.setId(post.getId());
+        R<Boolean> r = remoteStationService.update(station);
+        return checkData(r);
+    }
+
+    @Override
+    public Boolean deleteSync(Serializable id) {
+
+        R<Boolean> r = remoteStationService.delete(id);
+        return checkData(r);
+    }
+
+    @Override
+    public Boolean saveOrUpdateBatchSync(Collection<Post> collection) {
+        List<SysStation> list = new ArrayList<>();
+        collection.forEach(post -> {
+            SysStation station = converterValue(post);
+            station.setId(post.getId());
+        });
+        R<Boolean> r = remoteStationService.saveOrUpdateBatch(list);
+        return checkData(r);
+    }
+    private SysStation converterValue(Post post){
+        SysStation station = new SysStation();
+        station.setCode(post.getPostCode());
+        station.setName(post.getPostName());
+        station.setGroupId(post.getGroupId());
+        station.setBlockId(post.getSectionId());
+        station.setPipeId(post.getPipelineId());
+        station.setSeqId(post.getPostSeqId());
+        station.setBeginGrade(post.getJobLevelId1());
+        station.setEndGrade(post.getJobLevelId2());
+        station.setSingleGrade(post.getSingleJobLevle().toString());
+        return station;
     }
 }

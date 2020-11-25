@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.convert.Convert;
+import net.herdao.hdp.admin.api.dto.OrgDTO;
+import net.herdao.hdp.admin.api.feign.RemoteOrgService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +80,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private SysDictItemService sysDictItemService;
     @Autowired
     private OrgModifyRecordService orgModifyRecordService;
+    @Autowired
+    private RemoteOrgService remoteOrgService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -522,7 +527,15 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                             org.setOrgFullname(org.getOrgFullname().replaceFirst(tpOrganization.getOrgFullname(), parentOrganization.getOrgFullname()));
                         }
                     });
-
+                    organizations.forEach(e->{
+                        OrgDTO orgDTO = new OrgDTO();
+                        orgDTO.setId(e.getId());
+                        orgDTO.setParentId(e.getParentId());
+                        orgDTO.setName(e.getOrgName());
+                        orgDTO.setCode(e.getOrgCode());
+                        orgDTO.setType(Integer.parseInt(e.getOrgType()));
+                        remoteOrgService.update(orgDTO);
+                    });
                     this.updateBatchById(organizations);
                 }
             }
@@ -547,6 +560,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                     .set(Organization::getOrgDesc, organization.getOrgDesc())
                     .eq(Organization::getId, organization.getId());
             this.update(updateWrapper);
+
         }
 
         // 操作日志信息 TODO 如果父组织更新了，是否记录子组织操作日志， 需求待优化
