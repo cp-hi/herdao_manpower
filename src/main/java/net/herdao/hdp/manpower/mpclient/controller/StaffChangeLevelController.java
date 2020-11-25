@@ -32,15 +32,6 @@ public class StaffChangeLevelController {
         return null;
     }
 
-    /**
-     * TODO:: 待确认
-     */
-    @ApiOperation(value = "分页列表-导出")
-    @GetMapping("/export")
-    public R export() {
-        return null;
-    }
-
     @ApiOperation(value = "分页列表-流程详情")
     @GetMapping("/process/{id}" )
     public R getProcessDetail(@RequestParam("id") Long id) {

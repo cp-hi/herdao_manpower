@@ -28,15 +28,6 @@ public class StaffCallInAndCallOutController {
         return null;
     }
 
-    /**
-     * TODO:: 待确认
-     */
-    @ApiOperation(value = "分页列表-导出")
-    @GetMapping("/export")
-    public R export() {
-        return null;
-    }
-
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
     public R deleteCallInAndCallOut(@PathVariable("id") Long id) {

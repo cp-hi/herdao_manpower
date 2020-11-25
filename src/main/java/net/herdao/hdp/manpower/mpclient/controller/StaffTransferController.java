@@ -33,15 +33,6 @@ public class StaffTransferController {
     }
 
     /**
-     * TODO:: 待确认
-     */
-    @ApiOperation(value = "分页列表-导出")
-    @GetMapping("/export")
-    public R export() {
-        return null;
-    }
-
-    /**
      * 对接第三方工具，待讨论
      * @return
      */
