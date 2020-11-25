@@ -18,5 +18,6 @@ import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 @ApiModel(value = "职级DTO")
 public class JobLevelDTO extends JobLevel {
     private Integer onJobStaffs;
-    private JobGrade jobGrade;
+    //    private JobGrade jobGrade;
+    private String jobGradeName;
 }

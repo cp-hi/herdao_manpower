@@ -9,8 +9,8 @@
         <result property="jobGradeId" column="job_grade_id"/>
         <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
 
-        <association property="jobGrade" column="job_grade_id" javaType="jobGrade"
-                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.selectIgnoreDel"/>
+        <association property="jobGradeName" column="job_grade_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.selectEntityName"/>
     </resultMap>
 
     <select id="page" resultMap="jobLevelDTOMap" parameterType="jobLevel">
