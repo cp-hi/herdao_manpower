@@ -4,15 +4,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.staffTransfer.SaveStaffTransferInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffTransfer.SaveStaffTransferProveDTO;
-import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferApproveVO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferExecuteDTO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferExecuteVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * @Author Liu Chang
@@ -25,11 +24,20 @@ import java.util.Date;
 public class StaffTransferController {
 
     @ApiOperation(value = "分页列表")
-    @GetMapping("/page" )
+    @GetMapping("/page")
     public R<Page<StaffTransferPageVO>> pageStaffTransfer(String searchText,
                                                           Page page,
                                                           Long orgId,
                                                           String status) {
+        return null;
+    }
+
+    /**
+     * TODO:: 待确认
+     */
+    @ApiOperation(value = "分页列表-导出")
+    @GetMapping("/export")
+    public R export() {
         return null;
     }
 
@@ -81,13 +89,13 @@ public class StaffTransferController {
 
     @ApiOperation(value = "获取执行调动信息")
     @GetMapping("/execution/{id}")
-    public R<StaffTransferApproveVO> getStaffTransferExecutionInfo(@PathVariable("id") Long id) {
+    public R<StaffTransferExecuteVO> getStaffTransferExecutionInfo(@PathVariable("id") Long id) {
         return null;
     }
 
     @ApiOperation(value = "确认执行")
     @PutMapping("/execution/{id}")
-    public R executeStaffTransfer(@RequestBody(required = true) SaveStaffTransferProveDTO dto) {
+    public R executeStaffTransfer(@RequestBody(required = true) SaveStaffTransferExecuteDTO dto) {
         return null;
     }
 }

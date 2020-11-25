@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.staffTransfer;
+package net.herdao.hdp.manpower.mpclient.dto.staffChanges;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,11 +9,11 @@ import java.util.List;
 
 /**
  * @Author Liu Chang
- * @Date 2020/11/24 6:48 下午
+ * @Date 2020/11/24 7:19 下午
  */
 @Data
-@ApiModel(value = "保存调出详情页")
-public class SaveStaffCallOutDTO {
+@ApiModel(value = "保存升/降级详情页")
+public class SavaStaffChangeLevelDTO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1", required = true)
     @NotNull
     private Long id;
@@ -50,14 +50,20 @@ public class SaveStaffCallOutDTO {
     @NotNull
     private Long transStartDate;
 
-    @ApiModelProperty(value = "合同年限", name = "contractPeriod")
-    private Double contractPeriod;
+    @ApiModelProperty(value = "考察期满日", name = "expireDate", example = "20200901")
+    private Long expireDate;
 
-    @ApiModelProperty(value = "本公司工龄", name = "probation")
-    private Double companySeniority;
+    @ApiModelProperty(value = "岗位年度编制", name = "yearPostPrepareCount", example = "5")
+    private Integer yearPostPrepareCount;
 
-    @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
-    private Double threeGroupSeniority;
+    @ApiModelProperty(value = "岗位月度编制", name = "monthPostPrepareCount", example = "5")
+    private Integer monthPostPrepareCount;
+
+    @ApiModelProperty(value = "已到岗人数", name = "postHasCount", example = "5")
+    private Integer postHasCount;
+
+    @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
+    private Boolean prepareChange;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

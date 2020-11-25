@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "调入调出分页列表")
-public class StaffCallInOrCallOutPageVO {
+public class StaffCallInAndCallOutPageVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
 

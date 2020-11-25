@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.staffTransfer.SaveStaffCallOutDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.out.StaffCallOutInfoVO;
 import org.springframework.web.bind.annotation.*;
 

@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "人事调动-调动执行")
-public class StaffTransferApproveVO {
+public class StaffTransferExecuteVO {
 
     private Long id;
 

@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.staffTransfer;
+package net.herdao.hdp.manpower.mpclient.dto.staffChanges;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

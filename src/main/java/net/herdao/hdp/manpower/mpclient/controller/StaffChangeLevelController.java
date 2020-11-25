@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.staffTransfer.SavaStaffChangeLevelDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SavaStaffChangeLevelDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffChangeLevelExecuteDTO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.level.change.StaffChangeLevelExecuteVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.level.change.StaffChangeLevelInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.level.change.StaffChangeLevelPageVO;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,15 @@ public class StaffChangeLevelController {
                                                                 Page page,
                                                                 Long orgId,
                                                                 String status) {
+        return null;
+    }
+
+    /**
+     * TODO:: 待确认
+     */
+    @ApiOperation(value = "分页列表-导出")
+    @GetMapping("/export")
+    public R export() {
         return null;
     }
 
@@ -67,4 +78,17 @@ public class StaffChangeLevelController {
                                           @PathVariable("id") @NotNull Long id) {
         return null;
     }
+
+    @ApiOperation(value = "获取执行调动信息")
+    @GetMapping("/execution/{id}")
+    public R<StaffChangeLevelExecuteVO> getStaffTransferExecutionInfo(@PathVariable("id") Long id) {
+        return null;
+    }
+
+    @ApiOperation(value = "确认执行")
+    @PutMapping("/execution/{id}")
+    public R executeStaffTransfer(@RequestBody(required = true) SaveStaffChangeLevelExecuteDTO dto) {
+        return null;
+    }
+
 }

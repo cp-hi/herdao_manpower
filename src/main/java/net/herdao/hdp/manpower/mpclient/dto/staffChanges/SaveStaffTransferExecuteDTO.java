@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.dto.staffTransfer;
+package net.herdao.hdp.manpower.mpclient.dto.staffChanges;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "保存人事调动执行")
-public class SaveStaffTransferProveDTO {
+public class SaveStaffTransferExecuteDTO {
     private Long id;
 
     @ApiModelProperty(value = "执行类型", name = "executeType")
