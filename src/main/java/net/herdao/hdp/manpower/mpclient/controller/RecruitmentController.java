@@ -2,11 +2,10 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormVO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
-import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -38,9 +37,9 @@ public class RecruitmentController  {
         @ApiImplicitParam(name="id",value="主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
-    public R<RecruitmentUpdateFormVO> getById(@PathVariable("id" ) Long id) {
+    public R<RecruitmentUpdateFormDTO> getById(@PathVariable("id" ) Long id) {
         Recruitment recruitment = recruitmentService.getById(id);
-        RecruitmentUpdateFormVO formVO=new RecruitmentUpdateFormVO();
+        RecruitmentUpdateFormDTO formVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitment,formVO);
         return R.ok(formVO);
     }
@@ -53,20 +52,20 @@ public class RecruitmentController  {
     @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
     @PostMapping("/update")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_add')" )
-    public R<RecruitmentUpdateFormVO> update(@Validated @RequestBody RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
-        R<RecruitmentUpdateFormVO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
+    public R<RecruitmentUpdateFormDTO> update(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
+        R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
         return result;
     }
 
     /**
      * 新增候选人-保存
-     * @param recruitmentAddFormVO 人才表
+     * @param recruitmentAddFormDTO 人才表
      * @return R
      */
     @ApiOperation(value = "新增候选人-保存", notes = "新增候选人-保存")
     @PostMapping("/save")
-    public R<RecruitmentAddFormVO> save(@Validated @RequestBody RecruitmentAddFormVO recruitmentAddFormVO) {
-        R<RecruitmentAddFormVO> result = recruitmentService.saveRecruitment(recruitmentAddFormVO);
+    public R<RecruitmentAddFormDTO> save(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
+        R<RecruitmentAddFormDTO> result = recruitmentService.saveRecruitment(recruitmentAddFormDTO);
         return result;
     }
 
@@ -113,8 +112,8 @@ public class RecruitmentController  {
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
     })
-    public R<RecruitmentUpdateFormVO> fetchResumeTop(Long id) {
-        RecruitmentUpdateFormVO entity = recruitmentService.fetchResumeTop(id);
+    public R<RecruitmentUpdateFormDTO> fetchResumeTop(Long id) {
+        RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
         return R.ok(entity);
     }
 }

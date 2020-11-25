@@ -18,17 +18,15 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormVO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormVO;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
@@ -55,7 +53,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public R<RecruitmentUpdateFormVO> updateRecruitment(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+    public R<RecruitmentUpdateFormDTO> updateRecruitment(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         //校检手机号码
         if (checkMobile(recruitmentUpdateFormVO)){
             return R.failed("当前手机号码已被占用，请重新检查手机号码!");
@@ -85,9 +83,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public R<RecruitmentAddFormVO> saveRecruitment(RecruitmentAddFormVO recruitmentAddFormVO) {
-        RecruitmentUpdateFormVO updateFormVO=new RecruitmentUpdateFormVO();
-        BeanUtils.copyProperties(recruitmentAddFormVO,updateFormVO);
+    public R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
+        RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
+        BeanUtils.copyProperties(recruitmentAddFormDTO,updateFormVO);
 
         //校检手机号码
         if (checkMobile(updateFormVO)){
@@ -100,7 +98,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         }
 
         Recruitment recruitment=new Recruitment();
-        BeanUtils.copyProperties(recruitmentAddFormVO,recruitment);
+        BeanUtils.copyProperties(recruitmentAddFormDTO,recruitment);
 
         SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setCreatorTime(LocalDateTime.now());
@@ -108,8 +106,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         recruitment.setCreatorName(sysUser.getAliasName());
         super.save(recruitment);
 
-        BeanUtils.copyProperties(recruitment, recruitmentAddFormVO);
-        return R.ok(recruitmentAddFormVO,"新增候选人成功");
+        BeanUtils.copyProperties(recruitment, recruitmentAddFormDTO);
+        return R.ok(recruitmentAddFormDTO,"新增候选人成功");
     }
 
     /**
@@ -117,7 +115,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
      * @param recruitmentUpdateFormVO
      * @return
      */
-    private boolean checkMobile(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+    private boolean checkMobile(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         if (ObjectUtil.isNotEmpty(recruitmentUpdateFormVO.getMobile())){
             LambdaQueryWrapper<Recruitment> queryWrapper = Wrappers.lambdaQuery();
             queryWrapper.eq( Recruitment::getMobile,recruitmentUpdateFormVO.getMobile());
@@ -132,7 +130,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
      * @param recruitmentUpdateFormVO
      * @return
      */
-    private boolean checkTalentNameAndMobile(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+    private boolean checkTalentNameAndMobile(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         if (ObjectUtil.isAllNotEmpty(recruitmentUpdateFormVO.getTalentName(),recruitmentUpdateFormVO.getMobile())){
             LambdaQueryWrapper<Recruitment> queryWrapper = Wrappers.lambdaQuery();
             queryWrapper.eq( Recruitment::getTalentName,recruitmentUpdateFormVO.getTalentName());
@@ -148,7 +146,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
      * @param recruitmentUpdateFormVO
      * @return
      */
-    private boolean checkEmail(RecruitmentUpdateFormVO recruitmentUpdateFormVO) {
+    private boolean checkEmail(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         if (ObjectUtil.isNotEmpty(recruitmentUpdateFormVO.getEmail())){
             LambdaQueryWrapper<Recruitment> queryWrapper = Wrappers.lambdaQuery();
             queryWrapper.eq( Recruitment::getEmail,recruitmentUpdateFormVO.getEmail());
@@ -164,8 +162,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentUpdateFormVO fetchResumeTop(Long id) {
-        RecruitmentUpdateFormVO entity = this.baseMapper.fetchResumeTop(id);
+    public RecruitmentUpdateFormDTO fetchResumeTop(Long id) {
+        RecruitmentUpdateFormDTO entity = this.baseMapper.fetchResumeTop(id);
         return entity;
     }
 }
