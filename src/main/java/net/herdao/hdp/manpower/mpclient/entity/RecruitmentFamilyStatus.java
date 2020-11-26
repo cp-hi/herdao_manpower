@@ -1,3 +1,19 @@
+/*
+ *    Copyright (c) 2018-2025, herdao All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * Neither the name of the herdao.net developer nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * Author: liang
+ */
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
@@ -8,38 +24,64 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+import java.math.BigDecimal;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 人才标签
+ * 人才家庭情况
  *
  * @author Andy
- * @date 2020-11-25 14:40:54
+ * @date 2020-11-26 15:28:43
  */
 @Data
-@TableName("mp_recruitment_label")
+@TableName("mp_recruitment_family_status")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "人才标签")
-public class RecruitmentLabel extends Model<RecruitmentLabel> {
+@ApiModel(value = "人才家庭情况")
+public class RecruitmentFamilyStatus extends Model<RecruitmentFamilyStatus> {
 private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * id
      */
     @TableId
-    @ApiModelProperty(value="ID")
+    @ApiModelProperty(value="id")
     private Long id;
     /**
-     * 标签名称
+     * 人才id
      */
-    @ApiModelProperty(value="标签名称")
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
+    /**
+     * 人才oid
+     */
+    @ApiModelProperty(value="人才oid")
+    private String recruitmentOid;
+    /**
+     * 家庭成员姓名
+     */
+    @ApiModelProperty(value="家庭成员姓名")
     private String name;
     /**
-     * 人才ID
+     * 关系
      */
-    @ApiModelProperty(value="人才ID")
-    private Long recruitmentId;
+    @ApiModelProperty(value="关系")
+    private String relations;
+    /**
+     * 年龄
+     */
+    @ApiModelProperty(value="年龄")
+    private BigDecimal age;
+    /**
+     * 职业
+     */
+    @ApiModelProperty(value="职业")
+    private String professional;
+    /**
+     * 工作单位/就读学校
+     */
+    @ApiModelProperty(value="工作单位/就读学校")
+    private String workUnit;
     /**
      * 新建人工号
      */
@@ -71,6 +113,11 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="修改人时间")
     private LocalDateTime modifierTime;
     /**
+     * 旧人力oid
+     */
+    @ApiModelProperty(value="旧人力oid")
+    private String oid;
+    /**
      * 预留字段1
      */
     @ApiModelProperty(value="预留字段1")
@@ -96,6 +143,11 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="预留字段5")
     private String field5;
     /**
+     * 所在地址
+     */
+    @ApiModelProperty(value="所在地址")
+    private String address;
+    /**
      * 租户ID
      */
     @ApiModelProperty(value="租户ID")
@@ -105,5 +157,4 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="逻辑删除")
     private Boolean delFlag;
-
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.RecruitmentFamilyStatusMapper">
+
+       <resultMap id="recruitmentFamilyStatusMap" type="net.herdao.hdp.manpower.mpclient.entity.RecruitmentFamilyStatus">
+            <id property="id" column="id"/>
+            <result property="recruitmentId" column="recruitment_id"/>
+            <result property="recruitmentOid" column="recruitment_oid"/>
+            <result property="name" column="name"/>
+            <result property="relations" column="relations"/>
+            <result property="age" column="age"/>
+            <result property="professional" column="professional"/>
+            <result property="workUnit" column="work_unit"/>
+            <result property="creatorCode" column="creator_code"/>
+            <result property="creatorName" column="creator_name"/>
+            <result property="creatorTime" column="creator_time"/>
+            <result property="modifierCode" column="modifier_code"/>
+            <result property="modifierName" column="modifier_name"/>
+            <result property="modifierTime" column="modifier_time"/>
+            <result property="oid" column="oid"/>
+            <result property="field1" column="FIELD1"/>
+            <result property="field2" column="FIELD2"/>
+            <result property="field3" column="FIELD3"/>
+            <result property="field4" column="FIELD4"/>
+            <result property="field5" column="FIELD5"/>
+            <result property="address" column="address"/>
+            <result property="tenantId" column="TENANT_ID"/>
+            <result property="delFlag" column="DEL_FLAG"/>
+       </resultMap>
+
+       <!-- 人才简历-家庭情况 -->
+       <select id="fetchResumeFamily" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO">
+               SELECT f.id,
+                      f.`name`,
+                      gx.label relations,
+                      f.professional,
+                      f.work_unit,
+                      f.ADDRESS
+                 FROM  mp_recruitment_family_status f
+                LEFT JOIN sys_dict_item gx ON gx.type = 'RELATIONS_TYPE' AND gx.VALUE = f.relations
+             <where>
+                  f.del_flag = 0
+                  <if test="recruitmentId != null ">
+                        AND f.recruitment_id = #{recruitmentId}
+                  </if>
+             </where>
+       </select>
+
+        <!-- 人才简历-家庭情况-列表 -->
+        <select id="fetchResumeFamilyPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO">
+            SELECT  f.id,
+                    f.`name`,
+                    gx.label relations,
+                    f.professional,
+                    f.work_unit,
+                    f.ADDRESS,
+                    CONCAT( f.modifier_name, " 于 ", f.modifier_name, " 更新" ) update_desc
+            FROM  mp_recruitment_family_status f
+            LEFT JOIN sys_dict_item gx ON gx.type = 'RELATIONS_TYPE' AND gx.VALUE = f.relations
+            <where>
+                f.del_flag = 0
+                <if test="recruitmentId != null ">
+                    AND f.recruitment_id = #{recruitmentId}
+                </if>
+            </where>
+        </select>
+
+</mapper>

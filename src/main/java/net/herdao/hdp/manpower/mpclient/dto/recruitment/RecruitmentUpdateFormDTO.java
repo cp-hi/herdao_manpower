@@ -73,4 +73,10 @@ public class RecruitmentUpdateFormDTO implements Serializable {
     @ApiModelProperty(value="人才标签")
     private String talentLabel;
 
+    /**
+     * 人才ID
+     */
+    @ApiModelProperty(value="人才ID")
+    private Long recruitmentId;
+
 }

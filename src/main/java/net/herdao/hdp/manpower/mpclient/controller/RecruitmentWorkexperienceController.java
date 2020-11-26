@@ -59,13 +59,13 @@ public class RecruitmentWorkexperienceController {
     @GetMapping("/page")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "分页实体", required = true),
-        @ApiImplicitParam(name = "recruitmentId", value = "分页对象", required = true)
+        @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
     })
-    public Page<RecruitmentWorkexperienceDTO> getRecruitmentWorkexperiencePage(Page page, Long recruitmentId) {
+    public R<Page<RecruitmentWorkexperienceDTO>> getRecruitmentWorkexperiencePage(Page page, Long recruitmentId) {
         RecruitmentWorkexperience workexperience = new RecruitmentWorkexperience();
         workexperience.setRecruitmentId(recruitmentId);
         Page<RecruitmentWorkexperienceDTO> pageResult = recruitmentWorkexperienceService.page(page, Wrappers.query(workexperience));
-        return pageResult;
+        return R.ok(pageResult);
     }
 
     /**

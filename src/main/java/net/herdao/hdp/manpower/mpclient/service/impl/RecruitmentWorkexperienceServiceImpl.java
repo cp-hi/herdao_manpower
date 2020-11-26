@@ -69,7 +69,7 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
         workexperience.setModifierCode(sysUser.getUsername());
         workexperience.setModifierName(sysUser.getAliasName());
 
-        super.save(workexperience);
+        super.updateById(workexperience);
         BeanUtils.copyProperties(workexperience,dto);
         return dto;
     }

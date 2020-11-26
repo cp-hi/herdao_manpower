@@ -158,7 +158,7 @@
             LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.MAIN_POST=1
             LEFT JOIN mp_post p ON p.ID = up.POST_ID
             LEFT JOIN mp_group g on p.GROUP_ID=g.ID
-            WHERE  f.del_flag = 0
+            WHERE f.del_flag = 0
             <if test="query.groupId != null">
                 and p.GROUP_ID = #{query.groupId}
             </if>
