@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -253,6 +254,24 @@ public class RecruitmentBaseDTO implements Serializable {
      */
     @ApiModelProperty(value="最高学历")
     private String highestEducation;
+
+    /**
+     * 最高学位
+     */
+    @ApiModelProperty(value="最高学位")
+    private String educationDegree;
+
+    /**
+     * 入学日期
+     */
+    @ApiModelProperty(value="入学日期")
+    private LocalDateTime beginDate;
+
+    /**
+     * 毕业日期
+     */
+    @ApiModelProperty(value="毕业日期")
+    private LocalDateTime endDate;
 
     /**
      * 是否有亲戚朋友在本公司

@@ -613,4 +613,16 @@ public class Recruitment extends Model<Recruitment> {
      */
     @ApiModelProperty(value="备注")
     private String remarks;
+
+    /**
+     * 职称证号
+     */
+    @ApiModelProperty(value="职称证号")
+    private String certificateNo;
+
+    /**
+     * 发证时间
+     */
+    @ApiModelProperty(value="发证时间")
+    private LocalDateTime certificateTime;
 }

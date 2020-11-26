@@ -224,39 +224,49 @@
 
     <!-- 人才简历-个人基本情况 从业情况与求职意向-->
     <select id="fetchResumeBaseSituation" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO">
-        SELECT  rec.talent_name,
-                rec.mobile,
-                disex.label sex,
-	            TIMESTAMPDIFF(YEAR ,rec.birthday, now()) age,
-                dirc.label talent_type,
-                dis.label resume_source,
-                rec.birthday,
-                rec.nation,
-                rec.birthplace,
-                disy.label fertility,
-                dihy.label marital_status,
-                dijk.label health_status,
-                rec.weight,
-                rec.height,
-                rec.political_landscape,
-                rec.emergency_contacts,
-                rec.EMERGENCY_PHONE,
-                TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age,
-                rec.workdate,
-                mp.POST_NAME,
-                rec.minimum_levelIncome,
-                rec.expected_levelIncome,
-                rec.other_request,
-                rec.induction_time
-            FROM
-                mp_recruitment rec
-                left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
-                left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
-                left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
-                left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
-                left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
-                left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
-                left join mp_post mp on mp.ID=rec.intention_post_id
+         SELECT     rec.id,
+                    rec.talent_name,
+                    rec.mobile,
+                    disex.label sex,
+                    TIMESTAMPDIFF(YEAR ,rec.birthday, now()) age,
+                    dirc.label talent_type,
+                    dis.label resume_source,
+                    rec.birthday,
+                    rec.nation,
+                    rec.birthplace,
+                    disy.label fertility,
+                    dihy.label marital_status,
+                    dijk.label health_status,
+                    rec.weight,
+                    rec.height,
+                    rec.political_landscape,
+                    rec.emergency_contacts,
+                    rec.EMERGENCY_PHONE,
+                    TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age,
+                    rec.workdate,
+                    mp.POST_NAME,
+                    rec.minimum_levelIncome,
+                    rec.expected_levelIncome,
+                    rec.other_request,
+                    rec.induction_time,
+                    zgxl.label highest_education,
+                    zgxw.label education_degree,
+                    rec.begin_date,
+                    rec.end_date,
+                    xxxs.label learn_form,
+                    rec.graduated,
+                    rec.professional
+            FROM  mp_recruitment rec
+                    left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
+                    left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
+                    left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
+                    left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
+                    left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
+                    left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
+                    left join sys_dict_item zgxl on zgxl.type='ZGXL' and zgxl.value=rec.highest_education
+                    left join sys_dict_item zgxw on zgxw.type='EDUCATION_DEGREE_TYPE' and zgxl.value=rec.education_degree
+                    left join sys_dict_item xxxs on xxxs.type='XXXS' and xxxs.value=rec.learn_form
+                    left join mp_post mp on mp.ID=rec.intention_post_id
             <where>
                 <if test="id != null ">
                     AND rec.id = #{id}
