@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.RecruitmentWorkexperienceMapper">
+
+      <resultMap id="recruitmentWorkexperienceMap" type="net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience">
+            <id property="id" column="id"/>
+            <result property="recruitmentId" column="recruitment_id"/>
+            <result property="recruitmentOid" column="recruitment_oid"/>
+            <result property="period" column="period"/>
+            <result property="todate" column="todate"/>
+            <result property="companyName" column="company_name"/>
+            <result property="post" column="post"/>
+            <result property="cashIncome" column="cash_income"/>
+            <result property="subordinate" column="subordinate"/>
+            <result property="leaveReason" column="leave_reason"/>
+            <result property="contact" column="contact"/>
+            <result property="contactTel" column="contact_tel"/>
+            <result property="creatorCode" column="creator_code"/>
+            <result property="creatorName" column="creator_name"/>
+            <result property="creatorTime" column="creator_time"/>
+            <result property="modifierCode" column="modifier_code"/>
+            <result property="modifierName" column="modifier_name"/>
+            <result property="modifierTime" column="modifier_time"/>
+            <result property="mainPerformance" column="main_performance"/>
+            <result property="oid" column="oid"/>
+            <result property="field1" column="FIELD1"/>
+            <result property="field2" column="FIELD2"/>
+            <result property="field3" column="FIELD3"/>
+            <result property="field4" column="FIELD4"/>
+            <result property="field5" column="FIELD5"/>
+            <result property="tenantId" column="TENANT_ID"/>
+            <result property="delFlag" column="DEL_FLAG"/>
+            <result property="role" column="role"/>
+      </resultMap>
+
+      <!-- 个人简历-工作经历-->
+      <select id="findWorkExperience" resultType="net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO">
+            SELECT wr.period,
+                   wr.todate,
+                   wr.company_name,
+                   wr.post,
+                   wr.cash_income,
+                   wr.subordinate,
+                   wr.leave_reason,
+                   wr.contact,
+                   wr.contact_tel
+              FROM
+                  mp_recruitment_workexperience wr
+            WHERE wr.DEL_FLAG =0
+            <where>
+                  <if test="id != null ">
+                     AND wr.id = #{id}
+                  </if>
+            </where>
+      </select>
+
+
+</mapper>

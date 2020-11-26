@@ -145,8 +145,8 @@
         </if>
     </select>
       
-      <!-- 工作情况-员工工作经历-->
-      <select id="findWorkexperienceDTO" resultType="net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO">
+    <!-- 工作情况-员工工作经历-->
+    <select id="findWorkexperienceDTO" resultType="net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO">
           SELECT  f.id,
                   f.BEGIN_DATE,
                   f.END_DATE,
@@ -171,5 +171,5 @@
             <if test="staffid != null">
             and f.STAFF_ID = #{staffid}
             </if>
-      </select>
+    </select>
 </mapper>
