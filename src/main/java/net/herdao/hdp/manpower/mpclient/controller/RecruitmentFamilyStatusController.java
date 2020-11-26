@@ -61,6 +61,10 @@ public class RecruitmentFamilyStatusController {
      */
     @ApiOperation(value = "个人简历-家庭情况-列表", notes = "个人简历-家庭情况-列表")
     @GetMapping("/fetchResumeFamilyPage")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "page", value = "分页对象", required = true),
+        @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
+    })
     public R<Page<RecruitmentFamilyDTO>> fetchResumeFamilyPage(Page page, Long recruitmentId) {
         Page<RecruitmentFamilyDTO> pageResult = recruitmentFamilyStatusService.fetchResumeFamilyPage(page, recruitmentId);
         return R.ok(pageResult);
@@ -73,6 +77,9 @@ public class RecruitmentFamilyStatusController {
      */
     @ApiOperation(value = "个人简历-家庭情况-编辑", notes = "个人简历-家庭情况-编辑")
     @GetMapping("/fetchDetails/{id}")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "ID", required = true)
+    })
     public R<RecruitmentFamilyDTO> fetchDetails(@PathVariable("id") Long id) {
         RecruitmentFamilyStatus familyStatus = recruitmentFamilyStatusService.getById(id);
         RecruitmentFamilyDTO dto=new RecruitmentFamilyDTO();
@@ -99,7 +106,7 @@ public class RecruitmentFamilyStatusController {
      */
     @ApiOperation(value = "个人简历-家庭情况-更新", notes = "个人简历-家庭情况-更新")
     @PutMapping("/updateFamily")
-    public R<RecruitmentFamilyDTO> updateFamily(@RequestBody RecruitmentFamilyDTO dto) {
+     public R<RecruitmentFamilyDTO> updateFamily(@RequestBody RecruitmentFamilyDTO dto) {
         RecruitmentFamilyDTO result = recruitmentFamilyStatusService.updateFamily(dto);
         return R.ok(result);
     }
@@ -111,6 +118,9 @@ public class RecruitmentFamilyStatusController {
      */
     @ApiOperation(value = "删除人才简历-家庭情况", notes = "删除人才简历-家庭情况")
     @DeleteMapping("/del/{id}")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "ID", required = true)
+    })
     public R removeById(@PathVariable Long id) {
         return R.ok(recruitmentFamilyStatusService.removeById(id));
     }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.RecruitmentAwardsMapper">
+
+            <resultMap id="recruitmentAwardsMap" type="net.herdao.hdp.manpower.mpclient.entity.RecruitmentAwards">
+                  <id property="id" column="id"/>
+                  <result property="recruitmentId" column="recruitment_id"/>
+                  <result property="recruitmentOid" column="recruitment_oid"/>
+                  <result property="awardsTime" column="awards_time"/>
+                  <result property="awardsContent" column="awards_content"/>
+                  <result property="issuedUnits" column="issued_units"/>
+                  <result property="creatorCode" column="creator_code"/>
+                  <result property="creatorName" column="creator_name"/>
+                  <result property="creatorTime" column="creator_time"/>
+                  <result property="modifierCode" column="modifier_code"/>
+                  <result property="modifierName" column="modifier_name"/>
+                  <result property="modifierTime" column="modifier_time"/>
+                  <result property="oid" column="oid"/>
+                  <result property="field1" column="FIELD1"/>
+                  <result property="field2" column="FIELD2"/>
+                  <result property="field3" column="FIELD3"/>
+                  <result property="field4" column="FIELD4"/>
+                  <result property="field5" column="FIELD5"/>
+                  <result property="tenantId" column="TENANT_ID"/>
+                  <result property="delFlag" column="DEL_FLAG"/>
+            </resultMap>
+
+      <!-- 人才简历-获奖情况-列表 -->
+      <select id="fetchResumeAwardsPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO">
+            SELECT r.awards_time,
+                   r.awards_content,
+                   r.issued_units,
+                   CONCAT( r.modifier_name, " 于 ", r.modifier_name, " 更新" ) update_desc
+             FROM  mp_recruitment_awards r
+            <where>
+                  r.del_flag = 0
+                  <if test="recruitmentId != null ">
+                        AND f.recruitment_id = #{recruitmentId}
+                  </if>
+            </where>
+      </select>
+</mapper>
