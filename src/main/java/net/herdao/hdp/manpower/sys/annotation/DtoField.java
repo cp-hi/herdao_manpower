@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.sys.annotation;
 
-import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import net.herdao.hdp.manpower.mpclient.service.impl.EntityServiceImpl;
 
 import java.lang.annotation.*;
@@ -22,6 +23,7 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@TableField(updateStrategy= FieldStrategy.IGNORED)
 public @interface DtoField {
 
     String[] objField() default "";

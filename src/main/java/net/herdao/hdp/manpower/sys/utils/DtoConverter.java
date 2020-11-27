@@ -53,9 +53,6 @@ public class DtoConverter {
         BeanUtils.copyProperties(source, target);
         List<Field> fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
         for (Field field : fields) {
-//            if (null == field) continue;
-//            field.setAccessible(true);
-
             //根据 DtoField中的信息获取source中对象数据
             DtoField dtoField = field.getAnnotation(DtoField.class);
 
@@ -189,7 +186,7 @@ public class DtoConverter {
         if (0 == source.size()) return list;
 
         //目标类型中所有字段及字段名称
-        List<Field> targetFields = AnnotationUtils.getAllFields(clzz, new String[0]);
+        List<Field> targetFields = AnnotationUtils.getAllFields(clzz);
         List<String> targetFieldNames = targetFields.stream().map(Field::getName).collect(Collectors.toList());
 
         //源对象中所有包含DtoField中的字段
@@ -225,6 +222,7 @@ public class DtoConverter {
     @SneakyThrows
     public static String bool2string(Boolean val, DtoField dtoField) {
         BiMap<String, String> converter = HashBiMap.create((Map) JSON.parse(dtoField.converter()));
-        return converter.inverse().get(val);
+        if (null == val) return null;
+        return converter.get(val.toString());
     }
 }
