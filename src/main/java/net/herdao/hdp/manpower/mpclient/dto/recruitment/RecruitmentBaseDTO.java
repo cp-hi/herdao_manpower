@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -21,8 +22,8 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才简历-个人基本情况 从业情况与求职意向")
-public class RecruitmentBaseDTO implements Serializable {
+@ApiModel(value = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向")
+public class RecruitmentBaseDTO extends BaseEntity<RecruitmentBaseDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -265,13 +266,13 @@ public class RecruitmentBaseDTO implements Serializable {
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")
-    private LocalDateTime beginDate;
+    private Date beginDate;
 
     /**
      * 毕业日期
      */
     @ApiModelProperty(value="毕业日期")
-    private LocalDateTime endDate;
+    private Date endDate;
 
     /**
      * 是否有亲戚朋友在本公司

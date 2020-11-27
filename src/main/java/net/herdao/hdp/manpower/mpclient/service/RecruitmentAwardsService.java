@@ -23,4 +23,12 @@ public interface RecruitmentAwardsService extends IService<RecruitmentAwards> {
      * @return
      */
     Page<RecruitmentAwardsDTO> fetchResumeAwardsPage(Page page, Long recruitmentId);
+
+    /**
+     * 人才简历-获奖情况-新增或修改
+     * @param dto
+     * @return
+     */
+    RecruitmentAwardsDTO saveOrUpdate(RecruitmentAwardsDTO dto);
+
 }

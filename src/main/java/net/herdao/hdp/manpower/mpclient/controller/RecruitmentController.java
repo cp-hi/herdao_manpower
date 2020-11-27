@@ -148,13 +148,13 @@ public class RecruitmentController  {
 
     /**
      * 编辑更新个人简历-个人基本情况 其他个人信息
-     * @param id id
+     * @param baseDTO 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
      * @return R
      */
     @ApiOperation(value = "编辑更新个人简历-个人基本情况 其他个人信息", notes = "编辑更新个人简历-个人基本情况 其他个人信息")
     @PostMapping("/updateBaseInfo" )
     public R<RecruitmentBaseDTO> updateBaseInfo(@RequestBody RecruitmentBaseDTO baseDTO) {
-        RecruitmentBaseDTO result = recruitmentService.updateBaseInfo(baseDTO);
+        RecruitmentBaseDTO result = recruitmentService.saveOrUpdate(baseDTO);
         return R.ok(result);
     }
 
