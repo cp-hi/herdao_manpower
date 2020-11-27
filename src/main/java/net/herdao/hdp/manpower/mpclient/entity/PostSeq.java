@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.service.impl.PostSeqServiceImpl;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
  * @ClassName PostSeq
@@ -34,12 +36,13 @@ public class PostSeq extends BaseEntity<PostSeq> {
     @ApiModelProperty(value = "描述", hidden = true)
     private String description;
 
-    @ApiModelProperty(value = "集团ID",required = true)
+    @ApiModelProperty(value = "集团", required = true)
     private Long groupId;
 
-    @ApiModelProperty(value = "父ID",required = true)
+    @ApiModelProperty(value = "父序列", required = true)
+    @DtoField(entityService = PostSeqServiceImpl.class, targetField = "parentName")
     private Long parentId;
 
-    @ApiModelProperty(value = "是否停用" )
+    @ApiModelProperty(value = "是否停用")
     private Boolean isStop;
 }

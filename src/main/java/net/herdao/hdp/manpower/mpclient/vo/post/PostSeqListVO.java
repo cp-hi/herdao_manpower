@@ -51,11 +51,11 @@ public class PostSeqListVO {
 
     @ExcelProperty("创建情况")
     @ApiModelProperty("创建情况")
-    @DtoField(objField = {"creatorName", "createdTime"}, mapFix = "{1:\"于\",3:\"创建\"}")
+    @DtoField(objField = {"creatorName", "createdTime"}, interpolation = "{1:\"于\",3:\"创建\"}")
     private String createdInfo;
 
     @ExcelProperty("最近更新情况")
     @ApiModelProperty("最近更新情况")
-    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix = "{1:\"于\",3:\"更新\"}")
+    @DtoField(objField = {"modifierName", "modifiedTime"}, interpolation = "{1:\"于\",3:\"更新\"}")
     private String lastUpdatedInfo;
 }

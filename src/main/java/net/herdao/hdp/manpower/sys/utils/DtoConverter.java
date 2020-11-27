@@ -4,20 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.SneakyThrows;
-import net.herdao.hdp.manpower.mpclient.service.EntityService;
-import net.herdao.hdp.manpower.mpclient.service.impl.EntityServiceImpl;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,8 +118,8 @@ public class DtoConverter {
         }
 
         //如果有插值map则插值， 一般用于 xx于 xx创建 xx于 xx更新
-        if (StringUtils.isNotBlank(dtoField.mapFix())) {
-            Map infix = (Map) JSON.parse(dtoField.mapFix());
+        if (StringUtils.isNotBlank(dtoField.interpolation())) {
+            Map infix = (Map) JSON.parse(dtoField.interpolation());
             for (Object key : infix.keySet()) {
                 Integer index = Integer.valueOf(key.toString());
                 if (values.size() >= index)

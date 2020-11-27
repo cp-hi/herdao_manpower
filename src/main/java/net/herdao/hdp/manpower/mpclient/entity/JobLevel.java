@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.service.impl.JobGradeServiceImpl;
+import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 import javax.validation.constraints.NotBlank;
 
@@ -37,10 +39,11 @@ public class JobLevel extends BaseEntity<JobLevel> {
     @ApiModelProperty(value = "描述", hidden = true)
     private String description;
 
-    @ApiModelProperty(value = "职等ID", required = true)
+    @ApiModelProperty(value = "职等", required = true)
+    @DtoField(entityService = JobGradeServiceImpl.class,targetField = "jobGradeName")
     private Long jobGradeId;
 
-    @ApiModelProperty(value = "集团ID", required = true)
+    @ApiModelProperty(value = "集团", required = true)
     private Long groupId;
 
     @ExcelProperty(value = "排序")

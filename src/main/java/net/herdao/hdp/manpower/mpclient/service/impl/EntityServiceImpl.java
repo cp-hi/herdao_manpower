@@ -87,6 +87,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
      */
     protected List<String> getExcludeFieldName() {
         List<String> excludeField = AnnotationUtils.getAllFieldNames(BaseEntity.class);
+        excludeField.add(baseMapper.getEntityCodeField());
         excludeField.add("isStop");
         excludeField.add("stopDate");
         excludeField.add("startDate");
@@ -118,20 +119,19 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             if (null == dtoField) {
                 tmp = String.format(tmp, property.value(), f.getFirstVal(), f.getSecondVal());
             } else {
+                String firstVal = null, secondVal = null;
                 if (EntityServiceImpl.class != dtoField.entityService()) {
                     EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
-                    String firstVal = service.selectEntityName((Serializable) f.getFirstVal());
-                    String secondVal = service.selectEntityName((Serializable) f.getSecondVal());
-                    tmp = String.format(tmp, property.value(), firstVal, secondVal);
+                    firstVal = service.selectEntityName((Serializable) f.getFirstVal());
+                    secondVal = service.selectEntityName((Serializable) f.getSecondVal());
                 } else if (StringUtils.isNotBlank(dtoField.dictField())) {
-                    String firstDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
-                    String secondDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
-                    tmp = String.format(tmp, property.value(), firstDict, secondDict);
+                    firstVal = DictCache.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
+                    secondVal = DictCache.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
                 } else if (Boolean.class == field.getType()) {
-                    String firstDict = DtoConverter.bool2string((Boolean) f.getFirstVal(), dtoField);
-                    String secondDict = DtoConverter.bool2string((Boolean) f.getSecondVal(), dtoField);
-                    tmp = String.format(tmp, property.value(), firstDict, secondDict);
+                    firstVal = DtoConverter.bool2string((Boolean) f.getFirstVal(), dtoField);
+                    secondVal = DtoConverter.bool2string((Boolean) f.getSecondVal(), dtoField);
                 }
+                tmp = String.format(tmp, property.value(), firstVal, secondVal);
             }
             modifyField.add(tmp);
         }
@@ -502,7 +502,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Override
     public String selectEntityName(Serializable id) {
-        return baseMapper.selectEntityName(id);
+        String entityName = baseMapper.selectEntityName(id);
+        return entityName;
     }
 
     @Override

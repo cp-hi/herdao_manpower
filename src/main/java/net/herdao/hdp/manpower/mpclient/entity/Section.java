@@ -25,7 +25,7 @@ public class Section extends BaseEntity<Section> {
     private String sectionCode;
     @ApiModelProperty(value = "板块名称")
     private String sectionName;
-    @ApiModelProperty(value = "集团ID",required = true)
+    @ApiModelProperty(value = "集团",required = true)
     private Long groupId;
     @ApiModelProperty(value = "排序",hidden = true)
     private Integer sortNo;

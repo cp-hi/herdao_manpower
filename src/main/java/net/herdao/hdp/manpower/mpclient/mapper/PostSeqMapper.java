@@ -4,6 +4,7 @@ import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -14,5 +15,6 @@ public interface PostSeqMapper extends EntityMapper<PostSeq> {
 
     PostSeqDTO getPostSeqDTO(Long id);
 
-    String selectEntityName(Long id);
+    @Override
+    String selectEntityName(Serializable id);
 }

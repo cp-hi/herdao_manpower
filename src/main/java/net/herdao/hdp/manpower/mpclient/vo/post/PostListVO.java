@@ -5,7 +5,6 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.service.impl.PipelineServiceImpl;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 
@@ -51,10 +50,10 @@ public class PostListVO {
     @ApiModelProperty("管线")
     private String pipelineName;
 
-    @ExcelProperty("管线")
-    @ApiModelProperty("管线")
+//    @ExcelProperty("管线")
+//    @ApiModelProperty("管线")
 //    @DtoField(entityService = PipelineServiceImpl.class, pkField = "pipelineId")
-    private String pipelineName1;
+//    private String pipelineName1;
 
     @ExcelProperty("职等")
     @ApiModelProperty("职等")
@@ -96,7 +95,7 @@ public class PostListVO {
 
     @ExcelProperty("最近更新情况")
     @ApiModelProperty("最近更新情况")
-    @DtoField(objField = {"modifierName", "modifiedTime"}, mapFix = "{1:\"于\",3:\"更新\"}")
+    @DtoField(objField = {"modifierName", "modifiedTime"}, interpolation = "{1:\"于\",3:\"更新\"}")
     private String lastUpdatedInfo;
 
 }

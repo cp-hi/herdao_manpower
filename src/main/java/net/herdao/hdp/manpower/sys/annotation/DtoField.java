@@ -32,19 +32,41 @@ public @interface DtoField {
 
     String dictField() default "";
 
+    /**
+     * 分割符
+     * @return
+     */
     String separator() default " ";
 
-    String mapFix() default "";//example  "{1:\"于\",3:\"创建\"}"    "{1:\"于\",3:\"更新\"}"
+    /**
+     * 插值字典
+     * @return
+     */
+    String interpolation() default "";//example  "{1:\"于\",3:\"创建\"}"    "{1:\"于\",3:\"更新\"}"
 
+    /**
+     * bool转换器
+     * @return
+     */
     String converter() default "{true:\"已停用\",false:\"已启用\"}";
 
+    /**
+     * 日期格式
+     * @return
+     */
     String pattern() default "yyyy-MM-dd HH:mm";
 
     String delFix() default "";
 
+    /**
+     * 实体服务类
+     * @return
+     */
     Class<? extends EntityServiceImpl> entityService() default EntityServiceImpl.class;
 
-    String pkField() default "";
-
+    /**
+     * 目标字段
+     * @return
+     */
     String targetField() default "";
 }

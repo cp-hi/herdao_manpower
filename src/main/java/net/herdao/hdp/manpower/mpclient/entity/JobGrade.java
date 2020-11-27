@@ -26,7 +26,7 @@ public class JobGrade extends BaseEntity<JobGrade> {
     private String jobGradeCode;
     @ApiModelProperty(value = "描述", hidden = true)
     private String description;
-    @ApiModelProperty(value = "集团id",required = true)
+    @ApiModelProperty(value = "集团",required = true)
     private Long groupId;
     @ApiModelProperty(value = "职等编码", hidden = true)
     private Integer sortNo;
