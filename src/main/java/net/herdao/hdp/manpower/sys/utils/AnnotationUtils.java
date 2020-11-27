@@ -59,35 +59,34 @@ public class AnnotationUtils {
      * @param object
      * @return
      */
-    public static Field[] getAllFields(Object object) {
+    public static List<Field> getAllFields(Object object) {
         Class clazz = object.getClass();
         return getAllFields(clazz, new String[0]);
     }
 
 
-    public static Field[] getAllFields(Class clazz, String... excludeColumn) {
-        List<Field> fieldList = new ArrayList<>();
+    public static List<Field> getAllFields(Class clazz, String... excludeColumn) {
+        List<Field> fields = new ArrayList<>();
         while (clazz != null) {
-            fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
+            fields.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
             clazz = clazz.getSuperclass();
         }
         List<String> exclude = Arrays.asList(excludeColumn);
-        fieldList = fieldList.stream().filter(f ->
+        fields = fields.stream().filter(f ->
                 !exclude.contains(f.getName())).collect(Collectors.toList());
-        Field[] fields = new Field[fieldList.size()];
-        fieldList.toArray(fields);
         return fields;
     }
 
 
     /**
      * 获取所有字段名
-     * @param clazz 类
+     *
+     * @param clazz         类
      * @param excludeColumn 要排除的字段
      * @return
      */
     public static List<String> getAllFieldNames(Class clazz, String... excludeColumn) {
-        List<Field> fields = Arrays.asList(getAllFields(clazz, excludeColumn));
+        List<Field> fields = getAllFields(clazz, excludeColumn);
         List<String> exclude = Arrays.asList(excludeColumn);
         List<String> fieldNames = fields.stream().map(Field::getName).filter(
                 n -> !exclude.contains(n)).collect(Collectors.toList());
@@ -96,7 +95,7 @@ public class AnnotationUtils {
 
 
     public static Field getFieldByName(Object source, String fieldName) {
-        Field[] fields = getAllFields(source);
+        List<Field> fields = getAllFields(source);
         for (Field field : fields) {
             if (fieldName.equals(field.getName())) {
                 field.setAccessible(true);
@@ -108,7 +107,7 @@ public class AnnotationUtils {
 
     @SneakyThrows
     public static Object getFieldValByName(Object source, String fieldName) {
-        Field[] fields = getAllFields(source);
+        List<Field> fields = getAllFields(source);
         for (Field field : fields) {
             if (fieldName.equals(field.getName())) {
                 field.setAccessible(true);
@@ -124,10 +123,6 @@ public class AnnotationUtils {
         propertyNames.removeAll(Arrays.asList(excludeColumn));
         return propertyNames;
     }
-
-//    public static List<String> getExcelPropertyNames(Object object) {
-//        return getExcelPropertyNames(object.getClass());
-//    }
 
     public static List<String> getExcelPropertyNames(Class clazz, String... excludeColumn) {
         Field[] fields = clazz.getDeclaredFields();
@@ -147,10 +142,10 @@ public class AnnotationUtils {
      * @return
      * @Author ljan
      */
-    public static Field[] getAnnotationFields(Object object, Class<? extends Annotation> clazz) {
-        Field[] fields = object.getClass().getDeclaredFields();
-        return getAllAnnotationFields(fields, clazz);
-    }
+//    public static List<Field> getAnnotationFields(Object object, Class<? extends Annotation> clazz) {
+//        Field[] fields = object.getClass().getDeclaredFields();
+//        return getAllAnnotationFields(fields, clazz);
+//    }
 
     /**
      * 获取当前类中包含某注解的字段,通常用于获取主键，包括父类，包括父类，包括父类
@@ -160,11 +155,11 @@ public class AnnotationUtils {
      * @Author ljan
      */
     public static Field getOneAnnotationFields(Object object, Class<? extends Annotation> clazz) {
-        Field[] fields = getAllFields(object);
+        List<Field> fields = getAllFields(object);
         fields = getAllAnnotationFields(fields, clazz);
-        if (null != fields && fields.length > 0) {
-            fields[0].setAccessible(true);
-            return fields[0];
+        if (null != fields && fields.size() > 0) {
+            fields.get(0).setAccessible(true);
+            return fields.get(0);
         }
         return null;
     }
@@ -176,8 +171,8 @@ public class AnnotationUtils {
      * @return
      * @Author ljan
      */
-    public static Field[] getAllAnnotationFields(Object object, Class<? extends Annotation> clazz) {
-        Field[] fields = getAllFields(object);
+    public static List<Field> getAllAnnotationFields(Object object, Class<? extends Annotation> clazz) {
+        List<Field> fields = getAllFields(object);
         return getAllAnnotationFields(fields, clazz);
     }
 
@@ -187,23 +182,23 @@ public class AnnotationUtils {
      * @return
      * @Author ljan
      */
-    public static Field[] getAllAnnotationFields(Field[] fields, Class<? extends Annotation> clazz) {
+    public static List<Field> getAllAnnotationFields(Field[] fields, Class<? extends Annotation> clazz) {
         List<Field> list = new ArrayList<>();
         for (Field field : fields) {
+            field.setAccessible(true);
             Annotation annotation = field.getAnnotation(clazz);
             if (null != annotation) list.add(field);
         }
-        Field[] array = new Field[list.size()];
-        return list.toArray(array);
+        return list;
     }
 
 
     public static Field getFieldByAnnotationAndName(Object object, String fieldName, Class<? extends Annotation> clazz) {
-        Field[] fields = getAllAnnotationFields(object, clazz);
+        List<Field> fields = getAllAnnotationFields(object, clazz);
         return getFieldByAnnotationAndName(fields, fieldName);
     }
 
-    public static Field getFieldByAnnotationAndName(Field[] fields, String fieldName) {
+    public static Field getFieldByAnnotationAndName(List<Field> fields, String fieldName) {
         Field field = null;
         for (Field f : fields) {
             if (fieldName.equals(f.getName())) {

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName DtoConverter
@@ -37,9 +38,9 @@ import java.util.Map;
 public class DtoConverter {
 
     /**
-     * @param source dto类
-     * @param targetClazz  vo 类
-     * @param <T>    vo 类
+     * @param source      dto类
+     * @param targetClazz vo 类
+     * @param <T>         vo 类
      * @return
      * @throws IllegalAccessException
      * @throws InstantiationException
@@ -50,10 +51,10 @@ public class DtoConverter {
             throws IllegalAccessException, InstantiationException {
         Object target = targetClazz.newInstance();
         BeanUtils.copyProperties(source, target);
-        Field[] fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
+        List<Field> fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
         for (Field field : fields) {
-            if (null == field) continue;
-            field.setAccessible(true);
+//            if (null == field) continue;
+//            field.setAccessible(true);
 
             //根据 DtoField中的信息获取source中对象数据
             DtoField dtoField = field.getAnnotation(DtoField.class);
@@ -65,13 +66,7 @@ public class DtoConverter {
             } else if (StringUtils.isNotBlank(dtoField.listField())) {
                 value = getListFieldVal(source, dtoField);//TODO 完善此方法
             } else if (StringUtils.isNotBlank(dtoField.dictField())) {
-                value = getDictFieldVal(source, dtoField);
-            } else if (StringUtils.isNotBlank(dtoField.targetField())) {
-                // TODO
-//                EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
-//                Object pkValue = AnnotationUtils.getFieldValByName(source, dtoField.pkField());
-//                String name = service.selectEntityName((Serializable) pkValue);
-//                value = name;
+                value = getDictFieldVal(source, field);
             }
             field.set(target, value);
         }
@@ -163,14 +158,16 @@ public class DtoConverter {
     /**
      * 转换字典对象
      *
-     * @param source   源对象
-     * @param dtoField 字典字段上的注解
+     * @param source 源对象
+     * @param field  字典字段
      * @return
      * @throws IllegalAccessException
      */
-    private static String getDictFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
+    private static String getDictFieldVal(Object source, Field field) throws IllegalAccessException {
+        DtoField dtoField = field.getAnnotation(DtoField.class);
         String[] dictInfo = dtoField.dictField().split("\\.");
-        Field currObj = AnnotationUtils.getFieldByName(source, dictInfo[1]);
+        String fieldName = dictInfo.length == 2 ? dictInfo[1] : field.getName();
+        Field currObj = AnnotationUtils.getFieldByName(source, fieldName);
         if (null == currObj) return null;
         Object val = currObj.get(source);
         return DictCache.getDictLabel(dictInfo[0], (String) val);
@@ -190,7 +187,14 @@ public class DtoConverter {
             throws InstantiationException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         if (0 == source.size()) return list;
-        Field[] fields = AnnotationUtils.getAllAnnotationFields(source.get(0), DtoField.class);
+
+        //目标类型中所有字段及字段名称
+        List<Field> targetFields = AnnotationUtils.getAllFields(clzz, new String[0]);
+        List<String> targetFieldNames = targetFields.stream().map(Field::getName).collect(Collectors.toList());
+
+        //源对象中所有包含DtoField中的字段
+        List<Field> sourceFields = AnnotationUtils.getAllAnnotationFields(source.get(0), DtoField.class);
+        sourceFields = sourceFields.stream().filter(sf -> targetFieldNames.contains(sf.getName())).collect(Collectors.toList());
         //TODO 先获取所有标注DtoField字段的数据存入List
         // 再把这些名称信息全部获取并存进缓存，设置有效期
         // 首先得设计缓存框架，包括Guava和Redis等等，缓存设计是重中之重！！！

@@ -8,7 +8,6 @@
 
     <resultMap id="postDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
         <id column="id" property="id"/>
-<!--        <result property="stop" column="IS_STOP"/>-->
         <result property="groupId" column="GROUP_ID"/>
         <result property="sectionId" column="section_id"/>
         <result property="pipelineId" column="pipeline_id"/>

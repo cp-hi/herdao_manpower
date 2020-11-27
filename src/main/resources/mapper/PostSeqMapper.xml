@@ -12,10 +12,7 @@
 
     <resultMap id="postSeqDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO">
         <id column="id" property="id"/>
-<!--        <result property="stop" column="IS_STOP"/>-->
         <result property="groupId" column="GROUP_ID"/>
-<!--        <result property="parent_seq_id" column="parentSeqId"/>-->
-<!--        <result property="parent_seq_name" column="parentSeqName"/>-->
         <association property="postCount" column="id" select="getPostCount" javaType="int"/>
         <association property="isLeaf" column="id" select="chkIsLeaf" javaType="boolean"/>
         <association property="groupName" column="group_id" javaType="string"

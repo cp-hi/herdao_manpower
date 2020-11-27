@@ -31,7 +31,6 @@ public class Pipeline extends BaseEntity<Pipeline> {
     @ApiModelProperty(value = "排序",hidden = true)
     private Integer sortNo;
     @ApiModelProperty(value = "是否停用",hidden = true)
-//    @TableField("IS_STOP")
     private Boolean isStop;
     @ApiModelProperty(value = "管线标准码",hidden = true)
     private String pipelineStdCode;

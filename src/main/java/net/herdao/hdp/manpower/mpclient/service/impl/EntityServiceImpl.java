@@ -102,7 +102,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             if (null == dtoField) {
                 tmp = String.format(tmp, property.value(), f.getFirstVal(), f.getSecondVal());
             } else {
-                if (null != dtoField.entityService()) {
+                if (EntityServiceImpl.class != dtoField.entityService()) {
                     EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
                     String firstVal = service.selectEntityName((Serializable) f.getFirstVal());
                     String secondVal = service.selectEntityName((Serializable) f.getSecondVal());
@@ -151,7 +151,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         //TODO 线程安全，能否锁住单个groupId下的value
         if (!currEntityCode.containsKey(groupId)) {
             Boolean groupEnable = baseMapper.checkGroupStatus(t);
-            if (!groupEnable) throw new Exception("找不到该集团，或已被删除或停用");
+            if (!groupEnable) throw new Exception("找不到该集团，可能已经被删除或停用");
             String lastEntityCode = baseMapper.getLastEntityCode(t);
             if (!NumberUtils.isNumber(lastEntityCode)) lastEntityCode = "000000";
             entityCode = Integer.valueOf(lastEntityCode) + count;
@@ -255,6 +255,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public void saveVerify(T t) {
         StringBuffer buffer = new StringBuffer();
+        Boolean isStop = getStatus(((BaseEntity) t).getId());
+        if (isStop) buffer.append("；该" + getEntityName() + "已经被删除");
         this.saveVerify(t, buffer);
         throwErrMsg(buffer);
     }
@@ -490,8 +492,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     public Function<T, Long> getGroupIdMapper() {
         throw new NotImplementedException("要使用批量保存方法请在各自的ServiceImpl类中重写此函数");
     }
+
     //endregion
-    protected <E> E checkData(R<E> r){
+    protected <E> E checkData(R<E> r) {
         return null;
     }
 }

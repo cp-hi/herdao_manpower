@@ -84,6 +84,7 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "岗位性质", hidden = true)
     private String postProperties;
     @ApiModelProperty(value = "绩效工资比例", hidden = true)
+    @DtoField(dictField = "YDJXGZBL", targetField = "perforSalaryRatio")
     private String perforSalaryRatio;
     //endregion
 
@@ -100,7 +101,6 @@ public class Post extends BaseEntity<Post> {
     private Integer sortNo;
 
     @ApiModelProperty(value = "是否停用")
-//    @TableField("IS_STOP")
     private Boolean isStop;
     @ApiModelProperty(value = "停用日期", hidden = true)
     private Date stopDate;
