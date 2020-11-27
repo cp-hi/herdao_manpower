@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, herdao All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the herdao.net developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: liang
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PostOrgMapper">
+
+  <resultMap id="mpPostOrgMap" type="net.herdao.hdp.manpower.mpclient.entity.PostOrg">
+                  <id property="id" column="ID"/>
+                        <result property="postCode" column="POST_CODE"/>
+                        <result property="postName" column="POST_NAME"/>
+                        <result property="groupId" column="GROUP_ID"/>
+                        <result property="postId" column="POST_ID"/>
+                        <result property="orgId" column="ORG_ID"/>
+                        <result property="isLeader" column="IS_LEADER"/>
+                        <result property="isCadre" column="IS_CADRE"/>
+                        <result property="sectionId" column="SECTION_ID"/>
+                        <result property="pipelineId" column="PIPELINE_ID"/>
+                        <result property="jobLevelId" column="JOB_LEVEL_ID"/>
+                        <result property="jobStaffs" column="JOB_STAFFS"/>
+                        <result property="sortNo" column="SORT_NO"/>
+                        <result property="isStop" column="IS_STOP"/>
+                        <result property="creatorCode" column="CREATOR_CODE"/>
+                        <result property="creatorName" column="CREATOR_NAME"/>
+                        <result property="createrTime" column="CREATOR_TIME"/>
+                        <result property="modifierCode" column="MODIFIER_CODE"/>
+                        <result property="modifierName" column="MODIFIER_NAME"/>
+                        <result property="modifierTime" column="MODIFIEr_TIME"/>
+                        <result property="remark" column="REMARK"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+                        <result property="stopDate" column="STOP_DATE"/>
+                        <result property="startDate" column="START_DATE"/>
+            </resultMap>
+    <resultMap id="dd" type="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
+        <id property="id" column="ID"/>
+        <result property="postCode" column="POST_CODE"/>
+        <result property="postName" column="POST_NAME"/>
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="postId" column="POST_ID"/>
+        <result property="orgId" column="ORG_ID"/>
+        <result property="isLeader" column="IS_LEADER"/>
+        <result property="isCadre" column="IS_CADRE"/>
+        <result property="sectionId" column="SECTION_ID"/>
+        <result property="pipelineId" column="PIPELINE_ID"/>
+        <result property="jobLevelId" column="JOB_LEVEL_ID"/>
+        <result property="jobStaffs" column="JOB_STAFFS"/>
+        <result property="sortNo" column="SORT_NO"/>
+        <result property="isStop" column="IS_STOP"/>
+        <result property="creatorCode" column="CREATOR_CODE"/>
+        <result property="creatorName" column="CREATOR_NAME"/>
+        <result property="createrTime" column="CREATOR_TIME"/>
+        <result property="modifierCode" column="MODIFIER_CODE"/>
+        <result property="modifierName" column="MODIFIER_NAME"/>
+        <result property="modifiedTime" column="MODIFIED_TIME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="tenantId" column="TENANT_ID"/>
+        <result property="field1" column="FIELD1"/>
+        <result property="field2" column="FIELD2"/>
+        <result property="field3" column="FIELD3"/>
+        <result property="field4" column="FIELD4"/>
+        <result property="field5" column="FIELD5"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="stopDate" column="STOP_DATE"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="mainPostName" column="main_post_name"/>
+        <result property="orgName" column="org_name"/>
+        <result property="jobGradeName" column="job_grade_name"/>
+        <result property="jobLevelName" column="job_level_name"/>
+        <result property="sectionName" column="section_name"/>
+        <result property="pipelineName" column="pipeline_name"/>
+        <result property="postSeqName" column="post_seq_name"/>
+    </resultMap>
+      <select id="findPostOrgPage" resultType="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
+        SELECT
+        po.*,
+        p.post_name main_post_name,
+        o.ORG_NAME,
+        jg.JOB_GRADE_NAME,
+        jl.JOB_LEVEL_NAME,
+        s.SECTION_NAME,
+        pl.PIPELINE_NAME,
+        ps.POST_SEQ_NAME
+        from
+        mp_post_org po
+        INNER JOIN mp_post p on po.POST_ID=p.id
+        INNER JOIN mp_organization o on po.org_id=o.id
+        LEFT JOIN mp_post_seq ps on p.POST_SEQ_ID=ps.id
+        LEFT JOIN mp_section s on po.section_id=s.id
+        LEFT JOIN mp_pipeline pl on po.pipeline_id=pl.id
+        left join mp_job_level jl on po.job_level_id=jl.id
+        LEFT join mp_job_grade jg on jl.job_grade_id=jg.id
+      </select>
+      <select id="findPostOrgById" resultType="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
+      </select>
+    <select id="getMaxCode" resultType="String">
+        SELECT
+            max(po.post_code)
+        FROM
+            mp_post_org po
+        WHERE
+            po.group_id =#{groupId}
+    </select>
+</mapper>
