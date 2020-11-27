@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.RecruitmentEducationMapper">
+
+      <resultMap id="recruitmentEducationMap" type="net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation">
+            <id property="id" column="id"/>
+            <result property="recruitmentId" column="recruitment_id"/>
+            <result property="recruitmentOid" column="recruitment_oid"/>
+            <result property="period" column="period"/>
+            <result property="todate" column="todate"/>
+            <result property="schoolName" column="school_name"/>
+            <result property="professional" column="professional"/>
+            <result property="degree" column="degree"/>
+            <result property="schoolSystem" column="school_system"/>
+            <result property="creatorCode" column="creator_code"/>
+            <result property="creatorName" column="creator_name"/>
+            <result property="creatorTime" column="creator_time"/>
+            <result property="modifierCode" column="modifier_code"/>
+            <result property="modifierName" column="modifier_name"/>
+            <result property="modifierTime" column="modifier_time"/>
+            <result property="oid" column="oid"/>
+            <result property="educationQua" column="education_qua"/>
+            <result property="field1" column="FIELD1"/>
+            <result property="field2" column="FIELD2"/>
+            <result property="field3" column="FIELD3"/>
+            <result property="field4" column="FIELD4"/>
+            <result property="field5" column="FIELD5"/>
+            <result property="tenantId" column="TENANT_ID"/>
+            <result property="delFlag" column="DEL_FLAG"/>
+            <result property="learnForm" column="learn_form"/>
+      </resultMap>
+
+      <!-- 人才简历-教育情况-列表 -->
+      <select id="fetchResumeEduPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO">
+            SELECT edu.period,
+                   edu.todate,
+                   edu.school_name,
+                   edu.professional,
+                   xl.label education_qua,
+                   xw.label degree,
+                   xxxs.label learn_form,
+                   CONCAT( edu.modifier_name, " 于 ", edu.modifier_name, " 更新" ) update_desc
+            FROM  mp_recruitment_education edu
+            LEFT JOIN sys_dict_item xl ON xl.type = 'EDUCATION_QUA_TYPE' AND xl.VALUE = edu.education_qua
+            LEFT JOIN sys_dict_item xw ON xw.type = 'EDUCATION_DEGREE_TYPE' AND xw.VALUE = edu.education_qua
+            LEFT JOIN sys_dict_item xxxs ON xxxs.type = 'XXXS' AND xxxs.VALUE = edu.education_qua
+              <where>
+                  edu.DEL_FLAG = 0
+                  <if test="recruitmentId != null ">
+                        AND f.recruitment_id = #{recruitmentId}
+                  </if>
+              </where>
+      </select>
+</mapper>
