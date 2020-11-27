@@ -25,6 +25,7 @@ import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.ApplicationContextBeanUtils;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -110,6 +111,10 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                 } else if (StringUtils.isNotBlank(dtoField.dictField())) {
                     String firstDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
                     String secondDict = DictCache.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
+                    tmp = String.format(tmp, property.value(), firstDict, secondDict);
+                } else if (Boolean.class == field.getType()) {
+                    String firstDict = DtoConverter.bool2string((Boolean) f.getFirstVal(), dtoField);
+                    String secondDict = DtoConverter.bool2string((Boolean) f.getSecondVal(), dtoField);
                     tmp = String.format(tmp, property.value(), firstDict, secondDict);
                 }
             }
@@ -248,15 +253,24 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("is_stop").eq("id", id);
         List<Object> objs = baseMapper.selectObjs(queryWrapper);
-        if (objs.size() > 0) return (Boolean) objs.get(0);
+        if (objs.size() > 0) return Integer.valueOf(1).equals(objs.get(0));
+        throw new Exception("找不到此对象，或已被删除");
+    }
+
+    @SneakyThrows
+    public boolean isDelete(Serializable id) {
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("del_flag").eq("id", id);
+        List<Object> objs = baseMapper.selectObjs(queryWrapper);
+        if (objs.size() > 0) return Integer.valueOf(1).equals(objs.get(0));
         throw new Exception("找不到此对象，或已被删除");
     }
 
     @Override
     public void saveVerify(T t) {
         StringBuffer buffer = new StringBuffer();
-        Boolean isStop = getStatus(((BaseEntity) t).getId());
-        if (isStop) buffer.append("；该" + getEntityName() + "已经被删除");
+        Boolean isDel = isDelete(((BaseEntity) t).getId());
+        if (isDel) buffer.append("；该" + getEntityName() + "已经被删除");
         this.saveVerify(t, buffer);
         throwErrMsg(buffer);
     }
