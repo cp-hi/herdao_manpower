@@ -84,6 +84,7 @@ public class Post extends BaseEntity<Post> {
     @ApiModelProperty(value = "岗位性质", hidden = true)
     private String postProperties;
     @ApiModelProperty(value = "绩效工资比例", hidden = true)
+    @DtoField(dictField = "YDJXGZBL", targetField = "perforSalaryRatio")
     private String perforSalaryRatio;
     //endregion
 
