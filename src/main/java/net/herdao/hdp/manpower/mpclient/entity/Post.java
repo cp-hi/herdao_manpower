@@ -1,7 +1,5 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -66,26 +64,29 @@ public class Post extends BaseEntity<Post> {
 
     //region 字典
     @ApiModelProperty(value = "岗位薪酬级别", hidden = true)
+    @DtoField(dictField = "XCJB" ,targetField = "postLevelName")
     private String postLevel;
 
     @ApiModelProperty(value = "福利级别", hidden = true)
+    @DtoField(dictField = "XCBL",targetField = "yearPayRatioName")
     private String welfareLevel;
 
     @ApiModelProperty(value = "行政级别", hidden = true)
+    @DtoField(dictField = "XZJB", targetField = "administrativeLevelName")
     private String administrativeLevel;
 
     @ApiModelProperty(value = "年终奖比例", hidden = true)
-    @DtoField(dictField = "XCBL", targetField = "yearPayRatio")
+    @DtoField(dictField = "XCBL", targetField = "yearPayRatioName")
     private String yearPayRatio;
 
-    @ApiModelProperty(value = "是否销售岗位", hidden = true)
-    private Boolean salesPosition;
-
-    @ApiModelProperty(value = "是否销售管理岗位", hidden = true)
-    private Boolean salesManager;
-
     @ApiModelProperty(value = "岗位组织类型", hidden = true)
+    @DtoField(dictField = "GWZZLX", targetField = "orgTypeName")
     private String orgType;
+
+    @ApiModelProperty(value = "绩效工资比例", hidden = true)
+    @DtoField(dictField = "YDJXGZBL", targetField = "perforSalaryRatioName")
+    private String perforSalaryRatio;
+    //endregion
 
     @ApiModelProperty(value = "岗位职责", hidden = true)
     private String postDescr;
@@ -93,16 +94,20 @@ public class Post extends BaseEntity<Post> {
     private String remark;
     @ApiModelProperty(value = "岗位性质", hidden = true)
     private String postProperties;
-    @ApiModelProperty(value = "绩效工资比例", hidden = true)
-    @DtoField(dictField = "YDJXGZBL", targetField = "perforSalaryRatio")
-    private String perforSalaryRatio;
-    //endregion
+
+    @ApiModelProperty(value = "是否销售岗位", hidden = true)
+    @DtoField(converter = "{true:\"是\",false:\"否\"}")
+    private Boolean salesPosition;
+
+    @ApiModelProperty(value = "是否销售管理岗位", hidden = true)
+    @DtoField(converter = "{true:\"是\",false:\"否\"}")
+    private Boolean salesManager;
 
     @ApiModelProperty(value = "岗位族", hidden = true)
     private String postClan;
 
-//    @ApiModelProperty(value = "职等名称", hidden = true)
-//    private String gradeName;
+    @ApiModelProperty(value = "职等名称", hidden = true)
+    private String gradeName;
 
     @ApiModelProperty(value = "集团", required = true)
     private Long groupId;

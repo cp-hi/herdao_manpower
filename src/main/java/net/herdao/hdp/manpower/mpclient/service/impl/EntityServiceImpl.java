@@ -82,6 +82,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     /**
      * 检验差异字段时要排除的字段
      * 如需加减，可以在子类中重写
+     *
      * @return
      */
     protected List<String> getExcludeFieldName() {
@@ -106,6 +107,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         List<String> excludeField = getExcludeFieldName();
         List<FieldInfo> diff = equator.getDiffFields(origin, current).stream().filter(
                 f -> !excludeField.contains(f.getFieldName())).collect(Collectors.toList());
+
         List<String> modifyField = new ArrayList<>();
 
         for (FieldInfo f : diff) {
@@ -270,13 +272,12 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         throw new Exception("找不到此对象，或已被删除");
     }
 
-    @SneakyThrows
     public boolean isDelete(Serializable id) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("del_flag").eq("id", id);
         List<Object> objs = baseMapper.selectObjs(queryWrapper);
         if (objs.size() > 0) return Integer.valueOf(1).equals(objs.get(0));
-        throw new Exception("找不到此对象，或已被删除");
+        return false;
     }
 
     @Override
