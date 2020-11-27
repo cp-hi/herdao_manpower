@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysStation;
 import net.herdao.hdp.admin.api.feign.RemoteStationService;
@@ -14,6 +15,7 @@ import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.sys.cache.DictCache;
 import net.herdao.hdp.manpower.sys.cache.GroupCache;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -131,6 +133,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         }
         return baseMapper.getPostStaffs(postId, limit);
     }
+
     //endregion
 
     //region 批量新增编辑校验
@@ -240,4 +243,16 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         station.setSingleGrade(post.getSingleJobLevle().toString());
         return station;
     }
+
+    @Autowired
+    private PostMapper mapper;
+    @Override
+    public void validityCheck(Long id, String msg) throws Exception {
+        QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        if (mapper.selectOne(queryWrapper) == null) {
+            throw new Exception(msg);
+        }
+    }
+
 }

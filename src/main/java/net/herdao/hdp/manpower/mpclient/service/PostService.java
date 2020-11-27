@@ -40,4 +40,6 @@ public interface PostService extends  EntityService<Post> {
      */
     List<PostStaffVO> getPostStaffs(Long postId, String operation, String size);
 
+    public void validityCheck(Long id, String msg) throws Exception;
+
 }

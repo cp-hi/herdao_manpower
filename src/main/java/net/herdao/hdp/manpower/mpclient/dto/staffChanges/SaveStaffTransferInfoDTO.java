@@ -15,6 +15,9 @@ import java.util.List;
 @Data
 @ApiModel(value = "保存人事调动详情")
 public class SaveStaffTransferInfoDTO {
+    @ApiModelProperty(value = "员工id", name = "userId", example = "1234", required = true)
+    @NotBlank
+    private Long userId;
 
     @ApiModelProperty(value = "调动前部门 id", name = "nowOrgId", example = "1234", required = true)
     @NotBlank
@@ -54,7 +57,7 @@ public class SaveStaffTransferInfoDTO {
     private Integer postHasCount;
 
     @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
-    private Boolean prepareChange;
+    private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;
@@ -69,10 +72,10 @@ public class SaveStaffTransferInfoDTO {
     private Double threeGroupSeniority;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitsId")
-    private String paidUnitsId;
+    private Long paidUnitsId;
 
     @ApiModelProperty(value = "公积金购买单位 id", name = "paidUnitsId")
-    private String fundUnitsId;
+    private Long fundUnitsId;
 
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
     private Long securityUnitId;

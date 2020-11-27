@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffChangesMapper">
+
+    <select id="findStaffTransferPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO">
+        SELECT
+        	sta.id,
+        	sta.user_id,
+            s.staff_name,
+            s.staff_code,
+            sta.trans_start_date,
+        	norg.ORG_NAME now_org_name,
+            np.POST_NAME now_post_name,
+        	torg.ORG_NAME trans_org_name,
+        	tp.POST_NAME trans_post_name
+
+        FROM mp_staff_transfer_approve sta
+        LEFT JOIN mp_staff s ON sta.user_id = s.user_id
+        LEFT JOIN mp_organization norg ON sta.now_org_id = norg.id
+        LEFT JOIN mp_post np ON sta.now_post_id = np.id
+        LEFT JOIN mp_organization torg ON sta.trans_org_id = torg.id
+        LEFT JOIN mp_post tp ON sta.trans_post_id = tp.id
+
+        <where>
+            <if test="searchText != '' and searchText != null">
+                and
+                s.staff_name like concat(#{searchText},'%')
+--                 concat(
+--                     IFNULL(s.staff_name,''),
+--                     IFNULL(s.staff_code,''),
+--                     IFNULL(sta.trans_start_date,''),
+--                     IFNULL(norg.now_org_name,''),
+--                     IFNULL(np.now_post_name,''),
+--                     IFNULL(torg.trans_org_name,''),
+--                     IFNULL(tp.trans_post_name,'') ,
+--                 )  LIKE concat(#{searchText},'%')
+            </if>
+            <if test="status != '' and status != null">
+                and sta.`status` = #{status}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -166,4 +166,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         return form;
     }
 
+    @Autowired
+    private CompanyMapper mapper;
+    @Override
+    public void validityCheck(Long id, String msg) throws Exception {
+        Company company = mapper.selectById(id);
+        if (company == null) {
+            throw new Exception(msg);
+        }
+    }
 }

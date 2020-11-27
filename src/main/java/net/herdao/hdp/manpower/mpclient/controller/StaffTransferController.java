@@ -6,9 +6,11 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferExecuteDTO;
+import net.herdao.hdp.manpower.mpclient.service.StaffTransferService;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferExecuteVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -22,6 +24,8 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/staff/transfer" )
 @Api(value = "staffTransfer", tags = "员工异动管理-人事调动")
 public class StaffTransferController {
+    @Autowired
+    private StaffTransferService service;
 
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
@@ -29,7 +33,7 @@ public class StaffTransferController {
                                                           Page page,
                                                           Long orgId,
                                                           String status) {
-        return null;
+        return R.ok(service.pageTransfer(page, searchText, orgId, status));
     }
 
     /**
@@ -43,39 +47,36 @@ public class StaffTransferController {
         return null;
     }
 
-    /**
-     * "确认发起" 对接第三方 TODO:: 待讨论
-     * @return
-     */
-    @ApiOperation(value = "分页列表-确认发起")
-    @GetMapping("/affirm/{id}")
-    public R affirmStaffTransfer(@RequestParam("id") Long id) {
-        return null;
+    @ApiOperation(value = "分页列表/详情页-确认发起")
+    @PostMapping("/affirm/start")
+    public R affirmStaffTransfer(Long id,
+                                 @RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
+        return R.ok(service.affirmStart(id, dto));
     }
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
     public R deleteStaffTransfer(@PathVariable("id") Long id) {
-        return null;
+        return R.ok(service.removeById(id));
     }
 
     @ApiOperation(value = "人事调动详情")
     @GetMapping("/{id}" )
     public R<StaffTransferInfoVO> getStaffTransferInfo(@PathVariable("id") Long id) {
-        return null;
+        return R.ok(service.getDetail(id));
     }
 
-    @ApiOperation(value = "新增人事调动")
+    @ApiOperation(value = "新增人事调动-保存")
     @PostMapping
-    public R<Long> addStaffTransfer(@RequestBody @NotNull SaveStaffTransferInfoDTO dto) {
-        return null;
+    public R<Long> addStaffTransfer(@RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
+       return R.ok(service.save(dto));
     }
 
-    @ApiOperation(value = "更新人事调动")
+    @ApiOperation(value = "更新人事调动-保存")
     @PutMapping("/{id}")
     public R<Long> updateStaffTransfer(@RequestBody @NotNull SaveStaffTransferInfoDTO dto,
-                                       @PathVariable("id") @NotNull Long id) {
-        return null;
+                                       @PathVariable("id") @NotNull Long id) throws Exception {
+        return R.ok(service.updateInfo(id, dto));
     }
 
     @ApiOperation(value = "获取执行调动信息")

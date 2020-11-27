@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -97,7 +98,7 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     private String transferType;
 
     @ApiModelProperty(value = "是否编制置换")
-    private Boolean prepareChange;
+    private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "现年度岗位编制")
     private Integer nowYearPostPrepareCount;
@@ -115,10 +116,10 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     private String paidUnitsOid;
 
     @ApiModelProperty(value = "社保缴纳单位id")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "社保缴纳单位oid")
-    private String securityUnitOid;
+    private String securityUnitsOid;
 
     @ApiModelProperty(value = "公积金缴纳单位id")
     private Long fundUnitsId;
@@ -155,4 +156,9 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
 
     @ApiModelProperty(value = "变更后职级id")
     private Long transJobLevelId;
+
+    private Long postOrgId;
+
+    @TableLogic
+    private Boolean delFlag;
 }

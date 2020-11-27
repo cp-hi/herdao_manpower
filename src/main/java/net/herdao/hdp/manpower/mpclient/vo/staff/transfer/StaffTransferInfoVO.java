@@ -95,10 +95,10 @@ public class StaffTransferInfoVO {
     private String fundUnitsName;
 
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "社保购买单位名称", name = "securityUnitName")
-    private Long securityUnitName;
+    private String securityUnitsName;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
