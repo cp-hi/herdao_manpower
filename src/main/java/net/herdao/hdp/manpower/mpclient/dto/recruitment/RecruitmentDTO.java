@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才列表DTO")
+@ApiModel(value = "人才列表")
 public class RecruitmentDTO extends BaseEntity<RecruitmentDTO> {
 
     private static final long serialVersionUID = 1L;

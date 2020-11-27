@@ -22,7 +22,7 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才家庭情况DTO")
+@ApiModel(value = "人才家庭情况")
 public class RecruitmentFamilyDTO extends BaseEntity<RecruitmentFamilyDTO> {
 
     private static final long serialVersionUID = 1L;

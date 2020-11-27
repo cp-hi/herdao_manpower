@@ -17,7 +17,7 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表单新增DTO")
+@ApiModel(value = "人才表单新增")
 public class RecruitmentAddFormDTO extends BaseEntity<RecruitmentAddFormDTO> {
 
     private static final long serialVersionUID = 1L;
