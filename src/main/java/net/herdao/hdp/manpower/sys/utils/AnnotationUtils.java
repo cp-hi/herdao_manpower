@@ -53,18 +53,6 @@ public class AnnotationUtils {
         }
     }
 
-    /**
-     * 获取一个类所有字段，包括父类
-     *
-     * @param object
-     * @return
-     */
-    public static List<Field> getAllFields(Object object) {
-        Class clazz = object.getClass();
-        return getAllFields(clazz, new String[0]);
-    }
-
-
     public static List<Field> getAllFields(Class clazz, String... excludeColumn) {
         List<Field> fields = new ArrayList<>();
         while (clazz != null) {
@@ -93,26 +81,12 @@ public class AnnotationUtils {
         return fieldNames;
     }
 
-
     public static Field getFieldByName(Object source, String fieldName) {
-        List<Field> fields = getAllFields(source);
+        List<Field> fields = getAllFields(source.getClass());
         for (Field field : fields) {
             if (fieldName.equals(field.getName())) {
                 field.setAccessible(true);
                 return field;
-            }
-        }
-        return null;
-    }
-
-    @SneakyThrows
-    public static Object getFieldValByName(Object source, String fieldName) {
-        List<Field> fields = getAllFields(source);
-        for (Field field : fields) {
-            if (fieldName.equals(field.getName())) {
-                field.setAccessible(true);
-                Object val = field.get(source);
-                return val;
             }
         }
         return null;
@@ -136,18 +110,6 @@ public class AnnotationUtils {
     }
 
     /**
-     * 获取当前类中包含某注解的字段，注意，不包含父类的
-     *
-     * @param object
-     * @return
-     * @Author ljan
-     */
-//    public static List<Field> getAnnotationFields(Object object, Class<? extends Annotation> clazz) {
-//        Field[] fields = object.getClass().getDeclaredFields();
-//        return getAllAnnotationFields(fields, clazz);
-//    }
-
-    /**
      * 获取当前类中包含某注解的字段,通常用于获取主键，包括父类，包括父类，包括父类
      *
      * @param object
@@ -155,7 +117,7 @@ public class AnnotationUtils {
      * @Author ljan
      */
     public static Field getOneAnnotationFields(Object object, Class<? extends Annotation> clazz) {
-        List<Field> fields = getAllFields(object);
+        List<Field> fields = getAllFields(object.getClass());
         fields = getAllAnnotationFields(fields, clazz);
         if (null != fields && fields.size() > 0) {
             fields.get(0).setAccessible(true);
@@ -172,17 +134,7 @@ public class AnnotationUtils {
      * @Author ljan
      */
     public static List<Field> getAllAnnotationFields(Object object, Class<? extends Annotation> clazz) {
-        List<Field> fields = getAllFields(object);
-        return getAllAnnotationFields(fields, clazz);
-    }
-
-    /**
-     * 获取当前类中包含某注解的字段，包括父类，包括父类，包括父类
-     *
-     * @return
-     * @Author ljan
-     */
-    public static List<Field> getAllAnnotationFields(Field[] fields, Class<? extends Annotation> clazz) {
+        List<Field> fields = getAllFields(object.getClass());
         List<Field> list = new ArrayList<>();
         for (Field field : fields) {
             field.setAccessible(true);
@@ -190,37 +142,5 @@ public class AnnotationUtils {
             if (null != annotation) list.add(field);
         }
         return list;
-    }
-
-
-    public static Field getFieldByAnnotationAndName(Object object, String fieldName, Class<? extends Annotation> clazz) {
-        List<Field> fields = getAllAnnotationFields(object, clazz);
-        return getFieldByAnnotationAndName(fields, fieldName);
-    }
-
-    public static Field getFieldByAnnotationAndName(List<Field> fields, String fieldName) {
-        Field field = null;
-        for (Field f : fields) {
-            if (fieldName.equals(f.getName())) {
-                f.setAccessible(true);
-                field = f;
-                break;
-            }
-        }
-        return field;
-    }
-
-
-    public static <T extends Annotation> T getAnnotationByFieldName(Object object, String fieldName, Class<? extends Annotation> clazz) {
-        Field field = getFieldByAnnotationAndName(object, fieldName, clazz);
-        T t = (T) field.getAnnotation(clazz);
-        return t;
-    }
-
-
-    public static <T extends Annotation> T getAnnotationByFieldName(Field[] fields, String fieldName, Class<? extends Annotation> clazz) {
-        Field field = getFieldByAnnotationAndName(fields, fieldName, clazz);
-        T t = (T) field.getAnnotation(clazz);
-        return t;
     }
 }

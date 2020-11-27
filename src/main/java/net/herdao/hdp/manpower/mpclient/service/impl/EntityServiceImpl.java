@@ -80,17 +80,30 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     /**
+     * 检验差异字段时要排除的字段
+     * 如需加减，可以在子类中重写
+     * @return
+     */
+    protected List<String> getExcludeFieldName() {
+        List<String> excludeField = AnnotationUtils.getAllFieldNames(BaseEntity.class);
+        excludeField.add("isStop");
+        excludeField.add("stopDate");
+        excludeField.add("startDate");
+        return excludeField;
+    }
+
+    /**
      * 获取变更字段内容
+     * 特殊的可以留在子类中实现
      *
      * @param origin
      * @return
      */
     @SneakyThrows
-    private List<String> getDiffEntityContent(T origin) {
+    protected List<String> getDiffEntityContent(T origin, T current) {
         Equator equator = new GetterBaseEquator();
-        T current = baseMapper.selectIgnoreDel(((BaseEntity) origin).getId());
         //TODO 比较字段变化及排除不需要比较字段
-        List<String> excludeField = AnnotationUtils.getAllFieldNames(BaseEntity.class, new String[0]);
+        List<String> excludeField = getExcludeFieldName();
         List<FieldInfo> diff = equator.getDiffFields(origin, current).stream().filter(
                 f -> !excludeField.contains(f.getFieldName())).collect(Collectors.toList());
         List<String> modifyField = new ArrayList<>();
@@ -171,7 +184,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     /**
      * 生成编码
      * 这里传入种子，子类可根据需求改变长度，
-     * 这里默认6位数字，不足补0
+     * 这里默认6位数字，不足补0，可以在子类中重写
      *
      * @param seed 种子数字，用于填充0
      * @return
@@ -203,7 +216,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             entity.setModifierId(Long.valueOf(sysUser.getUserId()));
             result = this.saveOrUpdate(t);
             if (result) {
-                List<String> content = getDiffEntityContent(origin);
+                List<String> content = getDiffEntityContent(origin, t);
                 if (content.size() > 0)
                     addOperationLog("编辑", entity.getId(), StringUtils.join(content, "；"));
             }
