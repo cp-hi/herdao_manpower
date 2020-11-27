@@ -105,13 +105,7 @@ public interface EntityService<T> extends IService<T> {
      *
      * @param t
      */
-    default Long saveSync(T t){return null;};
-    /**
-     * 更新同步平台数据
-     *
-     * @param t
-     */
-    default Boolean updateSync(T t){return null;};
+    default void saveOrUpdateSync(T t){};
     /**
      * 删除同步平台数据
      *
@@ -121,7 +115,12 @@ public interface EntityService<T> extends IService<T> {
      * 批量保存或更新
      *
      */
-    default Boolean saveOrUpdateBatchSync(Collection<T> collection){return null;};
+    default void saveOrUpdateBatchSync(List<T> collection){};
+    /**
+     * 删除同步平台数据
+     *
+     */
+    default Boolean stop(Serializable id,Boolean stop){return null;};
     /**
      * 导入校验
      *

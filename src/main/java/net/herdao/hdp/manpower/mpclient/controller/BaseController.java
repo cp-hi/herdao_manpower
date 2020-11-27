@@ -150,7 +150,7 @@ public class BaseController<T, D, F> {
             @ApiImplicitParam(name = "id", value = "主键"),
             @ApiImplicitParam(name = "stop", value = "0：启用；1：停用"),
     })
-    public R<Boolean> stop(@PathVariable Long id, @PathVariable boolean isStop) {
+    public R<Boolean> stop(@PathVariable("id") Long id, @PathVariable("stop") boolean isStop) {
         try {
             Boolean result = getEntityService().stopEntity(id, isStop);
             return R.ok(result);

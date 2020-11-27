@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import net.herdao.hdp.admin.api.entity.SysStationSeq;
 import net.herdao.hdp.admin.api.feign.RemoteStationSeqService;
 import net.herdao.hdp.admin.api.vo.TreeUtil;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqTree;
@@ -130,19 +131,18 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public Long saveSync(PostSeq postSeq) {
-        SysStationSeq stationSeq = converterValue(postSeq);
-        R<Long> r = remoteStationSeqService.save(stationSeq);
-        return checkData(r);
+    public Boolean isSync() {
+        return Boolean.TRUE;
     }
 
     @Override
-    public Boolean updateSync(PostSeq postSeq) {
+    public void saveOrUpdateSync(PostSeq postSeq) {
         SysStationSeq stationSeq = converterValue(postSeq);
-        stationSeq.setId(postSeq.getId());
-        R<Boolean> r = remoteStationSeqService.update(stationSeq);
-        return checkData(r);
+        R<Long> r = remoteStationSeqService.saveOrUpdate(stationSeq);
+        Long aLong = checkData(r);
+        postSeq.setId(aLong);
     }
+
 
     @Override
     public Boolean deleteSync(Serializable id) {
@@ -151,18 +151,26 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     }
 
     @Override
-    public Boolean saveOrUpdateBatchSync(Collection<PostSeq> collection) {
+    public Boolean stop(Serializable id, Boolean stop) {
+        R<Boolean> r = remoteStationSeqService.stop(id, stop);
+        return checkData(r);
+    }
+
+    @Override
+    public void saveOrUpdateBatchSync(List<PostSeq> collection) {
         List<SysStationSeq> list = new ArrayList<>();
         collection.forEach(postSeq->{
-            SysStationSeq stationSeq = converterValue(postSeq);
-            stationSeq.setId(postSeq.getId());
-            list.add(stationSeq);
+            list.add(converterValue(postSeq));
         });
-        R<Boolean> r = remoteStationSeqService.saveOrUpdateBatch(list);
-        return checkData(r);
+        R<List<Long>> r = remoteStationSeqService.saveOrUpdateBatch(list);
+        List<Long> longs = checkData(r);
+        for(int i=0;i<longs.size();i++){
+            collection.get(i).setId(longs.get(i));
+        }
     }
     private SysStationSeq converterValue(PostSeq postSeq){
         SysStationSeq stationSeq = new SysStationSeq();
+        stationSeq.setId(postSeq.getId());
         stationSeq.setName(postSeq.getPostSeqName());
         stationSeq.setParentId(postSeq.getParentId());
         return stationSeq;

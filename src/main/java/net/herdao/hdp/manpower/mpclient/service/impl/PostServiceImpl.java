@@ -193,21 +193,17 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         return Post::getGroupId;
     }
 
-
-
     @Override
-    public Long saveSync(Post post) {
-        SysStation station = converterValue(post);
-        R<Long> r = remoteStationService.save(station);
-        return checkData(r);
+    public Boolean isSync() {
+        return Boolean.TRUE;
     }
 
     @Override
-    public Boolean updateSync(Post post) {
+    public void saveOrUpdateSync(Post post) {
         SysStation station = converterValue(post);
-        station.setId(post.getId());
-        R<Boolean> r = remoteStationService.update(station);
-        return checkData(r);
+        R<Long> r = remoteStationService.save(station);
+        Long aLong = checkData(r);
+        post.setId(aLong);
     }
 
     @Override
@@ -218,17 +214,26 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     @Override
-    public Boolean saveOrUpdateBatchSync(Collection<Post> collection) {
+    public Boolean stop(Serializable id, Boolean stop) {
+        R<Boolean> r = remoteStationService.stop(id,stop);
+        return checkData(r);
+    }
+
+    @Override
+    public void saveOrUpdateBatchSync(List<Post> collection) {
         List<SysStation> list = new ArrayList<>();
         collection.forEach(post -> {
             SysStation station = converterValue(post);
-            station.setId(post.getId());
         });
-        R<Boolean> r = remoteStationService.saveOrUpdateBatch(list);
-        return checkData(r);
+        R<List<Long>> r = remoteStationService.saveOrUpdateBatch(list);
+        List<Long> longs = checkData(r);
+        for(int i=0;i<longs.size();i++){
+            collection.get(i).setId(longs.get(i));
+        }
     }
     private SysStation converterValue(Post post){
         SysStation station = new SysStation();
+        station.setId(post.getId());
         station.setCode(post.getPostCode());
         station.setName(post.getPostName());
         station.setGroupId(post.getGroupId());
