@@ -6,6 +6,8 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.sys.entity.OperationLog;
+import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,9 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "recruitment", tags = "人才表管理")
 public class RecruitmentController  {
 
-    private final  RecruitmentService recruitmentService;
+    private final RecruitmentService recruitmentService;
+
+    private final OperationLogService operationLogService;
 
     /**
      * 快速编辑
@@ -180,5 +184,17 @@ public class RecruitmentController  {
     public R<RecruitmentJobDTO> updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto) {
         RecruitmentJobDTO result = recruitmentService.updateRecruitmentJob(dto);
         return R.ok(result);
+    }
+
+    @ApiOperation(value = "获取人才管理操作日志")
+    @GetMapping("/getOperateLogPage")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="extraKey",value="额外信息"),
+            @ApiImplicitParam(name="module",value="模块名"),
+            @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    public R getOperateLogPage(Page page, OperationLog operationLog, String searchText) {
+        Page<OperationLog> pageResult = operationLogService.findOperationLog(page,operationLog,searchText);
+        return R.ok(pageResult);
     }
 }
