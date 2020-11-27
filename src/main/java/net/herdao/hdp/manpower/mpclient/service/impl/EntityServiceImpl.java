@@ -56,7 +56,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     @Override
     public IPage getOperationLogs(IPage page, Long objId) {
         return operationLogService.page(page, Wrappers.<OperationLog>query().lambda()
-                .eq(OperationLog::getEntityClass, baseMapper.getEntityClass().getName())
+                .eq(OperationLog::getEntityClass, getEntityClass().getName())
                 .eq(OperationLog::getObjId, objId).orderBy(true, false, OperationLog::getOperatedTime));
     }
 
@@ -73,7 +73,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
         log.setOperatorId(sysUser.getUserId());
         log.setOperator(sysUser.getUsername());
         log.setContent(operation + "了" + getEntityName() + ": " + objName);
-        log.setEntityClass(baseMapper.getEntityClass().getName());
+        log.setEntityClass(getEntityClass().getName());
         log.setOperatedTime(new Date());
         log.setObjId(objId);
         operationLogService.saveOrUpdate(log);
