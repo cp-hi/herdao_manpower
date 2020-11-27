@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+import net.herdao.hdp.manpower.mpclient.service.impl.JobLevelServiceImpl;
 import net.herdao.hdp.manpower.mpclient.service.impl.PipelineServiceImpl;
+import net.herdao.hdp.manpower.mpclient.service.impl.PostSeqServiceImpl;
 import net.herdao.hdp.manpower.mpclient.service.impl.SectionServiceImpl;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
@@ -45,13 +47,19 @@ public class Post extends BaseEntity<Post> {
     private Long pipelineId;
 
     @ApiModelProperty(value = "职级1")
+    @DtoField(entityService = JobLevelServiceImpl.class)
     private Long jobLevelId1;
+
     @ApiModelProperty(value = "职级2", hidden = true)
+    @DtoField(entityService = JobLevelServiceImpl.class)
     private Long jobLevelId2;
+
     @ApiModelProperty(value = "是否单职级", hidden = true)
+    @DtoField(converter = "{true:\"是\",false:\"否\"}")
     private Boolean singleJobLevle;
 
     @ApiModelProperty(value = "岗位序列", hidden = true)
+    @DtoField(entityService = PostSeqServiceImpl.class)
     private Long postSeqId;
     //endregion
 
@@ -66,6 +74,7 @@ public class Post extends BaseEntity<Post> {
     private String administrativeLevel;
 
     @ApiModelProperty(value = "年终奖比例", hidden = true)
+    @DtoField(dictField = "XCBL", targetField = "yearPayRatio")
     private String yearPayRatio;
 
     @ApiModelProperty(value = "是否销售岗位", hidden = true)

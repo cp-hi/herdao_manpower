@@ -221,4 +221,10 @@ public class DtoConverter {
         BiMap<String, String> converter = HashBiMap.create((Map) JSON.parse(dtoField.converter()));
         return (Boolean.parseBoolean(converter.inverse().get(field.get(source))));
     }
+
+    @SneakyThrows
+    public static String bool2string(Boolean val, DtoField dtoField) {
+        BiMap<String, String> converter = HashBiMap.create((Map) JSON.parse(dtoField.converter()));
+        return converter.inverse().get(val);
+    }
 }
