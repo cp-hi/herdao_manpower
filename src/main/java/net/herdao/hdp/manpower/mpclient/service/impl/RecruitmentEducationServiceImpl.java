@@ -82,7 +82,7 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
             education.setCreatorName(sysUser.getAliasName());
 
             BeanUtils.copyProperties(education,dto);
-            super.updateById(education);
+            super.save(education);
         }
 
         return dto;
