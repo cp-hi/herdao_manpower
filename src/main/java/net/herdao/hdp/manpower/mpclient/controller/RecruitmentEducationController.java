@@ -118,4 +118,6 @@ public class RecruitmentEducationController {
         RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
         return R.ok(result);
     }
+
+
 }
