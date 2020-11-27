@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 人才表
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "人才表")
 public class Recruitment extends Model<Recruitment> {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -300,17 +302,17 @@ public class Recruitment extends Model<Recruitment> {
      * 专业经验
      */
     @ApiModelProperty(value="专业经验")
-    private String professionalExperience;
+    private LocalDateTime professionalExperience;
     /**
      * 管理经验
      */
     @ApiModelProperty(value="管理经验")
-    private String managementExperience;
+    private LocalDateTime managementExperience;
     /**
      * 房地产行业经验
      */
     @ApiModelProperty(value="房地产行业经验")
-    private String realEstateExperience;
+    private LocalDateTime realEstateExperience;
     /**
      * 文字能力
      */

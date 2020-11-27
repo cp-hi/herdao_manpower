@@ -24,10 +24,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
@@ -161,11 +158,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
-        return null;
-    }
-
-    @Override
     public RecruitmentUpdateFormDTO fetchResumeTop(Long id) {
         RecruitmentUpdateFormDTO entity = this.baseMapper.fetchResumeTop(id);
         return entity;
@@ -196,6 +188,29 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         if(ObjectUtil.isNull(dto.getId())){
 
         }
+
+        return dto;
+    }
+
+    @Override
+    public RecruitmentJobDTO fetchResumeJob(Long id) {
+        RecruitmentJobDTO result = this.baseMapper.fetchResumeJob(id);
+        return result;
+    }
+
+    @Override
+    @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobDTO.class)
+    public RecruitmentJobDTO updateRecruitmentJob(RecruitmentJobDTO dto) {
+        Recruitment recruitment=new Recruitment();
+
+        BeanUtils.copyProperties(dto,recruitment);
+        SysUser sysUser = SysUserUtils.getSysUser();
+        recruitment.setModifierTime(LocalDateTime.now());
+        recruitment.setModifierCode(sysUser.getUsername());
+        recruitment.setModifierName(sysUser.getAliasName());
+        super.updateById(recruitment);
+
+        BeanUtils.copyProperties(recruitment,dto);
 
         return dto;
     }

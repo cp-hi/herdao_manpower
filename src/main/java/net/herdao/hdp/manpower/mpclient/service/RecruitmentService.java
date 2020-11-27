@@ -2,12 +2,11 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 人才表
@@ -15,7 +14,8 @@ import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
  * @author Andy
  * @date 2020-11-23 14:46:40
  */
-public interface RecruitmentService extends HdpService<Recruitment> {
+public interface RecruitmentService extends IService<Recruitment> {
+
     /**
      * 人才表分页
      * @param page 分页对象
@@ -59,4 +59,18 @@ public interface RecruitmentService extends HdpService<Recruitment> {
      * @return
      */
     RecruitmentBaseDTO saveOrUpdate(RecruitmentBaseDTO dto);
+
+    /**
+     * 人才简历-从业情况与求职意向
+     * @param id 主键ID
+     * @return
+     */
+    RecruitmentJobDTO fetchResumeJob(Long id);
+
+    /**
+     * 人才简历-从业情况与求职意向-修改更新
+     * @param dto 从业情况与求职意向
+     * @return
+     */
+    RecruitmentJobDTO updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto);
 }

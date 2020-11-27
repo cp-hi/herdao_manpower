@@ -273,4 +273,43 @@
                 </if>
             </where>
     </select>
+
+    <!-- 人才简历-从业情况与求职意向 -->
+    <select id="fetchResumeJob" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobDTO">
+       SELECT 	TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age ,
+				rec.workdate,
+				org.org_name,
+				ps.POST_NAME,
+				rec.minimum_levelIncome,
+				rec.expected_levelIncome,
+				rec.induction_time,
+				rec.career_plan,
+				rec.professional_experience,
+				rec.management_experience,
+				rec.real_estate_experience,
+				rec.writing_ability,
+				rec.professional_competence,
+				rec.management,
+				rec.foreign_languages,
+				rec.computer_proficiency,
+				rec.resources,
+				rec.title,
+				rec.assessment_unit,
+				rec.professional_qualifications,
+				rec.qualification_unit,
+				rec.qualification,
+				rec.address,
+				rec.other_request
+          FROM 	mp_recruitment rec
+          LEFT JOIN mp_organization org on org.id=rec.org_id
+          LEFT JOIN mp_post ps on ps.id =  rec.recruitment_post_id
+         <where>
+             rec.DEL_FLAG = 0
+            <if test="id != null ">
+                AND rec.id = #{id}
+            </if>
+         </where>
+     </select>
+
+
 </mapper>

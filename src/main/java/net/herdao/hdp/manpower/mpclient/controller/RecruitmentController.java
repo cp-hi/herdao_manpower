@@ -2,10 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
@@ -158,4 +155,30 @@ public class RecruitmentController  {
         return R.ok(result);
     }
 
+    /**
+     * 人才简历-从业情况与求职意向
+     * @param id
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-从业情况与求职意向", notes = "人才简历-从业情况与求职意向")
+    @GetMapping("/fetchResumeJob" )
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "ID", required = true)
+    })
+    public R<RecruitmentJobDTO> fetchResumeJob(Long id) {
+        RecruitmentJobDTO result = recruitmentService.fetchResumeJob(id);
+        return R.ok(result);
+    }
+
+    /**
+     * 人才简历-从业情况与求职意向-修改更新
+     * @param dto 人才简历-从业情况与求职意向
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-从业情况与求职意向-修改更新", notes = "人才简历-从业情况与求职意向-修改更新")
+    @PostMapping("/updateRecruitmentJob" )
+    public R<RecruitmentJobDTO> updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto) {
+        RecruitmentJobDTO result = recruitmentService.updateRecruitmentJob(dto);
+        return R.ok(result);
+    }
 }
