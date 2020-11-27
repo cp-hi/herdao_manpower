@@ -21,10 +21,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentFamilyStatus;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentFamilyStatusMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,7 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
     }
 
     @Override
+    @OperationEntity(operation = "人才简历-家庭成员-新增保存",module="人才简历", clazz = RecruitmentFamilyDTO.class)
     public RecruitmentFamilyDTO saveFamily(RecruitmentFamilyDTO familyDTO) {
         RecruitmentFamilyStatus familyStatus=new RecruitmentFamilyStatus();
         BeanUtils.copyProperties(familyDTO,familyStatus);
@@ -69,6 +72,7 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
      }
 
     @Override
+    @OperationEntity(operation = "人才简历-家庭成员-修改更新",module="人才简历", clazz = RecruitmentFamilyDTO.class)
     public RecruitmentFamilyDTO updateFamily(RecruitmentFamilyDTO familyDTO) {
         RecruitmentFamilyStatus familyStatus=new RecruitmentFamilyStatus();
         BeanUtils.copyProperties(familyDTO,familyStatus);

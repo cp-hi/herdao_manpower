@@ -23,6 +23,7 @@ import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperi
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentWorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -45,32 +46,34 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
     }
 
     @Override
+    @OperationEntity(operation = "人才工作经历表-新增保存",module="人才简历", clazz = RecruitmentWorkexperienceDTO.class)
     public RecruitmentWorkexperienceDTO saveWorkExperience(RecruitmentWorkexperienceDTO dto) {
-        RecruitmentWorkexperience workexperience=new RecruitmentWorkexperience();
-        BeanUtils.copyProperties(dto,workexperience);
+        RecruitmentWorkexperience workExperience=new RecruitmentWorkexperience();
+        BeanUtils.copyProperties(dto,workExperience);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        workexperience.setCreatorTime(LocalDateTime.now());
-        workexperience.setCreatorCode(sysUser.getUsername());
-        workexperience.setCreatorName(sysUser.getAliasName());
+        workExperience.setCreatorTime(LocalDateTime.now());
+        workExperience.setCreatorCode(sysUser.getUsername());
+        workExperience.setCreatorName(sysUser.getAliasName());
 
-        super.save(workexperience);
-        BeanUtils.copyProperties(workexperience,dto);
+        super.save(workExperience);
+        BeanUtils.copyProperties(workExperience,dto);
         return dto;
     }
 
     @Override
+    @OperationEntity(operation = "人才工作经历表-修改更新",module="人才简历", clazz = RecruitmentWorkexperienceDTO.class)
     public RecruitmentWorkexperienceDTO updateWorkExperience(RecruitmentWorkexperienceDTO dto) {
-        RecruitmentWorkexperience workexperience=new RecruitmentWorkexperience();
-        BeanUtils.copyProperties(dto,workexperience);
+        RecruitmentWorkexperience workExperience=new RecruitmentWorkexperience();
+        BeanUtils.copyProperties(dto,workExperience);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        workexperience.setModifierTime(LocalDateTime.now());
-        workexperience.setModifierCode(sysUser.getUsername());
-        workexperience.setModifierName(sysUser.getAliasName());
+        workExperience.setModifierTime(LocalDateTime.now());
+        workExperience.setModifierCode(sysUser.getUsername());
+        workExperience.setModifierName(sysUser.getAliasName());
 
-        super.updateById(workexperience);
-        BeanUtils.copyProperties(workexperience,dto);
+        super.updateById(workExperience);
+        BeanUtils.copyProperties(workExperience,dto);
         return dto;
     }
 }

@@ -56,7 +56,6 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
     @Override
     @OperationEntity(operation = "人才简历-教育情况-新增或修改",module="人才简历", clazz = RecruitmentEduDTO.class)
     public RecruitmentEduDTO saveOrUpdate(RecruitmentEduDTO dto) {
-
         //更新
         if(ObjectUtil.isNotNull(dto.getId())){
             RecruitmentEducation education=new RecruitmentEducation();

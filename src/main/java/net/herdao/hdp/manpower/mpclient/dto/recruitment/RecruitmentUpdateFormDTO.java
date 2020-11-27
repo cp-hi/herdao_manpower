@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -22,7 +23,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才表单编辑DTO")
-public class RecruitmentUpdateFormDTO implements Serializable {
+public class RecruitmentUpdateFormDTO extends BaseEntity<RecruitmentUpdateFormDTO> {
 
     private static final long serialVersionUID = 1L;
 
