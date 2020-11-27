@@ -55,7 +55,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "人才表单更新",module="人才简历", clazz = RecruitmentBaseDTO.class)
+    @OperationEntity(operation = "人才表单更新",module="人才简历", clazz = RecruitmentUpdateFormDTO.class)
     public R<RecruitmentUpdateFormDTO> updateRecruitment(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         //校检手机号码
         if (checkMobile(recruitmentUpdateFormVO)){
@@ -86,7 +86,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentBaseDTO.class)
+    @OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentAddFormDTO.class)
     public R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
         RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitmentAddFormDTO,updateFormVO);
@@ -180,7 +180,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     @Override
     @OperationEntity(operation = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向",module="人才简历", clazz = RecruitmentBaseDTO.class)
     public RecruitmentBaseDTO saveOrUpdate(RecruitmentBaseDTO dto) {
-
         //更新
         if(ObjectUtil.isNotNull(dto.getId())){
             Recruitment recruitment=new Recruitment();
