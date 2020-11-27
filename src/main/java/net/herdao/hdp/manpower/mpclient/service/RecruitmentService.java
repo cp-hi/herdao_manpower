@@ -54,11 +54,9 @@ public interface RecruitmentService extends HdpService<Recruitment> {
     RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
 
     /**
-     * 更新人才简历-个人基本情况 从业情况与求职意向
-     * @param baseDTO 人才实体
+     * 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
+     * @param dto
      * @return
      */
-     RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO baseDTO);
-
-
+    RecruitmentBaseDTO saveOrUpdate(RecruitmentBaseDTO dto);
 }

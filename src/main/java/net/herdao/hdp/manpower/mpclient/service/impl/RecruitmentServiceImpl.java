@@ -31,6 +31,7 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
+    @OperationEntity(operation = "人才表单更新",module="人才简历", clazz = RecruitmentBaseDTO.class)
     public R<RecruitmentUpdateFormDTO> updateRecruitment(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         //校检手机号码
         if (checkMobile(recruitmentUpdateFormVO)){
@@ -84,6 +86,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
+    @OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentBaseDTO.class)
     public R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
         RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitmentAddFormDTO,updateFormVO);
@@ -175,15 +178,26 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO baseDTO) {
-        Recruitment recruitment=new Recruitment();
-        BeanUtils.copyProperties(baseDTO,recruitment);
-        SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());
-        super.updateById(recruitment);
-        BeanUtils.copyProperties(recruitment,baseDTO);
-        return baseDTO;
+    @OperationEntity(operation = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向",module="人才简历", clazz = RecruitmentBaseDTO.class)
+    public RecruitmentBaseDTO saveOrUpdate(RecruitmentBaseDTO dto) {
+
+        //更新
+        if(ObjectUtil.isNotNull(dto.getId())){
+            Recruitment recruitment=new Recruitment();
+            BeanUtils.copyProperties(dto,recruitment);
+            SysUser sysUser = SysUserUtils.getSysUser();
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+            super.updateById(recruitment);
+            BeanUtils.copyProperties(recruitment,dto);
+        }
+
+        //新增
+        if(ObjectUtil.isNull(dto.getId())){
+
+        }
+
+        return dto;
     }
 }

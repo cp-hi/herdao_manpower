@@ -2,13 +2,16 @@
 package net.herdao.hdp.manpower.mpclient.dto.recruitment;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 人才获奖情况DTO
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ApiModel(value = "人才获奖情况DTO")
-public class RecruitmentAwardsDTO implements Serializable {
+public class RecruitmentAwardsDTO extends BaseEntity<RecruitmentAwardsDTO> {
 
     /**
      * id
@@ -37,7 +40,8 @@ public class RecruitmentAwardsDTO implements Serializable {
      * 获奖时间
      */
     @ApiModelProperty(value="获奖时间")
-    private LocalDateTime awardsTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date awardsTime;
 
     /**
      * 获奖内容

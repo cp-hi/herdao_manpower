@@ -53,7 +53,7 @@ public class OperationLogAspect {
     /**
      * 保存时设置操作人信息的切入点
      */
-    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..))")
+    @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..)) || execution(public * net.herdao.hdp.manpower.mpclient.service..*.*(..))")
     public void pointCutSave() {
         System.out.println("pointCutSave");
     }

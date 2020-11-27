@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -67,7 +68,10 @@ public class RecruitmentAwardsController {
     public R<RecruitmentAwardsDTO> fetchDetails(@PathVariable("id" ) Long id) {
         RecruitmentAwards awards= recruitmentAwardsService.getById(id);
         RecruitmentAwardsDTO dto=new RecruitmentAwardsDTO();
-        BeanUtils.copyProperties(awards,dto);
+        if (ObjectUtil.isNotNull(awards)){
+            BeanUtils.copyProperties(awards,dto);
+        }
+
         return R.ok(dto);
      }
 
@@ -79,17 +83,8 @@ public class RecruitmentAwardsController {
     @ApiOperation(value = "人才简历-获奖情况-新增", notes = "人才简历-获奖情况-新增")
     @PostMapping("/saveAwards")
     public R<RecruitmentAwardsDTO> saveAwards(@RequestBody RecruitmentAwardsDTO dto) {
-        RecruitmentAwards awards= new RecruitmentAwards();
-        BeanUtils.copyProperties(dto,awards);
-
-        SysUser sysUser = SysUserUtils.getSysUser();
-        awards.setCreatorTime(LocalDateTime.now());
-        awards.setCreatorCode(sysUser.getUsername());
-        awards.setCreatorName(sysUser.getAliasName());
-
-        recruitmentAwardsService.save(awards);
-        BeanUtils.copyProperties(awards,dto);
-        return R.ok(dto);
+        RecruitmentAwardsDTO result = recruitmentAwardsService.saveOrUpdate(dto);
+        return R.ok(result);
     }
 
     /**
@@ -100,17 +95,8 @@ public class RecruitmentAwardsController {
     @ApiOperation(value = "人才简历-获奖情况-更新", notes = "人才简历-获奖情况-更新")
     @PutMapping("/updateAwards")
     public R<RecruitmentAwardsDTO> updateAwards(@RequestBody RecruitmentAwardsDTO dto) {
-        RecruitmentAwards awards= new RecruitmentAwards();
-        BeanUtils.copyProperties(dto,awards);
-
-        SysUser sysUser = SysUserUtils.getSysUser();
-        awards.setModifierTime(LocalDateTime.now());
-        awards.setModifierCode(sysUser.getUsername());
-        awards.setModifierName(sysUser.getAliasName());
-
-        recruitmentAwardsService.updateById(awards);
-        BeanUtils.copyProperties(awards,dto);
-        return R.ok(dto);
+        RecruitmentAwardsDTO result = recruitmentAwardsService.saveOrUpdate(dto);
+        return R.ok(result);
     }
 
     /**
