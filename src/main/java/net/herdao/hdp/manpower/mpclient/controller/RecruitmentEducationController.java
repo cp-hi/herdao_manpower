@@ -101,7 +101,7 @@ public class RecruitmentEducationController {
      * @return R
      */
     @ApiOperation(value = "人才简历-教育情况-更新", notes = "人才简历-教育情况-更新")
-    @PutMapping("/updateEdu")
+    @PostMapping("/updateEdu")
     public R<RecruitmentEduDTO> updateEdu(@RequestBody RecruitmentEduDTO dto) {
         RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
         return R.ok(result);
@@ -113,9 +113,11 @@ public class RecruitmentEducationController {
      * @return R
      */
     @ApiOperation(value = "人才简历-教育情况-新增", notes = "人才简历-教育情况-新增")
-    @PutMapping("/saveEdu")
+    @PostMapping("/saveEdu")
     public R<RecruitmentEduDTO> saveEdu(@RequestBody RecruitmentEduDTO dto) {
         RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
         return R.ok(result);
     }
+
+
 }
