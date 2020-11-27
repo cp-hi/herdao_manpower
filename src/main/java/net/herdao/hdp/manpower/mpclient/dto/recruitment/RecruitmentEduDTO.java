@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,7 +20,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才教育情况DTO")
-public class RecruitmentEduDTO implements Serializable {
+public class RecruitmentEduDTO extends BaseEntity<RecruitmentEduDTO> {
 
     private static final long serialVersionUID = 1L;
 
