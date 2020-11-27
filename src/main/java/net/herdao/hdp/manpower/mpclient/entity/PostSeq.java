@@ -41,6 +41,5 @@ public class PostSeq extends BaseEntity<PostSeq> {
     private Long parentId;
 
     @ApiModelProperty(value = "是否停用" )
-//    @TableField("IS_STOP")
     private Boolean isStop;
 }

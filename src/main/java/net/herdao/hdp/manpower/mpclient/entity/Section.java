@@ -31,7 +31,6 @@ public class Section extends BaseEntity<Section> {
     private Integer sortNo;
 
     @ApiModelProperty(value = "是否停用",hidden = true)
-//    @TableField("IS_STOP")
     private Boolean isStop;
 
     @ApiModelProperty(value = "备注")

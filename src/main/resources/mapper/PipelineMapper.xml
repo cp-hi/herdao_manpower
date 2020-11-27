@@ -5,7 +5,6 @@
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper">
 
     <resultMap id="pipelineDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.pipeline.PipelineDTO">
-<!--        <result property="stop" column="IS_STOP"/>-->
         <result property="groupId" column="GROUP_ID"/>
         <association property="group" column="group_id" javaType="group"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectIgnoreDel" />
