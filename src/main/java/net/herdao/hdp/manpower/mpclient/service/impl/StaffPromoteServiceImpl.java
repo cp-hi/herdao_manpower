@@ -46,7 +46,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
     @Override
     public Page<StaffPromotePageVO> pageStaffPromote(Page page, String searchText, Long orgId, String status) {
-        return null;
+        return mapper.findStaffPromotePage(page, searchText, orgId, status);
     }
 
     @Override
