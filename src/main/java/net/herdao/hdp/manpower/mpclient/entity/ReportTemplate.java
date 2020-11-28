@@ -17,6 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -37,6 +39,7 @@ import java.time.LocalDateTime;
 @TableName("mp_report_template")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "报表模板表")
+@ExcelIgnoreUnannotated
 public class ReportTemplate extends Model<ReportTemplate> {
 private static final long serialVersionUID = 1L;
 
@@ -50,21 +53,25 @@ private static final long serialVersionUID = 1L;
      * 报表编码
      */
     @ApiModelProperty(value="报表编码")
+    @ExcelProperty(value = "报表编码",order = 2)
     private String code;
     /**
      * 报表名称
      */
     @ApiModelProperty(value="报表名称")
+    @ExcelProperty(value = "报表名称",order = 1)
     private String name;
     /**
      * 描述
      */
     @ApiModelProperty(value="描述")
+    @ExcelProperty(value = "描述",order = 3)
     private String descr;
     /**
      * 模板文件路径
      */
     @ApiModelProperty(value="模板文件路径")
+    @ExcelProperty(value = "报表模板链接",order = 5)
     private String uri;
     /**
      * 是否删除
@@ -110,6 +117,7 @@ private static final long serialVersionUID = 1L;
      * 修改人
      */
     @ApiModelProperty(value="修改人")
+    @ExcelProperty(value = "操作人",order = 4)
     private String modifierName;
     /**
      * 修改人时间

@@ -17,24 +17,22 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.admin.api.dto.UserInfo;
-import net.herdao.hdp.admin.api.feign.RemoteUserService;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.entity.ReportTemplate;
-import net.herdao.hdp.manpower.mpclient.service.ReportTemplateService;
-import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.entity.ReportTemplate;
+import net.herdao.hdp.manpower.mpclient.service.ReportTemplateService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 
@@ -64,7 +62,16 @@ public class ReportTemplateController {
     public R getReportTelatePage(Page page, ReportTemplate reportTemplate,String seachText) {
         return R.ok(reportTemplateService.findReportTelatePage(page, reportTemplate,seachText));
     }
-
+    @ApiOperation(value = "导出", notes = "导出")
+    @GetMapping("/export" )
+    @SneakyThrows
+    //@PreAuthorize("@pms.hasPermission('client_reporttelate_view')" )
+    public void export(HttpServletResponse response,ReportTemplate reportTemplate, String seachText) {
+        Page page = new Page();
+        page.setSize(-1);
+        IPage<ReportTemplate> reportTelatePage = reportTemplateService.findReportTelatePage(page, reportTemplate, seachText);
+        ExcelUtils.export2Web(response,"报表模板管理","报表模板管理",ReportTemplate.class,reportTelatePage.getRecords());
+    }
 
     /**
      * 通过id查询报表模板表
