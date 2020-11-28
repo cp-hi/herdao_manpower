@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -21,7 +20,7 @@ import java.time.LocalDateTime;
 @TableName("mp_staff_transfer_approve")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "员工异动（人事调动、调入调出）")
-public class StaffChanges  extends BaseModel<StaffChanges> {
+public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
 
     @ApiModelProperty(value = "异动 id")
     @TableId(value = "id", type = IdType.AUTO)

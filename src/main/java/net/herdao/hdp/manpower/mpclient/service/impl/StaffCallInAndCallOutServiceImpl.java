@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesStatusConstants;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesType;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.entity.StaffChanges;
-import net.herdao.hdp.manpower.mpclient.mapper.StaffChangesMapper;
+import net.herdao.hdp.manpower.mpclient.entity.StaffTransferApprove;
+import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffCallInAndCallOutService;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import java.util.List;
  * @Date 2020/11/27 2:37 下午
  */
 @Service
-public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffChangesMapper, StaffChanges> implements StaffCallInAndCallOutService {
+public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMapper, StaffTransferApprove> implements StaffCallInAndCallOutService {
 
     @Autowired
-    private StaffChangesMapper mapper;
+    private StaffTransferApproveMapper mapper;
 
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
@@ -32,11 +32,11 @@ public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffChangesMa
 
     @Override
     public Long affirmStart(Long id) throws Exception {
-        QueryWrapper<StaffChanges> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesStatusConstants.FILLING_IN)
                 .eq("transfer_type", StaffChangesType.CALL_IN_AND_CALL_OUT);
-        StaffChanges changes = mapper.selectOne(queryWrapper);
+        StaffTransferApprove changes = mapper.selectOne(queryWrapper);
         if (changes == null) {
             throw new Exception("该记录不可修改");
         }

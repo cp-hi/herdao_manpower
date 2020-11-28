@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo.staff.level.change;
+package net.herdao.hdp.manpower.mpclient.vo.staff.promote;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "晋升/降级调动-调动执行")
-public class StaffChangeLevelExecuteVO {
+public class StaffPromoteExecuteVO {
     private Long id;
 
     /**

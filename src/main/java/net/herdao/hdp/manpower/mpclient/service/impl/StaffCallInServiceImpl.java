@@ -8,7 +8,7 @@ import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallInDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.mapper.StaffChangesMapper;
+import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
 import org.springframework.beans.BeanUtils;
@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.RollbackException;
-import java.sql.Date;
 import java.time.*;
 import java.util.List;
 
@@ -26,7 +24,7 @@ import java.util.List;
  * @Date 2020/11/27 3:36 下午
  */
 @Service
-public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, StaffChanges> implements StaffCallInService {
+public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapper, StaffTransferApprove> implements StaffCallInService {
 
     @Autowired
     private StaffCallOutService staffCallOutService;
@@ -44,7 +42,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, Staf
     private CompanyService companyService;
 
     @Autowired
-    private StaffChangesMapper mapper;
+    private StaffTransferApproveMapper mapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -54,7 +52,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, Staf
         } else {
             id = saveInfo(dto);
         }
-        StaffChanges changes = mapper.selectById(id);
+        StaffTransferApprove changes = mapper.selectById(id);
         changes.setStatus(StaffChangesStatusConstants.APPROVING);
         mapper.updateById(changes);
         return id;
@@ -64,18 +62,18 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, Staf
     @Transactional(rollbackFor = Exception.class)
     public Long updateInfo(Long id, SaveStaffCallInDTO dto) throws Exception {
 //        dtoValidityCheck(id, dto);
-        QueryWrapper<StaffChanges> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesStatusConstants.FILLING_IN)
                 .eq("transfer_type", StaffChangesType.CALL_IN_AND_CALL_OUT);
-        StaffChanges staffChanges = mapper.selectOne(queryWrapper);
+        StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
 
-        QueryWrapper<StaffChanges> callInQueryWrapper = new QueryWrapper<>();
-        if (staffChanges == null) {
+        QueryWrapper<StaffTransferApprove> callInQueryWrapper = new QueryWrapper<>();
+        if (staffTransferApprove == null) {
             throw new Exception("该记录不可更改");
         }
-        BeanUtils.copyProperties(dto, staffChanges);
-        mapper.updateById(staffChanges);
+        BeanUtils.copyProperties(dto, staffTransferApprove);
+        mapper.updateById(staffTransferApprove);
         return id;
     }
 
@@ -125,12 +123,12 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, Staf
     public Long saveInfo(SaveStaffCallInDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
 
-        StaffChanges staffChanges = new StaffChanges();
-        BeanUtils.copyProperties(dto, staffChanges);
-        staffChanges.setTransferType(StaffChangesType.CALL_IN_AND_CALL_OUT);
-        staffChanges.setStatus(StaffChangesStatusConstants.FILLING_IN);
-        staffChanges.setDelFlag(false);
-        mapper.insert(staffChanges);
+        StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
+        BeanUtils.copyProperties(dto, staffTransferApprove);
+        staffTransferApprove.setTransferType(StaffChangesType.CALL_IN_AND_CALL_OUT);
+        staffTransferApprove.setStatus(StaffChangesStatusConstants.FILLING_IN);
+        staffTransferApprove.setDelFlag(false);
+        mapper.insert(staffTransferApprove);
 
         // 都造 "调出" 对象
         SaveStaffCallOutDTO outDTO = new SaveStaffCallOutDTO();
@@ -141,22 +139,22 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, Staf
         outDTO.setTransStartDate(callOutDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         outDTO.setTransStartDate(dto.getTransStartDate());
         // 调出记录要保存对应的调入记录 id
-        outDTO.setTransApproveId(staffChanges.getId());
+        outDTO.setTransApproveId(staffTransferApprove.getId());
         staffCallOutService.saveInfo(outDTO);
 
-        return staffChanges.getId();
+        return staffTransferApprove.getId();
     }
 
     @Override
     public StaffCallInInfoVO getDetail(Long id) {
-        StaffChanges staffChanges = mapper.selectById(id);
-        if (staffChanges != null) {
-            return staffChangesConvert2StaffTransferInfoVo(staffChanges);
+        StaffTransferApprove staffTransferApprove = mapper.selectById(id);
+        if (staffTransferApprove != null) {
+            return staffChangesConvert2StaffTransferInfoVo(staffTransferApprove);
         }
         return null;
     }
 
-    private StaffCallInInfoVO staffChangesConvert2StaffTransferInfoVo(StaffChanges from) {
+    private StaffCallInInfoVO staffChangesConvert2StaffTransferInfoVo(StaffTransferApprove from) {
         StaffCallInInfoVO to = new StaffCallInInfoVO();
         BeanUtils.copyProperties(from, to);
 

@@ -8,7 +8,7 @@ import net.herdao.hdp.manpower.mpclient.constant.StaffChangesType;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.mapper.StaffChangesMapper;
+import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
@@ -24,7 +24,7 @@ import java.util.List;
  * @Date 2020/11/25 4:18 下午
  */
 @Service
-public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, StaffChanges> implements StaffTransferService {
+public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMapper, StaffTransferApprove> implements StaffTransferService {
 
     @Autowired
     private UserpostService userPostService;
@@ -38,7 +38,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
     private CompanyService companyService;
 
     @Autowired
-    private StaffChangesMapper mapper;
+    private StaffTransferApproveMapper mapper;
 
     /**
      * TODO:: 维护岗位组织关系id
@@ -50,14 +50,14 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
     public Long saveInfo(SaveStaffTransferInfoDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
 
-        StaffChanges staffChanges = new StaffChanges();
-        BeanUtils.copyProperties(dto, staffChanges);
-        staffChanges.setTransferType(StaffChangesType.TRANSFER);
-        staffChanges.setStatus(StaffChangesStatusConstants.FILLING_IN);
-        staffChanges.setDelFlag(false);
+        StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
+        BeanUtils.copyProperties(dto, staffTransferApprove);
+        staffTransferApprove.setTransferType(StaffChangesType.TRANSFER);
+        staffTransferApprove.setStatus(StaffChangesStatusConstants.FILLING_IN);
+        staffTransferApprove.setDelFlag(false);
 
-        mapper.insert(staffChanges);
-        return staffChanges.getId();
+        mapper.insert(staffTransferApprove);
+        return staffTransferApprove.getId();
     }
 
     private void dtoValidityCheck(Long id, SaveStaffTransferInfoDTO dto) throws Exception {
@@ -103,9 +103,9 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
 
     @Override
     public StaffTransferInfoVO getDetail(Long id) {
-        StaffChanges staffChanges = mapper.selectById(id);
-        if (staffChanges != null) {
-            return staffChangesConvert2StaffTransferInfoVo(staffChanges);
+        StaffTransferApprove staffTransferApprove = mapper.selectById(id);
+        if (staffTransferApprove != null) {
+            return staffChangesConvert2StaffTransferInfoVo(staffTransferApprove);
         }
         return null;
     }
@@ -117,16 +117,16 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
 //        dtoValidityCheck(id, dto);
 
         // 对记录进行状态和类型有效性判断
-        QueryWrapper<StaffChanges> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesStatusConstants.FILLING_IN)
                 .eq("transfer_type", StaffChangesType.TRANSFER);
-        StaffChanges staffChanges = mapper.selectOne(queryWrapper);
-        if (staffChanges == null) {
+        StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
+        if (staffTransferApprove == null) {
             throw new Exception("该记录不可更新");
         }
-        BeanUtils.copyProperties(dto, staffChanges);
-        mapper.updateById(staffChanges);
+        BeanUtils.copyProperties(dto, staffTransferApprove);
+        mapper.updateById(staffTransferApprove);
         return id;
 
     }
@@ -140,7 +140,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
         } else {
            id = saveInfo(dto);
         }
-        StaffChanges changes = mapper.selectById(id);
+        StaffTransferApprove changes = mapper.selectById(id);
         // 更新状态为：填报中
         changes.setStatus(StaffChangesStatusConstants.APPROVING);
         mapper.updateById(changes);
@@ -153,7 +153,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
         return this.baseMapper.findStaffTransferPage(page, searchText, orgId, status);
     }
 
-    private StaffTransferInfoVO staffChangesConvert2StaffTransferInfoVo(StaffChanges from) {
+    private StaffTransferInfoVO staffChangesConvert2StaffTransferInfoVo(StaffTransferApprove from) {
         StaffTransferInfoVO to = new StaffTransferInfoVO();
         BeanUtils.copyProperties(from, to);
 
