@@ -1,31 +1,37 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesStatusConstants;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesType;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallInDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffChangesMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
-import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.RollbackException;
+import java.sql.Date;
+import java.time.*;
 import java.util.List;
 
 /**
  * @Author Liu Chang
- * @Date 2020/11/25 4:18 下午
+ * @Date 2020/11/27 3:36 下午
  */
 @Service
-public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, StaffChanges> implements StaffTransferService {
+public class StaffCallInServiceImpl extends ServiceImpl<StaffChangesMapper, StaffChanges> implements StaffCallInService {
 
+    @Autowired
+    private StaffCallOutService staffCallOutService;
+    @Autowired
+    private StaffService staffService;
     @Autowired
     private UserpostService userPostService;
     @Autowired
@@ -40,31 +46,44 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
     @Autowired
     private StaffChangesMapper mapper;
 
-    /**
-     * TODO:: 维护岗位组织关系id
-     * @param dto
-     * @return
-     * @throws Exception
-     */
     @Override
-    public Long saveInfo(SaveStaffTransferInfoDTO dto) throws Exception {
-//        dtoValidityCheck(null, dto);
-
-        StaffChanges staffChanges = new StaffChanges();
-        BeanUtils.copyProperties(dto, staffChanges);
-        staffChanges.setTransferType(StaffChangesType.TRANSFER);
-        staffChanges.setStatus(StaffChangesStatusConstants.FILLING_IN);
-        staffChanges.setDelFlag(false);
-
-        mapper.insert(staffChanges);
-        return staffChanges.getId();
+    @Transactional(rollbackFor = Exception.class)
+    public Long affirmStart(Long id, SaveStaffCallInDTO dto) throws Exception {
+        if (id != null) {
+            updateInfo(id, dto);
+        } else {
+            id = saveInfo(dto);
+        }
+        StaffChanges changes = mapper.selectById(id);
+        changes.setStatus(StaffChangesStatusConstants.APPROVING);
+        mapper.updateById(changes);
+        return id;
     }
 
-    private void dtoValidityCheck(Long id, SaveStaffTransferInfoDTO dto) throws Exception {
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long updateInfo(Long id, SaveStaffCallInDTO dto) throws Exception {
+//        dtoValidityCheck(id, dto);
+        QueryWrapper<StaffChanges> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id)
+                .eq("status", StaffChangesStatusConstants.FILLING_IN)
+                .eq("transfer_type", StaffChangesType.CALL_IN_AND_CALL_OUT);
+        StaffChanges staffChanges = mapper.selectOne(queryWrapper);
+
+        QueryWrapper<StaffChanges> callInQueryWrapper = new QueryWrapper<>();
+        if (staffChanges == null) {
+            throw new Exception("该记录不可更改");
+        }
+        BeanUtils.copyProperties(dto, staffChanges);
+        mapper.updateById(staffChanges);
+        return id;
+    }
+
+    private void dtoValidityCheck(Long id, SaveStaffCallInDTO dto) throws Exception {
         if (id != null) {
             Userpost userpost = userPostService.getById(id);
             if (userpost == null) {
-               throw new Exception("该员工的职位信息有误，请再次确认");
+                throw new Exception("该员工的职位信息有误，请再次确认");
             } else {
                 if (!dto.getNowOrgId().equals(userpost.getOrgId())) {
                     throw new Exception("原部门信息有误，请再次确认");
@@ -102,7 +121,34 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
     }
 
     @Override
-    public StaffTransferInfoVO getDetail(Long id) {
+    @Transactional(rollbackFor = Exception.class)
+    public Long saveInfo(SaveStaffCallInDTO dto) throws Exception {
+//        dtoValidityCheck(null, dto);
+
+        StaffChanges staffChanges = new StaffChanges();
+        BeanUtils.copyProperties(dto, staffChanges);
+        staffChanges.setTransferType(StaffChangesType.CALL_IN_AND_CALL_OUT);
+        staffChanges.setStatus(StaffChangesStatusConstants.FILLING_IN);
+        staffChanges.setDelFlag(false);
+        mapper.insert(staffChanges);
+
+        // 都造 "调出" 对象
+        SaveStaffCallOutDTO outDTO = new SaveStaffCallOutDTO();
+        BeanUtils.copyProperties(dto, outDTO);
+        // 调出生效时间比调入时间提前一天
+        LocalDateTime transStartDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getTransStartDate()), ZoneId.systemDefault());
+        LocalDateTime callOutDate = transStartDate.plusDays(-1L);
+        outDTO.setTransStartDate(callOutDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        outDTO.setTransStartDate(dto.getTransStartDate());
+        // 调出记录要保存对应的调入记录 id
+        outDTO.setTransApproveId(staffChanges.getId());
+        staffCallOutService.saveInfo(outDTO);
+
+        return staffChanges.getId();
+    }
+
+    @Override
+    public StaffCallInInfoVO getDetail(Long id) {
         StaffChanges staffChanges = mapper.selectById(id);
         if (staffChanges != null) {
             return staffChangesConvert2StaffTransferInfoVo(staffChanges);
@@ -110,51 +156,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
         return null;
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long updateInfo(Long id, SaveStaffTransferInfoDTO dto) throws Exception {
-        // 对入参的数据有效性校验
-//        dtoValidityCheck(id, dto);
-
-        // 对记录进行状态和类型有效性判断
-        QueryWrapper<StaffChanges> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id", id)
-                .eq("status", StaffChangesStatusConstants.FILLING_IN)
-                .eq("transfer_type", StaffChangesType.TRANSFER);
-        StaffChanges staffChanges = mapper.selectOne(queryWrapper);
-        if (staffChanges == null) {
-            throw new Exception("该记录不可更新");
-        }
-        BeanUtils.copyProperties(dto, staffChanges);
-        mapper.updateById(staffChanges);
-        return id;
-
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) throws Exception {
-        // 确保在没有保存数据，直接发起申请时数据正确
-        if (id != null) {
-            updateInfo(id, dto);
-        } else {
-           id = saveInfo(dto);
-        }
-        StaffChanges changes = mapper.selectById(id);
-        // 更新状态为：填报中
-        changes.setStatus(StaffChangesStatusConstants.APPROVING);
-        mapper.updateById(changes);
-        return id;
-    }
-
-    @Override
-    public Page<StaffTransferPageVO> pageTransfer(Page page, String searchText, Long orgId, String status) {
-
-        return this.baseMapper.findStaffTransferPage(page, searchText, orgId, status);
-    }
-
-    private StaffTransferInfoVO staffChangesConvert2StaffTransferInfoVo(StaffChanges from) {
-        StaffTransferInfoVO to = new StaffTransferInfoVO();
+    private StaffCallInInfoVO staffChangesConvert2StaffTransferInfoVo(StaffChanges from) {
+        StaffCallInInfoVO to = new StaffCallInInfoVO();
         BeanUtils.copyProperties(from, to);
 
         Post nowPost = postService.getById(to.getNowPostId());
@@ -207,8 +210,6 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffChangesMapper, St
 
     @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
-
         return null;
     }
-
 }

@@ -49,8 +49,8 @@ public class StaffTransferController {
 
     @ApiOperation(value = "分页列表/详情页-确认发起")
     @PostMapping("/affirm/start")
-    public R affirmStaffTransfer(Long id,
-                                 @RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
+    public R affirm(Long id,
+                    @RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
     }
 
@@ -69,7 +69,7 @@ public class StaffTransferController {
     @ApiOperation(value = "新增人事调动-保存")
     @PostMapping
     public R<Long> addStaffTransfer(@RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
-       return R.ok(service.save(dto));
+       return R.ok(service.saveInfo(dto));
     }
 
     @ApiOperation(value = "更新人事调动-保存")

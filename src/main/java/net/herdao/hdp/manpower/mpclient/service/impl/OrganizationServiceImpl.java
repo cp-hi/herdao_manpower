@@ -675,7 +675,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public List<OrganizationImportDTO> selectAllOrganization() {
         return this.baseMapper.selectAllOrganization();
     }
-
     /**
      * ======================================  组织导入 start ====================================
      **/

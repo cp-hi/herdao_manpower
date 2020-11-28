@@ -361,6 +361,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
+	public Staff getByUserId(Long userId) {
+		QueryWrapper<Staff> wrapper = new QueryWrapper<>();
+		return staffMapper.selectOne(wrapper.eq("user_id", userId));
+	}
+
+	@Override
     public Map<String, Object> getStaffDetail(Long id){
 		Staff staff = this.getById(id);
 		StaffBaseDTO base = baseMapper.getStaffBase(id);

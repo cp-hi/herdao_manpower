@@ -15,7 +15,7 @@ import java.nio.file.Path;
  */
 public interface StaffTransferService extends HdpService<StaffChanges> {
 
-    public Long save(SaveStaffTransferInfoDTO dto) throws Exception;
+    public Long saveInfo(SaveStaffTransferInfoDTO dto) throws Exception;
 
     public StaffTransferInfoVO getDetail(Long id);
 

@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-import org.joda.time.DateTime;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 /**
  * @Author Liu Chang
@@ -47,7 +49,7 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     private String nowPostOid;
 
     @ApiModelProperty(value = "原岗位入职日期")
-    private DateTime nowStartDate;
+    private LocalDateTime nowStartDate;
 
     @ApiModelProperty(value = "调入部门id")
     private Long transOrgId;
@@ -62,7 +64,7 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     private String transPostOid;
 
     @ApiModelProperty(value = "调入日期")
-    private DateTime transStartDate;
+    private LocalDateTime transStartDate;
 
     @ApiModelProperty(value = "合同期限（年）")
     private Double contractPeriod;
@@ -134,7 +136,7 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     private String creatorName;
 
     @ApiModelProperty(value = "新建时间")
-    private DateTime creatorTime;
+    private LocalDateTime creatorTime;
 
     @ApiModelProperty(value = "修改人工号")
     private String modifierCode;
@@ -143,7 +145,7 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     private String modifierName;
 
     @ApiModelProperty(value = "修改人时间")
-    private DateTime modifierTime;
+    private LocalDateTime modifierTime;
 
     @ApiModelProperty(value = "状态")
     private String status;
@@ -157,6 +159,10 @@ public class StaffChanges  extends BaseModel<StaffChanges> {
     @ApiModelProperty(value = "变更后职级id")
     private Long transJobLevelId;
 
+    @ApiModelProperty(value = "调出时对应调入 id")
+    private Long transApproveId;
+
+    @ApiModelProperty(value = "变更后组织 id")
     private Long postOrgId;
 
     @TableLogic

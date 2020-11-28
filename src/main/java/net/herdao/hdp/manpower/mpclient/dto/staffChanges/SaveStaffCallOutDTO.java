@@ -18,6 +18,10 @@ public class SaveStaffCallOutDTO {
     @NotNull
     private Long id;
 
+    @ApiModelProperty(value = "对应调入 id", name = "id", example = "1", required = true)
+    @NotNull
+    private Long transApproveId;
+
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1", required = true)
     @NotNull
     private Long userId;

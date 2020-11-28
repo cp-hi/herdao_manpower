@@ -92,4 +92,6 @@ public interface StaffService extends HdpService<Staff> {
 	void updateEduLast(Long id);
 
 	StaffBasicVO selectBasicByCode(String staffName);
+
+	Staff getByUserId(Long userId);
 }
