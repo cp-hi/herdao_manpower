@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -30,18 +31,21 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     private String oid;
 
     @ApiModelProperty(value = "员工id")
+    @NotNull
     private Long userId;
 
     @ApiModelProperty(value = "员工oid")
     private String userOid;
 
     @ApiModelProperty(value = "原部门id")
+    @NotNull
     private Long nowOrgId;
 
     @ApiModelProperty(value = "原部门oid")
     private String nowOrgOid;
 
     @ApiModelProperty(value = "原岗位id")
+    @NotNull
     private Long nowPostId;
 
     @ApiModelProperty(value = "原岗位oid")
@@ -51,18 +55,21 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     private LocalDateTime nowStartDate;
 
     @ApiModelProperty(value = "调入部门id")
+    @NotNull
     private Long transOrgId;
 
     @ApiModelProperty(value = "调入部门oid")
     private String transOrgOid;
 
     @ApiModelProperty(value = "调入岗位id")
+    @NotNull
     private Long transPostId;
 
     @ApiModelProperty(value = "调入岗位oid")
     private String transPostOid;
 
     @ApiModelProperty(value = "调入日期")
+    @NotNull
     private LocalDateTime transStartDate;
 
     @ApiModelProperty(value = "合同期限（年）")
@@ -96,6 +103,7 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     private String remark;
 
     @ApiModelProperty(value = "调动类型")
+    @NotNull
     private String transferType;
 
     @ApiModelProperty(value = "是否编制置换")
@@ -147,6 +155,7 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     private LocalDateTime modifierTime;
 
     @ApiModelProperty(value = "状态")
+    @NotNull
     private String status;
 
     @ApiModelProperty(value = "租户ID")

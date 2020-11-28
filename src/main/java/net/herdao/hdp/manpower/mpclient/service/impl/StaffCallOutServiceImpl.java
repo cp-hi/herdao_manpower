@@ -1,8 +1,8 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesStatusConstants;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesType;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveTypeConstants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
@@ -38,8 +38,8 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 //        dtoValidityCheck(null, dto);
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesType.CALL_IN_AND_CALL_OUT);
-        staffTransferApprove.setStatus(StaffChangesStatusConstants.FILLING_IN);
+        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
+        staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         staffTransferApprove.setDelFlag(false);
         mapper.insert(staffTransferApprove);
         return staffTransferApprove.getId();
@@ -50,10 +50,10 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 //        dtoValidityCheck(id, dto);
         StaffTransferApprove staffTransferApprove = mapper.selectById(id);
         if (staffTransferApprove != null) {
-            if (!staffTransferApprove.getStatus().equals(StaffChangesStatusConstants.FILLING_IN)) {
+            if (!staffTransferApprove.getStatus().equals(StaffChangesApproveStatusConstants.FILLING_IN)) {
                 throw new Exception("该记录已发起审批，不可更新");
             }
-            if (staffTransferApprove.getTransferType() != StaffChangesType.CALL_IN_AND_CALL_OUT) {
+            if (staffTransferApprove.getTransferType() != StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT) {
                 throw new Exception("该记录不是调入/调出类型，请再次确认更新信息");
             }
 
@@ -72,7 +72,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
             id = saveInfo(dto);
         }
         StaffTransferApprove changes = mapper.selectById(id);
-        changes.setStatus(StaffChangesStatusConstants.APPROVING);
+        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(changes);
         return id;
     }

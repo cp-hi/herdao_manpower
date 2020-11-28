@@ -3,8 +3,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesStatusConstants;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesType;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveTypeConstants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
@@ -52,8 +52,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
 
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesType.TRANSFER);
-        staffTransferApprove.setStatus(StaffChangesStatusConstants.FILLING_IN);
+        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.TRANSFER);
+        staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         staffTransferApprove.setDelFlag(false);
 
         mapper.insert(staffTransferApprove);
@@ -119,8 +119,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         // 对记录进行状态和类型有效性判断
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
-                .eq("status", StaffChangesStatusConstants.FILLING_IN)
-                .eq("transfer_type", StaffChangesType.TRANSFER);
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN)
+                .eq("transfer_type", StaffChangesApproveTypeConstants.TRANSFER);
         StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
         if (staffTransferApprove == null) {
             throw new Exception("该记录不可更新");
@@ -142,7 +142,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         }
         StaffTransferApprove changes = mapper.selectById(id);
         // 更新状态为：填报中
-        changes.setStatus(StaffChangesStatusConstants.APPROVING);
+        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(changes);
         return id;
     }

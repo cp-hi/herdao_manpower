@@ -29,7 +29,7 @@ public class StaffCallInAndCallOutController {
                                                                           Page page,
                                                                           Long orgId,
                                                                           String status) {
-        return R.ok(service.pageStasffCallInAndCallOut(page, searchText, orgId, status));
+        return R.ok(service.pageStaffCallInAndCallOut(page, searchText, orgId, status));
     }
 
     @ApiOperation(value = "分页列表-删除")

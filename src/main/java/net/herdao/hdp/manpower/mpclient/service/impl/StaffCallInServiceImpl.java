@@ -2,8 +2,8 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesStatusConstants;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesType;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveTypeConstants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallInDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
@@ -53,7 +53,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
             id = saveInfo(dto);
         }
         StaffTransferApprove changes = mapper.selectById(id);
-        changes.setStatus(StaffChangesStatusConstants.APPROVING);
+        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(changes);
         return id;
     }
@@ -64,8 +64,8 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 //        dtoValidityCheck(id, dto);
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
-                .eq("status", StaffChangesStatusConstants.FILLING_IN)
-                .eq("transfer_type", StaffChangesType.CALL_IN_AND_CALL_OUT);
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN)
+                .eq("transfer_type", StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
         StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
 
         QueryWrapper<StaffTransferApprove> callInQueryWrapper = new QueryWrapper<>();
@@ -125,8 +125,8 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesType.CALL_IN_AND_CALL_OUT);
-        staffTransferApprove.setStatus(StaffChangesStatusConstants.FILLING_IN);
+        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
+        staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         staffTransferApprove.setDelFlag(false);
         mapper.insert(staffTransferApprove);
 

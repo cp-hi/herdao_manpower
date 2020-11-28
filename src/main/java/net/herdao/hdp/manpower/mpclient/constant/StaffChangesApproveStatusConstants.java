@@ -4,7 +4,7 @@ package net.herdao.hdp.manpower.mpclient.constant;
  * @Author Liu Chang
  * @Date 2020/11/26 4:40 下午
  */
-public interface StaffChangesStatusConstants {
+public interface StaffChangesApproveStatusConstants {
     public final String FILLING_IN = "FILLING_IN";
 
     public final String APPROVING = "APPROVING";
