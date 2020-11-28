@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, herdao All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the herdao.net developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: liang
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.ReportTemplateMapper">
+
+  <resultMap id="mpReportTemplateMap" type="net.herdao.hdp.manpower.mpclient.entity.ReportTemplate">
+                  <id property="id" column="ID"/>
+                        <result property="code" column="CODE"/>
+                        <result property="name" column="NAME"/>
+                        <result property="descr" column="DESCR"/>
+                        <result property="uri" column="URI"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+                        <result property="isStop" column="IS_STOP"/>
+                        <result property="groupId" column="GROUP_ID"/>
+                        <result property="sortNo" column="SORT_NO"/>
+                        <result property="creatorCode" column="CREATOR_CODE"/>
+                        <result property="creatorName" column="CREATOR_NAME"/>
+                        <result property="creatorTime" column="CREATOR_TIME"/>
+                        <result property="modifierCode" column="MODIFIER_CODE"/>
+                        <result property="modifierName" column="MODIFIER_NAME"/>
+                        <result property="modifierTime" column="MODIFIER_TIME"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+            </resultMap>
+      <select id="findReportTelatePage" resultMap="mpReportTemplateMap">
+            SELECT
+            rt.*
+            from
+            mp_report_template rt
+            <where>
+                  <if test="seachText != null and seachText != ''">
+                        CONCAT_WS(',',rt.`NAME`,rt.`CODE`,rt.DESCR) like CONCAT('%','a','%')
+                  </if>
+            </where>
+      </select>
+</mapper>

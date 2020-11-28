@@ -26,10 +26,12 @@ import net.herdao.hdp.manpower.mpclient.entity.PostOrg;
 import net.herdao.hdp.manpower.mpclient.mapper.PostOrgMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostOrgService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,15 @@ public class PostOrgServiceImpl extends ServiceImpl<PostOrgMapper, PostOrg> impl
     @Transactional
     public PostOrg saveOrUpdatePostOrg(PostOrg postOrg) {
         postOrg.setPostCode(getCode(postOrg.getGroupId()));
+        if(ObjectUtil.isNotNull(postOrg.getId())){
+            postOrg.setModifierCode(SysUserUtils.getSysUser().getUsername());
+            postOrg.setModifierName(SysUserUtils.getSysUser().getAliasName());
+            postOrg.setModifierTime(LocalDateTime.now());
+        }else {
+            postOrg.setCreatorCode(SysUserUtils.getSysUser().getUsername());
+            postOrg.setCreatorName(SysUserUtils.getSysUser().getAliasName());
+            postOrg.setCreatorTime(LocalDateTime.now());
+        }
         this.saveOrUpdate(postOrg);
         return postOrg;
     }

@@ -37,8 +37,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/mppostorg" )
-@Api(value = "mppostorg", tags = "岗位组织管理")
+@RequestMapping("/postorg" )
+@Api(value = "postorg", tags = "岗位组织管理")
 public class PostOrgController {
 
     private final PostOrgService postOrgService;
@@ -51,8 +51,8 @@ public class PostOrgController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_view')" )
-    public R getMpPostOrgPage(Page page, PostOrgListVO postOrgListVO, String seachText) {
+    //@PreAuthorize("@pms.hasPermission('client_postorg_view')" )
+    public R getPostOrgPage(Page page, PostOrgListVO postOrgListVO, String seachText) {
         return R.ok(postOrgService.findPostOrgPage(page,postOrgListVO,seachText));
     }
 
@@ -64,7 +64,7 @@ public class PostOrgController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_view')" )
+    //@PreAuthorize("@pms.hasPermission('client_postorg_view')" )
     public R getById(@PathVariable("id" ) Long id) {
         return R.ok(postOrgService.findPostOrgById(id));
     }
@@ -77,7 +77,7 @@ public class PostOrgController {
     @ApiOperation(value = "新增岗位组织", notes = "新增岗位组织")
     @SysLog("新增岗位组织" )
     @PostMapping
-    //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_add')" )
+    //@PreAuthorize("@pms.hasPermission('client_postorg_add')" )
     public R save(@RequestBody PostOrg postOrg) {
         return R.ok(postOrgService.saveOrUpdatePostOrg(postOrg));
     }
@@ -90,7 +90,7 @@ public class PostOrgController {
     @ApiOperation(value = "修改岗位组织", notes = "修改岗位组织")
     @SysLog("修改岗位组织" )
     @PutMapping
-    //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_edit')" )
+    //@PreAuthorize("@pms.hasPermission('client_postorg_edit')" )
     public R updateById(@RequestBody PostOrg postOrg) {
         return R.ok(postOrgService.updateById(postOrg));
     }
@@ -103,7 +103,7 @@ public class PostOrgController {
     @ApiOperation(value = "通过id删除岗位组织", notes = "通过id删除岗位组织")
     @SysLog("通过id删除岗位组织" )
     @DeleteMapping("/{id}" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_del')" )
+    //@PreAuthorize("@pms.hasPermission('client_postorg_del')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(postOrgService.removeById(id));
     }

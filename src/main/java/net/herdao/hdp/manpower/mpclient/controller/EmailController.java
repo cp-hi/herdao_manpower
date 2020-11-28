@@ -1,16 +1,10 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.entity.EmailReceiveInfo;
 import net.herdao.hdp.manpower.mpclient.entity.EmailSendInfo;
-import net.herdao.hdp.manpower.mpclient.entity.ReportTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/email")

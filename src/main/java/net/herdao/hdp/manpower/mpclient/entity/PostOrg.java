@@ -130,7 +130,7 @@ private static final long serialVersionUID = 1L;
      * 修改用户ID
      */
     @ApiModelProperty(value="修改用户工号")
-    private Long modifierCode;
+    private String modifierCode;
     /**
      * 最后修改人
      */
