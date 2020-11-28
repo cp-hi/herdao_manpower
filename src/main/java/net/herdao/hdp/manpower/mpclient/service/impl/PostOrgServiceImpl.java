@@ -16,11 +16,12 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffCountDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostOrg;
 import net.herdao.hdp.manpower.mpclient.mapper.PostOrgMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostOrgService;
@@ -29,7 +30,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 岗位组织
@@ -45,7 +48,20 @@ public class PostOrgServiceImpl extends ServiceImpl<PostOrgMapper, PostOrg> impl
 
     @Override
     public Page<PostOrgListVO> findPostOrgPage(Page page, PostOrgListVO postOrgListVO, String searchText) {
-        return postOrgMapper.findPostOrgPage(page,postOrgListVO,searchText);
+        Page<PostOrgListVO> postOrgPage = postOrgMapper.findPostOrgPage(page, postOrgListVO, searchText);
+        Map<Long,Integer> staffCountDTOMap = new HashMap<>();
+        List<PostStaffCountDTO> staffCount = postOrgMapper.getStaffCount();
+        if(CollectionUtil.isNotEmpty(staffCount)){
+            staffCount.forEach(e->staffCountDTOMap.put(e.getPostOrgId(),e.getStaffCount()));
+        }
+        postOrgPage.getRecords().forEach(e->{
+            if(ObjectUtil.isNotNull(staffCountDTOMap.get(e.getId()))){
+                e.setStaffCount(staffCountDTOMap.get(e.getId()));
+            }else {
+                e.setStaffCount(0);
+            }
+        });
+        return postOrgPage;
     }
 
     /**
@@ -61,29 +77,8 @@ public class PostOrgServiceImpl extends ServiceImpl<PostOrgMapper, PostOrg> impl
     @Override
     @Transactional
     public PostOrg saveOrUpdatePostOrg(PostOrg postOrg) {
-        int retryCount=10;
-        if(ObjectUtil.isNull(postOrg.getId())){
-            this.save(postOrg);
-            do{
-                postOrg.setPostCode(this.getCode(postOrg.getGroupId()));
-                List<PostOrg> list = this.list(Wrappers.<PostOrg>lambdaUpdate()
-                        .eq(PostOrg::getId, postOrg.getId())
-                        .eq(PostOrg::getGroupId, postOrg.getGroupId())
-                        .ne(PostOrg::getPostCode, postOrg.getPostCode()));
-                System.out.println(this.update(postOrg, Wrappers.<PostOrg>lambdaUpdate()
-                        .eq(PostOrg::getId,postOrg.getId())
-                        .eq(PostOrg::getGroupId,postOrg.getGroupId())
-                        .ne(PostOrg::getPostCode,postOrg.getPostCode())));
-            }while (!this.update(postOrg, Wrappers.<PostOrg>lambdaUpdate()
-                    .eq(PostOrg::getId,postOrg.getId())
-                    .eq(PostOrg::getGroupId,postOrg.getGroupId())
-                    .ne(PostOrg::getPostCode,postOrg.getPostCode()))&&retryCount-->0);
-            if(retryCount<1){
-                throw new RuntimeException("失败");
-            }
-        }else{
-            this.updateById(postOrg);
-        }
+        postOrg.setPostCode(getCode(postOrg.getGroupId()));
+        this.saveOrUpdate(postOrg);
         return postOrg;
     }
     private String getCode(Long groupId){

@@ -17,16 +17,15 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.PostOrg;
 import net.herdao.hdp.manpower.mpclient.service.PostOrgService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -47,14 +46,14 @@ public class PostOrgController {
     /**
      * 分页查询
      * @param page 分页对象
-     * @param postOrg 岗位组织
+     * @param postOrgListVO 岗位组织
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_view')" )
-    public R getMpPostOrgPage(Page page, PostOrg postOrg) {
-        return R.ok(postOrgService.page(page, Wrappers.query(postOrg)));
+    public R getMpPostOrgPage(Page page, PostOrgListVO postOrgListVO, String seachText) {
+        return R.ok(postOrgService.findPostOrgPage(page,postOrgListVO,seachText));
     }
 
 
@@ -67,7 +66,7 @@ public class PostOrgController {
     @GetMapping("/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_mppostorg_view')" )
     public R getById(@PathVariable("id" ) Long id) {
-        return R.ok(postOrgService.getById(id));
+        return R.ok(postOrgService.findPostOrgById(id));
     }
 
     /**

@@ -203,5 +203,10 @@ public class PostOrgListVO {
      */
     @ApiModelProperty(value="岗位序列名称")
     private String  postSeqName;
+    /**
+     * 在职员工数
+     */
+    @ApiModelProperty(value="在职员工数")
+    private Integer  staffCount;
 
 }

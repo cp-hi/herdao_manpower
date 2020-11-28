@@ -19,10 +19,13 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostStaffCountDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostOrg;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 岗位组织
@@ -53,4 +56,8 @@ public interface PostOrgMapper extends BaseMapper<PostOrg> {
      * @return
      */
     String getMaxCode(Long groupId);
+    /**
+     * 获取岗位员工数量
+     */
+    List<PostStaffCountDTO> getStaffCount();
 }
