@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sun.tools.corba.se.idl.InterfaceGen;
 import io.swagger.annotations.ApiModel;
@@ -145,4 +146,7 @@ public class StaffPromoteApprove extends BaseModel<StaffPromoteApprove> {
 
     @ApiModelProperty(value = "晋升类型：1-晋升，2-降级")
     private Integer approveType;
+
+    @TableLogic
+    private Boolean delFlag;
 }

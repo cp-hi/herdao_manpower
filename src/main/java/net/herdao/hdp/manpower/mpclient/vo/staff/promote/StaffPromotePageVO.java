@@ -45,7 +45,7 @@ public class StaffPromotePageVO {
     private Long promoteOrgName;
 
     @ApiModelProperty(value = "调动后岗位 id", name = "promotePostName", example = "5432", required = true)
-    private Long promotePostName;
+    private String promotePostName;
 
     @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelName", example = "123", required = true)
     private Long promoteJobLevelName;

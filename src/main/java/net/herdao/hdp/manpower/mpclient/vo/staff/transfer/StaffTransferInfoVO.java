@@ -68,7 +68,7 @@ public class StaffTransferInfoVO {
     private Integer postHasCount;
 
     @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
-    private Boolean prepareChange;
+    private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;

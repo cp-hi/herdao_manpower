@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SavaStaffPromoteDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallInDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffPromoteExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.service.StaffPromoteService;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteExecuteVO;
@@ -44,35 +45,36 @@ public class StaffPromoteController {
         return null;
     }
 
-    @ApiOperation(value = "分页列表/详情-确认发起")
+    @ApiOperation(value = "分页列表或详情-确认发起")
     @GetMapping("/affirm/{id}")
-    public R affirmStaffChangeLevel(@RequestParam("id") Long id) {
-        return null;
+    public R affirmStaffPromote(@RequestParam("id") Long id,
+                                    @RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
+        return R.ok(service.affirmStart(id, dto));
     }
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
-    public R deleteStaffChangeLevel(@PathVariable("id") Long id) {
-        return null;
+    public R deleteStaffPromote(@PathVariable("id") Long id) {
+        return R.ok(service.removeById(id));
     }
 
     @ApiOperation(value = "员工职级变更记录详情")
     @GetMapping("/{id}" )
-    public R<StaffPromoteInfoVO> getStaffChangeLevel(@PathVariable("id") Long id) {
-        return null;
+    public R<StaffPromoteInfoVO> getStaffPromote(@PathVariable("id") Long id) {
+        return R.ok(service.getDetail(id));
     }
 
     @ApiOperation(value = "新增员工职级变更记录")
     @PostMapping
-    public R<Long> addStaffChangeLevel(@RequestBody @NotNull SavaStaffPromoteDTO dto) {
-        return null;
+    public R<Long> addStaffPromote(@RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
+        return R.ok(service.saveInfo(dto));
     }
 
     @ApiOperation(value = "更新员工职级变更记录")
     @PutMapping("/{id}")
-    public R<Long> updateStaffChangeLevel(@RequestBody @NotNull SavaStaffPromoteDTO dto,
-                                          @PathVariable("id") @NotNull Long id) {
-        return null;
+    public R<Long> updateStaffPromote(@RequestBody @NotNull SavaStaffPromoteDTO dto,
+                                          @PathVariable("id") @NotNull Long id) throws Exception {
+        return R.ok(service.updateInfo(id, dto));
     }
 
     @ApiOperation(value = "获取执行调动信息")

@@ -12,7 +12,7 @@ import java.util.List;
  * @Date 2020/11/24 7:19 下午
  */
 @Data
-@ApiModel(value = "保存升/降级详情页")
+@ApiModel(value = "保存升职降级详情页")
 public class SavaStaffPromoteDTO {
     @ApiModelProperty(value = "晋升 id", name = "id", example = "1", required = true)
     @NotNull

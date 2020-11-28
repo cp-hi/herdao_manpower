@@ -50,6 +50,9 @@ public class SaveStaffCallInDTO {
     @NotNull
     private Long transStartDate;
 
+    @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
+    private Boolean isPrepareChange;
+
     @ApiModelProperty(value = "岗位年度编制", name = "yearPostPrepareCount", example = "5")
     private Integer yearPostPrepareCount;
 

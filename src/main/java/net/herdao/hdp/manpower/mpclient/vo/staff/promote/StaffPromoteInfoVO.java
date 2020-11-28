@@ -55,7 +55,7 @@ public class StaffPromoteInfoVO {
     private Integer postHasCount;
 
     @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
-    private Boolean prepareChange;
+    private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

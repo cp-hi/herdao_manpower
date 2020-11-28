@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SavaStaffPromoteDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPromoteApprove;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
 
 /**
@@ -17,7 +18,7 @@ public interface StaffPromoteService extends HdpService<StaffPromoteApprove>{
 
     public Long saveInfo(SavaStaffPromoteDTO dto) throws Exception;
 
-    public StaffCallInInfoVO getDetail(Long id);
+    public StaffPromoteInfoVO getDetail(Long id);
 
     public Page<StaffPromotePageVO> pageStaffPromote(Page page, String searchText, Long orgId, String status);
 }
