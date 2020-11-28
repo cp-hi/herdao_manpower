@@ -46,7 +46,7 @@ public class StaffPromoteController {
     }
 
     @ApiOperation(value = "分页列表或详情-确认发起")
-    @GetMapping("/affirm/{id}")
+    @PutMapping("/affirm/{id}")
     public R affirmStaffPromote(@RequestParam("id") Long id,
                                     @RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
