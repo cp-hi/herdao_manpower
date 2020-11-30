@@ -1,10 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.sun.tools.corba.se.idl.InterfaceGen;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -118,21 +113,27 @@ public class StaffPromoteApprove extends BaseModel<StaffPromoteApprove> {
     private Integer nowPostHasCount;
 
     @ApiModelProperty(value = "新建人工号")
+    @TableField(value = "creator_code", fill = FieldFill.INSERT)
     private String creatorCode;
 
     @ApiModelProperty(value = "新建人")
+    @TableField(value = "creator_name", fill = FieldFill.INSERT)
     private String creatorName;
 
     @ApiModelProperty(value = "新建时间")
+    @TableField(value = "creator_time", fill = FieldFill.INSERT)
     private LocalDateTime creatorTime;
 
     @ApiModelProperty(value = "修改人工号")
+    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
     private String modifierCode;
 
     @ApiModelProperty(value = "修改人")
+    @TableField(value = "modifier_name", fill = FieldFill.UPDATE)
     private String modifierName;
 
     @ApiModelProperty(value = "修改人时间")
+    @TableField(value = "modifier_time", fill = FieldFill.UPDATE)
     private LocalDateTime modifierTime;
 
     @ApiModelProperty(value = "状态：FILLING_IN(填报中) APPROVING(审批中) APPROVED(一审批) EXECUTED(已执行) 四种")
