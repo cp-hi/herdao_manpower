@@ -8,7 +8,7 @@
             <resultMap id="staffEntrypostApproveMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove">
                   <id property="id" column="id"/>
                   <result property="oid" column="oid"/>
-                  <result property="username" column="UserName"/>
+                  <result property="userName" column="userName"/>
                   <result property="recruitmentId" column="recruitment_id"/>
                   <result property="recruitmentOid" column="recruitment_oid"/>
                   <result property="entryType" column="entry_type"/>

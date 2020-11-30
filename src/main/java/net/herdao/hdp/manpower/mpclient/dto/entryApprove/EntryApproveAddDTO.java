@@ -31,7 +31,7 @@ public class EntryApproveAddDTO implements Serializable {
      */
     @ApiModelProperty(value="姓名")
     @ExcelProperty(value = "姓名")
-    private String UserName;
+    private String userName;
 
     /**
      * 原占编员工id

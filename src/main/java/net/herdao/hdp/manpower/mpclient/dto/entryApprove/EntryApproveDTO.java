@@ -30,7 +30,7 @@ public class EntryApproveDTO implements Serializable {
      */
     @ApiModelProperty(value="姓名")
     @ExcelProperty(value = "姓名")
-    private String UserName;
+    private String userName;
 
     /**
      * 工号
