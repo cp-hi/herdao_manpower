@@ -18,6 +18,10 @@ public class SaveStaffCallOutDTO {
     @NotNull
     private Long id;
 
+    @ApiModelProperty(value = "对应调入 id", name = "id", example = "1", required = true)
+    @NotNull
+    private Long transApproveId;
+
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1", required = true)
     @NotNull
     private Long userId;
@@ -49,6 +53,10 @@ public class SaveStaffCallOutDTO {
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901", required = true)
     @NotNull
     private Long transStartDate;
+
+    @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
+    private Boolean isPrepareChange;
+
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;

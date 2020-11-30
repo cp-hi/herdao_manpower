@@ -33,17 +33,14 @@ public class StaffCallInAndCallOutPageVO {
     @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
     private String nowPostName;
 
+    @ApiModelProperty(value = "调动钱职级名称", name = "nowJobLevelName", example = "123")
+    private String nowJobLevelName;
+
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
     private String transOrgName;
 
     @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
     private String transPostName;
-
-    /**
-     * TODO:: 数据类型和字段名待修改
-     */
-    @ApiModelProperty(value = "职级变化：升职/降职", name = "levelChange")
-    private String levelChange;
 
     @ApiModelProperty(value = "调动后职级名称", name = "transJobLevelName", example = "123")
     private String transJobLevelName;

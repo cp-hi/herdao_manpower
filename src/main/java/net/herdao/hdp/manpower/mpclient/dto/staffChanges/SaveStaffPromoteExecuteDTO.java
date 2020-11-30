@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "保存晋升/降级执行")
-public class SaveStaffChangeLevelExecuteDTO {
+public class SaveStaffPromoteExecuteDTO {
     private Long id;
 
     /**

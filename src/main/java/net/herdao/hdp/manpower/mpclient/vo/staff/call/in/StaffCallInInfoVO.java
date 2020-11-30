@@ -22,20 +22,38 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "调动前部门 id", name = "nowOrgId", example = "1234")
     private Long nowOrgId;
 
+    @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
+    private String nowOrgName;
+
     @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345")
     private Long nowPostId;
+
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
+    private String nowPostName;
 
     @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123")
     private Long nowJobLevelId;
 
+    @ApiModelProperty(value = "原职级名称", name = "jobLevelName", example = "M3-6")
+    private String nowJobLevelName;
+
     @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321")
     private Long transOrgId;
+
+    @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
+    private String transOrgName;
 
     @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432")
     private Long transPostId;
 
+    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
+    private String transPostName;
+
     @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123")
     private Long transJobLevelId;
+
+    @ApiModelProperty(value = "调动后好职级名称", name = "jobLevelName", example = "M3-6")
+    private String transJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
@@ -74,14 +92,15 @@ public class StaffCallInInfoVO {
     private String fundUnitsName;
 
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "社保购买单位名称", name = "securityUnitName")
-    private Long securityUnitName;
+    private String securityUnitsName;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
     private List<String> appendixIds;
+
 }

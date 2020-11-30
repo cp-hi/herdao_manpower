@@ -50,6 +50,9 @@ public class SaveStaffCallInDTO {
     @NotNull
     private Long transStartDate;
 
+    @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
+    private Boolean isPrepareChange;
+
     @ApiModelProperty(value = "岗位年度编制", name = "yearPostPrepareCount", example = "5")
     private Integer yearPostPrepareCount;
 
@@ -74,20 +77,11 @@ public class SaveStaffCallInDTO {
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitsId")
     private Long paidUnitsId;
 
-    @ApiModelProperty(value = "工资发放单位名称", name = "paidUnitsName")
-    private String paidUnitsName;
-
     @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitsId")
     private Long fundUnitsId;
 
-    @ApiModelProperty(value = "公积金购买单位名称", name = "fundUnitsName")
-    private String fundUnitsName;
-
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
     private Long securityUnitId;
-
-    @ApiModelProperty(value = "社保购买单位名称", name = "securityUnitName")
-    private Long securityUnitName;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

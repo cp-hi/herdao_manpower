@@ -33,6 +33,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 
 /**
  * 员工表
@@ -89,4 +90,8 @@ public interface StaffService extends HdpService<Staff> {
 	boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO);
 
 	void updateEduLast(Long id);
+
+	StaffBasicVO selectBasicByCode(String staffName);
+
+	Staff getByUserId(Long userId);
 }

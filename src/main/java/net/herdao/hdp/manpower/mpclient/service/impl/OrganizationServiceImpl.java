@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import cn.hutool.core.convert.Convert;
 import net.herdao.hdp.admin.api.dto.OrgDTO;
 import net.herdao.hdp.admin.api.feign.RemoteOrgService;
 import org.springframework.beans.BeanUtils;
@@ -676,7 +675,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     public List<OrganizationImportDTO> selectAllOrganization() {
         return this.baseMapper.selectAllOrganization();
     }
-
     /**
      * ======================================  组织导入 start ====================================
      **/
@@ -988,4 +986,14 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     /**======================================  组织导入 end ====================================**/
 
+    @Autowired
+    private OrganizationMapper mapper;
+    @Override
+    public void validityCheck(Long id, String msg) throws Exception {
+        QueryWrapper<Organization> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        if (mapper.selectOne(queryWrapper) == null) {
+            throw new Exception(msg);
+        }
+    }
 }

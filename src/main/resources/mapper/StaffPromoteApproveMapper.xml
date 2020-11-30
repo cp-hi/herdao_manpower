@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper">
+
+    <select id="findStaffPromotePage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO">
+        SELECT
+        spa.id,
+        spa.user_id,
+        s.staff_name,
+        s.staff_code,
+        spa.promote_date,
+        norg.ORG_NAME now_org_name,
+        np.POST_NAME now_post_name,
+        njl.JOB_LEVEL_NAME now_job_level_name,
+        porg.ORG_NAME promote_org_name,
+        pp.POST_NAME promote_post_name,
+        pjl.JOB_LEVEL_NAME promote_job_level_name
+
+        FROM mp_staff_promote_approve spa
+        LEFT JOIN mp_staff s ON spa.user_id = s.user_id
+        LEFT JOIN mp_organization norg ON spa.now_org_id = norg.id
+        LEFT JOIN mp_post np ON spa.now_post_id = np.id
+        LEFT JOIN mp_organization porg ON spa.promote_org_id = porg.id
+        LEFT JOIN mp_post pp ON spa.promote_post_id = pp.id
+        LEFT JOIN mp_job_level njl ON spa.now_job_level_id = njl.id
+        LEFT JOIN mp_job_level pjl ON spa.promote_job_level_id = pjl.id
+
+        <where>
+            <if test="searchText != '' and searchText != null">
+                and
+                concat(
+                IFNULL(s.staff_name,''),
+                IFNULL(s.staff_code,''),
+                IFNULL(sta.trans_start_date,''),
+                IFNULL(norg.ORG_NAME,''),
+                IFNULL(np.POST_NAME,''),
+                IFNULL(njl.JOB_LEVEL_NAME,''),
+                IFNULL(porg.ORG_NAME,''),
+                IFNULL(pp.POST_NAME,''),
+                IFNULL(pjl.JOB_LEVEL_NAME,'')
+                ) LIKE concat(#{searchText},'%')
+            </if>
+            <if test="status != '' and status != null">
+                and spa.`status` = #{status}
+            </if>
+            <if test="orgId != '' and orgId != null">
+                and norg.`org_id` = #{orgId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findStaffCallInAndCallOutPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageVO">
+        SELECT
+        sta.id,
+        sta.user_id,
+        s.staff_name,
+        s.staff_code,
+        sta.trans_start_date,
+        norg.ORG_NAME now_org_name,
+        np.POST_NAME now_post_name,
+        torg.ORG_NAME trans_org_name,
+        tp.POST_NAME trans_post_name,
+        njl.JOB_LEVEL_NAME now_job_level_name ,
+        tjl.JOB_LEVEL_NAME trans_job_level_name
+
+        FROM mp_staff_transfer_approve sta
+        LEFT JOIN mp_staff s ON sta.user_id = s.user_id
+        LEFT JOIN mp_organization norg ON sta.now_org_id = norg.id
+        LEFT JOIN mp_post np ON sta.now_post_id = np.id
+        LEFT JOIN mp_organization torg ON sta.trans_org_id = torg.id
+        LEFT JOIN mp_post tp ON sta.trans_post_id = tp.id
+        LEFT JOIN mp_job_level njl ON sta.now_job_level_id = njl.id
+        LEFT JOIN mp_job_level tjl ON sta.trans_job_level_id = tjl.id
+
+        <where>
+            and transfer_type = 'CALL_IN_AND_CALL_OUT'
+            <if test="searchText != '' and searchText != null">
+                and
+                concat(
+                IFNULL(s.staff_name,''),
+                IFNULL(s.staff_code,''),
+                IFNULL(sta.trans_start_date,''),
+                IFNULL(norg.ORG_NAME,''),
+                IFNULL(np.POST_NAME,''),
+                IFNULL(torg.ORG_NAME,''),
+                IFNULL(tp.POST_NAME,''),
+                IFNULL(njl.JOB_LEVEL_NAME,''),
+                IFNULL(tjl.JOB_LEVEL_NAME,'')
+                ) LIKE concat(#{searchText},'%')
+
+            </if>
+            <if test="status != '' and status != null">
+                and sta.`status` = #{status}
+            </if>
+            <if test="orgId != '' and orgId != null">
+                and norg.`org_id` = #{orgId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
@@ -92,5 +93,16 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     @Override
     public Function<JobLevel, Long> getGroupIdMapper() {
         return JobLevel::getGroupId;
+    }
+
+    @Autowired
+    private JobLevelMapper mapper;
+    @Override
+    public void validityCheck(Long id, String msg) throws Exception {
+        QueryWrapper<JobLevel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        if (mapper.selectOne(queryWrapper) == null) {
+            throw new Exception(msg);
+        }
     }
 }

@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallInAndCallOutExecuteDTO;
+import net.herdao.hdp.manpower.mpclient.service.StaffCallInAndCallOutService;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutExecuteVO;
-import net.herdao.hdp.manpower.mpclient.vo.staff.level.change.StaffChangeLevelPageVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,19 +20,22 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "staffCallInAndCallOut", tags = "员工异动管理-调入调出")
 public class StaffCallInAndCallOutController {
 
+    @Autowired
+    private StaffCallInAndCallOutService service;
+
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R<Page<StaffChangeLevelPageVO>> pageStaffCallInAndCallOut(String searchText,
-                                                                     Page page,
-                                                                     Long orgId,
-                                                                     String status) {
-        return null;
+    public R<Page<StaffCallInAndCallOutPageVO>> pageStaffCallInAndCallOut(String searchText,
+                                                                          Page page,
+                                                                          Long orgId,
+                                                                          String status) {
+        return R.ok(service.pageStaffCallInAndCallOut(page, searchText, orgId, status));
     }
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
     public R deleteCallInAndCallOut(@PathVariable("id") Long id) {
-        return null;
+        return R.ok(service.removeById(id));
     }
 
     @ApiOperation(value = "获取执行调动信息")
@@ -40,10 +44,10 @@ public class StaffCallInAndCallOutController {
         return null;
     }
 
-    @ApiOperation(value = "确认执行")
-    @PutMapping("/execution/{id}")
-    public R executeStaffTransfer(@RequestBody(required = true) SaveStaffCallInAndCallOutExecuteDTO dto) {
-        return null;
+    @ApiOperation(value = "确认发起")
+    @PutMapping("/affirm/{id}")
+    public R<Long> affirm(@PathVariable(required = true) Long id) throws Exception {
+        return R.ok(service.affirmStart(id));
     }
 
 }

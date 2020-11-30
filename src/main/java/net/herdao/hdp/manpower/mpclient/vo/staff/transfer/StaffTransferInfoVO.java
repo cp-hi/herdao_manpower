@@ -68,7 +68,7 @@ public class StaffTransferInfoVO {
     private Integer postHasCount;
 
     @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
-    private Boolean prepareChange;
+    private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;
@@ -95,10 +95,10 @@ public class StaffTransferInfoVO {
     private String fundUnitsName;
 
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "社保购买单位名称", name = "securityUnitName")
-    private Long securityUnitName;
+    private String securityUnitsName;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

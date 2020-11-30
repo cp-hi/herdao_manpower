@@ -12,15 +12,19 @@ import java.util.List;
  * @Date 2020/11/24 7:19 下午
  */
 @Data
-@ApiModel(value = "保存升/降级详情页")
-public class SavaStaffChangeLevelDTO {
-    @ApiModelProperty(value = "人事调动 id", name = "id", example = "1", required = true)
+@ApiModel(value = "保存升职降级详情页")
+public class SavaStaffPromoteDTO {
+    @ApiModelProperty(value = "晋升 id", name = "id", example = "1", required = true)
     @NotNull
     private Long id;
 
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1", required = true)
     @NotNull
     private Long userId;
+
+    @ApiModelProperty(value = "晋升类型 1-晋升 2-降级", name = "promoteType", example = "1", required = true)
+    @NotNull
+    private Integer promoteType;
 
     @ApiModelProperty(value = "调动前部门 id", name = "nowOrgId", example = "1234", required = true)
     @NotNull
@@ -34,21 +38,21 @@ public class SavaStaffChangeLevelDTO {
     @NotNull
     private Long nowJobLevelId;
 
-    @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321", required = true)
+    @ApiModelProperty(value = "调动后部门 id", name = "promoteOrgId", example = "4321", required = true)
     @NotNull
-    private Long transOrgId;
+    private Long promoteOrgId;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432", required = true)
+    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostId", example = "5432", required = true)
     @NotNull
-    private Long transPostId;
+    private Long promotePostId;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelId", example = "123", required = true)
     @NotNull
-    private Long transJobLevelId;
+    private Long promoteJobLevelId;
 
-    @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901", required = true)
+    @ApiModelProperty(value = "生效日期", name = "promoteDate", example = "20200901", required = true)
     @NotNull
-    private Long transStartDate;
+    private Long promoteDate;
 
     @ApiModelProperty(value = "考察期满日", name = "expireDate", example = "20200901")
     private Long expireDate;
@@ -63,7 +67,7 @@ public class SavaStaffChangeLevelDTO {
     private Integer postHasCount;
 
     @ApiModelProperty(value = "编制是否置换", name = "isPrepareChange", example = "1")
-    private Boolean prepareChange;
+    private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

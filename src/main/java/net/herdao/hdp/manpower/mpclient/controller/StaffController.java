@@ -417,11 +417,10 @@ public class StaffController extends HdpBaseController{
         return R.ok(photoAddr);
     }
 
-    @ApiOperation(value = "人事异动(员工)基础信息（根据员工姓名查询基本信息）")
-    @GetMapping("/basic")
-    public R<StaffBasicVO> getStaffBasic(@RequestParam("staffName") String staffName) {
-
-        return null;
+    @ApiOperation(value = "人事异动(员工)基础信息-多页面通用（根据员工编码查询基本信息）")
+    @GetMapping("/changes/basic")
+    public R<StaffBasicVO> getStaffBasic(@RequestParam("staffCode") String staffCode) {
+        return R.ok(staffService.selectBasicByCode(staffCode));
     }
 
 }

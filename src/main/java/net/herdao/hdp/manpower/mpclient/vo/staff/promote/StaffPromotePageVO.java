@@ -1,8 +1,10 @@
-package net.herdao.hdp.manpower.mpclient.vo.staff.level.change;
+package net.herdao.hdp.manpower.mpclient.vo.staff.promote;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author Liu Chang
@@ -11,7 +13,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "职级分页列表")
-public class StaffChangeLevelPageVO {
+public class StaffPromotePageVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
 
@@ -24,8 +26,11 @@ public class StaffChangeLevelPageVO {
     @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
     private String staffCode;
 
+    @ApiModelProperty(value = "晋升类型：1-晋升 2-降级", name = "promoteType", example = "1")
+    private Integer promoteType;
+
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
-    private Long transStartDate;
+    private Long promoteStartDate;
 
     @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
@@ -36,14 +41,15 @@ public class StaffChangeLevelPageVO {
     @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName")
     private String nowJobLevelName;
 
-    @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 B")
-    private String transOrgName;
+    @ApiModelProperty(value = "调动后部门 id", name = "promoteOrgName", example = "4321", required = true)
+    private Long promoteOrgName;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
+    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostName", example = "5432", required = true)
+    private String promotePostName;
 
-    @ApiModelProperty(value = "调动后职级名称", name = "transJobLevelName")
-    private String transJobLevelName;
+    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelName", example = "123", required = true)
+    private Long promoteJobLevelName;
+
 
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
     private String updateInfo;

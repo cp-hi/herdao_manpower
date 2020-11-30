@@ -27,7 +27,7 @@ public class SaveStaffTransferExecuteDTO {
     private String securityType;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitsId")
-    private String paidUnitsId;
+    private Long paidUnitsId;
 
     @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitsId")
     private Long fundUnitsId;
