@@ -66,11 +66,4 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @return
      */
     RecruitmentJobDTO fetchResumeJob(Long id);
-
-    /**
-     * 人才简历-从业情况与求职意向-修改更新
-     * @param dto 从业情况与求职意向
-     * @return
-     */
-    RecruitmentJobDTO updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto);
 }

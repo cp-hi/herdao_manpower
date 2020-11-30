@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffEntrypostApproveMapper">
+
+            <resultMap id="staffEntrypostApproveMap" type="net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove">
+                  <id property="id" column="id"/>
+                  <result property="oid" column="oid"/>
+                  <result property="username" column="UserName"/>
+                  <result property="recruitmentId" column="recruitment_id"/>
+                  <result property="recruitmentOid" column="recruitment_oid"/>
+                  <result property="entryType" column="entry_type"/>
+                  <result property="status" column="status"/>
+                  <result property="personnelNature" column="personnel_nature"/>
+                  <result property="personnelType" column="personnel_type"/>
+                  <result property="staffStatus" column="staff_status"/>
+                  <result property="officeType" column="office_type"/>
+                  <result property="orgId" column="org_id"/>
+                  <result property="orgOid" column="org_oid"/>
+                  <result property="postId" column="post_id"/>
+                  <result property="postOid" column="post_oid"/>
+                  <result property="yearPostPrepareCount" column="year_post_prepare_count"/>
+                  <result property="monthPostPrepareCount" column="month_post_prepare_count"/>
+                  <result property="postHasCount" column="post_has_count"/>
+                  <result property="entryPostTime" column="entry_post_time"/>
+                  <result property="contractPeriod" column="contract_period"/>
+                  <result property="probation" column="probation"/>
+                  <result property="contractCompanyId" column="contract_company_id"/>
+                  <result property="contractCompanyOid" column="contract_company_oid"/>
+                  <result property="otherSubsides" column="other_subsides"/>
+                  <result property="remark" column="remark"/>
+                  <result property="staffId" column="staff_id"/>
+                  <result property="staffOid" column="staff_oid"/>
+                  <result property="entryStatus" column="entry_status"/>
+                  <result property="staffCode" column="staff_code"/>
+                  <result property="leaveSupplyRemark" column="leave_supply_remark"/>
+                  <result property="replaceUserId" column="replace_user_id"/>
+                  <result property="replaceUserOid" column="replace_user_oid"/>
+                  <result property="replaceOrganizationId" column="replace_organization_id"/>
+                  <result property="replaceOrganizationOid" column="replace_organization_oid"/>
+                  <result property="replacePostId" column="replace_post_id"/>
+                  <result property="replacePostOid" column="replace_post_oid"/>
+                  <result property="isAppointment" column="is_appointment"/>
+                  <result property="paidUnitsId" column="paid_units_id"/>
+                  <result property="paidUnitsOid" column="paid_units_oid"/>
+                  <result property="securityUnitsId" column="security_units_id"/>
+                  <result property="securityUnitsOid" column="security_units_oid"/>
+                  <result property="fundUnitsId" column="fund_units_id"/>
+                  <result property="fundUnitsOid" column="fund_units_oid"/>
+                  <result property="creatorCode" column="creator_code"/>
+                  <result property="creatorName" column="creator_name"/>
+                  <result property="creatorTime" column="creator_time"/>
+                  <result property="modifierCode" column="modifier_code"/>
+                  <result property="modifierName" column="modifier_name"/>
+                  <result property="modifierTime" column="modifier_time"/>
+                  <result property="field1" column="FIELD1"/>
+                  <result property="field2" column="FIELD2"/>
+                  <result property="field3" column="FIELD3"/>
+                  <result property="field4" column="FIELD4"/>
+                  <result property="field5" column="FIELD5"/>
+                  <result property="entryLoginStatus" column="entry_login_status"/>
+                  <result property="inviteStatus" column="invite_status"/>
+                  <result property="jobLevelId" column="job_level_id"/>
+                  <result property="entryLoginProgress" column="entry_login_progress"/>
+                  <result property="tenantId" column="TENANT_ID"/>
+                  <result property="delFlag" column="DEL_FLAG"/>
+                  <result property="postOrgId" column="post_org_id"/>
+                  <result property="mobileNo" column="mobile_no"/>
+                  <result property="certificateNo" column="certificate_no"/>
+                  <result property="certificateType" column="certificate_type"/>
+            </resultMap>
+
+
+      <!-- 录用审批-列表 -->
+      <select id="findApprovePage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO">
+            select * from (
+                    SELECT app.id,
+                           app.UserName,
+                           app.staff_id,
+                           app.mobile_no,
+                           org.org_name,
+                           pst.post_name,
+                           ryxz.value personnel_nature,
+                           rzlx.value office_type,
+                           spzt.value status,
+                           CONCAT(app.creator_name, " 于 ", app.creator_time, " 创建" ) create_desc,
+                           CONCAT(app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc
+                    FROM    mp_staff_entrypost_approve app
+                            LEFT JOIN mp_organization org on org.id=app.org_id
+                            LEFT JOIN mp_post pst on pst.id= app.post_id
+                            LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
+                            LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
+                            LEFT JOIN sys_dict_item spzt on spzt.type='YWDZT' and spzt.value=app.status
+                   <where>
+                          and app.del_flag = 0
+                      <if test="orgId != null and orgId != '' ">
+                          and app.org_id= #{orgId}
+                      </if>
+                      <if test="status != null and status != '' ">
+                          and app.status= #{status}
+                      </if>
+                  </where>
+             )t
+             <where>
+                 <if test="searchText != null and searchText != '' ">
+                      and CONCAT(
+                          IFNULL(t.UserName,''),
+                          IFNULL(t.staff_id,''),
+                          IFNULL(t.mobile_no,''),
+                          IFNULL(t.org_name,''),
+                          IFNULL(t.post_name,''),
+                          IFNULL(t.personnel_nature,''),
+                          IFNULL(t.office_type,''),
+                          IFNULL(t.status,''),
+                          IFNULL(t.create_desc,''),
+                          IFNULL(t.update_desc,'')
+                       )  LIKE concat('%', #{searchText} ,'%')
+                 </if>
+          </where>
+       </select>
+
+    <!-- 录用审批-流程审批-详情 -->
+    <select id="findApproveDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO">
+            SELECT  app.id,
+                    app.UserName,
+                    sf.STAFF_NAME replace_user_name,
+                    zjlx.value certificate_type,
+                    app.certificate_no,
+                    ryxz.value personnel_nature,
+                    rygsfw.value staff_status,
+                    rzlx.value office_type,
+                    if( app.is_appointment = 0,'否','是') is_appointment,
+                    org.org_name,
+                    pst.post_name,
+                    app.year_post_prepare_count,
+                    app.probation,
+                    app.contract_period,
+                    app.post_has_count,
+                    app.month_post_prepare_count,
+                    ldht.COMPANY_NAME contract_company,
+                    sb.COMPANY_NAME security_units,
+                    gz.COMPANY_NAME paid_units,
+                    gjj.COMPANY_NAME fund_units,
+                    app.remark,
+                    spzt.value status
+        FROM mp_staff_entrypost_approve app
+	        LEFT JOIN mp_organization org on org.id=app.org_id
+            LEFT JOIN mp_post pst on pst.id= app.post_id
+            LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
+            LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
+            LEFT JOIN sys_dict_item spzt on spzt.type='YWDZT' and spzt.value=app.status
+            LEFT JOIN mp_staff sf on sf.id=app.replace_user_id
+            LEFT JOIN sys_dict_item zjlx on zjlx.type='ID_TYPE' and zjlx.value=app.certificate_type
+            LEFT JOIN sys_dict_item rygsfw on rygsfw.type='RYGSFW' and rygsfw.value=app.staff_status
+	        LEFT JOIN mp_company ldht on ldht.id=app.contract_company_id
+            LEFT JOIN mp_company gz on gz.id=app.paid_units_id
+            LEFT JOIN mp_company sb on sb.id=app.security_units_id
+            LEFT JOIN mp_company gjj on gjj.id=app.fund_units_id
+          <where>
+                <if test="id != null">
+                    and app.id =  #{id}
+                </if>
+          </where>
+    </select>
+</mapper>
