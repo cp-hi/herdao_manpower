@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class UserExcelListener extends AnalysisEventListener<User> {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserExcelListener(UserService userService) {
         this.userService = userService;

@@ -5,11 +5,11 @@ package net.herdao.hdp.manpower.mpclient.constant;
  * @Date 2020/11/26 4:40 下午
  */
 public interface StaffChangesApproveStatusConstants {
-    public final String FILLING_IN = "FILLING_IN";
+    String FILLING_IN = "FILLING_IN";
 
-    public final String APPROVING = "APPROVING";
+    String APPROVING = "APPROVING";
 
-    public final String APPROVED = "APPROVED";
+    String APPROVED = "APPROVED";
 
-    public final String EXECUTED = "EXECUTED";
+    String EXECUTED = "EXECUTED";
 }

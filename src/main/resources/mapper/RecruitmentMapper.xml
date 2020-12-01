@@ -156,12 +156,14 @@
                 dirc.label talent_label,
                 rl.`name` rc_label,
                 invr.invite_count,
+                zpjg.value recruitment_status,
                 CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
              FROM
                 mp_recruitment rec
                 left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
                 left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
                 left join mp_recruitment_label rl on rl.recruitment_id= rec.id
+                left join sys_dict_item zpjg on zpjg.type='ZPJG' and zpjg.value=rec.recruitment_status
                 left join
                  (
                      SELECT

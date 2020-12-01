@@ -250,7 +250,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     @Autowired
-    private PostMapper mapper;
+    private final PostMapper mapper;
     @Override
     public void validityCheck(Long id, String msg) throws Exception {
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();

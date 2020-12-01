@@ -6,9 +6,9 @@ package net.herdao.hdp.manpower.mpclient.constant;
  * @Date 2020/11/27 3:06 下午
  */
 public interface StaffChangesApproveTypeConstants {
-    public final String TRANSFER = "TRANSFER";
+    String TRANSFER = "TRANSFER";
 
-    public final String CALL_IN_AND_CALL_OUT = "CALL_IN_AND_CALL_OUT";
+    String CALL_IN_AND_CALL_OUT = "CALL_IN_AND_CALL_OUT";
 
-    public final String PROMOTE = "PROMOTE";
+    String PROMOTE = "PROMOTE";
 }

@@ -46,7 +46,7 @@ public class StaffEditController {
 
     private final StaffcontractService staffcontractService;
     
-    private RemoteUserService remoteUserService;
+    private final RemoteUserService remoteUserService;
 
     @ApiOperation(value = "停用员工", notes = "通过工号停用员工")
     @GetMapping("/stop/{staffCode}" )

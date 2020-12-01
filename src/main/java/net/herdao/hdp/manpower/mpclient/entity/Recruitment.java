@@ -627,4 +627,10 @@ public class Recruitment extends Model<Recruitment> {
      */
     @ApiModelProperty(value="发证时间")
     private LocalDateTime certificateTime;
+
+    /**
+     * 招聘状态
+     */
+    @ApiModelProperty(value="招聘状态")
+    private String recruitmentStatus;
 }

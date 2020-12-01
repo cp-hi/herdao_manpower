@@ -13,8 +13,8 @@ public class FamilystatusListener<T, V> extends AnalysisEventListener<T> {
      * 每隔500条存储数据库，然后清理list ，方便内存回收
      */
     private static final int BATCH_COUNT = 500;
-    private IService<V> service;
-    private Class cls;
+    private final IService<V> service;
+    private final Class cls;
     List<V> dataList = new ArrayList<>();
 
 

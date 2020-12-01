@@ -73,9 +73,6 @@ public class ObjectFieldCompareUtils {
 		if (object1 == null && object2 != null) {
 			return false;
 		}
-		if (object1.equals(object2)) {
-			return true;
-		}
-		return false;
-	}
+        return object1.equals(object2);
+    }
 }

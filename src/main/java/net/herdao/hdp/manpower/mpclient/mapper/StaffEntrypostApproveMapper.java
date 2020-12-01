@@ -1,20 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, herdao All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the herdao.net developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: liang
- */
-
 package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -22,8 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 录用审批表
@@ -50,5 +36,27 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @return
      */
     EntryApproveFormDTO findApproveDetails(@Param("id") Long id);
+
+    /**
+     * 查询录用审批表的工号
+     * @param idnumber 身份证号码
+     * @return
+     */
+    List<StaffEntrypostApprove> getStaffCode(@Param("idnumber") String idnumber);
+
+    /**
+     * 获取员工工号前缀
+     * @param groupCode 集团code
+     * @param deptCode 部门code
+     * @return
+     */
+    StaffCodePrefixVO getStaffCodePrefix(@Param("groupCode") String groupCode,@Param("deptCode") String deptCode);
+
+    /**
+     * 获取最大员工工号+1
+     * @param staffCodeHead
+     * @return
+     */
+    StaffCodePrefixVO getMaxStaffCodeAddOne(@Param("staffCodeHead") String staffCodeHead);
 
 }

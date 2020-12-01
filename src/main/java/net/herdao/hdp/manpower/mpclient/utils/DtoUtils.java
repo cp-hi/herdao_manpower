@@ -28,8 +28,8 @@ public class DtoUtils {
                     if (m.getName().startsWith("set")) {
                         String fieldName = m.getName().replaceFirst("set", "");
                         Method method = result.getClass().getMethod(m.getName(), m.getParameterTypes());
-                        Method getMethod = obj.getClass().getMethod("get" + fieldName, new Class[]{});
-                        method.invoke(result, getMethod.invoke(obj, new Object[]{}));
+                        Method getMethod = obj.getClass().getMethod("get" + fieldName);
+                        method.invoke(result, getMethod.invoke(obj));
                     }
                 } catch (Exception e) {
                     continue;

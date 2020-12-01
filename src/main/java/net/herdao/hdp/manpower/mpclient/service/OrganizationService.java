@@ -211,5 +211,5 @@ public interface OrganizationService extends HdpService<Organization>{
      */
     List<OrganizationImportDTO> selectAllOrganization();
 
-    public void validityCheck(Long id, String msg) throws Exception;
+    void validityCheck(Long id, String msg) throws Exception;
 }

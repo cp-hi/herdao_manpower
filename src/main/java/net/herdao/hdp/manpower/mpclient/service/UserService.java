@@ -36,6 +36,6 @@ public interface UserService extends IService<User> {
 	 * @param isStop 是否停用 值：1 停用， 值：0 启用
 	 * @return
 	 */
-	public Integer getCountUser(String orgCode, Integer isStop);
+    Integer getCountUser(String orgCode, Integer isStop);
 
 }

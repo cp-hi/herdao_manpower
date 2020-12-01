@@ -9,11 +9,11 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.call.out.StaffCallOutInfoVO;
  * @Date 2020/11/27 4:34 下午
  */
 public interface StaffCallOutService extends HdpService<StaffTransferApprove> {
-    public Long saveInfo(SaveStaffCallOutDTO dto) throws Exception;
+    Long saveInfo(SaveStaffCallOutDTO dto) throws Exception;
 
-    public Long updateInfo(Long id, SaveStaffCallOutDTO dto) throws Exception;
+    Long updateInfo(Long id, SaveStaffCallOutDTO dto) throws Exception;
 
-    public Long affirmStart(Long id, SaveStaffCallOutDTO dto) throws Exception;
+    Long affirmStart(Long id, SaveStaffCallOutDTO dto) throws Exception;
 
-    public StaffCallOutInfoVO getDetail(Long id);
+    StaffCallOutInfoVO getDetail(Long id);
 }

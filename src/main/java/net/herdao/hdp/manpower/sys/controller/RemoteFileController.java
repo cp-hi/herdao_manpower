@@ -38,11 +38,11 @@ import java.util.Objects;
 @Slf4j
 public class RemoteFileController {
 
-	private Environment env;
+	private final Environment env;
 
-	private StaffFileService staffFileService;
+	private final StaffFileService staffFileService;
 
-	private RemoteFileService remoteFileService;
+	private final RemoteFileService remoteFileService;
 
 	/**
 	 * 文件上传

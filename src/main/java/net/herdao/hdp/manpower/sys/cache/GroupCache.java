@@ -29,7 +29,7 @@ public class GroupCache {
         GroupCache.groupService = service;
     }
 
-    private static Map<String, Group> groupMap = new HashMap<>();
+    private static final Map<String, Group> groupMap = new HashMap<>();
 
     public static Group getGroupByName(String groupName, boolean need, StringBuffer buffer) {
         Group group = groupMap.get(groupName);

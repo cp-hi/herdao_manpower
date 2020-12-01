@@ -38,7 +38,7 @@ public interface CompanyService extends HdpService<Company> {
 
     boolean companyUpdate(CompanyDetailDTO companyForm);
 
-    public void validityCheck(Long id, String msg) throws Exception;
+    void validityCheck(Long id, String msg) throws Exception;
 
     CompanyDetailDTO getCompanyById(Long id);
 

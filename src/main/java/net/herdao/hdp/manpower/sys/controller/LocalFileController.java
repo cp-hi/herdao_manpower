@@ -53,7 +53,7 @@ import java.net.URLEncoder;
 @Api(value = "file", tags = "本地文件操作")
 @Slf4j
 public class LocalFileController {
-	private Environment env;
+	private final Environment env;
 
 	/**
 	 * 文件上传

@@ -178,10 +178,10 @@ public class BaseController<T, D, F> {
     public R<F> save(@RequestBody F f) {
         try {
             Object t = getEntityClass().newInstance();
-            BeanUtils.copyProperties(f, (T) t);
-            getEntityService().saveVerify((T) t);
-            getEntityService().saveEntity((T) t);
-            BeanUtils.copyProperties((T) t, f);
+            BeanUtils.copyProperties(f, t);
+            getEntityService().saveVerify(t);
+            getEntityService().saveEntity(t);
+            BeanUtils.copyProperties(t, f);
             return R.ok(f);
         } catch (Exception ex) {
             log.error("save异常", ex);

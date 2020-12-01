@@ -15,8 +15,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StaffPromoteApproveMapper extends BaseMapper<StaffPromoteApprove> {
 
-    public Page<StaffPromotePageVO> findStaffPromotePage(Page page,
-                                                         @Param("searchText") String searchText,
-                                                         @Param("orgId")Long orgId,
-                                                         @Param("status") String status);
+    Page<StaffPromotePageVO> findStaffPromotePage(Page page,
+                                                  @Param("searchText") String searchText,
+                                                  @Param("orgId") Long orgId,
+                                                  @Param("status") String status);
 }

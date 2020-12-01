@@ -113,4 +113,12 @@ public class RecruitmentDTO extends BaseEntity<RecruitmentDTO> {
      */
     @ApiModelProperty(value="组织id")
     private Long orgId;
+
+    /**
+     * 招聘状态
+     */
+    @ApiModelProperty(value="招聘状态")
+    private String recruitmentStatus;
+
+
 }

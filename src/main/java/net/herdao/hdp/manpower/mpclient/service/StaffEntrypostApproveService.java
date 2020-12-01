@@ -19,10 +19,14 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 录用审批表
@@ -48,5 +52,13 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
      * @return
      */
     EntryApproveFormDTO findApproveDetails(Long id);
+
+    /**
+     * 录用审批-保存
+     * @param approveAddDTO
+     * @return
+     */
+    EntryApproveAddDTO saveApprove(@RequestBody EntryApproveAddDTO approveAddDTO);
+
 
 }

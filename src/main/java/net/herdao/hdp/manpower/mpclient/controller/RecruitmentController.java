@@ -87,7 +87,7 @@ public class RecruitmentController  {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R<Page<RecruitmentDTO>> findRecruitmentPage(Page page, String orgId, String searchText) {
-        Page recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
+        Page<RecruitmentDTO> recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
         return R.ok(recruitmentPage);
     }
 

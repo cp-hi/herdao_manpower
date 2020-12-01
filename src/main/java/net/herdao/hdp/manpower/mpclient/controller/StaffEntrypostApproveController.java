@@ -51,16 +51,7 @@ public class StaffEntrypostApproveController {
     @ApiOperation(value = "录用审批-保存", notes = "录用审批-保存")
     @PostMapping("/saveApprove")
     public R<EntryApproveAddDTO> saveApprove(@RequestBody EntryApproveAddDTO approveAddDTO) {
-        StaffEntrypostApprove approve=new StaffEntrypostApprove();
-        BeanUtils.copyProperties(approveAddDTO,approve);
 
-        SysUser sysUser = SysUserUtils.getSysUser();
-        approve.setCreatorTime(LocalDateTime.now());
-        approve.setCreatorCode(sysUser.getUsername());
-        approve.setCreatorName(sysUser.getAliasName());
-
-        staffEntrypostApproveService.save(approve);
-        BeanUtils.copyProperties(approve,approveAddDTO);
         return R.ok(approveAddDTO);
     }
 
@@ -133,4 +124,7 @@ public class StaffEntrypostApproveController {
         EntryApproveFormDTO result = staffEntrypostApproveService.findApproveDetails(id);
         return R.ok(result);
     }
+
+
+
 }

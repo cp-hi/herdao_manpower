@@ -51,13 +51,13 @@ public interface ManpowerContants {
     Integer DISABLE_STATUS = 1;
     
     // excel 导入说明 enum
-	public enum ImportTypeEnum {
+    enum ImportTypeEnum {
 		
 		ADD(0, "新增"), UPDATE(1, "编辑");
 
-		private int importType;
+		private final int importType;
 		
-		private String description;
+		private final String description;
 
 		ImportTypeEnum(int importType, String description) {
 			this.importType = importType;

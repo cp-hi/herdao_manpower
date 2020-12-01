@@ -31,7 +31,7 @@ public class DictCache {
         DictCache.sysDictItemService = dictItemService;
     }
 
-    private static Map<String, BiMap<String, String>> dictList = new HashMap<>();
+    private static final Map<String, BiMap<String, String>> dictList = new HashMap<>();
 
     public static String getDictLabel(String type, String val) {
         BiMap<String, String> biMap = dictList.get(type);

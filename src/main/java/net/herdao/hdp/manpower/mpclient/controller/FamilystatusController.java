@@ -40,9 +40,9 @@ import java.util.List;
 @Slf4j
 public class FamilystatusController extends HdpBaseController  {
 
-    private FamilystatusService familystatusService;
+    private final FamilystatusService familystatusService;
 
-    private RemoteUserService remoteUserService;
+    private final RemoteUserService remoteUserService;
 
     @Override
     public HdpService getHdpService() {

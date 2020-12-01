@@ -39,11 +39,11 @@ import java.util.List;
 @AllArgsConstructor
 public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, Staffcontract> implements StaffcontractService {
 
-    private StaffService staffService;
+    private final StaffService staffService;
 
-    private SysDictItemService itemService;
+    private final SysDictItemService itemService;
 
-    private CompanyService companyService;
+    private final CompanyService companyService;
 
     @Override
     public Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText) {

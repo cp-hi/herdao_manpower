@@ -177,7 +177,7 @@ public class SelectServiceImpl extends ServiceImpl<SelectMapper, SelectDTO> impl
 		//取出省数据
 		for(int i=0;i<cityList.size();i++){
 			String val=cityList.get(i).getValue();
-			if(val.length()>4 && val.substring(val.length()-4).equals("0000")){
+			if(val.length()>4 && val.endsWith("0000")){
 				
 				//取出下级市
 				List<SelectDTO> childrenList = new ArrayList();
