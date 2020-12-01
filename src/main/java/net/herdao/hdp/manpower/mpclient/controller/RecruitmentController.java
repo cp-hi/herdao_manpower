@@ -189,11 +189,18 @@ public class RecruitmentController  {
         return R.ok(result);
     }
 
+    /**
+     * 获取人才管理操作日志
+     * @param page 分页对象
+     * @param operationLog 操作记录
+     * @param searchText 关键字搜索
+     * @return
+     */
     @ApiOperation(value = "获取人才管理操作日志")
     @GetMapping("/getOperateLogPage")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="extraKey",value="额外信息"),
-            @ApiImplicitParam(name="module",value="模块名"),
+            @ApiImplicitParam(name="page",value="分页对象"),
+            @ApiImplicitParam(name="operationLog",value="操作记录"),
             @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     public R getOperateLogPage(Page page, OperationLog operationLog, String searchText) {
