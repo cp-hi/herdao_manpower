@@ -53,7 +53,6 @@ public class RecruitmentController  {
      */
     @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
     @PostMapping("/update")
-    //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_add')" )
     public R<RecruitmentUpdateFormDTO> update(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
         return result;
@@ -85,7 +84,6 @@ public class RecruitmentController  {
          @ApiImplicitParam(name="orgId",value="组织ID"),
          @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R<Page<RecruitmentDTO>> findRecruitmentPage(Page page, String orgId, String searchText) {
         Page<RecruitmentDTO> recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
         return R.ok(recruitmentPage);
@@ -123,7 +121,7 @@ public class RecruitmentController  {
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历", notes = "人才简历-个人基本情况 从业情况与求职意向")
+    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历", notes = "人才简历-个人基本情况 从业情况与求职意向 最高教育经历")
     @GetMapping("/fetchResumeBaseSituation" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
@@ -197,4 +195,6 @@ public class RecruitmentController  {
         Page<OperationLog> pageResult = operationLogService.findOperationLog(page,operationLog,searchText);
         return R.ok(pageResult);
     }
+
+
 }
