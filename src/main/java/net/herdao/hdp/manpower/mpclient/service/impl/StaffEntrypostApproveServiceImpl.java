@@ -67,7 +67,7 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         approve.setCreatorCode(sysUser.getUsername());
         approve.setCreatorName(sysUser.getAliasName());
 
-        //姓名是一个下拉组件 会查询人才表 带姓名和ID过来
+        //姓名是一个下拉组件 会查询人才表 带姓名和ID过来 待完善
         //获取员工工号
         Recruitment recruitment = recruitmentService.getById(approve.getRecruitmentId());
         String staffCode="";
