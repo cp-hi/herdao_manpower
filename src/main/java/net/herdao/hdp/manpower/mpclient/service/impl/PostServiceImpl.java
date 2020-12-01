@@ -144,8 +144,8 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         chkEntityExists(excel.getPostName(), group.getId(), false, buffer);
 
-        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
-        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
+        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), false, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
@@ -165,8 +165,8 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 
-        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
-        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
+        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), false, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
