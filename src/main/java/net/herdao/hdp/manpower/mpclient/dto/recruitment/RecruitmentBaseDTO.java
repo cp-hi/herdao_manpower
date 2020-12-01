@@ -324,4 +324,9 @@ public class RecruitmentBaseDTO extends BaseEntity<RecruitmentBaseDTO> {
     @ApiModelProperty(value="备注")
     private String remarks;
 
+    /**
+     * 学习形式
+     */
+    @ApiModelProperty(value="学习形式")
+    private String learnForm;
 }
