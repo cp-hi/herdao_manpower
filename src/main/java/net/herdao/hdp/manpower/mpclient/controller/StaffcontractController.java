@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -58,7 +59,7 @@ public class StaffcontractController extends HdpBaseController {
     }
 
     @Override
-    public List getDownloadUpdateTemplateList() {
+    public List getDownloadUpdateTemplateList(Map<String, Object> searchParams) {
         List<StaffcontractDTO> list = this.staffcontractService.findStaffContract(null,null);
         return list;
     }

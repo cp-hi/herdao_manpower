@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工家庭成员
@@ -60,7 +61,7 @@ public class FamilystatusController extends HdpBaseController  {
     }
 
     @Override
-    public List getDownloadUpdateTemplateList() {
+    public List getDownloadUpdateTemplateList(Map<String, Object> searchParams) {
         List<FamilyStatusVO> list = this.familystatusService.findFamilyStatus(null,null);
         return list;
     }

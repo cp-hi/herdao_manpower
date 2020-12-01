@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工奖惩
@@ -59,7 +60,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     }
 
     @Override
-    public List getDownloadUpdateTemplateList() {
+    public List getDownloadUpdateTemplateList(Map<String, Object> searchParams){
         List<StaffRpDTO> list = this.staffRpService.findStaffRp(null,null);
         return list;
     }
