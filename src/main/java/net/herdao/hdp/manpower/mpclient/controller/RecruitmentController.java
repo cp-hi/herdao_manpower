@@ -57,7 +57,7 @@ public class RecruitmentController  {
      * @return R
      */
     @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
-    @PostMapping("/update")
+    @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> update(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
         return result;
