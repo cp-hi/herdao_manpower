@@ -42,4 +42,10 @@ public class StaffCodePrefixVO extends Model<StaffCodePrefixVO> {
     private String staffCodeHead;
 
 
+    /**
+     * 员工工号
+     */
+    @ApiModelProperty(value="员工工号")
+    private String staffCode;
+
 }

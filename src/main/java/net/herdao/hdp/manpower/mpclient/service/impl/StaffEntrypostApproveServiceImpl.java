@@ -70,13 +70,15 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         //姓名是一个下拉组件 会查询人才表 带姓名和ID过来
         //获取员工工号
         Recruitment recruitment = recruitmentService.getById(approve.getRecruitmentId());
-        String staffCode = fetchStaffCode(recruitment.getIdnumber());
+        String staffCode="";
+        staffCode = fetchStaffCode(recruitment.getIdnumber(),recruitment.getOrgId());
 
         //如果员工工号，则生成员工工号。
         if (ObjectUtil.isEmpty(staffCode)) {
-            createStaffCode(approve.getOrgId());
+            staffCode = createStaffCode(approve.getOrgId());
         }
 
+        approve.setStaffCode(staffCode);
         super.save(approve);
         BeanUtils.copyProperties(approve, approveAddDTO);
 
@@ -87,9 +89,10 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
      * 获取员工工号
      *
      * @param idNumber 身份证号码
+     * @param orgId 组织ID
      * @return
      */
-    private String fetchStaffCode(String idNumber) {
+    private String fetchStaffCode(String idNumber,Long orgId) {
         String staffCode = "";
 
         //在员工表中根据身份证号码查找工号
@@ -112,6 +115,11 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
             }
         }
 
+        //如果为空则生成员工工号
+        if (ObjectUtil.isNotEmpty(staffCode)) {
+            createStaffCode(orgId);
+        }
+
         return staffCode;
     }
 
@@ -119,7 +127,8 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
      * 生成员工工号
      * @param orgId 组织ID
      */
-    public void createStaffCode(Long orgId) {
+    public String createStaffCode(Long orgId) {
+        String staffCode="";
         String groupCode = "";
         LambdaQueryWrapper<Group> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(Group::getOrgId, orgId);
@@ -134,14 +143,24 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
                 StaffCodePrefixVO prefixVO = this.baseMapper.getStaffCodePrefix(groupCode, orgId.toString());
                 String staffCodeHead = prefixVO.getStaffCodeHead();
                 if (ObjectUtil.isNotEmpty(staffCodeHead)){
+                    //在员工表和录用审批表中查询最大的员工工号并加1
                     StaffCodePrefixVO entity = this.baseMapper.getMaxStaffCodeAddOne(staffCodeHead);
                     if (ObjectUtil.isNotNull(entity)){
-
+                        staffCode = entity.getStaffCode();
+                    }else{
+                        //在员工表和录用审批表中无对应最大的员工工号，根据员工工号前缀加0100或00100的规则生成工号
+                        int size=2;
+                        if(staffCodeHead.length()==size){
+                            staffCode= staffCodeHead + "0100";
+                        }else{
+                            staffCode= staffCodeHead + "00100";
+                        }
                     }
                 }
-
             }
         }
+
+        return staffCode;
     }
 
 
