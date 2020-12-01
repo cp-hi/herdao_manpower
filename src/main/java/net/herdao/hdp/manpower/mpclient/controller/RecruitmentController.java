@@ -119,11 +119,11 @@ public class RecruitmentController  {
     }
 
     /**
-     * 获取人才简历-个人基本情况 从业情况与求职意向
+     * 获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向", notes = "人才简历-个人基本情况 从业情况与求职意向")
+    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历", notes = "人才简历-个人基本情况 从业情况与求职意向")
     @GetMapping("/fetchResumeBaseSituation" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
