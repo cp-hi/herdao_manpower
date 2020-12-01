@@ -1,16 +1,21 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 人才表
@@ -196,5 +201,23 @@ public class RecruitmentController  {
         return R.ok(pageResult);
     }
 
+    /**
+     * 人才管理-导出Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "人才管理-导出Excel", notes = "人才管理-导出Excel")
+    @GetMapping("/exportRecruitment")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    @SneakyThrows
+    public void exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
+        ExcelUtils.export2Web(response, "人才管理表", "人才管理表", StafftrainDTO.class, pageResult.getRecords());
+    }
 
 }
