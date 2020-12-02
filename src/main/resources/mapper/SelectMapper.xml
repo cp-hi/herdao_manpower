@@ -3,7 +3,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.sys.mapper.SelectMapper">
 	  <!-- 中国城市数据-->
-      <select id="getChinaCity" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+      <select id="getChinaCity" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO">
         select a.sz_code value,
         a.name label
 		from sys_city a
@@ -11,7 +11,7 @@
       </select>
 
 	  <!-- 省份数据-->
-      <select id="getProvince" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+      <select id="getProvince" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO">
         select a.sz_code value,
         a.name label
 		from sys_city a
@@ -20,7 +20,7 @@
       </select>
       
       <!-- 市数据-->
-      <select id="getCity" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+      <select id="getCity" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO">
         select a.sz_code value,
         a.name label
 		from sys_city a
@@ -34,7 +34,7 @@
       </select>
             
       <!-- 城市配置数据-->
-      <select id="getCitySet" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO">
+      <select id="getCitySet" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO">
         select a.city_code value,
         a.city_name label
 		from mp_city_set a

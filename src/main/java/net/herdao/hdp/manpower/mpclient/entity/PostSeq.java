@@ -25,8 +25,6 @@ import net.herdao.hdp.manpower.sys.annotation.DtoField;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "岗位序列")
 public class PostSeq extends BaseEntity<PostSeq> {
-    @TableId(value = "ID", type = IdType.INPUT)
-    private Long id;
     @ApiModelProperty(value = "岗位序列名称")
     private String postSeqName;
 

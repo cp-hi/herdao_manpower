@@ -25,8 +25,6 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 @ApiModel(value = "管线")
 public class Pipeline extends BaseEntity<Pipeline> {
     @ApiModelProperty(value = "管线编码",hidden = true)
-    @TableId(value = "ID", type = IdType.INPUT)
-    private Long id;
     private String pipelineCode;
     @ApiModelProperty(value = "管线名称" )
     private String pipelineName;
