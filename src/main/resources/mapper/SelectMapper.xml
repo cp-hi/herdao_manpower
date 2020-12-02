@@ -35,7 +35,7 @@
             
       <!-- 城市配置数据-->
       <select id="getCitySet" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO">
-        select a.city_code value,
+        select a.id value,
         a.city_name label
 		from mp_city_set a
 		order by a.city_name
