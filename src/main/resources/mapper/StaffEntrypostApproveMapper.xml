@@ -296,7 +296,7 @@
                             LEFT JOIN mp_organization org ON org.id = app.org_id
                             LEFT JOIN mp_post pst ON pst.id = app.post_id
                             LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
-                          LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
+                            LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
                             LEFT JOIN
                             (
                                 SELECT inv.staff_entrypost_approve_id,
