@@ -58,7 +58,7 @@ public class RecruitmentController  {
      */
     @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
     @PostMapping("/updateRecruitment")
-    public R<RecruitmentUpdateFormDTO> update(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
+    public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
         return result;
     }
@@ -220,11 +220,13 @@ public class RecruitmentController  {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     @SneakyThrows
-    public void exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
+    public R<RecruitmentDTO> exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
         Page page = new Page();
         page.setSize(-1);
         Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
-        ExcelUtils.export2Web(response, "人才管理表", "人才管理表", StafftrainDTO.class, pageResult.getRecords());
+        ExcelUtils.export2Web(response, "人才管理表", "人才管理表", RecruitmentDTO.class, pageResult.getRecords());
+        RecruitmentDTO dto=new RecruitmentDTO();
+        return R.ok(dto);
     }
 
 }
