@@ -1,4 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.controller;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.SneakyThrows;
@@ -232,21 +235,26 @@ public class RecruitmentController  {
 
     /**
      * 人才下拉框-前端调用
-     * @param orgId 组织ID
-     * @param searchText 关键字搜索
+     * @param talentName 姓名
+     * @param mobile 手机号码
      * @return
      */
     @ApiOperation(value = "人才下拉框-前端调用", notes = "人才下拉框-前端调用")
     @GetMapping("/findRecruitmentList")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+        @ApiImplicitParam(name="talentName",value="姓名"),
+        @ApiImplicitParam(name="mobile",value="手机号码"),
     })
-    public R<List<RecruitmentDTO>> findRecruitmentList(String orgId, String searchText) {
-        Page page = new Page();
-        page.setSize(-1);
-        Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
-        List<RecruitmentDTO> list = pageResult.getRecords();
+    public R<List<Recruitment>> findRecruitmentList(String talentName,String mobile) {
+        LambdaQueryWrapper<Recruitment> lambdaQueryWrapper= Wrappers.lambdaQuery();
+        if (ObjectUtil.isNotEmpty(talentName)){
+            lambdaQueryWrapper.eq( Recruitment::getTalentName,talentName);
+        }
+        if (ObjectUtil.isNotEmpty(mobile)){
+            lambdaQueryWrapper.eq( Recruitment::getMobile,mobile);
+        }
+
+        List<Recruitment> list = recruitmentService.list(lambdaQueryWrapper);
         return R.ok(list);
     }
 

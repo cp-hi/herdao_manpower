@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -98,5 +99,32 @@ public class EntryDTO implements Serializable {
     @ExcelProperty(value = "最近更新情况")
     private String updateDesc;
 
+    /**
+     * 人员归属范围
+     */
+    @ApiModelProperty(value="人员归属范围")
+    @ExcelProperty(value = "人员归属范围")
+    private String staffStatus;
+
+    /**
+     * 人员归属范围
+     */
+    @ApiModelProperty(value="人员归属范围")
+    @ExcelProperty(value = "人员归属范围")
+    private String officeType;
+
+    /**
+     * 试用期（月）
+     */
+    @ApiModelProperty(value="试用期")
+    @ExcelProperty(value = "试用期")
+    private String probation;
+
+    /**
+     * 就职次数
+     */
+    @ApiModelProperty(value="就职次数")
+    @ExcelProperty(value = "就职次数")
+    private String jobCount;
 
 }
