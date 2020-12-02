@@ -267,8 +267,6 @@
                   UNION ALL
                         SELECT  app.STAFF_CODE
                       FROM  mp_staff_entrypost_approve app
-                        WHERE
-                            app.STAFF_CODE LIKE '12%'
                         <where>
                             <if test="staffCodeHead != null and staffCodeHead !=''">
                                 app.STAFF_CODE LIKE concat(#{staffCodeHead},'%')
@@ -276,6 +274,39 @@
                         </where>
                 ) t  ORDER BY  t.STAFF_CODE DESC
             ) tt
+    </select>
+
+
+    <!-- 入职管理-待入职-列表 -->
+    <select id="findEntryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO">
+        SELECT  app.user_name,
+                app.mobile_no,
+                app.email,
+                org.org_name,
+                pst.post_name,
+                jl.JOB_LEVEL_NAME job_level_name,
+                app.entry_post_time,
+                rzdjqk.`value`  entry_login_status,
+                CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
+                IF(invite_count>0,'已邀请','未邀请') invite_status
+            FROM
+                mp_staff_entrypost_approve app
+                LEFT JOIN mp_organization org ON org.id = app.org_id
+                LEFT JOIN mp_post pst ON pst.id = app.post_id
+                LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
+              LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
+                LEFT JOIN
+                (
+                    SELECT inv.staff_entrypost_approve_id,
+                           count( inv.staff_entrypost_approve_id ) invite_count
+                        FROM
+                            mp_staff_entrypost_invite inv
+                            WHERE inv.del_flag =0
+                            GROUP BY staff_entrypost_approve_id
+                ) invr on  app.id = invr.staff_entrypost_approve_id
+             WHERE
+                app.STATUS = 3
+                AND app.entry_status = 'RZZT01'
     </select>
 
 </mapper>

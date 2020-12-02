@@ -10,6 +10,7 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
@@ -163,5 +164,9 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         return staffCode;
     }
 
-
+    @Override
+    public Page<EntryDTO> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
+        Page<EntryDTO> pageResult = this.baseMapper.findEntryPage(page, orgId, searchText);
+        return pageResult;
+    }
 }

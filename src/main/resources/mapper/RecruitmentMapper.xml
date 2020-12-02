@@ -169,7 +169,10 @@
                      SELECT
                         inv.recruitment_id,
                         count( inv.recruitment_id ) invite_count
-                        FROM  mp_recruitment_invite inv GROUP BY recruitment_id
+                        FROM  mp_recruitment_invite inv
+                         where inv.del_flag=0
+                        GROUP BY recruitment_id
+
                  ) invr on  rec.id = invr.recruitment_id
                   <where>
                             and rec.del_flag = 0

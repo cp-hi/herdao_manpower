@@ -49,10 +49,10 @@
                    wr.contact_tel
               FROM
                   mp_recruitment_workexperience wr
-            WHERE wr.DEL_FLAG =0
-            <where>
-                  <if test="id != null ">
-                     AND wr.id = #{id}
+             <where>
+                    wr.DEL_FLAG =0
+                  <if test="recruitmentId != null and recruitmentId != '' ">
+                     AND wr.recruitment_id = #{recruitmentId}
                   </if>
             </where>
       </select>

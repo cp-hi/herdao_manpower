@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -58,5 +59,14 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @return
      */
     StaffCodePrefixVO getMaxStaffCodeAddOne(@Param("staffCodeHead") String staffCodeHead);
+
+    /**
+     * 入职管理-待入职-列表
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字
+     * @return
+     */
+    Page<EntryDTO> findEntryPage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
 
 }
