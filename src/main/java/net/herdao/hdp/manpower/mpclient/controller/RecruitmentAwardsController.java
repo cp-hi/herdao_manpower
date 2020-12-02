@@ -39,6 +39,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -49,34 +50,36 @@ import java.time.LocalDateTime;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/recruitmentawards" )
+@RequestMapping("/recruitmentawards")
 @Api(value = "recruitmentawards", tags = "人才获奖情况表管理")
 public class RecruitmentAwardsController {
 
-    private final  RecruitmentAwardsService recruitmentAwardsService;
+    private final RecruitmentAwardsService recruitmentAwardsService;
 
     /**
      * 人才简历-获奖情况-编辑
+     *
      * @param id id
      * @return R
      */
     @ApiOperation(value = "人才简历-获奖情况-编辑", notes = "人才简历-获奖情况-编辑")
-    @GetMapping("/fetchDetails/{id}" )
+    @GetMapping("/fetchDetails/{id}")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
-    public R<RecruitmentAwardsDTO> fetchDetails(@PathVariable("id" ) Long id) {
-        RecruitmentAwards awards= recruitmentAwardsService.getById(id);
-        RecruitmentAwardsDTO dto=new RecruitmentAwardsDTO();
-        if (ObjectUtil.isNotNull(awards)){
-            BeanUtils.copyProperties(awards,dto);
+    public R<RecruitmentAwardsDTO> fetchDetails(@PathVariable("id") Long id) {
+        RecruitmentAwards awards = recruitmentAwardsService.getById(id);
+        RecruitmentAwardsDTO dto = new RecruitmentAwardsDTO();
+        if (ObjectUtil.isNotNull(awards)) {
+            BeanUtils.copyProperties(awards, dto);
         }
 
         return R.ok(dto);
-     }
+    }
 
     /**
      * 人才简历-获奖情况-新增
+     *
      * @param dto 人才获奖情况表
      * @return R
      */
@@ -89,6 +92,7 @@ public class RecruitmentAwardsController {
 
     /**
      * 人才简历-获奖情况-更新
+     *
      * @param dto 人才获奖情况表
      * @return R
      */
@@ -101,13 +105,14 @@ public class RecruitmentAwardsController {
 
     /**
      * 人才简历-获奖情况-删除
+     *
      * @param id id
      * @return R
      */
     @ApiOperation(value = "人才简历-获奖情况-删除", notes = "人才简历-获奖情况-删除")
-    @DeleteMapping("/del/{id}" )
+    @DeleteMapping("/del/{id}")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
     public R removeById(@PathVariable Long id) {
         return R.ok(recruitmentAwardsService.removeById(id));
@@ -116,18 +121,37 @@ public class RecruitmentAwardsController {
 
     /**
      * 人才简历-获奖情况-列表
-     * @param page 分页对象
+     *
+     * @param page          分页对象
      * @param recruitmentId 人才ID
      * @return
      */
     @ApiOperation(value = "人才简历-获奖情况-列表", notes = "人才简历-获奖情况-列表")
-    @GetMapping("/page" )
+    @GetMapping("/page")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "分页对象", required = true),
-        @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
+            @ApiImplicitParam(name = "page", value = "分页对象", required = true),
+            @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
     })
     public R<Page<RecruitmentAwardsDTO>> getRecruitmentAwardsPage(Page page, Long recruitmentId) {
         Page<RecruitmentAwardsDTO> pageResult = recruitmentAwardsService.fetchResumeAwardsPage(page, recruitmentId);
         return R.ok(pageResult);
+    }
+
+    /**
+     * 人才简历-获奖情况
+     * @param recruitmentId 人才ID
+     * @return
+     */
+    @ApiOperation(value = "人才简历-获奖情况-list", notes = "人才简历-获奖情况-list")
+    @GetMapping("/getRecruitmentAwardsList")
+    @ApiImplicitParams({
+         @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
+    })
+    public R<List<RecruitmentAwardsDTO>> getRecruitmentAwardsList(Long recruitmentId) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page<RecruitmentAwardsDTO> pageResult = recruitmentAwardsService.fetchResumeAwardsPage(page, recruitmentId);
+        List<RecruitmentAwardsDTO> list = pageResult.getRecords();
+        return R.ok(list);
     }
 }
