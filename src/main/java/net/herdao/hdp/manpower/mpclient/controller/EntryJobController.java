@@ -11,6 +11,8 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,45 @@ public class EntryJobController {
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
+    /**
+     * 入职管理-待入职-列表
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
+     * @return
+     */
+    @ApiOperation(value = "入职管理-待入职-列表")
+    @GetMapping("/findEntryPage")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="page",value="分页对象",required = true),
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    public R<Page<EntryDTO>> findEntryPage(Page<EntryDTO> page, String orgId, String searchText,String status) {
+        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+        return R.ok(pageResult);
+    }
 
+    /**
+     * 入职管理-待入职-导出Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "入职管理-待入职-导出Excel", notes = "入职管理-待入职-导出Excel")
+    @GetMapping("/exportEntry")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    @SneakyThrows
+    public R<EntryDTO> exportEntry(HttpServletResponse response, String orgId, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+        ExcelUtils.export2Web(response, "入职管理待入职表", "入职管理待入职表", EntryDTO.class, pageResult.getRecords());
+        EntryDTO dto=new EntryDTO();
+        return R.ok(dto);
+    }
 
 
 }

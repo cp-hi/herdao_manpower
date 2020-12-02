@@ -82,7 +82,7 @@ public class RecruitmentController  {
      * @param searchText 关键字搜索
      * @return
      */
-    @ApiOperation(value = "人才库列表;批量邀请更新简历信息", notes = "人才库列表;批量邀请更新简历信息")
+    @ApiOperation(value = "人才库列表;批量邀请更新简历信息列表", notes = "人才库列表;批量邀请更新简历信息列表")
     @GetMapping("/findRecruitmentPage")
     @ApiImplicitParams({
          @ApiImplicitParam(name="page",value="分页对象",required = true),
@@ -122,11 +122,11 @@ public class RecruitmentController  {
     }
 
     /**
-     * 获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历
+     * 获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历详情
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历", notes = "人才简历-个人基本情况 从业情况与求职意向 最高教育经历")
+    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历详情", notes = "人才简历-个人基本情况 从业情况与求职意向 最高教育经历详情")
     @GetMapping("/fetchResumeBaseSituation" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
