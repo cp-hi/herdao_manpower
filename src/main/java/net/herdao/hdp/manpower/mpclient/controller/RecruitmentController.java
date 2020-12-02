@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 人才表
@@ -227,6 +228,26 @@ public class RecruitmentController  {
         ExcelUtils.export2Web(response, "人才管理表", "人才管理表", RecruitmentDTO.class, pageResult.getRecords());
         RecruitmentDTO dto=new RecruitmentDTO();
         return R.ok(dto);
+    }
+
+    /**
+     * 人才下拉框-前端调用
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
+     * @return
+     */
+    @ApiOperation(value = "人才下拉框-前端调用", notes = "人才下拉框-前端调用")
+    @GetMapping("/findRecruitmentList")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    public R<List<RecruitmentDTO>> findRecruitmentList(String orgId, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
+        List<RecruitmentDTO> list = pageResult.getRecords();
+        return R.ok(list);
     }
 
 }
