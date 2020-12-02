@@ -169,4 +169,10 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         Page<EntryDTO> pageResult = this.baseMapper.findEntryPage(page, orgId, searchText);
         return pageResult;
     }
+
+    @Override
+    public Page<EntryDTO> findInJobPage(Page<EntryDTO> page, String orgId, String searchText) {
+        Page<EntryDTO> pageResult = this.baseMapper.findInJobPage(page, orgId, searchText);
+        return pageResult;
+    }
 }
