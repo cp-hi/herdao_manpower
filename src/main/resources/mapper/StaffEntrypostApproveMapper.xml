@@ -333,4 +333,60 @@
          </where>
     </select>
 
+    <!-- 入职管理-已入职-列表 -->
+    <select id="findEntryPage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO">
+        select t.*
+        from (
+        SELECT  app.user_name,
+        app.mobile_no,
+        app.email,
+        org.org_name,
+        pst.post_name,
+        jl.JOB_LEVEL_NAME job_level_name,
+        app.entry_post_time,
+        rzdjqk.`value`  entry_login_status,
+        CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
+        IF(invite_count>0,'已邀请','未邀请') invite_status
+        FROM
+        mp_staff_entrypost_approve app
+        LEFT JOIN mp_organization org ON org.id = app.org_id
+        LEFT JOIN mp_post pst ON pst.id = app.post_id
+        LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
+        LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
+        LEFT JOIN
+        (
+        SELECT inv.staff_entrypost_approve_id,
+        count( inv.staff_entrypost_approve_id ) invite_count
+        FROM
+        mp_staff_entrypost_invite inv
+        WHERE inv.del_flag =0
+        GROUP BY staff_entrypost_approve_id
+        ) invr on  app.id = invr.staff_entrypost_approve_id
+        <where>
+            app.STATUS = 3
+            AND app.entry_status = 'RZZT01'
+            AND app.del_flag = 0
+            <if test="orgId != null and orgId != '' ">
+                AND app.org_id= #{orgId}
+            </if>
+        </where>
+        ) t
+        <where>
+            <if test="searchText != null and searchText != '' ">
+                and CONCAT(
+                IFNULL(t.user_name,''),
+                IFNULL(t.mobile_no,''),
+                IFNULL(t.email,''),
+                IFNULL(t.org_name,''),
+                IFNULL(t.post_name,''),
+                IFNULL(t.job_level_name,''),
+                IFNULL(t.entry_post_time,''),
+                IFNULL(t.entry_login_status,''),
+                IFNULL(t.update_desc,''),
+                IFNULL(t.invite_status,'')
+                ) LIKE concat('%', #{searchText} ,'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

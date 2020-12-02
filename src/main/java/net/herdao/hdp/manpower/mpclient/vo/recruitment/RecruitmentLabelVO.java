@@ -28,7 +28,7 @@ public class RecruitmentLabelVO extends Model<RecruitmentLabelVO> {
      * ID
      */
     @TableId
-    @ApiModelProperty(value="ID")
+    @ApiModelProperty(value="ID",hidden = true)
     private Long id;
 
     /**

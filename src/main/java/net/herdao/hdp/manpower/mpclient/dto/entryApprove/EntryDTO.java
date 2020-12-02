@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * 待入职DTO
+ * 入职DTO
  * @author Andy
  */
 @Data
-@ApiModel(value = "待入职DTO")
+@ApiModel(value = "入职DTO")
 public class EntryDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,9 +1,16 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentLabel;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentLabelService;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentLabelVO;
@@ -15,6 +22,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -58,4 +66,25 @@ public class RecruitmentLabelController {
         BeanUtils.copyProperties(label,labelVO);
         return R.ok(labelVO);
     }
+
+    /**
+     * 人才简历-人才标签-list
+     * @param recruitmentId 人才ID
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-人才标签-list", notes = "人才简历-人才标签-list")
+    @SysLog("人才简历-人才标签-list" )
+    @GetMapping("/getLabelList" )
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="recruitmentId",value="人才ID")
+    })
+    public R<List<RecruitmentLabel>> getLabelList(String recruitmentId) {
+        LambdaQueryWrapper<RecruitmentLabel> queryWrapper = Wrappers.lambdaQuery();
+        if (ObjectUtil.isNotEmpty(recruitmentId)){
+            queryWrapper.eq(RecruitmentLabel::getRecruitmentId, recruitmentId);
+        }
+        List<RecruitmentLabel> list = recruitmentLabelService.list(queryWrapper);
+        return R.ok(list);
+    }
+
 }
