@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -163,7 +164,7 @@ public class EntryJobController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="page",value="分页对象",required = true),
         @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="entryCheckStatus",value="入职登记记录 (1:已提交，2：已提交，3：已确认）"),
+        @ApiImplicitParam(name="entryCheckStatus",value="入职登记记录 (1:未提交，2：已提交，3：已确认）"),
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
     @SneakyThrows
@@ -171,7 +172,26 @@ public class EntryJobController {
         Page page = new Page();
         page.setSize(-1);
         Page<EntryRegisterDTO> pageResult = staffEntrypostApproveService.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
-        ExcelUtils.export2Web(response, "入职登记记录", "入职登记记录", EntryRegisterDTO.class, pageResult.getRecords());
+        String excelName="入职登记记录";
+        String sheetName="入职登记记录";
+        String key1="1";
+        String key2="2";
+        String key3="3";
+        if (ObjectUtil.isNotEmpty(entryCheckStatus)){
+            if (key1.equals(entryCheckStatus)){
+                excelName+="-未提交";
+                sheetName+="-未提交";
+            }
+            if (key2.equals(entryCheckStatus)){
+                excelName+="-已提交";
+                sheetName+="-已提交";
+            }
+            if (key3.equals(entryCheckStatus)){
+                excelName+="-已确认";
+                sheetName+="-已确认";
+            }
+        }
+        ExcelUtils.export2Web(response, excelName, sheetName, EntryRegisterDTO.class, pageResult.getRecords());
         EntryRegisterDTO dto=new EntryRegisterDTO();
         return R.ok(dto);
     }
