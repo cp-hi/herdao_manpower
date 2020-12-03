@@ -83,6 +83,7 @@ public class RecruitmentLabelController {
         if (ObjectUtil.isNotEmpty(recruitmentId)){
             queryWrapper.eq(RecruitmentLabel::getRecruitmentId, recruitmentId);
         }
+        queryWrapper.eq(RecruitmentLabel::getDelFlag, 0);
         List<RecruitmentLabel> list = recruitmentLabelService.list(queryWrapper);
         return R.ok(list);
     }
