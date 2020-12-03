@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -132,4 +129,24 @@ public class EntryJobController {
         return R.ok(pageResult);
     }
 
+    /**
+     * 入职登记记录-未提交 已提交 已确认-列表分页
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param entryCheckStatus 入职登记记录 (1:已提交，2：已提交，3：已确认）
+     * @param searchText 关键字搜索
+     * @return
+     */
+    @ApiOperation(value = "入职登记记录-未提交 已提交 已确认-列表分页")
+    @GetMapping("/findEntryRegisterPage")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="page",value="分页对象",required = true),
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="entryCheckStatus",value="入职登记记录 (1:已提交，2：已提交，3：已确认）"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    public R<Page<EntryRegisterDTO>> findEntryRegisterPage(Page<EntryRegisterDTO> page, String orgId, String entryCheckStatus, String searchText) {
+        Page<EntryRegisterDTO> pageResult = staffEntrypostApproveService.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        return R.ok(pageResult);
+    }
 }

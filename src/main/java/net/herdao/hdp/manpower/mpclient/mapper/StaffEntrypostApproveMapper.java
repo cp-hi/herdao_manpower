@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryRegisterDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -86,6 +87,19 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @return
      */
     Page<EntryDTO> findEntryInvitePage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
+
+    /**
+     * 入职登记记录-未提交 已提交 已确认-列表
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param entryCheckStatus 入职登记记录 (1:已提交，2：已提交，3：已确认）
+     * @param searchText 关键字
+     * @return EntryRegisterDTO
+     */
+    Page<EntryRegisterDTO> findEntryRegisterPage(Page<EntryRegisterDTO> page, @Param("orgId") String orgId,@Param("entryCheckStatus") String entryCheckStatus, @Param("searchText") String searchText);
+
+
+
 
 
 

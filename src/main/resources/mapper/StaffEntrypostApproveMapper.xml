@@ -406,6 +406,7 @@
                     IFNULL(t.entry_login_status,''),
                     IFNULL(t.staff_status,''),
                     IFNULL(t.probation,''),
+                    IFNULL(t.job_count,''),
                     IFNULL(t.update_desc,''),
                     IFNULL(t.invite_status,'')
                  ) LIKE concat('%', #{searchText} ,'%')
@@ -471,5 +472,99 @@
             </if>
         </where>
     </select>
+
+    <!-- 入职登记记录-未提交 已提交 已确认-列表 -->
+    <select id="findEntryRegisterPage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryRegisterDTO">
+             select t.* from (
+                     SELECT app.id,
+                            app.user_name,
+                            app.staff_code,
+                            app.mobile_no,
+                            app.certificate_no,
+                            app.email,
+                            org.org_name,
+                            pst.post_name,
+                            jl.JOB_LEVEL_NAME job_level_name,
+                            app.entry_post_time,
+                            rzdjqk.`value` entry_login_status,
+                            rygsfw.value staff_status,
+                            rzlx.value office_type,
+                            app.probation,
+                            jb.job_count,
+                            rzdjjd.value entry_login_progress,
+                            ryxz.value personnel_nature,
+                            qr.value entry_info_confirm,
+                            CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
+                            IF(invite_count>0,'已邀请','未邀请') invite_status
+                    FROM  mp_staff_entrypost_approve app
+                          LEFT JOIN mp_organization org ON org.id = app.org_id
+                          LEFT JOIN mp_post pst ON pst.id = app.post_id
+                          LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
+                          LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
+                          LEFT JOIN sys_dict_item rygsfw on rygsfw.type='RYGSFW' and rygsfw.value=app.staff_status
+                          LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
+                          LEFT JOIN sys_dict_item rzdjjd on rzdjjd.type='EntryCHeckStatus' and rzdjjd.value=app.entry_login_progress
+                          LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
+                          LEFT JOIN sys_dict_item qr on qr.type='EntryInfoConfirm' and qr.value=app.entry_info_confirm
+                          LEFT JOIN
+                            (
+                                 SELECT inv.staff_entrypost_approve_id,
+                                        count( inv.staff_entrypost_approve_id ) invite_count
+                                 FROM  mp_staff_entrypost_invite inv
+                                  WHERE inv.del_flag =0
+                                 GROUP BY staff_entrypost_approve_id
+                            ) invr on  app.id = invr.staff_entrypost_approve_id
+                            LEFT JOIN
+                            (
+                                 SELECT  e.recruitment_id,
+                                         count(e.id) job_count
+                                    FROM
+                                        mp_staff_entrypost_approve e
+                                    WHERE
+                                        e.STATUS = 3
+                                        AND e.entry_status = 'RZZT02'
+                                        AND e.del_flag = 0
+                                      GROUP BY e.recruitment_id
+                            ) jb on app.recruitment_id = jb.recruitment_id
+                 <where>
+                        AND app.STATUS = 3
+                        AND app.entry_status = 'RZZT01'
+                        AND app.del_flag = 0
+                        AND app.entry_login_status =3
+                     <if test="orgId != null and orgId != '' ">
+                        AND app.org_id= #{orgId}
+                     </if>
+                     <if test="entryCheckStatus != null and entryCheckStatus != '' ">
+                        AND app.entry_check_status = #{entryCheckStatus}
+                     </if>
+                 </where>
+           )t
+         <where>
+            <if test="searchText != null and searchText != '' ">
+                and CONCAT(
+                    IFNULL(t.user_name,''),
+                    IFNULL(t.staff_code,''),
+                    IFNULL(t.mobile_no,''),
+                    IFNULL(t.certificate_no,''),
+                    IFNULL(t.email,''),
+                    IFNULL(t.post_name,''),
+                    IFNULL(t.job_level_name,''),
+                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_login_status,''),
+                    IFNULL(t.staff_status,''),
+                    IFNULL(t.probation,''),
+                    IFNULL(t.job_count,''),
+                    IFNULL(t.entry_login_progress,''),
+                    IFNULL(t.personnel_nature,''),
+                    IFNULL(t.entry_info_confirm,''),
+                    IFNULL(t.entry_info_confirm,''),
+                    IFNULL(t.update_desc,''),
+                    IFNULL(t.invite_status,'')
+                ) LIKE concat('%', #{searchText} ,'%')
+            </if>
+        </where>
+    </select>
+
+
 
 </mapper>

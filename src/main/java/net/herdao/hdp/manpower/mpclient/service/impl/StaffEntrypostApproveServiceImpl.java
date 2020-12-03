@@ -7,10 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
@@ -179,6 +176,12 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
     @Override
     public Page<EntryDTO> findEntryInvitePage(Page<EntryDTO> page, String orgId, String searchText) {
         Page<EntryDTO> pageResult = this.baseMapper.findEntryInvitePage(page, orgId, searchText);
+        return pageResult;
+    }
+
+    @Override
+    public Page<EntryRegisterDTO> findEntryRegisterPage(Page<EntryRegisterDTO> page, String orgId, String entryCheckStatus, String searchText) {
+        Page<EntryRegisterDTO> pageResult = this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
         return pageResult;
     }
 }

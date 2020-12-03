@@ -2,23 +2,19 @@ package net.herdao.hdp.manpower.mpclient.dto.entryApprove;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
- * 入职DTO
+ * 入职登记DTO
  * @author Andy
  */
 @Data
-@ApiModel(value = "入职DTO")
-public class EntryDTO implements Serializable {
+@ApiModel(value = "入职登记DTO")
+public class EntryRegisterDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -127,5 +123,24 @@ public class EntryDTO implements Serializable {
     @ExcelProperty(value = "就职次数")
     private String jobCount;
 
+    /**
+     * 入职登记进度
+     */
+    @ApiModelProperty(value="入职登记进度")
+    @ExcelProperty(value = "入职登记进度")
+    private String entryLoginProgress;
 
+    /**
+     * 人员性质
+     */
+    @ApiModelProperty(value="人员性质")
+    @ExcelProperty(value = "人员性质")
+    private String personnelNature;
+
+    /**
+     * 入职信息确认-字典
+     */
+    @ApiModelProperty(value="入职信息确认")
+    @ExcelProperty(value = "入职信息确认")
+    private String entryInfoConfirm;
 }
