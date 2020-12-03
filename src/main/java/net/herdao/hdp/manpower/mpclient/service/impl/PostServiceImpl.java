@@ -41,6 +41,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
     final RemoteStationService remoteStationService;
+
     @Override
     public List<PostDTO> postList(Long groupId) {
         return baseMapper.postList(groupId);
@@ -150,8 +151,10 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
         if (StringUtils.isBlank(buffer)) {
-            post.setSectionId(section.getId());
-            post.setPipelineId(pipeline.getId());
+            if (null != section)
+                post.setSectionId(section.getId());
+            if (null != pipeline)
+                post.setPipelineId(pipeline.getId());
             post.setPostSeqId(postSeq.getId());
             post.setJobLevelId1(jobLevel.getId());
         }
@@ -176,8 +179,10 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         post.setPerforSalaryRatio(DictCache.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
         if (StringUtils.isBlank(buffer)) {
-            post.setSectionId(section.getId());
-            post.setPipelineId(pipeline.getId());
+            if (null != section)
+                post.setSectionId(section.getId());
+            if (null != pipeline)
+                post.setPipelineId(pipeline.getId());
             post.setPostSeqId(postSeq.getId());
             post.setJobLevelId1(jobLevel.getId());
             post.setId(tmp.getId());
@@ -218,7 +223,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     @Override
     public Boolean stop(Serializable id, Boolean stop) {
-        R<Boolean> r = remoteStationService.stop(id,stop);
+        R<Boolean> r = remoteStationService.stop(id, stop);
         return checkData(r);
     }
 
@@ -230,11 +235,12 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         });
         R<List<Long>> r = remoteStationService.saveOrUpdateBatch(list);
         List<Long> longs = checkData(r);
-        for(int i=0;i<longs.size();i++){
+        for (int i = 0; i < longs.size(); i++) {
             collection.get(i).setId(longs.get(i));
         }
     }
-    private SysStation converterValue(Post post){
+
+    private SysStation converterValue(Post post) {
         SysStation station = new SysStation();
         station.setId(post.getId());
         station.setCode(post.getPostCode());
@@ -251,6 +257,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     @Autowired
     private final PostMapper mapper;
+
     @Override
     public void validityCheck(Long id, String msg) throws Exception {
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
