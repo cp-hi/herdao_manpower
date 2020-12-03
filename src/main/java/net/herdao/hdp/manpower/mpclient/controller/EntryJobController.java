@@ -8,14 +8,19 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 
 
 /**
@@ -155,7 +160,7 @@ public class EntryJobController {
      * 入职登记记录-导出Excel
      * @param response
      * @param orgId 组织ID
-     * @param entryCheckStatus 入职登记记录 (1:已提交，2：已提交，3：已确认）
+     * @param entryCheckStatus 入职登记状态 (1:已提交，2：已提交，3：已确认）
      * @param searchText 关键字搜索
      * @return R
      */
@@ -164,7 +169,7 @@ public class EntryJobController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="page",value="分页对象",required = true),
         @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="entryCheckStatus",value="入职登记记录 (1:未提交，2：已提交，3：已确认）"),
+        @ApiImplicitParam(name="entryCheckStatus",value="入职登记状态 (1:未提交，2：已提交，3：已确认）"),
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
     @SneakyThrows
@@ -196,4 +201,22 @@ public class EntryJobController {
         return R.ok(dto);
     }
 
+    /**
+     * 入职登记详情-确认入职登记(修改
+     * @param id 主键id
+     * @return R
+     */
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="主键id",required = true)
+    })
+    @ApiOperation(value = "入职登记详情-确认入职登记", notes = "入职登记详情-确认入职登记")
+    @PostMapping("/confirmEntry")
+    public R<StaffEntrypostApprove> confirmEntry(String id) {
+        staffEntrypostApproveService.getById(id);
+        StaffEntrypostApprove approve=new StaffEntrypostApprove();
+        //入职登记状态 (1:未提交，2：已提交，3：已确认）
+        approve.setEntryCheckStatus("3");
+        staffEntrypostApproveService.updateById(approve);
+        return R.ok(approve);
+    }
 }

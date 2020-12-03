@@ -34,6 +34,7 @@ import java.util.List;
  */
 @Service
 public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypostApproveMapper, StaffEntrypostApprove> implements StaffEntrypostApproveService {
+
     @Autowired
     private StaffService staffService;
 

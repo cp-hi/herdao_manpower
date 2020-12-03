@@ -92,7 +92,7 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * 入职登记记录-未提交 已提交 已确认-列表
      * @param page 分页对象
      * @param orgId 组织ID
-     * @param entryCheckStatus 入职登记记录 (1:已提交，2：已提交，3：已确认）
+     * @param entryCheckStatus 入职登记状态 (1:已提交，2：已提交，3：已确认）
      * @param searchText 关键字
      * @return EntryRegisterDTO
      */
