@@ -413,7 +413,6 @@
         </where>
    </select>
 
-
     <!-- 入职管理-邀请入职登记-列表 -->
     <select id="findEntryInvitePage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO">
         select t.*
