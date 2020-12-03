@@ -241,9 +241,7 @@ public class RecruitmentController  {
      */
     @ApiOperation(value = "人才下拉框-前端调用", notes = "人才下拉框-前端调用")
     @GetMapping("/findRecruitmentList")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="searchText",value="关键字")
-    })
+    @ApiImplicitParam(name="searchText",value="关键字")
     public R<List<Recruitment>> findRecruitmentList(String searchText) {
         Recruitment recruitment=new Recruitment();
         QueryWrapper<Recruitment> wrapper = Wrappers.query(recruitment);
