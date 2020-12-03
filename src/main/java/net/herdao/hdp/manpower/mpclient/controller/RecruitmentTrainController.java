@@ -55,7 +55,7 @@ public class RecruitmentTrainController {
     /**
      * 人才培训-分页列表
      * @param page 分页对象
-     * @param recruitmentTrain 人才培训表
+     * @param recruitmentId 人才ID
      * @return
      */
     @ApiOperation(value = "人才培训-分页列表", notes = "人才培训-分页列表")

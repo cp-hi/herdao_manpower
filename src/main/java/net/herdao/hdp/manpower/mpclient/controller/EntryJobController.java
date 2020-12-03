@@ -121,14 +121,14 @@ public class EntryJobController {
      * @return
      */
     @ApiOperation(value = "入职管理-邀请入职登记")
-    @GetMapping("/inviteEntry")
+    @GetMapping("/findEntryInvitePage")
     @ApiImplicitParams({
         @ApiImplicitParam(name="page",value="分页对象",required = true),
         @ApiImplicitParam(name="orgId",value="组织ID"),
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    public R<Page<EntryDTO>> inviteEntry(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+    public R<Page<EntryDTO>> findEntryInvitePage(Page<EntryDTO> page, String orgId, String searchText) {
+        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryInvitePage(page, orgId, searchText);
         return R.ok(pageResult);
     }
 

@@ -62,4 +62,13 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
      */
     Page<EntryDTO> findInJobPage(Page<EntryDTO> page, String orgId,  String searchText);
 
+    /**
+     * 入职管理-邀请入职登记-列表
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字
+     * @return
+     */
+    Page<EntryDTO> findEntryInvitePage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
+
 }
