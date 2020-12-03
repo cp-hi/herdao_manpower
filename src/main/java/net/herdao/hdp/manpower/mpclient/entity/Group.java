@@ -74,4 +74,10 @@ public class Group extends BaseEntity<Group> {
     @ApiModelProperty(value="绩效计算标准")
     private String achieveCalculateStandard;
 
+    /**
+     * 租户ID
+     */
+    @ApiModelProperty(value="租户ID")
+    private Long tenantId;
+
 }

@@ -45,5 +45,10 @@ public interface GroupService extends HdpService<Group> {
 
     GroupDetailDTO getGroupById(Long id);
 
-    GroupDetailDTO getGroupByOrgId(Long orgId);
+    /**
+     * 组织获取所在集团
+     * @param orgId
+     * @return
+     */
+    Group getGroupByOrgId(Long orgId);
 }

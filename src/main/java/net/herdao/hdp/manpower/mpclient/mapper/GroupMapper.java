@@ -46,5 +46,10 @@ public interface GroupMapper extends BaseMapper<Group> {
      */
     List<GroupListDTO> groupPage(Map<String, Object> map);
 
-    GroupDetailDTO getGroupByOrgId(Long orgId);
+    /**
+     * 组织获取所在集团
+     * @param orgId
+     * @return
+     */
+    Group getGroupByOrgId(Long orgId);
 }

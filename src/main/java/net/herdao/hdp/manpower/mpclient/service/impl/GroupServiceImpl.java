@@ -211,10 +211,20 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         return form;
     }
 
+    /**
+     * 组织获取集团
+     * @param orgId
+     * @return
+     */
     @Override
-    public GroupDetailDTO getGroupByOrgId(Long orgId) {
-        return null;
+    public Group getGroupByOrgId(Long orgId) {
+        return baseMapper.getGroupByOrgId(orgId);
     }
+
+    /**
+     * 同步
+     * @param group
+     */
     private void saveOrUpdateSync(Group group) {
         SysGroup sysGroup = convert(group);
         R<Long> r = remoteGroupService.saveOrUpdate(sysGroup);
