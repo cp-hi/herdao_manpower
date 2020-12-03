@@ -246,9 +246,6 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         station.setCode(post.getPostCode());
         station.setName(post.getPostName());
         station.setGroupId(post.getGroupId());
-        station.setBlockId(post.getSectionId());
-        station.setPipeId(post.getPipelineId());
-        station.setSeqId(post.getPostSeqId());
         station.setBeginGrade(post.getJobLevelId1());
         station.setEndGrade(post.getJobLevelId2());
         station.setSingleGrade(post.getSingleJobLevle().toString());
