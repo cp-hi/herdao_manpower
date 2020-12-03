@@ -62,7 +62,7 @@ public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
     @ApiModelProperty(value = "备注")
     private String remark;
 
-    @ApiModelProperty(value = "申请类型")
+    @ApiModelProperty(value = "离职类型")
     private String leaveType;
 
     @ApiModelProperty(value = "离职原因")
@@ -98,73 +98,75 @@ public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
     @ApiModelProperty(value = "离职所属期")
     private String leaveBelongsPeriod;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题1回答")
     private String leaveQuestionAns1;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题2回答")
     private String leaveQuestionAns2;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题3回答")
     private String leaveQuestionAns3;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题4回答")
     private String leaveQuestionAns4;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题5回答")
     private String leaveQuestionAns5;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题6回答")
     private String leaveQuestionAns6;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题7回答")
     private String leaveQuestionAns7;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题8回答")
     private String leaveQuestionAns8;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职问题其他说明")
     private String leaveQuestionAnsOther;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "改善建议")
+    private String improveProposal;
+
+    @ApiModelProperty(value = "面谈总结")
     private String interviewSummary;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "是否任免")
     private Boolean isAppoint;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = " 是否离任审计")
     private Boolean isLeaveAuditing;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职交接人id")
     private Long userAgentId;
 
-    @ApiModelProperty(value = " id")
     private String userAgentOid;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "离职单类型")
     private String leavePostType;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "新建人工号")
     private String creatorCode;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "新建人")
     private String creatorName;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "新建时间")
     private LocalDateTime creatorTime;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "修改人工号")
     private String modifierCode;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "修改人姓名")
     private String modifierName;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "修改人时间")
     private LocalDateTime modifierTime;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "租户ID")
     private Long tenantId;
 
-    @ApiModelProperty(value = " id")
+    @ApiModelProperty(value = "岗位组织关系id")
     private Long postOrgId;
 
     @TableLogic
