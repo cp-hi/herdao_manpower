@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import net.herdao.hdp.admin.api.entity.SysGrade;
+import net.herdao.hdp.admin.api.feign.RemoteGradeService;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
@@ -28,7 +31,8 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
 
     @Autowired
     JobGradeService jobGradeService;
-
+    @Autowired
+    private RemoteGradeService remoteGradeService;
     @Override
     public List<Map> jobLevelList(Long groupId) {
         return baseMapper.jobLevelList(groupId);
@@ -104,5 +108,26 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         if (mapper.selectOne(queryWrapper) == null) {
             throw new Exception(msg);
         }
+    }
+
+    @Override
+    public Boolean isSync() {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public void saveOrUpdateSync(JobLevel jobLevel) {
+        SysGrade grade = convert(jobLevel);
+        grade.setCpId(607l);
+        R<Long> longR = remoteGradeService.saveOrUpdate(grade);
+        checkData(longR);
+    }
+    private SysGrade convert(JobLevel jobLevel){
+        SysGrade grade = new SysGrade();
+        grade.setCpId(jobLevel.getId());
+        grade.setName(jobLevel.getJobLevelName());
+        grade.setCode(jobLevel.getJobLevelCode());
+        grade.setGroupId(jobLevel.getGroupId());
+        return grade;
     }
 }

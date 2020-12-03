@@ -209,6 +209,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             String entityCode = this.generateEntityCode(getEntityCode(t, 1));
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
+            if(isSync()){
+                saveOrUpdateSync(t);
+            }
             if (result)
                 addOperationLog("新增", entity.getId(), getNameMapper().apply(t));
         } else {
@@ -223,7 +226,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                     addOperationLog("编辑", entity.getId(), StringUtils.join(content, "；"));
             }
         }
-        return result;
+        throw new RuntimeException("dd");
+        //return result;
     }
 
     @Override
@@ -524,6 +528,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     //endregion
     protected <E> E checkData(R<E> r) {
-        return null;
+        if(r.getCode()==0){
+            return r.getData();
+        }
+        throw new RuntimeException("kkk");
     }
 }

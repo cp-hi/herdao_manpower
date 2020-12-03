@@ -1,34 +1,19 @@
 
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import net.herdao.hdp.admin.api.dto.OrgDTO;
-import net.herdao.hdp.admin.api.feign.RemoteOrgService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
+import net.herdao.hdp.admin.api.dto.OrgDTO;
+import net.herdao.hdp.admin.api.entity.SysDept;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.admin.api.feign.RemoteDeptService;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
@@ -44,12 +29,7 @@ import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
-import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
-import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.service.StaffService;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
@@ -57,6 +37,15 @@ import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationTreeVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
+import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Andy
@@ -80,7 +69,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Autowired
     private OrgModifyRecordService orgModifyRecordService;
     @Autowired
-    private RemoteOrgService remoteOrgService;
+    private RemoteDeptService remoteDeptService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -533,9 +522,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                         orgDTO.setName(e.getOrgName());
                         orgDTO.setCode(e.getOrgCode());
                         orgDTO.setType(Integer.parseInt(e.getOrgType()));
-                        remoteOrgService.update(orgDTO);
+                        //remoteOrgService.update(orgDTO);
                     });
                     this.updateBatchById(organizations);
+                    //remoteOrgService.saveOrUpdateBatch()
                 }
             }
         }
@@ -995,5 +985,30 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         if (mapper.selectOne(queryWrapper) == null) {
             throw new Exception(msg);
         }
+    }
+    private void saveOrUpdateSync(Organization organization) {
+        SysDept dept = convert(organization);
+        R<Long> r = remoteDeptService.saveOrUpdate(dept);
+        RemoteCallUtils.checkData(r);
+    }
+    private void saveOrUpdateBatchSync(List<Organization> collection){
+        List<SysDept> depts = new ArrayList<>();
+        collection.forEach(e->{
+            depts.add(convert(e));
+        });
+        R<List<Long>> r = remoteDeptService.saveOrUpdateBatch(depts);
+        RemoteCallUtils.checkData(r);
+    }
+    private SysDept convert(Organization organization){
+        SysDept dept = new SysDept();
+        dept.setCpDeptId(String.valueOf(organization.getId()));
+        dept.setName(organization.getOrgName());
+        dept.setCode(organization.getOrgCode());
+        dept.setLevel(String.valueOf(organization.getOrgTreeLevel()));
+        dept.setCpParentId(String.valueOf(organization.getParentId()));
+        dept.setType(String.valueOf(organization.getOrgType()));
+        dept.setVmFlag(organization.getIsVirtual()?"1":"0");
+        dept.setFullName(organization.getOrgFullname());
+        return dept;
     }
 }

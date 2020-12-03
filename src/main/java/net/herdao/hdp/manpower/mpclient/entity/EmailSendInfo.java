@@ -10,7 +10,9 @@ import java.util.List;
 @ApiModel(value = "邮件发送")
 public class EmailSendInfo {
     @ApiModelProperty(value = "邮件接收人")
-    private List<EmailReceiveInfo> receiveInfos;
+    private List<Long> ids;
     @ApiModelProperty(value = "模板")
     private String template;
+    @ApiModelProperty(value = "邮件类型")
+    private String type;
 }

@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -43,4 +44,6 @@ public interface GroupService extends HdpService<Group> {
     boolean groupUpdate(GroupDetailDTO groupForm);
 
     GroupDetailDTO getGroupById(Long id);
+
+    GroupDetailDTO getGroupByOrgId(Long orgId);
 }
