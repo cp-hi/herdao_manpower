@@ -79,4 +79,9 @@ public class RecruitmentUpdateFormDTO extends BaseEntity<RecruitmentUpdateFormDT
     @ApiModelProperty(value="人才ID")
     private Long recruitmentId;
 
+    /**
+     * 归属组织
+     */
+    @ApiModelProperty(value="归属组织ID")
+    private String orgId;
 }

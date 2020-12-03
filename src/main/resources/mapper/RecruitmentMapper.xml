@@ -138,42 +138,41 @@
                      t.talent_label,
                      GROUP_CONCAT(t.rc_label) rc_label,
                      CONCAT("已邀请",t.invite_count,"次") invite_situation,
+                     t.org_full_name,
                      t.update_desc
             from  (
-                SELECT
-                rec.id,
-                rec.talent_name,
-                rec.mobile,
-                rec.email,
-                rec.sex sex_id,
-                disex.label sex_label,
-                TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
-                TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
-                rec.highest_education,
-                rec.final_job_company,
-                rec.final_post_name,
-                rec.talent_type talent_type,
-                dirc.label talent_label,
-                rl.`name` rc_label,
-                invr.invite_count,
-                zpjg.value recruitment_status,
-                CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
-             FROM
-                mp_recruitment rec
+                SELECT  rec.id,
+                        rec.talent_name,
+                        rec.mobile,
+                        rec.email,
+                        rec.sex sex_id,
+                        disex.label sex_label,
+                        TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
+                        TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
+                        rec.highest_education,
+                        rec.final_job_company,
+                        rec.final_post_name,
+                        rec.talent_type talent_type,
+                        dirc.label talent_label,
+                        rl.`name` rc_label,
+                        invr.invite_count,
+                        zpjg.value recruitment_status,
+                        org.ORG_FULLNAME org_full_name,
+                        CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
+             FROM mp_recruitment rec
                 left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
                 left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
                 left join mp_recruitment_label rl on rl.recruitment_id= rec.id
                 left join sys_dict_item zpjg on zpjg.type='ZPJG' and zpjg.value=rec.recruitment_status
+                left join mp_organization org on org.id= rec.org_id
                 left join
                  (
-                     SELECT
-                        inv.recruitment_id,
-                        count( inv.recruitment_id ) invite_count
-                        FROM  mp_recruitment_invite inv
-                         where inv.del_flag=0
+                     SELECT  inv.recruitment_id,
+                             count( inv.recruitment_id ) invite_count
+                             FROM  mp_recruitment_invite inv
+                     where inv.del_flag=0
                         GROUP BY recruitment_id
-
-                 ) invr on  rec.id = invr.recruitment_id
+                  ) invr on  rec.id = invr.recruitment_id
                   <where>
                             and rec.del_flag = 0
                         <if test="orgId != null and orgId != '' ">
@@ -198,6 +197,7 @@
                     IFNULL(t.talent_label,''),
                     IFNULL(t.rc_label,'') ,
                     IFNULL(t.invite_situation,''),
+                    IFNULL(t.org_full_name,''),
                     IFNULL(t.update_desc,'')
                  )  LIKE concat('%', #{searchText} ,'%')
             </if>
