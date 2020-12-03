@@ -9,8 +9,9 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
-import net.herdao.hdp.manpower.sys.cache.GroupCache;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
+    @Autowired
+    CacheService cacheService;
 
     @Override
     public List<Map> postSeqList(Long groupId) {
@@ -48,7 +51,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     @Override
     public void batchAddVerify(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) postSeq.setGroupId(group.getId());
         chkEntityExists(excel.getPostSeqName(), group.getId(), false, buffer);
         PostSeq parent = this.getParent(excel.getParentName(), group.getId(), false, buffer);
@@ -62,7 +65,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     public void batchUpdateVerify(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
 
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) postSeq.setGroupId(group.getId());
         PostSeq tmp = chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         PostSeq parent = this.getParent(excel.getParentName(), group.getId(), false, buffer);

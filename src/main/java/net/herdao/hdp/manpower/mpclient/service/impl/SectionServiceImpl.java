@@ -9,14 +9,11 @@ import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.Section;
 import net.herdao.hdp.manpower.mpclient.mapper.SectionMapper;
 import net.herdao.hdp.manpower.mpclient.service.SectionService;
-import net.herdao.hdp.manpower.sys.annotation.DtoField;
-import net.herdao.hdp.manpower.sys.cache.GroupCache;
-import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -31,7 +28,8 @@ import java.util.function.Function;
  */
 @Service
 public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section> implements SectionService {
-
+@Autowired
+    CacheService cacheService;
     @Override
     public List<Map> sectionList(Long groupId) {
         return baseMapper.sectionList(groupId);
@@ -40,7 +38,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     @Override
     public void batchAddVerify(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchAddVO excel = (SectionBatchAddVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
         chkEntityExists(excel.getSectionName(), group.getId(), false, buffer);
     }
@@ -48,7 +46,7 @@ public class SectionServiceImpl extends EntityServiceImpl<SectionMapper, Section
     @Override
     public void batchUpdateVerify(Section section, Object excelObj, StringBuffer buffer) {
         SectionBatchUpdateVO excel = (SectionBatchUpdateVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) section.setGroupId(group.getId());
         Section tmp = chkEntityExists(excel.getSectionName(), group.getId(), true);
         if (StringUtils.isBlank(buffer)) {

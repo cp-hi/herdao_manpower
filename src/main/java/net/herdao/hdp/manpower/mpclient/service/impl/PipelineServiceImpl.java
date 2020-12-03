@@ -7,9 +7,10 @@ import net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper;
 import net.herdao.hdp.manpower.mpclient.service.PipelineService;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.pipeline.PipelineBatchUpdateVO;
-import net.herdao.hdp.manpower.sys.cache.GroupCache;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,8 @@ import java.util.function.Function;
 @Service
 @AllArgsConstructor
 public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipeline> implements PipelineService {
+    @Autowired
+    CacheService cacheService;
 
     @Override
     public List<Map> pipelineList(Long groupId) {
@@ -36,7 +39,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     @Override
     public void batchAddVerify(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchAddVO excel = (PipelineBatchAddVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());
         chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
     }
@@ -44,7 +47,7 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
     @Override
     public void batchUpdateVerify(Pipeline pipeline, Object excelObj, StringBuffer buffer) {
         PipelineBatchUpdateVO excel = (PipelineBatchUpdateVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) pipeline.setGroupId(group.getId());
         Pipeline tmp = chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
         if (StringUtils.isBlank(buffer)) {
@@ -63,4 +66,4 @@ public class PipelineServiceImpl extends EntityServiceImpl<PipelineMapper, Pipel
         return Pipeline::getGroupId;
     }
 
-   }
+}

@@ -12,8 +12,7 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
-import net.herdao.hdp.manpower.sys.cache.DictCache;
-import net.herdao.hdp.manpower.sys.cache.GroupCache;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +34,7 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> implements PostService {
 
+    final CacheService cacheService;
     final GroupService groupService;
     final SectionService sectionService;
     final PipelineService pipelineService;
@@ -141,7 +141,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     @Override
     public void batchAddVerify(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         chkEntityExists(excel.getPostName(), group.getId(), false, buffer);
 
@@ -164,7 +164,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     public void batchUpdateVerify(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
 
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 
@@ -173,10 +173,10 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        post.setOrgType(DictCache.getDictVal("GWZZLX", excel.getOrgType(), buffer));
-        post.setPostLevel(DictCache.getDictVal("XCJB", excel.getPostLevel(), buffer));
-        post.setYearPayRatio(DictCache.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
-        post.setPerforSalaryRatio(DictCache.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
+        post.setOrgType(cacheService.getDictVal("GWZZLX", excel.getOrgType(), buffer));
+        post.setPostLevel(cacheService.getDictVal("XCJB", excel.getPostLevel(), buffer));
+        post.setYearPayRatio(cacheService.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
+        post.setPerforSalaryRatio(cacheService.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
         if (StringUtils.isBlank(buffer)) {
             if (null != section)

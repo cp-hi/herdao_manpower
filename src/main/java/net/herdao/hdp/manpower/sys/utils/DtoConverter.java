@@ -6,10 +6,12 @@ import com.google.common.collect.HashBiMap;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
-import net.herdao.hdp.manpower.sys.cache.DictCache;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,8 +29,16 @@ import java.util.stream.Collectors;
  * @Date 2020/10/16 8:31
  * @Version 1.0
  */
-
+@Component
 public class DtoConverter {
+
+    private static CacheService cacheService;
+
+    @Autowired
+    public void setCacheService(CacheService cacheService) {
+        DtoConverter.cacheService = cacheService;
+    }
+
 
     /**
      * @param source      dto类
@@ -160,7 +170,7 @@ public class DtoConverter {
         Field currObj = AnnotationUtils.getFieldByName(source, fieldName);
         if (null == currObj) return null;
         Object val = currObj.get(source);
-        return DictCache.getDictLabel(dictInfo[0], (String) val);
+        return cacheService.getDictLabel(dictInfo[0], (String) val);
     }
 
     /**
