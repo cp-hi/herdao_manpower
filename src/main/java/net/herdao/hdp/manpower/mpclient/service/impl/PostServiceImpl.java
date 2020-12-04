@@ -233,11 +233,9 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         collection.forEach(post -> {
             SysStation station = converterValue(post);
         });
-        R<List<Long>> r = remoteStationService.saveOrUpdateBatch(list);
-        List<Long> longs = checkData(r);
-        for (int i = 0; i < longs.size(); i++) {
-            collection.get(i).setId(longs.get(i));
-        }
+        R<Boolean> r = remoteStationService.saveOrUpdateBatch(list);
+        Boolean aBoolean = checkData(r);
+
     }
 
     private SysStation converterValue(Post post) {
