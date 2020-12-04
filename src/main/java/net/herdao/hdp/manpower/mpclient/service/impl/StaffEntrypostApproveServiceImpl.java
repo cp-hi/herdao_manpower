@@ -191,4 +191,10 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         EntryPersonInfoDTO entryPersonInfo = this.baseMapper.findEntryPersonInfo(recruitmentId);
         return entryPersonInfo;
     }
+
+    @Override
+    public EntryJobDTO findEntryJobInfo(String recruitmentId) {
+        EntryJobDTO entryJobDTO = this.baseMapper.findEntryJobInfo(recruitmentId);
+        return entryJobDTO;
+    }
 }

@@ -238,16 +238,14 @@ public class EntryJobController {
         @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true)
     })
     @GetMapping("/findEntryInfo")
-    public R<Map<String,EntryInfoDTO>> findEntryInfo(String recruitmentId) {
-        Map<String,EntryInfoDTO> resultMap=new HashMap<String,EntryInfoDTO>();
+    public R<EntryInfoDTO> findEntryInfo(String recruitmentId) {
         EntryPersonInfoDTO entryPersonInfo = staffEntrypostApproveService.findEntryPersonInfo(recruitmentId);
+        EntryJobDTO entryJobInfo = staffEntrypostApproveService.findEntryJobInfo(recruitmentId);
 
         EntryInfoDTO entryInfo=new EntryInfoDTO();
         entryInfo.setEntryPersonInfoDTO(entryPersonInfo);
+        entryInfo.setEntryJobDTO(entryJobInfo);
 
-        resultMap.put("entryInfoDTO",entryInfo);
-
-
-        return R.ok(resultMap);
+        return R.ok(entryInfo);
     }
 }
