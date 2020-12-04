@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.security.annotation.Inner;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -268,5 +269,19 @@ public class RecruitmentController  {
     public R<RecruitmentEmployeeDTO> fetchEmploy(String recruitmentId) {
         RecruitmentEmployeeDTO entity = recruitmentService.fetchEmploy(recruitmentId);
         return R.ok(entity);
+    }
+
+    /**
+     * 候选人H5手机验证码登录
+     * @param mobile
+     * @param code
+     * @return
+     */
+    @ApiOperation(value = "候选人H5手机验证码登录", notes = "候选人H5手机验证码登录")
+    @Inner(value = false)
+    @GetMapping("/recruitmentLogin")
+    public R<Long> recruitmentLogin(String mobile, String code){
+        return recruitmentService.recruitmentLogin(mobile, code);
+
     }
 }
