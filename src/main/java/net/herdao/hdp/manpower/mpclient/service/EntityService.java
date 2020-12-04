@@ -166,7 +166,7 @@ public interface EntityService<T> extends IService<T> {
 
     String selectEntityName(Serializable id);
 
-    List<Map<Long, String>> selectNamesByIds(List<? extends Serializable> ids);
+    List<Map<String, Object>> selectNamesByIds(List<? extends Serializable> ids);
 
     //region 设置实体属性
 
