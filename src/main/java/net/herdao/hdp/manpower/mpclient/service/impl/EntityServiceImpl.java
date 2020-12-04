@@ -229,8 +229,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                     addOperationLog("编辑", entity.getId(), StringUtils.join(content, "；"));
             }
         }
-        throw new RuntimeException("dd");
-        //return result;
+        return result;
     }
 
     @Override
