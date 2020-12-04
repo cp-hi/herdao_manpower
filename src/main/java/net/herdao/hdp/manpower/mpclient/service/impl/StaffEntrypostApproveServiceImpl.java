@@ -185,4 +185,10 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         Page<EntryRegisterDTO> pageResult = this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
         return pageResult;
     }
+
+    @Override
+    public EntryPersonInfoDTO findEntryPersonInfo(String recruitmentId) {
+        EntryPersonInfoDTO entryPersonInfo = this.baseMapper.findEntryPersonInfo(recruitmentId);
+        return entryPersonInfo;
+    }
 }

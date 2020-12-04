@@ -565,6 +565,19 @@
         </where>
     </select>
 
-
+    <!--入职管理-办理入职-个人信息 -->
+    <select id="findEntryPersonInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryPersonInfoDTO">
+        SELECT rec.id recruitment_id,
+               rec.talent_name ,
+               rec.mobile,
+               rec.certificate_type,
+               rec.certificate_no
+         FROM  mp_recruitment rec
+         <where>
+             <if test="recruitmentId != null and recruitmentId != '' ">
+                AND rec.id = #{recruitmentId}
+             </if>
+         </where>
+    </select>
 
 </mapper>
