@@ -17,11 +17,16 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.common.core.constant.CacheConstants;
+import net.herdao.hdp.common.core.constant.enums.LoginTypeEnum;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
@@ -30,6 +35,8 @@ import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,7 +49,9 @@ import java.util.List;
  * @date 2020-11-23 14:46:40
  */
 @Service
+@AllArgsConstructor
 public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recruitment> implements RecruitmentService {
+    private final RedisTemplate redisTemplate;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -222,5 +231,32 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
         RecruitmentTopEduDTO recruitmentTopEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
         return recruitmentTopEduDTO;
+    }
+
+    @Override
+    public R recruitmentLogin(String mobile, String code) {
+        String key = CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile;
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+
+        if (!redisTemplate.hasKey(key)) {
+            return  R.failed("验证码不合法");
+        }
+
+        String redisCode = (String)redisTemplate.opsForValue().get(key);
+
+        if (StrUtil.isBlank(redisCode)) {
+            redisTemplate.delete(key);
+            return  R.failed("验证码不合法");
+        }
+
+        if (!StrUtil.equals(redisCode, code)) {
+            return  R.failed("验证码不合法");
+        }
+        List<Recruitment> recruitments = this.baseMapper.selectList(Wrappers.<Recruitment>query().lambda().eq(Recruitment::getMobile, mobile));
+        if(recruitments.isEmpty() || recruitments.size() != 1){
+            return  R.failed("手机号不合法");
+        }
+        return R.ok(recruitments.get(0).getId());
+
     }
 }

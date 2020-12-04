@@ -96,4 +96,12 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
 
+    /**
+     * 候选人H5登录
+     * @param mobile
+     * @param code
+     * @return
+     */
+     R recruitmentLogin(String mobile, String code);
+
 }
