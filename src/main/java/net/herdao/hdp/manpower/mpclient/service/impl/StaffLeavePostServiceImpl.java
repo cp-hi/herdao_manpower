@@ -80,6 +80,7 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
         StaffLeavePostApprove entity = new StaffLeavePostApprove();
         BeanUtils.copyProperties(dto, entity);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
         mapper.insert(entity);
         return entity.getId();
     }

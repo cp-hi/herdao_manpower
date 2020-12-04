@@ -21,7 +21,7 @@ public class GeneralFieldSetter implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         SysUser sysUser = SysUserUtils.getSysUser();
-        this.setFieldValByName("creatorCode", sysUser.getUserId(), metaObject);
+        this.setFieldValByName("creatorCode", sysUser.getCpUsername(), metaObject);
         this.setFieldValByName("creatorName", sysUser.getUsername(), metaObject);
         this.setFieldValByName("creatorTime", LocalDateTime.now(), metaObject);
         this.setFieldValByName("delFlag", false, metaObject);

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.entity.StaffLeavePostApprove;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPageVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @Author Liu Chang
@@ -12,5 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface StaffLeavePostMapper extends BaseMapper<StaffLeavePostApprove> {
-    public Page<StaffLeavePostPageVO> findStaffLeavePostPage(Page page, String searchText, Long orgId, String status);
+    public Page<StaffLeavePostPageVO> findStaffLeavePostPage(Page page,
+                                                             @Param("searchText") String searchText,
+                                                             @Param("orgId") Long orgId,
+                                                             @Param("status") String status);
 }

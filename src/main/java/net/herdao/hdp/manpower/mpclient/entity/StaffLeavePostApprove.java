@@ -15,10 +15,9 @@ import java.time.LocalDateTime;
  * @Date 2020/12/1 11:34 上午
  */
 @Data
-@TableName("mp_staff_promote_approve")
-@EqualsAndHashCode(callSuper = true)
+@TableName("mp_staff_leave_post_approve")
 @ApiModel(value = "离职")
-public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
+public class StaffLeavePostApprove {
 
     @ApiModelProperty(value = "离职 id")
     @TableId(value = "id", type = IdType.AUTO)
@@ -176,7 +175,6 @@ public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
     @ApiModelProperty(value = "岗位组织关系id")
     private Long postOrgId;
 
-    @TableField(numericScale = "del_flag", fill = FieldFill.INSERT)
     @TableLogic
     private Boolean delFlag;
 }
