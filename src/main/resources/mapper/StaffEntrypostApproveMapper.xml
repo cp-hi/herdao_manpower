@@ -580,4 +580,29 @@
          </where>
     </select>
 
+    <!--入职管理-办理入职-入职信息 -->
+    <select id="findEntryJobInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryJobDTO">
+       SELECT  app.id approve_id,
+               rygsfw.value staff_status,
+               rzlx.value office_type,
+               ryxz.value personnel_nature,
+               org.org_name,
+               pst.post_name,
+               jl.JOB_LEVEL_NAME job_level_name,
+               app.entry_post_time,
+               app.probation
+       FROM mp_staff_entrypost_approve app
+	    LEFT JOIN sys_dict_item rygsfw ON rygsfw.type = 'RYGSFW' AND rygsfw.VALUE= app.staff_status
+        LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
+        LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
+        LEFT JOIN mp_organization org on org.id=app.org_id
+        LEFT JOIN mp_post pst on pst.id= app.post_id
+        LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
+        <where>
+            <if test="recruitmentId != null and recruitmentId != '' ">
+                AND  app.recruitment_id= #{recruitmentId}
+            </if>
+        </where>
+    </select>
+
 </mapper>
