@@ -526,7 +526,7 @@
                 AND  p.JOB_LEVEL_ID1 = #{jobLevelId1}
             </if>
             <if test="orgId != null">
-                AND  o.id = #{orgId}
+                AND o.id=#{orgId}
             </if>
         </where>
     </select>

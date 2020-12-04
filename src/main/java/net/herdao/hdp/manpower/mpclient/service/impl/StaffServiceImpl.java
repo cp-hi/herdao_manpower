@@ -281,6 +281,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		map.put("sectionId", staff.getSectionId());
 		map.put("pipelineId", staff.getPipelineId());
 		map.put("jobLevelId1", staff.getJobLevelId1());
+		map.put("orgId",staff.getOrgId());
 		page = page.setRecords(baseMapper.staffPage(map));
 		return page;
 	}

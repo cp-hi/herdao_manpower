@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,39 +36,58 @@ public class PlatformSync {
     private final RemoteStationService remoteStationService;
     private final RemoteUserService remoteUserService;
     private final RemoteUserDeptStationService remoteUserDeptStationService;
-    @GetMapping("/aa")
-    public R sync(){
+    @GetMapping("/a")
+    public R a(){
         //同步组织
         List<Organization> list = organizationService.list();
         list.forEach(e->{
             saveOrUpdateSync(e);
         });
-        //同步集团
-        List<Group> list1 = groupService.list(Wrappers.lambdaQuery());
-        list1.forEach(e->{
-            saveOrUpdateSync(e);
-        });
-        //同步职级
-        jobLevelService.list(Wrappers.<JobLevel>lambdaQuery()).forEach(e->{
-            saveOrUpdateSync(e);
-        });
-        //同步岗位
-        List<Post> list2 = postService.list();
-        list.forEach(e->{
-            saveOrUpdateSync(e);
-        });
-        //同步用户
-        List<User> list3 = userService.list();
-        list.forEach(e->{
-            saveOrUpdateSync(e);
-        });
-        //同步用户组织岗位
-        List<Userpost> list4 = userpostService.list();
-        list.forEach(e->{
-            saveOrUpdateSync(e);
-        });
-        return R.ok("同步完成");
+
+        return R.ok();
     }
+    @GetMapping("/b")
+    public R b(){
+        //同步集团
+        List<Group> list = groupService.list(Wrappers.lambdaQuery());
+        list.forEach(e->{
+            saveOrUpdateSync(e);
+        });
+        return R.ok();
+    }
+    @GetMapping("/c")
+    public R c(){
+        //同步职级
+        List<JobLevel> list = jobLevelService.list(Wrappers.<JobLevel>lambdaQuery());
+        list.forEach(e->{
+            saveOrUpdateSync(e);
+        });
+        return R.ok();
+    }
+    @GetMapping("/d")
+    public R d(){
+        //同步岗位
+        List<Post> list = postService.list();
+        postsaveOrUpdateBatchSync(list);
+        return R.ok();
+    }
+    @GetMapping("/e")
+    public R e(){
+        //同步用户
+        List<User> list = userService.list();
+        list.forEach(e->{
+            saveOrUpdateSync(e);
+        });
+        return R.ok();
+    }
+    @GetMapping("/f")
+    public R f(){
+        //同步用户组织岗位
+        List<Userpost> list = userpostService.list();
+        saveOrUpdateBatchSync(list);
+        return R.ok();
+    }
+
     //组织
     private void saveOrUpdateSync(Organization organization) {
         SysDept dept = convert(organization);
@@ -98,7 +119,7 @@ public class PlatformSync {
         sysGroup.setName(group.getGroupName());
         sysGroup.setCode(group.getGroupCode());
         sysGroup.setCpId(group.getId());
-        sysGroup.setDelFlag(group.getDelFlag()?"1":"0");
+        sysGroup.setDelFlag(group.getDelFlag()==null||group.getDelFlag()?"1":"0");
         sysGroup.setCpDeptId(group.getOrgId());
         return sysGroup;
     }
@@ -118,6 +139,18 @@ public class PlatformSync {
         return grade;
     }
     //岗位
+    private void postsaveOrUpdateBatchSync(List<Post> users) {
+        List<SysStation> userDTOS = new ArrayList<>();
+        users.forEach(user->{
+            SysStation convert = convert(user);
+            userDTOS.add(convert);
+        });
+        for(int i=0;i<userDTOS.size();){
+            List<SysStation> sysUserOrgStations1 = userDTOS.subList(i, i + 10);
+            remoteStationService.saveOrUpdateBatch(sysUserOrgStations1);
+            i=i+10;
+        }
+    }
     private void saveOrUpdateSync(Post post) {
         SysStation sysStation = convert(post);
         R<Long> r = remoteStationService.saveOrUpdate(sysStation);
@@ -136,6 +169,18 @@ public class PlatformSync {
         return station;
     }
     //用户
+    private void usersaveOrUpdateBatchSync(List<User> users) {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        users.forEach(user->{
+            UserDTO convert = convert(user);
+            userDTOS.add(convert);
+        });
+        for(int i=0;i<userDTOS.size();){
+            List<UserDTO> sysUserOrgStations1 = userDTOS.subList(i, i + 10);
+            remoteUserService.saveOutsideUserBatch(sysUserOrgStations1);
+            i=i+10;
+        }
+    }
     private void saveOrUpdateSync(User user) {
         UserDTO convert = convert(user);
         R<Long> r = remoteUserService.saveOutsideUser(convert);
@@ -157,6 +202,18 @@ public class PlatformSync {
         return userDTO;
     }
     //用户组织岗位
+    private void saveOrUpdateBatchSync(List<Userpost> userposts) {
+        List<SysUserOrgStation> sysUserOrgStations = new ArrayList<>();
+        userposts.forEach(e->{
+            sysUserOrgStations.add(convert(e));
+        });
+        for(int i=0;i<sysUserOrgStations.size();){
+            List<SysUserOrgStation> sysUserOrgStations1 = sysUserOrgStations.subList(i, i + 13);
+            System.out.println(JSON.toJSON(sysUserOrgStations1));
+            remoteUserDeptStationService.saveOrUpdateBatch(sysUserOrgStations1);
+            i=i+13;
+        }
+    }
     private void saveOrUpdateSync(Userpost userpost) {
         SysUserOrgStation convert = convert(userpost);
         R<Long> r = remoteUserDeptStationService.saveOrUpdate(convert);
@@ -171,4 +228,5 @@ public class PlatformSync {
         sysUserOrgStation.setType(userpost.getOfficePostType());
         return sysUserOrgStation;
     }
+
 }

@@ -33,7 +33,8 @@ public class StaffListDTO {
     private String staffCode;
 
     @ApiModelProperty(value = "所在组织id")
-    private String orgId;
+    private Long orgId;
+
     @ApiModelProperty(value = "所在组织")
     private String orgName;
 
