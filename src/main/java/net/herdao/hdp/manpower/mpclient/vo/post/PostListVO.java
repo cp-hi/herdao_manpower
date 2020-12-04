@@ -50,11 +50,6 @@ public class PostListVO {
     @ApiModelProperty("管线")
     private String pipelineName;
 
-//    @ExcelProperty("管线")
-//    @ApiModelProperty("管线")
-//    @DtoField(entityService = PipelineServiceImpl.class, pkField = "pipelineId")
-//    private String pipelineName1;
-
     @ExcelProperty("职等")
     @ApiModelProperty("职等")
     private String jobGradeName;
@@ -75,23 +70,23 @@ public class PostListVO {
 
     @ExcelProperty("岗位薪酬级别")
     @ApiModelProperty("岗位薪酬级别")
-    @DtoField(dictField = "XCJB.postLevel")
-    private String postLevel;
+//    @DtoField(dictField = "XCJB.postLevel")
+    private String postLevelName;
 
     @ExcelProperty("年终奖薪酬比例")
     @ApiModelProperty("年终奖薪酬比例")
-    @DtoField(dictField = "XCBL.yearPayRatio")
-    private String yearPayRatio;
+//    @DtoField(dictField = "XCBL.yearPayRatio")
+    private String yearPayRatioName;
 
     @ExcelProperty("月度绩效工资比例")
     @ApiModelProperty("月度绩效工资比例")
-    @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
-    private String perforSalaryRatio;
+//    @DtoField(dictField = "YDJXGZBL.perforSalaryRatio")
+    private String perforSalaryRatioName;
 
     @ExcelProperty("岗位组织级别")
     @ApiModelProperty("岗位组织级别")
-    @DtoField(dictField = "GWZZLX.orgType")
-    private String orgType;
+//    @DtoField(dictField = "GWZZLX.orgType")
+    private String orgTypeName;
 
     @ExcelProperty("最近更新情况")
     @ApiModelProperty("最近更新情况")

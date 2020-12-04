@@ -71,4 +71,6 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      */
     RecruitmentEmployeeDTO fetchEmploy(@Param("recruitmentId") String recruitmentId);
 
+
+
 }

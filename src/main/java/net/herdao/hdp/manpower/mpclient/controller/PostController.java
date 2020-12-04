@@ -73,12 +73,6 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
             if (StringUtils.isNotBlank(f.getJobLevelId()))
                 jobLevelIds = f.getJobLevelId().split(",");
 
-//            if (null != f.getSingleJobLevle() && f.getSingleJobLevle() && jobLevelIds.length != 1)
-//                throw new Exception("单职级的岗位选了" + jobLevelIds.length + "个职级");
-//
-//            if (null != f.getSingleJobLevle() && !f.getSingleJobLevle() && jobLevelIds.length == 1)
-//                throw new Exception("非单职级岗位选了1个职级");
-
             if (jobLevelIds.length >= 1)
                 f.setJobLevelId1(Long.valueOf(jobLevelIds[0]));
             if (jobLevelIds.length >= 2)
@@ -119,7 +113,7 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
             @ApiImplicitParam(name = "operation", value = "操作，不填写则直接获取数据，填 download 则下载excel"),
             @ApiImplicitParam(name = "size", value = "数据条数，不填则返回10条，download则返回所有"),
     })
-    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size) throws IllegalAccessException, InstantiationException {
+    public R getPostDetails(HttpServletResponse response, Long postId, String operation, String size)  {
         List<PostDTO> list = postService.getPostDetails(postId, operation, size);
         List<PostDetailVO> data = DtoConverter.dto2vo(list, PostDetailVO.class);
         if ("download".equals(operation)) {

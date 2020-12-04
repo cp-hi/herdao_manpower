@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.SneakyThrows;
+import net.herdao.hdp.manpower.mpclient.service.EntityService;
+import net.herdao.hdp.manpower.mpclient.service.impl.EntityServiceImpl;
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.service.CacheService;
@@ -13,11 +15,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,7 +39,6 @@ public class DtoConverter {
         DtoConverter.cacheService = cacheService;
     }
 
-
     /**
      * @param source      dto类
      * @param targetClazz vo 类
@@ -49,9 +48,10 @@ public class DtoConverter {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      * @throws NoSuchFieldException
+     * @author ljan
      */
-    public static <T> T dto2vo(Object source, Class<? extends T> targetClazz)
-            throws IllegalAccessException, InstantiationException {
+    @SneakyThrows
+    public static <T> T dto2vo(Object source, Class<? extends T> targetClazz) {
         Object target = targetClazz.newInstance();
         BeanUtils.copyProperties(source, target);
         List<Field> fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
@@ -73,6 +73,50 @@ public class DtoConverter {
         return (T) target;
     }
 
+    @SneakyThrows
+    public static <T> T dto2vo(Object source, Class<? extends T> targetClazz,
+                               Map<Field, List<Long>> entityFieldIds, List<Field> dictFields) {
+
+        Object target = targetClazz.newInstance();
+        BeanUtils.copyProperties(source, target);
+        List<Field> fields = AnnotationUtils.getAllAnnotationFields(target, DtoField.class);
+
+        //遍历在VO标注的注解
+        for (Field field : fields) {
+            //根据 DtoField中的信息获取source中对象数据
+            DtoField dtoField = field.getAnnotation(DtoField.class);
+
+            String value = "";
+            if (dtoField.objField().length > 0
+                    && StringUtils.isNotBlank(dtoField.objField()[0])) {
+                value = getDtoFieldVal(source, dtoField);
+            } else if (StringUtils.isNotBlank(dtoField.listField())) {
+                value = getListFieldVal(source, dtoField);//TODO 完善此方法
+            } else if (StringUtils.isNotBlank(dtoField.dictField())) {
+                value = getDictFieldVal(source, field);
+            }
+            field.set(target, value);
+        }
+
+        //遍历在Entity标注的关联ID注解
+        for (Field sf : entityFieldIds.keySet()) {
+            DtoField dtoField = sf.getAnnotation(DtoField.class);
+            EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
+            Map<Long, String> entityNames = cacheService.getEntityNames(service.getEntityClass());
+            Field targetField = AnnotationUtils.getFieldByName(target, dtoField.targetField());
+            targetField.set(target, entityNames.get(sf.get(source)));
+        }
+
+        //遍历在Entity标注的字典注解
+        for (Field sourceField : dictFields) {
+            DtoField dtoField = sourceField.getAnnotation(DtoField.class);
+            Field targetField = AnnotationUtils.getFieldByName(target, dtoField.targetField());
+            String val = cacheService.getDictLabel(dtoField.dictField(), (String) sourceField.get(source));
+            targetField.set(target, val);
+        }
+        return (T) target;
+    }
+
     /**
      * 转换字段属性
      *
@@ -80,6 +124,7 @@ public class DtoConverter {
      * @param dtoField 字段注解
      * @return
      * @throws IllegalAccessException
+     * @author ljan
      */
     private static String getDtoFieldVal(Object source, DtoField dtoField) throws IllegalAccessException {
 
@@ -183,36 +228,61 @@ public class DtoConverter {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static <T> List<T> dto2vo(List source, Class<? extends T> clzz)
-            throws InstantiationException, IllegalAccessException {
+    @SneakyThrows
+    public static <T> List<T> dto2vo(List source, Class<? extends T> clzz) {
         List<T> list = new ArrayList<>();
         if (0 == source.size()) return list;
 
-        //目标类型中所有字段及字段名称
+        /**
+         * TODO 先获取所有标注DtoField字段的数据存入List
+         *再把这些名称信息全部获取并存进缓存，设置有效期
+         *首先得设计缓存框架，包括Guava和Redis等等，缓存设计是重中之重！！！
+         *目标类型中所有字段及字段名称
+         */
         List<Field> targetFields = AnnotationUtils.getAllFields(clzz);
         List<String> targetFieldNames = targetFields.stream().map(Field::getName).collect(Collectors.toList());
 
         //源对象中所有包含DtoField中的字段
         List<Field> sourceFields = AnnotationUtils.getAllAnnotationFields(source.get(0), DtoField.class);
-        sourceFields = sourceFields.stream().filter(sf -> targetFieldNames.contains(sf.getName())).collect(Collectors.toList());
-        //TODO 先获取所有标注DtoField字段的数据存入List
-        // 再把这些名称信息全部获取并存进缓存，设置有效期
-        // 首先得设计缓存框架，包括Guava和Redis等等，缓存设计是重中之重！！！
+        Map<Field, List<Long>> entityFieldIds = new HashMap<>();
+        List<Field> dictFieldNames = new ArrayList<>();
+
+        //找出
+        for (Field sf : sourceFields) {
+            sf.setAccessible(true);
+            DtoField dtoField = sf.getAnnotation(DtoField.class);
+            if (targetFieldNames.contains(dtoField.targetField())) {
+                if (EntityServiceImpl.class != dtoField.entityService()) {
+                    List ids = new ArrayList();
+                    for (Object s : source) {
+                        Object id = sf.get(s);
+                        if (!ids.contains(id))
+                            ids.add(id);
+                    }
+                    entityFieldIds.put(sf, ids);
+                    EntityService service = ApplicationContextBeanUtils.getBean(dtoField.entityService());
+                    Map<Long, String> entityNames = cacheService.getEntityNames(service.getEntityClass());
+                    List<Long> nocontainIds = (List<Long>) ids.stream().filter(id ->
+                            !entityNames.keySet().contains(id)).collect(Collectors.toList());
+                    if (nocontainIds.size() > 0) {
+                        List<Map<Long, String>> newEntityNames = service.selectNamesByIds(nocontainIds);
+                        for (Map<Long, String> newEntityName : newEntityNames) {
+                            Object id = newEntityName.get("id");
+                            Object name = newEntityName.get("entityName");
+                            entityNames.put((Long) id, (String) name);
+                        }
+                    }
+                } else if (StringUtils.isNotBlank(dtoField.dictField())) {
+                    dictFieldNames.add(sf);
+                }
+            }
+        }
         for (Object o : source) {
-            T t = dto2vo(o, clzz);
+            T t = dto2vo(o, clzz, entityFieldIds, dictFieldNames);
             list.add(t);
         }
         return list;
     }
-
-    public static <T> T vo2dto(Object source, Class clzz) {
-        throw new NotImplementedException("未实现此方法");
-    }
-
-    public static <T> List<T> vo2dto(List source, Class clzz) {
-        throw new NotImplementedException("未实现此方法");
-    }
-
 
     @SneakyThrows
     public static Boolean string2bool(Object source, String fieldName) {

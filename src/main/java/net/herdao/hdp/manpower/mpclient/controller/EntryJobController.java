@@ -7,12 +7,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -35,6 +40,8 @@ import java.time.LocalDateTime;
 public class EntryJobController {
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
+
+    private final RecruitmentService recruitmentService;
 
     /**
      * 入职管理-待入职-列表分页
@@ -218,5 +225,29 @@ public class EntryJobController {
         approve.setEntryCheckStatus("3");
         staffEntrypostApproveService.updateById(approve);
         return R.ok(approve);
+    }
+
+    /**
+     * 入职管理-办理入职
+     * @param recruitmentId 人才ID
+     * @return R
+     */
+
+    @ApiOperation(value = "入职管理-办理入职", notes = "入职管理-办理入职")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true)
+    })
+    @GetMapping("/findEntryInfo")
+    public R<Map<String,EntryInfoDTO>> findEntryInfo(String recruitmentId) {
+        Map<String,EntryInfoDTO> resultMap=new HashMap<String,EntryInfoDTO>();
+        EntryPersonInfoDTO entryPersonInfo = staffEntrypostApproveService.findEntryPersonInfo(recruitmentId);
+
+        EntryInfoDTO entryInfo=new EntryInfoDTO();
+        entryInfo.setEntryPersonInfoDTO(entryPersonInfo);
+
+        resultMap.put("entryInfoDTO",entryInfo);
+
+
+        return R.ok(resultMap);
     }
 }

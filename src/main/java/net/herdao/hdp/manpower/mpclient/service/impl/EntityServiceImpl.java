@@ -212,7 +212,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             String entityCode = this.generateEntityCode(getEntityCode(t, 1));
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
-            if(isSync()){
+            if (isSync()) {
                 saveOrUpdateSync(t);
             }
             if (result)
@@ -514,7 +514,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public List<Map<Long, String>> selectNamesByIds(List<? extends Serializable> ids) {
+    public List<Map<String, Object>> selectNamesByIds(List<? extends Serializable> ids) {
         return baseMapper.selectNamesByIds(ids);
     }
 
@@ -531,7 +531,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     //endregion
     protected <E> E checkData(R<E> r) {
-        if(r.getCode()==0){
+        if (r.getCode() == 0) {
             return r.getData();
         }
         throw new RuntimeException("kkk");
