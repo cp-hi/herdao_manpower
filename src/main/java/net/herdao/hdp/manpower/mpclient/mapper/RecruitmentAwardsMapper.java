@@ -25,6 +25,8 @@ import net.herdao.hdp.manpower.mpclient.entity.RecruitmentAwards;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 人才获奖情况表
  *
@@ -41,5 +43,14 @@ public interface RecruitmentAwardsMapper extends BaseMapper<RecruitmentAwards> {
      * @return
      */
     Page<RecruitmentAwardsDTO> fetchResumeAwardsPage(Page page, @Param("recruitmentId") Long recruitmentId);
+
+    /**
+     * 人才简历-获奖情况-list
+     * @param page 分页对象
+     * @param recruitmentId 人才ID
+     * @return
+     */
+    List<RecruitmentAwardsDTO> fetchResumeAwardsList(@Param("recruitmentId") Long recruitmentId);
+
 
 }

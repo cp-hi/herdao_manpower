@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
@@ -164,14 +163,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentBaseDTO fetchResumeBaseSituation(Long id) {
-        RecruitmentBaseDTO entity = this.baseMapper.fetchResumeBaseSituation(id);
-        return entity;
-    }
-
-    @Override
-    @OperationEntity(operation = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向",module="人才简历", clazz = RecruitmentBaseDTO.class)
-    public RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO dto) {
+    @OperationEntity(operation = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向",module="人才简历", clazz = RecruitmentDetailsDTO.class)
+    public RecruitmentDetailsDTO updateBaseInfo(RecruitmentDetailsDTO dto) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -211,5 +204,23 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentEmployeeDTO fetchEmploy(String recruitmentId) {
         RecruitmentEmployeeDTO entity = this.baseMapper.fetchEmploy(recruitmentId);
         return entity;
+    }
+
+    @Override
+    public RecruitmentPersonDTO fetchRecruitmentPerson(Long id) {
+        RecruitmentPersonDTO recruitmentPersonDTO = this.baseMapper.fetchRecruitmentPerson(id);
+        return recruitmentPersonDTO;
+    }
+
+    @Override
+    public RecruitmentIntentDTO fetchRecruitmentIntent(Long id) {
+        RecruitmentIntentDTO recruitmentIntentDTO = this.baseMapper.fetchRecruitmentIntent(id);
+        return recruitmentIntentDTO;
+    }
+
+    @Override
+    public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
+        RecruitmentTopEduDTO recruitmentTopEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
+        return recruitmentTopEduDTO;
     }
 }

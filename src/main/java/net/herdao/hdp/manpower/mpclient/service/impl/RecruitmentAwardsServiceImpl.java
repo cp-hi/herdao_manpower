@@ -30,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 人才获奖情况表
@@ -77,5 +78,11 @@ public class RecruitmentAwardsServiceImpl extends ServiceImpl<RecruitmentAwardsM
         }
 
         return dto;
+    }
+
+    @Override
+    public List<RecruitmentAwardsDTO> fetchResumeAwardsList(Long recruitmentId) {
+        List<RecruitmentAwardsDTO> list = this.baseMapper.fetchResumeAwardsList(recruitmentId);
+        return list;
     }
 }

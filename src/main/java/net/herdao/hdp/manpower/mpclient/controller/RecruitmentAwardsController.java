@@ -148,10 +148,7 @@ public class RecruitmentAwardsController {
          @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
     })
     public R<List<RecruitmentAwardsDTO>> getRecruitmentAwardsList(Long recruitmentId) {
-        Page page = new Page();
-        page.setSize(-1);
-        Page<RecruitmentAwardsDTO> pageResult = recruitmentAwardsService.fetchResumeAwardsPage(page, recruitmentId);
-        List<RecruitmentAwardsDTO> list = pageResult.getRecords();
+        List<RecruitmentAwardsDTO> list = recruitmentAwardsService.fetchResumeAwardsList(recruitmentId);
         return R.ok(list);
     }
 }

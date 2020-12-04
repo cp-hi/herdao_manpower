@@ -1,6 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
+
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,10 +8,13 @@ import io.swagger.annotations.*;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
-import net.herdao.hdp.manpower.mpclient.dto.staffTrain.StafftrainDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentAwardsService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -30,34 +33,42 @@ import java.util.List;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/recruitment" )
+@RequestMapping("/recruitment")
 @Api(value = "recruitment", tags = "人才表管理")
-public class RecruitmentController  {
+public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
 
     private final OperationLogService operationLogService;
 
+    private final RecruitmentWorkexperienceService recruitmentWorkexperienceService;
+
+    private final RecruitmentFamilyStatusService recruitmentFamilyStatusService;
+
+    private final RecruitmentAwardsService recruitmentAwardsService;
+
     /**
      * 快速编辑
+     *
      * @param id 主键id
      * @return R
      */
     @ApiOperation(value = "快速编辑", notes = "快速编辑")
-    @GetMapping("/quickEdit" )
+    @GetMapping("/quickEdit")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
     public R<RecruitmentUpdateFormDTO> getById(Long id) {
         Recruitment recruitment = recruitmentService.getById(id);
-        RecruitmentUpdateFormDTO formVO=new RecruitmentUpdateFormDTO();
-        BeanUtils.copyProperties(recruitment,formVO);
+        RecruitmentUpdateFormDTO formVO = new RecruitmentUpdateFormDTO();
+        BeanUtils.copyProperties(recruitment, formVO);
         return R.ok(formVO);
     }
 
     /**
      * 修改更新人才表
+     *
      * @param recruitmentUpdateFormVO 人才表
      * @return R
      */
@@ -70,6 +81,7 @@ public class RecruitmentController  {
 
     /**
      * 新增候选人-保存
+     *
      * @param recruitmentAddFormDTO 人才表
      * @return R
      */
@@ -82,17 +94,18 @@ public class RecruitmentController  {
 
     /**
      * 人才库列表
-     * @param page 分页对象
-     * @param orgId 组织ID
+     *
+     * @param page       分页对象
+     * @param orgId      组织ID
      * @param searchText 关键字搜索
      * @return
      */
     @ApiOperation(value = "人才库列表;批量邀请更新简历信息列表", notes = "人才库列表;批量邀请更新简历信息列表")
     @GetMapping("/findRecruitmentPage")
     @ApiImplicitParams({
-         @ApiImplicitParam(name="page",value="分页对象",required = true),
-         @ApiImplicitParam(name="orgId",value="组织ID"),
-         @ApiImplicitParam(name="searchText",value="关键字搜索"),
+            @ApiImplicitParam(name = "page", value = "分页对象", required = true),
+            @ApiImplicitParam(name = "orgId", value = "组织ID"),
+            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     public R<Page<RecruitmentDTO>> findRecruitmentPage(Page page, String orgId, String searchText) {
         Page<RecruitmentDTO> recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
@@ -101,25 +114,27 @@ public class RecruitmentController  {
 
     /**
      * 删除候选人
+     *
      * @param id id
      * @return R
      */
     @ApiOperation(value = "删除候选人", notes = "删除候选人")
-    @DeleteMapping("/{id}" )
-    @ApiImplicitParam(name = "id",value = "主键ID",required = true)
+    @DeleteMapping("/{id}")
+    @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     public R removeById(@PathVariable Long id) {
         return R.ok(recruitmentService.removeById(id));
     }
 
     /**
      * 人才简历-顶部
+     *
      * @param id 主键id
      * @return R
      */
     @ApiOperation(value = "人才简历-顶部", notes = "人才简历-顶部")
-    @GetMapping("/fetchResumeTop" )
+    @GetMapping("/fetchResumeTop")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
     public R<RecruitmentUpdateFormDTO> fetchResumeTop(Long id) {
         RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
@@ -127,58 +142,46 @@ public class RecruitmentController  {
     }
 
     /**
-     * 获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历详情
-     * @param id 主键id
-     * @return R
-     */
-    @ApiOperation(value = "获取人才简历-个人基本情况 从业情况与求职意向 最高教育经历详情", notes = "人才简历-个人基本情况 从业情况与求职意向 最高教育经历详情")
-    @GetMapping("/fetchResumeBaseSituation" )
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键id")
-    })
-    public R<RecruitmentBaseDTO> fetchResumeBaseSituation(Long id) {
-        RecruitmentBaseDTO entity = recruitmentService.fetchResumeBaseSituation(id);
-        return R.ok(entity);
-    }
-
-    /**
      * 编辑获取个人简历-个人基本情况 其他个人信息
+     *
      * @param id id
      * @return R
      */
     @ApiOperation(value = "编辑-获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
-    @GetMapping("/fetchDetails" )
+    @GetMapping("/fetchDetails")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="id",value="主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
-    public R<RecruitmentBaseDTO> fetchDetails(Long id) {
-        RecruitmentBaseDTO baseDTO=new RecruitmentBaseDTO();
+    public R<RecruitmentDetailsDTO> fetchDetails(Long id) {
+        RecruitmentDetailsDTO baseDTO = new RecruitmentDetailsDTO();
         Recruitment recruitment = recruitmentService.getById(id);
-        BeanUtils.copyProperties(recruitment,baseDTO);
+        BeanUtils.copyProperties(recruitment, baseDTO);
         return R.ok(baseDTO);
     }
 
     /**
      * 编辑更新个人简历-个人基本情况 其他个人信息
+     *
      * @param baseDTO 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
      * @return R
      */
     @ApiOperation(value = "编辑更新个人简历-个人基本情况 其他个人信息", notes = "编辑更新个人简历-个人基本情况 其他个人信息")
-    @PostMapping("/updateBaseInfo" )
-    public R<RecruitmentBaseDTO> updateBaseInfo(@RequestBody RecruitmentBaseDTO baseDTO) {
-        RecruitmentBaseDTO result = recruitmentService.updateBaseInfo(baseDTO);
+    @PostMapping("/updateBaseInfo")
+    public R<RecruitmentDetailsDTO> updateBaseInfo(@RequestBody RecruitmentDetailsDTO baseDTO) {
+        RecruitmentDetailsDTO result = recruitmentService.updateBaseInfo(baseDTO);
         return R.ok(result);
     }
 
     /**
      * 人才简历-从业情况与求职意向
+     *
      * @param id
      * @return R
      */
     @ApiOperation(value = "人才简历-从业情况与求职意向", notes = "人才简历-从业情况与求职意向")
-    @GetMapping("/fetchResumeJob" )
+    @GetMapping("/fetchResumeJob")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "ID", required = true)
+            @ApiImplicitParam(name = "id", value = "ID", required = true)
     })
     public R<RecruitmentJobDTO> fetchResumeJob(Long id) {
         RecruitmentJobDTO result = recruitmentService.fetchResumeJob(id);
@@ -187,11 +190,12 @@ public class RecruitmentController  {
 
     /**
      * 人才简历-从业情况与求职意向-修改更新
+     *
      * @param dto 人才简历-从业情况与求职意向
      * @return R
      */
     @ApiOperation(value = "人才简历-从业情况与求职意向-修改更新", notes = "人才简历-从业情况与求职意向-修改更新")
-    @PostMapping("/updateRecruitmentJob" )
+    @PostMapping("/updateRecruitmentJob")
     public R<RecruitmentJobDTO> updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto) {
         RecruitmentJobDTO result = recruitmentService.updateRecruitmentJob(dto);
         return R.ok(result);
@@ -199,33 +203,35 @@ public class RecruitmentController  {
 
     /**
      * 获取人才管理操作日志
-     * @param page 分页对象
+     *
+     * @param page         分页对象
      * @param operationLog 操作记录
-     * @param searchText 关键字搜索
+     * @param searchText   关键字搜索
      * @return
      */
     @ApiOperation(value = "获取人才管理操作日志")
     @GetMapping("/getOperateLogPage")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="page",value="分页对象"),
-            @ApiImplicitParam(name="operationLog",value="操作记录"),
-            @ApiImplicitParam(name="searchText",value="关键字搜索"),
+            @ApiImplicitParam(name = "page", value = "分页对象"),
+            @ApiImplicitParam(name = "operationLog", value = "操作记录"),
+            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     public R getOperateLogPage(Page page, OperationLog operationLog, String searchText) {
-        Page<OperationLog> pageResult = operationLogService.findOperationLog(page,operationLog,searchText);
+        Page<OperationLog> pageResult = operationLogService.findOperationLog(page, operationLog, searchText);
         return R.ok(pageResult);
     }
 
     /**
      * 人才管理-导出Excel
+     *
      * @param response
      * @return R
      */
     @ApiOperation(value = "人才管理-导出Excel", notes = "人才管理-导出Excel")
     @GetMapping("/exportRecruitment")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+            @ApiImplicitParam(name = "orgId", value = "组织ID"),
+            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     @SneakyThrows
     public R<RecruitmentDTO> exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
@@ -233,20 +239,21 @@ public class RecruitmentController  {
         page.setSize(-1);
         Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
         ExcelUtils.export2Web(response, "人才管理表", "人才管理表", RecruitmentDTO.class, pageResult.getRecords());
-        RecruitmentDTO dto=new RecruitmentDTO();
+        RecruitmentDTO dto = new RecruitmentDTO();
         return R.ok(dto);
     }
 
     /**
      * 人才下拉框-前端调用
+     *
      * @param searchText 关键字
      * @return
      */
     @ApiOperation(value = "人才下拉框-前端调用", notes = "人才下拉框-前端调用")
     @GetMapping("/findRecruitmentList")
-    @ApiImplicitParam(name="searchText",value="关键字")
+    @ApiImplicitParam(name = "searchText", value = "关键字")
     public R<List<Recruitment>> findRecruitmentList(String searchText) {
-        Recruitment recruitment=new Recruitment();
+        Recruitment recruitment = new Recruitment();
         QueryWrapper<Recruitment> wrapper = Wrappers.query(recruitment);
 
         if (ObjectUtil.isNotEmpty(searchText)) {
@@ -259,14 +266,46 @@ public class RecruitmentController  {
 
     /**
      * 人才简历-录用情况-列表分页
+     *
      * @param recruitmentId 人才ID
      * @return R
      */
     @ApiOperation(value = "人才简历-录用情况-列表分页", notes = "人才简历-录用情况-列表分页")
     @GetMapping("/fetchEmploy")
-    @ApiImplicitParam(name="recruitmentId",value="人才ID")
+    @ApiImplicitParam(name = "recruitmentId", value = "人才ID")
     public R<RecruitmentEmployeeDTO> fetchEmploy(String recruitmentId) {
         RecruitmentEmployeeDTO entity = recruitmentService.fetchEmploy(recruitmentId);
         return R.ok(entity);
     }
+
+    /**
+     * 人才简历-简历详情
+     *
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-简历详情", notes = "人才简历-简历详情")
+    @GetMapping("/fetchResumeDetails")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id")
+    })
+    public R<RecruitmentDetailsDTO> fetchResumeDetails(Long id) {
+        RecruitmentDetailsDTO result = new RecruitmentDetailsDTO();
+
+        RecruitmentPersonDTO personDTO = recruitmentService.fetchRecruitmentPerson(id);
+        RecruitmentIntentDTO intentDTO = recruitmentService.fetchRecruitmentIntent(id);
+        RecruitmentWorkexperienceDTO workDTO = recruitmentWorkexperienceService.findWorkExperience(id);
+        RecruitmentTopEduDTO topEduDTO = recruitmentService.fetchRecruitmentTopEdu(id);
+        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamily(id);
+        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+
+        result.setRecruitmentPersonDTO(personDTO);
+        result.setRecruitmentIntentDTO(intentDTO);
+        result.setRecruitmentWorkexperienceDTO(workDTO);
+        result.setRecruitmentTopEduDTO(topEduDTO);
+        result.setFamilyDTOList(familyDTOList);
+        result.setAwardsDTOList(recruitmentAwardsList);
+        return R.ok(result);
+    }
+
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -47,18 +48,11 @@ public interface RecruitmentService extends IService<Recruitment> {
     RecruitmentUpdateFormDTO fetchResumeTop(Long id);
 
     /**
-     * 编辑人才简历-个人基本情况 从业情况与求职意向
-     * @param id 主键ID
-     * @return
-     */
-    RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
-
-    /**
      * 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
      * @param dto
      * @return
      */
-    RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO dto);
+    RecruitmentDetailsDTO updateBaseInfo(RecruitmentDetailsDTO dto);
 
     /**
      * 人才简历-从业情况与求职意向
@@ -80,5 +74,26 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @return RecruitmentEmployeeDTO
      */
     RecruitmentEmployeeDTO fetchEmploy(String recruitmentId);
+
+    /**
+     * 获取人才简历-个人基本情况-详情
+     * @param id 主键ID
+     * @return RecruitmentDetailsDTO
+     */
+    RecruitmentPersonDTO fetchRecruitmentPerson(Long id);
+
+    /**
+     * 获取人才简历-从业情况与求职意向-详情
+     * @param id 主键ID
+     * @return RecruitmentIntentDTO
+     */
+    RecruitmentIntentDTO fetchRecruitmentIntent(Long id);
+
+    /**
+     * 获取人才简历-最高教育经历-详情
+     * @param id 主键ID
+     * @return RecruitmentTopEduDTO
+     */
+    RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
 
 }

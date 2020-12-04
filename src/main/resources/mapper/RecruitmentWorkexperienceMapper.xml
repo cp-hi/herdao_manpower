@@ -46,7 +46,8 @@
                    wr.subordinate,
                    wr.leave_reason,
                    wr.contact,
-                   wr.contact_tel
+                   wr.contact_tel,
+                   wr.role
               FROM
                   mp_recruitment_workexperience wr
              <where>

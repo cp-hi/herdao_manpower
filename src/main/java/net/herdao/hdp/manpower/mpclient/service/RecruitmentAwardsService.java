@@ -8,6 +8,8 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentAwards;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 人才获奖情况表
  *
@@ -30,5 +32,12 @@ public interface RecruitmentAwardsService extends IService<RecruitmentAwards> {
      * @return
      */
     RecruitmentAwardsDTO saveOrUpdate(RecruitmentAwardsDTO dto);
+
+    /**
+     * 人才简历-获奖情况-list
+     * @param recruitmentId 人才ID
+     * @return
+     */
+    List<RecruitmentAwardsDTO> fetchResumeAwardsList(Long recruitmentId);
 
 }

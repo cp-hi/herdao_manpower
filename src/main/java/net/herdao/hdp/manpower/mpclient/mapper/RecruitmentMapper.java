@@ -48,21 +48,14 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param id 主键ID
      * @return RecruitmentUpdateFormDTO
      */
-    RecruitmentUpdateFormDTO fetchResumeTop(Long id);
-
-    /**
-     * 人才简历-个人基本情况 从业情况与求职意向
-     * @param id 主键ID
-     * @return RecruitmentBaseDTO
-     */
-    RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
+    RecruitmentUpdateFormDTO fetchResumeTop(@Param("id") Long id);
 
     /**
      * 人才简历-从业情况与求职意向
      * @param id 主键ID
      * @return RecruitmentJobDTO
      */
-    RecruitmentJobDTO fetchResumeJob(Long id);
+    RecruitmentJobDTO fetchResumeJob(@Param("id") Long id);
 
     /**
      * 人才简历-录用情况-列表分页
@@ -71,6 +64,24 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      */
     RecruitmentEmployeeDTO fetchEmploy(@Param("recruitmentId") String recruitmentId);
 
+    /**
+     * 获取人才简历-个人基本情况-详情
+     * @param id 主键ID
+     * @return RecruitmentPersonDTO
+     */
+    RecruitmentPersonDTO fetchRecruitmentPerson(@Param("id") Long id);
 
+    /**
+     * 获取人才简历-从业情况与求职意向-详情
+     * @param id 主键ID
+     * @return RecruitmentIntentDTO
+     */
+    RecruitmentIntentDTO fetchRecruitmentIntent(@Param("id") Long id);
 
+    /**
+     * 获取人才简历-最高教育经历-详情
+     * @param id 主键ID
+     * @return RecruitmentTopEduDTO
+     */
+    RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
 }
