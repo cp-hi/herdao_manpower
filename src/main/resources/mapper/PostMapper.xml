@@ -9,19 +9,12 @@
     <resultMap id="postDTOMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
         <id column="id" property="id"/>
         <result property="groupId" column="GROUP_ID"/>
-        <!--        <result property="sectionId" column="section_id"/>-->
-        <!--        <result property="pipelineId" column="pipeline_id"/>-->
         <result property="jobLevelId1" column="job_Level_id1"/>
         <result property="jobLevelId2" column="job_Level_id2"/>
         <result property="postSeqId" column="post_seq_id"/>
 
-        <!--        <association property="sectionName" column="section_id" javaType="string"-->
-        <!--                     select="net.herdao.hdp.manpower.mpclient.mapper.SectionMapper.selectEntityName"/>-->
-
         <association property="groupName" column="group_id" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectEntityName"/>
-        <!--        <association property="pipelineName" column="pipeline_id" javaType="string"-->
-        <!--                     select="net.herdao.hdp.manpower.mpclient.mapper.PipelineMapper.selectEntityName"/>-->
 
         <association property="jobLevelName1" column="job_level_id1" javaType="string"
                      select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
