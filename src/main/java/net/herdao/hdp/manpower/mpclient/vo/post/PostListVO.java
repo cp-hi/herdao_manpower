@@ -50,11 +50,6 @@ public class PostListVO {
     @ApiModelProperty("管线")
     private String pipelineName;
 
-//    @ExcelProperty("管线")
-//    @ApiModelProperty("管线")
-//    @DtoField(entityService = PipelineServiceImpl.class, pkField = "pipelineId")
-//    private String pipelineName1;
-
     @ExcelProperty("职等")
     @ApiModelProperty("职等")
     private String jobGradeName;

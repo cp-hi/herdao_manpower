@@ -39,7 +39,6 @@ public class DtoConverter {
         DtoConverter.cacheService = cacheService;
     }
 
-
     /**
      * @param source      dto类
      * @param targetClazz vo 类
@@ -284,16 +283,6 @@ public class DtoConverter {
         }
         return list;
     }
-
-
-    public static <T> T vo2dto(Object source, Class clzz) {
-        throw new NotImplementedException("未实现此方法");
-    }
-
-    public static <T> List<T> vo2dto(List source, Class clzz) {
-        throw new NotImplementedException("未实现此方法");
-    }
-
 
     @SneakyThrows
     public static Boolean string2bool(Object source, String fieldName) {
