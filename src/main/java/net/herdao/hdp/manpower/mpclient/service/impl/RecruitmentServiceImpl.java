@@ -214,4 +214,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         return dto;
     }
+
+    @Override
+    public RecruitmentEmployeeDTO fetchEmploy(String recruitmentId) {
+        RecruitmentEmployeeDTO entity = this.baseMapper.fetchEmploy(recruitmentId);
+        return entity;
+    }
 }

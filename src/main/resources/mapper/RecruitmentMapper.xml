@@ -319,5 +319,39 @@
          </where>
      </select>
 
+    <!-- 人才简历-录用情况-列表分页 -->
+    <select id="fetchEmploy" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO">
+           SELECT CASE WHEN
+                    t.STATUS != 1 THEN
+                    '录用' ELSE '未录用'
+                    END result,
+                  t.ORG_NAME,
+                  t.POST_NAME,
+                  t.PIPELINE_NAME,
+                  t.entry_post_time,
+                  CASE WHEN t.entry_status = 'RZZT02' THEN
+                     '已到岗' ELSE '未到岗'
+                  END duty_status
+            FROM
+              (
+                SELECT  app.STATUS,
+                        org.ORG_NAME,
+                        pst.POST_NAME,
+                        pp.PIPELINE_NAME,
+                        app.entry_post_time,
+                        app.entry_status
+                FROM mp_staff_entrypost_approve app
+                    LEFT JOIN mp_organization org ON org.id = app.org_id
+                    LEFT JOIN mp_post pst ON pst.id = app.post_id
+                    LEFT JOIN mp_post_org po ON po.id = app.post_org_id
+                    LEFT JOIN mp_pipeline pp ON pp.id = po.PIPELINE_ID
+                 <where>
+                        app.DEL_FLAG = 0
+                    <if test="recruitmentId != null ">
+                        AND app.recruitment_id = #{recruitmentId}
+                    </if>
+                 </where>
+             ) t
+    </select>
 
 </mapper>

@@ -73,4 +73,12 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @return
      */
     RecruitmentJobDTO updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto);
+
+    /**
+     * 人才简历-录用情况-列表分页
+     * @param recruitmentId 人才ID
+     * @return RecruitmentEmployeeDTO
+     */
+    RecruitmentEmployeeDTO fetchEmploy(String recruitmentId);
+
 }

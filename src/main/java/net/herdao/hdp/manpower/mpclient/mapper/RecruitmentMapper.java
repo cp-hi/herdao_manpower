@@ -20,10 +20,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,28 +39,36 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param page 分页对象
      * @param orgId 组织ID
      * @param searchText 关键字
-     * @return
+     * @return Page<RecruitmentDTO>
      */
     Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
 
     /**
      * 人才简历-顶部
      * @param id 主键ID
-     * @return
+     * @return RecruitmentUpdateFormDTO
      */
     RecruitmentUpdateFormDTO fetchResumeTop(Long id);
 
     /**
      * 人才简历-个人基本情况 从业情况与求职意向
      * @param id 主键ID
-     * @return
+     * @return RecruitmentBaseDTO
      */
     RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
 
     /**
      * 人才简历-从业情况与求职意向
      * @param id 主键ID
-     * @return
+     * @return RecruitmentJobDTO
      */
     RecruitmentJobDTO fetchResumeJob(Long id);
+
+    /**
+     * 人才简历-录用情况-列表分页
+     * @param recruitmentId 人才ID
+     * @return RecruitmentEmployeeDTO
+     */
+    RecruitmentEmployeeDTO fetchEmploy(@Param("recruitmentId") String recruitmentId);
+
 }
