@@ -206,28 +206,35 @@
 
     <!-- 人才简历-顶部-->
     <select id="fetchResumeTop" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO">
-            SELECT  t.talent_name,
-                    t.mobile,
-                    t.talent_type,
-                    t.org_full_name,
-                    GROUP_CONCAT(t.rc_label) talent_label
-            FROM (
-               SELECT rec.talent_name,
-                      rec.mobile,
-                      dirc.label talent_type,
-                      rl.`name` rc_label,
-                      org.ORG_FULLNAME org_full_name
+        SELECT  t.talent_name,
+                t.mobile,
+                t.talent_type,
+                t.org_full_name,
+                t.sex,
+                GROUP_CONCAT(t.rc_label) talent_label
+        FROM (
+                SELECT rec.talent_name,
+                        rec.mobile,
+                        dirc.label talent_type,
+                        rl.`name` rc_label,
+                        org.ORG_FULLNAME org_full_name,
+                        xb.label sex
                 FROM  mp_recruitment rec
-                      LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX'
-                      AND dirc.VALUE = rec.talent_type
-                      LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
-                      LEFT JOIN mp_organization org on org.id= rec.org_id
+                LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX'
+                AND dirc.VALUE = rec.talent_type
+                LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
+                LEFT JOIN mp_organization org on org.id= rec.org_id
+                LEFT JOIN sys_dict_item xb ON xb.type = 'SEX' AND xb.VALUE = rec.sex
                 <where>
                     <if test="id != null ">
                         AND rec.id = #{id}
                     </if>
                 </where>
-	        )t
+         )t  GROUP BY  t.talent_name,
+                       t.mobile,
+                       t.talent_type,
+                       t.org_full_name,
+                       t.sex
     </select>
 
     <!-- 人才简历-个人基本情况 从业情况与求职意向-->
