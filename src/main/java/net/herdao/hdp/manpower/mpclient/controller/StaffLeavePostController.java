@@ -27,19 +27,29 @@ public class StaffLeavePostController {
     @Autowired
     private StaffLeaveService service;
 
+    /**
+     *
+     * @param searchText
+     * @param page
+     * @param orgId
+     * @param status 此状态码描述可参考 StaffChangesApproveStatusConstants 常量类
+     *               待离职-已执行传入参数为"56"，即状态 5 和 6 的都要
+     *               已离职传参为"5"
+     * @return
+     */
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
     public R<Page<StaffLeavePostPageVO>> page(String searchText,
                                               Page page,
                                               Long orgId,
                                               String status) {
-        return R.ok(service.pageStaffLeave(page, searchText, orgId, status));
+        return R.ok(service.pageStaffLeavePost(page, searchText, orgId, status));
     }
 
     @ApiOperation(value = "离职列表/详情页-确认发起")
     @PutMapping("/affirm/start")
     public R affirm(Long id,
-                    @RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
+                    @RequestBody @NotNull SaveStaffLeavePostDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
     }
 
@@ -59,7 +69,7 @@ public class StaffLeavePostController {
     @ApiOperation(value = "编辑")
     @PutMapping("/{id}")
     private R<Long> update(@PathVariable("id") @NotNull Long id,
-                           @RequestBody @NotNull SaveStaffLeavePostDTO dto) {
+                           @RequestBody @NotNull SaveStaffLeavePostDTO dto) throws Exception {
         return R.ok(service.updateStaffLeave(id, dto));
     }
 

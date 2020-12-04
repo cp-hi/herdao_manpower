@@ -1,10 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffLeavePostDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffLeavePostApprove;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffLeavePostMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffLeaveService;
@@ -13,6 +14,7 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPageVO
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,22 +32,46 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
      */
 
     @Override
-    public Page<StaffLeavePostPageVO> pageStaffLeave(Page page, String searchText, Long orgId, String status) {
-        return null;
+    public Page<StaffLeavePostPageVO> pageStaffLeavePost(Page page, String searchText, Long orgId, String status) {
+        return this.baseMapper.findStaffLeavePostPage(page, searchText, orgId, status);
     }
 
     @Override
-    public Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) {
-        return null;
+    @Transactional
+    public Long affirmStart(Long id, SaveStaffLeavePostDTO dto) throws Exception {
+        if (id != null) {
+            updateStaffLeave(id, dto);
+        } else {
+            id = insert(dto);
+        }
+        StaffLeavePostApprove entity = mapper.selectById(id);
+        entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
+        mapper.updateById(entity);
+        return id;
     }
 
     @Override
-    public Long updateStaffLeave(Long id, SaveStaffLeavePostDTO dto) {
-        return null;
+    public Long updateStaffLeave(Long id, SaveStaffLeavePostDTO dto) throws Exception {
+        QueryWrapper<StaffLeavePostApprove> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffLeavePostApprove entity = mapper.selectOne(queryWrapper);
+        if (entity == null) {
+            throw new Exception("该审批记录不可编辑");
+        }
+        BeanUtils.copyProperties(dto, entity);
+        mapper.updateById(entity);
+        return id;
     }
 
     @Override
     public StaffLeavePostInfoVO getStaffLeave(Long id) {
+        StaffLeavePostApprove entity = mapper.selectById(id);
+        if (entity != null) {
+            StaffLeavePostInfoVO vo = new StaffLeavePostInfoVO();
+            BeanUtils.copyProperties(entity, vo);
+            return vo;
+        }
         return null;
     }
 
@@ -53,6 +79,7 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
     public Long insert(SaveStaffLeavePostDTO dto) {
         StaffLeavePostApprove entity = new StaffLeavePostApprove();
         BeanUtils.copyProperties(dto, entity);
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         mapper.insert(entity);
         return entity.getId();
     }

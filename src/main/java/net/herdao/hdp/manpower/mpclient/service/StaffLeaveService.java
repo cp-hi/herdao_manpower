@@ -12,11 +12,11 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPageVO
  * @Date 2020/12/3 3:48 下午
  */
 public interface StaffLeaveService extends HdpService<StaffLeavePostApprove> {
-    Page<StaffLeavePostPageVO> pageStaffLeave(Page page, String searchText, Long orgId, String status);
+    Page<StaffLeavePostPageVO> pageStaffLeavePost(Page page, String searchText, Long orgId, String status);
 
-    Long affirmStart(Long id, SaveStaffTransferInfoDTO dto);
+    Long affirmStart(Long id, SaveStaffLeavePostDTO dto) throws Exception;
 
-    Long updateStaffLeave(Long id, SaveStaffLeavePostDTO dto);
+    Long updateStaffLeave(Long id, SaveStaffLeavePostDTO dto) throws Exception;
 
     StaffLeavePostInfoVO getStaffLeave(Long id);
 

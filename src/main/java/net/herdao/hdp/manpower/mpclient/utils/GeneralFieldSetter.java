@@ -24,6 +24,7 @@ public class GeneralFieldSetter implements MetaObjectHandler {
         this.setFieldValByName("creatorCode", sysUser.getUserId(), metaObject);
         this.setFieldValByName("creatorName", sysUser.getUsername(), metaObject);
         this.setFieldValByName("creatorTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("delFlag", false, metaObject);
     }
 
     @Override

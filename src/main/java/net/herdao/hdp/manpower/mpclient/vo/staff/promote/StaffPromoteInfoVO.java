@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Data
-@ApiModel(value = "职级更新信息")
+@ApiModel(value = "职级变更信息")
 public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
@@ -24,20 +24,38 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "调动前部门 id", name = "nowOrgId", example = "1234")
     private Long nowOrgId;
 
+    @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "1234")
+    private String nowOrgName;
+
     @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345")
     private Long nowPostId;
+
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostName", example = "1234")
+    private String nowPostName;
 
     @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123")
     private Long nowJobLevelId;
 
+    @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName", example = "1234")
+    private String nowJobLevelName;
+
     @ApiModelProperty(value = "调动后部门 id", name = "promoteOrgId", example = "4321", required = true)
     private Long promoteOrgId;
+
+    @ApiModelProperty(value = "调动前部门名称", name = "promoteOrgName", example = "1234")
+    private String promoteOrgName;
 
     @ApiModelProperty(value = "调动后岗位 id", name = "promotePostId", example = "5432", required = true)
     private Long promotePostId;
 
+    @ApiModelProperty(value = "调动后岗位名称", name = "promotePostName", example = "1234")
+    private String promotePostName;
+
     @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelId", example = "123", required = true)
     private Long promoteJobLevelId;
+
+    @ApiModelProperty(value = "调动后职级名称", name = "promoteJobLevelName", example = "1234")
+    private String promoteJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "promoteDate", example = "20200901", required = true)
     private Long promoteDate;

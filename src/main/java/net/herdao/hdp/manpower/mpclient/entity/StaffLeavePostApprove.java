@@ -1,9 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -150,21 +147,27 @@ public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
     private String leavePostType;
 
     @ApiModelProperty(value = "新建人工号")
+    @TableField(value = "creator_code", fill = FieldFill.INSERT)
     private String creatorCode;
 
     @ApiModelProperty(value = "新建人")
+    @TableField(value = "creator_name", fill = FieldFill.INSERT)
     private String creatorName;
 
     @ApiModelProperty(value = "新建时间")
+    @TableField(value = "creator_time", fill = FieldFill.INSERT)
     private LocalDateTime creatorTime;
 
     @ApiModelProperty(value = "修改人工号")
+    @TableField(value = "modifier_code", fill = FieldFill.INSERT)
     private String modifierCode;
 
     @ApiModelProperty(value = "修改人姓名")
+    @TableField(value = "modifier_name", fill = FieldFill.INSERT)
     private String modifierName;
 
     @ApiModelProperty(value = "修改人时间")
+    @TableField(value = "modifier_time", fill = FieldFill.INSERT)
     private LocalDateTime modifierTime;
 
     @ApiModelProperty(value = "租户ID")
@@ -173,6 +176,7 @@ public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
     @ApiModelProperty(value = "岗位组织关系id")
     private Long postOrgId;
 
+    @TableField(numericScale = "del_flag", fill = FieldFill.INSERT)
     @TableLogic
     private Boolean delFlag;
 }
