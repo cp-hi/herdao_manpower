@@ -15,7 +15,7 @@ public class EasyExcelValidator {
 
     private EasyExcelValidator(){}
  
-    private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
  
     public static <T> String validateEntity(T obj) throws NoSuchFieldException {
         StringBuilder result = new StringBuilder();

@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.sys.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.admin.api.entity.SysDict;
 import net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO;
+import net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO;
 
 import java.util.List;
 
@@ -41,5 +42,5 @@ public interface SelectMapper extends BaseMapper<SelectDTO> {
 	 * 获取市配置下拉数据
 	 * @return 市配置数据
 	 */
-	List<SelectDTO> getCitySet();
+	List<SelectIntDTO> getCitySet();
 }

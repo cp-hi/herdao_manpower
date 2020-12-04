@@ -32,7 +32,6 @@ public class RecruitmentUpdateFormDTO extends BaseEntity<RecruitmentUpdateFormDT
      */
     @TableId
     @ApiModelProperty(value="id",required = true)
-    @NotNull(message = "主键ID不能为空")
     private Long id;
 
     /**
@@ -80,4 +79,15 @@ public class RecruitmentUpdateFormDTO extends BaseEntity<RecruitmentUpdateFormDT
     @ApiModelProperty(value="人才ID")
     private Long recruitmentId;
 
+    /**
+     * 归属组织
+     */
+    @ApiModelProperty(value="归属组织ID")
+    private String orgId;
+
+    /**
+     * 所属组织
+     */
+    @ApiModelProperty(value="所属组织")
+    private String orgFullName;
 }

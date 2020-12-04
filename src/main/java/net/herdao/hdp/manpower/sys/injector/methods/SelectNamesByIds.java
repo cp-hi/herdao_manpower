@@ -22,7 +22,7 @@ public class SelectNamesByIds extends AbstractMethod {
         String sql = "<script> SELECT %s,(case when DEL_FLAG !=1 then %s else '--' end) entityName FROM %s WHERE %s IN (%s) </script>";
         SqlSource sqlSource = this.languageDriver.createSqlSource(this.configuration, String.format(sql, tableInfo.getKeyProperty(),
                 TableInfoUtils.getNameColumn(tableInfo), tableInfo.getTableName(), tableInfo.getKeyColumn(),
-                SqlScriptUtils.convertForeach("#{item}", "coll", (String) null, "item", ",")), Map.class);
+                SqlScriptUtils.convertForeach("#{item}", "coll", null, "item", ",")), Map.class);
         return this.addSelectMappedStatementForOther(mapperClass, "selectNamesByIds", sqlSource, Map.class);
     }
 }

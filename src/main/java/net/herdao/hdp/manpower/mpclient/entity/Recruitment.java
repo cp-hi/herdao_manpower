@@ -2,8 +2,10 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -72,7 +74,8 @@ public class Recruitment extends Model<Recruitment> {
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    private LocalDateTime birthday;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date birthday;
     /**
      * 移动电话
      */
@@ -97,12 +100,14 @@ public class Recruitment extends Model<Recruitment> {
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")
-    private LocalDateTime beginDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date beginDate;
     /**
      * 毕业时间
      */
     @ApiModelProperty(value="毕业时间")
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date endDate;
     /**
      * 最高学历证书号
      */
@@ -147,7 +152,8 @@ public class Recruitment extends Model<Recruitment> {
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
-    private LocalDateTime workdate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date workdate;
     /**
      * 最近工作单位名称
      */
@@ -167,7 +173,8 @@ public class Recruitment extends Model<Recruitment> {
      * 可到职日期
      */
     @ApiModelProperty(value="可到职日期")
-    private LocalDateTime inductionTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date inductionTime;
     /**
      * 是否有简历
      */
@@ -177,7 +184,8 @@ public class Recruitment extends Model<Recruitment> {
      * 信息录入时间
      */
     @ApiModelProperty(value="信息录入时间")
-    private LocalDateTime informationCreateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date informationCreateTime;
     /**
      * 备注
      */
@@ -302,17 +310,20 @@ public class Recruitment extends Model<Recruitment> {
      * 专业经验
      */
     @ApiModelProperty(value="专业经验")
-    private LocalDateTime professionalExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date professionalExperience;
     /**
      * 管理经验
      */
     @ApiModelProperty(value="管理经验")
-    private LocalDateTime managementExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date managementExperience;
     /**
      * 房地产行业经验
      */
     @ApiModelProperty(value="房地产行业经验")
-    private LocalDateTime realEstateExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date realEstateExperience;
     /**
      * 文字能力
      */
@@ -552,7 +563,9 @@ public class Recruitment extends Model<Recruitment> {
      * 逻辑删除
      */
     @ApiModelProperty(value="逻辑删除")
+    @TableLogic
     private Boolean delFlag;
+
     /**
      * 简历来源
      */
@@ -608,7 +621,7 @@ public class Recruitment extends Model<Recruitment> {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
-    private LocalDateTime resumeAccessTime;
+    private Date resumeAccessTime;
 
     /**
      * 备注
@@ -626,5 +639,13 @@ public class Recruitment extends Model<Recruitment> {
      * 发证时间
      */
     @ApiModelProperty(value="发证时间")
-    private LocalDateTime certificateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date certificateTime;
+
+    /**
+     * 招聘状态
+     */
+    @ApiModelProperty(value="招聘状态")
+    private String recruitmentStatus;
+
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -54,7 +55,7 @@ public class StaffEducationController extends HdpBaseController {
     }
 
     @Override
-    public List getDownloadUpdateTemplateList() {
+    public List getDownloadUpdateTemplateList(Map<String, Object> searchParams){
         List<StaffEducationDTO> list = this.staffeducationService.findStaffEducation(null, null);
         return list;
     }

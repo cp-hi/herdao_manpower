@@ -32,6 +32,9 @@ public class StaffListDTO {
     @ExcelProperty(value = "工号",order = 2)
     private String staffCode;
 
+    @ApiModelProperty(value = "所在组织id")
+    private Long orgId;
+
     @ApiModelProperty(value = "所在组织")
     private String orgName;
 

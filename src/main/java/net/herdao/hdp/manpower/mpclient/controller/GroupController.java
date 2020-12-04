@@ -29,6 +29,7 @@ import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.GroupListDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupUpdateVM;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -152,6 +153,11 @@ public class GroupController extends HdpBaseController {
 //    @PreAuthorize("@pms.hasPermission('group_mpgroup_del')" )
     public R<Boolean> removeById(@PathVariable Long id) {
         return R.ok(groupService.removeById(id));
-    }
 
+    }
+    @ApiOperation(value = "通过组织id获取集团", notes = "通过组织id获取集团")
+    @GetMapping("/getGroupByOrgId/{orgId}")
+    public R<Group> getGroupByOrgId(@PathVariable("orgId") Long orgId){
+        return R.ok(groupService.getGroupByOrgId(orgId));
+    }
 }

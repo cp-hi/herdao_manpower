@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.sys.service.SelectService;
 import net.herdao.hdp.manpower.mpclient.dto.comm.SelectDTO;
+import net.herdao.hdp.manpower.mpclient.dto.comm.SelectIntDTO;
 
 /**
  * <p>
@@ -34,8 +35,8 @@ public class SelectController {
 	 * @return 集团数据
 	 */
 	@GetMapping("/getGroup")
-	public R<List<SelectDTO>> getGroup() {
-		List<SelectDTO> selectDTOList = selectService.getGroup();		
+	public R<List<SelectIntDTO>> getGroup() {
+		List<SelectIntDTO> selectDTOList = selectService.getGroup();		
 		return R.ok(selectDTOList);
 	}
 	
@@ -45,8 +46,8 @@ public class SelectController {
 	 * @return 板块数据
 	 */
 	@GetMapping("/getSection")
-	public R<List<SelectDTO>> getSection(String groupid) {
-		List<SelectDTO> selectDTOList = selectService.getSection(groupid);		
+	public R<List<SelectIntDTO>> getSection(String groupid) {
+		List<SelectIntDTO> selectDTOList = selectService.getSection(groupid);		
 		return R.ok(selectDTOList);
 	}
 	
@@ -56,8 +57,8 @@ public class SelectController {
 	 * @return 管线数据
 	 */
 	@GetMapping("/getPipeline")
-	public R<List<SelectDTO>> getPipeline(String groupid) {
-		List<SelectDTO> selectDTOList = selectService.getPipeline(groupid);		
+	public R<List<SelectIntDTO>> getPipeline(String groupid) {
+		List<SelectIntDTO> selectDTOList = selectService.getPipeline(groupid);		
 		return R.ok(selectDTOList);
 	}
 	
@@ -66,8 +67,8 @@ public class SelectController {
 	 * @return 岗位序列数据
 	 */
 	@GetMapping("/getPostSeq")
-	public R<List<SelectDTO>> getPostSeq(String groupid) {
-		List<SelectDTO> selectDTOList = selectService.getPostSeq(groupid);		
+	public R<List<SelectIntDTO>> getPostSeq(String groupid) {
+		List<SelectIntDTO> selectDTOList = selectService.getPostSeq(groupid);		
 		return R.ok(selectDTOList);
 	}
 	
@@ -76,8 +77,8 @@ public class SelectController {
 	 * @return 职级数据
 	 */
 	@GetMapping("/getJobLevel")
-	public R<List<SelectDTO>> getJobLevel(String groupid) {
-		List<SelectDTO> selectDTOList = selectService.getJobLevel(groupid);		
+	public R<List<SelectIntDTO>> getJobLevel(String groupid) {
+		List<SelectIntDTO> selectDTOList = selectService.getJobLevel(groupid);		
 		return R.ok(selectDTOList);
 	}
 
@@ -86,8 +87,8 @@ public class SelectController {
 	 * @return 职等数据
 	 */
 	@GetMapping("/getJobGrade")
-	public R<List<SelectDTO>> getJobGrade(String groupid) {
-		List<SelectDTO> selectDTOList = selectService.getJobGrade(groupid);		
+	public R<List<SelectIntDTO>> getJobGrade(String groupid) {
+		List<SelectIntDTO> selectDTOList = selectService.getJobGrade(groupid);		
 		return R.ok(selectDTOList);
 	}
 
@@ -116,8 +117,8 @@ public class SelectController {
 	 * @return 市配置数据
 	 */
 	@GetMapping("/getCitySet")
-	public R<List<SelectDTO>> getCitySet() {
-		List<SelectDTO> selectDTOList = selectService.getCitySet();		
+	public R<List<SelectIntDTO>> getCitySet() {
+		List<SelectIntDTO> selectDTOList = selectService.getCitySet();		
 		return R.ok(selectDTOList);
 	}
 	

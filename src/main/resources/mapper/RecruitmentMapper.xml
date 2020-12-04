@@ -138,37 +138,41 @@
                      t.talent_label,
                      GROUP_CONCAT(t.rc_label) rc_label,
                      CONCAT("已邀请",t.invite_count,"次") invite_situation,
+                     t.org_full_name,
                      t.update_desc
             from  (
-                SELECT
-                rec.id,
-                rec.talent_name,
-                rec.mobile,
-                rec.email,
-                rec.sex sex_id,
-                disex.label sex_label,
-                TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
-                TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
-                rec.highest_education,
-                rec.final_job_company,
-                rec.final_post_name,
-                rec.talent_type talent_type,
-                dirc.label talent_label,
-                rl.`name` rc_label,
-                invr.invite_count,
-                CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
-             FROM
-                mp_recruitment rec
+                SELECT  rec.id,
+                        rec.talent_name,
+                        rec.mobile,
+                        rec.email,
+                        rec.sex sex_id,
+                        disex.label sex_label,
+                        TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
+                        TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
+                        rec.highest_education,
+                        rec.final_job_company,
+                        rec.final_post_name,
+                        rec.talent_type talent_type,
+                        dirc.label talent_label,
+                        rl.`name` rc_label,
+                        invr.invite_count,
+                        zpjg.value recruitment_status,
+                        org.ORG_FULLNAME org_full_name,
+                        CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
+             FROM mp_recruitment rec
                 left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
                 left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
                 left join mp_recruitment_label rl on rl.recruitment_id= rec.id
+                left join sys_dict_item zpjg on zpjg.type='ZPJG' and zpjg.value=rec.recruitment_status
+                left join mp_organization org on org.id= rec.org_id
                 left join
                  (
-                     SELECT
-                        inv.recruitment_id,
-                        count( inv.recruitment_id ) invite_count
-                        FROM  mp_recruitment_invite inv GROUP BY recruitment_id
-                 ) invr on  rec.id = invr.recruitment_id
+                     SELECT  inv.recruitment_id,
+                             count( inv.recruitment_id ) invite_count
+                             FROM  mp_recruitment_invite inv
+                     where inv.del_flag=0
+                        GROUP BY recruitment_id
+                  ) invr on  rec.id = invr.recruitment_id
                   <where>
                             and rec.del_flag = 0
                         <if test="orgId != null and orgId != '' ">
@@ -193,6 +197,7 @@
                     IFNULL(t.talent_label,''),
                     IFNULL(t.rc_label,'') ,
                     IFNULL(t.invite_situation,''),
+                    IFNULL(t.org_full_name,''),
                     IFNULL(t.update_desc,'')
                  )  LIKE concat('%', #{searchText} ,'%')
             </if>
@@ -204,16 +209,19 @@
             SELECT  t.talent_name,
                     t.mobile,
                     t.talent_type,
+                    t.org_full_name,
                     GROUP_CONCAT(t.rc_label) talent_label
             FROM (
                SELECT rec.talent_name,
                       rec.mobile,
                       dirc.label talent_type,
-                      rl.`name` rc_label
+                      rl.`name` rc_label,
+                      org.ORG_FULLNAME org_full_name
                 FROM  mp_recruitment rec
                       LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX'
                       AND dirc.VALUE = rec.talent_type
                       LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
+                      LEFT JOIN mp_organization org on org.id= rec.org_id
                 <where>
                     <if test="id != null ">
                         AND rec.id = #{id}
@@ -311,5 +319,39 @@
          </where>
      </select>
 
+    <!-- 人才简历-录用情况-列表分页 -->
+    <select id="fetchEmploy" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO">
+           SELECT CASE WHEN
+                    t.STATUS != 1 THEN
+                    '录用' ELSE '未录用'
+                    END result,
+                  t.ORG_NAME,
+                  t.POST_NAME,
+                  t.PIPELINE_NAME,
+                  t.entry_post_time,
+                  CASE WHEN t.entry_status = 'RZZT02' THEN
+                     '已到岗' ELSE '未到岗'
+                  END duty_status
+            FROM
+              (
+                SELECT  app.STATUS,
+                        org.ORG_NAME,
+                        pst.POST_NAME,
+                        pp.PIPELINE_NAME,
+                        app.entry_post_time,
+                        app.entry_status
+                FROM mp_staff_entrypost_approve app
+                    LEFT JOIN mp_organization org ON org.id = app.org_id
+                    LEFT JOIN mp_post pst ON pst.id = app.post_id
+                    LEFT JOIN mp_post_org po ON po.id = app.post_org_id
+                    LEFT JOIN mp_pipeline pp ON pp.id = po.PIPELINE_ID
+                 <where>
+                        app.DEL_FLAG = 0
+                    <if test="recruitmentId != null ">
+                        AND app.recruitment_id = #{recruitmentId}
+                    </if>
+                 </where>
+             ) t
+    </select>
 
 </mapper>

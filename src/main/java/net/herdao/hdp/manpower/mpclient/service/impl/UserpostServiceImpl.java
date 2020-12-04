@@ -37,7 +37,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> implements UserpostService {
-    private RemoteUserService remoteUserService;
+    private final RemoteUserService remoteUserService;
 
     @Override
     public List<Userpost> findUserPost(Userpost condition) {

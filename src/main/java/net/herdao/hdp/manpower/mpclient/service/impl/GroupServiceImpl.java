@@ -24,8 +24,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.admin.api.entity.SysGrade;
+import net.herdao.hdp.admin.api.entity.SysGroup;
+import net.herdao.hdp.admin.api.feign.RemoteGroupService;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import lombok.SneakyThrows;
 import net.herdao.hdp.manpower.mpclient.dto.GroupDetailDTO;
@@ -35,10 +39,12 @@ import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.group.GroupUpdateVM;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.mapper.GroupMapper;
 import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
+import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +74,8 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
 
     @Autowired
     private RemoteUserService remoteUserService;
+    @Autowired
+    private RemoteGroupService remoteGroupService;
 
     @Override
     @SuppressWarnings("all")
@@ -203,4 +211,32 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
         return form;
     }
 
+    /**
+     * 组织获取集团
+     * @param orgId
+     * @return
+     */
+    @Override
+    public Group getGroupByOrgId(Long orgId) {
+        return baseMapper.getGroupByOrgId(orgId);
+    }
+
+    /**
+     * 同步
+     * @param group
+     */
+    private void saveOrUpdateSync(Group group) {
+        SysGroup sysGroup = convert(group);
+        R<Long> r = remoteGroupService.saveOrUpdate(sysGroup);
+        RemoteCallUtils.checkData(r);
+    }
+    private SysGroup convert(Group group){
+        SysGroup sysGroup = new SysGroup();
+        sysGroup.setName(group.getGroupName());
+        sysGroup.setCode(group.getGroupCode());
+        sysGroup.setCpId(group.getId());
+        sysGroup.setDelFlag(group.getDelFlag()?"1":"0");
+        sysGroup.setCpDeptId(group.getOrgId());
+        return sysGroup;
+    }
 }

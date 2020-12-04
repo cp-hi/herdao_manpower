@@ -26,6 +26,6 @@ public class CheckDuplicateName extends AbstractMethod {
                 TableInfoUtils.getNameColumn(tableInfo), TableInfoUtils.getNameProperty(tableInfo),
                 tableInfo.getKeyColumn(), tableInfo.getKeyProperty(), tableInfo.getKeyProperty()), modelClass);
         return this.addMappedStatement(mapperClass, "checkDuplicateName", sqlSource, SqlCommandType.SELECT,
-                modelClass, (String) null, Boolean.class, new NoKeyGenerator(), (String) null, (String) null);
+                modelClass, null, Boolean.class, new NoKeyGenerator(), null, null);
     }
 }

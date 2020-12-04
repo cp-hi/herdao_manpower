@@ -37,9 +37,9 @@ import java.util.List;
 @AllArgsConstructor
 public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftrain> implements StafftrainService {
 
-    private StaffService staffService;
+    private final StaffService staffService;
 
-    private SysDictItemServiceImpl itemService;
+    private final SysDictItemServiceImpl itemService;
 
     @Override
     public Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page,StafftrainDTO stafftrainDTO, String searchText) {

@@ -22,7 +22,7 @@ import java.util.GregorianCalendar;
 @AllArgsConstructor
 @Component
 public class UserUtils{
-    private  RemoteUserService remoteUserService;
+    private final RemoteUserService remoteUserService;
     private  static RemoteUserService userService;
 
     @PostConstruct

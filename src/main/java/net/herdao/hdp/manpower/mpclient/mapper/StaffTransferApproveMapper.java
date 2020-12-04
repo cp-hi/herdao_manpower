@@ -14,15 +14,15 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface StaffTransferApproveMapper extends BaseMapper<StaffTransferApprove> {
-    public Page<StaffTransferPageVO> findStaffTransferPage(Page page,
-                                                           @Param("searchText") String searchText,
-                                                           @Param("orgId")Long orgId,
-                                                           @Param("status") String status);
+    Page<StaffTransferPageVO> findStaffTransferPage(Page page,
+                                                    @Param("searchText") String searchText,
+                                                    @Param("orgId") Long orgId,
+                                                    @Param("status") String status);
 
-    public Page<StaffCallInAndCallOutPageVO>findStaffCallInAndCallOutPage(Page page,
-                                                                          @Param("searchText") String searchText,
-                                                                          @Param("orgId")Long orgId,
-                                                                          @Param("status") String status);
+    Page<StaffCallInAndCallOutPageVO>findStaffCallInAndCallOutPage(Page page,
+                                                                   @Param("searchText") String searchText,
+                                                                   @Param("orgId") Long orgId,
+                                                                   @Param("status") String status);
 
 
 }

@@ -176,7 +176,7 @@ public class StaffFileController {
     })
     public R exportOperationLog(HttpServletResponse response,OperationLog operationLog,String searchText) {
         try {
-            List<OperationLog> list = operationLogService.findOperationLog(operationLog,searchText);;
+            List<OperationLog> list = operationLogService.findOperationLog(operationLog,searchText);
             ExcelUtils.export2Web(response, "员工附件操作日志", "员工附件操作日表", OperationLog.class,list);
         } catch (Exception e) {
             log.error("导出失败",e.toString());

@@ -198,7 +198,7 @@ public class ExcelUtils {
 
         try (
                 FileInputStream in = new FileInputStream(file);
-                ServletOutputStream out = response.getOutputStream();
+                ServletOutputStream out = response.getOutputStream()
         ) {
             IOUtils.copy(in, out);
             return "导出成功！";

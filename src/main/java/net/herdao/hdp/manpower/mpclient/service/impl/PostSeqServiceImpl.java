@@ -1,11 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import net.herdao.hdp.admin.api.entity.SysStationSeq;
-import net.herdao.hdp.admin.api.feign.RemoteStationSeqService;
 import net.herdao.hdp.admin.api.vo.TreeUtil;
-import net.herdao.hdp.common.core.constant.SecurityConstants;
-import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostSeqTree;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
@@ -13,14 +9,11 @@ import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
 import net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper;
 import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostSeqBatchVO;
-import net.herdao.hdp.manpower.sys.cache.GroupCache;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -36,9 +29,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq> implements PostSeqService {
-
     @Autowired
-    private RemoteStationSeqService remoteStationSeqService;
+    CacheService cacheService;
+
     @Override
     public List<Map> postSeqList(Long groupId) {
         return baseMapper.postSeqList(groupId);
@@ -58,7 +51,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     @Override
     public void batchAddVerify(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) postSeq.setGroupId(group.getId());
         chkEntityExists(excel.getPostSeqName(), group.getId(), false, buffer);
         PostSeq parent = this.getParent(excel.getParentName(), group.getId(), false, buffer);
@@ -72,7 +65,7 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
     public void batchUpdateVerify(PostSeq postSeq, Object excelObj, StringBuffer buffer) {
         PostSeqBatchVO excel = (PostSeqBatchVO) excelObj;
 
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) postSeq.setGroupId(group.getId());
         PostSeq tmp = chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         PostSeq parent = this.getParent(excel.getParentName(), group.getId(), false, buffer);
@@ -130,49 +123,4 @@ public class PostSeqServiceImpl extends EntityServiceImpl<PostSeqMapper, PostSeq
                 .stream().map(PostSeqTree::new).collect(Collectors.toList()), parent);
     }
 
-    @Override
-    public Boolean isSync() {
-        return Boolean.TRUE;
-    }
-
-    @Override
-    public void saveOrUpdateSync(PostSeq postSeq) {
-        SysStationSeq stationSeq = converterValue(postSeq);
-        R<Long> r = remoteStationSeqService.saveOrUpdate(stationSeq);
-        Long aLong = checkData(r);
-        postSeq.setId(aLong);
-    }
-
-
-    @Override
-    public Boolean deleteSync(Serializable id) {
-        R<Boolean> r = remoteStationSeqService.delete(id);
-        return checkData(r);
-    }
-
-    @Override
-    public Boolean stop(Serializable id, Boolean stop) {
-        R<Boolean> r = remoteStationSeqService.stop(id, stop);
-        return checkData(r);
-    }
-
-    @Override
-    public void saveOrUpdateBatchSync(List<PostSeq> collection) {
-        List<SysStationSeq> list = new ArrayList<>();
-        collection.forEach(postSeq->{
-            list.add(converterValue(postSeq));
-        });
-        R<List<Long>> r = remoteStationSeqService.saveOrUpdateBatch(list);
-        List<Long> longs = checkData(r);
-        for(int i=0;i<longs.size();i++){
-            collection.get(i).setId(longs.get(i));
-        }
-    }
-    private SysStationSeq converterValue(PostSeq postSeq){
-        SysStationSeq stationSeq = new SysStationSeq();
-        stationSeq.setId(postSeq.getId());
-        stationSeq.setName(postSeq.getPostSeqName());
-        stationSeq.setParentId(postSeq.getParentId());
-        return stationSeq;
-    }
 }

@@ -12,13 +12,13 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
  */
 public interface StaffTransferService extends HdpService<StaffTransferApprove> {
 
-    public Long saveInfo(SaveStaffTransferInfoDTO dto) throws Exception;
+    Long saveInfo(SaveStaffTransferInfoDTO dto) throws Exception;
 
-    public StaffTransferInfoVO getDetail(Long id);
+    StaffTransferInfoVO getDetail(Long id);
 
-    public Long updateInfo(Long id, SaveStaffTransferInfoDTO dto) throws Exception;
+    Long updateInfo(Long id, SaveStaffTransferInfoDTO dto) throws Exception;
 
-    public Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) throws Exception;
+    Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) throws Exception;
 
-    public Page<StaffTransferPageVO> pageTransfer(Page page, String searchText, Long orgId, String status);
+    Page<StaffTransferPageVO> pageTransfer(Page page, String searchText, Long orgId, String status);
 }

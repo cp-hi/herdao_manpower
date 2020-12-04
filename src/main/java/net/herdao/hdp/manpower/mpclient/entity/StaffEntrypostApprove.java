@@ -18,6 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
@@ -342,6 +343,7 @@ public class StaffEntrypostApprove extends Model<StaffEntrypostApprove> {
      * 逻辑删除
      */
     @ApiModelProperty(value="逻辑删除")
+    @TableLogic
     private Boolean delFlag;
     /**
      * 岗位组织关系id
@@ -363,4 +365,17 @@ public class StaffEntrypostApprove extends Model<StaffEntrypostApprove> {
      */
     @ApiModelProperty(value="证件类型")
     private String certificateType;
+
+    /**
+     * 入职登记状态-字典
+     */
+    @ApiModelProperty(value="入职登记状态-字典")
+    private String entryCheckStatus;
+
+    /**
+     * 入职信息确认-字典
+     */
+    @ApiModelProperty(value="入职信息确认-字典")
+    private String entryInfoConfirm;
+
  }

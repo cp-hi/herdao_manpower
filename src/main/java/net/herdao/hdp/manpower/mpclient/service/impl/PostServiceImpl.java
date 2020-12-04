@@ -12,8 +12,7 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
-import net.herdao.hdp.manpower.sys.cache.DictCache;
-import net.herdao.hdp.manpower.sys.cache.GroupCache;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,12 +34,14 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> implements PostService {
 
+    final CacheService cacheService;
     final GroupService groupService;
     final SectionService sectionService;
     final PipelineService pipelineService;
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
     final RemoteStationService remoteStationService;
+
     @Override
     public List<PostDTO> postList(Long groupId) {
         return baseMapper.postList(groupId);
@@ -140,18 +141,20 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     @Override
     public void batchAddVerify(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchAddVO excel = (PostBatchAddVO) excelObj;
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         chkEntityExists(excel.getPostName(), group.getId(), false, buffer);
 
-        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
-        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
+        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), false, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
         if (StringUtils.isBlank(buffer)) {
-            post.setSectionId(section.getId());
-            post.setPipelineId(pipeline.getId());
+            if (null != section)
+                post.setSectionId(section.getId());
+            if (null != pipeline)
+                post.setPipelineId(pipeline.getId());
             post.setPostSeqId(postSeq.getId());
             post.setJobLevelId1(jobLevel.getId());
         }
@@ -161,23 +164,25 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     public void batchUpdateVerify(Post post, Object excelObj, StringBuffer buffer) {
         PostBatchUpdateVO excel = (PostBatchUpdateVO) excelObj;
 
-        Group group = GroupCache.getGroupByName(excel.getGroupName(), true);
+        Group group = cacheService.getGroupByName(excel.getGroupName(), true);
         if (null != group) post.setGroupId(group.getId());//第一步是先设置集团
         Post tmp = chkEntityExists(excel.getPostName(), group.getId(), true, buffer);
 
-        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), true, buffer);
-        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), true, buffer);
+        Section section = sectionService.chkEntityExists(excel.getSectionName(), group.getId(), false, buffer);
+        Pipeline pipeline = pipelineService.chkEntityExists(excel.getPipelineName(), group.getId(), false, buffer);
         PostSeq postSeq = postSeqService.chkEntityExists(excel.getPostSeqName(), group.getId(), true, buffer);
         JobLevel jobLevel = jobLevelService.chkEntityExists(excel.getJobLevelName(), group.getId(), true, buffer);
 
-        post.setOrgType(DictCache.getDictVal("GWZZLX", excel.getOrgType(), buffer));
-        post.setPostLevel(DictCache.getDictVal("XCJB", excel.getPostLevel(), buffer));
-        post.setYearPayRatio(DictCache.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
-        post.setPerforSalaryRatio(DictCache.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
+        post.setOrgType(cacheService.getDictVal("GWZZLX", excel.getOrgType(), buffer));
+        post.setPostLevel(cacheService.getDictVal("XCJB", excel.getPostLevel(), buffer));
+        post.setYearPayRatio(cacheService.getDictVal("XCBL", excel.getYearPayRatio(), buffer));
+        post.setPerforSalaryRatio(cacheService.getDictVal("YDJXGZBL", excel.getPerforSalaryRatio(), buffer));
 
         if (StringUtils.isBlank(buffer)) {
-            post.setSectionId(section.getId());
-            post.setPipelineId(pipeline.getId());
+            if (null != section)
+                post.setSectionId(section.getId());
+            if (null != pipeline)
+                post.setPipelineId(pipeline.getId());
             post.setPostSeqId(postSeq.getId());
             post.setJobLevelId1(jobLevel.getId());
             post.setId(tmp.getId());
@@ -218,7 +223,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     @Override
     public Boolean stop(Serializable id, Boolean stop) {
-        R<Boolean> r = remoteStationService.stop(id,stop);
+        R<Boolean> r = remoteStationService.stop(id, stop);
         return checkData(r);
     }
 
@@ -228,21 +233,17 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         collection.forEach(post -> {
             SysStation station = converterValue(post);
         });
-        R<List<Long>> r = remoteStationService.saveOrUpdateBatch(list);
-        List<Long> longs = checkData(r);
-        for(int i=0;i<longs.size();i++){
-            collection.get(i).setId(longs.get(i));
-        }
+        R<Boolean> r = remoteStationService.saveOrUpdateBatch(list);
+        Boolean aBoolean = checkData(r);
+
     }
-    private SysStation converterValue(Post post){
+
+    private SysStation converterValue(Post post) {
         SysStation station = new SysStation();
         station.setId(post.getId());
         station.setCode(post.getPostCode());
         station.setName(post.getPostName());
         station.setGroupId(post.getGroupId());
-        station.setBlockId(post.getSectionId());
-        station.setPipeId(post.getPipelineId());
-        station.setSeqId(post.getPostSeqId());
         station.setBeginGrade(post.getJobLevelId1());
         station.setEndGrade(post.getJobLevelId2());
         station.setSingleGrade(post.getSingleJobLevle().toString());
@@ -250,7 +251,8 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     }
 
     @Autowired
-    private PostMapper mapper;
+    private final PostMapper mapper;
+
     @Override
     public void validityCheck(Long id, String msg) throws Exception {
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();

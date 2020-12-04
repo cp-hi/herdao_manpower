@@ -2,9 +2,6 @@
 package net.herdao.hdp.manpower.mpclient.dto.recruitment;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -113,4 +110,17 @@ public class RecruitmentDTO extends BaseEntity<RecruitmentDTO> {
      */
     @ApiModelProperty(value="组织id")
     private Long orgId;
+
+    /**
+     * 招聘状态
+     */
+    @ApiModelProperty(value="招聘状态")
+    private String recruitmentStatus;
+
+    /**
+     * 所属组织
+     */
+    @ApiModelProperty(value="所属组织")
+    private String orgFullName;
+
 }

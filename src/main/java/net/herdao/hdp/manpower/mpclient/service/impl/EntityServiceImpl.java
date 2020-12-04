@@ -20,8 +20,8 @@ import net.herdao.hdp.manpower.mpclient.mapper.EntityMapper;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.sys.annotation.DtoField;
 import net.herdao.hdp.manpower.sys.annotation.FieldValid;
-import net.herdao.hdp.manpower.sys.cache.DictCache;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
+import net.herdao.hdp.manpower.sys.service.CacheService;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
 import net.herdao.hdp.manpower.sys.utils.ApplicationContextBeanUtils;
@@ -52,6 +52,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     @Autowired
     OperationLogService operationLogService;
+
+    @Autowired
+    CacheService cacheService;
 
     @Override
     public IPage getOperationLogs(IPage page, Long objId) {
@@ -125,8 +128,8 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
                     firstVal = service.selectEntityName((Serializable) f.getFirstVal());
                     secondVal = service.selectEntityName((Serializable) f.getSecondVal());
                 } else if (StringUtils.isNotBlank(dtoField.dictField())) {
-                    firstVal = DictCache.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
-                    secondVal = DictCache.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
+                    firstVal = cacheService.getDictLabel(dtoField.dictField(), (String) f.getFirstVal());
+                    secondVal = cacheService.getDictLabel(dtoField.dictField(), (String) f.getSecondVal());
                 } else if (Boolean.class == field.getType()) {
                     firstVal = DtoConverter.bool2string((Boolean) f.getFirstVal(), dtoField);
                     secondVal = DtoConverter.bool2string((Boolean) f.getSecondVal(), dtoField);
@@ -209,6 +212,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
             String entityCode = this.generateEntityCode(getEntityCode(t, 1));
             field.set(t, entityCode);
             result = this.saveOrUpdate(t);
+            if (isSync()) {
+                saveOrUpdateSync(t);
+            }
             if (result)
                 addOperationLog("新增", entity.getId(), getNameMapper().apply(t));
         } else {
@@ -507,7 +513,7 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     @Override
-    public List<Map<Long, String>> selectNamesByIds(List<? extends Serializable> ids) {
+    public List<Map<String, Object>> selectNamesByIds(List<? extends Serializable> ids) {
         return baseMapper.selectNamesByIds(ids);
     }
 
@@ -524,6 +530,9 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
 
     //endregion
     protected <E> E checkData(R<E> r) {
-        return null;
+        if (r.getCode() == 0) {
+            return r.getData();
+        }
+        throw new RuntimeException("kkk");
     }
 }

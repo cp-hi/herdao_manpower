@@ -32,6 +32,10 @@ public class JobLevel extends BaseEntity<JobLevel> {
     @ApiModelProperty(value = "职级名称")
     private String jobLevelName;
 
+    @ExcelProperty(value = "职衔")
+    @ApiModelProperty(value = "职衔")
+    private String jobTitle;
+
     @ApiModelProperty(value = "职级编码", hidden = true)
     private String jobLevelCode;
 

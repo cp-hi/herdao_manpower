@@ -2,7 +2,6 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.base.Joiner;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @param <T> 实体类Entity类型
@@ -178,10 +176,10 @@ public class BaseController<T, D, F> {
     public R<F> save(@RequestBody F f) {
         try {
             Object t = getEntityClass().newInstance();
-            BeanUtils.copyProperties(f, (T) t);
-            getEntityService().saveVerify((T) t);
-            getEntityService().saveEntity((T) t);
-            BeanUtils.copyProperties((T) t, f);
+            BeanUtils.copyProperties(f, t);
+            getEntityService().saveVerify(t);
+            getEntityService().saveEntity(t);
+            BeanUtils.copyProperties(t, f);
             return R.ok(f);
         } catch (Exception ex) {
             log.error("save异常", ex);

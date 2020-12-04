@@ -25,6 +25,6 @@ public class GetLastEntityCode extends AbstractMethod {
                 tableInfo.getTableName(), tableInfo.getKeyColumn(), tableInfo.getKeyColumn(),
                 tableInfo.getTableName()), Object.class);
         return this.addMappedStatement(mapperClass, "getLastEntityCode", sqlSource, SqlCommandType.SELECT,
-                modelClass, (String) null, String.class, new NoKeyGenerator(), (String) null, (String) null);
+                modelClass, null, String.class, new NoKeyGenerator(), null, null);
     }
 }

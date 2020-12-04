@@ -64,8 +64,6 @@ public interface EntityService<T> extends IService<T> {
     default void delVerify(Serializable id) {
     }
 
-    ;
-
     /**
      * 停用/启用
      *
@@ -99,28 +97,33 @@ public interface EntityService<T> extends IService<T> {
      * 是否同步平台数据开关
      *
      */
-    default Boolean isSync(){return Boolean.FALSE;};
+    default Boolean isSync(){return Boolean.FALSE;}
+
     /**
      * 保存同步平台数据
      *
      * @param t
      */
-    default void saveOrUpdateSync(T t){};
+    default void saveOrUpdateSync(T t){}
+
     /**
      * 删除同步平台数据
      *
      */
-    default Boolean deleteSync(Serializable id){return null;};
+    default Boolean deleteSync(Serializable id){return null;}
+
     /**
      * 批量保存或更新
      *
      */
-    default void saveOrUpdateBatchSync(List<T> collection){};
+    default void saveOrUpdateBatchSync(List<T> collection){}
+
     /**
      * 删除同步平台数据
      *
      */
-    default Boolean stop(Serializable id,Boolean stop){return null;};
+    default Boolean stop(Serializable id,Boolean stop){return null;}
+
     /**
      * 导入校验
      *
@@ -163,7 +166,7 @@ public interface EntityService<T> extends IService<T> {
 
     String selectEntityName(Serializable id);
 
-    List<Map<Long, String>> selectNamesByIds(List<? extends Serializable> ids);
+    List<Map<String, Object>> selectNamesByIds(List<? extends Serializable> ids);
 
     //region 设置实体属性
 

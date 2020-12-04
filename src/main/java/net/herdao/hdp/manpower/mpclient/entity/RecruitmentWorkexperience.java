@@ -18,6 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
@@ -177,6 +178,7 @@ public class RecruitmentWorkexperience extends Model<RecruitmentWorkexperience> 
      * 逻辑删除
      */
     @ApiModelProperty(value="逻辑删除")
+    @TableLogic
     private Boolean delFlag;
     /**
      * 承担角色

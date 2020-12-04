@@ -55,7 +55,7 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * 
 	 * @return
 	 */
-	public List<StaffOrganizationComponentVO> selectOrganizations();
+    List<StaffOrganizationComponentVO> selectOrganizations();
 	
 	/**
 	 * 查询员工信息（组件）
@@ -63,7 +63,7 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param orgCode
 	 * @return
 	 */
-	public List<StaffOrganizationComponentVO> selectOrganizationComponentList(@Param("orgCode") String orgCode);
+    List<StaffOrganizationComponentVO> selectOrganizationComponentList(@Param("orgCode") String orgCode);
 	
 	/**
 	 * 查询组织下所有人员信息
@@ -74,7 +74,7 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param searchText
 	 * @return
 	 */
-	public List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("batchSelectOrgCodes") String [] batchSelectOrgCodes, @Param("staffIds") String [] staffIds, @Param("searchText") String searchText);
+    List<StaffComponentVO> selectStaffs(@Param("orgCode") String orgCode, @Param("batchSelectOrgCodes") String[] batchSelectOrgCodes, @Param("staffIds") String[] staffIds, @Param("searchText") String searchText);
 	
 	
 	/**
@@ -83,14 +83,14 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param orgCode
 	 * @return
 	 */
-	public List<StaffTotalComponentVO> getStaffTotals(@Param("orgCode")String orgCode);
+    List<StaffTotalComponentVO> getStaffTotals(@Param("orgCode") String orgCode);
 	
 	/**
 	 * 查询员工工龄信息
 	 * 
 	 * @return
 	 */
-	public StaffWorkYearDTO getStaffWorkYear(Long staffid);
+    StaffWorkYearDTO getStaffWorkYear(Long staffid);
 
 	/**
 	 * 查询员工基本信息

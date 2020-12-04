@@ -75,4 +75,11 @@
             </if>
         </where>
     </select>
+    <select id="getGroupByOrgId" resultMap="mpGroupMap">
+        select g.*
+        from mp_group g
+        INNER JOIN mp_organization o on g.ORG_ID=o.id
+        where (select o1.ORG_FULLNAME from mp_organization o1 where o1.id=#{orgId}) like CONCAT('%',o.ORG_NAME,'%')
+        LIMIT 0,1
+    </select>
 </mapper>
