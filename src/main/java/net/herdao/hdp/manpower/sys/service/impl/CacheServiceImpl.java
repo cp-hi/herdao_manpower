@@ -31,6 +31,7 @@ import java.util.Map;
 @Service
 public class CacheServiceImpl implements CacheService {
 
+    //region Bean
     @Resource(name = "entityNamesCache")
     Cache<String, Map<Long, String>> entityNamesCache;
 
@@ -46,7 +47,7 @@ public class CacheServiceImpl implements CacheService {
 
     @Autowired
     GroupService groupService;
-
+    //endregion
 
     @Override
     public void setEntityNames(Class entityClass, Map<Long, String> entityNames) {
