@@ -81,4 +81,11 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     RecruitmentEmployeeDTO fetchEmploy(String recruitmentId);
 
+    /**
+     * 候选人H5登录
+     * @param mobile
+     * @param code
+     * @return
+     */
+    R recruitmentLogin(String mobile, String code);
 }
