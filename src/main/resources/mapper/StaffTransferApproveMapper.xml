@@ -23,7 +23,7 @@
         LEFT JOIN mp_post tp ON sta.trans_post_id = tp.id
 
         <where>
-            and transfer_type = 'TRANSFER'
+            and transfer_type = '3'
             <if test="searchText != '' and searchText != null">
                 and
                  concat(
@@ -69,7 +69,7 @@
         LEFT JOIN mp_job_level tjl ON sta.trans_job_level_id = tjl.id
 
         <where>
-            and transfer_type = 'CALL_IN_AND_CALL_OUT'
+            and transfer_type = '5'
             <if test="searchText != '' and searchText != null">
                 and
                 concat(

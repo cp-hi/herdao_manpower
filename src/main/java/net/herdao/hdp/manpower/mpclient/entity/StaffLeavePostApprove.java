@@ -44,11 +44,15 @@ public class StaffLeavePostApprove extends BaseEntity<StaffLeavePostApprove> {
 
     private String nowOrgOid;
 
-    @ApiModelProperty(value = " 原就职岗位 id")
+    @ApiModelProperty(value = "原就职岗位 id")
     @NotNull
     private Long nowPostId;
 
     private String nowPostOid;
+
+    @ApiModelProperty(value = "原职级 id")
+    @NotNull
+    private Long nowJobLevelId;
 
     @ApiModelProperty(value = "用人部门意见")
     private String eeptRemark;

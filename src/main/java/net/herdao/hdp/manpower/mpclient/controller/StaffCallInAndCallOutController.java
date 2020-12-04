@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/staff/call-in-and-call-out" )
+@RequestMapping("/staff/callInAndCallOut" )
 @Api(value = "staffCallInAndCallOut", tags = "员工异动管理-调入调出")
 public class StaffCallInAndCallOutController {
 
