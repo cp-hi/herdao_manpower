@@ -448,6 +448,7 @@
             f.user_id,
             f.STAFF_NAME,
             f.STAFF_CODE,
+            o.id orgId,
             o.ORG_NAME,
             p.POST_NAME,
             p.SECTION_ID,
@@ -523,6 +524,9 @@
             </if>
             <if test="jobLevelId1 != null">
                 AND  p.JOB_LEVEL_ID1 = #{jobLevelId1}
+            </if>
+            <if test="orgId != null">
+                AND  o.id = #{orgId}
             </if>
         </where>
     </select>
