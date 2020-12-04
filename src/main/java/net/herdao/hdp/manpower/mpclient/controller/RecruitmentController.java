@@ -44,12 +44,12 @@ public class RecruitmentController  {
      * @return R
      */
     @ApiOperation(value = "快速编辑", notes = "快速编辑")
-    @GetMapping("/{id}" )
+    @GetMapping("/quickEdit" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
-    public R<RecruitmentUpdateFormDTO> getById(@PathVariable("id" ) Long id) {
+    public R<RecruitmentUpdateFormDTO> getById(Long id) {
         Recruitment recruitment = recruitmentService.getById(id);
         RecruitmentUpdateFormDTO formVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitment,formVO);
@@ -142,13 +142,16 @@ public class RecruitmentController  {
     }
 
     /**
-     * 编辑个人简历-个人基本情况 其他个人信息
+     * 编辑获取个人简历-个人基本情况 其他个人信息
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "编辑个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
-    @GetMapping("/fetchDetails/{id}" )
-    public R<RecruitmentBaseDTO> fetchDetails(@PathVariable("id" ) Long id) {
+    @ApiOperation(value = "编辑获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
+    @GetMapping("/fetchDetails" )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="主键id")
+    })
+    public R<RecruitmentBaseDTO> fetchDetails(Long id) {
         RecruitmentBaseDTO baseDTO=new RecruitmentBaseDTO();
         Recruitment recruitment = recruitmentService.getById(id);
         BeanUtils.copyProperties(recruitment,baseDTO);
