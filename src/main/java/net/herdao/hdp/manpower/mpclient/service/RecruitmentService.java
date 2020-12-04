@@ -58,7 +58,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param dto
      * @return
      */
-    RecruitmentBaseDTO saveOrUpdate(RecruitmentBaseDTO dto);
+    RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO dto);
 
     /**
      * 人才简历-从业情况与求职意向
