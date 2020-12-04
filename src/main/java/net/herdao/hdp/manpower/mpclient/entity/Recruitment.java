@@ -100,12 +100,14 @@ public class Recruitment extends Model<Recruitment> {
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")
-    private LocalDateTime beginDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date beginDate;
     /**
      * 毕业时间
      */
     @ApiModelProperty(value="毕业时间")
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date endDate;
     /**
      * 最高学历证书号
      */
@@ -171,7 +173,8 @@ public class Recruitment extends Model<Recruitment> {
      * 可到职日期
      */
     @ApiModelProperty(value="可到职日期")
-    private LocalDateTime inductionTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date inductionTime;
     /**
      * 是否有简历
      */
@@ -181,7 +184,8 @@ public class Recruitment extends Model<Recruitment> {
      * 信息录入时间
      */
     @ApiModelProperty(value="信息录入时间")
-    private LocalDateTime informationCreateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date informationCreateTime;
     /**
      * 备注
      */
@@ -306,17 +310,20 @@ public class Recruitment extends Model<Recruitment> {
      * 专业经验
      */
     @ApiModelProperty(value="专业经验")
-    private LocalDateTime professionalExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date professionalExperience;
     /**
      * 管理经验
      */
     @ApiModelProperty(value="管理经验")
-    private LocalDateTime managementExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date managementExperience;
     /**
      * 房地产行业经验
      */
     @ApiModelProperty(value="房地产行业经验")
-    private LocalDateTime realEstateExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date realEstateExperience;
     /**
      * 文字能力
      */
@@ -614,7 +621,7 @@ public class Recruitment extends Model<Recruitment> {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
-    private LocalDateTime resumeAccessTime;
+    private Date resumeAccessTime;
 
     /**
      * 备注
@@ -632,7 +639,8 @@ public class Recruitment extends Model<Recruitment> {
      * 发证时间
      */
     @ApiModelProperty(value="发证时间")
-    private LocalDateTime certificateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date certificateTime;
 
     /**
      * 招聘状态

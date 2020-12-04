@@ -146,7 +146,7 @@ public class RecruitmentController  {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "编辑获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
+    @ApiOperation(value = "编辑-获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
     @GetMapping("/fetchDetails" )
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="主键id")
@@ -166,7 +166,7 @@ public class RecruitmentController  {
     @ApiOperation(value = "编辑更新个人简历-个人基本情况 其他个人信息", notes = "编辑更新个人简历-个人基本情况 其他个人信息")
     @PostMapping("/updateBaseInfo" )
     public R<RecruitmentBaseDTO> updateBaseInfo(@RequestBody RecruitmentBaseDTO baseDTO) {
-        RecruitmentBaseDTO result = recruitmentService.saveOrUpdate(baseDTO);
+        RecruitmentBaseDTO result = recruitmentService.updateBaseInfo(baseDTO);
         return R.ok(result);
     }
 
