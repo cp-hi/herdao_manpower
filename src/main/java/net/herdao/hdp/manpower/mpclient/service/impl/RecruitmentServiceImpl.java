@@ -187,14 +187,14 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentJobDTO fetchResumeJob(Long id) {
-        RecruitmentJobDTO result = this.baseMapper.fetchResumeJob(id);
+    public RecruitmentJobIntentDTO fetchResumeJobIntent(Long id) {
+        RecruitmentJobIntentDTO result = this.baseMapper.fetchResumeJobIntent(id);
         return result;
     }
 
     @Override
-    @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobDTO.class)
-    public RecruitmentJobDTO updateRecruitmentJob(RecruitmentJobDTO dto) {
+    @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobIntentDTO.class)
+    public RecruitmentJobIntentDTO updateRecruitmentJob(RecruitmentJobIntentDTO dto) {
         Recruitment recruitment=new Recruitment();
 
         BeanUtils.copyProperties(dto,recruitment);

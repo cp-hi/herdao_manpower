@@ -48,12 +48,12 @@ public class RecruitmentDetailsDTO {
      * 人才简历-家庭情况-详情
      */
     @ApiModelProperty(value="人才简历-家庭情况-详情")
-    List<RecruitmentFamilyDTO> familyDTOList;
+    List<RecruitmentFamilyDTO> recruitmentFamilyDTO;
 
     /**
      * 人才简历-家庭情况-详情
      */
     @ApiModelProperty(value="人才简历-获奖资格-详情")
-    List<RecruitmentAwardsDTO> awardsDTOList;
+    List<RecruitmentAwardsDTO> recruitmentAwardsDTO;
 
 }

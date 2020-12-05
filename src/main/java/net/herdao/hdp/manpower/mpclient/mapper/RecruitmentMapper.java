@@ -19,12 +19,10 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 人才表
@@ -53,9 +51,9 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
     /**
      * 人才简历-从业情况与求职意向
      * @param id 主键ID
-     * @return RecruitmentJobDTO
+     * @return RecruitmentJobIntentDTO
      */
-    RecruitmentJobDTO fetchResumeJob(@Param("id") Long id);
+    RecruitmentJobIntentDTO fetchResumeJobIntent(@Param("id") Long id);
 
     /**
      * 人才简历-录用情况-列表分页

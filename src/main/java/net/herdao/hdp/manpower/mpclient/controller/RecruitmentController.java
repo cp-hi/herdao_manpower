@@ -180,12 +180,12 @@ public class RecruitmentController {
      * @return R
      */
     @ApiOperation(value = "简历编辑-获取人才简历-求职意向", notes = "简历编辑-获取人才简历-求职意向")
-    @GetMapping("/fetchResumeJob")
+    @GetMapping("/fetchResumeJobIntent")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     })
-    public R<RecruitmentJobDTO> fetchResumeJob(Long id) {
-        RecruitmentJobDTO result = recruitmentService.fetchResumeJob(id);
+    public R<RecruitmentJobIntentDTO> fetchResumeJobIntent(Long id) {
+        RecruitmentJobIntentDTO result = recruitmentService.fetchResumeJobIntent(id);
         return R.ok(result);
     }
 
@@ -195,10 +195,10 @@ public class RecruitmentController {
      * @param dto 人才简历-从业情况与求职意向
      * @return R
      */
-    @ApiOperation(value = "人才简历-从业情况与求职意向-修改更新", notes = "人才简历-从业情况与求职意向-修改更新")
+    @ApiOperation(value = "简历编辑-求职意向-修改更新", notes = "人才简历-从业情况与求职意向-修改更新")
     @PostMapping("/updateRecruitmentJob")
-    public R<RecruitmentJobDTO> updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto) {
-        RecruitmentJobDTO result = recruitmentService.updateRecruitmentJob(dto);
+    public R<RecruitmentJobIntentDTO> updateRecruitmentJob(@RequestBody RecruitmentJobIntentDTO dto) {
+        RecruitmentJobIntentDTO result = recruitmentService.updateRecruitmentJob(dto);
         return R.ok(result);
     }
 
@@ -304,8 +304,8 @@ public class RecruitmentController {
         result.setRecruitmentIntentDTO(intentDTO);
         result.setRecruitmentWorkexperienceDTO(workDTO);
         result.setRecruitmentTopEduDTO(topEduDTO);
-        result.setFamilyDTOList(familyDTOList);
-        result.setAwardsDTOList(recruitmentAwardsList);
+        result.setRecruitmentFamilyDTO(familyDTOList);
+        result.setRecruitmentAwardsDTO(recruitmentAwardsList);
         return R.ok(result);
     }
 

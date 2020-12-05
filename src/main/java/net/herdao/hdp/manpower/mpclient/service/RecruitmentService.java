@@ -59,14 +59,14 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param id 主键ID
      * @return
      */
-    RecruitmentJobDTO fetchResumeJob(Long id);
+    RecruitmentJobIntentDTO fetchResumeJobIntent(Long id);
 
     /**
      * 人才简历-从业情况与求职意向-修改更新
      * @param dto 从业情况与求职意向
      * @return
      */
-    RecruitmentJobDTO updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto);
+    RecruitmentJobIntentDTO updateRecruitmentJob(@RequestBody RecruitmentJobIntentDTO dto);
 
     /**
      * 人才简历-录用情况-列表分页
