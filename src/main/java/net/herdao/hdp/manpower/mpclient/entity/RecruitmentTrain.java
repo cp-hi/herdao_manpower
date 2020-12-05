@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 人才培训表
+ * 人才培训经历表
  *
  * @author Andy
  * @date 2020-12-02 20:12:55
@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("recruitment_train")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "人才培训表")
+@ApiModel(value = "人才培训经历表")
 public class RecruitmentTrain extends Model<RecruitmentTrain> {
 private static final long serialVersionUID = 1L;
 
