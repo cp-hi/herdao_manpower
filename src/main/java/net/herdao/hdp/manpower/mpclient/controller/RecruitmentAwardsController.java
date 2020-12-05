@@ -57,17 +57,16 @@ public class RecruitmentAwardsController {
     private final RecruitmentAwardsService recruitmentAwardsService;
 
     /**
-     * 人才简历-获奖情况-编辑
-     *
+     * 编辑人才简历-获奖情况-详情
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "人才简历-获奖情况-编辑", notes = "人才简历-获奖情况-编辑")
-    @GetMapping("/fetchDetails/{id}")
+    @ApiOperation(value = "编辑人才简历-获奖情况-详情", notes = "编辑人才简历-获奖情况-详情")
+    @GetMapping("/fetchDetailsById")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键id")
+        @ApiImplicitParam(name = "id", value = "主键id")
     })
-    public R<RecruitmentAwardsDTO> fetchDetails(@PathVariable("id") Long id) {
+    public R<RecruitmentAwardsDTO> fetchDetailsById(Long id) {
         RecruitmentAwards awards = recruitmentAwardsService.getById(id);
         RecruitmentAwardsDTO dto = new RecruitmentAwardsDTO();
         if (ObjectUtil.isNotNull(awards)) {
@@ -78,12 +77,12 @@ public class RecruitmentAwardsController {
     }
 
     /**
-     * 人才简历-获奖情况-新增
+     * 编辑人才简历-获奖情况-新增保存
      *
      * @param dto 人才获奖情况表
      * @return R
      */
-    @ApiOperation(value = "人才简历-获奖情况-新增", notes = "人才简历-获奖情况-新增")
+    @ApiOperation(value = "编辑人才简历-获奖情况-新增保存", notes = "编辑人才简历-获奖情况-新增保存")
     @PostMapping("/saveAwards")
     public R<RecruitmentAwardsDTO> saveAwards(@RequestBody RecruitmentAwardsDTO dto) {
         RecruitmentAwardsDTO result = recruitmentAwardsService.saveOrUpdate(dto);
@@ -104,12 +103,11 @@ public class RecruitmentAwardsController {
     }
 
     /**
-     * 人才简历-获奖情况-删除
-     *
+     * 编辑人才简历-获奖情况-删除
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "人才简历-获奖情况-删除", notes = "人才简历-获奖情况-删除")
+    @ApiOperation(value = "编辑人才简历-获奖情况-删除", notes = "编辑人才简历-获奖情况-删除")
     @DeleteMapping("/del/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id")
@@ -120,13 +118,12 @@ public class RecruitmentAwardsController {
 
 
     /**
-     * 人才简历-获奖情况-列表
-     *
+     * 编辑人才简历-获奖情况-分页列表
      * @param page          分页对象
      * @param recruitmentId 人才ID
      * @return
      */
-    @ApiOperation(value = "人才简历-获奖情况-列表", notes = "人才简历-获奖情况-列表")
+    @ApiOperation(value = "编辑人才简历-获奖情况-分页列表", notes = "编辑人才简历-获奖情况-分页列表")
     @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "分页对象", required = true),
@@ -138,11 +135,11 @@ public class RecruitmentAwardsController {
     }
 
     /**
-     * 人才简历-获奖情况
+     * 编辑人才简历-获奖情况-list
      * @param recruitmentId 人才ID
      * @return
      */
-    @ApiOperation(value = "人才简历-获奖情况-list", notes = "人才简历-获奖情况-list")
+    @ApiOperation(value = "编辑人才简历-获奖情况-list", notes = "编辑人才简历-获奖情况-list")
     @GetMapping("/getRecruitmentAwardsList")
     @ApiImplicitParams({
          @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
