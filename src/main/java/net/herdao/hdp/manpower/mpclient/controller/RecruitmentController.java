@@ -196,9 +196,9 @@ public class RecruitmentController {
      * @return R
      */
     @ApiOperation(value = "简历编辑-求职意向-修改更新", notes = "人才简历-从业情况与求职意向-修改更新")
-    @PostMapping("/updateRecruitmentJob")
-    public R<RecruitmentJobIntentDTO> updateRecruitmentJob(@RequestBody RecruitmentJobIntentDTO dto) {
-        RecruitmentJobIntentDTO result = recruitmentService.updateRecruitmentJob(dto);
+    @PostMapping("/updateRecruitmentJobIntent")
+    public R<RecruitmentJobIntentDTO> updateRecruitmentJobIntent(@RequestBody RecruitmentJobIntentDTO dto) {
+        RecruitmentJobIntentDTO result = recruitmentService.updateRecruitmentJobIntent(dto);
         return R.ok(result);
     }
 

@@ -157,5 +157,4 @@ public class RecruitmentJobIntentDTO  {
     @ApiModelProperty(value="其他要求")
     private String otherRequest;
 
-
 }

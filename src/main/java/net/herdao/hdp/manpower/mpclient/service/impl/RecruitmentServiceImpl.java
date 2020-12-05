@@ -194,7 +194,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobIntentDTO.class)
-    public RecruitmentJobIntentDTO updateRecruitmentJob(RecruitmentJobIntentDTO dto) {
+    public RecruitmentJobIntentDTO updateRecruitmentJobIntent(RecruitmentJobIntentDTO dto) {
         Recruitment recruitment=new Recruitment();
 
         BeanUtils.copyProperties(dto,recruitment);

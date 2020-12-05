@@ -66,7 +66,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param dto 从业情况与求职意向
      * @return
      */
-    RecruitmentJobIntentDTO updateRecruitmentJob(@RequestBody RecruitmentJobIntentDTO dto);
+    RecruitmentJobIntentDTO updateRecruitmentJobIntent(@RequestBody RecruitmentJobIntentDTO dto);
 
     /**
      * 人才简历-录用情况-列表分页
