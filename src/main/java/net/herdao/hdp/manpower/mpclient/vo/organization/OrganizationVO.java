@@ -179,7 +179,11 @@ public class OrganizationVO extends BaseEntity<OrganizationVO> {
 	 */
 	@ApiModelProperty(value = "负责岗位id")
 	private Long postId;
-
+	/**
+	 * 岗位组织关系id
+	 */
+	@ApiModelProperty(value = "岗位组织关系id")
+	private Long postOrgId;
 	/**
 	 * 组织描述
 	 */
