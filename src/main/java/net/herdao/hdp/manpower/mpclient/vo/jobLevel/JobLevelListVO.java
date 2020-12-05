@@ -27,6 +27,10 @@ public class JobLevelListVO {
     @ApiModelProperty("职级名称")
     private String jobLevelName;
 
+    @ExcelProperty("职衔")
+    @ApiModelProperty(value = "职衔")
+    private String jobTitle;
+
     @ExcelProperty("职级编码")
     @ApiModelProperty("职级编码")
     private String jobLevelCode;

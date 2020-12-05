@@ -1,11 +1,13 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserDTO;
-import net.herdao.hdp.admin.api.entity.*;
+import net.herdao.hdp.admin.api.entity.SysDept;
+import net.herdao.hdp.admin.api.entity.SysGrade;
+import net.herdao.hdp.admin.api.entity.SysGroup;
+import net.herdao.hdp.admin.api.entity.SysStation;
 import net.herdao.hdp.admin.api.feign.*;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.*;
@@ -208,10 +210,10 @@ public class PlatformSync {
 //            sysUserOrgStations.add(convert(e));
 //        });
 //        for(int i=0;i<sysUserOrgStations.size();){
-//            List<SysUserOrgStationDTO> sysUserOrgStations1 = sysUserOrgStations.subList(i, i + 13);
+//            List<SysUserOrgStationDTO> sysUserOrgStations1 = sysUserOrgStations.subList(i, i + 10);
 //            System.out.println(JSON.toJSON(sysUserOrgStations1));
 //            remoteUserDeptStationService.saveOrUpdateBatch(sysUserOrgStations1);
-//            i=i+13;
+//            i=i+10;
 //        }
 //    }
     private void saveOrUpdateSync(Userpost userpost) {

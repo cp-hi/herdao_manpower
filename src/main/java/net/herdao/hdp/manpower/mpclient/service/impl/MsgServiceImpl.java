@@ -4,21 +4,17 @@ import cn.hutool.core.collection.CollectionUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.constant.MsgType;
+import net.herdao.hdp.admin.api.dto.SysMsgDTO;
 import net.herdao.hdp.admin.api.entity.SysMsg;
 import net.herdao.hdp.admin.api.feign.RemoteMsgService;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.EmailSendInfo;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.MsgService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,45 +32,58 @@ public class MsgServiceImpl implements MsgService {
     @Override
     @SneakyThrows
     public Boolean sendEmail(EmailSendInfo emailSendInfo) {
-        List<SysMsg> sysMsgs = new ArrayList<>();
+        List<SysMsgDTO> sysMsgs = new ArrayList<>();
         //人才管理发送简历更新邮件
         if("1".equals(emailSendInfo.getType())){
             List<Recruitment> recruitments = recruitmentService.listByIds(emailSendInfo.getIds());
             recruitments.forEach(e->{
-                SysMsg sysMsg = new SysMsg();
-                //sysMsg.setEmail(e.getEmail());
-                sysMsg.setEmail("734458184@qq.com");
+                SysMsgDTO sysMsg = new SysMsgDTO();
+                sysMsg.setReceptEmail(e.getEmail());
                 sysMsg.setContent(emailSendInfo.getTemplate());
                 sysMsg.setTitle("人才管理");
-                sysMsg.setPhone(e.getHomePhone());
+                sysMsg.setReceptPhone(e.getHomePhone());
+                sysMsgs.add(sysMsg);
+            });
+        }
+        if("2".equals(emailSendInfo.getType())){
+            List<Recruitment> recruitments = recruitmentService.listByIds(emailSendInfo.getIds());
+            recruitments.forEach(e->{
+                SysMsgDTO sysMsg = new SysMsgDTO();
+                sysMsg.setReceptEmail(e.getEmail());
+                sysMsg.setContent(emailSendInfo.getTemplate());
+                sysMsg.setTitle("人才管理");
+                sysMsg.setReceptPhone(e.getHomePhone());
                 sysMsgs.add(sysMsg);
             });
         }
         if(CollectionUtil.isNotEmpty(sysMsgs)){
-            //remoteMsgService.sendMailBatch(sysMsgs);
-            MultipartFile mfile=new MockMultipartFile("附件1",new FileInputStream(new File("D:\\download\\%E5%85%AC%E5%8F%B8.xlsx")));
-            SysMsg[] sysMsgs1 = sysMsgs.toArray(new SysMsg[]{});
-            String [] ss=new String[]{"aa","bb"};
-            List<String> ls=new ArrayList<>();
-            ls.add("aa");
-            ls.add("bb");
-            remoteMsgService.sendMail(sysMsgs1[0],mfile);
-            //remoteMsgService.sendAttachMailBatch(sysMsgs,mfile);
+            R<Boolean> r = remoteMsgService.sendMailBatch(sysMsgs);
+            RemoteCallUtils.checkData(r);
         }
-        return null;
+        return Boolean.TRUE;
     }
 
     @Override
+    @SneakyThrows
     public Boolean msgResend(List<Integer> ids) {
         List<SysMsg> sysMsgs = RemoteCallUtils.checkData(remoteMsgService.getListbyIds(ids));
         sysMsgs.forEach(e->{
-            //邮件模板消息
-            if(MsgType.MAIL_TEMPLATE_MSG.equals(e.getType())){
-                //设置附件
+            if(MsgType.WEB_TEMPLATE_MSG.equals(e.getType())){
+                //发送网页消息
             }
-       });
-        MultiValueMap m= new LinkedMultiValueMap();
+            if(MsgType.MAIL_ONTIME_MSG.equals(e.getType())){
+                remoteMsgService.reSend(e.getId());
+            }
+            if(MsgType.MAIL_TEMPLATE_MSG.equals(e.getType())){
 
-        return null;
+            }
+            if(MsgType.WX_TEMPLATE_MSG.equals(e.getType())){
+
+            }
+            if(MsgType.QY_WX_TEMPLATE_MSG.equals(e.getType())){
+                //发送启业微信消息
+            }
+        });
+        return Boolean.TRUE;
     }
 }

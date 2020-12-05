@@ -17,8 +17,8 @@ import net.herdao.hdp.manpower.mpclient.entity.Post;
 @ApiModel(value = "岗位DTO")
 public class PostDTO extends Post {
 
-//    @ApiModelProperty("板块")
-//    private String sectionName;
+    @ApiModelProperty("板块")
+    private String sectionName;
 //
 //    @ApiModelProperty("管线")
 //    private String pipelineName;
