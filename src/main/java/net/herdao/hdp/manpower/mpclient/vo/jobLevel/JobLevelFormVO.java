@@ -3,7 +3,6 @@ package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.sys.annotation.DtoField;
 
 /**
  * @ClassName JobLevelListDTO
@@ -24,6 +23,9 @@ public class JobLevelFormVO {
 
     @ApiModelProperty("职等")
     private Long jobGradeId;
+
+    @ApiModelProperty(value = "职衔")
+    private String jobTitle;
 
     @ApiModelProperty(value = "所属集团",required = true)
     private Long groupId;
