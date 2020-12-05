@@ -67,20 +67,7 @@ public class RecruitmentController {
         return R.ok(formVO);
     }
 
-    /**
-     * 修改更新人才表
-     *
-     * @param recruitmentUpdateFormVO 人才表
-     * @return R
-     */
-    @ApiOperation(value = "快速编辑-修改更新xxx", notes = "快速编辑-修改更新xxx")
-    @PostMapping("/updateRecruitmentxxx")
-    public R<RecruitmentUpdateFormDTO> updateRecruitmentxxx(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
-        R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
-        return result;
-    }
-
-    /**
+     /**
      * 修改更新人才表
      *
      * @param recruitmentUpdateFormVO 人才表
