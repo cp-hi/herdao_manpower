@@ -237,7 +237,7 @@
                        t.sex
     </select>
 
-    <!-- 人才简历-从业情况与求职意向 -->
+    <!-- 人才简历编辑-获取求职意向 -->
     <select id="fetchResumeJob" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobDTO">
        SELECT 	TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age ,
 				rec.workdate,

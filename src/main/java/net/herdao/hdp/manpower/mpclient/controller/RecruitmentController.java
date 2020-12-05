@@ -174,15 +174,15 @@ public class RecruitmentController {
     }
 
     /**
-     * 人才简历-从业情况与求职意向
+     * 简历编辑-获取人才简历-求职意向
      *
      * @param id
      * @return R
      */
-    @ApiOperation(value = "人才简历-从业情况与求职意向", notes = "人才简历-从业情况与求职意向")
+    @ApiOperation(value = "简历编辑-获取人才简历-求职意向", notes = "简历编辑-获取人才简历-求职意向")
     @GetMapping("/fetchResumeJob")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "ID", required = true)
+        @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     })
     public R<RecruitmentJobDTO> fetchResumeJob(Long id) {
         RecruitmentJobDTO result = recruitmentService.fetchResumeJob(id);
