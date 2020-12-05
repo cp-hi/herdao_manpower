@@ -105,8 +105,8 @@ public class RecruitmentFamilyStatusController {
      * @return R
      */
     @ApiOperation(value = "个人简历-家庭情况-更新", notes = "个人简历-家庭情况-更新")
-    @PutMapping("/updateFamily")
-     public R<RecruitmentFamilyDTO> updateFamily(@RequestBody RecruitmentFamilyDTO dto) {
+    @PostMapping("/updateFamily")
+    public R<RecruitmentFamilyDTO> updateFamily(@RequestBody RecruitmentFamilyDTO dto) {
         RecruitmentFamilyDTO result = recruitmentFamilyStatusService.updateFamily(dto);
         return R.ok(result);
     }

@@ -299,7 +299,7 @@ public class RecruitmentController {
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
 
         result.setRecruitmentPersonDTO(personDTO);
-      /*  result.setRecruitmentIntentDTO(intentDTO);
+      /*result.setRecruitmentIntentDTO(intentDTO);
         result.setRecruitmentWorkexperienceDTO(workDTO);
         result.setRecruitmentTopEduDTO(topEduDTO);
         result.setRecruitmentFamilyDTO(familyDTOList);

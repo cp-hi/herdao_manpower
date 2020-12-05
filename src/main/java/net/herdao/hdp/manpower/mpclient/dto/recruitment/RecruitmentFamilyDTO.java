@@ -23,9 +23,8 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才家庭情况")
-public class RecruitmentFamilyDTO extends BaseEntity<RecruitmentFamilyDTO> {
+public class RecruitmentFamilyDTO   {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * id
@@ -56,7 +55,7 @@ public class RecruitmentFamilyDTO extends BaseEntity<RecruitmentFamilyDTO> {
      * 年龄
      */
     @ApiModelProperty(value="年龄")
-    private BigDecimal age;
+    private String age;
 
     /**
      * 职业

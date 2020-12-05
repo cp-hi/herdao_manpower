@@ -72,7 +72,7 @@ private static final long serialVersionUID = 1L;
      * 年龄
      */
     @ApiModelProperty(value="年龄")
-    private BigDecimal age;
+    private String age;
     /**
      * 职业
      */
