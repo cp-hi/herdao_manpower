@@ -1,19 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, herdao All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the herdao.net developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: liang
- */
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
@@ -38,7 +22,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * 人才简历-人才活动
+ * 编辑人才简历-人才专业专业活动
  *
  * @author Andy
  * @date 2020-12-02 20:12:40
@@ -46,18 +30,18 @@ import java.time.LocalDateTime;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentactiviti" )
-@Api(value = "recruitmentactiviti", tags = "人才简历-人才活动表管理")
+@Api(value = "recruitmentactiviti", tags = "编辑人才简历-人才专业专业活动表管理")
 public class RecruitmentActivitiController {
 
     private final  RecruitmentActivitiService recruitmentActivitiService;
 
     /**
-     * 人才简历-人才活动-分页列表
+     * 编辑人才简历-人才专业专业活动-分页列表
      * @param page 分页对象
      * @param recruitmentId 人才ID
      * @return
      */
-    @ApiOperation(value = "人才简历-人才活动-分页列表", notes = "人才简历-人才活动-分页列表")
+    @ApiOperation(value = "编辑人才简历-人才专业专业活动-分页列表", notes = "编辑人才简历-人才专业专业活动-分页列表")
     @GetMapping("/getRecruitmentActivitiPage" )
     @ApiImplicitParams({
          @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true),
@@ -72,26 +56,26 @@ public class RecruitmentActivitiController {
     }
 
     /**
-     * 人才简历-人才活动-详情
+     * 编辑人才简历-人才专业专业活动-详情
      * @param id 主键ID
      * @return R
      */
-    @ApiOperation(value = "人才简历-人才活动-详情", notes = "人才简历-人才活动-详情")
-    @GetMapping("/fetchDetails/{id}" )
+    @ApiOperation(value = "编辑人才简历-人才专业专业活动-详情", notes = "编辑人才简历-人才专业专业活动-详情")
+    @GetMapping("/fetchDetailsById" )
     @ApiImplicitParams({
        @ApiImplicitParam(name="id",value="主键ID",required = true),
     })
-    public R<RecruitmentActiviti> fetchDetails(@PathVariable("id" ) Long id) {
+    public R<RecruitmentActiviti> fetchDetailsById(Long id) {
         RecruitmentActiviti recruitmentActiviti = recruitmentActivitiService.getById(id);
         return R.ok(recruitmentActiviti);
     }
 
     /**
-     * 人才简历-人才活动-新增保存
-     * @param recruitmentActiviti 人才活动表
+     * 编辑人才简历-人才专业专业活动-新增保存
+     * @param recruitmentActiviti 人才专业专业活动表
      * @return R
      */
-    @ApiOperation(value = "人才简历-人才活动-新增保存", notes = "人才简历-人才活动-新增保存")
+    @ApiOperation(value = "编辑人才简历-人才专业专业活动-新增保存", notes = "编辑人才简历-人才专业专业活动-新增保存")
     @PostMapping("/saveActiviti")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmentactiviti_add')" )
     public R<RecruitmentActiviti> saveActiviti(@RequestBody RecruitmentActiviti recruitmentActiviti) {
@@ -104,11 +88,11 @@ public class RecruitmentActivitiController {
     }
 
     /**
-     * 人才简历-人才活动-修改更新
-     * @param recruitmentActiviti 人才活动表
+     * 编辑人才简历-人才专业专业活动-修改更新
+     * @param recruitmentActiviti 人才专业专业活动表
      * @return R
      */
-    @ApiOperation(value = "人才简历-人才活动-修改更新", notes = "人才简历-人才活动-修改更新")
+    @ApiOperation(value = "编辑人才简历-人才专业专业活动-修改更新", notes = "编辑人才简历-人才专业专业活动-修改更新")
     @PutMapping("/updateActiviti")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmentactiviti_edit')" )
     public R<RecruitmentActiviti> updateActiviti(@RequestBody RecruitmentActiviti recruitmentActiviti) {
@@ -121,11 +105,11 @@ public class RecruitmentActivitiController {
     }
 
     /**
-     * 人才简历-人才活动-删除
+     * 编辑人才简历-人才专业专业活动-删除
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "人才简历-人才活动-删除", notes = "人才简历-人才活动-删除")
+    @ApiOperation(value = "编辑人才简历-人才专业专业活动-删除", notes = "编辑人才简历-人才专业专业活动-删除")
     @DeleteMapping("/del/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmentactiviti_del')" )
     public R removeById(@PathVariable Long id) {
