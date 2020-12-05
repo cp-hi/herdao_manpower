@@ -149,11 +149,11 @@ public class RecruitmentController {
      * @return R
      */
     @ApiOperation(value = "编辑-获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
-    @GetMapping("/fetchDetails")
+    @GetMapping("/fetchDetailsById")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id")
     })
-    public R<RecruitmentDetailsDTO> fetchDetails(Long id) {
+    public R<RecruitmentDetailsDTO> fetchDetailsById(Long id) {
         RecruitmentDetailsDTO baseDTO = new RecruitmentDetailsDTO();
         Recruitment recruitment = recruitmentService.getById(id);
         BeanUtils.copyProperties(recruitment, baseDTO);
@@ -299,11 +299,11 @@ public class RecruitmentController {
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
 
         result.setRecruitmentPersonDTO(personDTO);
-      /*result.setRecruitmentIntentDTO(intentDTO);
+        result.setRecruitmentIntentDTO(intentDTO);
         result.setRecruitmentWorkexperienceDTO(workDTO);
         result.setRecruitmentTopEduDTO(topEduDTO);
         result.setRecruitmentFamilyDTO(familyDTOList);
-        result.setRecruitmentAwardsDTO(recruitmentAwardsList);*/
+        result.setRecruitmentAwardsDTO(recruitmentAwardsList);
         return R.ok(result);
     }
 
