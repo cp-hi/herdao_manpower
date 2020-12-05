@@ -48,18 +48,18 @@ public class RecruitmentController {
     private final RecruitmentEducationService recruitmentEducationService;
 
     /**
-     * 快速编辑
+     * 人才管理-快速编辑
      *
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "快速编辑", notes = "快速编辑")
+    @ApiOperation(value = "人才管理-快速编辑", notes = "人才管理-快速编辑")
     @GetMapping("/quickEdit")
     @ApiImplicitParams({
          @ApiImplicitParam(name = "id", value = "主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
-    public R<RecruitmentUpdateFormDTO> getById(Long id) {
+    public R<RecruitmentUpdateFormDTO> quickEdit(Long id) {
         Recruitment recruitment = recruitmentService.getById(id);
         RecruitmentUpdateFormDTO formVO = new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitment, formVO);
@@ -80,12 +80,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 新增候选人-新增保存
+     * 人才管理-添加候选人-新增保存
      *
      * @param recruitmentAddFormDTO 人才表
      * @return R
      */
-    @ApiOperation(value = "新增候选人-新增保存", notes = "新增候选人-新增保存")
+    @ApiOperation(value = "人才管理-添加候选人-新增保存", notes = "人才管理-添加候选人-新增保存")
     @PostMapping("/saveRecruitment")
     public R<RecruitmentAddFormDTO> saveRecruitment(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
         R<RecruitmentAddFormDTO> result = recruitmentService.saveRecruitment(recruitmentAddFormDTO);
@@ -113,12 +113,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 删除候选人
+     * 人才管理-删除候选人
      *
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "删除候选人", notes = "删除候选人")
+    @ApiOperation(value = " 人才管理-删除候选人", notes = " 人才管理-删除候选人")
     @DeleteMapping("/{id}")
     @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     public R removeById(@PathVariable Long id) {
@@ -174,7 +174,6 @@ public class RecruitmentController {
 
     /**
      * 简历编辑-获取人才简历-求职意向
-     *
      * @param id
      * @return R
      */
@@ -189,12 +188,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 人才简历-从业情况与求职意向-修改更新
+     * 简历编辑-求职意向-修改更新
      *
      * @param dto 人才简历-从业情况与求职意向
      * @return R
      */
-    @ApiOperation(value = "简历编辑-求职意向-修改更新", notes = "人才简历-从业情况与求职意向-修改更新")
+    @ApiOperation(value = "简历编辑-求职意向-修改更新", notes = "简历编辑-求职意向-修改更新")
     @PostMapping("/updateRecruitmentJobIntent")
     public R<RecruitmentJobIntentDTO> updateRecruitmentJobIntent(@RequestBody RecruitmentJobIntentDTO dto) {
         RecruitmentJobIntentDTO result = recruitmentService.updateRecruitmentJobIntent(dto);
@@ -223,7 +222,6 @@ public class RecruitmentController {
 
     /**
      * 人才管理-导出Excel
-     *
      * @param response
      * @return R
      */
@@ -353,4 +351,4 @@ public class RecruitmentController {
         return R.ok(result);
     }
 
- }
+}
