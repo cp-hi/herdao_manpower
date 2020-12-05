@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.mpclient.constant;
 
 /**
+ * 员工职位变更从提交到审批执行的状态
+ * 对应 sys_dict_item type = "YWDZT"
+ *
  * @Author Liu Chang
  * @Date 2020/11/26 4:40 下午
  */
