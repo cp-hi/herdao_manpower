@@ -342,6 +342,14 @@ public class RecruitmentController {
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
         result.setRecruitmentFamilyDTO(familyList);
 
+        //其他个人信息
+        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
+        result.setRecruitmentOtherInfo(otherInfo);
+
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
+        result.setRecruitmentBaseInfo(baseInfo);
+
         return R.ok(result);
     }
 

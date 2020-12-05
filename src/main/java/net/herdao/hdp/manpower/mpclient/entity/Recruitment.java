@@ -625,12 +625,6 @@ public class Recruitment extends Model<Recruitment> {
     private Date resumeAccessTime;
 
     /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remarks;
-
-    /**
      * 职称证号
      */
     @ApiModelProperty(value="职称证号")

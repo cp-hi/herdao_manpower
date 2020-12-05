@@ -35,5 +35,16 @@ public class RecruitmentEditDetailsDTO {
     @ApiModelProperty(value="人才简历-家庭状况-详情")
     List<RecruitmentFamilyDTO>  recruitmentFamilyDTO;
 
+    /**
+     * 人才简历-其他个人信息
+     */
+    @ApiModelProperty(value="人才简历-其他个人信息")
+    RecruitmentOtherInfo recruitmentOtherInfo;
+
+    /**
+     * 人才简历-个人基本信息
+     */
+    @ApiModelProperty(value="人才简历-个人基本信息")
+    RecruitmentBaseInfo recruitmentBaseInfo;
 
 }

@@ -259,4 +259,16 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         return R.ok(recruitments.get(0).getId());
 
     }
+
+    @Override
+    public RecruitmentOtherInfo fetchRecruitmentOtherInfo(Long id) {
+        RecruitmentOtherInfo recruitmentOtherInfo = this.baseMapper.fetchRecruitmentOtherInfo(id);
+        return recruitmentOtherInfo;
+    }
+
+    @Override
+    public RecruitmentBaseInfo fetchRecruitmentBaseInfo(Long id) {
+        RecruitmentBaseInfo recruitmentBaseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
+        return recruitmentBaseInfo;
+    }
 }

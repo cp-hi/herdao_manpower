@@ -403,4 +403,70 @@
         </where>
     </select>
 
+    <!-- 获取人才简历-其他个人信息-详情 -->
+    <select id="fetchRecruitmentOtherInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo">
+        SELECT  rec.id,
+                IF( rec.is_relative_company=0,'否','是') is_relative_company,
+                IF( rec.is_accept_assignment=0,'否','是') is_accept_assignment,
+                IF( rec.relative_post_name=0,'否','是') relative_post_name,
+                rec.accept_assignment_location,
+                rec.applicant_sign,
+                rec.resume_access_time,
+                jp.label resume_access,
+                rec.remark
+        FROM  mp_recruitment rec
+        left join sys_dict_item jp on jp.type='JPXXTJ' and jp.value=rec.resume_access
+         <where>
+            <if test="id != null ">
+                AND rec.id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <!-- 编辑人才简历-个人基本信息-详情 -->
+    <select id="fetchRecruitmentBaseInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo">
+        	SELECT  rec.id,
+					rec.talent_name,
+					rec.birthday,
+					disex.label sex,
+					rec.nation,
+					dihy.label marital_status,
+ 					disy.label fertility,
+					dijk.label health_status,
+					rec.height,
+			        rec.weight,
+					zzmm.label political_landscape,
+					rec.emergency_contacts,
+					rec.emergency_phone,
+					zgxl.label highest_education,
+					rec.professional,
+					rec.highest_diplomano,
+					rec.graduated,
+					rec.home_phone,
+					rec.now_address,
+					rec.zipcode,
+					rec.account_address,
+					rec.interests,
+					rec.specialty,
+					rec.advantage,
+					rec.shortcoming
+            FROM  mp_recruitment rec
+					left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
+					left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
+					left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
+					left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
+					left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
+					left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
+					left join sys_dict_item zgxl on zgxl.type='ZGXL' and zgxl.value=rec.highest_education
+					left join sys_dict_item zgxw on zgxw.type='EDUCATION_DEGREE_TYPE' and zgxl.value=rec.education_degree
+					left join sys_dict_item xxxs on xxxs.type='XXXS' and xxxs.value=rec.learn_form
+					left join sys_dict_item zzmm on zzmm.type='ZZMM' and zzmm.value=rec.political_landscape
+					left join mp_post mp on mp.ID=rec.intention_post_id
+            <where>
+                <if test="id != null ">
+                    AND rec.id = #{id}
+                </if>
+            </where>
+     </select>
+
 </mapper>

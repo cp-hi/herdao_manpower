@@ -82,4 +82,19 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @return RecruitmentTopEduDTO
      */
     RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
+
+    /**
+     * 获取人才简历-其他个人信息-详情
+     * @param id 主键ID
+     * @return RecruitmentOtherInfo
+     */
+    RecruitmentOtherInfo fetchRecruitmentOtherInfo(@Param("id") Long id);
+
+    /**
+     * 编辑人才简历-个人基本信息-详情
+     * @param id 主键ID
+     * @return RecruitmentOtherInfo
+     */
+    RecruitmentBaseInfo fetchRecruitmentBaseInfo(@Param("id") Long id);
+
 }

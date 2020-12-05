@@ -104,4 +104,19 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
      R recruitmentLogin(String mobile, String code);
 
+    /**
+     * 获取人才简历-其他个人信息-详情
+     * @param id 主键ID
+     * @return RecruitmentOtherInfo
+     */
+    RecruitmentOtherInfo fetchRecruitmentOtherInfo(Long id);
+
+    /**
+     * 编辑人才简历-个人基本信息-详情
+     * @param id 主键ID
+     * @return RecruitmentOtherInfo
+     */
+    RecruitmentBaseInfo fetchRecruitmentBaseInfo(Long id);
+
+
 }
