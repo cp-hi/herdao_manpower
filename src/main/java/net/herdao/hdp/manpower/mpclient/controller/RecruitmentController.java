@@ -73,7 +73,7 @@ public class RecruitmentController {
      * @param recruitmentUpdateFormVO 人才表
      * @return R
      */
-    @ApiOperation(value = "快速编辑-保存", notes = "快速编辑-保存")
+    @ApiOperation(value = "快速编辑-修改更新", notes = "快速编辑-修改更新")
     @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
@@ -81,12 +81,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 新增候选人-保存
+     * 新增候选人-新增保存
      *
      * @param recruitmentAddFormDTO 人才表
      * @return R
      */
-    @ApiOperation(value = "新增候选人-保存", notes = "新增候选人-保存")
+    @ApiOperation(value = "新增候选人-新增保存", notes = "新增候选人-新增保存")
     @PostMapping("/saveRecruitment")
     public R<RecruitmentAddFormDTO> saveRecruitment(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
         R<RecruitmentAddFormDTO> result = recruitmentService.saveRecruitment(recruitmentAddFormDTO);
@@ -320,6 +320,5 @@ public class RecruitmentController {
     @GetMapping("/recruitmentLogin")
     public R<Long> recruitmentLogin(String mobile, String code){
         return recruitmentService.recruitmentLogin(mobile, code);
-
     }
  }

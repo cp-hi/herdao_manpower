@@ -44,18 +44,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentworkexperience")
-@Api(value = "recruitmentworkexperience", tags = "人才工作经历表管理")
+@Api(value = "recruitmentworkexperience", tags = "人才工作情况表管理")
 public class RecruitmentWorkexperienceController {
 
     private final RecruitmentWorkexperienceService recruitmentWorkexperienceService;
 
     /**
-     * 人才简历-工作情况-列表
+     * 编辑人才简历-工作情况-分页列表
      * @param page          分页对象
      * @param recruitmentId 人才ID
      * @return
      */
-    @ApiOperation(value = "人才简历-工作情况-列表", notes = "人才简历-工作情况-列表")
+    @ApiOperation(value = "编辑人才简历-工作情况-分页列表", notes = "编辑人才简历-工作情况-分页列表")
     @GetMapping("/page")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "分页实体", required = true),
@@ -69,13 +69,16 @@ public class RecruitmentWorkexperienceController {
     }
 
     /**
-     * 人才简历-工作情况-编辑
+     * 编辑人才简历-工作情况-详情
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "人才简历-工作情况-编辑", notes = "人才简历-工作情况-编辑")
-    @GetMapping("/fetchDetails/{id}")
-    public R<RecruitmentWorkexperienceDTO> fetchDetails(@PathVariable("id") Long id) {
+    @ApiOperation(value = "编辑人才简历-工作情况-详情", notes = "编辑人才简历-工作情况-详情")
+    @GetMapping("/fetchDetailsById")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", value = "主键ID", required = true)
+    })
+    public R<RecruitmentWorkexperienceDTO> fetchDetailsById(Long id) {
         RecruitmentWorkexperience result = recruitmentWorkexperienceService.getById(id);
         RecruitmentWorkexperienceDTO dto = new RecruitmentWorkexperienceDTO();
         BeanUtils.copyProperties(result, dto);
@@ -83,11 +86,11 @@ public class RecruitmentWorkexperienceController {
     }
 
     /**
-     * 人才简历-工作情况-新增
+     * 编辑人才简历-工作情况-新增保存
      * @param dto 人才工作经历表
      * @return R
      */
-    @ApiOperation(value = "人才简历-工作情况-新增", notes = "人才简历-工作情况-新增")
+    @ApiOperation(value = "编辑人才简历-工作情况-新增保存", notes = "编辑人才简历-工作情况-新增保存")
     @PostMapping("/saveWorkExperience")
     public R<RecruitmentWorkexperienceDTO> saveWorkExperience(@RequestBody RecruitmentWorkexperienceDTO dto) {
         RecruitmentWorkexperienceDTO result = recruitmentWorkexperienceService.saveWorkExperience(dto);
@@ -95,11 +98,11 @@ public class RecruitmentWorkexperienceController {
     }
 
     /**
-     * 人才简历-工作情况-更新
+     * 编辑才简历-工作情况-修改更新
      * @param dto 人才工作经历表
      * @return R
      */
-    @ApiOperation(value = "才简历-工作情况-更新", notes = "才简历-工作情况-更新")
+    @ApiOperation(value = "编辑才简历-工作情况-修改更新", notes = "编辑才简历-工作情况-修改更新")
     @PutMapping("/updateWorkExperience")
     public R<RecruitmentWorkexperienceDTO> updateWorkExperience(@RequestBody RecruitmentWorkexperienceDTO dto) {
         RecruitmentWorkexperienceDTO result = recruitmentWorkexperienceService.updateWorkExperience(dto);
@@ -107,24 +110,23 @@ public class RecruitmentWorkexperienceController {
     }
 
     /**
-     * 删除个人简历-工作经历
+     * 编辑个人简历-工作情况-删除
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "删除个人简历-工作经历", notes = "删除个人简历-工作经历")
-    @SysLog("删除个人简历-工作经历")
+    @ApiOperation(value = "编辑个人简历-工作情况-删除", notes = "编辑个人简历-工作情况-删除")
     @DeleteMapping("/del/{id}")
     public R removeById(@PathVariable Long id) {
         return R.ok(recruitmentWorkexperienceService.removeById(id));
     }
 
     /**
-     * 查看个人简历-工作经历
+     * 编辑个人简历-获取工作情况-list
      *
      * @param recruitmentId 人才ID
      * @return R
      */
-    @ApiOperation(value = "查看个人简历-工作经历", notes = "查看个人简历-工作经历")
+    @ApiOperation(value = "编辑个人简历-获取工作情况-list", notes = "编辑个人简历-获取工作情况-list")
     @GetMapping("/findWorkExperience")
     @ApiImplicitParams({
          @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
