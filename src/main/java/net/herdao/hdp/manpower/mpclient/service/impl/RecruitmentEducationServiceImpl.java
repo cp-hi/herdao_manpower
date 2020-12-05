@@ -87,5 +87,9 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         return dto;
     }
 
-
+    @Override
+    public List<RecruitmentEduDTO> fetchResumeEduList(Long recruitmentId) {
+        List<RecruitmentEduDTO> list = this.baseMapper.fetchResumeEduList(recruitmentId);
+        return list;
+    }
 }

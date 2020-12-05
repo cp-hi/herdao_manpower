@@ -11,11 +11,8 @@ import net.herdao.hdp.common.security.annotation.Inner;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentAwardsService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
@@ -48,6 +45,8 @@ public class RecruitmentController {
 
     private final RecruitmentAwardsService recruitmentAwardsService;
 
+    private final RecruitmentEducationService recruitmentEducationService;
+
     /**
      * 快速编辑
      *
@@ -57,7 +56,7 @@ public class RecruitmentController {
     @ApiOperation(value = "快速编辑", notes = "快速编辑")
     @GetMapping("/quickEdit")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键id")
+         @ApiImplicitParam(name = "id", value = "主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
     public R<RecruitmentUpdateFormDTO> getById(Long id) {
@@ -145,7 +144,7 @@ public class RecruitmentController {
     /**
      * 编辑获取个人简历-个人基本情况 其他个人信息
      *
-     * @param id id
+     * @param id 主键id
      * @return R
      */
     @ApiOperation(value = "编辑-获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
@@ -319,4 +318,31 @@ public class RecruitmentController {
     public R<Long> recruitmentLogin(String mobile, String code){
         return recruitmentService.recruitmentLogin(mobile, code);
     }
+
+    /**
+     * 编辑人才简历-基础信息-详情
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "编辑人才简历-基础信息-详情", notes = "编辑人才简历-基础信息-详情")
+    @GetMapping("/fetchResumeEditDetails")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentEditDetailsDTO> fetchResumeEditDetails(Long id) {
+        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
+
+        //获奖情况
+        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        result.setRecruitmentAwardsDTO(recruitmentAwardsList);
+
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        result.setRecruitmentEduDTO(recruitmentEduList);
+
+        //家庭状况
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
+        result.setRecruitmentFamilyDTO(familyList);
+
+        return R.ok(result);
+    }
+
  }
