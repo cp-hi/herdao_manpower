@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -43,6 +44,15 @@ public class StaffContractRenewal {
     private Long postId;
 
     private String postOid;
+
+    @ApiModelProperty(value = "合同开始日期")
+    private LocalDateTime contractStartTime;
+
+    @ApiModelProperty(value = "合同结束日期")
+    private LocalDateTime contractEntTime;
+
+    @ApiModelProperty(value = "合同试用期")
+    private Double contractProbation;
 
     @ApiModelProperty(value = "现岗位入职日期")
     private LocalDateTime nowStartDate;
