@@ -288,7 +288,7 @@ public class RecruitmentController {
     @ApiOperation(value = "人才简历-简历详情", notes = "人才简历-简历详情")
     @GetMapping("/fetchResumeDetails")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键id")
+         @ApiImplicitParam(name = "id", value = "主键id")
     })
     public R<RecruitmentDetailsDTO> fetchResumeDetails(Long id) {
         RecruitmentDetailsDTO result = new RecruitmentDetailsDTO();
