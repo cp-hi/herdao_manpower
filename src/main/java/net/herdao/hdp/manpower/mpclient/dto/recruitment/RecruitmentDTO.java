@@ -16,9 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "人才列表")
-public class RecruitmentDTO extends BaseEntity<RecruitmentDTO> {
-
-    private static final long serialVersionUID = 1L;
+public class RecruitmentDTO   {
 
     /**
      * id

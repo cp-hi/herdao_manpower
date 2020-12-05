@@ -23,9 +23,8 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才表单编辑")
-public class RecruitmentUpdateFormDTO extends BaseEntity<RecruitmentUpdateFormDTO> {
+public class RecruitmentUpdateFormDTO   {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

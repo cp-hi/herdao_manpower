@@ -23,7 +23,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才家庭情况")
-public class RecruitmentFamilyDTO   {
+public class RecruitmentFamilyDTO  {
 
 
     /**

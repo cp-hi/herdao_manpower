@@ -20,9 +20,8 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才教育情况")
-public class RecruitmentEduDTO extends BaseEntity<RecruitmentEduDTO> {
+public class RecruitmentEduDTO   {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * id

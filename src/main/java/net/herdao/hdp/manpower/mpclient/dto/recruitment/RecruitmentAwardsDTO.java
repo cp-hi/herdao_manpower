@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才获奖情况")
-public class RecruitmentAwardsDTO extends BaseEntity<RecruitmentAwardsDTO> {
+public class RecruitmentAwardsDTO {
 
     /**
      * id
