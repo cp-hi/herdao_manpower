@@ -90,12 +90,12 @@ public class RecruitmentAwardsController {
     }
 
     /**
-     * 人才简历-获奖情况-更新
+     * 人才简历-获奖情况-修改更新
      *
      * @param dto 人才获奖情况表
      * @return R
      */
-    @ApiOperation(value = "人才简历-获奖情况-更新", notes = "人才简历-获奖情况-更新")
+    @ApiOperation(value = "人才简历-获奖情况-修改更新", notes = "人才简历-获奖情况-修改更新")
     @PutMapping("/updateAwards")
     public R<RecruitmentAwardsDTO> updateAwards(@RequestBody RecruitmentAwardsDTO dto) {
         RecruitmentAwardsDTO result = recruitmentAwardsService.saveOrUpdate(dto);

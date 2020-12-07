@@ -80,11 +80,11 @@ public class RecruitmentEducationController {
     }
 
     /**
-     * 人才简历-教育情况-更新
+     * 人才简历-教育情况-修改更新
      * @param dto 人才教育情况
      * @return R
      */
-    @ApiOperation(value = "人才简历-教育情况-更新", notes = "人才简历-教育情况-更新")
+    @ApiOperation(value = "人才简历-教育情况-修改更新", notes = "人才简历-教育情况-修改更新")
     @PostMapping("/updateEdu")
     public R<RecruitmentEduDTO> updateEdu(@RequestBody RecruitmentEduDTO dto) {
         RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
