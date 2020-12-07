@@ -71,7 +71,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "人才表单更新",module="人才简历", clazz = RecruitmentUpdateFormDTO.class)
+    //@OperationEntity(operation = "人才表单更新",module="人才简历", clazz = RecruitmentUpdateFormDTO.class)
     public R<RecruitmentUpdateFormDTO> updateRecruitment(RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         //校检手机号码
         if (checkMobile(recruitmentUpdateFormVO)){
@@ -91,10 +91,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
 
-        SysUser sysUser = SysUserUtils.getSysUser();
+        /*SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());
+        recruitment.setModifierName(sysUser.getAliasName());*/
         super.updateById(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
@@ -102,7 +102,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentAddFormDTO.class)
+    //@OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentAddFormDTO.class)
     public R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
         RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitmentAddFormDTO,updateFormVO);
@@ -120,10 +120,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentAddFormDTO,recruitment);
 
-        SysUser sysUser = SysUserUtils.getSysUser();
+       /* SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setCreatorTime(LocalDateTime.now());
         recruitment.setCreatorCode(sysUser.getUsername());
-        recruitment.setCreatorName(sysUser.getAliasName());
+        recruitment.setCreatorName(sysUser.getAliasName());*/
         super.save(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentAddFormDTO);
@@ -183,14 +183,14 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "修改更新人才简历-个人基本情况",module="人才简历", clazz = RecruitmentDetailsDTO.class)
+    //@OperationEntity(operation = "修改更新人才简历-个人基本情况",module="人才简历", clazz = RecruitmentDetailsDTO.class)
     public RecruitmentEditBaseInfoDTO updateBaseInfo(RecruitmentEditBaseInfoDTO dto) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
-        SysUser sysUser = SysUserUtils.getSysUser();
+        /*SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());
+        recruitment.setModifierName(sysUser.getAliasName());*/
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,dto);
 
@@ -204,15 +204,15 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobIntentDTO.class)
+    //@OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobIntentDTO.class)
     public RecruitmentJobIntentDTO updateRecruitmentJobIntent(RecruitmentJobIntentDTO dto) {
         Recruitment recruitment=new Recruitment();
 
         BeanUtils.copyProperties(dto,recruitment);
-        SysUser sysUser = SysUserUtils.getSysUser();
+       /* SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());
+        recruitment.setModifierName(sysUser.getAliasName());*/
         super.updateById(recruitment);
 
         BeanUtils.copyProperties(recruitment,dto);
