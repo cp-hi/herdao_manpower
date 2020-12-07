@@ -37,7 +37,7 @@
                 and scr.`status` = #{status}
             </if>
             <if test="orgId != '' and orgId != null">
-                and org.`org_id` = #{orgId}
+                and org.`id` = #{orgId}
             </if>
             and scr.`del_flag` = '0'
         </where>

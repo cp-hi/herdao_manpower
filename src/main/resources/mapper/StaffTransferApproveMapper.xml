@@ -40,7 +40,7 @@
                 and sta.`status` = #{status}
             </if>
             <if test="orgId != '' and orgId != null">
-                and norg.`org_id` = #{orgId}
+                and norg.`id` = #{orgId}
             </if>
             and sta.`del_flag` = '0'
         </where>
@@ -96,7 +96,7 @@
                 and sta.`status` = #{status}
             </if>
             <if test="orgId != '' and orgId != null">
-                and norg.`org_id` = #{orgId}
+                and norg.`id` = #{orgId}
             </if>
             and sta.`del_flag` = '0'
         </where>
