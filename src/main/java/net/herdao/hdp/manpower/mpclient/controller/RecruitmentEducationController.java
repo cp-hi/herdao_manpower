@@ -1,4 +1,5 @@
 
+
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -87,19 +88,19 @@ public class RecruitmentEducationController {
     @ApiOperation(value = "人才简历-教育情况-修改更新", notes = "人才简历-教育情况-修改更新")
     @PostMapping("/updateEdu")
     public R<RecruitmentEduDTO> updateEdu(@RequestBody RecruitmentEduDTO dto) {
-        RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
+        RecruitmentEduDTO result = recruitmentEducationService.updateEdu(dto);
         return R.ok(result);
     }
 
     /**
-     * 人才简历-教育情况-新增
+     * 人才简历-教育情况-新增保存
      * @param dto 人才教育情况
      * @return R
      */
-    @ApiOperation(value = "人才简历-教育情况-新增", notes = "人才简历-教育情况-新增")
+    @ApiOperation(value = "人才简历-教育情况-新增保存", notes = "人才简历-教育情况-新增保存")
     @PostMapping("/saveEdu")
     public R<RecruitmentEduDTO> saveEdu(@RequestBody RecruitmentEduDTO dto) {
-        RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
+        RecruitmentEduDTO result = recruitmentEducationService.saveEdu(dto);
         return R.ok(result);
     }
 

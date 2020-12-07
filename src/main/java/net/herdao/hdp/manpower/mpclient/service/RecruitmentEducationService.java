@@ -28,11 +28,18 @@ public interface RecruitmentEducationService extends IService<RecruitmentEducati
     Page<RecruitmentEduDTO> fetchResumeEduPage(Page page, Long recruitmentId);
 
     /**
-     * 人才简历-教育情况-新增或修改
+     * 人才简历-教育情况-新增保存
      * @param dto 人才教育
      * @return RecruitmentEduDTO
      */
-    RecruitmentEduDTO saveOrUpdate(RecruitmentEduDTO dto);
+    RecruitmentEduDTO saveEdu(RecruitmentEduDTO dto);
+
+    /**
+     * 人才简历-教育情况-修改更新
+     * @param dto 人才教育
+     * @return RecruitmentEduDTO
+     */
+    RecruitmentEduDTO updateEdu(RecruitmentEduDTO dto);
 
     /**
      * 人才简历-教育情况-list
