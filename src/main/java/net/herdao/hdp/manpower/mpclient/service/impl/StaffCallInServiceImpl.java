@@ -64,11 +64,9 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 //        dtoValidityCheck(id, dto);
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
-                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN)
-                .eq("transfer_type", StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
         StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
 
-        QueryWrapper<StaffTransferApprove> callInQueryWrapper = new QueryWrapper<>();
         if (staffTransferApprove == null) {
             throw new Exception("该记录不可更改");
         }
@@ -125,7 +123,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
+        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
         staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         staffTransferApprove.setDelFlag(false);
         mapper.insert(staffTransferApprove);

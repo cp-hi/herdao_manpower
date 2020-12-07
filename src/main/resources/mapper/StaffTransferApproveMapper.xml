@@ -40,9 +40,9 @@
                 and sta.`status` = #{status}
             </if>
             <if test="orgId != '' and orgId != null">
-                and norg.`org_id` = #{orgId}
+                and norg.`id` = #{orgId}
             </if>
-            and mslpa.`del_flag` = '0'
+            and sta.`del_flag` = '0'
         </where>
     </select>
 
@@ -70,7 +70,13 @@
         LEFT JOIN mp_job_level tjl ON sta.trans_job_level_id = tjl.id
 
         <where>
-            and transfer_type = '5'
+            <if test="type == '5' and type != null">
+                and transfer_type = '6' or transfer_type = '7'
+            </if>
+            <if test="type != '5' and type != null">
+                and transfer_type = #{type}
+            </if>
+
             <if test="searchText != '' and searchText != null">
                 and
                 concat(
@@ -90,9 +96,9 @@
                 and sta.`status` = #{status}
             </if>
             <if test="orgId != '' and orgId != null">
-                and norg.`org_id` = #{orgId}
+                and norg.`id` = #{orgId}
             </if>
-            and mslpa.`del_flag` = '0'
+            and sta.`del_flag` = '0'
         </where>
     </select>
 

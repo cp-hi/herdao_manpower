@@ -48,7 +48,7 @@
                 </if>
             </if>
             <if test="orgId != '' and orgId != null">
-                and norg.`org_id` = #{orgId}
+                and norg.`id` = #{orgId}
             </if>
             and mslpa.`del_flag` = '0'
         </where>
