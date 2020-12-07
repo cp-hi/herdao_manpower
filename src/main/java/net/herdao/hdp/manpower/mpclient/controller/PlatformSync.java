@@ -1,11 +1,13 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.dto.UserDTO;
-import net.herdao.hdp.admin.api.entity.*;
+import net.herdao.hdp.admin.api.entity.SysDept;
+import net.herdao.hdp.admin.api.entity.SysGrade;
+import net.herdao.hdp.admin.api.entity.SysGroup;
+import net.herdao.hdp.admin.api.entity.SysStation;
 import net.herdao.hdp.admin.api.feign.*;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.*;
@@ -84,7 +86,7 @@ public class PlatformSync {
     public R f(){
         //同步用户组织岗位
         List<Userpost> list = userpostService.list();
-        saveOrUpdateBatchSync(list);
+//        saveOrUpdateBatchSync(list);
         return R.ok();
     }
 
@@ -202,31 +204,31 @@ public class PlatformSync {
         return userDTO;
     }
     //用户组织岗位
-    private void saveOrUpdateBatchSync(List<Userpost> userposts) {
-        List<SysUserOrgStation> sysUserOrgStations = new ArrayList<>();
-        userposts.forEach(e->{
-            sysUserOrgStations.add(convert(e));
-        });
-        for(int i=0;i<sysUserOrgStations.size();){
-            List<SysUserOrgStation> sysUserOrgStations1 = sysUserOrgStations.subList(i, i + 13);
-            System.out.println(JSON.toJSON(sysUserOrgStations1));
-            remoteUserDeptStationService.saveOrUpdateBatch(sysUserOrgStations1);
-            i=i+13;
-        }
-    }
+//    private void saveOrUpdateBatchSync(List<Userpost> userposts) {
+//        List<SysUserOrgStationDTO> sysUserOrgStations = new ArrayList<>();
+//        userposts.forEach(e->{
+//            sysUserOrgStations.add(convert(e));
+//        });
+//        for(int i=0;i<sysUserOrgStations.size();){
+//            List<SysUserOrgStationDTO> sysUserOrgStations1 = sysUserOrgStations.subList(i, i + 10);
+//            System.out.println(JSON.toJSON(sysUserOrgStations1));
+//            remoteUserDeptStationService.saveOrUpdateBatch(sysUserOrgStations1);
+//            i=i+10;
+//        }
+//    }
     private void saveOrUpdateSync(Userpost userpost) {
-        SysUserOrgStation convert = convert(userpost);
-        R<Long> r = remoteUserDeptStationService.saveOrUpdate(convert);
-        RemoteCallUtils.checkData(r);
+//        SysUserOrgStation convert = convert(userpost);
+//        R<Long> r = remoteUserDeptStationService.saveOrUpdate(convert);
+//        RemoteCallUtils.checkData(r);
     }
-    private SysUserOrgStation convert(Userpost userpost){
-        SysUserOrgStation sysUserOrgStation = new SysUserOrgStation();
-        sysUserOrgStation.setCpId(userpost.getId());
-        sysUserOrgStation.setCpUserId(userpost.getUserId());
-        sysUserOrgStation.setCpDeptId(userpost.getOrgDeptId());
-        sysUserOrgStation.setCpStationId(userpost.getPostId());
-        sysUserOrgStation.setType(userpost.getOfficePostType());
-        return sysUserOrgStation;
-    }
+//    private SysUserOrgStationDTO convert(Userpost userpost){
+//        SysUserOrgStationDTO sysUserOrgStation = new SysUserOrgStationDTO();
+//        sysUserOrgStation.setCpId(userpost.getId());
+//        sysUserOrgStation.setCpUserId(userpost.getUserId());
+//        sysUserOrgStation.setCpDeptId(userpost.getOrgDeptId());
+//        sysUserOrgStation.setCpStationId(userpost.getPostId());
+//        sysUserOrgStation.setType(userpost.getOfficePostType());
+//        return sysUserOrgStation;
+//    }
 
 }

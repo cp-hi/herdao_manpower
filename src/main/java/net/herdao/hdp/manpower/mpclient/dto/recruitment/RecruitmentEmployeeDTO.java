@@ -13,9 +13,7 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
  */
 @Data
 @ApiModel(value = "人才简历-录用情况")
-public class RecruitmentEmployeeDTO extends BaseEntity<RecruitmentEmployeeDTO> {
-
-    private static final long serialVersionUID = 1L;
+public class RecruitmentEmployeeDTO   {
 
     /**
      * id

@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.sys.service.CacheService;
+import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -210,7 +211,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     public void saveOrUpdateSync(Post post) {
         SysStation station = converterValue(post);
         R<Long> r = remoteStationService.save(station);
-        Long aLong = checkData(r);
+        Long aLong = RemoteCallUtils.checkData(r);
         post.setId(aLong);
     }
 
@@ -218,13 +219,13 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     public Boolean deleteSync(Serializable id) {
 
         R<Boolean> r = remoteStationService.delete(id);
-        return checkData(r);
+        return RemoteCallUtils.checkData(r);
     }
 
     @Override
     public Boolean stop(Serializable id, Boolean stop) {
         R<Boolean> r = remoteStationService.stop(id, stop);
-        return checkData(r);
+        return RemoteCallUtils.checkData(r);
     }
 
     @Override
@@ -234,7 +235,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
             SysStation station = converterValue(post);
         });
         R<Boolean> r = remoteStationService.saveOrUpdateBatch(list);
-        Boolean aBoolean = checkData(r);
+        Boolean aBoolean = RemoteCallUtils.checkData(r);
 
     }
 

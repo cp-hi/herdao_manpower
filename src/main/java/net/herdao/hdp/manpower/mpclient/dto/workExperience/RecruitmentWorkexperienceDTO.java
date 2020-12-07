@@ -36,9 +36,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才工作经历表DTO")
-public class RecruitmentWorkexperienceDTO extends Model<RecruitmentWorkexperienceDTO> {
-
-    private static final long serialVersionUID = 1L;
+public class RecruitmentWorkexperienceDTO  {
 
     /**
      * id

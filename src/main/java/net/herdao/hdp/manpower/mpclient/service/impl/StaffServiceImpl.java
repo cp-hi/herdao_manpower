@@ -252,11 +252,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public Map<String, Object> queryCount(Long groupId){
-		int total = baseMapper.getStaffCount(groupId,null);
-		int jobType1 = baseMapper.getStaffCount(groupId,"1");
-		int jobType2 = baseMapper.getStaffCount(groupId,"2");
-		int jobType3 = baseMapper.getStaffCount(groupId,"7");
+	public Map<String, Object> queryCount(Long groupId,Long orgId){
+		int total = baseMapper.getStaffCount(groupId,null,orgId);
+		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId);
+		int jobType2 = baseMapper.getStaffCount(groupId,"2",orgId);
+		int jobType3 = baseMapper.getStaffCount(groupId,"7",orgId);
 		int toJoin = 0;
 		int toLeave = 0;
 		Map<String, Object> map = new HashMap<>();

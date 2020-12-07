@@ -28,13 +28,28 @@
                   <result property="delFlag" column="DEL_FLAG"/>
             </resultMap>
 
-      <!-- 人才简历-获奖情况-列表 -->
+      <!-- 人才简历-获奖情况-列表分页 -->
       <select id="fetchResumeAwardsPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO">
             SELECT r.awards_time,
                    r.awards_content,
                    r.issued_units,
                    CONCAT( r.modifier_name, " 于 ", r.modifier_name, " 更新" ) update_desc
              FROM  mp_recruitment_awards r
+            <where>
+                  r.del_flag = 0
+                  <if test="recruitmentId != null ">
+                        AND r.recruitment_id = #{recruitmentId}
+                  </if>
+            </where>
+      </select>
+
+      <!-- 人才简历-获奖情况-list -->
+      <select id="fetchResumeAwardsList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO">
+            SELECT r.awards_time,
+                   r.awards_content,
+                   r.issued_units,
+                   CONCAT( r.modifier_name, " 于 ", r.modifier_name, " 更新" ) update_desc
+            FROM  mp_recruitment_awards r
             <where>
                   r.del_flag = 0
                   <if test="recruitmentId != null ">

@@ -12,13 +12,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 人才表单新增DTO
+ * 人才表单-新增DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才表单新增")
-public class RecruitmentAddFormDTO extends BaseEntity<RecruitmentAddFormDTO> {
+@ApiModel(value = "人才表单-新增DTO")
+public class RecruitmentAddFormDTO  {
 
     private static final long serialVersionUID = 1L;
 

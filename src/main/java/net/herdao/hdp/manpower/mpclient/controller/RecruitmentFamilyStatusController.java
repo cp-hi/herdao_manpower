@@ -53,13 +53,13 @@ public class RecruitmentFamilyStatusController {
     private final RecruitmentFamilyStatusService recruitmentFamilyStatusService;
 
     /**
-     * 个人简历-家庭情况-列表
+     * 个人简历-家庭情况-分页列表
      *
      * @param page          分页对象
      * @param recruitmentId 人才ID
      * @return
      */
-    @ApiOperation(value = "个人简历-家庭情况-列表", notes = "个人简历-家庭情况-列表")
+    @ApiOperation(value = "个人简历-家庭情况-分页列表", notes = "个人简历-家庭情况-分页列表")
     @GetMapping("/fetchResumeFamilyPage")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "分页对象", required = true),
@@ -71,16 +71,16 @@ public class RecruitmentFamilyStatusController {
     }
 
     /**
-     * 个人简历-家庭情况-编辑
-     * @param id id
+     * 编辑个人简历-家庭情况-详情
+     * @param id 主键ID
      * @return R
      */
-    @ApiOperation(value = "个人简历-家庭情况-编辑", notes = "个人简历-家庭情况-编辑")
-    @GetMapping("/fetchDetails/{id}")
+    @ApiOperation(value = "编辑个人简历-家庭情况-详情", notes = "编辑个人简历-家庭情况-详情")
+    @GetMapping("/fetchDetailsById")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "ID", required = true)
+        @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     })
-    public R<RecruitmentFamilyDTO> fetchDetails(@PathVariable("id") Long id) {
+    public R<RecruitmentFamilyDTO> fetchDetailsById(Long id) {
         RecruitmentFamilyStatus familyStatus = recruitmentFamilyStatusService.getById(id);
         RecruitmentFamilyDTO dto=new RecruitmentFamilyDTO();
         BeanUtils.copyProperties(familyStatus,dto);
@@ -88,11 +88,11 @@ public class RecruitmentFamilyStatusController {
     }
 
     /**
-     * 个人简历-家庭情况-新增
+     * 个人简历-家庭情况-新增保存
      * @param dto 人才家庭情况
      * @return R
      */
-    @ApiOperation(value = "个人简历-家庭情况-新增", notes = "个人简历-家庭情况-新增")
+    @ApiOperation(value = "个人简历-家庭情况-新增保存", notes = "个人简历-家庭情况-新增保存")
     @PostMapping("/saveFamily")
     public R<RecruitmentFamilyDTO> saveFamily(@RequestBody RecruitmentFamilyDTO dto) {
         RecruitmentFamilyDTO result = recruitmentFamilyStatusService.saveFamily(dto);
@@ -100,23 +100,23 @@ public class RecruitmentFamilyStatusController {
     }
 
     /**
-     * 个人简历-家庭情况-更新
+     * 个人简历-家庭情况-修改更新
      * @param dto 人才家庭情况
      * @return R
      */
-    @ApiOperation(value = "个人简历-家庭情况-更新", notes = "个人简历-家庭情况-更新")
-    @PutMapping("/updateFamily")
-     public R<RecruitmentFamilyDTO> updateFamily(@RequestBody RecruitmentFamilyDTO dto) {
+    @ApiOperation(value = "个人简历-家庭情况-修改更新", notes = "个人简历-家庭情况-修改更新")
+    @PostMapping("/updateFamily")
+    public R<RecruitmentFamilyDTO> updateFamily(@RequestBody RecruitmentFamilyDTO dto) {
         RecruitmentFamilyDTO result = recruitmentFamilyStatusService.updateFamily(dto);
         return R.ok(result);
     }
 
     /**
-     * 删除人才简历-家庭情况
+     * 人才简历-家庭情况-删除
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "删除人才简历-家庭情况", notes = "删除人才简历-家庭情况")
+    @ApiOperation(value = "人才简历-家庭情况-删除", notes = "人才简历-家庭情况-删除")
     @DeleteMapping("/del/{id}")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "ID", required = true)
@@ -130,12 +130,12 @@ public class RecruitmentFamilyStatusController {
      * @param recruitmentId 人才ID
      * @return
      */
-    @ApiOperation(value = "人才简历-家庭情况", notes = "人才简历-家庭情况")
-    @GetMapping("/fetchResumeFamily")
+    @ApiOperation(value = "人才简历-家庭情况-list", notes = "人才简历-家庭情况-list")
+    @GetMapping("/fetchResumeFamilyList")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
     })
-    public R<List<RecruitmentFamilyDTO>> fetchResumeFamily(Long recruitmentId) {
+    public R<List<RecruitmentFamilyDTO>> fetchResumeFamilyList(Long recruitmentId) {
         List<RecruitmentFamilyDTO> list = recruitmentFamilyStatusService.fetchResumeFamily(recruitmentId);
         return R.ok(list);
     }

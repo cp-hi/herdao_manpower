@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -47,32 +48,25 @@ public interface RecruitmentService extends IService<Recruitment> {
     RecruitmentUpdateFormDTO fetchResumeTop(Long id);
 
     /**
-     * 编辑人才简历-个人基本情况 从业情况与求职意向
-     * @param id 主键ID
-     * @return
-     */
-    RecruitmentBaseDTO fetchResumeBaseSituation(Long id);
-
-    /**
-     * 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
+     * 修改更新人才简历-个人基本情况
      * @param dto
      * @return
      */
-    RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO dto);
+    RecruitmentEditBaseInfoDTO updateBaseInfo(RecruitmentEditBaseInfoDTO dto);
 
     /**
      * 人才简历-从业情况与求职意向
      * @param id 主键ID
      * @return
      */
-    RecruitmentJobDTO fetchResumeJob(Long id);
+    RecruitmentJobIntentDTO fetchResumeJobIntent(Long id);
 
     /**
      * 人才简历-从业情况与求职意向-修改更新
      * @param dto 从业情况与求职意向
      * @return
      */
-    RecruitmentJobDTO updateRecruitmentJob(@RequestBody RecruitmentJobDTO dto);
+    RecruitmentJobIntentDTO updateRecruitmentJobIntent(@RequestBody RecruitmentJobIntentDTO dto);
 
     /**
      * 人才简历-录用情况-列表分页
@@ -81,4 +75,60 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     RecruitmentEmployeeDTO fetchEmploy(String recruitmentId);
 
+    /**
+     * 获取人才简历-个人基本情况-详情
+     * @param id 主键ID
+     * @return RecruitmentDetailsDTO
+     */
+    RecruitmentPersonDTO fetchRecruitmentPerson(Long id);
+
+    /**
+     * 获取人才简历-从业情况与求职意向-详情
+     * @param id 主键ID
+     * @return RecruitmentIntentDTO
+     */
+    RecruitmentIntentDTO fetchRecruitmentIntent(Long id);
+
+    /**
+     * 获取人才简历-最高教育经历-详情
+     * @param id 主键ID
+     * @return RecruitmentTopEduDTO
+     */
+    RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
+
+    /**
+     * 候选人H5登录
+     * @param mobile
+     * @param code
+     * @return
+     */
+     R recruitmentLogin(String mobile, String code);
+
+    /**
+     * 获取人才简历-其他个人信息-详情
+     * @param id 主键ID
+     * @return RecruitmentOtherInfo
+     */
+    RecruitmentOtherInfo fetchRecruitmentOtherInfo(Long id);
+
+    /**
+     * 编辑人才简历-个人基本信息-详情
+     * @param id 主键ID
+     * @return RecruitmentOtherInfo
+     */
+    RecruitmentBaseInfo fetchRecruitmentBaseInfo(Long id);
+
+    /**
+     * 修改更新人才简历-其他信息
+     * @param otherInfo 其他信息
+     * @return
+     */
+     RecruitmentEditOtherInfoDTO updateOtherInfo(@RequestBody RecruitmentEditOtherInfoDTO otherInfo);
+
+    /**
+     * 候选人H5登录验证码
+     * @param mobile
+     * @return
+     */
+    R<Boolean> sendSmsCode(String mobile);
 }

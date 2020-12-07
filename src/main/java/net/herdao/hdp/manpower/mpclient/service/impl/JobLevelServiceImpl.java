@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import net.herdao.hdp.manpower.sys.service.CacheService;
+import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,9 +121,8 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     @Override
     public void saveOrUpdateSync(JobLevel jobLevel) {
         SysGrade grade = convert(jobLevel);
-        grade.setCpId(607l);
         R<Long> longR = remoteGradeService.saveOrUpdate(grade);
-        checkData(longR);
+        RemoteCallUtils.checkData(longR);
     }
     private SysGrade convert(JobLevel jobLevel){
         SysGrade grade = new SysGrade();

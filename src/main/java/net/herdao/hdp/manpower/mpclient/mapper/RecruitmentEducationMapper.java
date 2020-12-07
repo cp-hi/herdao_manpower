@@ -25,6 +25,8 @@ import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 人才教育情况
  *
@@ -35,10 +37,19 @@ import org.apache.ibatis.annotations.Param;
 public interface RecruitmentEducationMapper extends BaseMapper<RecruitmentEducation> {
 
     /**
-     * @param page 人才简历-教育情况-列表
+     * 人才简历-教育情况-分页列表
+     * @param page 分页对象
      * @param recruitmentId 人才ID
      * @return
      */
     Page<RecruitmentEduDTO> fetchResumeEduPage(Page page, @Param("recruitmentId") Long recruitmentId);
+
+    /**
+     * 人才简历-教育情况-list
+     * @param recruitmentId 人才ID
+     * @return
+     */
+    List<RecruitmentEduDTO> fetchResumeEduList(@Param("recruitmentId") Long recruitmentId);
+
 
 }

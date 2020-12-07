@@ -19,8 +19,8 @@ import java.util.Date;
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才获奖情况")
-public class RecruitmentAwardsDTO extends BaseEntity<RecruitmentAwardsDTO> {
+@ApiModel(value = "人才获奖情况DTO")
+public class RecruitmentAwardsDTO {
 
     /**
      * id

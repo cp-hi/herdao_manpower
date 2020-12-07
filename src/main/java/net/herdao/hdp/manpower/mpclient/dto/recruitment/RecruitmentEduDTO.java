@@ -20,9 +20,8 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才教育情况")
-public class RecruitmentEduDTO extends BaseEntity<RecruitmentEduDTO> {
+public class RecruitmentEduDTO   {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * id
@@ -41,14 +40,14 @@ public class RecruitmentEduDTO extends BaseEntity<RecruitmentEduDTO> {
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date period;
 
     /**
      * 毕业日期
      */
     @ApiModelProperty(value="毕业日期")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date todate;
 
     /**

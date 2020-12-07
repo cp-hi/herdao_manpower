@@ -529,10 +529,4 @@ public class EntityServiceImpl<M extends EntityMapper<T>, T> extends ServiceImpl
     }
 
     //endregion
-    protected <E> E checkData(R<E> r) {
-        if (r.getCode() == 0) {
-            return r.getData();
-        }
-        throw new RuntimeException("kkk");
-    }
 }

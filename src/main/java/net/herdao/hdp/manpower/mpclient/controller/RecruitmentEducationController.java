@@ -1,19 +1,4 @@
-/*
- *    Copyright (c) 2018-2025, herdao All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the herdao.net developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: liang
- */
+
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
@@ -96,26 +81,26 @@ public class RecruitmentEducationController {
     }
 
     /**
-     * 人才简历-教育情况-更新
+     * 人才简历-教育情况-修改更新
      * @param dto 人才教育情况
      * @return R
      */
-    @ApiOperation(value = "人才简历-教育情况-更新", notes = "人才简历-教育情况-更新")
+    @ApiOperation(value = "人才简历-教育情况-修改更新", notes = "人才简历-教育情况-修改更新")
     @PostMapping("/updateEdu")
     public R<RecruitmentEduDTO> updateEdu(@RequestBody RecruitmentEduDTO dto) {
-        RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
+        RecruitmentEduDTO result = recruitmentEducationService.updateEdu(dto);
         return R.ok(result);
     }
 
     /**
-     * 人才简历-教育情况-新增
+     * 人才简历-教育情况-新增保存
      * @param dto 人才教育情况
      * @return R
      */
-    @ApiOperation(value = "人才简历-教育情况-新增", notes = "人才简历-教育情况-新增")
+    @ApiOperation(value = "人才简历-教育情况-新增保存", notes = "人才简历-教育情况-新增保存")
     @PostMapping("/saveEdu")
     public R<RecruitmentEduDTO> saveEdu(@RequestBody RecruitmentEduDTO dto) {
-        RecruitmentEduDTO result = recruitmentEducationService.saveOrUpdate(dto);
+        RecruitmentEduDTO result = recruitmentEducationService.saveEdu(dto);
         return R.ok(result);
     }
 

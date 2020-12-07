@@ -114,6 +114,12 @@
         left join mp_job_level jl on po.job_level_id=jl.id
         LEFT join mp_job_grade jg on jl.job_grade_id=jg.id
         <where>
+            <if test="postOrgListVO.orgId != null">
+                po.org_id = #{postOrgListVO.orgId}
+            </if>
+            <if test="postOrgListVO.groupId != null">
+                po.group_id = #{postOrgListVO.groupId}
+            </if>
             <if test="searchText != null and searchText !=''">
                and CONCAT_WS(
                 ',',

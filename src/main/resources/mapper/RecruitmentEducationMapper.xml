@@ -33,7 +33,7 @@
             <result property="learnForm" column="learn_form"/>
       </resultMap>
 
-      <!-- 人才简历-教育情况-列表 -->
+      <!-- 人才简历-教育情况-列表分页 -->
       <select id="fetchResumeEduPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO">
             SELECT edu.period,
                    edu.todate,
@@ -50,8 +50,30 @@
               <where>
                   edu.DEL_FLAG = 0
                   <if test="recruitmentId != null ">
-                        AND f.recruitment_id = #{recruitmentId}
+                        AND edu.recruitment_id = #{recruitmentId}
                   </if>
               </where>
       </select>
+
+    <!-- 人才简历-教育情况-list -->
+    <select id="fetchResumeEduList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO">
+        SELECT  edu.period,
+                edu.todate,
+                edu.school_name,
+                edu.professional,
+                xl.label education_qua,
+                xw.label degree,
+                xxxs.label learn_form,
+                CONCAT( edu.modifier_name, " 于 ", edu.modifier_name, " 更新" ) update_desc
+        FROM  mp_recruitment_education edu
+        LEFT JOIN sys_dict_item xl ON xl.type = 'EDUCATION_QUA_TYPE' AND xl.VALUE = edu.education_qua
+        LEFT JOIN sys_dict_item xw ON xw.type = 'EDUCATION_DEGREE_TYPE' AND xw.VALUE = edu.education_qua
+        LEFT JOIN sys_dict_item xxxs ON xxxs.type = 'XXXS' AND xxxs.VALUE = edu.education_qua
+        <where>
+            edu.DEL_FLAG = 0
+            <if test="recruitmentId != null ">
+                AND edu.recruitment_id = #{recruitmentId}
+            </if>
+        </where>
+    </select>
 </mapper>

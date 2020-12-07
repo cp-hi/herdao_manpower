@@ -49,43 +49,52 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
     }
 
     /**
-     * @description 人才简历-教育情况-新增或修改
+     * @description 人才简历-教育情况-新增保存
      * @date 2020-10-19 10:22:19
      * @version 1.0
      */
     @Override
-    @OperationEntity(operation = "人才简历-教育情况-新增或修改",module="人才简历", clazz = RecruitmentEduDTO.class)
-    public RecruitmentEduDTO saveOrUpdate(RecruitmentEduDTO dto) {
-        //更新
-        if(ObjectUtil.isNotNull(dto.getId())){
-            RecruitmentEducation education=new RecruitmentEducation();
-            BeanUtils.copyProperties(dto,education);
+    //@OperationEntity(operation = "人才简历-教育情况-新增或修改",module="人才简历", clazz = RecruitmentEduDTO.class)
+    public RecruitmentEduDTO saveEdu(RecruitmentEduDTO dto) {
+        RecruitmentEducation education=new RecruitmentEducation();
+        BeanUtils.copyProperties(dto,education);
 
-            SysUser sysUser = SysUserUtils.getSysUser();
-            education.setModifierTime(LocalDateTime.now());
-            education.setModifierCode(sysUser.getUsername());
-            education.setModifierName(sysUser.getAliasName());
+        SysUser sysUser = SysUserUtils.getSysUser();
+        education.setCreatorTime(LocalDateTime.now());
+        education.setCreatorCode(sysUser.getUsername());
+        education.setCreatorName(sysUser.getAliasName());
 
-            BeanUtils.copyProperties(education,dto);
-            super.updateById(education);
-        }
-
-        //新增
-        if(ObjectUtil.isNull(dto.getId())){
-            RecruitmentEducation education=new RecruitmentEducation();
-            BeanUtils.copyProperties(dto,education);
-
-            SysUser sysUser = SysUserUtils.getSysUser();
-            education.setCreatorTime(LocalDateTime.now());
-            education.setCreatorCode(sysUser.getUsername());
-            education.setCreatorName(sysUser.getAliasName());
-
-            BeanUtils.copyProperties(education,dto);
-            super.save(education);
-        }
+        BeanUtils.copyProperties(education,dto);
+        super.save(education);
 
         return dto;
     }
 
+    /**
+     * @description 人才简历-教育情况-修改更新
+     * @date 2020-10-19 10:22:19
+     * @version 1.0
+     */
+    @Override
+    //@OperationEntity(operation = "人才简历-教育情况-新增或修改",module="人才简历", clazz = RecruitmentEduDTO.class)
+    public RecruitmentEduDTO updateEdu(RecruitmentEduDTO dto) {
+        RecruitmentEducation education=new RecruitmentEducation();
+        BeanUtils.copyProperties(dto,education);
 
+        SysUser sysUser = SysUserUtils.getSysUser();
+        education.setModifierTime(LocalDateTime.now());
+        education.setModifierCode(sysUser.getUsername());
+        education.setModifierName(sysUser.getAliasName());
+
+        BeanUtils.copyProperties(education,dto);
+        super.updateById(education);
+
+        return dto;
+    }
+
+    @Override
+    public List<RecruitmentEduDTO> fetchResumeEduList(Long recruitmentId) {
+        List<RecruitmentEduDTO> list = this.baseMapper.fetchResumeEduList(recruitmentId);
+        return list;
+    }
 }

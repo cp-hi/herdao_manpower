@@ -17,16 +17,25 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostOrg;
 import net.herdao.hdp.manpower.mpclient.service.PostOrgService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostShortVO;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Wrapper;
+import java.util.List;
 
 
 /**
@@ -55,7 +64,16 @@ public class PostOrgController {
     public R getPostOrgPage(Page page, PostOrgListVO postOrgListVO, String seachText) {
         return R.ok(postOrgService.findPostOrgPage(page,postOrgListVO,seachText));
     }
-
+    @GetMapping("/list")
+    @ApiOperation(value = "简要信息列表", notes = "用于下拉列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "groupId", value = "集团ID"),
+    })
+    public R<List<PostOrgListVO>> list(Long groupId){
+        List<PostOrg> list = postOrgService.list(Wrappers.<PostOrg>lambdaQuery().eq(PostOrg::getGroupId, groupId));
+        List<PostOrgListVO> vos = DtoConverter.dto2vo(list, PostOrgListVO.class);
+        return R.ok(vos);
+    }
 
     /**
      * 通过id查询岗位组织

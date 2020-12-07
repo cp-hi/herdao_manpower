@@ -17,13 +17,23 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.esms.MessageData;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.common.core.constant.CacheConstants;
+import net.herdao.hdp.common.core.constant.SecurityConstants;
+import net.herdao.hdp.common.core.constant.enums.LoginTypeEnum;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.common.message.config.SmsTemplate;
+import net.herdao.hdp.common.message.constant.SmsConstant;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
@@ -31,10 +41,13 @@ import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 人才表
@@ -42,8 +55,14 @@ import java.util.List;
  * @author Andy
  * @date 2020-11-23 14:46:40
  */
+@Slf4j
 @Service
+@AllArgsConstructor
 public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recruitment> implements RecruitmentService {
+
+    private final RedisTemplate redisTemplate;
+
+    private final SmsTemplate smsTemplate;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -164,14 +183,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentBaseDTO fetchResumeBaseSituation(Long id) {
-        RecruitmentBaseDTO entity = this.baseMapper.fetchResumeBaseSituation(id);
-        return entity;
-    }
-
-    @Override
-    @OperationEntity(operation = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向",module="人才简历", clazz = RecruitmentBaseDTO.class)
-    public RecruitmentBaseDTO updateBaseInfo(RecruitmentBaseDTO dto) {
+    @OperationEntity(operation = "修改更新人才简历-个人基本情况",module="人才简历", clazz = RecruitmentDetailsDTO.class)
+    public RecruitmentEditBaseInfoDTO updateBaseInfo(RecruitmentEditBaseInfoDTO dto) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -185,14 +198,14 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentJobDTO fetchResumeJob(Long id) {
-        RecruitmentJobDTO result = this.baseMapper.fetchResumeJob(id);
+    public RecruitmentJobIntentDTO fetchResumeJobIntent(Long id) {
+        RecruitmentJobIntentDTO result = this.baseMapper.fetchResumeJobIntent(id);
         return result;
     }
 
     @Override
-    @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobDTO.class)
-    public RecruitmentJobDTO updateRecruitmentJob(RecruitmentJobDTO dto) {
+    @OperationEntity(operation = "人才简历-从业情况与求职意向-更新",module="人才简历", clazz = RecruitmentJobIntentDTO.class)
+    public RecruitmentJobIntentDTO updateRecruitmentJobIntent(RecruitmentJobIntentDTO dto) {
         Recruitment recruitment=new Recruitment();
 
         BeanUtils.copyProperties(dto,recruitment);
@@ -211,5 +224,103 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentEmployeeDTO fetchEmploy(String recruitmentId) {
         RecruitmentEmployeeDTO entity = this.baseMapper.fetchEmploy(recruitmentId);
         return entity;
+    }
+
+    @Override
+    public RecruitmentPersonDTO fetchRecruitmentPerson(Long id) {
+        RecruitmentPersonDTO recruitmentPersonDTO = this.baseMapper.fetchRecruitmentPerson(id);
+        return recruitmentPersonDTO;
+    }
+
+    @Override
+    public RecruitmentIntentDTO fetchRecruitmentIntent(Long id) {
+        RecruitmentIntentDTO recruitmentIntentDTO = this.baseMapper.fetchRecruitmentIntent(id);
+        return recruitmentIntentDTO;
+    }
+
+    @Override
+    public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
+        RecruitmentTopEduDTO recruitmentTopEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
+        return recruitmentTopEduDTO;
+    }
+
+    @Override
+    public R recruitmentLogin(String mobile, String code) {
+        String key = CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile;
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+
+        if (!redisTemplate.hasKey(key)) {
+            return  R.failed("验证码不合法");
+        }
+
+        String redisCode = (String)redisTemplate.opsForValue().get(key);
+
+        if (StrUtil.isBlank(redisCode)) {
+            redisTemplate.delete(key);
+            return  R.failed("验证码不合法");
+        }
+
+        if (!StrUtil.equals(redisCode, code)) {
+            return  R.failed("验证码不合法");
+        }
+        List<Recruitment> recruitments = this.baseMapper.selectList(Wrappers.<Recruitment>query().lambda().eq(Recruitment::getMobile, mobile));
+        if(recruitments.isEmpty() || recruitments.size() != 1){
+            return  R.failed("手机号不合法");
+        }
+        return R.ok(recruitments.get(0).getId());
+
+    }
+
+    @Override
+    public RecruitmentOtherInfo fetchRecruitmentOtherInfo(Long id) {
+        RecruitmentOtherInfo recruitmentOtherInfo = this.baseMapper.fetchRecruitmentOtherInfo(id);
+        return recruitmentOtherInfo;
+    }
+
+    @Override
+    public RecruitmentBaseInfo fetchRecruitmentBaseInfo(Long id) {
+        RecruitmentBaseInfo recruitmentBaseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
+        return recruitmentBaseInfo;
+    }
+
+    @Override
+    public RecruitmentEditOtherInfoDTO updateOtherInfo(RecruitmentEditOtherInfoDTO otherInfo) {
+        Recruitment recruitment=new Recruitment();
+        BeanUtils.copyProperties(otherInfo,recruitment);
+        SysUser sysUser = SysUserUtils.getSysUser();
+        recruitment.setModifierTime(LocalDateTime.now());
+        recruitment.setModifierCode(sysUser.getUsername());
+        recruitment.setModifierName(sysUser.getAliasName());
+        super.updateById(recruitment);
+        BeanUtils.copyProperties(recruitment,otherInfo);
+
+        return otherInfo;
+    }
+
+    @Override
+    public R<Boolean> sendSmsCode(String mobile) {
+        List<Recruitment> recruitments = this.baseMapper.selectList(Wrappers.<Recruitment>query().lambda().eq(Recruitment::getMobile, mobile));
+        if(recruitments.isEmpty() || recruitments.size() != 1){
+            log.info("手机号未注册:{}", mobile);
+            return R.ok(Boolean.FALSE, "手机号未注册");
+        }
+
+        Object codeObj = redisTemplate.opsForValue()
+                .get(CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile);
+
+        if (codeObj != null) {
+            log.info("手机号验证码未过期:{}，{}", mobile, codeObj);
+            return R.ok(Boolean.FALSE, "验证码发送过频繁");
+        }
+
+        String code = RandomUtil.randomNumbers(Integer.parseInt(SecurityConstants.CODE_SIZE));
+        log.debug("手机号生成验证码成功:{},{}", mobile, code);
+        redisTemplate.opsForValue().set(
+                CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile, code,
+                SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
+        MessageData message = new MessageData(mobile, String.format(SmsConstant.MP_TEMPLATE,code));
+        R r = smsTemplate.doSendSingleSmsForSingle(message);
+        log.info("执行短信通知结果: {}，消息体: {}", r.getMsg(), message);
+        return r;
     }
 }

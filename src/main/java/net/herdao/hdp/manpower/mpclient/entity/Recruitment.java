@@ -621,13 +621,8 @@ public class Recruitment extends Model<Recruitment> {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date resumeAccessTime;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remarks;
 
     /**
      * 职称证号

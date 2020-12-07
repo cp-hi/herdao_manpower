@@ -59,7 +59,7 @@ public interface StaffService extends HdpService<Staff> {
 	 * @param groupId
 	 * @return
 	 */
-	Map<String, Object> queryCount(Long groupId);
+	Map<String, Object> queryCount(Long groupId,Long orgId);
 
 	IPage staffPage(Page page, StaffListDTO staff, String searchText);
 
