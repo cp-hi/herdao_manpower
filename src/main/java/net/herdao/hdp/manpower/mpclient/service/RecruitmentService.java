@@ -48,11 +48,11 @@ public interface RecruitmentService extends IService<Recruitment> {
     RecruitmentUpdateFormDTO fetchResumeTop(Long id);
 
     /**
-     * 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
+     * 修改更新人才简历-个人基本情况
      * @param dto
      * @return
      */
-    RecruitmentDetailsDTO updateBaseInfo(RecruitmentDetailsDTO dto);
+    RecruitmentEditBaseInfo updateBaseInfo(RecruitmentEditBaseInfo dto);
 
     /**
      * 人才简历-从业情况与求职意向
@@ -118,5 +118,10 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     RecruitmentBaseInfo fetchRecruitmentBaseInfo(Long id);
 
-
+    /**
+     * 修改更新人才简历-其他信息
+     * @param otherInfo 其他信息
+     * @return
+     */
+     RecruitmentEditOtherInfo updateOtherInfo(@RequestBody RecruitmentEditOtherInfo otherInfo);
 }

@@ -93,7 +93,7 @@ public class RecruitmentActivitiController {
      * @return R
      */
     @ApiOperation(value = "编辑人才简历-人才专业活动-修改更新", notes = "编辑人才简历-人才专业活动-修改更新")
-    @PutMapping("/updateActiviti")
+    @PostMapping("/updateActiviti")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmentactiviti_edit')" )
     public R<RecruitmentActiviti> updateActiviti(@RequestBody RecruitmentActiviti recruitmentActiviti) {
         SysUser sysUser = SysUserUtils.getSysUser();

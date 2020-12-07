@@ -172,8 +172,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    @OperationEntity(operation = "人才简历-个人基本情况 其他个人信息 从业情况与求职意向",module="人才简历", clazz = RecruitmentDetailsDTO.class)
-    public RecruitmentDetailsDTO updateBaseInfo(RecruitmentDetailsDTO dto) {
+    @OperationEntity(operation = "修改更新人才简历-个人基本情况",module="人才简历", clazz = RecruitmentDetailsDTO.class)
+    public RecruitmentEditBaseInfo updateBaseInfo(RecruitmentEditBaseInfo dto) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -270,5 +270,19 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentBaseInfo fetchRecruitmentBaseInfo(Long id) {
         RecruitmentBaseInfo recruitmentBaseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
         return recruitmentBaseInfo;
+    }
+
+    @Override
+    public RecruitmentEditOtherInfo updateOtherInfo(RecruitmentEditOtherInfo otherInfo) {
+        Recruitment recruitment=new Recruitment();
+        BeanUtils.copyProperties(otherInfo,recruitment);
+        SysUser sysUser = SysUserUtils.getSysUser();
+        recruitment.setModifierTime(LocalDateTime.now());
+        recruitment.setModifierCode(sysUser.getUsername());
+        recruitment.setModifierName(sysUser.getAliasName());
+        super.updateById(recruitment);
+        BeanUtils.copyProperties(recruitment,otherInfo);
+
+        return otherInfo;
     }
 }

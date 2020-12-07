@@ -95,7 +95,7 @@ public class RecruitmentTrainController {
      * @return R
      */
     @ApiOperation(value = "人才培训经历-修改更新", notes = "人才培训经历-修改更新")
-    @PutMapping("/updateTrain")
+    @PostMapping("/updateTrain")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttrain_edit')" )
     public R<RecruitmentTrain> updateTrain(@RequestBody RecruitmentTrain recruitmentTrain) {
         SysUser sysUser = SysUserUtils.getSysUser();

@@ -161,19 +161,6 @@ public class RecruitmentController {
     }
 
     /**
-     * 编辑更新个人简历-个人基本情况 其他个人信息
-     *
-     * @param baseDTO 人才简历-个人基本情况 其他个人信息 从业情况与求职意向
-     * @return R
-     */
-    @ApiOperation(value = "编辑更新个人简历-个人基本情况 其他个人信息", notes = "编辑更新个人简历-个人基本情况 其他个人信息")
-    @PostMapping("/updateBaseInfo")
-    public R<RecruitmentDetailsDTO> updateBaseInfo(@RequestBody RecruitmentDetailsDTO baseDTO) {
-        RecruitmentDetailsDTO result = recruitmentService.updateBaseInfo(baseDTO);
-        return R.ok(result);
-    }
-
-    /**
      * 简历编辑-获取人才简历-求职意向
      * @param id
      * @return R
@@ -378,6 +365,30 @@ public class RecruitmentController {
         result.setRecruitmentEditBaseInfo(editBaseInfo);
 
         return R.ok(result);
+    }
+
+    /**
+     * 编辑页面-修改更新个人简历-个人基本情况
+     * @param baseInfo 人才简历-个人基本情况
+     * @return R
+     */
+    @ApiOperation(value = "编辑页面-修改更新个人简历-个人基本情况", notes = "编辑页面-修改更新个人简历-个人基本情况")
+    @PostMapping("/updateBaseInfo")
+    public R<RecruitmentEditBaseInfo> updateBaseInfo(@RequestBody RecruitmentEditBaseInfo baseInfo) {
+        RecruitmentEditBaseInfo result = recruitmentService.updateBaseInfo(baseInfo);
+        return R.ok(result,"修改更新成功");
+    }
+
+    /**
+     * 编辑页面-修改更新个人简历-其他个人信息
+     * @param otherInfo 人才简历-其他个人信息
+     * @return R
+     */
+    @ApiOperation(value = "编辑页面-修改更新个人简历-其他个人信息", notes = "编辑页面-修改更新个人简历-其他个人信息")
+    @PostMapping("/updateOtherInfo")
+    public R<RecruitmentEditOtherInfo> updateOtherInfo(@RequestBody RecruitmentEditOtherInfo otherInfo) {
+        RecruitmentEditOtherInfo result = recruitmentService.updateOtherInfo(otherInfo);
+        return R.ok(result,"修改更新成功");
     }
 
 }
