@@ -22,7 +22,7 @@ public interface StaffTransferApproveMapper extends BaseMapper<StaffTransferAppr
     Page<StaffCallInAndCallOutPageVO>findStaffCallInAndCallOutPage(Page page,
                                                                    @Param("searchText") String searchText,
                                                                    @Param("orgId") Long orgId,
-                                                                   @Param("status") String status);
+                                                                   @Param("status") String status, @Param("type") String type);
 
 
 }

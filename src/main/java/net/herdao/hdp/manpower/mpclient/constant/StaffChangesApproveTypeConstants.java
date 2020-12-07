@@ -22,4 +22,14 @@ public interface StaffChangesApproveTypeConstants {
      * 晋升
      */
     public final String PROMOTE = "2";
+
+    /**
+     * 调入
+     */
+    String CALL_IN = "6";
+
+    /**
+     * 调出
+     */
+    String CALL_OUT = "7";
 }

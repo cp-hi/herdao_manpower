@@ -34,8 +34,7 @@ public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffTransferA
     public Long affirmStart(Long id) throws Exception {
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
-                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN)
-                .eq("transfer_type", StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
         StaffTransferApprove changes = mapper.selectOne(queryWrapper);
         if (changes == null) {
             throw new Exception("该记录不可修改");
@@ -46,7 +45,7 @@ public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffTransferA
     }
 
     @Override
-    public Page<StaffCallInAndCallOutPageVO> pageStaffCallInAndCallOut(Page page, String searchText, Long orgId, String status) {
-        return this.baseMapper.findStaffCallInAndCallOutPage(page, searchText, orgId, status);
+    public Page<StaffCallInAndCallOutPageVO> pageStaffCallInAndCallOut(Page page, String searchText, Long orgId, String status, String type) {
+        return this.baseMapper.findStaffCallInAndCallOutPage(page, searchText, orgId, status, type);
     }
 }

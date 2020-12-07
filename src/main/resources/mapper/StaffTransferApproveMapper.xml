@@ -70,7 +70,13 @@
         LEFT JOIN mp_job_level tjl ON sta.trans_job_level_id = tjl.id
 
         <where>
-            and transfer_type = '5'
+            <if test="type == 5">
+                and transfer_type = '6' or transfer_type = '7'
+            </if>
+            <if test="test != 5">
+                and transfer_type = #{type}
+            </if>
+
             <if test="searchText != '' and searchText != null">
                 and
                 concat(
