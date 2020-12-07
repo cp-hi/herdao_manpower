@@ -50,48 +50,28 @@ public class RecruitmentTitleController {
 
     private final  RecruitmentTitleService recruitmentTitleService;
 
-    /**
-     * 编辑人才简历-人才职称资格-分页列表
-     * @param page 分页对象
-     * @param recruitmentId 人才ID
-     * @return
-     */
-    @ApiOperation(value = "编辑人才简历-人才职称资格-分页列表", notes = "编辑人才简历-人才职称资格-分页列表")
-    @GetMapping("/page" )
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "分页对象", required = true),
-        @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
-    })
-    //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttitle_view')" )
-    public R<Page<RecruitmentTitle>> getRecruitmentTitlePage(Page page, Long recruitmentId) {
-        RecruitmentTitle title=new RecruitmentTitle();
-        title.setRecruitmentId(recruitmentId);
-        Page<RecruitmentTitle> pageResult = recruitmentTitleService.page(page, Wrappers.query(title));
-        return R.ok(pageResult);
-    }
-
    /**
-     * 编辑人才简历-人才职称资格-详情
+     * 简历详情-人才职称资格-详情
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "编辑人才简历-人才职称资格-详情", notes = "编辑人才简历-人才职称资格-详情")
-    @GetMapping("/fetchDetailsById" )
+    @ApiOperation(value = "简历详情-人才职称资格-详情", notes = "简历详情-人才职称资格-详情")
+    @GetMapping("/fetchRecruitmentTitleById" )
     @ApiImplicitParams({
        @ApiImplicitParam(name = "id", value = "主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttitle_view')" )
-    public R<RecruitmentTitle> fetchDetailsById(Long id) {
+    public R<RecruitmentTitle> fetchRecruitmentTitleById(Long id) {
         RecruitmentTitle recruitmentTitle = recruitmentTitleService.getById(id);
         return R.ok(recruitmentTitle);
     }
 
     /**
-     * 新增人才职称资格
+     * 简历详情-人才职称资格-新增保存
      * @param recruitmentTitle 人才职称资格
      * @return R
      */
-    @ApiOperation(value = "编辑人才简历-人才职称资格-新增保存", notes = "编辑人才简历-人才职称资格-新增保存")
+    @ApiOperation(value = "简历详情-人才职称资格-新增保存", notes = "简历详情-人才职称资格-新增保存")
     @PostMapping("/saveTitle")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttitle_add')" )
     public R<RecruitmentTitle> saveTitle(@RequestBody RecruitmentTitle recruitmentTitle) {
@@ -105,11 +85,11 @@ public class RecruitmentTitleController {
     }
 
     /**
-     * 编辑人才简历-人才职称资格-修改更新
+     * 简历详情-人才职称资格-修改更新
      * @param recruitmentTitle 人才职称资格
      * @return R
      */
-    @ApiOperation(value = "编辑人才简历-人才职称资格-修改更新", notes = "编辑人才简历-人才职称资格-修改更新")
+    @ApiOperation(value = "简历详情-人才职称资格-修改更新", notes = "简历详情-人才职称资格-修改更新")
     @PostMapping("/updateTitle")
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttitle_edit')" )
     public R<RecruitmentTitle> updateTitle(@RequestBody RecruitmentTitle recruitmentTitle) {
@@ -123,11 +103,11 @@ public class RecruitmentTitleController {
     }
 
     /**
-     * 编辑人才简历-人才职称资格-删除
+     * 简历详情-人才职称资格-删除
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "编辑人才简历-人才职称资格-删除", notes = "编辑人才简历-人才职称资格-删除")
+    @ApiOperation(value = "简历详情-人才职称资格-删除", notes = "简历详情-人才职称资格-删除")
     @DeleteMapping("del/{id}" )
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttitle_del')" )
     public R removeById(@PathVariable Long id) {

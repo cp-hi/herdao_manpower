@@ -36,7 +36,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才工作经历表DTO")
-public class RecruitmentWorkexperienceDTO  {
+public class RecruitmentWorkExperienceDTO {
 
     /**
      * id

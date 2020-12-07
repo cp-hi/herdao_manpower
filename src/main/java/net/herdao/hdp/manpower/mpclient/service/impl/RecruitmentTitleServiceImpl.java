@@ -17,10 +17,13 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentTitle;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentTitleMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentTitleService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 人才职称资格
@@ -31,4 +34,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecruitmentTitleServiceImpl extends ServiceImpl<RecruitmentTitleMapper, RecruitmentTitle> implements RecruitmentTitleService {
 
+    @Override
+    public List<RecruitmentTitleDTO> findRecruitmentTitleList(Long recruitmentId) {
+        List<RecruitmentTitleDTO> titleList = this.baseMapper.findRecruitmentTitleList(recruitmentId);
+        return titleList;
+    }
 }

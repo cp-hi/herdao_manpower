@@ -6,25 +6,42 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.RecruitmentActivitiMapper">
 
-  <resultMap id="recruitmentActivitiMap" type="net.herdao.hdp.manpower.mpclient.entity.RecruitmentActiviti">
+             <resultMap id="recruitmentActivitiMap" type="net.herdao.hdp.manpower.mpclient.entity.RecruitmentActiviti">
                   <id property="id" column="ID"/>
-                        <result property="beginDate" column="begin_date"/>
-                        <result property="endDate" column="end_date"/>
-                        <result property="content" column="content"/>
-                        <result property="result" column="result"/>
-                        <result property="recruitmentId" column="recruitment_id"/>
-                        <result property="field1" column="FIELD1"/>
-                        <result property="field2" column="FIELD2"/>
-                        <result property="field3" column="FIELD3"/>
-                        <result property="field4" column="FIELD4"/>
-                        <result property="field5" column="FIELD5"/>
-                        <result property="tenantId" column="TENANT_ID"/>
-                        <result property="delFlag" column="DEL_FLAG"/>
-                        <result property="creatorCode" column="creator_code"/>
-                        <result property="creatorName" column="creator_name"/>
-                        <result property="creatorTime" column="creator_time"/>
-                        <result property="modifierCode" column="modifier_code"/>
-                        <result property="modifierName" column="modifier_name"/>
-                        <result property="modifierTime" column="modifier_time"/>
+                  <result property="beginDate" column="begin_date"/>
+                  <result property="endDate" column="end_date"/>
+                  <result property="content" column="content"/>
+                  <result property="result" column="result"/>
+                  <result property="recruitmentId" column="recruitment_id"/>
+                  <result property="field1" column="FIELD1"/>
+                  <result property="field2" column="FIELD2"/>
+                  <result property="field3" column="FIELD3"/>
+                  <result property="field4" column="FIELD4"/>
+                  <result property="field5" column="FIELD5"/>
+                  <result property="tenantId" column="TENANT_ID"/>
+                  <result property="delFlag" column="DEL_FLAG"/>
+                  <result property="creatorCode" column="creator_code"/>
+                  <result property="creatorName" column="creator_name"/>
+                  <result property="creatorTime" column="creator_time"/>
+                  <result property="modifierCode" column="modifier_code"/>
+                  <result property="modifierName" column="modifier_name"/>
+                  <result property="modifierTime" column="modifier_time"/>
             </resultMap>
+
+      <!-- 简历详情-人才活动-list -->
+      <select id="findRecruitmentActivitiList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO">
+          SELECT  t.id,
+                  t.begin_date,
+                  t.end_date,
+                  t.content,
+                  t.result
+          FROM   mp_recruitment_activiti t
+            <where>
+                  t.DEL_FLAG =0
+                  <if test="recruitmentId != null and recruitmentId != '' ">
+                        AND t.recruitment_id = #{recruitmentId}
+                  </if>
+            </where>
+      </select>
+
 </mapper>

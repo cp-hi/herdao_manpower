@@ -19,11 +19,11 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.beans.BeanUtils;
+
+import java.util.List;
 
 /**
  * 人才工作经历表
@@ -39,7 +39,7 @@ public interface RecruitmentWorkexperienceMapper extends BaseMapper<RecruitmentW
      * @param recruitmentId 人才ID
      * @return
      */
-    RecruitmentWorkexperienceDTO findWorkExperience(Long recruitmentId);
+    List<RecruitmentWorkExperienceDTO> findWorkExperienceList(Long recruitmentId);
 
 
 

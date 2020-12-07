@@ -37,7 +37,7 @@
       </resultMap>
 
       <!-- 个人简历-工作经历-->
-      <select id="findWorkExperience" resultType="net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO">
+      <select id="findWorkExperienceList" resultType="net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO">
             SELECT wr.period,
                    wr.todate,
                    wr.company_name,

@@ -18,8 +18,12 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentTitle;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 人才职称资格
@@ -29,5 +33,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface RecruitmentTitleMapper extends BaseMapper<RecruitmentTitle> {
+    /**
+     * 简历详情-职称及职业资格
+     * @param recruitmentId 人才ID
+     * @return
+     */
+    List<RecruitmentTitleDTO> findRecruitmentTitleList(Long recruitmentId);
 
 }

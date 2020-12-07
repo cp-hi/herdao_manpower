@@ -36,38 +36,17 @@ public class RecruitmentTrainController {
     private final  RecruitmentTrainService recruitmentTrainService;
 
     /**
-     * 人才培训经历-分页列表
-     * @param page 分页对象
-     * @param recruitmentId 人才ID
-     * @return
-     */
-    @ApiOperation(value = "人才培训经历-分页列表", notes = "人才培训-分页列表")
-    @GetMapping("/getRecruitmentTrainPage" )
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true),
-    })
-    //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttrain_view')" )
-    public R<Page<RecruitmentTrain>> getRecruitmentTrainPage(Page page, Long recruitmentId) {
-        RecruitmentTrain train=new RecruitmentTrain();
-        if (ObjectUtil.isNotNull(recruitmentId)){
-            train.setRecruitmentId(recruitmentId);
-        }
-        Page<RecruitmentTrain> pagResult = recruitmentTrainService.page(page, Wrappers.query(train));
-        return R.ok(pagResult);
-    }
-
-    /**
-     * 人才培训-详情
+     * 人才培训经历-详情
      * @param id id
      * @return R
      */
     @ApiOperation(value = "人才培训经历-详情", notes = "人才培训经历-详情")
-    @GetMapping("/fetchDetailsById" )
+    @GetMapping("/fetchRecruitmentTrainById" )
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="主键ID",required = true),
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmenttrain_view')" )
-    public R<RecruitmentTrain> fetchDetailsById(Long id) {
+    public R<RecruitmentTrain> fetchRecruitmentTrainById(Long id) {
         RecruitmentTrain recruitmentTrain = recruitmentTrainService.getById(id);
         return R.ok(recruitmentTrain);
     }

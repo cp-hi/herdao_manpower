@@ -34,7 +34,7 @@ import java.time.LocalDateTime;
  * @date 2020-12-02 20:12:40
  */
 @Data
-@TableName("recruitment_activiti")
+@TableName("mp_recruitment_activiti")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "人才活动表")
 public class RecruitmentActiviti extends Model<RecruitmentActiviti> {

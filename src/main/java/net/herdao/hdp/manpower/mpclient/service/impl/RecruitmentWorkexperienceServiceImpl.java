@@ -18,8 +18,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentWorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
@@ -29,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 人才工作经历表
@@ -40,14 +40,14 @@ import java.time.LocalDateTime;
 public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<RecruitmentWorkexperienceMapper, RecruitmentWorkexperience> implements RecruitmentWorkexperienceService {
 
     @Override
-    public RecruitmentWorkexperienceDTO findWorkExperience(Long recruitmentId) {
-        RecruitmentWorkexperienceDTO result = this.baseMapper.findWorkExperience(recruitmentId);
-        return result;
+    public List<RecruitmentWorkExperienceDTO> findWorkExperienceList(Long recruitmentId) {
+        List<RecruitmentWorkExperienceDTO> workExperienceList = this.baseMapper.findWorkExperienceList(recruitmentId);
+        return workExperienceList;
     }
 
     @Override
-    @OperationEntity(operation = "人才工作经历表-新增保存",module="人才简历", clazz = RecruitmentWorkexperienceDTO.class)
-    public RecruitmentWorkexperienceDTO saveWorkExperience(RecruitmentWorkexperienceDTO dto) {
+    @OperationEntity(operation = "人才工作经历表-新增保存",module="人才简历", clazz = RecruitmentWorkExperienceDTO.class)
+    public RecruitmentWorkExperienceDTO saveWorkExperience(RecruitmentWorkExperienceDTO dto) {
         RecruitmentWorkexperience workExperience=new RecruitmentWorkexperience();
         BeanUtils.copyProperties(dto,workExperience);
 
@@ -62,8 +62,8 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
     }
 
     @Override
-    @OperationEntity(operation = "人才工作经历表-修改更新",module="人才简历", clazz = RecruitmentWorkexperienceDTO.class)
-    public RecruitmentWorkexperienceDTO updateWorkExperience(RecruitmentWorkexperienceDTO dto) {
+    @OperationEntity(operation = "人才工作经历表-修改更新",module="人才简历", clazz = RecruitmentWorkExperienceDTO.class)
+    public RecruitmentWorkExperienceDTO updateWorkExperience(RecruitmentWorkExperienceDTO dto) {
         RecruitmentWorkexperience workExperience=new RecruitmentWorkexperience();
         BeanUtils.copyProperties(dto,workExperience);
 

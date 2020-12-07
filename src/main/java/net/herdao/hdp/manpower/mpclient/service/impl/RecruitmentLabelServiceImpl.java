@@ -3,7 +3,6 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentLabel;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentLabelMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentLabelService;

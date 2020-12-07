@@ -9,8 +9,9 @@ import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.annotation.Inner;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.entity.RecruitmentTitle;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -47,6 +48,13 @@ public class RecruitmentController {
     private final RecruitmentAwardsService recruitmentAwardsService;
 
     private final RecruitmentEducationService recruitmentEducationService;
+
+    private final  RecruitmentTitleService recruitmentTitleService;
+
+    private final  RecruitmentTrainService recruitmentTrainService;
+
+    private final  RecruitmentActivitiService recruitmentActivitiService;
+
 
     /**
      * 人才管理-快速编辑
@@ -249,12 +257,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 人才简历-简历详情
+     * 人才管理-人才简历
      *
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "人才简历-简历详情", notes = "人才简历-简历详情")
+    @ApiOperation(value = "人才管理-人才简历", notes = "人才管理-人才简历")
     @GetMapping("/fetchResumeDetails")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentDetailsDTO> fetchResumeDetails(Long id) {
@@ -262,14 +270,15 @@ public class RecruitmentController {
 
         RecruitmentPersonDTO personDTO = recruitmentService.fetchRecruitmentPerson(id);
         RecruitmentIntentDTO intentDTO = recruitmentService.fetchRecruitmentIntent(id);
-        RecruitmentWorkexperienceDTO workDTO = recruitmentWorkexperienceService.findWorkExperience(id);
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
         RecruitmentTopEduDTO topEduDTO = recruitmentService.fetchRecruitmentTopEdu(id);
+
         List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamily(id);
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
 
         result.setRecruitmentPersonDTO(personDTO);
         result.setRecruitmentIntentDTO(intentDTO);
-        result.setRecruitmentWorkexperienceDTO(workDTO);
+        result.setRecruitmentWorkexperienceDTO(workList);
         result.setRecruitmentTopEduDTO(topEduDTO);
         result.setRecruitmentFamilyDTO(familyDTOList);
         result.setRecruitmentAwardsDTO(recruitmentAwardsList);
@@ -380,6 +389,42 @@ public class RecruitmentController {
     @GetMapping("/{mobile}")
     public R<Boolean> sendSmsCode(@PathVariable String mobile) {
         return recruitmentService.sendSmsCode(mobile);
+    }
+
+
+    /**
+     * 简历详情-工作情况
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "简历详情-工作情况", notes = "简历详情-工作情况")
+    @GetMapping("/fetchResumeWorkDetails")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetails(Long id) {
+
+        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
+
+        //获奖情况
+        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        result.setRecruitmentAwardsDTO(awardsList);
+
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        result.setWorkExperienceDTO(workList);
+
+        //职称及职业资格
+        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
+        result.setRecruitmentTitleDTO(titleList);
+
+        //培训经历
+        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
+        result.setRecruitmentTrainDTO(trainList);
+
+        //人才活动
+        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
+        result.setRecruitmentActivitiDTO(activitiList);
+
+        return R.ok(result);
     }
 
 }

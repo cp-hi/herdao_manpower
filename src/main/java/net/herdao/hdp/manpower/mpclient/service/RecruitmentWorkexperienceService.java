@@ -18,9 +18,10 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
+
+import java.util.List;
 
 /**
  * 人才工作经历表
@@ -34,19 +35,19 @@ public interface RecruitmentWorkexperienceService extends IService<RecruitmentWo
      * @param recruitmentId 人才ID
      * @return
      */
-    RecruitmentWorkexperienceDTO findWorkExperience(Long recruitmentId);
+    List<RecruitmentWorkExperienceDTO> findWorkExperienceList(Long recruitmentId);
 
     /**
      * 个人简历-工作经历-新增
      * @param dto 人才实体
      * @return
      */
-    RecruitmentWorkexperienceDTO saveWorkExperience(RecruitmentWorkexperienceDTO dto);
+    RecruitmentWorkExperienceDTO saveWorkExperience(RecruitmentWorkExperienceDTO dto);
 
     /**
      * 个人简历-工作经历-更新
      * @param dto 人才实体
      * @return
      */
-    RecruitmentWorkexperienceDTO updateWorkExperience(RecruitmentWorkexperienceDTO dto);
+    RecruitmentWorkExperienceDTO updateWorkExperience(RecruitmentWorkExperienceDTO dto);
 }
