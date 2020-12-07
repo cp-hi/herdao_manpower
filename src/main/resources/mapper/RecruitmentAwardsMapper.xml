@@ -45,7 +45,8 @@
 
       <!-- 人才简历-获奖情况-list -->
       <select id="fetchResumeAwardsList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO">
-            SELECT r.awards_time,
+            SELECT r.id,
+                   r.awards_time,
                    r.awards_content,
                    r.issued_units,
                    CONCAT( r.modifier_name, " 于 ", r.modifier_name, " 更新" ) update_desc

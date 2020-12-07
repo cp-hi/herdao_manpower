@@ -31,7 +31,8 @@
 
       <!-- 简历详情-职称及职业资格 -->
       <select id="findRecruitmentTitleList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO">
-              SELECT  t.title,
+              SELECT  t.id,
+                      t.title,
                       t.qualification,
                       t.awards_unite,
                       t.certificate_no,
