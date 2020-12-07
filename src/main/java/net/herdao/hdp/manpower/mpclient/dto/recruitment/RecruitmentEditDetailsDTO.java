@@ -4,7 +4,6 @@ package net.herdao.hdp.manpower.mpclient.dto.recruitment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkexperienceDTO;
 
 import java.util.List;
 
@@ -39,13 +38,13 @@ public class RecruitmentEditDetailsDTO {
      * 人才简历-其他个人信息
      */
     @ApiModelProperty(value="人才简历-其他个人信息")
-    RecruitmentEditOtherInfo recruitmentEditOtherInfo;
+    RecruitmentEditOtherInfoDTO recruitmentEditOtherInfoDTO;
 
     /**
      * 人才简历-个人基本信息
      */
     @ApiModelProperty(value="人才简历-个人基本信息")
-    RecruitmentEditBaseInfo recruitmentEditBaseInfo;
+    RecruitmentEditBaseInfoDTO recruitmentEditBaseInfoDTO;
 
 
 }

@@ -152,8 +152,10 @@ public class RecruitmentController {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     })
-    public R<RecruitmentJobIntentDTO> fetchResumeJobIntent(Long id) {
-        RecruitmentJobIntentDTO result = recruitmentService.fetchResumeJobIntent(id);
+    public R<RecruitmentJobIntentResultDTO> fetchResumeJobIntent(Long id) {
+        RecruitmentJobIntentDTO intent = recruitmentService.fetchResumeJobIntent(id);
+        RecruitmentJobIntentResultDTO result=new RecruitmentJobIntentResultDTO();
+        result.setRecruitmentJobIntentDTO(intent);
         return R.ok(result);
     }
 
@@ -336,15 +338,15 @@ public class RecruitmentController {
 
         //其他个人信息
         RecruitmentOtherInfo otherInfoList = recruitmentService.fetchRecruitmentOtherInfo(id);
-        RecruitmentEditOtherInfo editOtherInfo=new RecruitmentEditOtherInfo();
+        RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
         BeanUtils.copyProperties(otherInfoList,editOtherInfo);
-        result.setRecruitmentEditOtherInfo(editOtherInfo);
+        result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
 
         //个人基本信息
         RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
-        RecruitmentEditBaseInfo editBaseInfo=new RecruitmentEditBaseInfo();
+        RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
         BeanUtils.copyProperties(baseInfo,editBaseInfo);
-        result.setRecruitmentEditBaseInfo(editBaseInfo);
+        result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
 
         return R.ok(result);
     }
@@ -356,8 +358,8 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "简历详情-个人基本情况-修改更新", notes = "简历详情-个人基本情况-修改更新")
     @PostMapping("/updateBaseInfo")
-    public R<RecruitmentEditBaseInfo> updateBaseInfo(@RequestBody RecruitmentEditBaseInfo baseInfo) {
-        RecruitmentEditBaseInfo result = recruitmentService.updateBaseInfo(baseInfo);
+    public R<RecruitmentEditBaseInfoDTO> updateBaseInfo(@RequestBody RecruitmentEditBaseInfoDTO baseInfo) {
+        RecruitmentEditBaseInfoDTO result = recruitmentService.updateBaseInfo(baseInfo);
         return R.ok(result,"修改更新成功");
     }
 
@@ -368,8 +370,8 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "简历详情-其他个人信息-修改更新", notes = "简历详情-其他个人信息-修改更新")
     @PostMapping("/updateOtherInfo")
-    public R<RecruitmentEditOtherInfo> updateOtherInfo(@RequestBody RecruitmentEditOtherInfo otherInfo) {
-        RecruitmentEditOtherInfo result = recruitmentService.updateOtherInfo(otherInfo);
+    public R<RecruitmentEditOtherInfoDTO> updateOtherInfo(@RequestBody RecruitmentEditOtherInfoDTO otherInfo) {
+        RecruitmentEditOtherInfoDTO result = recruitmentService.updateOtherInfo(otherInfo);
         return R.ok(result,"修改更新成功");
     }
 

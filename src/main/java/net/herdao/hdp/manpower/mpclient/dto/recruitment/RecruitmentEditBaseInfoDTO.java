@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "编辑人才简历-个人基本信息DTO")
-public class RecruitmentEditBaseInfo {
+public class RecruitmentEditBaseInfoDTO {
 
     /**
      * id

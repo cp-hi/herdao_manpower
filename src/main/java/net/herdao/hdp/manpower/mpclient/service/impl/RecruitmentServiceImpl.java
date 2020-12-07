@@ -16,7 +16,6 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -185,7 +184,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     @OperationEntity(operation = "修改更新人才简历-个人基本情况",module="人才简历", clazz = RecruitmentDetailsDTO.class)
-    public RecruitmentEditBaseInfo updateBaseInfo(RecruitmentEditBaseInfo dto) {
+    public RecruitmentEditBaseInfoDTO updateBaseInfo(RecruitmentEditBaseInfoDTO dto) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -285,7 +284,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public RecruitmentEditOtherInfo updateOtherInfo(RecruitmentEditOtherInfo otherInfo) {
+    public RecruitmentEditOtherInfoDTO updateOtherInfo(RecruitmentEditOtherInfoDTO otherInfo) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(otherInfo,recruitment);
         SysUser sysUser = SysUserUtils.getSysUser();

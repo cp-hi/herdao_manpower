@@ -52,7 +52,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param dto
      * @return
      */
-    RecruitmentEditBaseInfo updateBaseInfo(RecruitmentEditBaseInfo dto);
+    RecruitmentEditBaseInfoDTO updateBaseInfo(RecruitmentEditBaseInfoDTO dto);
 
     /**
      * 人才简历-从业情况与求职意向
@@ -123,7 +123,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param otherInfo 其他信息
      * @return
      */
-     RecruitmentEditOtherInfo updateOtherInfo(@RequestBody RecruitmentEditOtherInfo otherInfo);
+     RecruitmentEditOtherInfoDTO updateOtherInfo(@RequestBody RecruitmentEditOtherInfoDTO otherInfo);
 
     /**
      * 候选人H5登录验证码
