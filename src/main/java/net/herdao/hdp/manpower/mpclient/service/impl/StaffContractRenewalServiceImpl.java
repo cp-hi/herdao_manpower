@@ -38,10 +38,11 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
         if (id != null) {
             updateInfo(id, dto);
         } else {
-            add(dto);
+            id = add(dto);
         }
         StaffContractRenewal entity = mapper.selectById(id);
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
+        mapper.updateById(entity);
         return id;
     }
 
