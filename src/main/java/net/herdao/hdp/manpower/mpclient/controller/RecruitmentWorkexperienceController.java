@@ -103,7 +103,7 @@ public class RecruitmentWorkexperienceController {
      * @return R
      */
     @ApiOperation(value = "编辑才简历-工作情况-修改更新", notes = "编辑才简历-工作情况-修改更新")
-    @PutMapping("/updateWorkExperience")
+    @PostMapping("/updateWorkExperience")
     public R<RecruitmentWorkexperienceDTO> updateWorkExperience(@RequestBody RecruitmentWorkexperienceDTO dto) {
         RecruitmentWorkexperienceDTO result = recruitmentWorkexperienceService.updateWorkExperience(dto);
         return R.ok(result);
