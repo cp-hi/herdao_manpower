@@ -73,7 +73,7 @@
             <if test="type == '5' and type != null">
                 and transfer_type = '6' or transfer_type = '7'
             </if>
-            <if test="test != '5' and type != null">
+            <if test="type != '5' and type != null">
                 and transfer_type = #{type}
             </if>
 
