@@ -143,29 +143,11 @@ public class RecruitmentController {
     }
 
     /**
-     * 编辑获取个人简历-个人基本情况 其他个人信息
-     *
-     * @param id 主键id
-     * @return R
-     */
-    @ApiOperation(value = "编辑-获取个人简历-个人基本情况 其他个人信息", notes = "编辑个人简历-个人基本情况 其他个人信息 最高教育经历")
-    @GetMapping("/fetchDetailsById")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键id")
-    })
-    public R<RecruitmentDetailsDTO> fetchDetailsById(Long id) {
-        RecruitmentDetailsDTO baseDTO = new RecruitmentDetailsDTO();
-        Recruitment recruitment = recruitmentService.getById(id);
-        BeanUtils.copyProperties(recruitment, baseDTO);
-        return R.ok(baseDTO);
-    }
-
-    /**
-     * 简历编辑-获取人才简历-求职意向
+     * 简历详情-求职意向-详情
      * @param id
      * @return R
      */
-    @ApiOperation(value = "简历编辑-获取人才简历-求职意向", notes = "简历编辑-获取人才简历-求职意向")
+    @ApiOperation(value = "简历详情-求职意向-详情", notes = "简历详情-求职意向-详情向")
     @GetMapping("/fetchResumeJobIntent")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "主键ID", required = true)
@@ -176,12 +158,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 简历编辑-求职意向-修改更新
+     * 简历详情-求职意向-修改更新
      *
-     * @param dto 人才简历-从业情况与求职意向
+     * @param dto 人才简历-求职意向
      * @return R
      */
-    @ApiOperation(value = "简历编辑-求职意向-修改更新", notes = "简历编辑-求职意向-修改更新")
+    @ApiOperation(value = "简历详情-求职意向-修改更新", notes = "简历详情-求职意向-修改更新")
     @PostMapping("/updateRecruitmentJobIntent")
     public R<RecruitmentJobIntentDTO> updateRecruitmentJobIntent(@RequestBody RecruitmentJobIntentDTO dto) {
         RecruitmentJobIntentDTO result = recruitmentService.updateRecruitmentJobIntent(dto);
@@ -306,11 +288,11 @@ public class RecruitmentController {
     }
 
     /**
-     * 编辑人才简历-基础信息-详情
+     * 简历详情-基础信息-个人基本信息
      * @param id 主键id
      * @return R
      */
-    @ApiOperation(value = "编辑人才简历-基础信息-详情", notes = "编辑人才简历-基础信息-详情")
+    @ApiOperation(value = "简历详情-基础信息-个人基本信息", notes = "简历详情-基础信息-个人基本信息")
     @GetMapping("/fetchResumeEditDetails")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentEditDetailsDTO> fetchResumeEditDetails(Long id) {
@@ -368,11 +350,11 @@ public class RecruitmentController {
     }
 
     /**
-     * 编辑页面-修改更新个人简历-个人基本情况
-     * @param baseInfo 人才简历-个人基本情况
+     * 简历详情-个人基本情况-修改更新
+     * @param baseInfo 个人基本情况
      * @return R
      */
-    @ApiOperation(value = "编辑页面-修改更新个人简历-个人基本情况", notes = "编辑页面-修改更新个人简历-个人基本情况")
+    @ApiOperation(value = "简历详情-个人基本情况-修改更新", notes = "简历详情-个人基本情况-修改更新")
     @PostMapping("/updateBaseInfo")
     public R<RecruitmentEditBaseInfo> updateBaseInfo(@RequestBody RecruitmentEditBaseInfo baseInfo) {
         RecruitmentEditBaseInfo result = recruitmentService.updateBaseInfo(baseInfo);
@@ -380,11 +362,11 @@ public class RecruitmentController {
     }
 
     /**
-     * 编辑页面-修改更新个人简历-其他个人信息
+     * 简历详情-其他个人信息-修改更新
      * @param otherInfo 人才简历-其他个人信息
      * @return R
      */
-    @ApiOperation(value = "编辑页面-修改更新个人简历-其他个人信息", notes = "编辑页面-修改更新个人简历-其他个人信息")
+    @ApiOperation(value = "简历详情-其他个人信息-修改更新", notes = "简历详情-其他个人信息-修改更新")
     @PostMapping("/updateOtherInfo")
     public R<RecruitmentEditOtherInfo> updateOtherInfo(@RequestBody RecruitmentEditOtherInfo otherInfo) {
         RecruitmentEditOtherInfo result = recruitmentService.updateOtherInfo(otherInfo);
