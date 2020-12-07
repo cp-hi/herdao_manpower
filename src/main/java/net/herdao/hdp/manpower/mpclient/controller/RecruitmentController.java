@@ -391,4 +391,11 @@ public class RecruitmentController {
         return R.ok(result,"修改更新成功");
     }
 
+    @ApiOperation(value = "手机验证码", notes = "手机验证码")
+    @Inner(value = false)
+    @GetMapping("/{mobile}")
+    public R<Boolean> sendSmsCode(@PathVariable String mobile) {
+        return recruitmentService.sendSmsCode(mobile);
+    }
+
 }

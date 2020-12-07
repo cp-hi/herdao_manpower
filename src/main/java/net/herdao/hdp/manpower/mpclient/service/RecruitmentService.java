@@ -124,4 +124,11 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @return
      */
      RecruitmentEditOtherInfo updateOtherInfo(@RequestBody RecruitmentEditOtherInfo otherInfo);
+
+    /**
+     * 候选人H5登录验证码
+     * @param mobile
+     * @return
+     */
+    R<Boolean> sendSmsCode(String mobile);
 }
