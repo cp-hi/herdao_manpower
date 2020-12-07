@@ -45,7 +45,7 @@
                 and spa.`status` = #{status}
             </if>
             <if test="orgId != '' and orgId != null">
-                and norg.`org_id` = #{orgId}
+                and norg.`id` = #{orgId}
             </if>
             and spa.`del_flag` = '0'
         </where>
