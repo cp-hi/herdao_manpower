@@ -19,8 +19,8 @@ public class RecruitmentEditDetailsDTO {
     /**
      * 人才简历-获奖资格-详情
      */
-    @ApiModelProperty(value="人才简历-获奖资格-详情")
-    List<RecruitmentEditAwardsDTO> recruitmentEditAwardsDTO;
+    /*@ApiModelProperty(value="人才简历-获奖资格-详情")
+    List<RecruitmentEditAwardsDTO> recruitmentEditAwardsDTO;*/
 
     /**
      * 人才简历-教育情况-详情

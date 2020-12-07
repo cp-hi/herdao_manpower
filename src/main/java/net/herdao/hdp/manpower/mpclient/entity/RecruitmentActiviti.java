@@ -20,12 +20,14 @@ package net.herdao.hdp.manpower.mpclient.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 人才活动表
@@ -50,12 +52,14 @@ private static final long serialVersionUID = 1L;
      * 活动开始时间
      */
     @ApiModelProperty(value="活动开始时间")
-    private LocalDateTime beginDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date beginDate;
     /**
      * 活动结束时间
      */
     @ApiModelProperty(value="活动结束时间")
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date endDate;
     /**
      * 活动内容
      */
@@ -136,4 +140,4 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="修改人时间")
     private LocalDateTime modifierTime;
-    }
+}

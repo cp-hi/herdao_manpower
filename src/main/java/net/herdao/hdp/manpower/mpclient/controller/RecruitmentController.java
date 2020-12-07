@@ -310,7 +310,7 @@ public class RecruitmentController {
         RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
 
         //获奖情况
-        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        /*List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
         RecruitmentEditAwardsDTO editAwardsDTO=new RecruitmentEditAwardsDTO();
         List<RecruitmentEditAwardsDTO> editAwardsList=new ArrayList<RecruitmentEditAwardsDTO>();
         if (ObjectUtil.isNotEmpty(recruitmentAwardsList)){
@@ -319,7 +319,7 @@ public class RecruitmentController {
                 editAwardsList.add(editAwardsDTO);
             });
         }
-        result.setRecruitmentEditAwardsDTO(editAwardsList);
+        result.setRecruitmentEditAwardsDTO(editAwardsList);*/
 
         //教育经历
         List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);

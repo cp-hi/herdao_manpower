@@ -4,12 +4,14 @@ package net.herdao.hdp.manpower.mpclient.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 人才培训经历表
@@ -34,12 +36,14 @@ private static final long serialVersionUID = 1L;
      * 开始培训时间
      */
     @ApiModelProperty(value="开始培训时间")
-    private LocalDateTime beginDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date beginDate;
     /**
      * 结束培训时间
      */
     @ApiModelProperty(value="结束培训时间")
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date endDate;
     /**
      * 培训内容
      */
@@ -130,4 +134,6 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="组织者")
     private String organizer;
-    }
+
+
+}
