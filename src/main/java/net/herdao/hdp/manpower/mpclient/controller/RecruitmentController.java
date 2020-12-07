@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -330,23 +331,51 @@ public class RecruitmentController {
 
         //获奖情况
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
-        result.setRecruitmentAwardsDTO(recruitmentAwardsList);
+        RecruitmentEditAwardsDTO editAwardsDTO=new RecruitmentEditAwardsDTO();
+        List<RecruitmentEditAwardsDTO> editAwardsList=new ArrayList<RecruitmentEditAwardsDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentAwardsList)){
+            recruitmentAwardsList.forEach(e->{
+                BeanUtils.copyProperties(e,editAwardsDTO);
+                editAwardsList.add(editAwardsDTO);
+            });
+        }
+        result.setRecruitmentEditAwardsDTO(editAwardsList);
 
         //教育经历
         List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
-        result.setRecruitmentEduDTO(recruitmentEduList);
+        RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
+            recruitmentEduList.forEach(e->{
+                BeanUtils.copyProperties(e,editEduDTO);
+                editEduList.add(editEduDTO);
+            });
+        }
+        result.setRecruitmentEditEduDTO(editEduList);
 
         //家庭状况
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
-        result.setRecruitmentFamilyDTO(familyList);
+        RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
+        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
+        if (ObjectUtil.isNotEmpty(familyList)){
+            familyList.forEach(e->{
+                BeanUtils.copyProperties(e,editFamilyDTO);
+                editFamilyList.add(editFamilyDTO);
+            });
+        }
+        result.setRecruitmentEditFamilyDTO(editFamilyList);
 
         //其他个人信息
-        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
-        result.setRecruitmentOtherInfo(otherInfo);
+        RecruitmentOtherInfo otherInfoList = recruitmentService.fetchRecruitmentOtherInfo(id);
+        RecruitmentEditOtherInfo editOtherInfo=new RecruitmentEditOtherInfo();
+        BeanUtils.copyProperties(otherInfoList,editOtherInfo);
+        result.setRecruitmentEditOtherInfo(editOtherInfo);
 
         //个人基本信息
         RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
-        result.setRecruitmentBaseInfo(baseInfo);
+        RecruitmentEditBaseInfo editBaseInfo=new RecruitmentEditBaseInfo();
+        BeanUtils.copyProperties(baseInfo,editBaseInfo);
+        result.setRecruitmentEditBaseInfo(editBaseInfo);
 
         return R.ok(result);
     }

@@ -6,21 +6,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * 人才获奖情况DTO
+ * 人才获奖情况-编辑DTO
  * @author andy
  * @date 2020-09-25 09:49:45
  */
 @Data
-@ApiModel(value = "人才获奖情况DTO")
-public class RecruitmentAwardsDTO {
+@ApiModel(value = "人才获奖情况-编辑DTO")
+public class RecruitmentEditAwardsDTO {
 
     /**
      * id

@@ -21,30 +21,31 @@ public class RecruitmentEditDetailsDTO {
      * 人才简历-获奖资格-详情
      */
     @ApiModelProperty(value="人才简历-获奖资格-详情")
-    List<RecruitmentAwardsDTO> recruitmentAwardsDTO;
+    List<RecruitmentEditAwardsDTO> recruitmentEditAwardsDTO;
 
     /**
-     * 人才简历-教育经历-详情
+     * 人才简历-教育情况-详情
      */
-    @ApiModelProperty(value="人才简历-获奖资格-详情")
-    List<RecruitmentEduDTO>  recruitmentEduDTO;
+    @ApiModelProperty(value="人才简历-教育情况-详情")
+    List<RecruitmentEditEduDTO>  recruitmentEditEduDTO;
 
     /**
      * 人才简历-家庭状况-详情
      */
     @ApiModelProperty(value="人才简历-家庭状况-详情")
-    List<RecruitmentFamilyDTO>  recruitmentFamilyDTO;
+    List<RecruitmentEditFamilyDTO>  recruitmentEditFamilyDTO;
 
     /**
      * 人才简历-其他个人信息
      */
     @ApiModelProperty(value="人才简历-其他个人信息")
-    RecruitmentOtherInfo recruitmentOtherInfo;
+    RecruitmentEditOtherInfo recruitmentEditOtherInfo;
 
     /**
      * 人才简历-个人基本信息
      */
     @ApiModelProperty(value="人才简历-个人基本信息")
-    RecruitmentBaseInfo recruitmentBaseInfo;
+    RecruitmentEditBaseInfo recruitmentEditBaseInfo;
+
 
 }
