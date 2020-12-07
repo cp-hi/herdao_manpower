@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ApiModel(value = "续签合同列表")
-public class StaffRenewContractPageVO {
+public class StaffContractRenewalPageVO {
     @ApiModelProperty(value = "续签合同 id", name = "id", example = "1")
     private Long id;
 

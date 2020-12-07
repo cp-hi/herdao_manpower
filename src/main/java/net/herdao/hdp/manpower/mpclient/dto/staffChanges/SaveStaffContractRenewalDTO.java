@@ -30,10 +30,10 @@ public class SaveStaffContractRenewalDTO {
     private Long staffContractId;
 
     @ApiModelProperty(value = "合同开始日期")
-    private LocalDateTime contractStartTime;
+    private Long contractStartTime;
 
     @ApiModelProperty(value = "合同结束日期")
-    private LocalDateTime contractEntTime;
+    private Long contractEntTime;
 
     @ApiModelProperty(value = "合同试用期")
     private Double contractProbation;
@@ -45,10 +45,10 @@ public class SaveStaffContractRenewalDTO {
     private Double signedBasicWage;
 
     @ApiModelProperty(value = "续签开始日期")
-    private LocalDateTime renewalStartTime;
+    private Long renewalStartTime;
 
     @ApiModelProperty(value = "续签结束日期")
-    private LocalDateTime renewalEndTime;
+    private Long renewalEndTime;
 
     @ApiModelProperty(value = "拟续签年数")
     private Double proposedSigningYears;

@@ -49,7 +49,7 @@ public class StaffContractRenewal {
     private LocalDateTime contractStartTime;
 
     @ApiModelProperty(value = "合同结束日期")
-    private LocalDateTime contractEntTime;
+    private LocalDateTime contractEndTime;
 
     @ApiModelProperty(value = "合同试用期")
     private Double contractProbation;
@@ -87,10 +87,10 @@ public class StaffContractRenewal {
     @ApiModelProperty(value = "经办人意见")
     private String remark;
 
-    @ApiModelProperty(value = "续签开始时间")
+    @ApiModelProperty(value = "续签合同开生效时间")
     private LocalDateTime renewalStartTime;
 
-    @ApiModelProperty(value = "续签结束时间")
+    @ApiModelProperty(value = "续签合同到期时间")
     private LocalDateTime renewalEndTime;
 
     @ApiModelProperty(value = "续签类型")
@@ -105,17 +105,17 @@ public class StaffContractRenewal {
     @TableField(value = "creator_code", fill = FieldFill.INSERT)
     private String creatorCode;
 
-    @ApiModelProperty(value = "新建人")
-    @TableField(value = "creator_name", fill = FieldFill.INSERT)
-    private String creatorName;
+//    @ApiModelProperty(value = "新建人")
+//    @TableField(value = "creator_name", fill = FieldFill.INSERT)
+//    private String creatorName;
 
     @ApiModelProperty(value = "新建人")
     @TableField(value = "creator_time", fill = FieldFill.INSERT)
     private LocalDateTime creatorTime;
 
-    @ApiModelProperty(value = "修改人工号")
-    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
-    private String modifierCode;
+//    @ApiModelProperty(value = "修改人工号")
+//    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
+//    private String modifierCode;
 
     @ApiModelProperty(value = "修改人名称")
     @TableField(value = "modifier_name", fill = FieldFill.UPDATE)
@@ -129,6 +129,7 @@ public class StaffContractRenewal {
     private Long tenantId;
 
     @ApiModelProperty(value = "逻辑删除")
+    @TableLogic
     private Boolean delFlag;
 }
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 @Data
 @ApiModel(value = "续签合同详情")
-public class StaffRenewContractInfoVO {
+public class StaffContractRenewalInfoVO {
     @ApiModelProperty(value = "合同续约 id")
     private Long id;
 
@@ -41,7 +41,7 @@ public class StaffRenewContractInfoVO {
     private Long renewalCompanyId;
 
     @ApiModelProperty(value = "续签主体单位名称")
-    private Long renewalCompanyName;
+    private String renewalCompanyName;
 
     @ApiModelProperty(value = "合同签定基本工资")
     private Double signedBasicWage;
