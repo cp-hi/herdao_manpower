@@ -28,8 +28,9 @@ public class StaffCallInAndCallOutController {
     public R<Page<StaffCallInAndCallOutPageVO>> pageStaffCallInAndCallOut(String searchText,
                                                                           Page page,
                                                                           Long orgId,
-                                                                          String status) {
-        return R.ok(service.pageStaffCallInAndCallOut(page, searchText, orgId, status));
+                                                                          String status,
+                                                                          String type) {
+        return R.ok(service.pageStaffCallInAndCallOut(page, searchText, orgId, status, type));
     }
 
     @ApiOperation(value = "分页列表-删除")

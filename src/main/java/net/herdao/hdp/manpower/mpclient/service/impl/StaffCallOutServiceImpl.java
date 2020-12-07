@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveTypeConstants;
@@ -38,7 +39,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 //        dtoValidityCheck(null, dto);
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT);
+        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_OUT);
         staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         staffTransferApprove.setDelFlag(false);
         mapper.insert(staffTransferApprove);
@@ -48,20 +49,17 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     @Override
     public Long updateInfo(Long id, SaveStaffCallOutDTO dto) throws Exception {
 //        dtoValidityCheck(id, dto);
-        StaffTransferApprove staffTransferApprove = mapper.selectById(id);
-        if (staffTransferApprove != null) {
-            if (!staffTransferApprove.getStatus().equals(StaffChangesApproveStatusConstants.FILLING_IN)) {
-                throw new Exception("该记录已发起审批，不可更新");
-            }
-            if (staffTransferApprove.getTransferType() != StaffChangesApproveTypeConstants.CALL_IN_AND_CALL_OUT) {
-                throw new Exception("该记录不是调入/调出类型，请再次确认更新信息");
-            }
-
-            BeanUtils.copyProperties(dto, staffTransferApprove);
-            mapper.updateById(staffTransferApprove);
-            return id;
+        QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
+        if (staffTransferApprove == null) {
+            throw new Exception("该记录不可更改");
         }
-        return null;
+
+        BeanUtils.copyProperties(dto, staffTransferApprove);
+        mapper.updateById(staffTransferApprove);
+        return id;
     }
 
     @Override

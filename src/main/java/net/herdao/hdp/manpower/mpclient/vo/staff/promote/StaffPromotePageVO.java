@@ -41,14 +41,14 @@ public class StaffPromotePageVO {
     @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName")
     private String nowJobLevelName;
 
-    @ApiModelProperty(value = "调动后部门 id", name = "promoteOrgName", example = "4321", required = true)
-    private Long promoteOrgName;
+    @ApiModelProperty(value = "调动后部门名称", name = "promoteOrgName", example = "4321", required = true)
+    private String promoteOrgName;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostName", example = "5432", required = true)
+    @ApiModelProperty(value = "调动后岗位名称", name = "promotePostName", example = "5432", required = true)
     private String promotePostName;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelName", example = "123", required = true)
-    private Long promoteJobLevelName;
+    @ApiModelProperty(value = "调动后职级名称", name = "promoteJobLevelName", example = "123", required = true)
+    private String promoteJobLevelName;
 
 
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
