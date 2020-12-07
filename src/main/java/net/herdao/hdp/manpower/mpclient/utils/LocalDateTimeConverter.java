@@ -8,8 +8,12 @@ import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.alibaba.excel.util.NumberUtils;
 import com.alibaba.excel.util.StringUtils;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeConverter implements Converter<LocalDateTime>{
@@ -43,5 +47,13 @@ public class LocalDateTimeConverter implements Converter<LocalDateTime>{
             return new CellData(tmp);
         }
         return new CellData("");
+    }
+
+    public LocalDateTime convert2LocalDateTime (Long from) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(from), ZoneId.systemDefault());
+    }
+
+    public Long convert2Long (LocalDateTime from) {
+        return Timestamp.valueOf(from).getTime();
     }
 }

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @RestController
-@RequestMapping("/staff/call-out" )
+@RequestMapping("/staff/callOut" )
 @Api(value = "staffCallOut", tags = "员工异动管理-调出管理")
 public class StaffCallOutController {
 
@@ -50,7 +50,7 @@ public class StaffCallOutController {
     }
 
     @ApiOperation(value = "确认发起")
-    @PutMapping("/affirm/start")
+    @PostMapping("/affirm/start")
     public R<Long> affirm(Long id,
                           @RequestBody @NotNull SaveStaffCallOutDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
