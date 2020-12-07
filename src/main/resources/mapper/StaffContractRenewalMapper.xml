@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper">
+
+    <select id="findStaffContractRenewalPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO">
+        SELECT
+        scr.id,
+        scr.user_id,
+        s.staff_name,
+        s.staff_code,
+        company.company_name,
+        scr.renewal_type,
+        scr.renewal_start_time,
+        scr.renewal_start_time,
+        scr.status
+
+        FROM mp_staff_contract_renewal scr
+        LEFT JOIN mp_staff s ON scr.user_id = s.user_id
+        LEFT JOIN mp_company company ON scr.renewal_company_id = company.id
+        LEFT JOIN mp_organization org ON scr.org_id = org.id
+
+        <where>
+
+            <if test="searchText != '' and searchText != null">
+                and
+                concat(
+                    IFNULL(s.staff_name,''),
+                    IFNULL(s.staff_code,''),
+                    IFNULL(company.company_name,''),
+                    IFNULL(scr.renewal_type,''),
+                    IFNULL(scr.renewal_start_time,''),
+                    IFNULL(scr.renewal_end_time,,'')
+                ) LIKE concat(#{searchText},'%')
+            </if>
+            <if test="status != '' and status != null">
+                and scr.`status` = #{status}
+            </if>
+            <if test="orgId != '' and orgId != null">
+                and org.`org_id` = #{orgId}
+            </if>
+            and scr.`del_flag` = '0'
+        </where>
+    </select>
+</mapper>

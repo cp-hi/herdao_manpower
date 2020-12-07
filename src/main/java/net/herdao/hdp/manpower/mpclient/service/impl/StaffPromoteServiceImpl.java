@@ -7,9 +7,7 @@ import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConsta
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SavaStaffPromoteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
-import net.herdao.hdp.manpower.mpclient.entity.StaffPromoteApprove;
-import net.herdao.hdp.manpower.mpclient.entity.StaffTransferApprove;
-import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
@@ -114,11 +112,45 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     public StaffPromoteInfoVO getDetail(Long id) {
         StaffPromoteApprove promoteApprove = mapper.selectById(id);
         if (promoteApprove != null) {
-            StaffPromoteInfoVO vo = new StaffPromoteInfoVO();
-            BeanUtils.copyProperties(promoteApprove, vo);
-            return vo;
+            return StaffPromoteApprove2StaffPromoteInfoVO(promoteApprove);
         }
         return null;
+    }
+
+    private StaffPromoteInfoVO StaffPromoteApprove2StaffPromoteInfoVO(StaffPromoteApprove from) {
+        StaffPromoteInfoVO to = new StaffPromoteInfoVO();
+        BeanUtils.copyProperties(from, to);
+
+        Post nowPost = postService.getById(to.getNowPostId());
+        if (nowPost != null) {
+            to.setNowPostName(nowPost.getPostName());
+        }
+
+        Post promotePost = postService.getById(to.getPromotePostId());
+        if (promotePost != null) {
+            to.setPromotePostName(promotePost.getPostName());
+        }
+
+        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        if (nowOrg != null) {
+            to.setNowOrgName(nowOrg.getOrgName());
+        }
+
+        Organization promoteOrg = orgService.getById(to.getPromoteOrgId());
+        if (promoteOrg != null) {
+            to.setPromoteOrgName(promoteOrg.getOrgName());
+        }
+
+        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        if (nowJobLevel != null) {
+            to.setNowJobLevelName(nowJobLevel.getJobLevelName());
+        }
+
+        JobLevel promoteJobLevel = jobLevelService.getById(to.getPromoteJobLevelId());
+        if (promoteJobLevel != null) {
+            to.setPromoteJobLevelName(promoteJobLevel.getJobLevelName() );
+        }
+        return to;
     }
 
 
