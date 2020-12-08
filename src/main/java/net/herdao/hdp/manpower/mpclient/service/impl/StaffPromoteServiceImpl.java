@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDT
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
@@ -59,12 +60,13 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         QueryWrapper<StaffPromoteApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
-        StaffPromoteApprove promoteApprove = mapper.selectOne(queryWrapper);
-        if (promoteApprove == null) {
+        StaffPromoteApprove entity = mapper.selectOne(queryWrapper);
+        if (entity == null) {
             throw new Exception("该记录不可更新");
         }
-        BeanUtils.copyProperties(dto, promoteApprove);
-        mapper.updateById(promoteApprove);
+        BeanUtils.copyProperties(dto, entity);
+        entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
+        mapper.updateById(entity);
         return id;
     }
 
@@ -73,6 +75,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         // dtoValidityCheck(null, dto);
         StaffPromoteApprove promoteApprove = new StaffPromoteApprove();
         BeanUtils.copyProperties(dto, promoteApprove);
+        promoteApprove.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
         promoteApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         promoteApprove.setDelFlag(false);
         mapper.insert(promoteApprove);
@@ -120,6 +123,8 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     private StaffPromoteInfoVO StaffPromoteApprove2StaffPromoteInfoVO(StaffPromoteApprove from) {
         StaffPromoteInfoVO to = new StaffPromoteInfoVO();
         BeanUtils.copyProperties(from, to);
+
+        to.setPromoteDate(LocalDateTimeUtils.convert2Long(from.getPromoteDate()));
 
         Post nowPost = postService.getById(to.getNowPostId());
         if (nowPost != null) {
