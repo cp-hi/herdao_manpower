@@ -3,7 +3,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper">
 
-    <select id="findStaffTransferPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO">
+    <select id="findStaffTransferPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPage">
         SELECT
         	sta.id,
         	sta.user_id,
@@ -13,7 +13,9 @@
         	norg.ORG_NAME now_org_name,
             np.POST_NAME now_post_name,
         	torg.ORG_NAME trans_org_name,
-        	tp.POST_NAME trans_post_name
+        	tp.POST_NAME trans_post_name,
+        	sta.modifier_name,
+        	sta.modifier_time
 
         FROM mp_staff_transfer_approve sta
         LEFT JOIN mp_staff s ON sta.user_id = s.user_id
@@ -46,7 +48,7 @@
         </where>
     </select>
 
-    <select id="findStaffCallInAndCallOutPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageVO">
+    <select id="findStaffCallInAndCallOutPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPage">
         SELECT
         sta.id,
         sta.user_id,
@@ -58,7 +60,9 @@
         torg.ORG_NAME trans_org_name,
         tp.POST_NAME trans_post_name,
         njl.JOB_LEVEL_NAME now_job_level_name ,
-        tjl.JOB_LEVEL_NAME trans_job_level_name
+        tjl.JOB_LEVEL_NAME trans_job_level_name,
+        sta.modifier_name,
+        sta.modifier_time
 
         FROM mp_staff_transfer_approve sta
         LEFT JOIN mp_staff s ON sta.user_id = s.user_id

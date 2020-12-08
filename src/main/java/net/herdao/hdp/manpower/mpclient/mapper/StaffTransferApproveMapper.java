@@ -3,8 +3,8 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.entity.StaffTransferApprove;
-import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageVO;
-import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPage;
+import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,16 +14,16 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface StaffTransferApproveMapper extends BaseMapper<StaffTransferApprove> {
-    Page<StaffTransferPageVO> findStaffTransferPage(Page page,
-                                                    @Param("searchText") String searchText,
-                                                    @Param("orgId") Long orgId,
-                                                    @Param("status") String status);
+    Page<StaffTransferPage> findStaffTransferPage(Page page,
+                                                  @Param("searchText") String searchText,
+                                                  @Param("orgId") Long orgId,
+                                                  @Param("status") String status);
 
-    Page<StaffCallInAndCallOutPageVO>findStaffCallInAndCallOutPage(Page page,
-                                                                   @Param("searchText") String searchText,
-                                                                   @Param("orgId") Long orgId,
-                                                                   @Param("status") String status,
-                                                                   @Param("type") String type);
+    Page<StaffCallInAndCallOutPage>findStaffCallInAndCallOutPage(Page page,
+                                                                 @Param("searchText") String searchText,
+                                                                 @Param("orgId") Long orgId,
+                                                                 @Param("status") String status,
+                                                                 @Param("type") String type);
 
 
 }
