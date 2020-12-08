@@ -36,13 +36,12 @@
        <select id="fetchResumeFamily" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO">
                SELECT f.id,
                       f.`name`,
-                      gx.label relations,
+                      f.relations,
                       f.professional,
                       f.work_unit,
                       f.ADDRESS
                  FROM  mp_recruitment_family_status f
-                LEFT JOIN sys_dict_item gx ON gx.type = 'RELATIONS_TYPE' AND gx.VALUE = f.relations
-             <where>
+              <where>
                   f.del_flag = 0
                   <if test="recruitmentId != null ">
                         AND f.recruitment_id = #{recruitmentId}
@@ -54,14 +53,13 @@
         <select id="fetchResumeFamilyPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO">
             SELECT  f.id,
                     f.`name`,
-                    gx.label relations,
+                    f.relations,
                     f.professional,
                     f.work_unit,
                     f.ADDRESS,
                     CONCAT( f.modifier_name, " 于 ", f.modifier_name, " 更新" ) update_desc
             FROM  mp_recruitment_family_status f
-            LEFT JOIN sys_dict_item gx ON gx.type = 'RELATIONS_TYPE' AND gx.VALUE = f.relations
-            <where>
+             <where>
                 f.del_flag = 0
                 <if test="recruitmentId != null ">
                     AND f.recruitment_id = #{recruitmentId}

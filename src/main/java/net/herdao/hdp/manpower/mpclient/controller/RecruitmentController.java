@@ -323,7 +323,6 @@ public class RecruitmentController {
 
         //教育经历
         List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
-
         List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
         if (ObjectUtil.isNotEmpty(recruitmentEduList)){
             recruitmentEduList.forEach(e->{
@@ -336,7 +335,6 @@ public class RecruitmentController {
 
         //家庭状况
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
-
         List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
         if (ObjectUtil.isNotEmpty(familyList)){
             familyList.forEach(e->{

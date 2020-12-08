@@ -125,45 +125,40 @@
     <!-- 人才表分页-->
     <select id="findRecruitmentPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO">
       select * from (
-             SELECT  t.id,
-                     t.talent_name,
-                     t.mobile,
-                     t.email,
-                     t.sex_label sex,
-                     t.age,
-                     t.work_age ,
-                     t.highest_education,
-                     t.final_job_company,
-                     t.final_post_name,
-                     t.talent_label,
-                     GROUP_CONCAT(t.rc_label) rc_label,
-                     CONCAT("已邀请",t.invite_count,"次") invite_situation,
-                     t.org_full_name,
-                     t.update_desc
+        SELECT  t.id,
+                t.talent_name,
+                t.mobile,
+                t.email,
+                t.sex,
+                t.age,
+                t.work_age ,
+                t.highest_education,
+                t.final_job_company,
+                t.final_post_name,
+                t.talent_label,
+                GROUP_CONCAT(t.rc_label) rc_label,
+                CONCAT("已邀请",t.invite_count,"次") invite_situation,
+                t.org_full_name,
+                t.update_desc
             from  (
                 SELECT  rec.id,
                         rec.talent_name,
                         rec.mobile,
                         rec.email,
-                        rec.sex sex_id,
-                        disex.label sex_label,
+                        rec.sex,
                         TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
                         TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
                         rec.highest_education,
                         rec.final_job_company,
                         rec.final_post_name,
-                        rec.talent_type talent_type,
-                        dirc.label talent_label,
+                        rec.talent_type talent_label,
                         rl.`name` rc_label,
                         invr.invite_count,
-                        zpjg.value recruitment_status,
+                        rec.recruitment_status,
                         org.ORG_FULLNAME org_full_name,
                         CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
-             FROM mp_recruitment rec
-                left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
-                left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
+                FROM mp_recruitment rec
                 left join mp_recruitment_label rl on rl.recruitment_id= rec.id
-                left join sys_dict_item zpjg on zpjg.type='ZPJG' and zpjg.value=rec.recruitment_status
                 left join mp_organization org on org.id= rec.org_id
                 left join
                  (
@@ -182,7 +177,7 @@
             ) t
             GROUP BY  t.id, t.talent_name
        )t
-         <where>
+          <where>
             <if test="searchText != null and searchText != '' ">
                 and CONCAT(
                     IFNULL(t.talent_name,''),
@@ -213,18 +208,15 @@
                 t.sex,
                 GROUP_CONCAT(t.rc_label) talent_label
         FROM (
-                SELECT rec.talent_name,
+                SELECT  rec.talent_name,
                         rec.mobile,
-                        dirc.label talent_type,
+                        rec.talent_type,
                         rl.`name` rc_label,
                         org.ORG_FULLNAME org_full_name,
-                        xb.label sex
+                        rec.sex
                 FROM  mp_recruitment rec
-                LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX'
-                AND dirc.VALUE = rec.talent_type
                 LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
                 LEFT JOIN mp_organization org on org.id= rec.org_id
-                LEFT JOIN sys_dict_item xb ON xb.type = 'SEX' AND xb.VALUE = rec.sex
                 <where>
                     <if test="id != null ">
                         AND rec.id = #{id}
@@ -314,33 +306,23 @@
         SELECT  rec.id,
                 rec.talent_name,
                 rec.mobile,
-                disex.label sex,
+                rec.sex,
                 TIMESTAMPDIFF(YEAR ,rec.birthday, now()) age,
-                dirc.label talent_type,
-                dis.label resume_source,
+                rec.talent_type,
+                rec.resume_source,
                 rec.birthday,
                 rec.nation,
                 rec.birthplace,
-                disy.label fertility,
-                dihy.label marital_status,
-                dijk.label health_status,
+                rec.fertility,
+                rec.marital_status,
+                rec.health_status,
                 rec.weight,
                 rec.height,
-                zzmm.label political_landscape,
+                rec.political_landscape,
                 rec.emergency_contacts,
                 rec.EMERGENCY_PHONE
                 FROM  mp_recruitment rec
-                left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
-                left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
-                left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
-                left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
-                left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
-                left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
-                left join sys_dict_item zgxl on zgxl.type='ZGXL' and zgxl.value=rec.highest_education
-                left join sys_dict_item zgxw on zgxw.type='EDUCATION_DEGREE_TYPE' and zgxl.value=rec.education_degree
-                left join sys_dict_item xxxs on xxxs.type='XXXS' and xxxs.value=rec.learn_form
-                left join sys_dict_item zzmm on zzmm.type='ZZMM' and zzmm.value=rec.political_landscape
-                left join mp_post mp on mp.ID=rec.intention_post_id
+           left join mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
@@ -358,16 +340,7 @@
                 rec.expected_levelIncome,
                 rec.other_request
           FROM  mp_recruitment rec
-            left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
-            left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
-            left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
-            left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
-            left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
-            left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
-            left join sys_dict_item zgxl on zgxl.type='ZGXL' and zgxl.value=rec.highest_education
-            left join sys_dict_item zgxw on zgxw.type='EDUCATION_DEGREE_TYPE' and zgxl.value=rec.education_degree
-            left join sys_dict_item xxxs on xxxs.type='XXXS' and xxxs.value=rec.learn_form
-            left join mp_post mp on mp.ID=rec.intention_post_id
+          left join mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
@@ -378,25 +351,15 @@
     <!-- 获取人才简历-最高教育经历-详情-->
     <select id="fetchRecruitmentTopEdu" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO">
         SELECT     rec.id,
-                   zgxl.label highest_education,
-                   zgxw.label education_degree,
+                   rec.highest_education,
+                   rec.education_degree,
                    rec.begin_date,
                    rec.end_date,
-                   xxxs.label learn_form,
+                   rec.learn_form,
                    rec.graduated,
                    rec.professional
         FROM  mp_recruitment rec
-        left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
-        left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
-        left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
-        left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
-        left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
-        left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
-        left join sys_dict_item zgxl on zgxl.type='ZGXL' and zgxl.value=rec.highest_education
-        left join sys_dict_item zgxw on zgxw.type='EDUCATION_DEGREE_TYPE' and zgxl.value=rec.education_degree
-        left join sys_dict_item xxxs on xxxs.type='XXXS' and xxxs.value=rec.learn_form
-        left join mp_post mp on mp.ID=rec.intention_post_id
-        <where>
+         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
             </if>
@@ -412,11 +375,10 @@
                 rec.accept_assignment_location,
                 rec.applicant_sign,
                 rec.resume_access_time,
-                jp.label resume_access,
+                rec.resume_access,
                 rec.remark
         FROM  mp_recruitment rec
-        left join sys_dict_item jp on jp.type='JPXXTJ' and jp.value=rec.resume_access
-         <where>
+          <where>
             <if test="id != null ">
                 AND rec.id = #{id}
             </if>
@@ -428,17 +390,17 @@
         	SELECT  rec.id,
 					rec.talent_name,
 					rec.birthday,
-					disex.label sex,
+                    rec.sex,
 					rec.nation,
-					dihy.label marital_status,
- 					disy.label fertility,
-					dijk.label health_status,
+                    rec.marital_status,
+                    rec.fertility,
+                    rec.health_status,
 					rec.height,
 			        rec.weight,
-					zzmm.label political_landscape,
+                    rec.political_landscape,
 					rec.emergency_contacts,
 					rec.emergency_phone,
-					zgxl.label highest_education,
+                    rec.highest_education,
 					rec.professional,
 					rec.highest_diplomano,
 					rec.graduated,
@@ -451,18 +413,7 @@
 					rec.advantage,
 					rec.shortcoming
             FROM  mp_recruitment rec
-					left join sys_dict_item disex on disex.type='sex' and disex.value=rec.sex
-					left join sys_dict_item dirc on dirc.type='ZPRCLX' and dirc.value=rec.talent_type
-					left join sys_dict_item dis on dis.type='JLLYLX' and dis.value=rec.resume_source
-					left join sys_dict_item disy on disy.type='SYZK' and disy.value=rec.fertility
-					left join sys_dict_item dihy on dihy.type='HYZK' and dihy.value=rec.marital_status
-					left join sys_dict_item dijk on dijk.type='JKQK' and dijk.value=rec.health_status
-					left join sys_dict_item zgxl on zgxl.type='ZGXL' and zgxl.value=rec.highest_education
-					left join sys_dict_item zgxw on zgxw.type='EDUCATION_DEGREE_TYPE' and zgxl.value=rec.education_degree
-					left join sys_dict_item xxxs on xxxs.type='XXXS' and xxxs.value=rec.learn_form
-					left join sys_dict_item zzmm on zzmm.type='ZZMM' and zzmm.value=rec.political_landscape
-					left join mp_post mp on mp.ID=rec.intention_post_id
-            <where>
+             <where>
                 <if test="id != null ">
                     AND rec.id = #{id}
                 </if>
