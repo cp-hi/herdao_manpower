@@ -1,5 +1,5 @@
 /*
- *    Copyright (c) 2018-2025, hdp All rights reserved.
+ *    Copyright (c) 2018-2025, herdao All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -9,41 +9,37 @@
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
+ * Neither the name of the herdao.net developer nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * Author: hdp
+ * Author: liang
  */
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
-import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.entity.MpStaffPositiveApproval;
 
 /**
- * 
+ * 转正审批表
  *
- * @author andy
- * @date 2020-09-15 17:59:33
+ * @author cp
+ * @date 2020-12-08 11:02:30
  */
-public interface UserService extends IService<User> {
-	
-	/**
-	 * 统计组织员工数
-	 * 
-	 * @param orgCode 组织code
-	 * @param isStop 是否停用 值：1 停用， 值：0 启用
-	 * @return
-	 */
-    Integer getCountUser(String orgCode, Integer isStop);
+public interface MpStaffPositiveApprovalService extends IService<MpStaffPositiveApproval> {
 
     /**
-	 * 获取员工信息
-	 * 
-	 * @param id 用户id
-	 * @return
-	 */
-    UserMsgDTO getUserMsg(long id);
+     * 分页查询
+     * @return
+     */
+    IPage<MpStaffPositiveApproval> getPageInfo(Page<MpStaffPositiveApproval> page, MpStaffPositiveApproval mpStaffPositiveApproval);
+
+
+
+    /**
+     * 通过id删除转正审批表
+     */
+    void deleteById(String[] inputIds);
 }
