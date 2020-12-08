@@ -30,4 +30,16 @@ public class StaffBasicVO {
 
     @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
     private Long entryTime;
+
+    private Long orgId;
+
+    private String orgName;
+
+    private Long pastId;
+
+    private String pastName;
+
+    private Long  jobLevelId;
+
+    private String jobLevelName;
 }

@@ -3,7 +3,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper">
 
-    <select id="findStaffPromotePage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO">
+    <select id="findStaffPromotePage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePage">
         SELECT
         spa.id,
         spa.user_id,
@@ -15,7 +15,9 @@
         njl.JOB_LEVEL_NAME now_job_level_name,
         porg.ORG_NAME promote_org_name,
         pp.POST_NAME promote_post_name,
-        pjl.JOB_LEVEL_NAME promote_job_level_name
+        pjl.JOB_LEVEL_NAME promote_job_level_name,
+        spa.modifier_name,
+        spa.modifier_time
 
         FROM mp_staff_promote_approve spa
         LEFT JOIN mp_staff s ON spa.user_id = s.user_id

@@ -419,8 +419,8 @@ public class StaffController extends HdpBaseController{
 
     @ApiOperation(value = "人事异动(员工)基础信息-多页面通用（根据员工编码查询基本信息）")
     @GetMapping("/changes/basic")
-    public R<StaffBasicVO> getStaffBasic(@RequestParam("staffCode") String staffCode) {
-        return R.ok(staffService.selectBasicByCode(staffCode));
+    public R<StaffBasicVO> getStaffBasic(@RequestParam("id") String id) {
+        return R.ok(staffService.selectBasicByCode(id));
     }
 
 }
