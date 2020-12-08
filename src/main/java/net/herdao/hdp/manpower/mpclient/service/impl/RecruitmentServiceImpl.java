@@ -90,6 +90,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
+        recruitment.setOrgId(Long.parseLong(recruitmentUpdateFormVO.getOrgId()));
 
         /*SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
