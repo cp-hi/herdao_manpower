@@ -48,8 +48,8 @@
                    wr.leave_reason,
                    wr.contact,
                    wr.contact_tel,
-                   wr.role
-              FROM
+                   wr.main_performance
+               FROM
                   mp_recruitment_workexperience wr
              <where>
                     wr.DEL_FLAG =0
