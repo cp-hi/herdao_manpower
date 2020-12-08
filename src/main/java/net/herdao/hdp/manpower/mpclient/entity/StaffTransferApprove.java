@@ -146,15 +146,15 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     private LocalDateTime creatorTime;
 
     @ApiModelProperty(value = "修改人工号")
-    @TableField(value = "modifier_code", fill = FieldFill.INSERT)
+    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
     private String modifierCode;
 
     @ApiModelProperty(value = "修改人")
-    @TableField(value = "modifier_name", fill = FieldFill.INSERT)
+    @TableField(value = "modifier_name", fill = FieldFill.UPDATE)
     private String modifierName;
 
     @ApiModelProperty(value = "修改人时间")
-    @TableField(value = "modifier_time", fill = FieldFill.INSERT)
+    @TableField(value = "modifier_time", fill = FieldFill.UPDATE)
     private LocalDateTime modifierTime;
 
     @ApiModelProperty(value = "状态")

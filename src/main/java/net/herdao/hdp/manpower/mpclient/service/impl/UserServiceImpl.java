@@ -17,6 +17,8 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.mapper.UserMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
@@ -35,5 +37,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	public Integer getCountUser(String orgCode, Integer isStop) {
 		return this.baseMapper.getCountUser(orgCode, isStop);
 	}
-
+	
+	@Override
+	public UserMsgDTO getUserMsg(long id){
+		return this.baseMapper.getUserMsg(id);
+	}
 }

@@ -85,4 +85,10 @@ public class RecruitmentAddFormDTO  {
     @ApiModelProperty(value="参加工作日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date workdate;
+
+    /**
+     * 组织id
+     */
+    @ApiModelProperty(value="组织id")
+    private Long orgId;
 }

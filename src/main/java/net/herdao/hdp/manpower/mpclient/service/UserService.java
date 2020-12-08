@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 
 /**
@@ -38,4 +39,11 @@ public interface UserService extends IService<User> {
 	 */
     Integer getCountUser(String orgCode, Integer isStop);
 
+    /**
+	 * 获取员工信息
+	 * 
+	 * @param id 用户id
+	 * @return
+	 */
+    UserMsgDTO getUserMsg(long id);
 }

@@ -18,6 +18,8 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,4 +41,11 @@ public interface UserMapper extends BaseMapper<User> {
 	 */
 	Integer getCountUser(@Param("orgCode") String orgCode, @Param("isStop") Integer isStop);
 
+	/**
+	 * 获取员工信息
+	 * 
+	 * @param id 用户id
+	 * @return
+	 */
+    UserMsgDTO getUserMsg(long id);
 }

@@ -327,36 +327,45 @@ public class RecruitmentController {
         List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
         if (ObjectUtil.isNotEmpty(recruitmentEduList)){
             recruitmentEduList.forEach(e->{
-                RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
-                BeanUtils.copyProperties(e,editEduDTO);
-                editEduList.add(editEduDTO);
-            });
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+                    BeanUtils.copyProperties(e,editEduDTO);
+                    editEduList.add(editEduDTO);
+                    result.setRecruitmentEditEduDTO(editEduList);
+                }
+             });
         }
-        result.setRecruitmentEditEduDTO(editEduList);
+
 
         //家庭状况
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
         List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
         if (ObjectUtil.isNotEmpty(familyList)){
             familyList.forEach(e->{
-                RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
-                BeanUtils.copyProperties(e,editFamilyDTO);
-                editFamilyList.add(editFamilyDTO);
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
+                    BeanUtils.copyProperties(e,editFamilyDTO);
+                    editFamilyList.add(editFamilyDTO);
+                    result.setRecruitmentEditFamilyDTO(editFamilyList);
+                }
             });
         }
-        result.setRecruitmentEditFamilyDTO(editFamilyList);
 
         //其他个人信息
-        RecruitmentOtherInfo otherInfoList = recruitmentService.fetchRecruitmentOtherInfo(id);
-        RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
-        BeanUtils.copyProperties(otherInfoList,editOtherInfo);
-        result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
+        if (ObjectUtil.isNotNull(otherInfo)){
+            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
+            BeanUtils.copyProperties(otherInfo,editOtherInfo);
+            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        }
 
         //个人基本信息
         RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
-        RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
-        BeanUtils.copyProperties(baseInfo,editBaseInfo);
-        result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        if (ObjectUtil.isNotNull(baseInfo)){
+            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
+            BeanUtils.copyProperties(baseInfo,editBaseInfo);
+            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        }
 
         return R.ok(result);
     }

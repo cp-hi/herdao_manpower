@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.entity.StaffContractRenewal;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import net.herdao.hdp.manpower.mpclient.service.StaffContractRenewalService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +51,12 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
     public Long add(SaveStaffContractRenewalDTO dto) {
         StaffContractRenewal entity = new StaffContractRenewal();
         BeanUtils.copyProperties(dto, entity);
+
+        entity.setContractStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractStartTime()));
+        entity.setContractEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractEndTime()));
+        entity.setRenewalStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalStartTime()));
+        entity.setRenewalEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalEndTime()));
+
         entity.setDelFlag(false);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         mapper.insert(entity);
@@ -63,6 +70,12 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
         StaffContractRenewal entity = mapper.selectOne(wrapper);
         if (entity != null) {
             BeanUtils.copyProperties(dto, entity);
+
+            entity.setContractStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractStartTime()));
+            entity.setContractEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractEndTime()));
+            entity.setRenewalStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalStartTime()));
+            entity.setRenewalEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalEndTime()));
+
             mapper.updateById(entity);
             return id;
         } else {
@@ -72,11 +85,15 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
 
     @Override
     public StaffContractRenewalInfoVO getDetail(Long id) {
-        StaffContractRenewal staffContractRenewal = mapper.selectById(id);
+        StaffContractRenewal entity = mapper.selectById(id);
         StaffContractRenewalInfoVO vo = new StaffContractRenewalInfoVO();
-        BeanUtils.copyProperties(staffContractRenewal, vo);
+        BeanUtils.copyProperties(entity, vo);
         String renewalCompanyName = companyService.getById(vo.getRenewalCompanyId()).getCompanyName();
         vo.setRenewalCompanyName(renewalCompanyName);
-        return null;
+        vo.setContractStartTime(LocalDateTimeUtils.convert2Long(entity.getContractStartTime()));
+        vo.setContractEndTime(LocalDateTimeUtils.convert2Long(entity.getContractEndTime()));
+        vo.setRenewalStartTime(LocalDateTimeUtils.convert2Long(entity.getRenewalStartTime()));
+        vo.setRenewalEndTime(LocalDateTimeUtils.convert2Long(entity.getRenewalEndTime()));
+        return vo;
     }
 }

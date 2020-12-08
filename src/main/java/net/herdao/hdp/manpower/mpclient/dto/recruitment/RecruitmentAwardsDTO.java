@@ -35,7 +35,6 @@ public class RecruitmentAwardsDTO {
     @ApiModelProperty(value="人才id")
     private Long recruitmentId;
 
-
     /**
      * 获奖时间
      */

@@ -90,4 +90,5 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="资质挂靠单位")
     private String qualificationUnit;
 
+
 }

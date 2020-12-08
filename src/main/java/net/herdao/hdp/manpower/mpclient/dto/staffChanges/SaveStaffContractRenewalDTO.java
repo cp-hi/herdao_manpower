@@ -33,7 +33,7 @@ public class SaveStaffContractRenewalDTO {
     private Long contractStartTime;
 
     @ApiModelProperty(value = "合同结束日期")
-    private Long contractEntTime;
+    private Long contractEndTime;
 
     @ApiModelProperty(value = "合同试用期")
     private Double contractProbation;

@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,13 +66,14 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
-        StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
+        StaffTransferApprove entity = mapper.selectOne(queryWrapper);
 
-        if (staffTransferApprove == null) {
+        if (entity == null) {
             throw new Exception("该记录不可更改");
         }
-        BeanUtils.copyProperties(dto, staffTransferApprove);
-        mapper.updateById(staffTransferApprove);
+        BeanUtils.copyProperties(dto, entity);
+        entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
+        mapper.updateById(entity);
         return id;
     }
 
@@ -121,26 +123,32 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
     public Long saveInfo(SaveStaffCallInDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
 
-        StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
-        BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
-        staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        staffTransferApprove.setDelFlag(false);
-        mapper.insert(staffTransferApprove);
+        StaffTransferApprove entity = new StaffTransferApprove();
+        BeanUtils.copyProperties(dto, entity);
+        LocalDateTime transStartDate = LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate());
+        entity.setTransStartDate(transStartDate);
+        entity.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
+        mapper.insert(entity);
 
-        // 都造 "调出" 对象
+        // 插入一条对应的调出数据
+        staffCallOutService.saveInfo(getOutDTO(entity));
+
+        return entity.getId();
+    }
+
+    private SaveStaffCallOutDTO getOutDTO(StaffTransferApprove callInEntity) {
         SaveStaffCallOutDTO outDTO = new SaveStaffCallOutDTO();
-        BeanUtils.copyProperties(dto, outDTO);
-        // 调出生效时间比调入时间提前一天
-        LocalDateTime transStartDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getTransStartDate()), ZoneId.systemDefault());
-        LocalDateTime callOutDate = transStartDate.plusDays(-1L);
-        outDTO.setTransStartDate(callOutDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        outDTO.setTransStartDate(dto.getTransStartDate());
-        // 调出记录要保存对应的调入记录 id
-        outDTO.setTransApproveId(staffTransferApprove.getId());
-        staffCallOutService.saveInfo(outDTO);
+        BeanUtils.copyProperties(callInEntity, outDTO);
 
-        return staffTransferApprove.getId();
+        // 调出生效时间比调入时间提前一天
+        LocalDateTime callOutDate = callInEntity.getTransStartDate().plusDays(-1L);
+        outDTO.setTransStartDate(LocalDateTimeUtils.convert2Long(callOutDate));
+
+        // 调出记录要保存对应的调入记录 id
+        outDTO.setTransApproveId(callInEntity.getId());
+        return outDTO;
     }
 
     @Override
@@ -156,6 +164,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         StaffCallInInfoVO to = new StaffCallInInfoVO();
         BeanUtils.copyProperties(from, to);
 
+        to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
         Post nowPost = postService.getById(to.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());

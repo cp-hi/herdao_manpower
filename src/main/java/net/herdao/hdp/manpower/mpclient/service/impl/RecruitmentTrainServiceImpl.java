@@ -35,7 +35,7 @@ import java.util.List;
 public class RecruitmentTrainServiceImpl extends ServiceImpl<RecruitmentTrainMapper, RecruitmentTrain> implements RecruitmentTrainService {
     @Override
     public List<RecruitmentTrainDTO> findRecruitmentTrainList(Long recruitmentId) {
-        this.baseMapper.findRecruitmentTrainList(recruitmentId);
-        return null;
+        List<RecruitmentTrainDTO> list = this.baseMapper.findRecruitmentTrainList(recruitmentId);
+        return list;
     }
 }
