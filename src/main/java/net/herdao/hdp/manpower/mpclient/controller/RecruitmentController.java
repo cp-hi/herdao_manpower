@@ -72,6 +72,7 @@ public class RecruitmentController {
         Recruitment recruitment = recruitmentService.getById(id);
         RecruitmentUpdateFormDTO formVO = new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitment, formVO);
+        formVO.setOrgId(String.valueOf(recruitment.getOrgId()));
         return R.ok(formVO);
     }
 
