@@ -611,10 +611,11 @@ public class Recruitment extends Model<Recruitment> {
      */
     @ApiModelProperty(value="申请人签名")
     private String applicantSign;
+
     /**
-     * 获取岗位招聘信息途径
+     * 获得招聘信息途径
      */
-    @ApiModelProperty(value="获取岗位招聘信息途径")
+    @ApiModelProperty(value="获得招聘信息途径")
     private String resumeAccess;
 
     /**
