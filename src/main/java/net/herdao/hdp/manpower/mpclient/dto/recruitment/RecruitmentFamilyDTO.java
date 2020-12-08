@@ -33,11 +33,7 @@ public class RecruitmentFamilyDTO  {
     @ApiModelProperty(value="id")
     private Long id;
 
-    /**
-     * 人才id
-     */
-    @ApiModelProperty(value="人才id")
-    private Long recruitmentId;
+
 
     /**
      * 家庭成员姓名

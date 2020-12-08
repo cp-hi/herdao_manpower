@@ -54,7 +54,8 @@
 
     <!-- 人才简历-教育情况-list -->
     <select id="fetchResumeEduList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO">
-        SELECT  edu.period,
+        SELECT  edu.id,
+                edu.period,
                 edu.todate,
                 edu.school_name,
                 edu.professional,
