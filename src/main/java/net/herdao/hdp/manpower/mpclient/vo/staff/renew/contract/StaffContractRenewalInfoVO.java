@@ -27,11 +27,11 @@ public class StaffContractRenewalInfoVO {
     @NotNull
     private Long staffContractId;
 
-    @ApiModelProperty(value = "合同开始日期")
-    private LocalDateTime contractStartTime;
+    @ApiModelProperty(value = "合同开始日期(原合同生效时间)")
+    private Long contractStartTime;
 
-    @ApiModelProperty(value = "合同结束日期")
-    private LocalDateTime contractEntTime;
+    @ApiModelProperty(value = "合同结束日期(原合同到期时间)")
+    private Long contractEndTime;
 
     @ApiModelProperty(value = "合同试用期")
     private Double contractProbation;
@@ -46,11 +46,11 @@ public class StaffContractRenewalInfoVO {
     @ApiModelProperty(value = "合同签定基本工资")
     private Double signedBasicWage;
 
-    @ApiModelProperty(value = "续签开始日期")
-    private LocalDateTime renewalStartTime;
+    @ApiModelProperty(value = "续签开始日期(续签合同生效日期)")
+    private Long renewalStartTime;
 
-    @ApiModelProperty(value = "续签结束日期")
-    private LocalDateTime renewalEndTime;
+    @ApiModelProperty(value = "续签结束日期(续签合同到期日期)")
+    private Long renewalEndTime;
 
     @ApiModelProperty(value = "拟续签年数")
     private Double proposedSigningYears;
