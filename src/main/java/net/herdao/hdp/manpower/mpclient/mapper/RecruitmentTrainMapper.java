@@ -22,6 +22,7 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentTrain;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -38,5 +39,5 @@ public interface RecruitmentTrainMapper extends BaseMapper<RecruitmentTrain> {
      * @param recruitmentId 人才ID
      * @return
      */
-    List<RecruitmentTrainDTO> findRecruitmentTrainList(Long recruitmentId);
+    List<RecruitmentTrainDTO> findRecruitmentTrainList(@Param("recruitmentId") Long recruitmentId);
 }

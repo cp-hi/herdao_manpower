@@ -20,8 +20,6 @@ import java.util.Date;
 @ApiModel(value = "人才表单-新增DTO")
 public class RecruitmentAddFormDTO  {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * id
      */
