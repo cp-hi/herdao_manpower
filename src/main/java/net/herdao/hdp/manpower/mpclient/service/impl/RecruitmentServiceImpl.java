@@ -209,6 +209,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
 
         BeanUtils.copyProperties(dto,recruitment);
+        if (ObjectUtil.isNotNull(dto.getOrgName())){
+            recruitment.setOrgId(Long.parseLong(dto.getOrgName()));
+        }
+        if (ObjectUtil.isNotNull(dto.getPostName())){
+            recruitment.setRecruitmentPostId(Long.parseLong(dto.getPostName()));
+        }
+
        /* SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
