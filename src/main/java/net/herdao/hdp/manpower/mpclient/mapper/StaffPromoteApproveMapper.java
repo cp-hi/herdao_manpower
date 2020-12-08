@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPromoteApprove;
-import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,8 +15,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StaffPromoteApproveMapper extends BaseMapper<StaffPromoteApprove> {
 
-    Page<StaffPromotePageVO> findStaffPromotePage(Page page,
-                                                  @Param("searchText") String searchText,
-                                                  @Param("orgId") Long orgId,
-                                                  @Param("status") String status);
+    Page<StaffPromotePage> findStaffPromotePage(Page page,
+                                                @Param("searchText") String searchText,
+                                                @Param("orgId") Long orgId,
+                                                @Param("status") String status);
 }

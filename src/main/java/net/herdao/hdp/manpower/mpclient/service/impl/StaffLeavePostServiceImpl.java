@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffLeavePostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffLeavePostApprove;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffLeavePostMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffLeaveService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPageVO;
 import org.springframework.beans.BeanUtils;
@@ -60,6 +61,9 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
             throw new Exception("该审批记录不可编辑");
         }
         BeanUtils.copyProperties(dto, entity);
+        entity.setInterviewsTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getInterviewsTime()));
+        entity.setLeaveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveTime()));
+        entity.setLeaveApplicationTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveApplicationTime()));
         mapper.updateById(entity);
         return id;
     }
@@ -70,6 +74,9 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
         if (entity != null) {
             StaffLeavePostInfoVO vo = new StaffLeavePostInfoVO();
             BeanUtils.copyProperties(entity, vo);
+            vo.setInterviewsTime(LocalDateTimeUtils.convert2Long(entity.getInterviewsTime()));
+            vo.setLeaveTime(LocalDateTimeUtils.convert2Long(entity.getLeaveTime()));
+            vo.setLeaveApplicationTime(LocalDateTimeUtils.convert2Long(entity.getLeaveApplicationTime()));
             return vo;
         }
         return null;
@@ -79,6 +86,10 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
     public Long insert(SaveStaffLeavePostDTO dto) {
         StaffLeavePostApprove entity = new StaffLeavePostApprove();
         BeanUtils.copyProperties(dto, entity);
+
+        entity.setInterviewsTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getInterviewsTime()));
+        entity.setLeaveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveTime()));
+        entity.setLeaveApplicationTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveApplicationTime()));
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         entity.setDelFlag(false);
         mapper.insert(entity);

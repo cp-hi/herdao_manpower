@@ -9,10 +9,15 @@ import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffTransferApprove;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffCallInAndCallOutService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +51,30 @@ public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffTransferA
 
     @Override
     public Page<StaffCallInAndCallOutPageVO> pageStaffCallInAndCallOut(Page page, String searchText, Long orgId, String status, String type) {
-        return this.baseMapper.findStaffCallInAndCallOutPage(page, searchText, orgId, status, type);
+        Page<StaffCallInAndCallOutPage> staffCallInAndCallOutPage = this.baseMapper.findStaffCallInAndCallOutPage(page, searchText, orgId, status, type);
+        return convert2PageVO(staffCallInAndCallOutPage);
+    }
+
+    /**
+     * 适配数据库中获取的原始数据为传给前端的 vo
+     *
+     * @param page
+     * @return
+     */
+    private Page<StaffCallInAndCallOutPageVO> convert2PageVO(Page<StaffCallInAndCallOutPage> page) {
+        Page<StaffCallInAndCallOutPageVO> pageVO = new Page<>();
+        List<StaffCallInAndCallOutPageVO> list = new ArrayList<>();
+        for (StaffCallInAndCallOutPage record : page.getRecords()) {
+            StaffCallInAndCallOutPageVO vo = new StaffCallInAndCallOutPageVO();
+            BeanUtils.copyProperties(record, vo);
+            if (record.getTransStartDate() != null) {
+                vo.setTransStartDate(LocalDateTimeUtils.convert2Long(record.getTransStartDate()));
+            }
+            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            list.add(vo);
+        }
+        pageVO.setRecords(list);
+        return pageVO;
     }
 }
