@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, herdao All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the herdao.net developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: liang
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.MpStaffPositiveApprovalMapper">
+
+  <resultMap id="mpStaffPositiveApprovalMap" type="net.herdao.hdp.manpower.mpclient.entity.MpStaffPositiveApproval">
+
+                  <id property="id" column="id"/>
+                        <result property="oid" column="oid"/>
+                        <result property="userId" column="user_id"/>
+                        <result property="userOid" column="user_oid"/>
+                        <result property="orgId" column="org_id"/>
+                        <result property="orgOid" column="org_oid"/>
+                        <result property="postId" column="post_id"/>
+                        <result property="postOid" column="post_oid"/>
+                        <result property="staffpositiveapplicationOid" column="StaffPositiveApplication_oid"/>
+                        <result property="staffpositiveapplicationId" column="StaffPositiveApplication_id"/>
+                        <result property="entryTime" column="entry_time"/>
+                        <result property="positiveTime" column="positive_time"/>
+                        <result property="previousMonthIncome" column="previous_month_income"/>
+                        <result property="otherCosts" column="other_costs"/>
+                        <result property="status" column="status"/>
+                        <result property="remark" column="remark"/>
+                        <result property="posExamScore" column="pos_exam_score"/>
+                        <result property="yearPostPrepareCount" column="year_post_prepare_count"/>
+                        <result property="monthPostPrepareCount" column="month_post_prepare_count"/>
+                        <result property="postHasCount" column="post_has_count"/>
+                        <result property="isPrepareChange" column="is_prepare_change"/>
+                        <result property="beforePostId" column="before_post_id"/>
+                        <result property="beforePostOid" column="before_post_oid"/>
+                        <result property="nowYearPostPrepareCount" column="now_year_post_prepare_count"/>
+                        <result property="nowMonthPostPrepareCount" column="now_month_post_prepare_count"/>
+                        <result property="nowPostHasCount" column="now_post_has_count"/>
+                        <result property="interviewsTime" column="interviews_time"/>
+                        <result property="interviewsPlace" column="interviews_place"/>
+                        <result property="entryLeader" column="entry_leader"/>
+                        <result property="interviewsHost" column="interviews_host"/>
+                        <result property="interviewsParticipants" column="interviews_participants"/>
+                        <result property="recordMan" column="record_man"/>
+                        <result property="positiveQuestionAns1" column="positive_question_ans1"/>
+                        <result property="positiveQuestionAns2" column="positive_question_ans2"/>
+                        <result property="positiveQuestionAns3" column="positive_question_ans3"/>
+                        <result property="positiveQuestionAns4" column="positive_question_ans4"/>
+                        <result property="positiveQuestionAns5" column="positive_question_ans5"/>
+                        <result property="positiveQuestionAns6" column="positive_question_ans6"/>
+                        <result property="positiveQuestionAns7" column="positive_question_ans7"/>
+                        <result property="improveProposal" column="improve_proposal"/>
+                        <result property="interviewSummary" column="interview_summary"/>
+                        <result property="creatorCode" column="creator_code"/>
+                        <result property="creatorName" column="creator_name"/>
+                        <result property="creatorTime" column="creator_time"/>
+                        <result property="modifierCode" column="modifier_code"/>
+                        <result property="modifierName" column="modifier_name"/>
+                        <result property="modifierTime" column="modifier_time"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+                        <result property="postOrgId" column="post_org_id"/>
+                        <result property="certificateType" column="certificate_type"/>
+                        <result property="certificateNo" column="certificate_no"/>
+                        <result property="probation" column="probation"/>
+            </resultMap>
+</mapper>
