@@ -9,6 +9,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallOutDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.out.StaffCallOutInfoVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,15 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     @Override
     public Long saveInfo(SaveStaffCallOutDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
-        StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
-        BeanUtils.copyProperties(dto, staffTransferApprove);
-        staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.CALL_OUT);
-        staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        staffTransferApprove.setDelFlag(false);
-        mapper.insert(staffTransferApprove);
-        return staffTransferApprove.getId();
+        StaffTransferApprove entity = new StaffTransferApprove();
+        BeanUtils.copyProperties(dto, entity);
+
+        entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
+        entity.setTransferType(StaffChangesApproveTypeConstants.CALL_OUT);
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
+        mapper.insert(entity);
+        return entity.getId();
     }
 
     @Override
@@ -52,13 +55,14 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
-        StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
-        if (staffTransferApprove == null) {
+        StaffTransferApprove entity = mapper.selectOne(queryWrapper);
+        if (entity == null) {
             throw new Exception("该记录不可更改");
         }
 
-        BeanUtils.copyProperties(dto, staffTransferApprove);
-        mapper.updateById(staffTransferApprove);
+        BeanUtils.copyProperties(dto, entity);
+        entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
+        mapper.updateById(entity);
         return id;
     }
 
@@ -88,6 +92,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         StaffCallOutInfoVO to = new StaffCallOutInfoVO();
         BeanUtils.copyProperties(from, to);
 
+        to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
         Post nowPost = postService.getById(to.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
