@@ -10,13 +10,18 @@ import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDT
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +57,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
 
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
+
+        staffTransferApprove.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.TRANSFER);
         staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         staffTransferApprove.setDelFlag(false);
@@ -121,14 +128,14 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN)
                 .eq("transfer_type", StaffChangesApproveTypeConstants.TRANSFER);
-        StaffTransferApprove staffTransferApprove = mapper.selectOne(queryWrapper);
-        if (staffTransferApprove == null) {
+        StaffTransferApprove entity = mapper.selectOne(queryWrapper);
+        if (entity == null) {
             throw new Exception("该记录不可更新");
         }
-        BeanUtils.copyProperties(dto, staffTransferApprove);
-        mapper.updateById(staffTransferApprove);
+        BeanUtils.copyProperties(dto, entity);
+        entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
+        mapper.updateById(entity);
         return id;
-
     }
 
     @Override
@@ -150,12 +157,38 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     @Override
     public Page<StaffTransferPageVO> pageTransfer(Page page, String searchText, Long orgId, String status) {
 
-        return this.baseMapper.findStaffTransferPage(page, searchText, orgId, status);
+        Page<StaffTransferPage> staffTransferPage = this.baseMapper.findStaffTransferPage(page, searchText, orgId, status);
+        return convert2PageVO(staffTransferPage);
+    }
+
+    /**
+     * 适配数据库中获取的原始数据为传给前端的 vo
+     *
+     * @param page
+     * @return
+     */
+    private Page<StaffTransferPageVO> convert2PageVO(Page<StaffTransferPage> page) {
+        Page<StaffTransferPageVO> pageVO = new Page<>();
+        List<StaffTransferPageVO> list = new ArrayList<>();
+        for (StaffTransferPage record : page.getRecords()) {
+            StaffTransferPageVO vo = new StaffTransferPageVO();
+            BeanUtils.copyProperties(record, vo);
+            if (record.getTransStartDate() != null) {
+                vo.setTransStartDate(LocalDateTimeUtils.convert2Long(record.getTransStartDate()));
+            }
+            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            list.add(vo);
+        }
+        pageVO.setRecords(list);
+        return pageVO;
     }
 
     private StaffTransferInfoVO staffChangesConvert2StaffTransferInfoVo(StaffTransferApprove from) {
         StaffTransferInfoVO to = new StaffTransferInfoVO();
         BeanUtils.copyProperties(from, to);
+
+        to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
 
         Post nowPost = postService.getById(to.getNowPostId());
         if (nowPost != null) {
@@ -210,5 +243,4 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
 
         return null;
     }
-
 }

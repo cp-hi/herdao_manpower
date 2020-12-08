@@ -6,17 +6,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SavaStaffPromoteDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffTransferInfoDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteInfoVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,12 +61,13 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         QueryWrapper<StaffPromoteApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
-        StaffPromoteApprove promoteApprove = mapper.selectOne(queryWrapper);
-        if (promoteApprove == null) {
+        StaffPromoteApprove entity = mapper.selectOne(queryWrapper);
+        if (entity == null) {
             throw new Exception("该记录不可更新");
         }
-        BeanUtils.copyProperties(dto, promoteApprove);
-        mapper.updateById(promoteApprove);
+        BeanUtils.copyProperties(dto, entity);
+        entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
+        mapper.updateById(entity);
         return id;
     }
 
@@ -73,6 +76,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         // dtoValidityCheck(null, dto);
         StaffPromoteApprove promoteApprove = new StaffPromoteApprove();
         BeanUtils.copyProperties(dto, promoteApprove);
+        promoteApprove.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
         promoteApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         promoteApprove.setDelFlag(false);
         mapper.insert(promoteApprove);
@@ -121,6 +125,8 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         StaffPromoteInfoVO to = new StaffPromoteInfoVO();
         BeanUtils.copyProperties(from, to);
 
+        to.setPromoteDate(LocalDateTimeUtils.convert2Long(from.getPromoteDate()));
+
         Post nowPost = postService.getById(to.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
@@ -156,7 +162,25 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
     @Override
     public Page<StaffPromotePageVO> pageStaffPromote(Page page, String searchText, Long orgId, String status) {
-        return mapper.findStaffPromotePage(page, searchText, orgId, status);
+        Page<StaffPromotePage> promotePage = mapper.findStaffPromotePage(page, searchText, orgId, status);
+        return convert2PageVO(promotePage);
+    }
+
+    private Page<StaffPromotePageVO> convert2PageVO(Page<StaffPromotePage> page) {
+        Page<StaffPromotePageVO> pageVO = new Page<>();
+        List<StaffPromotePageVO> list = new ArrayList<>();
+        for (StaffPromotePage record : page.getRecords()) {
+            StaffPromotePageVO vo = new StaffPromotePageVO();
+            BeanUtils.copyProperties(record, vo);
+            if (record.getPromoteStartDate() != null) {
+                vo.setPromoteStartDate(LocalDateTimeUtils.convert2Long(record.getPromoteStartDate()));
+            }
+            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            list.add(vo);
+        }
+        pageVO.setRecords(list);
+        return pageVO;
     }
 
     @Override
