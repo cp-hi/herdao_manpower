@@ -118,4 +118,7 @@ public class RecruitmentWorkExperienceDTO {
      */
     @ApiModelProperty(value="人才主键ID")
     private Long recruitmentId;
+
+
+
  }

@@ -73,4 +73,10 @@ public class RecruitmentTrainDTO {
     @ApiModelProperty(value="组织者")
     private String organizer;
 
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
+
 }

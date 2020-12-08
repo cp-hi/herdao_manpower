@@ -71,5 +71,10 @@ public class RecruitmentActivitiDTO{
     @ApiModelProperty(value="成绩/成果")
     private String result;
 
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
 
  }

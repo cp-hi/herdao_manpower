@@ -85,4 +85,12 @@ public class RecruitmentEduDTO   {
      */
     @ApiModelProperty(value="最近更新情况")
     private String updateDesc;
+
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
+
+
 }
