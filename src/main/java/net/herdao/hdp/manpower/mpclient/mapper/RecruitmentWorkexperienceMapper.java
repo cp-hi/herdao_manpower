@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public interface RecruitmentWorkexperienceMapper extends BaseMapper<RecruitmentW
      * @param recruitmentId 人才ID
      * @return
      */
-    List<RecruitmentWorkExperienceDTO> findWorkExperienceList(Long recruitmentId);
+    List<RecruitmentWorkExperienceDTO> findWorkExperienceList(@Param("recruitmentId") Long recruitmentId);
 
 
 

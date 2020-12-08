@@ -25,19 +25,12 @@ import java.util.Date;
 @ApiModel(value = "人才家庭情况")
 public class RecruitmentFamilyDTO  {
 
-
     /**
      * id
      */
     @TableId
     @ApiModelProperty(value="id")
     private Long id;
-
-    /**
-     * 人才id
-     */
-    @ApiModelProperty(value="人才id")
-    private Long recruitmentId;
 
     /**
      * 家庭成员姓名
@@ -80,4 +73,10 @@ public class RecruitmentFamilyDTO  {
      */
     @ApiModelProperty(value="最近更新情况")
     private String updateDesc;
+
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
 }

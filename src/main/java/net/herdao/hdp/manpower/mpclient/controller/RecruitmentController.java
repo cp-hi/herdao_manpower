@@ -72,6 +72,7 @@ public class RecruitmentController {
         Recruitment recruitment = recruitmentService.getById(id);
         RecruitmentUpdateFormDTO formVO = new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitment, formVO);
+        formVO.setOrgId(String.valueOf(recruitment.getOrgId()));
         return R.ok(formVO);
     }
 
@@ -323,10 +324,10 @@ public class RecruitmentController {
 
         //教育经历
         List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
-        RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
         List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
         if (ObjectUtil.isNotEmpty(recruitmentEduList)){
             recruitmentEduList.forEach(e->{
+                RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
                 BeanUtils.copyProperties(e,editEduDTO);
                 editEduList.add(editEduDTO);
             });
@@ -335,10 +336,10 @@ public class RecruitmentController {
 
         //家庭状况
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
-        RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
         List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
         if (ObjectUtil.isNotEmpty(familyList)){
             familyList.forEach(e->{
+                RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
                 BeanUtils.copyProperties(e,editFamilyDTO);
                 editFamilyList.add(editFamilyDTO);
             });

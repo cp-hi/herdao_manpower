@@ -21,12 +21,14 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 人才教育情况
@@ -57,16 +59,21 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="人才oid")
     private String recruitmentOid;
+
     /**
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")
-    private LocalDateTime period;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date period;
+
     /**
      * 毕业日期
      */
     @ApiModelProperty(value="毕业日期")
-    private LocalDateTime todate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date todate;
+
     /**
      * 毕业院校
      */

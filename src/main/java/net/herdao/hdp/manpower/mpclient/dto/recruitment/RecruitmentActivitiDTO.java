@@ -37,7 +37,13 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才活动表DTO")
-public class RecruitmentActivitiDTO  {
+public class RecruitmentActivitiDTO{
+
+    /**
+     * id
+     */
+    @ApiModelProperty(value="id")
+    private Long id;
 
     /**
      * 活动开始时间

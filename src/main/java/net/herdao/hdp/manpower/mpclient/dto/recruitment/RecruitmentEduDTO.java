@@ -31,12 +31,6 @@ public class RecruitmentEduDTO   {
     private Long id;
 
     /**
-     * 人才id
-     */
-    @ApiModelProperty(value="人才id")
-    private Long recruitmentId;
-
-    /**
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")

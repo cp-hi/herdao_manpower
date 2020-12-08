@@ -148,12 +148,14 @@ public class Recruitment extends Model<Recruitment> {
      */
     @ApiModelProperty(value="资质挂靠单位")
     private String qualificationUnit;
+
     /**
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date workdate;
+
     /**
      * 最近工作单位名称
      */
@@ -611,10 +613,11 @@ public class Recruitment extends Model<Recruitment> {
      */
     @ApiModelProperty(value="申请人签名")
     private String applicantSign;
+
     /**
-     * 获取岗位招聘信息途径
+     * 获得招聘信息途径
      */
-    @ApiModelProperty(value="获取岗位招聘信息途径")
+    @ApiModelProperty(value="获得招聘信息途径")
     private String resumeAccess;
 
     /**

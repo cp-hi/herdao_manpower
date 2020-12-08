@@ -46,24 +46,7 @@ import java.util.List;
 public class RecruitmentFamilyStatusController {
 
     private final RecruitmentFamilyStatusService recruitmentFamilyStatusService;
-
-    /**
-     * 个人简历-家庭情况-分页列表
-     *
-     * @param page          分页对象
-     * @param recruitmentId 人才ID
-     * @return
-     */
-    @ApiOperation(value = "个人简历-家庭情况-分页列表", notes = "个人简历-家庭情况-分页列表")
-    @GetMapping("/fetchResumeFamilyPage")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "分页对象", required = true),
-        @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
-    })
-    public R<Page<RecruitmentFamilyDTO>> fetchResumeFamilyPage(Page page, Long recruitmentId) {
-        Page<RecruitmentFamilyDTO> pageResult = recruitmentFamilyStatusService.fetchResumeFamilyPage(page, recruitmentId);
-        return R.ok(pageResult);
-    }
+ 
 
     /**
      * 编辑个人简历-家庭情况-详情
@@ -120,20 +103,7 @@ public class RecruitmentFamilyStatusController {
         return R.ok(recruitmentFamilyStatusService.removeById(id));
     }
 
-    /**
-     * 人才简历-家庭情况
-     * @param recruitmentId 人才ID
-     * @return
-     */
-    @ApiOperation(value = "人才简历-家庭情况-list", notes = "人才简历-家庭情况-list")
-    @GetMapping("/fetchResumeFamilyList")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "recruitmentId", value = "人才ID", required = true)
-    })
-    public R<List<RecruitmentFamilyDTO>> fetchResumeFamilyList(Long recruitmentId) {
-        List<RecruitmentFamilyDTO> list = recruitmentFamilyStatusService.fetchResumeFamily(recruitmentId);
-        return R.ok(list);
-    }
+
 
 
 }

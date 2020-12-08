@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,6 +29,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 人才工作经历表
@@ -63,12 +65,14 @@ public class RecruitmentWorkexperience extends Model<RecruitmentWorkexperience> 
      * 开始日期
      */
     @ApiModelProperty(value="开始日期")
-    private LocalDateTime period;
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date period;
     /**
      * 结束日期
      */
     @ApiModelProperty(value="结束日期")
-    private LocalDateTime todate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date todate;
     /**
      * 单位名称
      */
