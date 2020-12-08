@@ -37,4 +37,34 @@
 	  		 </if>
 	   </where>
     </select>
+    
+    <!-- 获取员工信息 -->
+    <select id="getUserMsg" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO">
+       select a.id,
+       a.LOGIN_CODE staff_code,
+       c.ORG_DEPT_ID org_id,
+       d.ORG_FULLNAME org_name,
+       c.post_id,
+       c.post_org_id,
+		case when po.post_name is null then e.POST_NAME else po.post_name end post_name,
+		e.POST_LEVEL post_level,
+		po.JOB_LEVEL_ID job_level_id,
+		b.STAFF_SCOPE staff_scope,
+		b.job_type,
+		UNIX_TIMESTAMP(b.ENTRY_TIME) entry_time,
+		b.sex,
+		datediff(now(),b.BIRTHDAY)/365 age,
+		b.BIRTHPLACE birthplace
+		from mp_user a
+		left join mp_staff b on a.id=b.user_id
+		left join mp_userpost c on a.id=c.USER_ID and c.MAIN_POST=1
+		left join mp_organization d on c.ORG_DEPT_ID=d.id
+		left join mp_post e on c.POST_ID=e.id
+		left join mp_post_org po on c.post_org_id=po.id
+	   <where>
+	  		 <if test="id != null">
+	  		 	AND a.id=#{id}
+	  		 </if>
+	   </where>
+    </select>
 </mapper>

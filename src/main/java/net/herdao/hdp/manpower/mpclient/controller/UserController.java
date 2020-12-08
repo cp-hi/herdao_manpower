@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -109,6 +110,15 @@ public class UserController {
         return R.ok(userService.removeById(id));
     }
 
-
+    /**
+     * 通过id获取人员信息
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @GetMapping("/getUserMsg/{id}" )
+    public R<UserMsgDTO> getUserMsg(@PathVariable("id" ) Long id) {
+        return R.ok(userService.getUserMsg(id));
+    }
 
 }
