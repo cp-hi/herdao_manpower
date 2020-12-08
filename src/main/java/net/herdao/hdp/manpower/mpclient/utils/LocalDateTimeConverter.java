@@ -49,11 +49,4 @@ public class LocalDateTimeConverter implements Converter<LocalDateTime>{
         return new CellData("");
     }
 
-    public LocalDateTime convert2LocalDateTime (Long from) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(from), ZoneId.systemDefault());
-    }
-
-    public Long convert2Long (LocalDateTime from) {
-        return Timestamp.valueOf(from).getTime();
-    }
 }
