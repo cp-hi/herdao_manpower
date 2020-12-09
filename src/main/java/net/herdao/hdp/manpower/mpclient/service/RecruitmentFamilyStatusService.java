@@ -23,7 +23,7 @@ public interface RecruitmentFamilyStatusService extends IService<RecruitmentFami
      * @param recruitmentId 人才ID
      * @return
      */
-    List<RecruitmentFamilyDTO> fetchResumeFamily(Long recruitmentId);
+    List<RecruitmentFamilyDTO> fetchResumeFamilyList(Long recruitmentId);
 
     /**
      * @param page 分页对象

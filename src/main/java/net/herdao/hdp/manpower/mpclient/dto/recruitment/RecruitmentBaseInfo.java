@@ -170,4 +170,10 @@ public class RecruitmentBaseInfo {
     @ApiModelProperty(value="缺点")
     private String shortcoming;
 
+    /**
+     * 性格特点
+     */
+    @ApiModelProperty(value="性格特点")
+    private String characteristics;
+
 }

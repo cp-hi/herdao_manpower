@@ -11,7 +11,6 @@ import net.herdao.hdp.common.security.annotation.Inner;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
-import net.herdao.hdp.manpower.mpclient.entity.RecruitmentTitle;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
@@ -273,8 +272,7 @@ public class RecruitmentController {
         RecruitmentIntentDTO intentDTO = recruitmentService.fetchRecruitmentIntent(id);
         List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
         RecruitmentTopEduDTO topEduDTO = recruitmentService.fetchRecruitmentTopEdu(id);
-
-        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamily(id);
+        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
 
         result.setRecruitmentPersonDTO(personDTO);
@@ -338,7 +336,7 @@ public class RecruitmentController {
 
 
         //家庭状况
-        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamily(id);
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
         List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
         if (ObjectUtil.isNotEmpty(familyList)){
             familyList.forEach(e->{

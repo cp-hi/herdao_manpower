@@ -39,7 +39,7 @@ public interface RecruitmentFamilyStatusMapper extends BaseMapper<RecruitmentFam
      * @param recruitmentId 人才ID
      * @return
      */
-    List<RecruitmentFamilyDTO> fetchResumeFamily(@Param("recruitmentId") Long recruitmentId);
+    List<RecruitmentFamilyDTO> fetchResumeFamilyList(@Param("recruitmentId") Long recruitmentId);
 
     /**
      * @param page 分页对象
