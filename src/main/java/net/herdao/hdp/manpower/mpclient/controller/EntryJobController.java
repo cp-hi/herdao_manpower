@@ -214,6 +214,27 @@ public class EntryJobController {
     }
 
     /**
+     * 入职管理-办理入职-获取个人信息和入职信息详情
+     * @param recruitmentId 人才ID
+     * @return R
+     */
+    @ApiOperation(value = "入职管理-办理入职-获取个人信息和入职信息详情", notes = "入职管理-办理入职-获取个人信息和入职信息详情")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true)
+    })
+    @GetMapping("/findEntryInfo")
+    public R<EntryInfoDTO> findEntryInfo(String recruitmentId) {
+        EntryPersonInfoDTO entryPersonInfo = staffEntrypostApproveService.findEntryPersonInfo(recruitmentId);
+        EntryJobDTO entryJobInfo = staffEntrypostApproveService.findEntryJobInfo(recruitmentId);
+
+        EntryInfoDTO entryInfo=new EntryInfoDTO();
+        entryInfo.setEntryPersonInfoDTO(entryPersonInfo);
+        entryInfo.setEntryJobDTO(entryJobInfo);
+
+        return R.ok(entryInfo);
+    }
+
+    /**
      * 入职登记详情-确认入职登记
      * @param recruitmentId 人才表主键id
      * @param approveId 审批录用表主键id
@@ -222,10 +243,10 @@ public class EntryJobController {
      * @return
      */
     @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
-        @ApiImplicitParam(name="approveId",value="审批录用表主键id",required = true),
-        @ApiImplicitParam(name="certificateType",value="证件类型"),
-        @ApiImplicitParam(name="certificateNo",value="证件号码")
+            @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
+            @ApiImplicitParam(name="approveId",value="审批录用表主键id",required = true),
+            @ApiImplicitParam(name="certificateType",value="证件类型"),
+            @ApiImplicitParam(name="certificateNo",value="证件号码")
     })
     @ApiOperation(value = "入职登记详情-确认入职登记", notes = "入职登记详情-确认入职登记")
     @PostMapping("/confirmEntry")
@@ -258,27 +279,4 @@ public class EntryJobController {
 
         return R.ok(approve);
     }
-
-    /**
-     * 入职管理-办理入职-获取个人信息和入职信息详情
-     * @param recruitmentId 人才ID
-     * @return R
-     */
-    @ApiOperation(value = "入职管理-办理入职-获取个人信息和入职信息详情", notes = "入职管理-办理入职-获取个人信息和入职信息详情")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true)
-    })
-    @GetMapping("/findEntryInfo")
-    public R<EntryInfoDTO> findEntryInfo(String recruitmentId) {
-        EntryPersonInfoDTO entryPersonInfo = staffEntrypostApproveService.findEntryPersonInfo(recruitmentId);
-        EntryJobDTO entryJobInfo = staffEntrypostApproveService.findEntryJobInfo(recruitmentId);
-
-        EntryInfoDTO entryInfo=new EntryInfoDTO();
-        entryInfo.setEntryPersonInfoDTO(entryPersonInfo);
-        entryInfo.setEntryJobDTO(entryJobInfo);
-
-        return R.ok(entryInfo);
-    }
-
-
 }
