@@ -44,14 +44,14 @@ public class StaffPromoteController {
         return null;
     }
 
-    @ApiOperation(value = "分页列表或详情-确认发起")
+    @ApiOperation(value = "新增、详情页-确认发起")
     @PostMapping("/affirm/start")
     public R affirmStaffPromote(@RequestParam("id") Long id,
                                     @RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
     }
 
-    @ApiOperation(value = "分页列表或详情-确认发起")
+    @ApiOperation(value = "分页列表-确认发起")
     @PutMapping("/affirm/{id}")
     public R affirmPage(@PathVariable Long id) throws Exception{
         return R.ok(service.affirm(id));
