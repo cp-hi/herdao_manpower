@@ -57,7 +57,7 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
     public Page<StaffPositiveApprovalPageVO> getPageInfo(Page<StaffPositiveApproval> page, StaffPositiveListDTO staffPositiveApproval) {
         LambdaQueryWrapper<StaffPositiveApproval> queryWrapper = new LambdaQueryWrapper<>();
 
-        queryWrapper.eq(StaffPositiveApproval::getDelFlag,0);
+        queryWrapper.eq(StaffPositiveApproval::getDelFlag, 0);
         //根据入职日期和状态查询
         if (staffPositiveApproval.getEntryTime() != null &&
                 StringUtils.isNotEmpty(staffPositiveApproval.getStatus())) {
