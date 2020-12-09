@@ -75,6 +75,9 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="所属组织外键")
     private Long orgId;
 
+    @ApiModelProperty(value = "职级id")
+    private Long jobLevelId;
+
     /**
      * 所属部门外键
      */

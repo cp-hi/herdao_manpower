@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import javafx.geometry.Pos;
 import net.herdao.hdp.admin.api.dto.UserInfo;
-import net.herdao.hdp.admin.api.entity.SysDict;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
@@ -23,9 +21,6 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
-import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
-import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
@@ -38,7 +33,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -94,6 +88,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Autowired
 	private OrganizationService organizationService;
+
+	@Autowired
+	private PostService postService;
+	@Autowired
+	private JobLevelService jobLevelService;
 
 	private final static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -342,28 +341,21 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	private StaffMapper staffMapper;
 	@Autowired
 	private SysDictItemMapper sysDictItemMapper;
-	@Autowired
-	private OrganizationMapper orgMapper;
-	@Autowired
-	private PostMapper postMapper;
-	@Autowired
-	private JobLevelMapper jobLevelMapper;
 	@Override
-	public StaffBasicVO selectBasicByUserId(String id) {
+	public StaffBasicVO selectBasicByUserId(Long userId) {
+		// 查询员工信息
 		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
 		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
-				.eq("id", id);
+				.eq("user_id", userId);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
+		// 查看 人员归属范围和任职类型的字典类型
 		QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
-		SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("dict_id", 333)
+		SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
 				.eq("value", staff.getStaffScope()));
 		QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
-		SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("dict_id",334)
+		SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
 				.eq("value", staff.getJobType()));
-		QueryWrapper<Organization> orgQueryWrapper = new QueryWrapper<>();
-		QueryWrapper<Post> postQueryWrapper = new QueryWrapper<>();
-		QueryWrapper<JobLevel> jobLevelQueryWrapper = new QueryWrapper<>();
 
 		StaffBasicVO vo = new StaffBasicVO();
 		vo.setUserId(staff.getUserId());
@@ -372,7 +364,39 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		vo.setStaffScope(staffScope);
 		vo.setJobType(jobType);
 		vo.setEntryTime(staff.getEntryTime().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
-		return vo;
+
+
+		// 查询员工任职信息
+		if (staff != null && staff.getUserId() != null) {
+			QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
+			Userpost userpost = userpostService.getOne(upWrapper.eq("user_id", staff.getUserId()));
+			// 查询员工组织信息
+			if (userpost != null && userpost.getOrgId() != null) {
+				Organization org = organizationService.getById(userpost.getOrgId());
+				if (org != null) {
+					vo.setOrgId(org.getId());
+					vo.setOrgName(org.getOrgName());
+				}
+			}
+			// 查看员工岗位信息
+			if (userpost != null &&  userpost.getPostId() != null) {
+				Post post = postService.getById(userpost.getPostId());
+				if (post != null) {
+					vo.setPostId(post.getId());
+					vo.setPostName(post.getPostName());
+				}
+			}
+			// 查看员工职级信息
+			if (userpost != null && userpost.getJobLevelId() != null) {
+				JobLevel jobLevel = jobLevelService.getById(userpost.getJobLevelId());
+				if (jobLevel != null) {
+					vo.setJobLevelId(jobLevel.getId());
+					vo.setJobLevelName(jobLevel.getJobLevelName());
+				}
+			}
+			return vo;
+		}
+		return null;
 	}
 
 	@Override

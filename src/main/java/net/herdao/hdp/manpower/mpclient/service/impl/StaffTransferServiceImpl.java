@@ -45,6 +45,10 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     @Autowired
     private StaffTransferApproveMapper mapper;
 
+    public StaffTransferServiceImpl(UserpostService userPostService) {
+        this.userPostService = userPostService;
+    }
+
     /**
      * TODO:: 维护岗位组织关系id
      * @param dto
@@ -141,16 +145,30 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) throws Exception {
-        // 确保在没有保存数据，直接发起申请时数据正确
+        // 编辑未保存直接"发起申请"
         if (id != null) {
             updateInfo(id, dto);
-        } else {
-           id = saveInfo(dto);
         }
-        StaffTransferApprove changes = mapper.selectById(id);
-        // 更新状态为：填报中
-        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
-        mapper.updateById(changes);
+        // 新建数据未保存直接"发起申请"
+        else {
+            id = saveInfo(dto);
+        }
+        // 获取已保存数据更新状态为：填报中
+        return affirm(id);
+    }
+
+    @Override
+    @Transactional
+    public Long affirm(Long id) throws Exception {
+        QueryWrapper<StaffTransferApprove> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffTransferApprove entity = mapper.selectOne(wrapper);
+        if(entity == null) {
+           throw new Exception("该人事调动记录已发起审批，请勿重复操作");
+        }
+        entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
+        mapper.updateById(entity);
         return id;
     }
 

@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 
+import javax.validation.Valid;
+
 /**
  * @Author Liu Chang
  * @Date 2020/11/24 2:57 下午
@@ -31,15 +33,21 @@ public class StaffBasicVO {
     @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
     private Long entryTime;
 
+    @ApiModelProperty(value = "组织/部门 id", name = "orgId")
     private Long orgId;
 
+    @ApiModelProperty(value = "组织/部门名称", name = "orgName")
     private String orgName;
 
-    private Long pastId;
+    @ApiModelProperty(value = "岗位 id", name = "postId")
+    private Long postId;
 
-    private String pastName;
+    @ApiModelProperty(value = "岗位名称", name = "postName")
+    private String postName;
 
+    @ApiModelProperty(value = "职级 id", name = "jobLevelId")
     private Long  jobLevelId;
 
+    @ApiModelProperty(value = "职级名称", name = "jobLevelName")
     private String jobLevelName;
 }
