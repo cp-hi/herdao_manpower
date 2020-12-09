@@ -41,8 +41,8 @@ import java.util.List;
 public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentFamilyStatusMapper, RecruitmentFamilyStatus> implements RecruitmentFamilyStatusService {
 
     @Override
-    public List<RecruitmentFamilyDTO> fetchResumeFamily(Long recruitmentId) {
-        List<RecruitmentFamilyDTO> list = this.baseMapper.fetchResumeFamily(recruitmentId);
+    public List<RecruitmentFamilyDTO> fetchResumeFamilyList(Long recruitmentId) {
+        List<RecruitmentFamilyDTO> list = this.baseMapper.fetchResumeFamilyList(recruitmentId);
         return list;
     }
 

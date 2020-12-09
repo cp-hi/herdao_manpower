@@ -188,6 +188,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentEditBaseInfoDTO updateBaseInfo(RecruitmentEditBaseInfoDTO dto) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
+        recruitment.setCharacteristics(dto.getCharacteristics());
         /*SysUser sysUser = SysUserUtils.getSysUser();
         recruitment.setModifierTime(LocalDateTime.now());
         recruitment.setModifierCode(sysUser.getUsername());
