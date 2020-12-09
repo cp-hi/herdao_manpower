@@ -16,6 +16,7 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -41,17 +42,33 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     private StaffPromoteApproveMapper mapper;
 
     @Override
+    @Transactional
     public Long affirmStart(Long id, SavaStaffPromoteDTO dto) throws Exception {
-        // 确保在没有保存数据，直接发起申请时数据正确
+        // 编辑未保存直接"发起申请"
         if (id != null) {
             updateInfo(id, dto);
-        } else {
+        }
+        // 新建数据未保存直接"发起申请"
+        else {
             id = saveInfo(dto);
         }
-        StaffPromoteApprove changes = mapper.selectById(id);
-        // 更新状态为：填报中
-        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
-        mapper.updateById(changes);
+        // 获取已保存数据更新状态为：填报中
+        return affirm(id);
+
+    }
+
+    @Override
+    @Transactional
+    public Long affirm(Long id) throws Exception {
+        QueryWrapper<StaffPromoteApprove> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffPromoteApprove entity = mapper.selectOne(wrapper);
+        if(entity == null) {
+            throw new Exception("该人事调动记录已发起审批，请勿重复操作");
+        }
+        entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
+        mapper.updateById(entity);
         return id;
     }
 

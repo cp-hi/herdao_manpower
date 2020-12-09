@@ -21,4 +21,6 @@ public interface StaffTransferService extends HdpService<StaffTransferApprove> {
     Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) throws Exception;
 
     Page<StaffTransferPageVO> pageTransfer(Page page, String searchText, Long orgId, String status);
+
+    Long affirm(Long id) throws Exception;
 }

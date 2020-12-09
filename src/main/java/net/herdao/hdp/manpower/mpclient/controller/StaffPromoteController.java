@@ -5,7 +5,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SavaStaffPromoteDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffCallInDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffPromoteExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.service.StaffPromoteService;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteExecuteVO;
@@ -46,10 +45,16 @@ public class StaffPromoteController {
     }
 
     @ApiOperation(value = "分页列表或详情-确认发起")
-    @PostMapping("/affirm")
+    @PostMapping("/affirm/start")
     public R affirmStaffPromote(@RequestParam("id") Long id,
                                     @RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
+    }
+
+    @ApiOperation(value = "分页列表或详情-确认发起")
+    @PutMapping("/affirm/{id}")
+    public R affirmPage(@PathVariable Long id) throws Exception{
+        return R.ok(service.affirm(id));
     }
 
     @ApiOperation(value = "分页列表-删除")

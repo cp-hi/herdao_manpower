@@ -48,10 +48,16 @@ public class StaffTransferController {
     }
 
     @ApiOperation(value = "分页列表/详情页-确认发起")
-    @PutMapping("/affirm/start")
-    public R affirm(Long id,
-                    @RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
+    @PostMapping("/affirm/start")
+    public R affirmDetail(Long id,
+                    @RequestBody SaveStaffTransferInfoDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
+    }
+
+    @ApiOperation(value = "分页列表/详情页-确认发起")
+    @PutMapping("/affirm/{id}")
+    public R affirmPage(@PathVariable Long id) throws Exception {
+        return R.ok(service.affirm(id));
     }
 
     @ApiOperation(value = "分页列表-删除")

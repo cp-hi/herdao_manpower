@@ -14,6 +14,8 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
 public interface StaffPromoteService extends HdpService<StaffPromoteApprove>{
     Long affirmStart(Long id, SavaStaffPromoteDTO dto) throws Exception;
 
+    Long affirm(Long id) throws Exception;
+
     Long updateInfo(Long id, SavaStaffPromoteDTO dto) throws Exception;
 
     Long saveInfo(SavaStaffPromoteDTO dto) throws Exception;
