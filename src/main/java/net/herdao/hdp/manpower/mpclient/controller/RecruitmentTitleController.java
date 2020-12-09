@@ -45,7 +45,7 @@ import java.time.LocalDateTime;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentTitle" )
-@Api(value = "recruitmentTitle", tags = "人才职称资格管理")
+@Api(value = "recruitmentTitle", tags = "简历库-人才职称资格管理")
 public class RecruitmentTitleController {
 
     private final  RecruitmentTitleService recruitmentTitleService;

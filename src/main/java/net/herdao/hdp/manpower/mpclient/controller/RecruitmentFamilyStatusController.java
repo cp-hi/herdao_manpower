@@ -42,7 +42,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentfamilystatus")
-@Api(value = "recruitmentfamilystatus", tags = "人才家庭情况管理")
+@Api(value = "recruitmentfamilystatus", tags = "简历库-人才家庭情况管理")
 public class RecruitmentFamilyStatusController {
 
     private final RecruitmentFamilyStatusService recruitmentFamilyStatusService;

@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentTrain" )
-@Api(value = "recruitmentTrain", tags = "人才培训经历表管理")
+@Api(value = "recruitmentTrain", tags = "简历库-人才培训经历表管理")
 public class RecruitmentTrainController {
 
     private final  RecruitmentTrainService recruitmentTrainService;

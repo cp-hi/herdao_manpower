@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/exceloperaterecord" )
-@Api(value = "exceloperaterecord", tags = "管理")
+@Api(value = "exceloperaterecord", tags = "操作记录管理")
 public class ExcelOperateRecordController {
 
     private final  ExcelOperateRecordService excelOperateRecordService;

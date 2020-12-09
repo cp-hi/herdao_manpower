@@ -51,7 +51,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentawards")
-@Api(value = "recruitmentawards", tags = "人才获奖情况表管理")
+@Api(value = "recruitmentawards", tags = "简历详情-人才获奖情况表管理")
 public class RecruitmentAwardsController {
 
     private final RecruitmentAwardsService recruitmentAwardsService;
