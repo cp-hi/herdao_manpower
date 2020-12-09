@@ -111,11 +111,11 @@ public class UserController {
     }
 
     /**
-     * 通过id获取人员信息
+     * 通过id获取人员基本信息
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @ApiOperation(value = "通过id获取人员基本信息", notes = "通过id获取人员基本信息")
     @GetMapping("/getUserMsg/{id}" )
     public R<UserMsgDTO> getUserMsg(@PathVariable("id" ) Long id) {
         return R.ok(userService.getUserMsg(id));
