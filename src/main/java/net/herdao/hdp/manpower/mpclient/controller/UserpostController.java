@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("/userpost" )
-@Api(value = "userpost", tags = "用户岗位")
+@Api(value = "userpost", tags = "用户岗位管理")
 public class UserpostController extends HdpBaseController {
 
     @Autowired

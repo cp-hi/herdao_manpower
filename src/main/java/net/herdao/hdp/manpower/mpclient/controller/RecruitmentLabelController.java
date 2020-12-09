@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmentlabel" )
-@Api(value = "recruitmentlabel", tags = "人才标签管理")
+@Api(value = "recruitmentlabel", tags = "简历库-人才标签管理")
 public class RecruitmentLabelController {
 
     private final  RecruitmentLabelService recruitmentLabelService;

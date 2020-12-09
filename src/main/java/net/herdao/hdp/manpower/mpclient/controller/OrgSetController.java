@@ -48,7 +48,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/orgset")
-@Api(value = "orgset", tags = "组织设置")
+@Api(value = "orgset", tags = "组织设置管理")
 public class OrgSetController {
 
 	private final SysDictItemService sysDictItemService;

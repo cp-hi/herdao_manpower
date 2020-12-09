@@ -35,7 +35,7 @@ import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/orgmodifyrecord")
-@Api(value = "orgmodifyrecord", tags = "管理")
+@Api(value = "orgmodifyrecord", tags = "组织变更记录管理")
 public class OrgModifyRecordController {
 
     private final OrgModifyRecordService orgModifyRecordService;

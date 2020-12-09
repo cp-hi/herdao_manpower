@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/recruitmenteducation" )
-@Api(value = "recruitmenteducation", tags = "人才教育情况管理")
+@Api(value = "recruitmenteducation", tags = "简历库-人才教育情况管理")
 public class RecruitmentEducationController {
 
     private final  RecruitmentEducationService recruitmentEducationService;

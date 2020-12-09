@@ -36,7 +36,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/entryJob" )
-@Api(value = "entryJob", tags = "入职管理")
+@Api(value = "entryJob", tags = "入职审批管理")
 public class EntryJobController {
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;

@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user" )
-@Api(value = "user", tags = "管理")
+@Api(value = "user", tags = "用户管理")
 public class UserController {
 
     private final  UserService userService;
