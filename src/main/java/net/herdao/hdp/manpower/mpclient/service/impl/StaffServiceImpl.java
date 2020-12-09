@@ -349,22 +349,34 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private JobLevelMapper jobLevelMapper;
 	@Override
-	public StaffBasicVO selectBasicByUserId(String id) {
+	public StaffBasicVO selectBasicByUserId(Long id) {
+		// 查询员工信息
 		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
 		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
 				.eq("id", id);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
+		// 查看员工部门信息
 		QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
 		SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("dict_id", 333)
 				.eq("value", staff.getStaffScope()));
 		QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
 		SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("dict_id",334)
 				.eq("value", staff.getJobType()));
-		QueryWrapper<Organization> orgQueryWrapper = new QueryWrapper<>();
-		QueryWrapper<Post> postQueryWrapper = new QueryWrapper<>();
-		QueryWrapper<JobLevel> jobLevelQueryWrapper = new QueryWrapper<>();
 
+		// 查询员工任职信息
+		Userpost userpost = userpostService.getById(staff.getUserId());
+		// 查询员工组织信息
+		QueryWrapper<Organization> orgQueryWrapper = new QueryWrapper<>();
+		Organization org = orgMapper.selectOne(orgQueryWrapper.eq("id", userpost.getOrgId()));
+		// 查看员工岗位信息
+		QueryWrapper<Post> postQueryWrapper = new QueryWrapper<>();
+		Post post = postMapper.selectOne(postQueryWrapper.eq("id", userpost.getPostId()));
+		// 查看员工职级信息
+		QueryWrapper<JobLevel> jobLevelQueryWrapper = new QueryWrapper<>();
+		JobLevel jobLevel = jobLevelMapper.selectOne(jobLevelQueryWrapper.eq("id", userpost.getJobLevelId()));
+
+		// 封装返回值
 		StaffBasicVO vo = new StaffBasicVO();
 		vo.setUserId(staff.getUserId());
 		vo.setStaffName(staff.getStaffName());
@@ -372,6 +384,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		vo.setStaffScope(staffScope);
 		vo.setJobType(jobType);
 		vo.setEntryTime(staff.getEntryTime().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+		vo.setOrgId(org.getId());
+		vo.setOrgName(org.getOrgName());
+		vo.setPostId(post.getId());
+		vo.setPostName(post.getPostName());
+		vo.setJobLevelId(jobLevel.getId());
+		vo.setJobLevelName(jobLevel.getJobLevelName());
 		return vo;
 	}
 
