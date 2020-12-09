@@ -41,7 +41,7 @@ public class RecruitmentJobIntentDTO  {
      * 应聘岗位
      */
     @ApiModelProperty(value="应聘岗位")
-    private String postName;
+    private String intentionPostName;
 
     /**
      * 最低薪资（月薪/年薪）
@@ -167,6 +167,15 @@ public class RecruitmentJobIntentDTO  {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date workdate;
 
+    /**
+     * 应聘聘组织ID
+     */
+    @ApiModelProperty(value="应聘聘组织ID")
+    private Long orgId;
 
+    /**
+     * 应聘聘岗位ID
+     */
+    private Long intentionPostId;
 
 }

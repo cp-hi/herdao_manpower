@@ -646,4 +646,6 @@ public class Recruitment extends Model<Recruitment> {
     @ApiModelProperty(value="招聘状态")
     private String recruitmentStatus;
 
+
+
 }

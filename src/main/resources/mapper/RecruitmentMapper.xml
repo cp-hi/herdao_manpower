@@ -238,7 +238,7 @@
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age ,
 				rec.workdate,
 				org.org_name,
-				ps.POST_NAME,
+				ps.POST_NAME intentionPostName,
 				rec.minimum_levelIncome,
 				rec.expected_levelIncome,
 				rec.induction_time,
@@ -258,7 +258,9 @@
 				rec.qualification_unit,
 				rec.qualification,
 				rec.address,
-				rec.other_request
+				rec.other_request,
+                rec.org_id,
+                rec.intention_post_id
           FROM 	mp_recruitment rec
           LEFT JOIN mp_organization org on org.id=rec.org_id
           LEFT JOIN mp_post ps on ps.id =  rec.recruitment_post_id
