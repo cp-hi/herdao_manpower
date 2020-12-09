@@ -1,16 +1,31 @@
 
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
-import net.herdao.hdp.admin.api.dto.OrgDTO;
 import net.herdao.hdp.admin.api.entity.SysDept;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteDeptService;
@@ -29,7 +44,12 @@ import net.herdao.hdp.manpower.mpclient.entity.Organization;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.mapper.OrganizationMapper;
-import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.service.OrgModifyRecordService;
+import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
+import net.herdao.hdp.manpower.mpclient.service.PostService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
@@ -38,14 +58,6 @@ import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationVO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Andy
@@ -514,15 +526,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                             org.setOrgCode(org.getOrgCode().replaceFirst(tpOrganization.getOrgCode(), parentOrganization.getOrgCode()));
                             org.setOrgFullname(org.getOrgFullname().replaceFirst(tpOrganization.getOrgFullname(), parentOrganization.getOrgFullname()));
                         }
-                    });
-                    organizations.forEach(e->{
-                        OrgDTO orgDTO = new OrgDTO();
-                        orgDTO.setId(e.getId());
-                        orgDTO.setParentId(e.getParentId());
-                        orgDTO.setName(e.getOrgName());
-                        orgDTO.setCode(e.getOrgCode());
-                        orgDTO.setType(Integer.parseInt(e.getOrgType()));
-                        //remoteOrgService.update(orgDTO);
                     });
                     this.updateBatchById(organizations);
                     //remoteOrgService.saveOrUpdateBatch()
