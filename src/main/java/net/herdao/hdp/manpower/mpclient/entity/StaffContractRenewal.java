@@ -105,17 +105,17 @@ public class StaffContractRenewal {
     @TableField(value = "creator_code", fill = FieldFill.INSERT)
     private String creatorCode;
 
-//    @ApiModelProperty(value = "新建人")
-//    @TableField(value = "creator_name", fill = FieldFill.INSERT)
-//    private String creatorName;
+    @ApiModelProperty(value = "新建人")
+    @TableField(value = "creator_name", fill = FieldFill.INSERT)
+    private String creatorName;
 
     @ApiModelProperty(value = "新建人")
     @TableField(value = "creator_time", fill = FieldFill.INSERT)
     private LocalDateTime creatorTime;
 
-//    @ApiModelProperty(value = "修改人工号")
-//    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
-//    private String modifierCode;
+    @ApiModelProperty(value = "修改人工号")
+    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
+    private String modifierCode;
 
     @ApiModelProperty(value = "修改人名称")
     @TableField(value = "modifier_name", fill = FieldFill.UPDATE)

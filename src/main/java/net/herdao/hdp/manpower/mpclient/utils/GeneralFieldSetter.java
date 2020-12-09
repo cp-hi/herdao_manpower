@@ -21,10 +21,10 @@ public class GeneralFieldSetter implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         SysUser sysUser = SysUserUtils.getSysUser();
-        this.setFieldValByName("creatorCode", sysUser.getCpUsername(), metaObject);
+        this.setFieldValByName("creatorCode", sysUser.getUsername(), metaObject);
         this.setFieldValByName("creatorName", sysUser.getUsername(), metaObject);
         this.setFieldValByName("creatorTime", LocalDateTime.now(), metaObject);
-        this.setFieldValByName("modifierCode", sysUser.getUserId(), metaObject);
+        this.setFieldValByName("modifierCode", sysUser.getUsername(), metaObject);
         this.setFieldValByName("modifierName", sysUser.getUsername(), metaObject);
         this.setFieldValByName("modifierTime", LocalDateTime.now(), metaObject);
         this.setFieldValByName("delFlag", false, metaObject);
@@ -33,7 +33,7 @@ public class GeneralFieldSetter implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         SysUser sysUser = SysUserUtils.getSysUser();
-        this.setFieldValByName("modifierCode", sysUser.getUserId(), metaObject);
+        this.setFieldValByName("modifierCode", sysUser.getUsername(), metaObject);
         this.setFieldValByName("modifierName", sysUser.getUsername(), metaObject);
         this.setFieldValByName("modifierTime", LocalDateTime.now(), metaObject);
     }
