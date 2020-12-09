@@ -92,4 +92,11 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
      */
     EntryJobDTO findEntryJobInfo(String recruitmentId);
 
+    /**
+     * 录用审批-填报中-修改-通过主键ID获取详情
+     * @param id id
+     * @return EntryJobDTO
+     */
+    EntryApproveUpdateDTO findEntryJobEditInfoById(Long id);
+
 }

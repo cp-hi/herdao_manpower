@@ -46,14 +46,12 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryApproveDTO> findApprovePage(Page<EntryApproveDTO> page, String orgId, String searchText, String status) {
-        Page<EntryApproveDTO> pageResult = this.baseMapper.findApprovePage(page, orgId, searchText, status);
-        return pageResult;
+        return this.baseMapper.findApprovePage(page, orgId, searchText, status);
     }
 
     @Override
     public EntryApproveFormDTO findApproveDetails(Long id) {
-        EntryApproveFormDTO result = this.baseMapper.findApproveDetails(id);
-        return result;
+        return this.baseMapper.findApproveDetails(id);
     }
 
     @Override
@@ -164,37 +162,36 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryDTO> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = this.baseMapper.findEntryPage(page, orgId, searchText);
-        return pageResult;
+        return this.baseMapper.findEntryPage(page, orgId, searchText);
     }
 
     @Override
     public Page<EntryDTO> findInJobPage(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = this.baseMapper.findInJobPage(page, orgId, searchText);
-        return pageResult;
+        return this.baseMapper.findInJobPage(page, orgId, searchText);
     }
 
     @Override
     public Page<EntryDTO> findEntryInvitePage(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = this.baseMapper.findEntryInvitePage(page, orgId, searchText);
-        return pageResult;
+        return this.baseMapper.findEntryInvitePage(page, orgId, searchText);
     }
 
     @Override
     public Page<EntryRegisterDTO> findEntryRegisterPage(Page<EntryRegisterDTO> page, String orgId, String entryCheckStatus, String searchText) {
-        Page<EntryRegisterDTO> pageResult = this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
-        return pageResult;
+         return this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
     }
 
     @Override
     public EntryPersonInfoDTO findEntryPersonInfo(String recruitmentId) {
-        EntryPersonInfoDTO entryPersonInfo = this.baseMapper.findEntryPersonInfo(recruitmentId);
-        return entryPersonInfo;
+         return this.baseMapper.findEntryPersonInfo(recruitmentId);
     }
 
     @Override
     public EntryJobDTO findEntryJobInfo(String recruitmentId) {
-        EntryJobDTO entryJobDTO = this.baseMapper.findEntryJobInfo(recruitmentId);
-        return entryJobDTO;
+         return this.baseMapper.findEntryJobInfo(recruitmentId);
+    }
+
+    @Override
+    public EntryApproveUpdateDTO findEntryJobEditInfoById(Long id) {
+        return this.baseMapper.findEntryJobEditInfoById(id);
     }
 }

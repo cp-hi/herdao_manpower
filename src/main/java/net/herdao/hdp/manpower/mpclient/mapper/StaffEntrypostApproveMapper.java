@@ -109,4 +109,11 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      */
     EntryJobDTO findEntryJobInfo(@Param("recruitmentId") String recruitmentId);
 
+    /**
+     * 录用审批-填报中-修改-通过主键ID获取详情
+     * @param id id
+     * @return EntryJobDTO
+     */
+    EntryApproveUpdateDTO findEntryJobEditInfoById(@Param("id") Long id);
+
 }

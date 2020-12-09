@@ -54,11 +54,25 @@ public class EntryApproveDTO implements Serializable {
     private String orgName;
 
     /**
+     * 录用组织ID
+     */
+    @ApiModelProperty(value="录用组织ID")
+    @ExcelProperty(value = "录用组织ID")
+    private String orgId;
+
+    /**
      * 录用岗位
      */
     @ApiModelProperty(value="录用岗位")
     @ExcelProperty(value = "录用岗位")
     private String postName;
+
+    /**
+     * 录用岗位ID
+     */
+    @ApiModelProperty(value="录用岗位ID")
+    @ExcelProperty(value = "录用岗位ID")
+    private String postId;
 
     /**
      * 人员性质
