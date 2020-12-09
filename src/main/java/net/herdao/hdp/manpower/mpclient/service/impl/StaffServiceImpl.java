@@ -349,11 +349,11 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private JobLevelMapper jobLevelMapper;
 	@Override
-	public StaffBasicVO selectBasicByUserId(Long id) {
+	public StaffBasicVO selectBasicByUserId(Long userId) {
 		// 查询员工信息
 		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
 		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
-				.eq("user_id", id);
+				.eq("user_id", userId);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
 		// 查看 人员归属范围和任职类型的字典类型
