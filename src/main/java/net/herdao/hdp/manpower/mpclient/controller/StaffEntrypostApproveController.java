@@ -11,6 +11,7 @@ import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
@@ -44,11 +45,11 @@ public class StaffEntrypostApproveController {
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
     /**
-     * 录用审批-保存
+     * 录用审批-发起录用-保存
      * @param approveAddDTO 录用审批表
      * @return R
      */
-    @ApiOperation(value = "录用审批-保存", notes = "录用审批-保存")
+    @ApiOperation(value = "录用审批-发起录用-保存", notes = "录用审批-发起录用-保存")
     @PostMapping("/saveApprove")
     public R<EntryApproveAddDTO> saveApprove(@RequestBody EntryApproveAddDTO approveAddDTO) {
         StaffEntrypostApprove approve=new StaffEntrypostApprove();
@@ -89,7 +90,7 @@ public class StaffEntrypostApproveController {
         @ApiImplicitParam(name="page",value="分页对象",required = true),
         @ApiImplicitParam(name="orgId",value="组织ID"),
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
-        @ApiImplicitParam(name="status",value="状态：1 填报中，2 审批中，3 已审批"),
+        @ApiImplicitParam(name="status",value="状态：1 填报中，2 审批中，3 已审批",required = true),
     })
     public R<Page<EntryApproveDTO>> findApprovePage(Page<EntryApproveDTO> page, String orgId, String searchText,String status) {
         Page<EntryApproveDTO> pageResult = staffEntrypostApproveService.findApprovePage(page,orgId,searchText,status);
@@ -134,6 +135,41 @@ public class StaffEntrypostApproveController {
         return R.ok(result);
     }
 
+    /**
+     * 录用审批-填报中-修改-通过主键ID获取详情
+     * @param id 主键ID
+     * @return R
+     */
+    @ApiOperation(value = "录用审批-填报中-修改-通过主键ID获取详情", notes = "录用审批-填报中-修改-通过主键ID获取详情")
+    @GetMapping("/findEntryJobEditInfoById")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="主键ID"),
+    })
+    public R<EntryApproveUpdateDTO> findEntryJobEditInfoById(Long id) {
+        EntryApproveUpdateDTO result = staffEntrypostApproveService.findEntryJobEditInfoById(id);
+        return R.ok(result);
+    }
 
+    /**
+     * 录用审批-填报中-修改更新
+     * @return R
+     */
+    @ApiOperation(value = "录用审批-填报中-修改更新", notes = "录用审批-填报中-修改更新")
+    @PostMapping("/updateEntryJobEditInfo")
+    public R<EntryApproveUpdateDTO> updateEntryJobEditInfo(@RequestBody EntryApproveUpdateDTO dto) {
+        StaffEntrypostApprove approve=new StaffEntrypostApprove();
+        BeanUtils.copyProperties(dto,approve);
+        approve.setRecruitmentId(dto.getUserId());
+        //状态：1 填报中，2 审批中，3 已审批
+        approve.setStatus("1");
 
+        SysUser sysUser = SysUserUtils.getSysUser();
+        approve.setModifierTime(LocalDateTime.now());
+        approve.setModifierCode(sysUser.getUsername());
+        approve.setModifierName(sysUser.getAliasName());
+
+        staffEntrypostApproveService.updateById(approve);
+        BeanUtils.copyProperties(approve,dto);
+        return R.ok(dto,"修改更新成功");
+    }
 }

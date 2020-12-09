@@ -80,15 +80,17 @@
                     app.staff_id,
                     app.mobile_no,
                     org.org_name,
+                    org.id org_id,
                     pst.post_name,
+                    pst.id post_id,
                     app.personnel_nature,
                     app.office_type,
-                    app.status,
-                    CONCAT(app.creator_name, " 于 ", app.creator_time, " 创建" ) create_desc,
-                    CONCAT(app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc
-            FROM mp_staff_entrypost_approve app
-            LEFT JOIN mp_organization org on org.id=app.org_id
-            LEFT JOIN mp_post pst on pst.id= app.post_id
+                    app.STATUS,
+                    CONCAT( app.creator_name, " 于 ", app.creator_time, " 创建" ) create_desc,
+                    CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc
+             FROM  mp_staff_entrypost_approve app
+                LEFT JOIN mp_organization org ON org.id = app.org_id
+                LEFT JOIN mp_post pst ON pst.id = app.post_id
              <where>
                     and app.del_flag = 0
                 <if test="orgId != null and orgId != '' ">
@@ -580,5 +582,50 @@
         </where>
     </select>
 
+    <!--录用审批-填报中-修改-通过主键ID获取详情 -->
+    <select id="findEntryJobEditInfoById" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveUpdateDTO">
+        SELECT  app.user_name,
+                rec.id user_id,
+                app.replace_user_id,
+                st.STAFF_NAME replace_user_name,
+                app.certificate_type,
+                app.certificate_no,
+                app.personnel_nature,
+                app.staff_status,
+                app.office_type,
+                app.is_appointment,
+                org.org_name,
+                org.id org_id,
+                pst.post_name,
+                pst.id post_id,
+                app.year_post_prepare_count,
+                app.month_post_prepare_count,
+                app.post_has_count,
+                app.contract_period,
+                app.probation,
+                app.contract_company_id,
+                ldht.COMPANY_NAME contract_company_name,
+                app.security_units_id,
+                sb.COMPANY_NAME security_units_name,
+                app.paid_units_id,
+                gz.COMPANY_NAME paid_units_name,
+                app.fund_units_id,
+                gjj.COMPANY_NAME fund_units_name,
+                app.remark
+         FROM mp_staff_entrypost_approve app
+                LEFT JOIN mp_organization org ON org.id = app.org_id
+                LEFT JOIN mp_post pst ON pst.id = app.post_id
+                LEFT JOIN mp_recruitment rec  ON rec.id=app.recruitment_id
+                LEFT JOIN mp_staff st ON st.id=app.replace_user_id
+                LEFT JOIN mp_company ldht on ldht.id=app.contract_company_id
+                LEFT JOIN mp_company gz on gz.id=app.paid_units_id
+                LEFT JOIN mp_company sb on sb.id=app.security_units_id
+                LEFT JOIN mp_company gjj on gjj.id=app.fund_units_id
+             <where>
+                <if test="id != null">
+                    AND app.id= #{id}
+                </if>
+             </where>
+    </select>
 
 </mapper>
