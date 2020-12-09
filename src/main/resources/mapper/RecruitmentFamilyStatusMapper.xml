@@ -39,7 +39,8 @@
                       f.relations,
                       f.professional,
                       f.work_unit,
-                      f.ADDRESS
+                      f.ADDRESS,
+                      f.age
                  FROM  mp_recruitment_family_status f
               <where>
                   f.del_flag = 0
