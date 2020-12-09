@@ -141,14 +141,19 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long affirmStart(Long id, SaveStaffTransferInfoDTO dto) throws Exception {
-        // 确保在没有保存数据，直接发起申请时数据正确
-        if (id != null) {
-            updateInfo(id, dto);
-        } else {
-           id = saveInfo(dto);
+        // 详情页面的数据没保存直接"发起申请"
+        if (dto != null) {
+            // 编辑未保存直接"发起申请"
+            if (id != null) {
+                updateInfo(id, dto);
+            }
+            // 新建数据未保存直接"发起申请"
+            else {
+                id = saveInfo(dto);
+            }
         }
+        // 获取已保存数据更新状态为：填报中
         StaffTransferApprove changes = mapper.selectById(id);
-        // 更新状态为：填报中
         changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(changes);
         return id;

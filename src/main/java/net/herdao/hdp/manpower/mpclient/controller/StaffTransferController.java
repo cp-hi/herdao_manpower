@@ -48,7 +48,7 @@ public class StaffTransferController {
     }
 
     @ApiOperation(value = "分页列表/详情页-确认发起")
-    @PostMapping("/affirm/start")
+    @PutMapping("/affirm/start")
     public R affirm(Long id,
                     @RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
