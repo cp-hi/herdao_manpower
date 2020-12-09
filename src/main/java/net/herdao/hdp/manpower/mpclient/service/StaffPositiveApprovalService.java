@@ -17,10 +17,12 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.entity.MpStaffPositiveApproval;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveListDTO;
+import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 
 /**
  * 转正审批表
@@ -28,13 +30,13 @@ import net.herdao.hdp.manpower.mpclient.entity.MpStaffPositiveApproval;
  * @author cp
  * @date 2020-12-08 11:02:30
  */
-public interface MpStaffPositiveApprovalService extends IService<MpStaffPositiveApproval> {
+public interface StaffPositiveApprovalService extends IService<StaffPositiveApproval> {
 
     /**
      * 分页查询
      * @return
      */
-    IPage<MpStaffPositiveApproval> getPageInfo(Page<MpStaffPositiveApproval> page, MpStaffPositiveApproval mpStaffPositiveApproval);
+    Page<StaffPositiveApprovalPageVO> getPageInfo(Page<StaffPositiveApproval> page, StaffPositiveListDTO dto);
 
 
 
@@ -42,4 +44,12 @@ public interface MpStaffPositiveApprovalService extends IService<MpStaffPositive
      * 通过id删除转正审批表
      */
     void deleteById(String[] inputIds);
+
+
+    /**
+     * 新增转正审批表
+     * @param staffPositiveApproval
+     * @return
+     */
+    Long insert(StaffPositiveApprovalSaveDTO staffPositiveApproval);
 }

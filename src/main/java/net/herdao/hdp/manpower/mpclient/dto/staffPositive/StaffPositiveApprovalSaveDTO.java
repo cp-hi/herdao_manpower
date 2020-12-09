@@ -15,7 +15,7 @@
  * Author: liang
  */
 
-package net.herdao.hdp.manpower.mpclient.entity;
+package net.herdao.hdp.manpower.mpclient.dto.staffPositive;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -25,9 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -39,8 +37,8 @@ import java.time.LocalDateTime;
 @Data
 @TableName("mp_staff_positive_approval")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "转正审批表")
-public class MpStaffPositiveApproval extends Model<MpStaffPositiveApproval> {
+@ApiModel(value = "转正审批保存DTO")
+public class StaffPositiveApprovalSaveDTO extends Model<StaffPositiveApprovalSaveDTO> {
 private static final long serialVersionUID = 1L;
 
     /**
@@ -334,4 +332,6 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="试用期/月")
     private String probation;
-    }
+
+
+}

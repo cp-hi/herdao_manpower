@@ -18,7 +18,8 @@
 package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.herdao.hdp.manpower.mpclient.entity.MpStaffPositiveApproval;
+import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +29,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2020-12-08 11:02:30
  */
 @Mapper
-public interface MpStaffPositiveApprovalMapper extends BaseMapper<MpStaffPositiveApproval> {
+public interface StaffPositiveApprovalMapper extends BaseMapper<StaffPositiveApproval> {
 
 }
