@@ -14,9 +14,8 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
-import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
-import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
+import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +41,12 @@ public class EntryJobController {
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
     private final RecruitmentService recruitmentService;
+
+    private final UserService userService;
+
+    private final UserpostService userpostService;
+
+    private final StaffService staffService;
 
     /**
      * 入职管理-待入职-列表分页
@@ -209,31 +214,57 @@ public class EntryJobController {
     }
 
     /**
-     * 入职登记详情-确认入职登记(修改
-     * @param id 主键id
-     * @return R
+     * 入职登记详情-确认入职登记
+     * @param recruitmentId 人才表主键id
+     * @param approveId 审批录用表主键id
+     * @param certificateType 证件类型
+     * @param certificateNo 证件号码
+     * @return
      */
     @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键id",required = true)
+        @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
+        @ApiImplicitParam(name="approveId",value="审批录用表主键id",required = true),
+        @ApiImplicitParam(name="certificateType",value="证件类型"),
+        @ApiImplicitParam(name="certificateNo",value="证件号码")
     })
     @ApiOperation(value = "入职登记详情-确认入职登记", notes = "入职登记详情-确认入职登记")
     @PostMapping("/confirmEntry")
-    public R<StaffEntrypostApprove> confirmEntry(String id) {
-        staffEntrypostApproveService.getById(id);
-        StaffEntrypostApprove approve=new StaffEntrypostApprove();
+    public R<StaffEntrypostApprove> confirmEntry(Long recruitmentId,String approveId,
+                                                 String certificateType,String certificateNo) {
+        StaffEntrypostApprove approve = staffEntrypostApproveService.getById(approveId);
         //入职登记状态 (1:未提交，2：已提交，3：已确认）
         approve.setEntryCheckStatus("3");
+        //修改更新入职登记状态
         staffEntrypostApproveService.updateById(approve);
+
+        //修改更新人才表
+        Recruitment recruitment = recruitmentService.getById(recruitmentId);
+        recruitment.setId(recruitmentId);
+        recruitment.setCertificateType(certificateType);
+        recruitmentService.updateById(recruitment);
+
+        //同步人才表（mp_recruitment)到mp_user,mp_userpost,mp_staff表
+        User user=new User();
+        BeanUtils.copyProperties(recruitment,user);
+        userService.save(user);
+
+        Userpost userpost=new Userpost();
+        BeanUtils.copyProperties(recruitment,userpost);
+        userpostService.save(userpost);
+
+        Staff staff=new Staff();
+        BeanUtils.copyProperties(recruitment,staff);
+        staffService.save(staff);
+
         return R.ok(approve);
     }
 
     /**
-     * 入职管理-办理入职
+     * 入职管理-办理入职-获取个人信息和入职信息详情
      * @param recruitmentId 人才ID
      * @return R
      */
-
-    @ApiOperation(value = "入职管理-办理入职", notes = "入职管理-办理入职")
+    @ApiOperation(value = "入职管理-办理入职-获取个人信息和入职信息详情", notes = "入职管理-办理入职-获取个人信息和入职信息详情")
     @ApiImplicitParams({
         @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true)
     })
@@ -248,4 +279,6 @@ public class EntryJobController {
 
         return R.ok(entryInfo);
     }
+
+
 }

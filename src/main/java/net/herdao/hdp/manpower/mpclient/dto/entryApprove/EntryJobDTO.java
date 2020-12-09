@@ -22,8 +22,8 @@ public class EntryJobDTO implements Serializable {
     /**
      * 审批表主键ID
      */
-    @ApiModelProperty(value="审批表主键ID")
-    private Long approveId;
+    @ApiModelProperty(value="id")
+    private Long id;
 
     /**
      * 人员归属范围

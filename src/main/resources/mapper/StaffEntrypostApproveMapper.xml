@@ -81,18 +81,15 @@
                     app.mobile_no,
                     org.org_name,
                     pst.post_name,
-                    ryxz.value personnel_nature,
-                    rzlx.value office_type,
-                    spzt.value status,
+                    app.personnel_nature,
+                    app.office_type,
+                    app.status,
                     CONCAT(app.creator_name, " 于 ", app.creator_time, " 创建" ) create_desc,
                     CONCAT(app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc
             FROM mp_staff_entrypost_approve app
             LEFT JOIN mp_organization org on org.id=app.org_id
             LEFT JOIN mp_post pst on pst.id= app.post_id
-            LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
-            LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
-            LEFT JOIN sys_dict_item spzt on spzt.type='YWDZT' and spzt.value=app.status
-            <where>
+             <where>
                     and app.del_flag = 0
                 <if test="orgId != null and orgId != '' ">
                     and app.org_id= #{orgId}
@@ -122,37 +119,32 @@
 
     <!-- 录用审批-流程审批-详情 -->
     <select id="findApproveDetails" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO">
-        SELECT app.id,
-        app.user_name,
-        sf.STAFF_NAME replace_user_name,
-        zjlx.value certificate_type,
-        app.certificate_no,
-        ryxz.value personnel_nature,
-        rygsfw.value staff_status,
-        rzlx.value office_type,
-        if( app.is_appointment = 0,'否','是') is_appointment,
-        org.org_name,
-        pst.post_name,
-        app.year_post_prepare_count,
-        app.probation,
-        app.contract_period,
-        app.post_has_count,
-        app.month_post_prepare_count,
-        ldht.COMPANY_NAME contract_company,
-        sb.COMPANY_NAME security_units,
-        gz.COMPANY_NAME paid_units,
-        gjj.COMPANY_NAME fund_units,
-        app.remark,
-        spzt.value status
+         SELECT app.id,
+                app.user_name,
+                sf.STAFF_NAME replace_user_name,
+                app.certificate_type,
+                app.certificate_no,
+                app.personnel_nature,
+                app.staff_status,
+                app.office_type,
+                if( app.is_appointment = 0,'否','是') is_appointment,
+                org.org_name,
+                pst.post_name,
+                app.year_post_prepare_count,
+                app.probation,
+                app.contract_period,
+                app.post_has_count,
+                app.month_post_prepare_count,
+                ldht.COMPANY_NAME contract_company,
+                sb.COMPANY_NAME security_units,
+                gz.COMPANY_NAME paid_units,
+                gjj.COMPANY_NAME fund_units,
+                app.remark,
+                app.status
         FROM mp_staff_entrypost_approve app
         LEFT JOIN mp_organization org on org.id=app.org_id
         LEFT JOIN mp_post pst on pst.id= app.post_id
-        LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
-        LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
-        LEFT JOIN sys_dict_item spzt on spzt.type='YWDZT' and spzt.value=app.status
         LEFT JOIN mp_staff sf on sf.id=app.replace_user_id
-        LEFT JOIN sys_dict_item zjlx on zjlx.type='ID_TYPE' and zjlx.value=app.certificate_type
-        LEFT JOIN sys_dict_item rygsfw on rygsfw.type='RYGSFW' and rygsfw.value=app.staff_status
         LEFT JOIN mp_company ldht on ldht.id=app.contract_company_id
         LEFT JOIN mp_company gz on gz.id=app.paid_units_id
         LEFT JOIN mp_company sb on sb.id=app.security_units_id
@@ -168,23 +160,23 @@
     <select id="getStaffCode" resultMap="staffEntrypostApproveMap">
         SELECT t.staff_code
         FROM (
-        SELECT app.staff_code
-        FROM mp_recruitment rec,
-        mp_staff_entrypost_approve app
-        WHERE rec.id = app.recruitment_id
-        AND app.entry_status = 'RZZT03'
-        <where>
-            <if test="idnumber != null">
-                AND rec.idnumber = #{idnumber}
-            </if>
-        </where>
-        ORDER BY app.creator_time DESC
+            SELECT app.staff_code
+              FROM mp_recruitment rec,
+                   mp_staff_entrypost_approve app
+             WHERE rec.id = app.recruitment_id
+            AND app.entry_status = 'RZZT03'
+            <where>
+                <if test="idnumber != null">
+                    AND rec.idnumber = #{idnumber}
+                </if>
+            </where>
+            ORDER BY app.creator_time DESC
         ) t LIMIT 1
     </select>
 
     <!-- 获取员工工号前缀 -->
     <select id="getStaffCodePrefix" resultType="net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO">
-        SELECT t.group_code,
+        SELECT  t.group_code,
                 t.group_name,
                 t.dept_code,
                 t.staff_code_head
@@ -289,7 +281,7 @@
                             pst.post_name,
                             jl.JOB_LEVEL_NAME job_level_name,
                             app.entry_post_time,
-                            rzdjqk.`value`  entry_login_status,
+                            app.entry_login_status,
                             CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
                             IF(invite_count>0,'已邀请','未邀请') invite_status
                         FROM
@@ -297,7 +289,6 @@
                             LEFT JOIN mp_organization org ON org.id = app.org_id
                             LEFT JOIN mp_post pst ON pst.id = app.post_id
                             LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
-                            LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
                             LEFT JOIN
                             (
                                 SELECT inv.staff_entrypost_approve_id,
@@ -345,11 +336,11 @@
                     app.email,
                     org.org_name,
                     pst.post_name,
-                    jl.JOB_LEVEL_NAME job_level_name,
+                    jl.job_level_name,
                     app.entry_post_time,
-                    rzdjqk.`value` entry_login_status,
-                    rygsfw.value staff_status,
-                    rzlx.value office_type,
+                    app.entry_login_status,
+                    app.staff_status,
+                    app.office_type,
                     app.probation,
                     jb.job_count,
                     CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
@@ -358,9 +349,6 @@
                   LEFT JOIN mp_organization org ON org.id = app.org_id
                   LEFT JOIN mp_post pst ON pst.id = app.post_id
                   LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
-                  LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
-                  LEFT JOIN sys_dict_item rygsfw on rygsfw.type='RYGSFW' and rygsfw.value=app.staff_status
-                  LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
                   LEFT JOIN
                     (
                             SELECT inv.staff_entrypost_approve_id,
@@ -418,33 +406,30 @@
     <select id="findEntryInvitePage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO">
         select t.*
         from (
-        SELECT  app.id,
-        app.user_name,
-        app.mobile_no,
-        app.email,
-        org.org_name,
-        app.certificate_no,
-        pst.post_name,
-        jl.JOB_LEVEL_NAME job_level_name,
-        app.entry_post_time,
-        rzdjqk.`value`  entry_login_status,
-        CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
-        IF(invite_count>0,'已邀请','未邀请') invite_status
-        FROM
-        mp_staff_entrypost_approve app
-        LEFT JOIN mp_organization org ON org.id = app.org_id
-        LEFT JOIN mp_post pst ON pst.id = app.post_id
-        LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
-        LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
-        LEFT JOIN
-        (
-        SELECT inv.staff_entrypost_approve_id,
-        count( inv.staff_entrypost_approve_id ) invite_count
-        FROM
-        mp_staff_entrypost_invite inv
-        WHERE inv.del_flag =0
-        GROUP BY staff_entrypost_approve_id
-        ) invr on  app.id = invr.staff_entrypost_approve_id
+                SELECT  app.id,
+                        app.user_name,
+                        app.mobile_no,
+                        app.email,
+                        org.org_name,
+                        app.certificate_no,
+                        pst.post_name,
+                        jl.JOB_LEVEL_NAME job_level_name,
+                        app.entry_post_time,
+                        app.entry_login_status,
+                        CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
+                        IF(invite_count>0,'已邀请','未邀请') invite_status
+            FROM mp_staff_entrypost_approve app
+            LEFT JOIN mp_organization org ON org.id = app.org_id
+            LEFT JOIN mp_post pst ON pst.id = app.post_id
+            LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
+            LEFT JOIN
+            (
+                SELECT inv.staff_entrypost_approve_id,
+                count( inv.staff_entrypost_approve_id ) invite_count
+                FROM mp_staff_entrypost_invite inv
+                WHERE inv.del_flag =0
+                GROUP BY staff_entrypost_approve_id
+            ) invr on  app.id = invr.staff_entrypost_approve_id
         <where>
             app.STATUS = 3
             AND app.entry_status = 'RZZT01'
@@ -458,16 +443,16 @@
         <where>
             <if test="searchText != null and searchText != '' ">
                 and CONCAT(
-                IFNULL(t.user_name,''),
-                IFNULL(t.mobile_no,''),
-                IFNULL(t.email,''),
-                IFNULL(t.org_name,''),
-                IFNULL(t.post_name,''),
-                IFNULL(t.job_level_name,''),
-                IFNULL(t.entry_post_time,''),
-                IFNULL(t.entry_login_status,''),
-                IFNULL(t.update_desc,''),
-                IFNULL(t.invite_status,'')
+                    IFNULL(t.user_name,''),
+                    IFNULL(t.mobile_no,''),
+                    IFNULL(t.email,''),
+                    IFNULL(t.org_name,''),
+                    IFNULL(t.post_name,''),
+                    IFNULL(t.job_level_name,''),
+                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_login_status,''),
+                    IFNULL(t.update_desc,''),
+                    IFNULL(t.invite_status,'')
                 ) LIKE concat('%', #{searchText} ,'%')
             </if>
         </where>
@@ -486,26 +471,20 @@
                             pst.post_name,
                             jl.JOB_LEVEL_NAME job_level_name,
                             app.entry_post_time,
-                            rzdjqk.`value` entry_login_status,
-                            rygsfw.value staff_status,
-                            rzlx.value office_type,
+                            app.entry_login_status,
+                            app.staff_status,
+                            app.office_type,
                             app.probation,
                             jb.job_count,
-                            rzdjjd.value entry_login_progress,
-                            ryxz.value personnel_nature,
-                            qr.value entry_info_confirm,
+                            app.entry_login_progress,
+                            app.personnel_nature,
+                            app.entry_info_confirm,
                             CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
                             IF(invite_count>0,'已邀请','未邀请') invite_status
                     FROM  mp_staff_entrypost_approve app
                           LEFT JOIN mp_organization org ON org.id = app.org_id
                           LEFT JOIN mp_post pst ON pst.id = app.post_id
                           LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
-                          LEFT JOIN sys_dict_item rzdjqk on rzdjqk.type='RZDJQK' and rzdjqk.value=app.entry_login_status
-                          LEFT JOIN sys_dict_item rygsfw on rygsfw.type='RYGSFW' and rygsfw.value=app.staff_status
-                          LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
-                          LEFT JOIN sys_dict_item rzdjjd on rzdjjd.type='EntryCHeckStatus' and rzdjjd.value=app.entry_login_progress
-                          LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
-                          LEFT JOIN sys_dict_item qr on qr.type='EntryInfoConfirm' and qr.value=app.entry_info_confirm
                           LEFT JOIN
                             (
                                  SELECT inv.staff_entrypost_approve_id,
@@ -567,7 +546,7 @@
 
     <!--入职管理-办理入职-个人信息 -->
     <select id="findEntryPersonInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryPersonInfoDTO">
-        SELECT rec.id recruitment_id,
+        SELECT rec.id,
                rec.talent_name ,
                rec.mobile,
                rec.certificate_type,
@@ -582,22 +561,18 @@
 
     <!--入职管理-办理入职-入职信息 -->
     <select id="findEntryJobInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryJobDTO">
-       SELECT  app.id approve_id,
-               rygsfw.value staff_status,
-               rzlx.value office_type,
-               ryxz.value personnel_nature,
-               org.org_name,
-               pst.post_name,
-               jl.JOB_LEVEL_NAME job_level_name,
-               app.entry_post_time,
-               app.probation
-       FROM mp_staff_entrypost_approve app
-	    LEFT JOIN sys_dict_item rygsfw ON rygsfw.type = 'RYGSFW' AND rygsfw.VALUE= app.staff_status
-        LEFT JOIN sys_dict_item rzlx on rzlx.type='JOB_TYPE' and rzlx.value=app.office_type
-        LEFT JOIN sys_dict_item ryxz on ryxz.type='RYXZ' and ryxz.value=app.personnel_nature
+        SELECT  app.id,
+                app.staff_status,
+                app.office_type,
+                app.personnel_nature,
+                org.org_name,
+                pst.post_name,
+                app.job_level_id,
+                app.entry_post_time,
+                app.probation
+        FROM mp_staff_entrypost_approve app
         LEFT JOIN mp_organization org on org.id=app.org_id
         LEFT JOIN mp_post pst on pst.id= app.post_id
-        LEFT JOIN mp_job_level jl ON jl.id=app.job_level_id
         <where>
             <if test="recruitmentId != null and recruitmentId != '' ">
                 AND  app.recruitment_id= #{recruitmentId}
