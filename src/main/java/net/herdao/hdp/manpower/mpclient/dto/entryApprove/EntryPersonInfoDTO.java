@@ -22,7 +22,7 @@ public class EntryPersonInfoDTO implements Serializable {
      * 人才主键ID
      */
     @ApiModelProperty(value="人才主键ID")
-    private Long recruitmentId;
+    private Long id;
 
     /**
      * 姓名

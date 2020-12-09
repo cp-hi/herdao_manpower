@@ -109,8 +109,8 @@ public class EntryDTO implements Serializable {
     /**
      * 人员归属范围
      */
-    @ApiModelProperty(value="人员归属范围")
-    @ExcelProperty(value = "人员归属范围")
+    @ApiModelProperty(value="任职类型")
+    @ExcelProperty(value = "任职类型")
     private String officeType;
 
     /**

@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @TableName("mp_userpost")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "用户岗位表管理")
 public class Userpost extends BaseModel<Userpost> {
 private static final long serialVersionUID = 1L;
 

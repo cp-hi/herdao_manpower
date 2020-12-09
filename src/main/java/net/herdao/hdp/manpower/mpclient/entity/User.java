@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("mp_user")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "用户表管理")
 public class User extends Model<User> {
 private static final long serialVersionUID = 1L;
 
@@ -112,4 +112,5 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="租户ID")
     @ExcelIgnore
     private Long tenantId;
-    }
+
+}
