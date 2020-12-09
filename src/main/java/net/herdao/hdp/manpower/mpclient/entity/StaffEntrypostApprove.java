@@ -43,7 +43,7 @@ public class StaffEntrypostApprove extends Model<StaffEntrypostApprove> {
      * 姓名
      */
     @ApiModelProperty(value="姓名")
-    private String username;
+    private String userName;
     /**
      * 人才id
      */

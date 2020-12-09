@@ -34,10 +34,22 @@ public class EntryApproveAddDTO implements Serializable {
     private String userName;
 
     /**
+     * 人才ID
+     */
+    @ApiModelProperty(value="人才ID")
+    private Long userId;
+
+    /**
      * 原占编员工id
      */
     @ApiModelProperty(value="原占编员工id")
     private Long replaceUserId;
+
+    /**
+     * 原占编员工姓名
+     */
+    @ApiModelProperty(value="原占编员工姓名")
+    private Long replaceUserName;
 
     /**
      * 证件类型
@@ -72,7 +84,7 @@ public class EntryApproveAddDTO implements Serializable {
     /**
      * 是否需要任命
      */
-    @ApiModelProperty(value="是否需要任命")
+    @ApiModelProperty(value="是否需要任命--后台保存传参")
     private Integer isAppointment;
 
     /**
@@ -82,10 +94,23 @@ public class EntryApproveAddDTO implements Serializable {
     private Long orgId;
 
     /**
+     * 录用组织
+     */
+    @ApiModelProperty(value="录用组织名称")
+    private String orgName;
+
+
+    /**
      * 录用岗位
      */
     @ApiModelProperty(value="录用岗位")
     private Long postId;
+
+    /**
+     * 录用岗位名称
+     */
+    @ApiModelProperty(value="录用岗位名称")
+    private String postName;
 
     /**
      * 岗位年度编制
@@ -109,13 +134,13 @@ public class EntryApproveAddDTO implements Serializable {
      * 劳动合同签订年限
      */
     @ApiModelProperty(value="劳动合同签订年限")
-    private String contractPeriod;
+    private BigDecimal contractPeriod;
 
     /**
      * 试用期（月）
      */
     @ApiModelProperty(value="试用期（月）")
-    private String probation;
+    private BigDecimal probation;
 
     /**
      * 劳动合同签订主体ID
@@ -124,10 +149,22 @@ public class EntryApproveAddDTO implements Serializable {
     private Long contractCompanyId;
 
     /**
-     * 社保购买单位
+     * 劳动合同签订主体
+     */
+    @ApiModelProperty(value="劳动合同签订主体")
+    private Long contractCompanyName;
+
+    /**
+     * 社保购买单位ID
      */
     @ApiModelProperty(value="社保购买单位ID")
     private Long securityUnitsId;
+
+    /**
+     * 社保购买单位
+     */
+    @ApiModelProperty(value="社保购买单位")
+    private Long securityUnitsName;
 
     /**
      * 工资发放单位id
@@ -136,10 +173,22 @@ public class EntryApproveAddDTO implements Serializable {
     private Long paidUnitsId;
 
     /**
+     * 工资发放单位
+     */
+    @ApiModelProperty(value="工资发放单位")
+    private Long paidUnitsName;
+
+    /**
      * 公积金购买单位id
      */
     @ApiModelProperty(value="公积金购买单位ID")
     private Long fundUnitsId;
+
+    /**
+     * 公积金购买单位
+     */
+    @ApiModelProperty(value="公积金购买单位")
+    private Long fundUnitsName;
 
     /**
      * 经办人意见

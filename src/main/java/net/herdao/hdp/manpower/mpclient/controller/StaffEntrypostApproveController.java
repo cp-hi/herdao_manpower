@@ -51,9 +51,12 @@ public class StaffEntrypostApproveController {
      */
     @ApiOperation(value = "录用审批-发起录用-保存", notes = "录用审批-发起录用-保存")
     @PostMapping("/saveApprove")
-    public R<EntryApproveAddDTO> saveApprove(@RequestBody EntryApproveAddDTO approveAddDTO) {
+    public R<EntryApproveAddDTO> saveApprove(@RequestBody EntryApproveAddDTO dto) {
         StaffEntrypostApprove approve=new StaffEntrypostApprove();
-        BeanUtils.copyProperties(approveAddDTO,approve);
+        BeanUtils.copyProperties(dto,approve);
+        approve.setRecruitmentId(dto.getUserId());
+        //状态：1 填报中，2 审批中，3 已审批
+        approve.setStatus("1");
 
         SysUser sysUser = SysUserUtils.getSysUser();
         approve.setCreatorTime(LocalDateTime.now());
@@ -61,8 +64,8 @@ public class StaffEntrypostApproveController {
         approve.setCreatorName(sysUser.getAliasName());
 
         staffEntrypostApproveService.save(approve);
-        BeanUtils.copyProperties(approve,approveAddDTO);
-        return R.ok(approveAddDTO);
+        BeanUtils.copyProperties(approve,dto);
+        return R.ok(dto,"新增保存成功");
     }
 
     /**
