@@ -584,7 +584,8 @@
 
     <!--录用审批-填报中-修改-通过主键ID获取详情 -->
     <select id="findEntryJobEditInfoById" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveUpdateDTO">
-        SELECT  app.user_name,
+        SELECT  app.id,
+                app.user_name,
                 rec.id user_id,
                 app.replace_user_id,
                 st.STAFF_NAME replace_user_name,
