@@ -282,19 +282,75 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
             //同步人才表（mp_recruitment)到mp_staff表
             Staff staff=new Staff();
             BeanUtils.copyProperties(recruitment,staff);
-            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             staff.setId(null);
             staff.setTenantId(null);
-            staff.setStaffName(recruitment.getTalentName());
-            staff.setJobType(approve.getOfficeType());
-            staff.setPoliticsStatus(recruitment.getPoliticalLandscape());
-           /* staff.setEntryTime(recruitment.getInductionTime());*/
-            staff.setGoalPosts(recruitment.getIntentionPostId());
-            staff.setPostCode(recruitment.getZipcode());
-            staff.setIdType(recruitment.getCertificateType());
-            staff.setProbPeriod(approve.getProbation().longValue());
-            staff.setSchoolName(recruitment.getGraduated());
-            staff.setEducationQua(recruitment.getHighestEducation());
+            /*staff.setEntryTime(recruitment.getInductionTime());*/
+            if (ObjectUtil.isNotNull(recruitment.getTalentName())){
+                staff.setStaffName(recruitment.getTalentName());
+            }
+            if (ObjectUtil.isNotNull(approve.getOfficeType())){
+                staff.setJobType(approve.getOfficeType());
+            }
+            if (ObjectUtil.isNotNull(recruitment.getPoliticalLandscape())){
+                staff.setPoliticsStatus(recruitment.getPoliticalLandscape());
+            }
+
+            if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
+                staff.setGoalPosts(recruitment.getIntentionPostId());
+            }
+            if (ObjectUtil.isNotNull(recruitment.getZipcode())){
+                staff.setPostCode(recruitment.getZipcode());
+            }
+            if (ObjectUtil.isNotNull(recruitment.getCertificateType())){
+                staff.setIdType(recruitment.getCertificateType());
+            }
+            if (ObjectUtil.isNotNull(approve.getProbation())){
+                staff.setProbPeriod(approve.getProbation().longValue());
+            }
+            if (ObjectUtil.isNotNull(approve.getProbation())){
+                staff.setProbPeriod(approve.getProbation().longValue());
+            }
+            if (ObjectUtil.isNotNull(recruitment.getGraduated())){
+                staff.setSchoolName(recruitment.getGraduated());
+            }
+            if (ObjectUtil.isNotNull(recruitment.getHighestEducation())){
+                staff.setEducationQua(recruitment.getHighestEducation());
+            }
+            if (ObjectUtil.isNotNull(recruitment.getProfessionalExperience())){
+                staff.setProfessionalExperience(DateUtil.format(recruitment.getProfessionalExperience(), "yyyy-MM-dd"));
+            }
+            if (ObjectUtil.isNotNull(recruitment.getManagementExperience())){
+                staff.setManagementExperience(DateUtil.format(recruitment.getManagementExperience(), "yyyy-MM-dd"));
+            }
+            if (ObjectUtil.isNotNull(recruitment.getRealEstateExperience())){
+                staff.setRealestateExperience(DateUtil.format(recruitment.getRealEstateExperience(), "yyyy-MM-dd"));
+            }
+            if (ObjectUtil.isNotNull(approve.getContractCompanyId())){
+                staff.setContractCompany(approve.getContractCompanyId().toString());
+            }
+            if (ObjectUtil.isNotNull(approve.getContractPeriod())){
+                staff.setContractTerm(approve.getContractPeriod().toString());
+            }
+            if (ObjectUtil.isNotNull(user.getId())){
+                staff.setUserId(user.getId());
+            }
+            if (ObjectUtil.isNotNull(approve.getPaidUnitsId())){
+                staff.setPaidUnit(approve.getPaidUnitsId().toString());
+            }
+            if (ObjectUtil.isNotNull(approve.getSecurityUnitsId())){
+                staff.setSecurityUnit(approve.getSecurityUnitsId().toString());
+            }
+            if (ObjectUtil.isNotNull(approve.getFundUnitsId())){
+                staff.setFundUnit(approve.getFundUnitsId().toString());
+            }
+            if (recruitment.getIsAcceptAssignment()!=null){
+                if (recruitment.getIsAcceptAssignment()==1){
+                    staff.setAcceptedAssignment(true);
+                }
+                if (recruitment.getIsAcceptAssignment()==0){
+                    staff.setAcceptedAssignment(false);
+                }
+            }
 
             //staff.setStaffCode(approve.getStaffCode());
             //staff.setPersonnelNature(approve.getPersonnelNature());
@@ -331,23 +387,6 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
             //staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
             //staff.setProfessionalCompetence(recruitment.getProfessionalCompetence());
             //staff.setWritingAbility(recruitment.getWritingAbility());
-            staff.setProfessionalExperience(DateUtil.format(recruitment.getProfessionalExperience(), "yyyy-MM-dd"));
-            staff.setManagementExperience(DateUtil.format(recruitment.getManagementExperience(), "yyyy-MM-dd"));
-            staff.setRealestateExperience(DateUtil.format(recruitment.getRealEstateExperience(), "yyyy-MM-dd"));
-            staff.setContractCompany(approve.getContractCompanyId().toString());
-            staff.setContractTerm(approve.getContractPeriod().toString());
-            staff.setUserId(user.getId());
-            staff.setPaidUnit(approve.getPaidUnitsId().toString());
-            staff.setSecurityUnit(approve.getSecurityUnitsId().toString());
-            staff.setFundUnit(approve.getFundUnitsId().toString());
-            if (recruitment.getIsAcceptAssignment()!=null){
-                if (recruitment.getIsAcceptAssignment()==1){
-                    staff.setAcceptedAssignment(true);
-                }
-                if (recruitment.getIsAcceptAssignment()==0){
-                    staff.setAcceptedAssignment(false);
-                }
-            }
 
             staffService.save(staff);
         }
