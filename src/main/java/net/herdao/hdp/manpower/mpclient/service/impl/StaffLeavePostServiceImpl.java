@@ -11,12 +11,15 @@ import net.herdao.hdp.manpower.mpclient.mapper.StaffLeavePostMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffLeaveService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostInfoVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +37,29 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
 
     @Override
     public Page<StaffLeavePostPageVO> pageStaffLeavePost(Page page, String searchText, Long orgId, String status) {
-        return this.baseMapper.findStaffLeavePostPage(page, searchText, orgId, status);
+
+        Page<StaffLeavePostPage> leavePostPage = this.baseMapper.findStaffLeavePostPage(page, searchText, orgId, status);
+        return convert2PageVO(leavePostPage);
+    }
+
+    private Page<StaffLeavePostPageVO> convert2PageVO(Page<StaffLeavePostPage> page) {
+        Page<StaffLeavePostPageVO> pageVO = new Page<>();
+        List<StaffLeavePostPageVO> list = new ArrayList<>();
+        for (StaffLeavePostPage record : page.getRecords()) {
+            StaffLeavePostPageVO vo = new StaffLeavePostPageVO();
+            BeanUtils.copyProperties(record, vo);
+            if (record.getEntryTime() != null) {
+                vo.setEntryTime(LocalDateTimeUtils.convert2Long(record.getEntryTime()));
+            }
+            if (record.getLeaveTime() != null) {
+                vo.setLeaveTime(LocalDateTimeUtils.convert2Long(record.getLeaveTime()));
+            }
+            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            list.add(vo);
+        }
+        pageVO.setRecords(list);
+        return pageVO;
     }
 
     @Override
