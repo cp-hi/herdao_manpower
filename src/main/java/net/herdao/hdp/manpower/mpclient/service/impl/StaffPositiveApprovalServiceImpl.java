@@ -16,22 +16,16 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPositiveApprovalMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
-import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePage;
-import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
-import net.herdao.hdp.manpower.sys.utils.BeanConvertUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -68,12 +62,35 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
                                                                          Long orgId,
                                                                          String status,String searchText) {
         Page<StaffPositiveApprovalPage> pageInfo = this.baseMapper.getPositiveApprovalPageInfo(page,orgId,status,searchText);
-
-        return     BeanConvertUtils.convertPageTo(pageInfo, StaffPositiveApprovalPageVO::new);
-
+        return   convert2PageVO(pageInfo);
     }
 
 
+    /**
+     * 适配数据库中获取的原始数据为传给前端的 vo
+     *
+     * @param page
+     * @return
+     */
+    private Page<StaffPositiveApprovalPageVO> convert2PageVO(Page<StaffPositiveApprovalPage> page) {
+        Page<StaffPositiveApprovalPageVO> pageVO = new Page<>();
+        List<StaffPositiveApprovalPageVO> list = new ArrayList<>();
+        for (StaffPositiveApprovalPage record : page.getRecords()) {
+            StaffPositiveApprovalPageVO vo = new StaffPositiveApprovalPageVO();
+            BeanUtils.copyProperties(record, vo);
+            if (record.getEntryTime() != null) {
+                vo.setEntryTime(LocalDateTimeUtils.convert2Long(record.getEntryTime()));
+            }
+            if (record.getPositiveTime() != null) {
+                vo.setPositiveTime(LocalDateTimeUtils.convert2Long(record.getPositiveTime()));
+            }
+            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            list.add(vo);
+        }
+        pageVO.setRecords(list);
+        return pageVO;
+    }
 
 
     /**

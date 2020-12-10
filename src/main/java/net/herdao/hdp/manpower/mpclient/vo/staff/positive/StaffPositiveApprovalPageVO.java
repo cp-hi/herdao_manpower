@@ -112,5 +112,8 @@ private static final long serialVersionUID = 1L;
     private Double companySeniority;
 
 
+    @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
+    private String updateInfo;
+
 
 }

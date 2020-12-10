@@ -96,6 +96,8 @@
          s.company_seniority,
          mspa.positive_time,
          mspa.creator_time,
+         mspa.modifier_name,
+         mspa.modifier_time,
          norg.ORG_NAME now_org_name,
          np.POST_NAME now_post_name
     FROM mp_staff_positive_approval AS  mspa

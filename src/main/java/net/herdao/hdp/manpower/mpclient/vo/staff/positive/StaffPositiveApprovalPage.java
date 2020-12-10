@@ -117,5 +117,16 @@ public class StaffPositiveApprovalPage   {
     private Double companySeniority;
 
 
+    /**
+     * 修改人时间
+     */
+    @ApiModelProperty(value="修改人时间")
+    private LocalDateTime modifierTime;
 
+
+    /**
+     * 修改人
+     */
+    @ApiModelProperty(value="修改人")
+    private String modifierName;
 }
