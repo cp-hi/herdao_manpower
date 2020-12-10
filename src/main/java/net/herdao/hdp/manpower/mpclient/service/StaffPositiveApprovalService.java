@@ -36,7 +36,8 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
      * 分页查询
      * @return
      */
-    Page<StaffPositiveApprovalPageVO> getPageInfo(Page<StaffPositiveApproval> page, StaffPositiveListDTO dto);
+    Page<StaffPositiveApprovalPageVO> getPositiveApprovalPageInfo(Page<StaffPositiveApproval> page,    Long orgId,
+                                                                  String status,String searchText);
 
 
 
