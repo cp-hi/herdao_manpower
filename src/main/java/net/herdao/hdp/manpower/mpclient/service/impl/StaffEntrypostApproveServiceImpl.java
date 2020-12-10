@@ -64,18 +64,26 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         approve.setCreatorCode(sysUser.getUsername());
         approve.setCreatorName(sysUser.getAliasName());
 
-        //姓名是一个下拉组件 会查询人才表 带姓名和ID过来 待完善
+        Recruitment recruitment = recruitmentService.getById(approveAddDTO.getUserId());
+        if (ObjectUtil.isNotNull(recruitment)){
+            approve.setMobileNo(recruitment.getMobile());
+            approve.setUserName(recruitment.getTalentName());
+            approve.setRecruitmentId(recruitment.getId());
+        }
+
         //获取员工工号
-        Recruitment recruitment = recruitmentService.getById(approve.getRecruitmentId());
         String staffCode="";
-        staffCode = fetchStaffCode(recruitment.getIdnumber(),recruitment.getOrgId());
+        if (ObjectUtil.isNotNull(recruitment)){
+            staffCode = fetchStaffCode(recruitment.getIdnumber(),recruitment.getOrgId());
+        }
 
         //如果员工工号，则生成员工工号。
         if (ObjectUtil.isEmpty(staffCode)) {
             staffCode = createStaffCode(approve.getOrgId());
         }
-
         approve.setStaffCode(staffCode);
+        //状态：1 填报中，2 审批中，3 已审批
+        approve.setStatus("1");
         super.save(approve);
         BeanUtils.copyProperties(approve, approveAddDTO);
 
@@ -138,19 +146,21 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         if (ObjectUtil.isNotEmpty(groupCode)) {
             if (ObjectUtil.isNotNull(orgId)) {
                 StaffCodePrefixVO prefixVO = this.baseMapper.getStaffCodePrefix(groupCode, orgId.toString());
-                String staffCodeHead = prefixVO.getStaffCodeHead();
-                if (ObjectUtil.isNotEmpty(staffCodeHead)){
-                    //在员工表和录用审批表中查询最大的员工工号并加1
-                    StaffCodePrefixVO entity = this.baseMapper.getMaxStaffCodeAddOne(staffCodeHead);
-                    if (ObjectUtil.isNotNull(entity)){
-                        staffCode = entity.getStaffCode();
-                    }else{
-                        //在员工表和录用审批表中无对应最大的员工工号，根据员工工号前缀加0100或00100的规则生成工号
-                        int size=2;
-                        if(staffCodeHead.length()==size){
-                            staffCode= staffCodeHead + "0100";
+                if (ObjectUtil.isNotNull(prefixVO)){
+                    String staffCodeHead = prefixVO.getStaffCodeHead();
+                    if (ObjectUtil.isNotEmpty(staffCodeHead)){
+                        //在员工表和录用审批表中查询最大的员工工号并加1
+                        StaffCodePrefixVO entity = this.baseMapper.getMaxStaffCodeAddOne(staffCodeHead);
+                        if (ObjectUtil.isNotNull(entity)){
+                            staffCode = entity.getStaffCode();
                         }else{
-                            staffCode= staffCodeHead + "00100";
+                            //在员工表和录用审批表中无对应最大的员工工号，根据员工工号前缀加0100或00100的规则生成工号
+                            int size=2;
+                            if(staffCodeHead.length()==size){
+                                staffCode= staffCodeHead + "0100";
+                            }else{
+                                staffCode= staffCodeHead + "00100";
+                            }
                         }
                     }
                 }

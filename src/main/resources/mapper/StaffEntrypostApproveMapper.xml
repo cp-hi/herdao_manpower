@@ -235,7 +235,7 @@
         ) t
         <where>
             <if test="groupCode != null">
-                AND t.group_code = #{idnumber}
+                AND t.group_code = #{groupCode}
             </if>
             <if test="deptCode != null and deptCode= '003012' ">
                 AND t.dept_code = #{deptCode}

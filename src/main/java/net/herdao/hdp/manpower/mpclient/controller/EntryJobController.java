@@ -269,7 +269,13 @@ public class EntryJobController {
         User user=new User();
         BeanUtils.copyProperties(recruitment,user);
         user.setUserName(recruitment.getTalentName());
-
+        String loginCode=SysUserUtils.getSysUser().getUsername();
+        String password=SysUserUtils.getSysUser().getPassword();
+        user.setLoginCode(loginCode);
+        user.setPassword(password);
+        user.setOrgId(recruitment.getOrgId());
+        //是否停用 1 是， 值：0 否
+        user.setIsStop(0L);
 
         userService.save(user);
 
