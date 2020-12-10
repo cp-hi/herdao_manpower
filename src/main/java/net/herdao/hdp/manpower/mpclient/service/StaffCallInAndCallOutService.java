@@ -10,7 +10,7 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.call.StaffCallInAndCallOutPageV
  */
 
 public interface StaffCallInAndCallOutService extends HdpService<StaffTransferApprove> {
-    Long affirmStart(Long id) throws Exception;
+    Long affirm(Long id) throws Exception;
 
     Page<StaffCallInAndCallOutPageVO> pageStaffCallInAndCallOut(Page page, String searchText, Long orgId, String status, String type);
 }

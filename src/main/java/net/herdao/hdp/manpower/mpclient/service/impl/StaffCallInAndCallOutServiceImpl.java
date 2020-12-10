@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveTypeConstants;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffTransferApprove;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
@@ -36,13 +35,13 @@ public class StaffCallInAndCallOutServiceImpl extends ServiceImpl<StaffTransferA
     }
 
     @Override
-    public Long affirmStart(Long id) throws Exception {
+    public Long affirm(Long id) throws Exception {
         QueryWrapper<StaffTransferApprove> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id)
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
         StaffTransferApprove changes = mapper.selectOne(queryWrapper);
         if (changes == null) {
-            throw new Exception("该记录不可修改");
+            throw new Exception("该调入、调出审批记录不可修改");
         }
         changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(changes);

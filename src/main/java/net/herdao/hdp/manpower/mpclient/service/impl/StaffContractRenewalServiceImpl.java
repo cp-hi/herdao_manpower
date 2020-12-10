@@ -61,13 +61,24 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
     }
 
     @Override
-    public Long affirm(Long id, SaveStaffContractRenewalDTO dto) throws Exception {
+    public Long affirmStart(Long id, SaveStaffContractRenewalDTO dto) throws Exception {
         if (id != null) {
             updateInfo(id, dto);
         } else {
             id = add(dto);
         }
-        StaffContractRenewal entity = mapper.selectById(id);
+       return affirm(id);
+    }
+
+    @Override
+    public Long affirm(Long id) throws Exception {
+        QueryWrapper<StaffContractRenewal> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffContractRenewal entity = mapper.selectOne(wrapper);
+        if(entity == null) {
+            throw new Exception("该合同续签审批记录已发起审批，请勿重复操作");
+        }
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(entity);
         return id;

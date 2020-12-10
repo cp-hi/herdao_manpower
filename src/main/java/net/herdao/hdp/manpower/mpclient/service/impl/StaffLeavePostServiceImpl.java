@@ -70,7 +70,18 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
         } else {
             id = insert(dto);
         }
-        StaffLeavePostApprove entity = mapper.selectById(id);
+        return affirm(id);
+    }
+
+    @Override
+    public Long affirm(Long id) throws Exception {
+        QueryWrapper<StaffLeavePostApprove> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffLeavePostApprove entity = mapper.selectOne(wrapper);
+        if(entity == null) {
+            throw new Exception("该离职审批记录已发起审批，请勿重复操作");
+        }
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(entity);
         return id;

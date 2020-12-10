@@ -24,6 +24,8 @@ import java.util.List;
 @Service
 public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMapper, StaffTransferApprove> implements StaffCallOutService {
     @Autowired
+    private StaffCallInAndCallOutService callInAndCallOutService;
+    @Autowired
     private UserpostService userPostService;
     @Autowired
     private OrganizationService orgService;
@@ -73,10 +75,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         } else {
             id = saveInfo(dto);
         }
-        StaffTransferApprove changes = mapper.selectById(id);
-        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
-        mapper.updateById(changes);
-        return id;
+        return callInAndCallOutService.affirm(id);
     }
 
     @Override
