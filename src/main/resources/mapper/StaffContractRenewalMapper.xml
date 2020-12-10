@@ -3,7 +3,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper">
 
-    <select id="findStaffContractRenewalPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO">
+    <select id="findStaffContractRenewalPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPage">
         SELECT
         scr.id,
         scr.user_id,
