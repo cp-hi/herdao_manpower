@@ -27,6 +27,7 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 转正审批表
@@ -37,8 +38,8 @@ import java.math.BigDecimal;
 @Data
 //@TableName("mp_staff_positive_approval")
 @ApiModel(value = "转正审批分页列表")
-public class StaffPositiveApprovalPageVO   {
-private static final long serialVersionUID = 1L;
+public class StaffPositiveApprovalPage   {
+    private static final long serialVersionUID = 1L;
 
 
 
@@ -53,21 +54,25 @@ private static final long serialVersionUID = 1L;
      * 入职日期
      */
     @ApiModelProperty(value="入职日期")
-    private Long entryTime;
+    private LocalDateTime entryTime;
     /**
      * 转正时间
      */
     @ApiModelProperty(value="转正时间")
-    private Long positiveTime;
+    private LocalDateTime positiveTime;
 
     /**
      * 状态
      */
     @ApiModelProperty(value="状态")
     private String status;
-
     /**
-     * 
+     * 备注
+     */
+    @ApiModelProperty(value="备注")
+    private String remark;
+    /**
+     *
      */
     @ApiModelProperty(value="")
     private String posExamScore;
@@ -77,7 +82,7 @@ private static final long serialVersionUID = 1L;
      * 新建时间
      */
     @ApiModelProperty(value="新建时间")
-    private Long creatorTime;
+    private LocalDateTime creatorTime;
 
 
 

@@ -84,4 +84,41 @@
                         <result property="certificateNo" column="certificate_no"/>
                         <result property="probation" column="probation"/>
             </resultMap>
+    <select id="getPositiveApprovalPageInfo"
+            resultType="net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage">
+      SELECT
+         mspa.id,
+         mspa.user_id,
+         s.staff_name,
+         s.staff_code,
+         s.job_type,
+         s.entry_time,
+         s.company_seniority,
+         mspa.positive_time,
+         mspa.creator_time,
+         norg.ORG_NAME now_org_name,
+         np.POST_NAME now_post_name
+    FROM mp_staff_positive_approval AS  mspa
+    LEFT JOIN mp_staff s ON mspa.user_id = s.user_id
+    LEFT JOIN mp_organization norg ON mspa.org_id = norg.id
+    LEFT JOIN mp_post np ON mspa.before_post_id = np.id
+          <where>
+                <if test="searchText != '' and searchText != null">
+                      and
+                      concat(
+                      IFNULL(s.staff_name,''),
+                      IFNULL(s.staff_code,''),
+                      IFNULL(mspa.positive_time,''),
+                      IFNULL(mspa.creator_time,''),
+                      IFNULL(norg.ORG_NAME,''),
+                      IFNULL(np.POST_NAME,'')
+                      ) LIKE concat(#{searchText},'%')
+                </if>
+                <if test="orgId != '' and orgId != null">
+                      and norg.`id` = #{orgId}
+                </if>
+                and mspa.`del_flag` = '0' and mspa.`status` = #{status}
+          </where>
+
+    </select>
 </mapper>
