@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -46,26 +47,16 @@ public class StaffEntrypostApproveController {
 
     /**
      * 录用审批-发起录用-保存
-     * @param approveAddDTO 录用审批表
+     * @param dto 录用审批表
      * @return R
      */
     @ApiOperation(value = "录用审批-发起录用-保存", notes = "录用审批-发起录用-保存")
     @PostMapping("/saveApprove")
     public R<EntryApproveAddDTO> saveApprove(@RequestBody EntryApproveAddDTO dto) {
         StaffEntrypostApprove approve=new StaffEntrypostApprove();
-        BeanUtils.copyProperties(dto,approve);
-        approve.setRecruitmentId(dto.getUserId());
-        //状态：1 填报中，2 审批中，3 已审批
-        approve.setStatus("1");
-
-        SysUser sysUser = SysUserUtils.getSysUser();
-        approve.setCreatorTime(LocalDateTime.now());
-        approve.setCreatorCode(sysUser.getUsername());
-        approve.setCreatorName(sysUser.getAliasName());
-
-        staffEntrypostApproveService.save(approve);
+        EntryApproveAddDTO result = staffEntrypostApproveService.saveApprove(dto);
         BeanUtils.copyProperties(approve,dto);
-        return R.ok(dto,"新增保存成功");
+        return R.ok(result,"新增保存成功");
     }
 
     /**
@@ -115,11 +106,9 @@ public class StaffEntrypostApproveController {
         @ApiImplicitParam(name="status",value="状态：1 填报中，2 审批中，3 已审批"),
     })
     @SneakyThrows
-    public R exportStaffEdu(HttpServletResponse response, String orgId, String searchText, String status) {
-        Page page = new Page();
-        page.setSize(-1);
-        Page pageResult = staffEntrypostApproveService.findApprovePage(page, orgId, searchText, status);
-        ExcelUtils.export2Web(response, "录用审批表", "录用审批表", EntryApproveDTO.class, pageResult.getRecords());
+    public R exportApprove(HttpServletResponse response, String orgId, String searchText, String status) {
+        List<EntryApproveDTO> list = staffEntrypostApproveService.exportApprove(orgId, searchText, status);
+        ExcelUtils.export2Web(response, "录用审批表", "录用审批表", EntryApproveDTO.class, list);
         return R.ok("导出成功");
     }
 
@@ -165,6 +154,7 @@ public class StaffEntrypostApproveController {
         approve.setRecruitmentId(dto.getUserId());
         //状态：1 填报中，2 审批中，3 已审批
         approve.setStatus("1");
+        approve.setPostId(Long.parseLong(dto.getPostId()));
 
         SysUser sysUser = SysUserUtils.getSysUser();
         approve.setModifierTime(LocalDateTime.now());

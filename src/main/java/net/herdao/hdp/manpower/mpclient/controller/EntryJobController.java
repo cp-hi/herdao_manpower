@@ -262,11 +262,21 @@ public class EntryJobController {
         Recruitment recruitment = recruitmentService.getById(recruitmentId);
         recruitment.setId(recruitmentId);
         recruitment.setCertificateType(certificateType);
+        recruitment.setCertificateNo(certificateNo);
         recruitmentService.updateById(recruitment);
 
         //同步人才表（mp_recruitment)到mp_user,mp_userpost,mp_staff表
         User user=new User();
         BeanUtils.copyProperties(recruitment,user);
+        user.setUserName(recruitment.getTalentName());
+        String loginCode=SysUserUtils.getSysUser().getUsername();
+        String password=SysUserUtils.getSysUser().getPassword();
+        user.setLoginCode(loginCode);
+        user.setPassword(password);
+        user.setOrgId(recruitment.getOrgId());
+        //是否停用 1 是， 值：0 否
+        user.setIsStop(0L);
+
         userService.save(user);
 
         Userpost userpost=new Userpost();

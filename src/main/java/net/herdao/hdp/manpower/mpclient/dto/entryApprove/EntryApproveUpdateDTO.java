@@ -49,7 +49,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 原占编员工姓名
      */
     @ApiModelProperty(value="原占编员工姓名")
-    private Long replaceUserName;
+    private String replaceUserName;
 
     /**
      * 证件类型
@@ -85,7 +85,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 是否需要任命
      */
     @ApiModelProperty(value="是否需要任命--后台保存传参")
-    private Integer isAppointment;
+    private Boolean isAppointment;
 
     /**
      * 录用组织
@@ -104,7 +104,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 录用岗位
      */
     @ApiModelProperty(value="录用岗位")
-    private Long postId;
+    private String postId;
 
     /**
      * 录用岗位名称
@@ -152,7 +152,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 劳动合同签订主体
      */
     @ApiModelProperty(value="劳动合同签订主体")
-    private Long contractCompanyName;
+    private String contractCompanyName;
 
     /**
      * 社保购买单位ID
@@ -164,7 +164,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 社保购买单位
      */
     @ApiModelProperty(value="社保购买单位")
-    private Long securityUnitsName;
+    private String securityUnitsName;
 
     /**
      * 工资发放单位id
@@ -176,7 +176,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 工资发放单位
      */
     @ApiModelProperty(value="工资发放单位")
-    private Long paidUnitsName;
+    private String paidUnitsName;
 
     /**
      * 公积金购买单位id
@@ -188,7 +188,7 @@ public class EntryApproveUpdateDTO implements Serializable {
      * 公积金购买单位
      */
     @ApiModelProperty(value="公积金购买单位")
-    private Long fundUnitsName;
+    private String fundUnitsName;
 
     /**
      * 经办人意见

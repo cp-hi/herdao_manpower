@@ -85,7 +85,7 @@ public class EntryApproveAddDTO implements Serializable {
      * 是否需要任命
      */
     @ApiModelProperty(value="是否需要任命--后台保存传参")
-    private Integer isAppointment;
+    private Boolean isAppointment;
 
     /**
      * 录用组织

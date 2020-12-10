@@ -9,6 +9,8 @@ import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 /**
  * 录用审批表
  *
@@ -98,5 +100,15 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
      * @return EntryJobDTO
      */
     EntryApproveUpdateDTO findEntryJobEditInfoById(Long id);
+
+    /**
+     * 录用审批-导出excel
+     * @param orgId 组织ID
+     * @param searchText 关键字
+     * @param status 状态：1 填报中，2 审批中，3 已审批
+     * @return
+     */
+    List<EntryApproveDTO> exportApprove(String orgId, String searchText,  String status);
+
 
 }
