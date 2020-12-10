@@ -3,7 +3,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffLeavePostMapper">
 
-    <select id="findStaffLeavePostPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPageVO">
+    <select id="findStaffLeavePostPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPage">
         SELECT
         mslpa.id,
         mslpa.user_id,
@@ -28,15 +28,15 @@
             <if test="searchText != '' and searchText != null">
                 and
                 concat(
-                IFNULL(s.staff_name,''),
-                IFNULL(s.staff_code,''),
-                IFNULL(mslpa.job_type,''),
-                IFNULL(mslpa.company_seniority,''),
-                IFNULL(mslpa.leave_reason,''),
-                IFNULL(mslpa.trans_start_date,''),
-                IFNULL(norg.ORG_NAME,''),
-                IFNULL(np.POST_NAME,''),
-                IFNULL(njl.JOB_LEVEL_NAME,''),
+                IFNULL(s.staff_name, ''),
+                IFNULL(s.staff_code, ''),
+                IFNULL(s.job_type, ''),
+                IFNULL(s.company_seniority, ''),
+                IFNULL(mslpa.leave_time, ''),
+                IFNULL(mslpa.leave_reason, ''),
+                IFNULL(norg.ORG_NAME, ''),
+                IFNULL(np.POST_NAME, ''),
+                IFNULL(njl.JOB_LEVEL_NAME, '')
                 ) LIKE concat(#{searchText},'%')
             </if>
             <if test="status != '' and status != null">

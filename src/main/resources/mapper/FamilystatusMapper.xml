@@ -62,22 +62,24 @@
                   f.MODIFIED_TIME,
                   g.ID group_id,
                   g.GROUP_NAME
-                  FROM
-                  mp_familystatus f
+                  FROM mp_familystatus f
                   LEFT JOIN mp_staff s ON s.ID = f.STAFF_id
-                  LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE'
-                  AND dic.`value` = f.RELATIONS
+                  LEFT JOIN sys_dict_item dic ON dic.type = 'RELATIONS_TYPE' AND dic.`value` = f.RELATIONS
                   LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID and up.MAIN_POST=1
                   LEFT JOIN mp_post p ON p.ID = up.POST_ID
                   LEFT JOIN mp_group g on p.GROUP_ID=g.ID
+        		  LEFT JOIN mp_organization o ON up.ORG_DEPT_ID = o.ID
                   WHERE  f.del_flag = 0
-                  <if test="query.groupId != null">
+                  <if test="groupId != null">
                       and p.GROUP_ID = #{query.groupId}
                   </if>
-                   ORDER BY f.CREATED_TIME desc
+                  <if test="orgId != null">
+		          	AND o.ORG_CODE like (select CONCAT(org.ORG_CODE,'%') from mp_organization org where org.id=#{orgId} limit 1)
+		          </if>
+                  ORDER BY f.CREATED_TIME desc
           ) t
           <where>
-              <if test="searchText != null">
+              <if test="searchText != null and searchText !='' ">
                   and CONCAT(
                       IFNULL( t.staff_name,''), IFNULL( t.staff_code,''),IFNULL( t.NAME,''),IFNULL( t.RELATIONS,''),
                       IFNULL( t.age,''),IFNULL( t.PROFESSIONAL,''),IFNULL( t.WORK_UNIT,''),IFNULL( t.address,''),

@@ -11,10 +11,15 @@ import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import net.herdao.hdp.manpower.mpclient.service.StaffContractRenewalService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalInfoVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author Liu Chang
@@ -31,17 +36,49 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
 
     @Override
     public Page<StaffContractRenewalPageVO> pageStaffRenewContract(Page page, String searchText, Long orgId, String status) {
-        return mapper.findStaffContractRenewalPage(page, searchText, orgId, status);
+        Page<StaffContractRenewalPage> contractRenewalPage = mapper.findStaffContractRenewalPage(page, searchText, orgId, status);
+        return convert2Page(contractRenewalPage);
+    }
+
+    private Page<StaffContractRenewalPageVO> convert2Page(Page<StaffContractRenewalPage> page) {
+        Page<StaffContractRenewalPageVO> pageVO = new Page<>();
+        List<StaffContractRenewalPageVO> list = new ArrayList<>();
+        for (StaffContractRenewalPage record : page.getRecords()) {
+            StaffContractRenewalPageVO vo = new StaffContractRenewalPageVO();
+            BeanUtils.copyProperties(record, vo);
+            if (record.getRenewalStartTime() != null) {
+                vo.setRenewalStartTime(LocalDateTimeUtils.convert2Long(record.getRenewalStartTime()));
+            }
+            if (record.getRenewalEndTime() != null) {
+                vo.setRenewalEndTime(LocalDateTimeUtils.convert2Long(record.getRenewalEndTime()));
+            }
+            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            list.add(vo);
+        }
+        pageVO.setRecords(list);
+        return pageVO;
     }
 
     @Override
-    public Long affirm(Long id, SaveStaffContractRenewalDTO dto) throws Exception {
+    public Long affirmStart(Long id, SaveStaffContractRenewalDTO dto) throws Exception {
         if (id != null) {
             updateInfo(id, dto);
         } else {
             id = add(dto);
         }
-        StaffContractRenewal entity = mapper.selectById(id);
+       return affirm(id);
+    }
+
+    @Override
+    public Long affirm(Long id) throws Exception {
+        QueryWrapper<StaffContractRenewal> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
+        StaffContractRenewal entity = mapper.selectOne(wrapper);
+        if(entity == null) {
+            throw new Exception("该合同续签审批记录已发起审批，请勿重复操作");
+        }
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(entity);
         return id;

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -123,8 +124,7 @@ public class WorkexperienceController extends HdpBaseController {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findStaffWorkPage(Page page,WorkexperienceDTO workexperienceDTO, String searchText) {
-        Page pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO,searchText);
-        return R.ok(pageResult);
+        return R.ok(workexperienceService.findStaffWorkPage(page, workexperienceDTO,searchText));
     }
 
     /**
@@ -170,7 +170,7 @@ public class WorkexperienceController extends HdpBaseController {
     public void exportStaffWork(HttpServletResponse response, WorkexperienceDTO workexperienceDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO, searchText);
+        IPage pageResult = workexperienceService.findStaffWorkPage(page, workexperienceDTO, searchText);
         ExcelUtils.export2Web(response, "员工工作经历", "员工工作经历表", WorkexperienceDTO.class, pageResult.getRecords());
     }
 

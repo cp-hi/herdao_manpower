@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工家庭成员
@@ -27,7 +28,7 @@ public interface FamilystatusMapper extends BaseMapper<Familystatus> {
      * @param searchText
      * @return
      */
-    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page,@Param("query") FamilyStatusListDTO familyStatusListDTO, @Param("searchText") String searchText);
+    List<FamilyStatusListDTO> findFamilyStatusPage(Map<String, Object> map);
 
 
     /**

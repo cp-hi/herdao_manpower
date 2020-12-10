@@ -46,12 +46,19 @@ public class StaffLeavePostController {
         return R.ok(service.pageStaffLeavePost(page, searchText, orgId, status));
     }
 
-    @ApiOperation(value = "离职列表/详情页-确认发起")
-    @PutMapping("/affirm/start")
-    public R affirm(Long id,
+    @ApiOperation(value = "新增、编辑页-确认发起")
+    @PostMapping("/affirm/start")
+    public R affirmStart(Long id,
                     @RequestBody @NotNull SaveStaffLeavePostDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
     }
+
+    @ApiOperation(value = "新增、编辑页-确认发起")
+    @PutMapping("/affirm/{id}")
+    public R affirm(@PathVariable("id") Long id) throws Exception {
+        return R.ok(service.affirm(id));
+    }
+
 
     @ApiModelProperty(value = "新增离职审批")
     @PostMapping

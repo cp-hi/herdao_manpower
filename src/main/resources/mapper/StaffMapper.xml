@@ -526,7 +526,7 @@
                 AND  p.JOB_LEVEL_ID1 = #{jobLevelId1}
             </if>
             <if test="orgId != null">
-                AND o.id=#{orgId}
+                AND o.ORG_CODE like (select CONCAT(org.ORG_CODE,'%') from mp_organization org where org.id=#{orgId} limit 1)
             </if>
         </where>
     </select>

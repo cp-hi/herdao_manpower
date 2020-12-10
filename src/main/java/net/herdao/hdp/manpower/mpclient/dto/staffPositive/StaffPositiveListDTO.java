@@ -48,15 +48,15 @@ private static final long serialVersionUID = 1L;
     /**
      * 入职日期
      */
-    @ApiModelProperty(value="入职日期")
-    private LocalDateTime entryTime;
+    @ApiModelProperty(value="组织id")
+    private LocalDateTime orgId;
 
 
     /**
      * 其他
      */
-    @ApiModelProperty(value="其他")
-    private BigDecimal otherCosts;
+    @ApiModelProperty(value="查询文本")
+    private BigDecimal searchText;
     /**
      * 状态
      */

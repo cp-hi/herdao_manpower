@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
@@ -25,7 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工家庭成员
@@ -43,9 +46,15 @@ public class FamilystatusServiceImpl extends ServiceImpl<FamilystatusMapper, Fam
     private SysDictItemService itemService;
 
     @Override
-    public Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page,FamilyStatusListDTO familyStatusListDTO, String searchText) {
-        Page<FamilyStatusListDTO> pageResult = this.baseMapper.findFamilyStatusPage(page, familyStatusListDTO,searchText);
-        return pageResult;
+    public IPage findFamilyStatusPage(Page<FamilyStatusListDTO> page,FamilyStatusListDTO familyStatusListDTO, String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",familyStatusListDTO.getGroupId());
+		map.put("orgId",familyStatusListDTO.getOrgId());
+    	
+		page = page.setRecords(this.baseMapper.findFamilyStatusPage(map));
+        return page;
     }
 
     @Override

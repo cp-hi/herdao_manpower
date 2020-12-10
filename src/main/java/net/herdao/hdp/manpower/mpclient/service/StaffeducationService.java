@@ -1,6 +1,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
@@ -36,7 +37,7 @@ public interface StaffeducationService extends HdpService<Staffeducation> {
      * @param searchText 关键字搜索
      * @return
      */
-    Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page,StaffEducationDTO staffEducationDTO, String searchText);
+     IPage findStaffEducationPage(Page<StaffEducationDTO> page,StaffEducationDTO staffEducationDTO, String searchText);
 
     /**
      * 员工教育经历

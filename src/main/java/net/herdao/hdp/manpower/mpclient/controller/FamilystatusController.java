@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -103,8 +104,7 @@ public class FamilystatusController extends HdpBaseController  {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findFamilyStatusPage(Page page, FamilyStatusListDTO familyStatusListDTO, String searchText) {
-        Page pageResult = familystatusService.findFamilyStatusPage(page,familyStatusListDTO, searchText);
-        return R.ok(pageResult);
+        return R.ok(familystatusService.findFamilyStatusPage(page,familyStatusListDTO, searchText));
     }
 
     /**
@@ -122,7 +122,7 @@ public class FamilystatusController extends HdpBaseController  {
     public void exportFamily(HttpServletResponse response, FamilyStatusListDTO familyStatusListDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page familyStatusPage = familystatusService.findFamilyStatusPage(page, familyStatusListDTO, searchText);
+        IPage familyStatusPage = familystatusService.findFamilyStatusPage(page, familyStatusListDTO, searchText);
         ExcelUtils.export2Web(response, "家庭情况况表", "家庭情况表", FamilyStatusListDTO.class, familyStatusPage.getRecords());
     }
 

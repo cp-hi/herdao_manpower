@@ -3,7 +3,7 @@
 
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper">
 
-    <select id="findStaffContractRenewalPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO">
+    <select id="findStaffContractRenewalPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPage">
         SELECT
         scr.id,
         scr.user_id,
@@ -12,7 +12,7 @@
         company.company_name,
         scr.renewal_type,
         scr.renewal_start_time,
-        scr.renewal_start_time,
+        scr.renewal_end_time,
         scr.status
 
         FROM mp_staff_contract_renewal scr
@@ -25,12 +25,12 @@
             <if test="searchText != '' and searchText != null">
                 and
                 concat(
-                    IFNULL(s.staff_name,''),
-                    IFNULL(s.staff_code,''),
-                    IFNULL(company.company_name,''),
-                    IFNULL(scr.renewal_type,''),
-                    IFNULL(scr.renewal_start_time,''),
-                    IFNULL(scr.renewal_end_time,,'')
+                    IFNULL(s.staff_name, ''),
+                    IFNULL(s.staff_code, ''),
+                    IFNULL(company.company_name, ''),
+                    IFNULL(scr.renewal_type, ''),
+                    IFNULL(scr.renewal_start_time, ''),
+                    IFNULL(scr.renewal_end_time, '')
                 ) LIKE concat(#{searchText},'%')
             </if>
             <if test="status != '' and status != null">

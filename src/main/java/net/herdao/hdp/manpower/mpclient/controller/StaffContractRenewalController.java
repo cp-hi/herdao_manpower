@@ -34,12 +34,19 @@ public class StaffContractRenewalController {
         return R.ok(service.pageStaffRenewContract(page, searchText, orgId, status));
     }
 
-    @ApiOperation(value = "分页列表/详情页-确认发起")
+    @ApiOperation(value = "新增、修改页-确认发起")
     @PostMapping("/affirm/start")
-    public R affirm(Long id,
+    public R affirmStart(Long id,
                     @RequestBody @NotNull SaveStaffContractRenewalDTO dto) throws Exception {
-        return R.ok(service.affirm(id, dto));
+        return R.ok(service.affirmStart(id, dto));
     }
+
+    @ApiOperation(value = "分页列表-确认发起")
+    @PutMapping("/affirm/{id}")
+    public R affirm(@PathVariable("id") Long id) throws Exception {
+        return R.ok(service.affirm(id));
+    }
+
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")

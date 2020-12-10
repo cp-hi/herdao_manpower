@@ -84,12 +84,15 @@
                     WHERE
                     u.del_flag = 0
                     AND u.MAIN_POST = 1
-                   <if test="query.groupId != null">
+                  <if test="groupId != null">
                       and p.GROUP_ID = #{query.groupId}
                   </if>
+                  <if test="orgId != null">
+		          	AND a.ORG_CODE like (select CONCAT(org.ORG_CODE,'%') from mp_organization org where org.id=#{orgId} limit 1)
+		          </if>
             )t
           <where>
-              <if test="searchText != null">
+              <if test="searchText != null and searchText!=''">
                   and CONCAT(
                       IFNULL( t.staffName,''), IFNULL( t.staffCode,''),IFNULL( t.startDate,''),IFNULL( t.orgName,''),IFNULL( t.sectionName,''),
                       IFNULL( t.pipelineName,''),IFNULL( t.postName,''), IFNULL( t.jobLevelName,''), IFNULL( t.customPost,''),IFNULL( t.modifier_name,''),IFNULL( t.MODIFIED_TIME,'')

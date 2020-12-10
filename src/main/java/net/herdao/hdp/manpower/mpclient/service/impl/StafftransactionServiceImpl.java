@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,9 @@ import net.herdao.hdp.manpower.mpclient.mapper.StafftransactionMapper;
 import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 异动情况
@@ -39,9 +42,15 @@ import java.util.List;
 @AllArgsConstructor
 public class StafftransactionServiceImpl extends ServiceImpl<StafftransactionMapper, Stafftransaction> implements StafftransactionService {
     @Override
-    public Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page,StafftransDTO stafftransDTO, String searchText) {
-        Page<StafftransDTO> pageResult = this.baseMapper.findStaffTransPage(page,stafftransDTO, searchText);
-        return pageResult;
+    public IPage findStaffTransPage(Page<StafftransDTO> page,StafftransDTO stafftransDTO, String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",stafftransDTO.getGroupId());
+		map.put("orgId",stafftransDTO.getOrgId());
+		
+        page = page.setRecords(this.baseMapper.findStaffTransPage(map));
+        return page;
     }
 
     @Override

@@ -24,6 +24,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -43,7 +44,7 @@ public interface WorkexperienceMapper extends BaseMapper<Workexperience> {
      * @param searchText 关键字搜索
      * @return
      */
-    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page,@Param("query") WorkexperienceDTO workexperienceDTO, @Param("searchText") String searchText);
+    List<WorkexperienceDTO> findStaffWorkPage(Map<String, Object> map);
 
     /**
      * 员工工作经历

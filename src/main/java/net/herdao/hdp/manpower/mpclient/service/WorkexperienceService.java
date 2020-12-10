@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
@@ -37,7 +38,7 @@ public interface WorkexperienceService extends HdpService<Workexperience> {
      * @param searchText 关键字搜索
      * @return
      */
-    Page<WorkexperienceDTO> findStaffWorkPage(Page<WorkexperienceDTO> page,WorkexperienceDTO workexperienceDTO, String searchText);
+    IPage findStaffWorkPage(Page<WorkexperienceDTO> page,WorkexperienceDTO workexperienceDTO, String searchText);
 
 
     /**

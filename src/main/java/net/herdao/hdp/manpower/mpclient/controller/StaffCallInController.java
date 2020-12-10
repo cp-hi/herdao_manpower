@@ -43,9 +43,9 @@ public class StaffCallInController {
         return R.ok(service.updateInfo(id, dto));
     }
 
-    @ApiOperation(value = "确认发起")
+    @ApiOperation(value = "新建、编辑页-确认发起")
     @PostMapping("/affirm/start")
-    public R<Long> affirm(Long id,
+    public R<Long> affirmStart(Long id,
                           @RequestBody @NotNull SaveStaffCallInDTO dto) throws Exception {
         return R.ok(service.affirmStart(id, dto));
     }
