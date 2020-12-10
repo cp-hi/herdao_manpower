@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -115,11 +116,9 @@ public class StaffEntrypostApproveController {
         @ApiImplicitParam(name="status",value="状态：1 填报中，2 审批中，3 已审批"),
     })
     @SneakyThrows
-    public R exportStaffEdu(HttpServletResponse response, String orgId, String searchText, String status) {
-        Page page = new Page();
-        page.setSize(-1);
-        Page pageResult = staffEntrypostApproveService.findApprovePage(page, orgId, searchText, status);
-        ExcelUtils.export2Web(response, "录用审批表", "录用审批表", EntryApproveDTO.class, pageResult.getRecords());
+    public R exportApprove(HttpServletResponse response, String orgId, String searchText, String status) {
+        List<EntryApproveDTO> list = staffEntrypostApproveService.exportApprove(orgId, searchText, status);
+        ExcelUtils.export2Web(response, "录用审批表", "录用审批表", EntryApproveDTO.class, list);
         return R.ok("导出成功");
     }
 

@@ -116,4 +116,14 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      */
     EntryApproveUpdateDTO findEntryJobEditInfoById(@Param("id") Long id);
 
+    /**
+     * 录用审批-导出excel
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字
+     * @param status 状态：1 填报中，2 审批中，3 已审批
+     * @return
+     */
+    List<EntryApproveDTO> exportApprove(@Param("orgId") String orgId, @Param("searchText") String searchText,@Param("status") String status);
+
 }

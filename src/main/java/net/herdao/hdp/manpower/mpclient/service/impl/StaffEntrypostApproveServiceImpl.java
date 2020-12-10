@@ -194,4 +194,9 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
     public EntryApproveUpdateDTO findEntryJobEditInfoById(Long id) {
         return this.baseMapper.findEntryJobEditInfoById(id);
     }
+
+    @Override
+    public List<EntryApproveDTO> exportApprove(String orgId, String searchText, String status) {
+        return this.baseMapper.exportApprove( orgId, searchText, status);
+    }
 }

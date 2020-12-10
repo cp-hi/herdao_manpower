@@ -628,4 +628,56 @@
              </where>
     </select>
 
+    <!-- 录用审批-导出excel -->
+    <select id="exportApprove" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO">
+        select * from (
+                SELECT  app.id,
+                        app.user_name,
+                        app.staff_id,
+                        app.mobile_no,
+                        org.org_name,
+                        org.id org_id,
+                        pst.post_name,
+                        pst.id post_id,
+                        pn.label personnel_nature,
+                        jt.label office_type,
+                        app.STATUS,
+                        CONCAT( app.creator_name, " 于 ", app.creator_time, " 创建" ) create_desc,
+                        CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc
+           FROM mp_staff_entrypost_approve app
+                LEFT JOIN mp_organization org ON org.id = app.org_id
+                LEFT JOIN mp_post pst ON pst.id = app.post_id
+                LEFT JOIN sys_dict_item pn ON pn.type = 'RYXZ'
+                AND pn.`value` = app.personnel_nature
+                LEFT JOIN sys_dict_item jt ON jt.type = 'JOB_TYPE'
+                AND jt.`value` = app.office_type
+            <where>
+                and app.del_flag = 0
+                <if test="orgId != null and orgId != '' ">
+                    and app.org_id= #{orgId}
+                </if>
+                <if test="status != null and status != '' ">
+                    and app.status= #{status}
+                </if>
+            </where>
+        )t
+        <where>
+            <if test="searchText != null and searchText != '' ">
+                and CONCAT(
+                    IFNULL(t.user_name,''),
+                    IFNULL(t.staff_id,''),
+                    IFNULL(t.mobile_no,''),
+                    IFNULL(t.org_name,''),
+                    IFNULL(t.post_name,''),
+                    IFNULL(t.personnel_nature,''),
+                    IFNULL(t.office_type,''),
+                    IFNULL(t.status,''),
+                    IFNULL(t.create_desc,''),
+                    IFNULL(t.update_desc,'')
+                ) LIKE concat('%', #{searchText} ,'%')
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

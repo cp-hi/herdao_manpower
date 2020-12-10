@@ -262,11 +262,15 @@ public class EntryJobController {
         Recruitment recruitment = recruitmentService.getById(recruitmentId);
         recruitment.setId(recruitmentId);
         recruitment.setCertificateType(certificateType);
+        recruitment.setCertificateNo(certificateNo);
         recruitmentService.updateById(recruitment);
 
         //同步人才表（mp_recruitment)到mp_user,mp_userpost,mp_staff表
         User user=new User();
         BeanUtils.copyProperties(recruitment,user);
+        user.setUserName(recruitment.getTalentName());
+
+
         userService.save(user);
 
         Userpost userpost=new Userpost();
