@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Data
-@ApiModel(value = "保存人事调动详情")
+@ApiModel(value = "发起调动审批")
 public class SaveStaffTransferInfoDTO {
     @ApiModelProperty(value = "员工id", name = "userId", example = "1234", required = true)
     @NotBlank

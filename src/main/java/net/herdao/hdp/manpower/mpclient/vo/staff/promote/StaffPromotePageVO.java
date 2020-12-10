@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Data
-@ApiModel(value = "职级分页列表")
+@ApiModel(value = "晋升分页列表")
 public class StaffPromotePageVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
