@@ -1,6 +1,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
@@ -23,7 +24,7 @@ public interface FamilystatusService extends HdpService<Familystatus> {
      * @param searchText
      * @return
      */
-    Page<FamilyStatusListDTO> findFamilyStatusPage(Page<FamilyStatusListDTO> page,FamilyStatusListDTO familyStatusListDTO, String searchText);
+	IPage findFamilyStatusPage(Page<FamilyStatusListDTO> page,FamilyStatusListDTO familyStatusListDTO, String searchText);
 
     /**
      * 员工家庭情况

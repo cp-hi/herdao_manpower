@@ -17,6 +17,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,9 @@ import net.herdao.hdp.manpower.mpclient.mapper.UserpostMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author andy
@@ -46,9 +49,15 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
-    public Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,UserpostDTO userpostDTO,  String searchText) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostNowPage(page,userpostDTO, searchText);
-        return pageResult;
+    public IPage findUserPostNowPage(Page<UserpostDTO> page,UserpostDTO userpostDTO,  String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",userpostDTO.getGroupId());
+		map.put("orgId",userpostDTO.getOrgId());
+    	
+        page = page.setRecords(this.baseMapper.findUserPostNowPage(map));
+        return page;
     }
 
     @Override

@@ -98,4 +98,9 @@ public class StafftransDTO {
     @ExcelIgnore
     @ApiModelProperty(value="员工工号")
     private String staffId;
+    /**
+     * 所在组织id
+     */
+    @ApiModelProperty(value = "所在组织id")
+    private Long orgId;
 }

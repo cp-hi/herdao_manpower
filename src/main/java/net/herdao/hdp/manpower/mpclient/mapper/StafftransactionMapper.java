@@ -26,6 +26,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 异动情况
@@ -41,7 +42,7 @@ public interface StafftransactionMapper extends BaseMapper<Stafftransaction> {
      * @param searchText 关键字搜索
      * @return
      */
-    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page,@Param("query") StafftransDTO stafftransDTO, @Param("searchText") String searchText);
+    List<StafftransDTO> findStaffTransPage(Map<String, Object> map);
 
     /**
      * 员工异动情况

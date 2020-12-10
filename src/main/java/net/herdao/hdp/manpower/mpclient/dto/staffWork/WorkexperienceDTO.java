@@ -131,4 +131,9 @@ public class WorkexperienceDTO {
     @ApiModelProperty(value="员工工号")
     @ExcelIgnore
     private String staffId;
+    /**
+     * 所在组织id
+     */
+    @ApiModelProperty(value = "所在组织id")
+    private Long orgId;
 }

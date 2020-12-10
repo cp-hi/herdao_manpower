@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -33,7 +34,7 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      * @param searchText
       * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,@Param("query") UserpostDTO userpostDTO,  @Param("searchText") String searchText);
+    List<UserpostDTO> findUserPostNowPage(Map<String, Object> map);
 
     /**
      * 现任职情况

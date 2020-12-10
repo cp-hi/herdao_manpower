@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.dto.UserInfo;
@@ -27,7 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工教育经历
@@ -70,9 +73,15 @@ public class StaffeducationServiceImpl extends ServiceImpl<StaffeducationMapper,
     }
 
     @Override
-    public Page<StaffEducationDTO> findStaffEducationPage(Page<StaffEducationDTO> page,StaffEducationDTO staffEducationDTO, String searchText) {
-        Page<StaffEducationDTO> pageResult = this.baseMapper.findStaffEducationPage(page,staffEducationDTO, searchText);
-        return pageResult;
+    public IPage findStaffEducationPage(Page<StaffEducationDTO> page,StaffEducationDTO staffEducationDTO, String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",staffEducationDTO.getGroupId());
+		map.put("orgId",staffEducationDTO.getOrgId());
+		
+        page = page.setRecords(this.baseMapper.findStaffEducationPage(map));
+        return page;
     }
 
     @Override

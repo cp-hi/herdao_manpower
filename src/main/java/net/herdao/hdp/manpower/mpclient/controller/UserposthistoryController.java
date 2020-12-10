@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -69,8 +70,7 @@ public class UserposthistoryController extends HdpBaseController {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findUserPostHistoryPage(Page page,UserpostDTO userpostDTO, String searchText) {
-        Page pageResult = userposthistoryService.findUserPostHistoryPage(page,userpostDTO, searchText);
-        return R.ok(pageResult);
+        return R.ok(userposthistoryService.findUserPostHistoryPage(page,userpostDTO, searchText));
     }
 
     /**
@@ -87,7 +87,7 @@ public class UserposthistoryController extends HdpBaseController {
     public void exportStaffJobHis(HttpServletResponse response, UserpostDTO userpostDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page pageResult = userposthistoryService.findUserPostHistoryPage(page, userpostDTO, searchText);
+        IPage pageResult = userposthistoryService.findUserPostHistoryPage(page, userpostDTO, searchText);
         ExcelUtils.export2Web(response, "历史任职情况", "历史任职情况", UserpostDTO.class, pageResult.getRecords());
     }
 

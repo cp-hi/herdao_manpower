@@ -1,6 +1,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -68,8 +69,7 @@ public class UserpostController extends HdpBaseController {
         @ApiImplicitParam(name="searchText",value="搜索关键字")
     })
     public R findUserPostNowPage(Page page,UserpostDTO userpostDTO, String searchText) {
-        Page pageResult = userpostService.findUserPostNowPage(page,userpostDTO, searchText);
-        return R.ok(pageResult);
+        return R.ok(userpostService.findUserPostNowPage(page,userpostDTO, searchText));
     }
 
     /**
@@ -87,7 +87,7 @@ public class UserpostController extends HdpBaseController {
     public void exportStaffNowJob(HttpServletResponse response,UserpostDTO userpostDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page pageResult = userpostService.findUserPostNowPage(page, userpostDTO, searchText);
+        IPage pageResult = userpostService.findUserPostNowPage(page, userpostDTO, searchText);
         ExcelUtils.export2Web(response, "现任职情况", "现任职情况表", UserpostDTO.class,pageResult.getRecords());
     }
 

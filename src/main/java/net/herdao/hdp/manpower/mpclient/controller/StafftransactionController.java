@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -68,8 +69,7 @@ public class StafftransactionController extends HdpBaseController  {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findStaffTransPage(Page page, StafftransDTO stafftransDTO,String searchText) {
-        Page pageResult = stafftransactionService.findStaffTransPage(page,stafftransDTO, searchText);
-        return R.ok(pageResult);
+        return R.ok(stafftransactionService.findStaffTransPage(page,stafftransDTO, searchText));
     }
 
     /**
@@ -87,7 +87,7 @@ public class StafftransactionController extends HdpBaseController  {
     public void exportTrans(HttpServletResponse response, StafftransDTO stafftransDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page pageResult = stafftransactionService.findStaffTransPage(page, stafftransDTO, searchText);
+        IPage pageResult = stafftransactionService.findStaffTransPage(page, stafftransDTO, searchText);
         ExcelUtils.export2Web(response, "员工异动情况表", "员工异动情况表", StafftransDTO.class, pageResult.getRecords());
     }
 

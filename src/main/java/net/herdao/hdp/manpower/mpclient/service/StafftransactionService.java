@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
@@ -22,7 +23,7 @@ public interface StafftransactionService extends HdpService<Stafftransaction> {
      * @param searchText 关键字搜索
      * @return
      */
-    Page<StafftransDTO> findStaffTransPage(Page<StafftransDTO> page,StafftransDTO stafftransDTO, String searchText);
+    IPage findStaffTransPage(Page<StafftransDTO> page,StafftransDTO stafftransDTO, String searchText);
 
     /**
      * 员工异动情况分页

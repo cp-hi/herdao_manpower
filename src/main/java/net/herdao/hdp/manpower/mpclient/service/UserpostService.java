@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Userpost;
@@ -43,7 +44,7 @@ public interface UserpostService extends HdpService<Userpost> {
      * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostNowPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, String searchText);
+    IPage findUserPostNowPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, String searchText);
 
     /**
      * 现任职情况

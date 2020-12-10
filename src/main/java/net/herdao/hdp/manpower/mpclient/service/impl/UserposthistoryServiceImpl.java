@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,9 @@ import net.herdao.hdp.manpower.mpclient.mapper.UserposthistoryMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserposthistoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工岗位历史表
@@ -39,9 +42,15 @@ import java.util.List;
 public class UserposthistoryServiceImpl extends ServiceImpl<UserposthistoryMapper, Userposthistory> implements UserposthistoryService {
 
     @Override
-    public Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, String searchText) {
-        Page<UserpostDTO> pageResult = this.baseMapper.findUserPostHistoryPage(page,userpostDTO, searchText);
-        return pageResult;
+    public IPage findUserPostHistoryPage(Page<UserpostDTO> page,UserpostDTO userpostDTO, String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",userpostDTO.getGroupId());
+		map.put("orgId",userpostDTO.getOrgId());
+
+        page = page.setRecords(this.baseMapper.findUserPostHistoryPage(map));
+        return page;
     }
 
     @Override

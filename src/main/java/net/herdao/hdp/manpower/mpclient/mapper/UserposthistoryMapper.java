@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工岗位历史表
@@ -24,7 +25,7 @@ public interface UserposthistoryMapper extends BaseMapper<Userposthistory> {
      * @param searchText
      * @return
      */
-    Page<UserpostDTO> findUserPostHistoryPage(Page<UserpostDTO> page,@Param("query") UserpostDTO userpostDTO, @Param("searchText") String searchText);
+    List<UserpostDTO> findUserPostHistoryPage(Map<String, Object> map);
 
     /**
      * 历史任职情况分页
