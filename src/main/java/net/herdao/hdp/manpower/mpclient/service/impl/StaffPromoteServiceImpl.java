@@ -65,7 +65,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
                 .eq("status", StaffChangesApproveStatusConstants.FILLING_IN);
         StaffPromoteApprove entity = mapper.selectOne(wrapper);
         if(entity == null) {
-            throw new Exception("该人事调动记录已发起审批，请勿重复操作");
+            throw new Exception("该晋升/降级审批记录已发起审批，请勿重复操作");
         }
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         mapper.updateById(entity);

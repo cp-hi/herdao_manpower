@@ -30,7 +30,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
     @Autowired
     private StaffCallOutService staffCallOutService;
     @Autowired
-    private StaffService staffService;
+    private StaffCallInAndCallOutService callInAndCallOutService;
     @Autowired
     private UserpostService userPostService;
     @Autowired
@@ -53,10 +53,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         } else {
             id = saveInfo(dto);
         }
-        StaffTransferApprove changes = mapper.selectById(id);
-        changes.setStatus(StaffChangesApproveStatusConstants.APPROVING);
-        mapper.updateById(changes);
-        return id;
+        return callInAndCallOutService.affirm(id);
     }
 
     @Override

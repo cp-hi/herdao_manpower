@@ -16,6 +16,8 @@ public interface StaffLeaveService extends HdpService<StaffLeavePostApprove> {
 
     Long affirmStart(Long id, SaveStaffLeavePostDTO dto) throws Exception;
 
+    Long affirm(Long id) throws Exception;
+
     Long updateStaffLeave(Long id, SaveStaffLeavePostDTO dto) throws Exception;
 
     StaffLeavePostInfoVO getStaffLeave(Long id);

@@ -14,7 +14,9 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRen
 public interface StaffContractRenewalService extends IService<StaffContractRenewal> {
     Page<StaffContractRenewalPageVO> pageStaffRenewContract(Page page, String searchText, Long orgId, String status);
 
-    Long affirm(Long id, SaveStaffContractRenewalDTO dto) throws Exception;
+    Long affirmStart(Long id, SaveStaffContractRenewalDTO dto) throws Exception;
+
+    Long affirm(Long id) throws Exception;
 
     Long add(SaveStaffContractRenewalDTO dto);
 

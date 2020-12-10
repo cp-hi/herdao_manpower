@@ -3,7 +3,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.entity.StaffContractRenewal;
-import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StaffRenewContractMapper extends BaseMapper<StaffContractRenewal> {
 
-    Page<StaffContractRenewalPageVO> findStaffContractRenewalPage(Page page,
+    Page<StaffContractRenewalPage> findStaffContractRenewalPage(Page page,
                                                                 @Param("searchText") String searchText,
                                                                 @Param("orgId") Long orgId,
                                                                 @Param("status") String status);

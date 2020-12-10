@@ -7,11 +7,17 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
+ * 该类接受从数据库中拿到的列表原始数据及数据类型完全一致
+ *
+ * 在 service 层做和 xxxPageVO 中某些字段的数据类型转换
+ * e.g. LocalDateTime -> long
+ *      updateName & updateTime ->  String： 由 xxx 更新于 2020-01-01
+ *
  * @Author Liu Chang
  * @Date 2020/12/8 4:37 下午
  */
 @Data
-@ApiModel(value = "职级分页列表")
+@ApiModel(value = "晋升分页列表")
 public class StaffPromotePage {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;

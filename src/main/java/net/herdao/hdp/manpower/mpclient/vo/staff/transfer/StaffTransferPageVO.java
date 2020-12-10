@@ -21,13 +21,13 @@ public class StaffTransferPageVO {
     @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
     private String  staffName;
 
-    @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
+    @ApiModelProperty(value = "员工工号", name = "staffCode", example = "123456")
     private String staffCode;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
 
-    @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
+    @ApiModelProperty(value = "调动前所在部门", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
 
     @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")

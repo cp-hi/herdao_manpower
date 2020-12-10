@@ -45,10 +45,10 @@ public class StaffCallInAndCallOutController {
         return null;
     }
 
-    @ApiOperation(value = "确认发起")
+    @ApiOperation(value = "分页列表页-确认发起")
     @PutMapping("/affirm/{id}")
-    public R<Long> affirm(@PathVariable(required = true) Long id) throws Exception {
-        return R.ok(service.affirmStart(id));
+    public R<Long> affirm(@PathVariable("id") Long id) throws Exception {
+        return R.ok(service.affirm(id));
     }
 
 }
