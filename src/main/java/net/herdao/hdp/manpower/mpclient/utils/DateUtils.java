@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * TimeUtil 日期时间工具类
+ * DateUtils 日期时间工具类
  * @author andy
  */
 public class DateUtils {

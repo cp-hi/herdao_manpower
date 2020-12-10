@@ -155,6 +155,7 @@ public class StaffEntrypostApproveController {
         //状态：1 填报中，2 审批中，3 已审批
         approve.setStatus("1");
         approve.setPostId(Long.parseLong(dto.getPostId()));
+        approve.setOrgId(dto.getOrgId());
 
         SysUser sysUser = SysUserUtils.getSysUser();
         approve.setModifierTime(LocalDateTime.now());

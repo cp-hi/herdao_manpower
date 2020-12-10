@@ -377,9 +377,9 @@ public class Recruitment extends Model<Recruitment> {
     @ApiModelProperty(value="是否有亲戚朋友在本公司")
     private Integer isRelativeCompany;
     /**
-     * 职位跟姓名
+     * 亲戚职位跟姓名
      */
-    @ApiModelProperty(value="职位跟姓名")
+    @ApiModelProperty(value="亲戚职位跟姓名")
     private String relativePostName;
     /**
      * 是否接受外派

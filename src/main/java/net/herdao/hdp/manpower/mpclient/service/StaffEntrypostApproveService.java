@@ -110,5 +110,15 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
      */
     List<EntryApproveDTO> exportApprove(String orgId, String searchText,  String status);
 
+    /**
+     * 入职登记详情-确认入职登记
+     * @param recruitmentId 人才表ID
+     * @param approveId  审批表ID
+     * @param certificateType 证书类型
+     * @param certificateNo 证书编号
+     * @return
+     */
+    StaffEntrypostApprove confirmEntry(Long recruitmentId, String approveId, String certificateType, String certificateNo);
 
-}
+
+ }

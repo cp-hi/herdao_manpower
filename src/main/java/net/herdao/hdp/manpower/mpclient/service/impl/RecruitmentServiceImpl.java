@@ -32,6 +32,7 @@ import net.herdao.hdp.common.core.constant.CacheConstants;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.constant.enums.LoginTypeEnum;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.common.message.config.SmsTemplate;
 import net.herdao.hdp.common.message.constant.SmsConstant;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
@@ -66,7 +67,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
-        Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText);
+        Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText,new EhrDataScope());
         return list;
     }
 

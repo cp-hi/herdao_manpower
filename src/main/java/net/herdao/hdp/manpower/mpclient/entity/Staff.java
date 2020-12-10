@@ -18,6 +18,7 @@
 package net.herdao.hdp.manpower.mpclient.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -96,7 +97,8 @@ private static final long serialVersionUID = 1L;
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    private LocalDate birthday;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date birthday;
     /**
      * 国籍
      */
@@ -169,7 +171,8 @@ private static final long serialVersionUID = 1L;
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
-    private LocalDate workDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDateTime workDate;
     /**
      * 参加工作工龄
      */
@@ -179,7 +182,7 @@ private static final long serialVersionUID = 1L;
      * 入职本公司日期
      */
     @ApiModelProperty(value="入职本公司日期")
-    private LocalDate entryTime;
+    private LocalDateTime entryTime;
     /**
      * 本公司工龄
      */
@@ -414,7 +417,8 @@ private static final long serialVersionUID = 1L;
      * 发证时间
      */
     @ApiModelProperty(value="发证时间")
-    private LocalDateTime certificationTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
+    private Date certificationTime;
     /**
      * 资质挂靠单位
      */
@@ -560,4 +564,23 @@ private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value="试用期")
     private Long probPeriod;
+
+    /**
+     * 租户ID
+     */
+    @ApiModelProperty(value="租户ID")
+    private Long tenantId;
+
+    /**
+     * 证件类型
+     */
+    @ApiModelProperty(value="证件类型")
+    private String certificateType;
+
+    /**
+     * 证件号码
+     */
+    @ApiModelProperty(value="证件号码")
+    private String certificateNo;
+
 }

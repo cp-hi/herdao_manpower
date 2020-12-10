@@ -18,6 +18,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,12 +42,6 @@ public class EntryJobController {
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
     private final RecruitmentService recruitmentService;
-
-    private final UserService userService;
-
-    private final UserpostService userpostService;
-
-    private final StaffService staffService;
 
     /**
      * 入职管理-待入职-列表分页
@@ -250,43 +245,10 @@ public class EntryJobController {
     })
     @ApiOperation(value = "入职登记详情-确认入职登记", notes = "入职登记详情-确认入职登记")
     @PostMapping("/confirmEntry")
-    public R<StaffEntrypostApprove> confirmEntry(Long recruitmentId,String approveId,
-                                                 String certificateType,String certificateNo) {
-        StaffEntrypostApprove approve = staffEntrypostApproveService.getById(approveId);
-        //入职登记状态 (1:未提交，2：已提交，3：已确认）
-        approve.setEntryCheckStatus("3");
-        //修改更新入职登记状态
-        staffEntrypostApproveService.updateById(approve);
-
-        //修改更新人才表
-        Recruitment recruitment = recruitmentService.getById(recruitmentId);
-        recruitment.setId(recruitmentId);
-        recruitment.setCertificateType(certificateType);
-        recruitment.setCertificateNo(certificateNo);
-        recruitmentService.updateById(recruitment);
-
-        //同步人才表（mp_recruitment)到mp_user,mp_userpost,mp_staff表
-        User user=new User();
-        BeanUtils.copyProperties(recruitment,user);
-        user.setUserName(recruitment.getTalentName());
-        String loginCode=SysUserUtils.getSysUser().getUsername();
-        String password=SysUserUtils.getSysUser().getPassword();
-        user.setLoginCode(loginCode);
-        user.setPassword(password);
-        user.setOrgId(recruitment.getOrgId());
-        //是否停用 1 是， 值：0 否
-        user.setIsStop(0L);
-
-        userService.save(user);
-
-        Userpost userpost=new Userpost();
-        BeanUtils.copyProperties(recruitment,userpost);
-        userpostService.save(userpost);
-
-        Staff staff=new Staff();
-        BeanUtils.copyProperties(recruitment,staff);
-        staffService.save(staff);
-
+    public R<StaffEntrypostApprove> confirmEntry(Long recruitmentId,String approveId,String certificateType,String certificateNo) {
+        StaffEntrypostApprove approve = staffEntrypostApproveService.confirmEntry(recruitmentId, approveId, certificateType, certificateNo);
         return R.ok(approve);
     }
+
+
 }

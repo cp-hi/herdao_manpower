@@ -363,7 +363,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		vo.setStaffCode(staff.getStaffCode());
 		vo.setStaffScope(staffScope);
 		vo.setJobType(jobType);
-		vo.setEntryTime(staff.getEntryTime().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+		//vo.setEntryTime(staff.getEntryTime().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
 
 		// 查询员工任职信息
