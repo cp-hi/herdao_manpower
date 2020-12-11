@@ -23,6 +23,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -363,8 +364,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		vo.setStaffCode(staff.getStaffCode());
 		vo.setStaffScope(staffScope);
 		vo.setJobType(jobType);
-		//vo.setEntryTime(staff.getEntryTime().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
-
+		vo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
 
 		// 查询员工任职信息
 		if (staff != null && staff.getUserId() != null) {
