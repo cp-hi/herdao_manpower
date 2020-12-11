@@ -65,10 +65,10 @@ public class EntryDTO implements Serializable {
     private String postName;
 
     /**
-     * 岗位
+     * 职级
      */
-    @ApiModelProperty(value="岗位")
-    @ExcelProperty(value = "岗位")
+    @ApiModelProperty(value="职级")
+    @ExcelProperty(value = "职级")
     private String jobLevelName;
 
     /**
@@ -127,5 +127,18 @@ public class EntryDTO implements Serializable {
     @ExcelProperty(value = "就职次数")
     private String jobCount;
 
+    /**
+     * 工号
+     */
+    @ApiModelProperty(value="工号")
+    @ExcelProperty(value = "工号")
+    private String staffCode;
+
+    /**
+     * 证件号码
+     */
+    @ApiModelProperty(value="证件号码")
+    @ExcelProperty(value = "证件号码")
+    private String certificateNo;
 
 }
