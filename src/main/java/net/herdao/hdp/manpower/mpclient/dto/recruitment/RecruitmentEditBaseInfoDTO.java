@@ -174,4 +174,17 @@ public class RecruitmentEditBaseInfoDTO {
      */
     @ApiModelProperty(value="性格特点")
     private String characteristics;
+
+    /**
+     * 是否接受外派
+     */
+    @ApiModelProperty(value="是否接受外派")
+    private Boolean isAcceptAssignment;
+
+    /**
+     * 有亲戚朋友在本公司
+     */
+    @ApiModelProperty(value="有亲戚朋友在本公司")
+    private Boolean isRelativeCompany;
+
 }
