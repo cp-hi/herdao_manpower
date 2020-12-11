@@ -66,16 +66,8 @@ public class StaffPositiveApprovalPage   {
      */
     @ApiModelProperty(value="状态")
     private String status;
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remark;
-    /**
-     *
-     */
-    @ApiModelProperty(value="")
-    private String posExamScore;
+
+
 
 
     /**
@@ -129,4 +121,11 @@ public class StaffPositiveApprovalPage   {
      */
     @ApiModelProperty(value="修改人")
     private String modifierName;
+
+
+    /**
+     * 转正类型
+     */
+    @ApiModelProperty(value = "转正类型")
+    private String positiveType;
 }

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -161,6 +162,16 @@ public class StaffEntrypostApproveController {
         approve.setModifierTime(LocalDateTime.now());
         approve.setModifierCode(sysUser.getUsername());
         approve.setModifierName(sysUser.getAliasName());
+
+        if (ObjectUtil.isNotNull(dto.getIsAppointment())){
+            //true 1 , false 0
+            if (dto.getIsAppointment()){
+                approve.setIsAppointment(1);
+            }
+            if (!dto.getIsAppointment()){
+                approve.setIsAppointment(0);
+            }
+        }
 
         staffEntrypostApproveService.updateById(approve);
         BeanUtils.copyProperties(approve,dto);

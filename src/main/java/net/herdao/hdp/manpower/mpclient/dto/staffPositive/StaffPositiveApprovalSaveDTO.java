@@ -26,7 +26,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * 转正审批表
@@ -96,12 +95,12 @@ private static final long serialVersionUID = 1L;
      * 入职日期
      */
     @ApiModelProperty(value="入职日期")
-    private LocalDateTime entryTime;
+    private Long entryTime;
     /**
      * 转正时间
      */
     @ApiModelProperty(value="转正时间")
-    private LocalDateTime positiveTime;
+    private Long positiveTime;
     /**
      * 转正前月度总收入
      */
@@ -127,6 +126,13 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="")
     private String posExamScore;
+
+    @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
+    private String staffName;
+
+
+    @ApiModelProperty(value = "所属组织")
+    private String nowOrgName;
     /**
      * 年度岗位编制
      */
@@ -176,7 +182,7 @@ private static final long serialVersionUID = 1L;
      * 面谈时间
      */
     @ApiModelProperty(value="面谈时间")
-    private LocalDateTime interviewsTime;
+    private Long interviewsTime;
     /**
      * 面谈地点
      */
@@ -261,7 +267,7 @@ private static final long serialVersionUID = 1L;
      * 新建时间
      */
     @ApiModelProperty(value="新建时间")
-    private LocalDateTime creatorTime;
+    private Long creatorTime;
     /**
      * 修改人工号
      */
@@ -276,7 +282,7 @@ private static final long serialVersionUID = 1L;
      * 修改人时间
      */
     @ApiModelProperty(value="修改人时间")
-    private LocalDateTime modifierTime;
+    private Long modifierTime;
     /**
      * 预留字段1
      */
@@ -333,5 +339,11 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="试用期/月")
     private String probation;
 
+
+    /**
+     * 转正类型
+     */
+    @ApiModelProperty(value = "转正类型")
+    private String positiveType;
 
 }

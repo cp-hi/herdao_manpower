@@ -20,8 +20,8 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveListDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 
 /**
@@ -34,11 +34,11 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
 
     /**
      * 分页查询
+     *
      * @return
      */
-    Page<StaffPositiveApprovalPageVO> getPositiveApprovalPageInfo(Page<StaffPositiveApproval> page,    Long orgId,
-                                                                  String status,String searchText);
-
+    Page<StaffPositiveApprovalPageVO> getPositiveApprovalPageInfo(Page<StaffPositiveApproval> page, Long orgId,
+                                                                  String status, String searchText);
 
 
     /**
@@ -49,8 +49,29 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
 
     /**
      * 新增转正审批表
+     *
      * @param staffPositiveApproval
      * @return
      */
     Long insert(StaffPositiveApprovalSaveDTO staffPositiveApproval);
+
+    /**
+     * 获取转正详情
+     */
+    StaffPositiveApprovalInfoVO getStaffPositive(Long id);
+
+    /**
+     * 新增、编辑页-确认发起
+     */
+    Long affirm(Long id) throws Exception;
+
+    /**
+     * 编辑
+     */
+    Long updateStaffLeave(Long id, StaffPositiveApprovalSaveDTO dto) throws Exception;
+
+    /**
+     * 新增、编辑页-确认发起
+     */
+    Long affirmStart(Long id, StaffPositiveApprovalSaveDTO dto) throws Exception;
 }

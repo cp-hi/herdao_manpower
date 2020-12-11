@@ -8,11 +8,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 入职管理-办理入职
+ * 入职管理-办理入职DTO
  * @author Andy
  */
 @Data
-@ApiModel(value = "入职管理-办理入职 ")
+@ApiModel(value = "入职管理-办理入职DTO")
 public class EntryInfoDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
