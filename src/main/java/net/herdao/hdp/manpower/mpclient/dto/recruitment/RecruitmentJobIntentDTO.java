@@ -18,7 +18,6 @@ import java.util.Date;
 @ApiModel(value = "编辑人才简历-求职意向-DTO")
 public class RecruitmentJobIntentDTO  {
 
-
     /**
      * id
      */
@@ -59,7 +58,8 @@ public class RecruitmentJobIntentDTO  {
      * 可到职日期
      */
     @ApiModelProperty(value="可到职日期")
-    private String inductionTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date inductionTime;
 
     /**
      * 目标岗位/职业规划
@@ -67,20 +67,26 @@ public class RecruitmentJobIntentDTO  {
     @ApiModelProperty(value="目标岗位/职业规划")
     private String careerPlan;
 
+    /**
+     * 专业经验
+     */
     @ApiModelProperty(value="专业经验")
-    private String professionalExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date professionalExperience;
 
     /**
      * 管理经验
      */
     @ApiModelProperty(value="管理经验")
-    private String managementExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date managementExperience;
 
     /**
      * 房地产行业经验
      */
     @ApiModelProperty(value="房地产行业经验")
-    private String realestateExperience;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date realEstateExperience;
 
     /**
      * 文字能力
