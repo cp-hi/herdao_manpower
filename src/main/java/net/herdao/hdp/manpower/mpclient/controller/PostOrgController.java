@@ -26,15 +26,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.PostOrg;
 import net.herdao.hdp.manpower.mpclient.service.PostOrgService;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostShortVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Wrapper;
 import java.util.List;
 
 

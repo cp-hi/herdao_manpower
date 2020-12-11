@@ -40,7 +40,7 @@
                         <result property="isStop" column="IS_STOP"/>
                         <result property="creatorCode" column="CREATOR_CODE"/>
                         <result property="creatorName" column="CREATOR_NAME"/>
-                        <result property="createrTime" column="CREATOR_TIME"/>
+                        <result property="creatorTime" column="CREATOR_TIME"/>
                         <result property="modifierCode" column="MODIFIER_CODE"/>
                         <result property="modifierName" column="MODIFIER_NAME"/>
                         <result property="modifierTime" column="MODIFIEr_TIME"/>
@@ -55,7 +55,7 @@
                         <result property="stopDate" column="STOP_DATE"/>
                         <result property="startDate" column="START_DATE"/>
             </resultMap>
-    <resultMap id="dd" type="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
+    <resultMap id="PageResultMap" type="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
         <id property="id" column="ID"/>
         <result property="postCode" column="POST_CODE"/>
         <result property="postName" column="POST_NAME"/>
@@ -72,7 +72,7 @@
         <result property="isStop" column="IS_STOP"/>
         <result property="creatorCode" column="CREATOR_CODE"/>
         <result property="creatorName" column="CREATOR_NAME"/>
-        <result property="createrTime" column="CREATOR_TIME"/>
+        <result property="creatorTime" column="CREATOR_TIME"/>
         <result property="modifierCode" column="MODIFIER_CODE"/>
         <result property="modifierName" column="MODIFIER_NAME"/>
         <result property="modifiedTime" column="MODIFIED_TIME"/>
@@ -93,8 +93,9 @@
         <result property="sectionName" column="section_name"/>
         <result property="pipelineName" column="pipeline_name"/>
         <result property="postSeqName" column="post_seq_name"/>
+        <result property="lastUpdatedInfo" column="last_updated_info"/>
     </resultMap>
-      <select id="findPostOrgPage" resultType="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
+      <select id="findPostOrgPage" resultMap="PageResultMap">
         SELECT
         po.*,
         p.post_name main_post_name,
@@ -103,7 +104,8 @@
         jl.JOB_LEVEL_NAME,
         s.SECTION_NAME,
         pl.PIPELINE_NAME,
-        ps.POST_SEQ_NAME
+        ps.POST_SEQ_NAME,
+        CONCAT(po.MODIFIER_NAME, " 于 " ,po.MODIFIER_TIME," 更新") last_updated_info
         from
         mp_post_org po
         INNER JOIN mp_post p on po.POST_ID=p.id
@@ -137,7 +139,7 @@
             </if>
         </where>
       </select>
-      <select id="findPostOrgById" resultType="net.herdao.hdp.manpower.mpclient.vo.post.PostOrgListVO">
+      <select id="findPostOrgById" resultMap="PageResultMap">
           SELECT
             po.*,
             p.post_name main_post_name,

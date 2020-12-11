@@ -209,4 +209,7 @@ public class PostOrgListVO {
     @ApiModelProperty(value="在职员工数")
     private Integer  staffCount;
 
+    @ApiModelProperty(value="最近更新情况")
+    private String lastUpdatedInfo;
+
 }
