@@ -204,7 +204,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
 
     @Override
     public Boolean isSync() {
-        return Boolean.TRUE;
+        return Boolean.FALSE;
     }
 
     @Override
