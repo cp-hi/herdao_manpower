@@ -21,6 +21,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 转正审批表
  *
@@ -29,8 +31,8 @@ import lombok.Data;
  */
 @Data
 //@TableName("mp_staff_positive_approval")
-@ApiModel(value = "转正审批分页列表")
-public class StaffPositiveApprovalPageVO {
+@ApiModel(value = "转正审批详情")
+public class StaffPositiveApprovalInfoVO {
     private static final long serialVersionUID = 1L;
 
 
@@ -49,19 +51,6 @@ public class StaffPositiveApprovalPageVO {
      */
     @ApiModelProperty(value = "转正时间")
     private Long positiveTime;
-
-    /**
-     * 状态
-     */
-    @ApiModelProperty(value = "状态")
-    private String status;
-
-    /*    *//**
-     *
-     *//*
-    @ApiModelProperty(value = "")
-    private String posExamScore;*/
-
 
     /**
      * 新建时间
@@ -88,15 +77,11 @@ public class StaffPositiveApprovalPageVO {
     @ApiModelProperty(value = "岗位")
     private String nowPostName;
 
-    @ApiModelProperty(value = "职级")
-    private String nowJobLevelName;
-
-    @ApiModelProperty(value = "任职类型")
-    private String jobType;
 
 
-    @ApiModelProperty(value = "司龄")
-    private Double companySeniority;
+
+
+
 
 
     /**
@@ -105,8 +90,7 @@ public class StaffPositiveApprovalPageVO {
     @ApiModelProperty(value = "转正类型")
     private String positiveType;
 
-    @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
-    private String updateInfo;
 
-
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private List<String> appendixIds;
 }
