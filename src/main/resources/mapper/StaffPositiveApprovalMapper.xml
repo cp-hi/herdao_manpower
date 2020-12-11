@@ -95,15 +95,19 @@
          s.entry_time,
          s.company_seniority,
          mspa.positive_time,
-         mspa.creator_time,
+         mspa.creator_time as creator_time,
          mspa.modifier_name,
          mspa.modifier_time,
-         norg.ORG_NAME now_org_name,
+         mspa.positive_type,
+         mspa.status,
+         norg.ORG_NAME as now_org_name,
+         njl.JOB_LEVEL_NAME,
          np.POST_NAME now_post_name
-    FROM mp_staff_positive_approval AS  mspa
-    LEFT JOIN mp_staff s ON mspa.user_id = s.user_id
-    LEFT JOIN mp_organization norg ON mspa.org_id = norg.id
-    LEFT JOIN mp_post np ON mspa.before_post_id = np.id
+      FROM mp_staff_positive_approval AS  mspa
+      LEFT JOIN mp_staff s ON mspa.user_id = s.user_id
+      LEFT JOIN mp_organization norg ON mspa.org_id = norg.id
+      LEFT JOIN mp_post np ON mspa.before_post_id = np.id
+      LEFT JOIN mp_job_level njl ON mspa.now_job_level_id = njl.id
           <where>
                 <if test="searchText != '' and searchText != null">
                       and
@@ -113,13 +117,18 @@
                       IFNULL(mspa.positive_time,''),
                       IFNULL(mspa.creator_time,''),
                       IFNULL(norg.ORG_NAME,''),
+                      IFNULL(mspa.positive_type,''),
+                      IFNULL(njl.JOB_LEVEL_NAME, ''),
                       IFNULL(np.POST_NAME,'')
                       ) LIKE concat(#{searchText},'%')
                 </if>
                 <if test="orgId != '' and orgId != null">
                       and norg.`id` = #{orgId}
                 </if>
-                and mspa.`del_flag` = '0' and mspa.`status` = #{status}
+                <if test="status != '' and status != null">
+                  and mspa.`status` = #{status}
+                </if>
+                and mspa.`del_flag` = '0'
           </where>
 
     </select>
