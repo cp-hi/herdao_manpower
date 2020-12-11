@@ -299,7 +299,7 @@ public class RecruitmentController {
 
     /**
      * 候选人H5手机验证码登录
-     * @param mobile
+     * @param mobile 手机号码
      * @param code
      * @return
      */
@@ -426,7 +426,6 @@ public class RecruitmentController {
     @Inner(value = false)
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetails(Long id) {
-
         RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
 
         //获奖情况

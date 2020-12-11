@@ -67,7 +67,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
-        Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText,new EhrDataScope());
+        Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText);
         return list;
     }
 

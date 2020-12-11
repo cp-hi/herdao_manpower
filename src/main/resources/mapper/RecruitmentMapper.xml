@@ -124,59 +124,61 @@
 
     <!-- 人才表分页-->
     <select id="findRecruitmentPage" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO">
-      select * from (
-        SELECT  t.id,
-                t.talent_name,
-                t.mobile,
-                t.email,
-                t.sex,
-                t.age,
-                t.work_age ,
-                t.highest_education,
-                t.final_job_company,
-                t.final_post_name,
-                t.talent_label,
-                GROUP_CONCAT(t.rc_label) rc_label,
-                CONCAT("已邀请",t.invite_count,"次") invite_situation,
-                t.org_full_name,
-                t.update_desc
-            from  (
-                SELECT  rec.id,
-                        rec.talent_name,
-                        rec.mobile,
-                        rec.email,
-                        rec.sex,
-                        TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
-                        TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
-                        rec.highest_education,
-                        rec.final_job_company,
-                        rec.final_post_name,
-                        rec.talent_type talent_label,
-                        rl.`name` rc_label,
-                        invr.invite_count,
-                        rec.recruitment_status,
-                        org.ORG_FULLNAME org_full_name,
-                        CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
-                FROM mp_recruitment rec
-                left join mp_recruitment_label rl on rl.recruitment_id= rec.id
-                left join mp_organization org on org.id= rec.org_id
-                left join
-                 (
-                     SELECT  inv.recruitment_id,
-                             count( inv.recruitment_id ) invite_count
-                             FROM  mp_recruitment_invite inv
-                     where inv.del_flag=0
-                        GROUP BY recruitment_id
-                  ) invr on  rec.id = invr.recruitment_id
-                  <where>
-                            and rec.del_flag = 0
-                        <if test="orgId != null  ">
-                            and rec.org_id= #{orgId}
-                        </if>
-                  </where>
-            ) t
-            GROUP BY  t.id, t.talent_name
-       )t
+              select * from (
+                    SELECT  t.id,
+                            t.talent_name,
+                            t.mobile,
+                            t.org_id,
+                            t.email,
+                            t.sex,
+                            t.age,
+                            t.work_age ,
+                            t.highest_education,
+                            t.final_job_company,
+                            t.final_post_name,
+                            t.talent_label,
+                            GROUP_CONCAT(t.rc_label) rc_label,
+                            CONCAT("已邀请",t.invite_count,"次") invite_situation,
+                            t.org_full_name,
+                            t.update_desc
+                        from  (
+                            SELECT  rec.id,
+                                    rec.org_id,
+                                    rec.talent_name,
+                                    rec.mobile,
+                                    rec.email,
+                                    rec.sex,
+                                    TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
+                                    TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
+                                    rec.highest_education,
+                                    rec.final_job_company,
+                                    rec.final_post_name,
+                                    rec.talent_type talent_label,
+                                    rl.`name` rc_label,
+                                    invr.invite_count,
+                                    rec.recruitment_status,
+                                    org.ORG_FULLNAME org_full_name,
+                                    CONCAT( rec.modifier_name, " 于 ", rec.modifier_time, " 更新" ) update_desc
+                            FROM mp_recruitment rec
+                            left join mp_recruitment_label rl on rl.recruitment_id= rec.id
+                            left join mp_organization org on org.id= rec.org_id
+                            left join
+                             (
+                                 SELECT  inv.recruitment_id,
+                                         count( inv.recruitment_id ) invite_count
+                                         FROM  mp_recruitment_invite inv
+                                 where inv.del_flag=0
+                                    GROUP BY recruitment_id
+                              ) invr on  rec.id = invr.recruitment_id
+                              <where>
+                                        and rec.del_flag = 0
+                                    <if test="orgId != null  ">
+                                        and rec.org_id= #{orgId}
+                                    </if>
+                              </where>
+                        ) t
+                        GROUP BY  t.id, t.talent_name
+               )t
           <where>
             <if test="searchText != null and searchText != '' ">
                 and CONCAT(

@@ -4,7 +4,6 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,7 +24,7 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param searchText 关键字
      * @return Page<RecruitmentDTO>
      */
-    Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText, EhrDataScope ehrDataScope);
+    Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
 
     /**
      * 人才简历-顶部
