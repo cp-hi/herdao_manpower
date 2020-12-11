@@ -63,6 +63,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才管理-快速编辑", notes = "人才管理-快速编辑")
     @GetMapping("/quickEdit")
+    @Inner(value = false)
     @ApiImplicitParams({
          @ApiImplicitParam(name = "id", value = "主键id")
     })
@@ -82,6 +83,7 @@ public class RecruitmentController {
      * @return R
      */
     @ApiOperation(value = "快速编辑-修改更新", notes = "快速编辑-修改更新")
+    @Inner(value = false)
     @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
         R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
@@ -95,6 +97,7 @@ public class RecruitmentController {
      * @return R
      */
     @ApiOperation(value = "人才管理-添加候选人-新增保存", notes = "人才管理-添加候选人-新增保存")
+    @Inner(value = false)
     @PostMapping("/saveRecruitment")
     public R<RecruitmentAddFormDTO> saveRecruitment(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
         R<RecruitmentAddFormDTO> result = recruitmentService.saveRecruitment(recruitmentAddFormDTO);
@@ -111,6 +114,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才库列表;批量邀请更新简历信息列表", notes = "人才库列表;批量邀请更新简历信息列表")
     @GetMapping("/findRecruitmentPage")
+    @Inner(value = false)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "分页对象", required = true),
             @ApiImplicitParam(name = "orgId", value = "组织ID"),
@@ -129,6 +133,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = " 人才管理-删除候选人", notes = " 人才管理-删除候选人")
     @DeleteMapping("/{id}")
+    @Inner(value = false)
     @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     public R removeById(@PathVariable Long id) {
         return R.ok(recruitmentService.removeById(id));
@@ -142,6 +147,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才简历-顶部", notes = "人才简历-顶部")
     @GetMapping("/fetchResumeTop")
+    @Inner(value = false)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id")
     })
@@ -155,6 +161,7 @@ public class RecruitmentController {
      * @param id
      * @return R
      */
+    @Inner(value = false)
     @ApiOperation(value = "简历详情-求职意向-详情", notes = "简历详情-求职意向-详情向")
     @GetMapping("/fetchResumeJobIntent")
     @ApiImplicitParams({
@@ -173,6 +180,7 @@ public class RecruitmentController {
      * @param dto 人才简历-求职意向
      * @return R
      */
+    @Inner(value = false)
     @ApiOperation(value = "简历详情-求职意向-修改更新", notes = "简历详情-求职意向-修改更新")
     @PostMapping("/updateRecruitmentJobIntent")
     public R<RecruitmentJobIntentDTO> updateRecruitmentJobIntent(@RequestBody RecruitmentJobIntentDTO dto) {
@@ -190,6 +198,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "获取人才管理操作日志")
     @GetMapping("/getOperateLogPage")
+    @Inner(value = false)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "分页对象"),
             @ApiImplicitParam(name = "operationLog", value = "操作记录"),
@@ -207,6 +216,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才管理-导出Excel", notes = "人才管理-导出Excel")
     @GetMapping("/exportRecruitment")
+    @Inner(value = false)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgId", value = "组织ID"),
             @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
@@ -229,6 +239,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才下拉框-前端调用", notes = "人才下拉框-前端调用")
     @GetMapping("/findRecruitmentList")
+    @Inner(value = false)
     @ApiImplicitParam(name = "searchText", value = "关键字")
     public R<List<Recruitment>> findRecruitmentList(String searchText) {
         Recruitment recruitment = new Recruitment();
@@ -250,6 +261,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才简历-录用情况-列表分页", notes = "人才简历-录用情况-列表分页")
     @GetMapping("/fetchEmploy")
+    @Inner(value = false)
     @ApiImplicitParam(name = "recruitmentId", value = "人才ID")
     public R<RecruitmentEmployeeDTO> fetchEmploy(String recruitmentId) {
         RecruitmentEmployeeDTO entity = recruitmentService.fetchEmploy(recruitmentId);
@@ -264,6 +276,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才管理-人才简历", notes = "人才管理-人才简历")
     @GetMapping("/fetchResumeDetails")
+    @Inner(value = false)
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentDetailsDTO> fetchResumeDetails(Long id) {
         RecruitmentDetailsDTO result = new RecruitmentDetailsDTO();
@@ -304,6 +317,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "简历详情-基础信息-个人基本信息", notes = "简历详情-基础信息-个人基本信息")
     @GetMapping("/fetchResumeEditDetails")
+    @Inner(value = false)
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentEditDetailsDTO> fetchResumeEditDetails(Long id) {
         RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
@@ -375,6 +389,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "简历详情-个人基本情况-修改更新", notes = "简历详情-个人基本情况-修改更新")
     @PostMapping("/updateBaseInfo")
+    @Inner(value = false)
     public R<RecruitmentEditBaseInfoDTO> updateBaseInfo(@RequestBody RecruitmentEditBaseInfoDTO baseInfo) {
         RecruitmentEditBaseInfoDTO result = recruitmentService.updateBaseInfo(baseInfo);
         return R.ok(result,"修改更新成功");
@@ -387,6 +402,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "简历详情-其他个人信息-修改更新", notes = "简历详情-其他个人信息-修改更新")
     @PostMapping("/updateOtherInfo")
+    @Inner(value = false)
     public R<RecruitmentEditOtherInfoDTO> updateOtherInfo(@RequestBody RecruitmentEditOtherInfoDTO otherInfo) {
         RecruitmentEditOtherInfoDTO result = recruitmentService.updateOtherInfo(otherInfo);
         return R.ok(result,"修改更新成功");
@@ -407,6 +423,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "简历详情-工作情况", notes = "简历详情-工作情况")
     @GetMapping("/fetchResumeWorkDetails")
+    @Inner(value = false)
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetails(Long id) {
 
