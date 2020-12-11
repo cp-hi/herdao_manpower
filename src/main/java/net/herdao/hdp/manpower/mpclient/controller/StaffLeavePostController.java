@@ -43,46 +43,45 @@ public class StaffLeavePostController {
                                               Page page,
                                               Long orgId,
                                               String status) {
-        return R.ok(service.pageStaffLeavePost(page, searchText, orgId, status));
+        return R.ok(service.pageStaffLeavePost(page, searchText, orgId, status), "success");
     }
 
     @ApiOperation(value = "新增、编辑页-确认发起")
     @PostMapping("/affirm/start")
     public R affirmStart(Long id,
                     @RequestBody @NotNull SaveStaffLeavePostDTO dto) throws Exception {
-        return R.ok(service.affirmStart(id, dto));
+        return R.ok(service.affirmStart(id, dto), "success");
     }
 
     @ApiOperation(value = "新增、编辑页-确认发起")
     @PutMapping("/affirm/{id}")
     public R affirm(@PathVariable("id") Long id) throws Exception {
-        return R.ok(service.affirm(id));
+        return R.ok(service.affirm(id), "success");
     }
-
 
     @ApiModelProperty(value = "新增离职审批")
     @PostMapping
     public R<Long> insert(@RequestBody @NotNull SaveStaffLeavePostDTO dto) {
 
-        return R.ok(service.insert(dto));
+        return R.ok(service.insert(dto), "success");
     }
 
     @ApiOperation(value = "获取离职详情")
     @GetMapping("/{id}")
     public R<StaffLeavePostInfoVO> getDetail(@PathVariable("id") Long id) {
-        return R.ok(service.getStaffLeave(id));
+        return R.ok(service.getStaffLeave(id), "success");
     }
 
     @ApiOperation(value = "编辑")
     @PutMapping("/{id}")
     private R<Long> update(@PathVariable("id") @NotNull Long id,
                            @RequestBody @NotNull SaveStaffLeavePostDTO dto) throws Exception {
-        return R.ok(service.updateStaffLeave(id, dto));
+        return R.ok(service.updateStaffLeave(id, dto), "success");
     }
 
     @ApiModelProperty(value = "取消离职")
     @DeleteMapping("/{id}")
     private R delete(@PathVariable("id") Long id) {
-        return R.ok(service.removeById(id));
+        return R.ok(service.removeById(id), "success");
     }
 }

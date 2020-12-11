@@ -34,7 +34,7 @@ public class StaffPromoteController {
                                                         Page page,
                                                         Long orgId,
                                                         String status) {
-        return R.ok(service.pageStaffPromote(page, searchText, orgId, status));
+        return R.ok(service.pageStaffPromote(page, searchText, orgId, status), "success");
     }
 
     @ApiOperation(value = "分页列表-流程详情")
@@ -48,38 +48,38 @@ public class StaffPromoteController {
     @PostMapping("/affirm/start")
     public R affirmStaffPromote(@RequestParam("id") Long id,
                                     @RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
-        return R.ok(service.affirmStart(id, dto));
+        return R.ok(service.affirmStart(id, dto), "success");
     }
 
     @ApiOperation(value = "分页列表-确认发起")
     @PutMapping("/affirm/{id}")
     public R affirmPage(@PathVariable Long id) throws Exception{
-        return R.ok(service.affirm(id));
+        return R.ok(service.affirm(id), "success");
     }
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
     public R deleteStaffPromote(@PathVariable("id") Long id) {
-        return R.ok(service.removeById(id));
+        return R.ok(service.removeById(id), "success");
     }
 
     @ApiOperation(value = "员工职级变更记录详情")
     @GetMapping("/{id}" )
     public R<StaffPromoteInfoVO> getStaffPromote(@PathVariable("id") Long id) {
-        return R.ok(service.getDetail(id));
+        return R.ok(service.getDetail(id), "success");
     }
 
     @ApiOperation(value = "新增员工职级变更记录")
     @PostMapping
     public R<Long> addStaffPromote(@RequestBody @NotNull SavaStaffPromoteDTO dto) throws Exception {
-        return R.ok(service.saveInfo(dto));
+        return R.ok(service.saveInfo(dto), "success");
     }
 
     @ApiOperation(value = "更新员工职级变更记录")
     @PutMapping("/{id}")
     public R<Long> updateStaffPromote(@RequestBody @NotNull SavaStaffPromoteDTO dto,
                                           @PathVariable("id") @NotNull Long id) throws Exception {
-        return R.ok(service.updateInfo(id, dto));
+        return R.ok(service.updateInfo(id, dto), "success");
     }
 
     @ApiOperation(value = "获取执行调动信息")

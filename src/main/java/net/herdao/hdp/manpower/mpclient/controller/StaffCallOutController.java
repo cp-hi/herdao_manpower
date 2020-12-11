@@ -28,7 +28,7 @@ public class StaffCallOutController {
     @ApiOperation(value = "员工调出记录详情")
     @GetMapping("/{id}")
     public R<StaffCallOutInfoVO> getStaffCallOutInfo(@PathVariable("id") Long id) {
-        return R.ok(service.getDetail(id));
+        return R.ok(service.getDetail(id), "success");
     }
 
     /**
@@ -39,20 +39,20 @@ public class StaffCallOutController {
     @ApiOperation(value = "新增员工调出记录")
     @PostMapping
     public R<Long> addStaffCallIn(@RequestBody @NotNull SaveStaffCallOutDTO dto) throws Exception {
-        return R.ok(service.saveInfo(dto));
+        return R.ok(service.saveInfo(dto), "success");
     }
 
     @ApiOperation(value = "更新员工调入记录")
     @PutMapping("/{id}")
     public R<Long> updateStaffChangeLevel(@PathVariable @NotNull Long id,
                                           @RequestBody @NotNull SaveStaffCallOutDTO dto) throws Exception {
-        return R.ok(service.updateInfo(id, dto));
+        return R.ok(service.updateInfo(id, dto), "success");
     }
 
     @ApiOperation(value = "新建、编辑页-确认发起")
     @PostMapping("/affirm/start")
     public R<Long> affirmStart(Long id,
                           @RequestBody @NotNull SaveStaffCallOutDTO dto) throws Exception {
-        return R.ok(service.affirmStart(id, dto));
+        return R.ok(service.affirmStart(id, dto), "success");
     }
 }

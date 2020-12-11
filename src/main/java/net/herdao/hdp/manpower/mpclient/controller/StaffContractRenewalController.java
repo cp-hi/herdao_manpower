@@ -31,45 +31,45 @@ public class StaffContractRenewalController {
                                                                       Page page,
                                                                       Long orgId,
                                                                       String status) {
-        return R.ok(service.pageStaffRenewContract(page, searchText, orgId, status));
+        return R.ok(service.pageStaffRenewContract(page, searchText, orgId, status), "success");
     }
 
     @ApiOperation(value = "新增、修改页-确认发起")
     @PostMapping("/affirm/start")
     public R affirmStart(Long id,
                     @RequestBody @NotNull SaveStaffContractRenewalDTO dto) throws Exception {
-        return R.ok(service.affirmStart(id, dto));
+        return R.ok(service.affirmStart(id, dto), "success");
     }
 
     @ApiOperation(value = "分页列表-确认发起")
     @PutMapping("/affirm/{id}")
     public R affirm(@PathVariable("id") Long id) throws Exception {
-        return R.ok(service.affirm(id));
+        return R.ok(service.affirm(id), "success");
     }
 
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
     public R deleteStaffRenewContract(@PathVariable("id") Long id) {
-        return R.ok(service.removeById(id));
+        return R.ok(service.removeById(id), "success");
     }
 
     @ApiOperation(value = "新增合同续签-保存")
     @PostMapping
     public R<Long> addRenewContract(@RequestBody SaveStaffContractRenewalDTO dto) {
-        return R.ok(service.add(dto));
+        return R.ok(service.add(dto), "success");
     }
 
     @ApiOperation(value = "更新合同续签-保存")
     @PutMapping("/{id}")
     public R<Long> updateRenewContract(@PathVariable("id") Long id,
                                        @RequestBody @NotNull SaveStaffContractRenewalDTO dto) throws Exception {
-        return R.ok(service.updateInfo(id, dto));
+        return R.ok(service.updateInfo(id, dto), "success");
     }
 
     @ApiOperation(value = "更新合同续签-保存")
     @GetMapping("/{id}")
     public R<StaffContractRenewalInfoVO> getDetail(@PathVariable("id") Long id) {
-        return R.ok(service.getDetail(id));
+        return R.ok(service.getDetail(id), "success");
     }
 }
