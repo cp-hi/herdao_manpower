@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffRp.StaffRpDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffRewardsPulishments;
@@ -37,7 +38,7 @@ public interface StaffRewardsPulishmentsService extends HdpService<StaffRewardsP
      * @param searchText
      * @return
      */
-    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page,StaffRpDTO staffRpDTO, String searchText);
+    IPage findStaffRpPage(Page<StaffRpDTO> page,StaffRpDTO staffRpDTO, String searchText);
 
     /**
      * 员工奖惩

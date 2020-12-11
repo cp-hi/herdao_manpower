@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工培训
@@ -42,9 +45,16 @@ public class StafftrainServiceImpl extends ServiceImpl<StafftrainMapper, Stafftr
     private final SysDictItemServiceImpl itemService;
 
     @Override
-    public Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page,StafftrainDTO stafftrainDTO, String searchText) {
-        Page<StafftrainDTO> list = this.baseMapper.findStaffTrainPage(page,stafftrainDTO, searchText);
-        return list;
+    public IPage findStaffTrainPage(Page<StafftrainDTO> page,StafftrainDTO stafftrainDTO, String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",stafftrainDTO.getGroupId());
+		map.put("orgId",stafftrainDTO.getOrgId());
+    	
+        page = page.setRecords(this.baseMapper.findStaffTrainPage(map));
+    	
+        return page;
     }
 
     @Override

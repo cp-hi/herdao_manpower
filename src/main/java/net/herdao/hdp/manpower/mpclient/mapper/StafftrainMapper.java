@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工培训
@@ -26,7 +27,7 @@ public interface StafftrainMapper extends BaseMapper<Stafftrain> {
      * @param searchText 关键字
      * @return
      */
-    Page<StafftrainDTO> findStaffTrainPage(Page<StafftrainDTO> page,@Param("query") StafftrainDTO stafftrainDTO, @Param("searchText") String searchText);
+    List<StafftrainDTO> findStaffTrainPage(Map<String, Object> map);
 
 
     /**

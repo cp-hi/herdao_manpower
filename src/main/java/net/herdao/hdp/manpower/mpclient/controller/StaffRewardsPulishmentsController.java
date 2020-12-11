@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -102,8 +103,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findStaffRpPage(Page page,StaffRpDTO staffRpDTO,String searchText) {
-        Page pageResult = staffRpService.findStaffRpPage(page,staffRpDTO, searchText);
-        return R.ok(pageResult);
+        return R.ok(staffRpService.findStaffRpPage(page,staffRpDTO, searchText));
     }
 
     /**
@@ -120,7 +120,7 @@ public class StaffRewardsPulishmentsController extends HdpBaseController {
     public void exportStaffRp(HttpServletResponse response, StaffRpDTO staffRpDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page pageResult = staffRpService.findStaffRpPage(page, staffRpDTO, searchText);
+        IPage pageResult = staffRpService.findStaffRpPage(page, staffRpDTO, searchText);
         ExcelUtils.export2Web(response, "员工奖惩情况表", "员工奖惩情况表", StaffRpDTO.class, pageResult.getRecords());
     }
 

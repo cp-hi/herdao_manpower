@@ -119,4 +119,9 @@ public class StaffcontractDTO {
      */
     @ApiModelProperty(value="集团名")
     private String groupName;
+    /**
+     * 所在组织id
+     */
+    @ApiModelProperty(value = "所在组织id")
+    private Long orgId;
 }
