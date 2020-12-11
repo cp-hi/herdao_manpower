@@ -80,9 +80,9 @@
                     app.staff_id,
                     app.mobile_no,
                     org.org_name,
-                    org.id org_id,
+                    app.org_id,
                     pst.post_name,
-                    pst.id post_id,
+                    app.post_id,
                     app.personnel_nature,
                     app.office_type,
                     app.STATUS,
@@ -596,9 +596,9 @@
                 app.office_type,
                 app.is_appointment,
                 org.org_name,
-                org.id org_id,
+                app.org_id org_id,
                 pst.post_name,
-                pst.id post_id,
+                app.post_id post_id,
                 app.year_post_prepare_count,
                 app.month_post_prepare_count,
                 app.post_has_count,
@@ -613,15 +613,15 @@
                 app.fund_units_id,
                 gjj.COMPANY_NAME fund_units_name,
                 app.remark
-         FROM mp_staff_entrypost_approve app
-                LEFT JOIN mp_organization org ON org.id = app.org_id
-                LEFT JOIN mp_post pst ON pst.id = app.post_id
-                LEFT JOIN mp_recruitment rec  ON rec.id=app.recruitment_id
-                LEFT JOIN mp_staff st ON st.id=app.replace_user_id
-                LEFT JOIN mp_company ldht on ldht.id=app.contract_company_id
-                LEFT JOIN mp_company gz on gz.id=app.paid_units_id
-                LEFT JOIN mp_company sb on sb.id=app.security_units_id
-                LEFT JOIN mp_company gjj on gjj.id=app.fund_units_id
+            FROM mp_staff_entrypost_approve app
+            LEFT JOIN mp_organization org ON org.id = app.org_id
+            LEFT JOIN mp_post pst ON pst.id = app.post_id
+            LEFT JOIN mp_recruitment rec  ON rec.id=app.recruitment_id
+            LEFT JOIN mp_staff st ON st.id=app.replace_user_id
+            LEFT JOIN mp_company ldht on ldht.id=app.contract_company_id
+            LEFT JOIN mp_company gz on gz.id=app.paid_units_id
+            LEFT JOIN mp_company sb on sb.id=app.security_units_id
+            LEFT JOIN mp_company gjj on gjj.id=app.fund_units_id
              <where>
                 <if test="id != null">
                     AND app.id= #{id}
