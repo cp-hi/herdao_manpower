@@ -39,7 +39,7 @@ public class SaveStaffTransferInfoDTO {
     @NotBlank
     private Long transPostId;
 
-    @ApiModelProperty(value = "雕工后职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123", required = true)
     @NotBlank
     private Long transJobLevelId;
 

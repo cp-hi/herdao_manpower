@@ -73,7 +73,7 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;
 
-    @ApiModelProperty(value = "使用期", name = "probation")
+    @ApiModelProperty(value = "试用期", name = "probation")
     private Double probation;
 
     @ApiModelProperty(value = "本公司工龄", name = "probation")

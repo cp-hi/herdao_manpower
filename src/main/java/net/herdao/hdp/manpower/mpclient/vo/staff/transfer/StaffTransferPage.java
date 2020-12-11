@@ -29,7 +29,7 @@ public class StaffTransferPage {
     @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
     private String  staffName;
 
-    @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
+    @ApiModelProperty(value = "员工工号", name = "staffCode", example = "123456")
     private String staffCode;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
