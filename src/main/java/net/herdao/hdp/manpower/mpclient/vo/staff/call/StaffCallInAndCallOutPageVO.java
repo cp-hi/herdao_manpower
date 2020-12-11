@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @ApiModel(value = "调入调出分页列表")
 public class StaffCallInAndCallOutPageVO {
-    @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
+    @ApiModelProperty(value = "调入调出 id", name = "id", example = "1")
     private Long id;
 
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
@@ -21,7 +21,7 @@ public class StaffCallInAndCallOutPageVO {
     @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
     private String  staffName;
 
-    @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
+    @ApiModelProperty(value = "员工工号", name = "staffCode", example = "123456")
     private String staffCode;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
@@ -33,7 +33,7 @@ public class StaffCallInAndCallOutPageVO {
     @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
     private String nowPostName;
 
-    @ApiModelProperty(value = "调动钱职级名称", name = "nowJobLevelName", example = "123")
+    @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName", example = "123")
     private String nowJobLevelName;
 
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
