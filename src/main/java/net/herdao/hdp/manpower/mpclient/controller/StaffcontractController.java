@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -151,8 +152,7 @@ public class StaffcontractController extends HdpBaseController {
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
     public R findStaffContractPage(Page page,StaffcontractDTO staffcontractDTO, String searchText) {
-        Page pageResult = staffcontractService.findStaffContractPage(page,staffcontractDTO, searchText);
-        return R.ok(pageResult);
+        return R.ok(staffcontractService.findStaffContractPage(page,staffcontractDTO, searchText));
     }
 
     /**
@@ -170,7 +170,7 @@ public class StaffcontractController extends HdpBaseController {
     public void exportStaffContact(HttpServletResponse response, StaffcontractDTO staffcontractDTO, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page pageResult = staffcontractService.findStaffContractPage(page, staffcontractDTO, searchText);
+        IPage pageResult = staffcontractService.findStaffContractPage(page, staffcontractDTO, searchText);
         ExcelUtils.export2Web(response, "导出员工合同表", "员工合同签订表", StaffcontractDTO.class, pageResult.getRecords());
     }
 

@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffContract.StaffcontractDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
@@ -21,7 +22,7 @@ public interface StaffcontractService extends HdpService<Staffcontract> {
      * @param searchText
      * @return
      */
-    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText);
+    IPage findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText);
 
     /**
      * 员工合同签订

@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工合同签订
@@ -46,9 +49,15 @@ public class StaffcontractServiceImpl extends ServiceImpl<StaffcontractMapper, S
     private final CompanyService companyService;
 
     @Override
-    public Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText) {
-        Page<StaffcontractDTO> list = this.baseMapper.findStaffContractPage(page,staffcontractDTO, searchText);
-        return list;
+    public IPage findStaffContractPage(Page<StaffcontractDTO> page,StaffcontractDTO staffcontractDTO, String searchText) {
+    	Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("searchText", searchText);
+		map.put("groupId",staffcontractDTO.getGroupId());
+		map.put("orgId",staffcontractDTO.getOrgId());
+    	
+        page = page.setRecords(this.baseMapper.findStaffContractPage(map));
+        return page;
     }
 
     @Override

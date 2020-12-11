@@ -25,6 +25,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工奖惩
@@ -40,7 +41,7 @@ public interface StaffRewardsPulishmentsMapper extends BaseMapper<StaffRewardsPu
      * @param searchText
      * @return
      */
-    Page<StaffRpDTO> findStaffRpPage(Page<StaffRpDTO> page,@Param("query") StaffRpDTO staffRpDTO,  @Param("searchText") String searchText);
+    List<StaffRpDTO> findStaffRpPage(Map<String, Object> map);
 
     /**
      * 员工奖惩

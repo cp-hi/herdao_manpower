@@ -64,39 +64,43 @@
                  t.GROUP_NAME
          FROM
          (
-         SELECT
-         f.id,
-         s.staff_name,
-         s.staff_code,
-         f.START_DATE,
-         f.END_DATE,
-         c.COMPANY_NAME company,
-         f.CONTRACT_ID,
-         dic.label CONTRACT_TYPE,
-         f.CONTRACT_PERIOD,
-         f.PROBATION_MONTH,
-         u.USER_NAME modifier_name,
-         f.MODIFIED_TIME,
-         IF (f.NEWEST = 0, '否', '是') contract_status,
-         g.ID group_id,
-         g.GROUP_NAME
-         FROM
-         mp_staffcontract f
-         LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
-         LEFT JOIN mp_company c ON c.Id=f.COMPANY_ID
-         LEFT JOIN sys_dict_item dic ON dic.VALUE= f.CONTRACT_TYPE AND dic.type = 'HTQXLX'
-         LEFT JOIN mp_user u ON u.id = f.modifier_id
-         LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID AND up.MAIN_POST=1
-         LEFT JOIN mp_post p ON p.ID = up.POST_ID
-         LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
-         WHERE f.del_flag = 0
-         <if test="query.groupId != null">
-             and p.GROUP_ID = #{query.groupId}
-         </if>
+		         SELECT
+		         f.id,
+		         s.staff_name,
+		         s.staff_code,
+		         f.START_DATE,
+		         f.END_DATE,
+		         c.COMPANY_NAME company,
+		         f.CONTRACT_ID,
+		         dic.label CONTRACT_TYPE,
+		         f.CONTRACT_PERIOD,
+		         f.PROBATION_MONTH,
+		         u.USER_NAME modifier_name,
+		         f.MODIFIED_TIME,
+		         IF (f.NEWEST = 0, '否', '是') contract_status,
+		         g.ID group_id,
+		         g.GROUP_NAME
+		         FROM
+		         mp_staffcontract f
+		         LEFT JOIN mp_staff s ON s.ID = f.STAFF_ID
+		         LEFT JOIN mp_company c ON c.Id=f.COMPANY_ID
+		         LEFT JOIN sys_dict_item dic ON dic.VALUE= f.CONTRACT_TYPE AND dic.type = 'HTQXLX'
+		         LEFT JOIN mp_user u ON u.id = f.modifier_id
+		         LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID AND up.MAIN_POST=1
+		         LEFT JOIN mp_post p ON p.ID = up.POST_ID
+		         LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+		         LEFT JOIN mp_organization o ON up.ORG_DEPT_ID = o.ID
+		         WHERE f.del_flag = 0
+                  <if test="groupId != null">
+                      and p.GROUP_ID = #{query.groupId}
+                  </if>
+                  <if test="orgId != null">
+		          	AND o.ORG_CODE like (select CONCAT(org.ORG_CODE,'%') from mp_organization org where org.id=#{orgId} limit 1)
+		          </if>
          ORDER BY f.CREATED_TIME DESC
          ) t
           <where>
-              <if test="searchText != null">
+              <if test="searchText != null and searchText !='' ">
                  and CONCAT(
                       IFNULL(t.staff_name,''),IFNULL(t.staff_code,''),IFNULL(t.START_DATE,''),
                       IFNULL(t.END_DATE,'') ,IFNULL(t.company,''),IFNULL(t.CONTRACT_ID,''),IFNULL(t.CONTRACT_TYPE,''),

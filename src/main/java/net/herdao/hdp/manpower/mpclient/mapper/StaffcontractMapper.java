@@ -25,6 +25,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工合同签订
@@ -39,7 +40,7 @@ public interface StaffcontractMapper extends BaseMapper<Staffcontract> {
      * @param searchText
      * @return
      */
-    Page<StaffcontractDTO> findStaffContractPage(Page<StaffcontractDTO> page,@Param("query") StaffcontractDTO staffcontractDTO, @Param("searchText") String searchText);
+    List<StaffcontractDTO> findStaffContractPage(Map<String, Object> map);
 
     /**
      * 员工合同签订分页
