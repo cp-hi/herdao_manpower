@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Data
-@ApiModel(value = "职级变更信息")
+@ApiModel(value = "升级、降级详情页")
 public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
     private Long id;
@@ -42,7 +42,7 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "调动后部门 id", name = "promoteOrgId", example = "4321", required = true)
     private Long promoteOrgId;
 
-    @ApiModelProperty(value = "调动前部门名称", name = "promoteOrgName", example = "1234")
+    @ApiModelProperty(value = "调动后部门名称", name = "promoteOrgName", example = "1234")
     private String promoteOrgName;
 
     @ApiModelProperty(value = "调动后岗位 id", name = "promotePostId", example = "5432", required = true)

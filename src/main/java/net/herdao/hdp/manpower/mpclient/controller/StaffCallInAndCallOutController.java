@@ -30,13 +30,13 @@ public class StaffCallInAndCallOutController {
                                                                           Long orgId,
                                                                           String status,
                                                                           String type) {
-        return R.ok(service.pageStaffCallInAndCallOut(page, searchText, orgId, status, type));
+        return R.ok(service.pageStaffCallInAndCallOut(page, searchText, orgId, status, type), "success");
     }
 
     @ApiOperation(value = "分页列表-删除")
     @DeleteMapping("/{id}")
     public R deleteCallInAndCallOut(@PathVariable("id") Long id) {
-        return R.ok(service.removeById(id));
+        return R.ok(service.removeById(id), "success");
     }
 
     @ApiOperation(value = "获取执行调动信息")
@@ -48,7 +48,7 @@ public class StaffCallInAndCallOutController {
     @ApiOperation(value = "分页列表页-确认发起")
     @PutMapping("/affirm/{id}")
     public R<Long> affirm(@PathVariable("id") Long id) throws Exception {
-        return R.ok(service.affirm(id));
+        return R.ok(service.affirm(id), "success");
     }
 
 }
