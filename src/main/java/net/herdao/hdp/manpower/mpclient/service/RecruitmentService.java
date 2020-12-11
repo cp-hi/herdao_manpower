@@ -102,7 +102,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param code
      * @return
      */
-     R recruitmentLogin(String mobile, String code);
+     R<Recruitment> recruitmentLogin(String mobile, String code);
 
     /**
      * 获取人才简历-其他个人信息-详情

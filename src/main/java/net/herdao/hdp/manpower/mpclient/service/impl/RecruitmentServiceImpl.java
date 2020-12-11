@@ -256,7 +256,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public R recruitmentLogin(String mobile, String code) {
+    public R<Recruitment> recruitmentLogin(String mobile, String code) {
         String key = CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile;
         redisTemplate.setKeySerializer(new StringRedisSerializer());
 
@@ -274,12 +274,18 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         if (!StrUtil.equals(redisCode, code)) {
             return  R.failed("验证码不合法");
         }
+
         List<Recruitment> recruitments = this.baseMapper.selectList(Wrappers.<Recruitment>query().lambda().eq(Recruitment::getMobile, mobile));
+        Recruitment recruitment=new Recruitment();
         if(recruitments.isEmpty() || recruitments.size() != 1){
             return  R.failed("手机号不合法");
         }
-        return R.ok(recruitments.get(0).getId());
 
+        if (ObjectUtil.isNotEmpty(recruitments)){
+            recruitment = recruitments.get(0);
+        }
+
+        return R.ok(recruitment);
     }
 
     @Override

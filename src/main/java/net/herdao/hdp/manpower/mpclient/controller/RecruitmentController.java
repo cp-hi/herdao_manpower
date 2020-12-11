@@ -306,7 +306,7 @@ public class RecruitmentController {
     @ApiOperation(value = "候选人H5手机验证码登录", notes = "候选人H5手机验证码登录")
     @Inner(value = false)
     @GetMapping("/recruitmentLogin")
-    public R<Long> recruitmentLogin(String mobile, String code){
+    public R<Recruitment> recruitmentLogin(String mobile, String code){
         return recruitmentService.recruitmentLogin(mobile, code);
     }
 
@@ -410,7 +410,8 @@ public class RecruitmentController {
 
     @ApiOperation(value = "手机验证码", notes = "手机验证码")
     @Inner(value = false)
-    @GetMapping("/{mobile}")
+    @GetMapping("/sendSmsCode/{mobile}")
+    @ApiImplicitParam(name = "mobile", value = "手机号码")
     public R<Boolean> sendSmsCode(@PathVariable String mobile) {
         return recruitmentService.sendSmsCode(mobile);
     }
