@@ -198,6 +198,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
             vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
             list.add(vo);
         }
+        BeanUtils.copyProperties(page, pageVO);
         pageVO.setRecords(list);
         return pageVO;
     }
