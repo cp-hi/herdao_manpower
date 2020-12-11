@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @ApiModel(value = "保存调入详情页")
 public class SaveStaffCallInDTO {
-    @ApiModelProperty(value = "人事调动 id", name = "id", example = "1", required = true)
+    @ApiModelProperty(value = "人事调入 id", name = "id", example = "1", required = true)
     @NotNull
     private Long id;
 
@@ -42,7 +42,7 @@ public class SaveStaffCallInDTO {
     @NotNull
     private Long transPostId;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "调动后职级 id", name = "transJobLevelId", example = "123", required = true)
     @NotNull
     private Long transJobLevelId;
 
@@ -65,10 +65,10 @@ public class SaveStaffCallInDTO {
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;
 
-    @ApiModelProperty(value = "使用期", name = "probation")
+    @ApiModelProperty(value = "试用期", name = "probation")
     private Double probation;
 
-    @ApiModelProperty(value = "本公司工龄", name = "probation")
+    @ApiModelProperty(value = "本公司工龄", name = "companySeniority")
     private Double companySeniority;
 
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")

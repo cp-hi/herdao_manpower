@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @ApiModel(value = "调出详情页")
 public class StaffCallOutInfoVO {
-    @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
+    @ApiModelProperty(value = "人事调出 id", name = "id", example = "1")
     private Long id;
 
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
@@ -49,10 +49,10 @@ public class StaffCallOutInfoVO {
     @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
     private String transPostName;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123")
+    @ApiModelProperty(value = "调动后职级 id", name = "transJobLevelId", example = "123")
     private Long transJobLevelId;
 
-    @ApiModelProperty(value = "调动后好职级名称", name = "jobLevelName", example = "M3-6")
+    @ApiModelProperty(value = "调动后好职级名称", name = "transJobLevelName", example = "M3-6")
     private String transJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
@@ -61,7 +61,7 @@ public class StaffCallOutInfoVO {
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
     private Double contractPeriod;
 
-    @ApiModelProperty(value = "本公司工龄", name = "probation")
+    @ApiModelProperty(value = "本公司工龄", name = "companySeniority")
     private Double companySeniority;
 
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
