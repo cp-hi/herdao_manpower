@@ -84,6 +84,27 @@ public class EntryJobController {
     }
 
     /**
+     * 入职管理-邀请入职登记-导出Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "入职管理-邀请入职登记-导出Excel", notes = "入职管理-邀请入职登记-导出Excel")
+    @GetMapping("/exportInviteEntry")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="orgId",value="组织ID"),
+        @ApiImplicitParam(name="searchText",value="关键字搜索"),
+    })
+    @SneakyThrows
+    public R<EntryDTO> exportInviteEntry(HttpServletResponse response, String orgId, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+        ExcelUtils.export2Web(response, "入职管理待入职表", "入职管理待入职表", EntryDTO.class, pageResult.getRecords());
+        EntryDTO dto=new EntryDTO();
+        return R.ok(dto);
+    }
+
+    /**
      * 入职管理-最近入职-列表分页
      * @param page 分页对象
      * @param orgId 组织ID
