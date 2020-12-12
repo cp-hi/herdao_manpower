@@ -93,10 +93,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
         recruitment.setOrgId(Long.parseLong(recruitmentUpdateFormVO.getOrgId()));
 
-        /*SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
+
         super.updateById(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
@@ -122,10 +125,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentAddFormDTO,recruitment);
 
-       /* SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setCreatorTime(LocalDateTime.now());
-        recruitment.setCreatorCode(sysUser.getUsername());
-        recruitment.setCreatorName(sysUser.getAliasName());*/
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setCreatorTime(LocalDateTime.now());
+            recruitment.setCreatorCode(sysUser.getUsername());
+            recruitment.setCreatorName(sysUser.getAliasName());
+        }
         super.save(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentAddFormDTO);
@@ -206,12 +211,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 recruitment.setIsRelativeCompany(0);
             }
         }
-       /* SysUser sysUser = SysUserUtils.getSysUser();
+
+        SysUser sysUser = SysUserUtils.getSysUser();
         if (ObjectUtil.isNotNull(sysUser)){
             recruitment.setModifierTime(LocalDateTime.now());
             recruitment.setModifierCode(sysUser.getUsername());
             recruitment.setModifierName(sysUser.getAliasName());
-        }*/
+        }
 
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,dto);
@@ -238,13 +244,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             recruitment.setRecruitmentPostId(dto.getIntentionPostId());
         }
 
-       /* SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
-
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
         super.updateById(recruitment);
-
         BeanUtils.copyProperties(recruitment,dto);
 
         return dto;
@@ -323,10 +329,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentEditOtherInfoDTO updateOtherInfo(RecruitmentEditOtherInfoDTO otherInfo) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(otherInfo,recruitment);
-       /* SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,otherInfo);
 
