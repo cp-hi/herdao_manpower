@@ -303,7 +303,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         //更新人才表的最高学历教育信息
         Recruitment recruitment=new Recruitment();
-
+        if (ObjectUtil.isNotNull(recruitmentTopEdu)){
+            BeanUtils.copyProperties(recruitmentTopEdu,recruitment);
+            super.updateById(recruitment);
+        }
 
         return recruitmentTopEdu;
     }
