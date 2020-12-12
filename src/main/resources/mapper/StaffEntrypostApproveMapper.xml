@@ -465,6 +465,7 @@
     <select id="findEntryRegisterPage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryRegisterDTO">
              select t.* from (
                      SELECT app.id,
+                            app.recruitment_id,
                             app.user_name,
                             app.staff_code,
                             app.mobile_no,

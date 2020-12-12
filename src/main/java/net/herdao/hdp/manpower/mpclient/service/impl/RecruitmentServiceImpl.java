@@ -280,6 +280,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
+        //获取人才教育表的最高学历信息
         LambdaQueryWrapper<RecruitmentEducation> eduQueryWrapper = Wrappers.lambdaQuery();
         eduQueryWrapper.eq( RecruitmentEducation::getRecruitmentId,id).orderByDesc(RecruitmentEducation::getPeriod);
         List<RecruitmentEducation> eduList = recruitmentEducationService.list(eduQueryWrapper);
@@ -288,18 +289,23 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             education = eduList.get(0);
         }
 
-        RecruitmentTopEduDTO recruitmentTopEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
-        if (ObjectUtil.isNotNull(recruitmentTopEduDTO)){
-            BeanUtils.copyProperties(education,recruitmentTopEduDTO);
-            recruitmentTopEduDTO.setBeginDate(education.getPeriod());
-            recruitmentTopEduDTO.setEndDate(education.getTodate());
-            recruitmentTopEduDTO.setHighestEducation(education.getEducationQua());
-            recruitmentTopEduDTO.setEducationDegree(education.getDegree());
-            recruitmentTopEduDTO.setGraduated(education.getSchoolName());
-            //recruitmentTopEduDTO.setProfessional(education.getProfessional());
-            //recruitmentTopEduDTO.setLearnForm(education.getLearnForm());
-         }
-        return recruitmentTopEduDTO;
+        RecruitmentTopEduDTO recruitmentTopEdu = this.baseMapper.fetchRecruitmentTopEdu(id);
+        if (ObjectUtil.isNotEmpty(education)){
+            BeanUtils.copyProperties(education,recruitmentTopEdu);
+            recruitmentTopEdu.setBeginDate(education.getPeriod());
+            recruitmentTopEdu.setEndDate(education.getTodate());
+            recruitmentTopEdu.setHighestEducation(education.getEducationQua());
+            recruitmentTopEdu.setEducationDegree(education.getDegree());
+            recruitmentTopEdu.setGraduated(education.getSchoolName());
+            //recruitmentTopEdu.setProfessional(education.getProfessional());
+            //recruitmentTopEdu.setLearnForm(education.getLearnForm());
+        }
+
+        //更新人才表的最高学历教育信息
+        Recruitment recruitment=new Recruitment();
+
+
+        return recruitmentTopEdu;
     }
 
     @Override

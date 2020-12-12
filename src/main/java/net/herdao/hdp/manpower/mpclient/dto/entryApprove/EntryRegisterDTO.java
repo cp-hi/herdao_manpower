@@ -143,4 +143,11 @@ public class EntryRegisterDTO implements Serializable {
     @ApiModelProperty(value="入职信息确认")
     @ExcelProperty(value = "入职信息确认")
     private String entryInfoConfirm;
+
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才表主键id")
+    @ExcelIgnore
+    private Long recruitmentId;
 }
