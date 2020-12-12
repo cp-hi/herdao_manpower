@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @author Andy
  */
 @Data
-@ApiModel(value = "入职管理-办理入职-入职信息DTO")
+@ApiModel(value = "入职信息")
 public class EntryJobDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
