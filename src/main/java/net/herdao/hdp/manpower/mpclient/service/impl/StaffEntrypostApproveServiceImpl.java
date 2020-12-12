@@ -218,10 +218,12 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
     @Transactional(rollbackFor = Exception.class)
     public StaffEntrypostApprove confirmEntry(Long recruitmentId, String approveId, String certificateType, String certificateNo) {
         StaffEntrypostApprove approve = super.getById(approveId);
+        //修改更新入职登记状态 入职状态
         if (ObjectUtil.isNotNull(approve)){
             //入职登记状态 (1:未提交，2：已提交，3：已确认）
             approve.setEntryCheckStatus("3");
-            //修改更新入职登记状态
+            //入职状态  (待入职:RZZT01,已入职:RZZT02,报废:RZZT03)
+            approve.setEntryStatus("RZZT02");
             super.updateById(approve);
         }
 
@@ -294,7 +296,6 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
             if (ObjectUtil.isNotNull(recruitment.getPoliticalLandscape())){
                 staff.setPoliticsStatus(recruitment.getPoliticalLandscape());
             }
-
             if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
                 staff.setGoalPosts(recruitment.getIntentionPostId());
             }
@@ -351,42 +352,18 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
                     staff.setAcceptedAssignment(false);
                 }
             }
-
-            //staff.setStaffCode(approve.getStaffCode());
-            //staff.setPersonnelNature(approve.getPersonnelNature());
-            //staff.setPersonnelType(approve.getPersonnelType());
-            //staff.setSex(recruitment.getSex());
-            //staff.setBirthday(recruitment.getBirthday());
-            //staff.setBirthplace(recruitment.getBirthplace());
-            //staff.setNation(recruitment.getNation());
-            //staff.setMaritalStatus(recruitment.getMaritalStatus());
-            //staff.setFertility(recruitment.getFertility());
-            //staff.setHealthStatus(recruitment.getHealthStatus());
-            //staff.setHeight(recruitment.getHeight());
-            //staff.setWeight(recruitment.getWeight());
-            //staff.setWorkDate(recruitment.getWorkdate());
-            //staff.setAccountAddress(recruitment.getAccountAddress());
-            //staff.setAccountType(recruitment.getAccountType());
-            //staff.setEmail(recruitment.getEmail());
-            //staff.setIdNumber(recruitment.getIdnumber());
-            //staff.setHomePhone(recruitment.getHomePhone());
-            //staff.setMobile(recruitment.getMobile());
-            //staff.setEmergencyContacts(recruitment.getEmergencyContacts());
-            //staff.setBeginDate(recruitment.getBeginDate());
-            //staff.setEndDate(recruitment.getEndDate());
-            //staff.setLearnForm(recruitment.getLearnForm());
-            //staff.setProfessional(recruitment.getProfessional());
-            //staff.setCertificateType(recruitment.getCertificateType());
-            //staff.setCertificateNo(recruitment.getCertificateNo());
-            //staff.setCertificationTime(recruitment.getCertificateTime());
-            //staff.setInterests(recruitment.getInterests());
-            //staff.setSpecialty(recruitment.getSpecialty());
-            //staff.setCharacteristics(recruitment.getCharacteristics());
-            //staff.setAdvantage(recruitment.getAdvantage());
-            //staff.setShortcoming(recruitment.getShortcoming());
-            //staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
-            //staff.setProfessionalCompetence(recruitment.getProfessionalCompetence());
-            //staff.setWritingAbility(recruitment.getWritingAbility());
+            if (recruitment.getAcceptAssignmentLocation()!=null){
+                staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
+            }
+            if (recruitment.getAcceptAssignmentLocation()!=null){
+                staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
+            }
+            if (recruitment.getBeginDate()!=null){
+                staff.setBeginDate(recruitment.getBeginDate());
+            }
+            if (recruitment.getEndDate()!=null){
+                staff.setEndDate(recruitment.getEndDate());
+            }
 
             staffService.save(staff);
         }
