@@ -284,28 +284,32 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         LambdaQueryWrapper<RecruitmentEducation> eduQueryWrapper = Wrappers.lambdaQuery();
         eduQueryWrapper.eq( RecruitmentEducation::getRecruitmentId,id).orderByDesc(RecruitmentEducation::getPeriod);
         List<RecruitmentEducation> eduList = recruitmentEducationService.list(eduQueryWrapper);
-        RecruitmentEducation education= null;
-        if (ObjectUtil.isNotEmpty(eduList)){
-            education = eduList.get(0);
-        }
 
+        //获取人才表的最高教育信息
         RecruitmentTopEduDTO recruitmentTopEdu = this.baseMapper.fetchRecruitmentTopEdu(id);
-        if (ObjectUtil.isNotEmpty(education)){
-            BeanUtils.copyProperties(education,recruitmentTopEdu);
-            recruitmentTopEdu.setBeginDate(education.getPeriod());
-            recruitmentTopEdu.setEndDate(education.getTodate());
-            recruitmentTopEdu.setHighestEducation(education.getEducationQua());
-            recruitmentTopEdu.setEducationDegree(education.getDegree());
-            recruitmentTopEdu.setGraduated(education.getSchoolName());
-            //recruitmentTopEdu.setProfessional(education.getProfessional());
-            //recruitmentTopEdu.setLearnForm(education.getLearnForm());
-        }
 
-        //更新人才表的最高学历教育信息
-        Recruitment recruitment=new Recruitment();
-        if (ObjectUtil.isNotNull(recruitmentTopEdu)){
-            BeanUtils.copyProperties(recruitmentTopEdu,recruitment);
-            super.updateById(recruitment);
+        //如果人才教育表的最高学历信息不为空 则进行赋值和更新操作
+        if (ObjectUtil.isNotEmpty(eduList)){
+            RecruitmentEducation education = eduList.get(0);
+
+            //把“人才教育表的最高学历信息”赋值到“人才表的最高教育信息”
+            if (ObjectUtil.isNotEmpty(education)){
+                BeanUtils.copyProperties(education,recruitmentTopEdu);
+                recruitmentTopEdu.setBeginDate(education.getPeriod());
+                recruitmentTopEdu.setEndDate(education.getTodate());
+                recruitmentTopEdu.setHighestEducation(education.getEducationQua());
+                recruitmentTopEdu.setEducationDegree(education.getDegree());
+                recruitmentTopEdu.setGraduated(education.getSchoolName());
+                //recruitmentTopEdu.setProfessional(education.getProfessional());
+                //recruitmentTopEdu.setLearnForm(education.getLearnForm());
+            }
+
+            //更新人才表的最高学历教育信息
+            Recruitment recruitment=new Recruitment();
+            if (ObjectUtil.isNotEmpty(recruitmentTopEdu)){
+                BeanUtils.copyProperties(recruitmentTopEdu,recruitment);
+                super.updateById(recruitment);
+            }
         }
 
         return recruitmentTopEdu;
