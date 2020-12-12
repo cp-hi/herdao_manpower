@@ -306,7 +306,10 @@ public class RecruitmentController {
         RecruitmentPersonDTO personDTO = recruitmentService.fetchRecruitmentPerson(id);
         RecruitmentIntentDTO intentDTO = recruitmentService.fetchRecruitmentIntent(id);
         List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+
+        //获取最高学历
         RecruitmentTopEduDTO topEduDTO = recruitmentService.fetchRecruitmentTopEdu(id);
+
         List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
 

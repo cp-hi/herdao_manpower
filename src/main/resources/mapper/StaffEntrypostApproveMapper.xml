@@ -275,6 +275,7 @@
             select t.*
             from (
                     SELECT  app.id,
+                            app.recruitment_id,
                             app.user_name,
                             app.mobile_no,
                             app.email,

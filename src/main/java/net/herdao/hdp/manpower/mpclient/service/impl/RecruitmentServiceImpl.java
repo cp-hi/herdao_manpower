@@ -37,7 +37,9 @@ import net.herdao.hdp.common.message.config.SmsTemplate;
 import net.herdao.hdp.common.message.constant.SmsConstant;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -64,6 +66,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     private final RedisTemplate redisTemplate;
 
     private final SmsTemplate smsTemplate;
+
+    private final RecruitmentEducationService recruitmentEducationService;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -276,7 +280,25 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
+        LambdaQueryWrapper<RecruitmentEducation> eduQueryWrapper = Wrappers.lambdaQuery();
+        eduQueryWrapper.eq( RecruitmentEducation::getRecruitmentId,id).orderByDesc(RecruitmentEducation::getPeriod);
+        List<RecruitmentEducation> eduList = recruitmentEducationService.list(eduQueryWrapper);
+        RecruitmentEducation education= null;
+        if (ObjectUtil.isNotEmpty(eduList)){
+            education = eduList.get(0);
+        }
+
         RecruitmentTopEduDTO recruitmentTopEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
+        if (ObjectUtil.isNotNull(recruitmentTopEduDTO)){
+            BeanUtils.copyProperties(education,recruitmentTopEduDTO);
+            recruitmentTopEduDTO.setBeginDate(education.getPeriod());
+            recruitmentTopEduDTO.setEndDate(education.getTodate());
+            recruitmentTopEduDTO.setHighestEducation(education.getEducationQua());
+            recruitmentTopEduDTO.setEducationDegree(education.getDegree());
+            recruitmentTopEduDTO.setGraduated(education.getSchoolName());
+            //recruitmentTopEduDTO.setProfessional(education.getProfessional());
+            //recruitmentTopEduDTO.setLearnForm(education.getLearnForm());
+         }
         return recruitmentTopEduDTO;
     }
 
@@ -363,8 +385,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile, code,
                 SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
         MessageData message = new MessageData(mobile, String.format(SmsConstant.MP_TEMPLATE,code));
-        R r = smsTemplate.doSendSingleSmsForSingle(message);
-        log.info("执行短信通知结果: {}，消息体: {}", r.getMsg(), message);
-        return r;
+        R result = smsTemplate.doSendSingleSmsForSingle(message);
+        log.info("执行短信通知结果: {}，消息体: {}", result.getMsg(), message);
+        return result;
     }
 }
