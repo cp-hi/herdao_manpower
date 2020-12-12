@@ -190,10 +190,29 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
         recruitment.setCharacteristics(dto.getCharacteristics());
-        /*SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
+        if (ObjectUtil.isNotNull(dto.getIsAcceptAssignment())){
+            if (dto.getIsAcceptAssignment()){
+                recruitment.setIsAcceptAssignment(1);
+            }
+            if (!dto.getIsAcceptAssignment()){
+                recruitment.setIsAcceptAssignment(0);
+            }
+        }
+        if (ObjectUtil.isNotNull(dto.getIsRelativeCompany())){
+            if (dto.getIsRelativeCompany()){
+                recruitment.setIsRelativeCompany(1);
+            }
+            if (!dto.getIsRelativeCompany()){
+                recruitment.setIsRelativeCompany(0);
+            }
+        }
+       /* SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }*/
+
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,dto);
 

@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.sys.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
@@ -27,8 +28,11 @@ public class SysUserUtils {
     }
 
     public static SysUser getSysUser() {
-        UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
-        SysUser sysUser = userInfo.getSysUser();
+        SysUser sysUser=null;
+        if (ObjectUtil.isNotNull(SecurityUtils.getUser())){
+            UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
+            sysUser = userInfo.getSysUser();
+        }
         return sysUser;
     }
 }
