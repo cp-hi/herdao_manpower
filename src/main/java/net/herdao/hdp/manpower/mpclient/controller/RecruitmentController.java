@@ -149,7 +149,7 @@ public class RecruitmentController {
     @GetMapping("/fetchResumeTop")
     @Inner(value = false)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "主键id")
+        @ApiImplicitParam(name = "id", value = "主键id")
     })
     public R<RecruitmentUpdateFormDTO> fetchResumeTop(Long id) {
         RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
@@ -223,6 +223,28 @@ public class RecruitmentController {
     })
     @SneakyThrows
     public R<RecruitmentDTO> exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
+        Page page = new Page();
+        page.setSize(-1);
+        Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
+        ExcelUtils.export2Web(response, "人才管理表", "人才管理表", RecruitmentDTO.class, pageResult.getRecords());
+        RecruitmentDTO dto = new RecruitmentDTO();
+        return R.ok(dto);
+    }
+
+    /**
+     * 人才管理-邀请更新简历信息-导出Excel
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "人才管理-邀请更新简历信息-导出Excel", notes = "人才管理-邀请更新简历信息-导出Excel")
+    @GetMapping("/exportInviteRecruitment")
+    @Inner(value = false)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgId", value = "组织ID"),
+            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
+    })
+    @SneakyThrows
+    public R<RecruitmentDTO> exportInviteRecruitment(HttpServletResponse response, String orgId, String searchText) {
         Page page = new Page();
         page.setSize(-1);
         Page<RecruitmentDTO> pageResult = recruitmentService.findRecruitmentPage(page, orgId, searchText);
