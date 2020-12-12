@@ -577,8 +577,8 @@
         LEFT JOIN mp_organization org on org.id=app.org_id
         LEFT JOIN mp_post pst on pst.id= app.post_id
         <where>
-            <if test="recruitmentId != null and recruitmentId != '' ">
-                AND  app.recruitment_id= #{recruitmentId}
+            <if test="id != null ">
+                AND  app.id= #{id}
             </if>
         </where>
     </select>

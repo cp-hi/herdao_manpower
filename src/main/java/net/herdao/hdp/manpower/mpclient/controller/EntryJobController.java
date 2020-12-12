@@ -236,12 +236,13 @@ public class EntryJobController {
      */
     @ApiOperation(value = "入职管理-办理入职-获取个人信息和入职信息详情", notes = "入职管理-办理入职-获取个人信息和入职信息详情")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentId",value="人才ID",required = true)
+        @ApiImplicitParam(name="recruitmentId",value="人才表主键ID",required = true),
+        @ApiImplicitParam(name="id",value="审批表主键ID",required = true)
     })
     @GetMapping("/findEntryInfo")
-    public R<EntryInfoDTO> findEntryInfo(String recruitmentId) {
+    public R<EntryInfoDTO> findEntryInfo(String recruitmentId,String id) {
         EntryPersonInfoDTO entryPersonInfo = staffEntrypostApproveService.findEntryPersonInfo(recruitmentId);
-        EntryJobDTO entryJobInfo = staffEntrypostApproveService.findEntryJobInfo(recruitmentId);
+        EntryJobDTO entryJobInfo = staffEntrypostApproveService.findEntryJobInfo(id);
 
         EntryInfoDTO entryInfo=new EntryInfoDTO();
         entryInfo.setEntryPersonInfoDTO(entryPersonInfo);
