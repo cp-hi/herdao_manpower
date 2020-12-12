@@ -252,7 +252,7 @@ public class EntryJobController {
     }
 
     /**
-     * 入职登记详情-确认入职登记
+     * 办理入职-确认入职
      * @param recruitmentId 人才表主键id
      * @param approveId 审批录用表主键id
      * @param certificateType 证件类型
@@ -260,12 +260,12 @@ public class EntryJobController {
      * @return
      */
     @ApiImplicitParams({
-            @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
-            @ApiImplicitParam(name="approveId",value="审批录用表主键id",required = true),
-            @ApiImplicitParam(name="certificateType",value="证件类型"),
-            @ApiImplicitParam(name="certificateNo",value="证件号码")
+        @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
+        @ApiImplicitParam(name="approveId",value="审批录用表主键id",required = true),
+        @ApiImplicitParam(name="certificateType",value="证件类型"),
+        @ApiImplicitParam(name="certificateNo",value="证件号码")
     })
-    @ApiOperation(value = "入职登记详情-确认入职登记", notes = "入职登记详情-确认入职登记")
+    @ApiOperation(value = "办理入职-确认入职", notes = "办理入职-确认入职")
     @PostMapping("/confirmEntry")
     public R<StaffEntrypostApprove> confirmEntry(Long recruitmentId,String approveId,String certificateType,String certificateNo) {
         StaffEntrypostApprove approve = staffEntrypostApproveService.confirmEntry(recruitmentId, approveId, certificateType, certificateNo);

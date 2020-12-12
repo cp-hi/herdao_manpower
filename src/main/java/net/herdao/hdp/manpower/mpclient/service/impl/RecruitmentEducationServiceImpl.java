@@ -74,8 +74,6 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         BeanUtils.copyProperties(education,dto);
         super.save(education);
 
-        //更新人才表的最高学历信息
-        updateHeightEdu(education.getRecruitmentId());
         return dto;
     }
 
@@ -107,29 +105,5 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         return list;
     }
 
-    /**
-     * 更新人才简历表（人才表）的最高学历的信息
-     * @param recruitmentId 人才ID
-     */
-    private void updateHeightEdu(Long recruitmentId){
-        //获取人才教育表的最高学历信息
-        LambdaQueryWrapper<RecruitmentEducation> eduQueryWrapper = Wrappers.lambdaQuery();
-        eduQueryWrapper.eq( RecruitmentEducation::getRecruitmentId,recruitmentId).orderByDesc(RecruitmentEducation::getPeriod);
-        List<RecruitmentEducation> eduList = super.list(eduQueryWrapper);
-        if (ObjectUtil.isNotEmpty(eduList)){
-            //更新人才表的最高学历教育信息
-            Recruitment recruitment=new Recruitment();
-            if (ObjectUtil.isNotEmpty(eduList)){
-                RecruitmentEducation education = eduList.get(0);
-                recruitment.setBeginDate(education.getPeriod());
-                recruitment.setEndDate(education.getTodate());
-                recruitment.setHighestEducation(education.getEducationQua());
-                recruitment.setEducationDegree(education.getDegree());
-                recruitment.setGraduated(education.getSchoolName());
-                recruitment.setProfessional(education.getProfessional());
-                recruitment.setLearnForm(education.getLearnForm());
-            }
-        }
 
-    }
 }
