@@ -51,7 +51,7 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryApproveDTO> findApprovePage(Page<EntryApproveDTO> page, String orgId, String searchText, String status) {
-        return this.baseMapper.findApprovePage(page, orgId, searchText, status ,new EhrDataScope());
+        return this.baseMapper.findApprovePage(page, orgId, searchText, status );
     }
 
     @Override
@@ -177,7 +177,7 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryDTO> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findEntryPage(page, orgId, searchText,new EhrDataScope());
+        return this.baseMapper.findEntryPage(page, orgId, searchText);
     }
 
     @Override

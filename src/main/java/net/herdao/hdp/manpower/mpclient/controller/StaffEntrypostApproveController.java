@@ -54,11 +54,10 @@ public class StaffEntrypostApproveController {
     @ApiOperation(value = "录用审批-发起录用-保存", notes = "录用审批-发起录用-保存")
     @PostMapping("/saveApprove")
     public R<EntryApproveAddDTO> saveApprove(@RequestBody EntryApproveAddDTO dto) {
-        StaffEntrypostApprove approve=new StaffEntrypostApprove();
         EntryApproveAddDTO result = staffEntrypostApproveService.saveApprove(dto);
-        BeanUtils.copyProperties(approve,dto);
         return R.ok(result,"新增保存成功");
     }
+
 
     /**
      * 录用审批-删除

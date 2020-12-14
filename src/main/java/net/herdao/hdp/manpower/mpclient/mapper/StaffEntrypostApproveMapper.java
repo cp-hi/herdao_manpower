@@ -29,7 +29,7 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @param ehrDataScope 数据权限过滤
      * @return
      */
-    Page<EntryApproveDTO> findApprovePage(Page<EntryApproveDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText,@Param("status") String status,@Param("ehrDataScope") EhrDataScope ehrDataScope);
+    Page<EntryApproveDTO> findApprovePage(Page<EntryApproveDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText,@Param("status") String status);
 
     /**
      * 录用审批-流程审批-详情
@@ -68,7 +68,7 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @param ehrDataScope 数据过滤
      * @return
      */
-    Page<EntryDTO> findEntryPage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText,@Param("ehrDataScope") EhrDataScope ehrDataScope);
+    Page<EntryDTO> findEntryPage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
 
     /**
      * 入职管理-已入职-列表
