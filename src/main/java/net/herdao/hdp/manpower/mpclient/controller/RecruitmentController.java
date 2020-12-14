@@ -526,7 +526,7 @@ public class RecruitmentController {
     @PostMapping("/generateWorkflow")
     @ApiImplicitParams({
         @ApiImplicitParam(name="recordId",value="业务表单ID",required = true),
-        @ApiImplicitParam(name="flowType",value="主键ID",required = true)
+        @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true)
     })
     public R generateWorkflow(String recordId,String flowType) {
     	return recruitmentService.generateWorkflow(recordId, flowType);
