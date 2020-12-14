@@ -532,4 +532,23 @@ public class RecruitmentController {
     	return recruitmentService.generateWorkflow(recordId, flowType);
     }
     
+    
+    /**
+     * 	流程回调 更新业务表单的状态 
+     */
+    @ApiOperation(value = "流程回调 更新业务表单的状态 ", notes = "流程回调 更新业务表单的状态 ")
+    @PostMapping("/workflowNotify")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="recordId",value="业务表单ID",required = true),
+        @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true),
+        @ApiImplicitParam(name="status",value="状态",required = true)
+    })
+    public R workflowNotify(String recordId,String flowType) {
+    	
+    	//TODO 根据流程类型找到 对应的 需要修改的表单
+    	//TODO 更新表单的状态 
+    	
+    	return R.ok();
+    }
+    
 }
