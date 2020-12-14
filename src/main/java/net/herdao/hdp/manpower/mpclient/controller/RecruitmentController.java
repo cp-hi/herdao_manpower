@@ -54,7 +54,6 @@ public class RecruitmentController {
 
     private final  RecruitmentActivitiService recruitmentActivitiService;
 
-
     /**
      * 人才管理-快速编辑
      *
@@ -477,4 +476,22 @@ public class RecruitmentController {
         return R.ok(result);
     }
 
+    
+    
+
+    /**
+     * 	发起流程
+     */
+    @ApiOperation(value = "发起流程", notes = "发起流程")
+    @PostMapping("/generateWorkflow")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="主键ID"),
+    })
+    public R generateWorkflow(Long id) {
+    	
+    	
+    	
+    	return R.ok();
+    }
+    
 }
