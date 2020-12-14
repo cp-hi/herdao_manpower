@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
@@ -63,9 +64,10 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @param page 分页对象
      * @param orgId 组织ID
      * @param searchText 关键字
+     * @param ehrDataScope 数据过滤
      * @return
      */
-    Page<EntryDTO> findEntryPage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText);
+    Page<EntryDTO> findEntryPage(Page<EntryDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText,@Param("ehrDataScope") EhrDataScope ehrDataScope);
 
     /**
      * 入职管理-已入职-列表

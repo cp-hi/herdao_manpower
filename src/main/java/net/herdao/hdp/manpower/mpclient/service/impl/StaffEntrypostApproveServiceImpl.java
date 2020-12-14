@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffEntrypostApproveMapper;
@@ -176,7 +177,7 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryDTO> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findEntryPage(page, orgId, searchText);
+        return this.baseMapper.findEntryPage(page, orgId, searchText,new EhrDataScope());
     }
 
     @Override

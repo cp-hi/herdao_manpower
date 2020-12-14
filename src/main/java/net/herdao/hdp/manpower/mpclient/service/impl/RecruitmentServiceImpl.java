@@ -95,7 +95,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
-        recruitment.setOrgId(Long.parseLong(recruitmentUpdateFormVO.getOrgId()));
+        if (ObjectUtil.isNotNull(recruitmentUpdateFormVO.getOrgId())){
+            recruitment.setOrgId(Long.parseLong(recruitmentUpdateFormVO.getOrgId()));
+        }
 
         SysUser sysUser = SysUserUtils.getSysUser();
         if (ObjectUtil.isNotNull(sysUser)){
@@ -105,6 +107,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         }
 
         super.updateById(recruitment);
+
         BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
         return R.ok(recruitmentUpdateFormVO,"快速编辑-保存成功");
     }
