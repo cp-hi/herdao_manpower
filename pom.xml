@@ -75,6 +75,14 @@
             <version>3.9.0</version>
         </dependency>
 
+		<!-- 中台api依赖 -->
+        <dependency>
+            <groupId>net.herdao</groupId>
+            <artifactId>hdp-middle-platform-api</artifactId>
+            <scope>compile</scope>
+            <version>${hdp.version}</version>
+        </dependency>
+        
     </dependencies>
 
 

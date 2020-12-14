@@ -131,4 +131,12 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @return
      */
     R<Boolean> sendSmsCode(String mobile);
+
+	/**
+	 * 
+	 * @param recordId  表单业务ID
+	 * @param flowType 流程类型（录用流程）
+	 * @return
+	 */
+	R generateWorkflow(String recordId, String flowType);
 }

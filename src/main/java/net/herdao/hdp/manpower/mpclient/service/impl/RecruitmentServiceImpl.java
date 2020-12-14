@@ -16,15 +16,25 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esms.MessageData;
+
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -32,25 +42,29 @@ import net.herdao.hdp.common.core.constant.CacheConstants;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.constant.enums.LoginTypeEnum;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.common.message.config.SmsTemplate;
 import net.herdao.hdp.common.message.constant.SmsConstant;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
+import net.herdao.hdp.common.security.service.HdpUser;
+import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditBaseInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditOtherInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentPersonDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
-import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import net.herdao.hdp.middle.api.feign.RemoteWorkflowService;
 
 /**
  * 人才表
@@ -68,6 +82,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     private final SmsTemplate smsTemplate;
 
     private final RecruitmentEducationService recruitmentEducationService;
+    
+    
+    private RemoteWorkflowService remoteWorkflowService;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -404,4 +421,25 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         log.info("执行短信通知结果: {}，消息体: {}", result.getMsg(), message);
         return result;
     }
+    
+    /**
+     * 
+     * @param recordId  表单业务ID
+     * @param flowType 流程类型（录用流程）
+     * @return
+     */
+    @Override
+    public R generateWorkflow(String recordId,String flowType){
+    	
+    	HdpUser user = SecurityUtils.getUser();
+    	
+    	String parameterJson = "{ CreateUser:\"22\", ReferenceUser:\"22\", Org_Code:\"011\", Condition:\"\"}";
+    	String contentUrl = "www.baidu.com";
+    	String contentFK = recordId;
+    	String flowContent = flowType;
+    	
+    	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent);
+    	
+    }
+    
 }
