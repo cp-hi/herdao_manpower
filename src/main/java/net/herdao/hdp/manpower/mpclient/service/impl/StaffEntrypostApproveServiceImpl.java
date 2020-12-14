@@ -218,10 +218,10 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
     @Transactional(rollbackFor = Exception.class)
     public StaffEntrypostApprove confirmEntry(Long recruitmentId, String approveId, String certificateType, String certificateNo) {
         StaffEntrypostApprove approve = super.getById(approveId);
-        //修改更新入职登记状态
+        //修改更新入职状态
         if (ObjectUtil.isNotNull(approve)){
-            //入职登记状态 (1:未提交，2：已提交，3：已确认）
-            approve.setEntryCheckStatus("3");
+            //入职状态(待入职:RZZT01,已入职:RZZT02,报废:RZZT03)
+            approve.setEntryStatus("RZZT02");
             super.updateById(approve);
         }
 
@@ -235,133 +235,13 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
             recruitmentService.updateById(recruitment);
 
             //同步人才表（mp_recruitment)到mp_user表
-            User user=new User();
-            BeanUtils.copyProperties(recruitment,user);
-            user.setTenantId(null);
-            user.setId(null);
-            if (ObjectUtil.isNotNull(recruitment.getTalentName())){
-                user.setUserName(recruitment.getTalentName());
-            }
-            //是否停用   1：是  ， 0:否
-            user.setIsStop(0L);
-            //登录帐号 = 员工工号
-            if (ObjectUtil.isNotNull(approve.getStaffCode())){
-                user.setLoginCode(approve.getStaffCode());
-            }
-            //登录密码 = 身份证后六位
-            if (ObjectUtil.isNotNull(recruitment.getIdnumber())){
-                String password = recruitment.getIdnumber().substring(recruitment.getIdnumber().length() - 6);
-                user.setPassword(password);
-            }
-            userService.save(user);
+            User user = updateUser(approve, recruitment);
 
             //同步人才表（mp_recruitment)到mp_userpost表
-            Userpost userpost=new Userpost();
-            BeanUtils.copyProperties(recruitment,userpost);
-            userpost.setTenantId(null);
-            userpost.setId(null);
-            if(ObjectUtil.isNotNull(user)){
-                userpost.setUserId(user.getId());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getOrgId())){
-                userpost.setOrgId(recruitment.getOrgId());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
-                userpost.setPostId(Long.parseLong(recruitment.getIntentionPostId()));
-            }
-            if (ObjectUtil.isNotNull(recruitment.getInductionTime())){
-                //任职日期
-                userpost.setStartDate(recruitment.getInductionTime());
-            }
-            //是否主岗 默认主岗
-            userpost.setMainPost(true);
-            //是否虚拟岗位 默认否
-            userpost.setIsVirtual(false);
-            userpostService.save(userpost);
+            updateUserpost(recruitment, user);
 
             //同步人才表（mp_recruitment)到mp_staff表
-            Staff staff=new Staff();
-            BeanUtils.copyProperties(recruitment,staff);
-            staff.setId(null);
-            staff.setTenantId(null);
-            /*staff.setEntryTime(recruitment.getInductionTime());*/
-            if (ObjectUtil.isNotNull(recruitment.getTalentName())){
-                staff.setStaffName(recruitment.getTalentName());
-            }
-            if (ObjectUtil.isNotNull(approve.getOfficeType())){
-                staff.setJobType(approve.getOfficeType());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getPoliticalLandscape())){
-                staff.setPoliticsStatus(recruitment.getPoliticalLandscape());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
-                staff.setGoalPosts(recruitment.getIntentionPostId());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getZipcode())){
-                staff.setPostCode(recruitment.getZipcode());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getCertificateType())){
-                staff.setIdType(recruitment.getCertificateType());
-            }
-            if (ObjectUtil.isNotNull(approve.getProbation())){
-                staff.setProbPeriod(approve.getProbation().longValue());
-            }
-            if (ObjectUtil.isNotNull(approve.getProbation())){
-                staff.setProbPeriod(approve.getProbation().longValue());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getGraduated())){
-                staff.setSchoolName(recruitment.getGraduated());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getHighestEducation())){
-                staff.setEducationQua(recruitment.getHighestEducation());
-            }
-            if (ObjectUtil.isNotNull(recruitment.getProfessionalExperience())){
-                staff.setProfessionalExperience(DateUtil.format(recruitment.getProfessionalExperience(), "yyyy-MM-dd"));
-            }
-            if (ObjectUtil.isNotNull(recruitment.getManagementExperience())){
-                staff.setManagementExperience(DateUtil.format(recruitment.getManagementExperience(), "yyyy-MM-dd"));
-            }
-            if (ObjectUtil.isNotNull(recruitment.getRealEstateExperience())){
-                staff.setRealestateExperience(DateUtil.format(recruitment.getRealEstateExperience(), "yyyy-MM-dd"));
-            }
-            if (ObjectUtil.isNotNull(approve.getContractCompanyId())){
-                staff.setContractCompany(approve.getContractCompanyId().toString());
-            }
-            if (ObjectUtil.isNotNull(approve.getContractPeriod())){
-                staff.setContractTerm(approve.getContractPeriod().toString());
-            }
-            if (ObjectUtil.isNotNull(user.getId())){
-                staff.setUserId(user.getId());
-            }
-            if (ObjectUtil.isNotNull(approve.getPaidUnitsId())){
-                staff.setPaidUnit(approve.getPaidUnitsId().toString());
-            }
-            if (ObjectUtil.isNotNull(approve.getSecurityUnitsId())){
-                staff.setSecurityUnit(approve.getSecurityUnitsId().toString());
-            }
-            if (ObjectUtil.isNotNull(approve.getFundUnitsId())){
-                staff.setFundUnit(approve.getFundUnitsId().toString());
-            }
-            if (recruitment.getIsAcceptAssignment()!=null){
-                if (recruitment.getIsAcceptAssignment()==1){
-                    staff.setAcceptedAssignment(true);
-                }
-                if (recruitment.getIsAcceptAssignment()==0){
-                    staff.setAcceptedAssignment(false);
-                }
-            }
-            if (recruitment.getAcceptAssignmentLocation()!=null){
-                staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
-            }
-            if (recruitment.getAcceptAssignmentLocation()!=null){
-                staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
-            }
-            if (recruitment.getBeginDate()!=null){
-                staff.setBeginDate(recruitment.getBeginDate());
-            }
-            if (recruitment.getEndDate()!=null){
-                staff.setEndDate(recruitment.getEndDate());
-            }
+            Staff staff = updateStaff(approve, recruitment, user);
 
             staffService.save(staff);
         }
@@ -370,7 +250,159 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         return approve;
     }
 
+    /**
+     * 同步人才表（mp_recruitment)到mp_user表
+     * @param approve
+     * @param recruitment
+     * @return
+     */
+    @NotNull
+    private User updateUser(StaffEntrypostApprove approve, Recruitment recruitment) {
+        User user=new User();
+        BeanUtils.copyProperties(recruitment,user);
+        user.setTenantId(null);
+        user.setId(null);
+        if (ObjectUtil.isNotNull(recruitment.getTalentName())){
+            user.setUserName(recruitment.getTalentName());
+        }
+        //是否停用   1：是  ， 0:否
+        user.setIsStop(0L);
+        //登录帐号 = 员工工号
+        if (ObjectUtil.isNotNull(approve.getStaffCode())){
+            user.setLoginCode(approve.getStaffCode());
+        }
+        //登录密码 = 身份证后六位
+        if (ObjectUtil.isNotNull(recruitment.getIdnumber())){
+            String password = recruitment.getIdnumber().substring(recruitment.getIdnumber().length() - 6);
+            user.setPassword(password);
+        }
+        userService.save(user);
+        return user;
+    }
 
+    /**
+     * //同步人才表（mp_recruitment)到mp_staff表
+     * @param approve
+     * @param recruitment
+     * @param user
+     * @return
+     */
+    @NotNull
+    private Staff updateStaff(StaffEntrypostApprove approve, Recruitment recruitment, User user) {
+        Staff staff=new Staff();
+        BeanUtils.copyProperties(recruitment,staff);
+        staff.setId(null);
+        staff.setTenantId(null);
+        /*staff.setEntryTime(recruitment.getInductionTime());*/
+        if (ObjectUtil.isNotNull(recruitment.getTalentName())){
+            staff.setStaffName(recruitment.getTalentName());
+        }
+        if (ObjectUtil.isNotNull(approve.getOfficeType())){
+            staff.setJobType(approve.getOfficeType());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getPoliticalLandscape())){
+            staff.setPoliticsStatus(recruitment.getPoliticalLandscape());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
+            staff.setGoalPosts(recruitment.getIntentionPostId());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getZipcode())){
+            staff.setPostCode(recruitment.getZipcode());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getCertificateType())){
+            staff.setIdType(recruitment.getCertificateType());
+        }
+        if (ObjectUtil.isNotNull(approve.getProbation())){
+            staff.setProbPeriod(approve.getProbation().longValue());
+        }
+        if (ObjectUtil.isNotNull(approve.getProbation())){
+            staff.setProbPeriod(approve.getProbation().longValue());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getGraduated())){
+            staff.setSchoolName(recruitment.getGraduated());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getHighestEducation())){
+            staff.setEducationQua(recruitment.getHighestEducation());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getProfessionalExperience())){
+            staff.setProfessionalExperience(DateUtil.format(recruitment.getProfessionalExperience(), "yyyy-MM-dd"));
+        }
+        if (ObjectUtil.isNotNull(recruitment.getManagementExperience())){
+            staff.setManagementExperience(DateUtil.format(recruitment.getManagementExperience(), "yyyy-MM-dd"));
+        }
+        if (ObjectUtil.isNotNull(recruitment.getRealEstateExperience())){
+            staff.setRealestateExperience(DateUtil.format(recruitment.getRealEstateExperience(), "yyyy-MM-dd"));
+        }
+        if (ObjectUtil.isNotNull(approve.getContractCompanyId())){
+            staff.setContractCompany(approve.getContractCompanyId().toString());
+        }
+        if (ObjectUtil.isNotNull(approve.getContractPeriod())){
+            staff.setContractTerm(approve.getContractPeriod().toString());
+        }
+        if (ObjectUtil.isNotNull(user.getId())){
+            staff.setUserId(user.getId());
+        }
+        if (ObjectUtil.isNotNull(approve.getPaidUnitsId())){
+            staff.setPaidUnit(approve.getPaidUnitsId().toString());
+        }
+        if (ObjectUtil.isNotNull(approve.getSecurityUnitsId())){
+            staff.setSecurityUnit(approve.getSecurityUnitsId().toString());
+        }
+        if (ObjectUtil.isNotNull(approve.getFundUnitsId())){
+            staff.setFundUnit(approve.getFundUnitsId().toString());
+        }
+        if (recruitment.getIsAcceptAssignment()!=null){
+            if (recruitment.getIsAcceptAssignment()==1){
+                staff.setAcceptedAssignment(true);
+            }
+            if (recruitment.getIsAcceptAssignment()==0){
+                staff.setAcceptedAssignment(false);
+            }
+        }
+        if (recruitment.getAcceptAssignmentLocation()!=null){
+            staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
+        }
+        if (recruitment.getAcceptAssignmentLocation()!=null){
+            staff.setAssignmentLocations(recruitment.getAcceptAssignmentLocation());
+        }
+        if (recruitment.getBeginDate()!=null){
+            staff.setBeginDate(recruitment.getBeginDate());
+        }
+        if (recruitment.getEndDate()!=null){
+            staff.setEndDate(recruitment.getEndDate());
+        }
+        return staff;
+    }
+
+    /**
+     * 同步userpost表
+     * @param recruitment
+     * @param user
+     */
+    private void updateUserpost(Recruitment recruitment, User user) {
+        Userpost userpost=new Userpost();
+        BeanUtils.copyProperties(recruitment,userpost);
+        userpost.setTenantId(null);
+        userpost.setId(null);
+        if(ObjectUtil.isNotNull(user)){
+            userpost.setUserId(user.getId());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getOrgId())){
+            userpost.setOrgId(recruitment.getOrgId());
+        }
+        if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
+            userpost.setPostId(Long.parseLong(recruitment.getIntentionPostId()));
+        }
+        if (ObjectUtil.isNotNull(recruitment.getInductionTime())){
+            //任职日期
+            userpost.setStartDate(recruitment.getInductionTime());
+        }
+        //是否主岗 默认主岗
+        userpost.setMainPost(true);
+        //是否虚拟岗位 默认否
+        userpost.setIsVirtual(false);
+        userpostService.save(userpost);
+    }
 
 
 }

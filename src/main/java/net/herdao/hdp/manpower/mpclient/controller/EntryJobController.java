@@ -272,5 +272,27 @@ public class EntryJobController {
         return R.ok(approve);
     }
 
+    /**
+     * 确认入职登记
+     * @param id 主键id
+     * @return
+     */
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="入职表(审批表)主键id",required = true)
+    })
+    @ApiOperation(value = "确认入职登记", notes = "确认入职登记")
+    @PostMapping("/confirmEntryRegister")
+    public R<StaffEntrypostApprove> confirmEntryRegister(String id) {
+        StaffEntrypostApprove approve = staffEntrypostApproveService.getById(id);
+        //修改更新入职登记状态
+        if (ObjectUtil.isNotNull(approve)){
+            //入职登记状态 (1:未提交，2：已提交，3：已确认）
+            approve.setEntryCheckStatus("3");
+            staffEntrypostApproveService.updateById(approve);
+        }
+
+        return R.ok(approve,"确认入职登记成功");
+    }
+
 
 }
