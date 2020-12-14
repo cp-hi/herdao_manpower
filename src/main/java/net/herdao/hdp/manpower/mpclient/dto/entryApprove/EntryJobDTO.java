@@ -45,18 +45,6 @@ public class EntryJobDTO implements Serializable {
     private String personnelNature;
 
     /**
-     * 入职组织
-     */
-    @ApiModelProperty(value="入职组织")
-    private String orgName;
-
-    /**
-     * 入职岗位
-     */
-    @ApiModelProperty(value="入职岗位")
-    private String postName;
-
-    /**
      * 职级
      */
     @ApiModelProperty(value="职级")

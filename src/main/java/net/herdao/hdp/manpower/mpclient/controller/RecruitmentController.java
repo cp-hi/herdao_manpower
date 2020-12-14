@@ -85,8 +85,7 @@ public class RecruitmentController {
     @Inner(value = false)
     @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
-        R<RecruitmentUpdateFormDTO> result = recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
-        return result;
+         return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
     }
 
     /**
@@ -371,7 +370,6 @@ public class RecruitmentController {
                 }
              });
         }
-
 
         //家庭状况
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);

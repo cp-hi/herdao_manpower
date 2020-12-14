@@ -25,7 +25,6 @@ import java.util.Date;
 @ApiModel(value = "人才表单编辑")
 public class RecruitmentUpdateFormDTO   {
 
-
     /**
      * id
      */
@@ -96,4 +95,34 @@ public class RecruitmentUpdateFormDTO   {
     @ApiModelProperty(value="性别")
     private String sex;
 
+    /**
+     * 年龄
+     */
+    @ApiModelProperty(value="年龄")
+    private String age;
+
+    /**
+     * 工作年限
+     */
+    @ApiModelProperty(value="工作年限")
+    private String workAge;
+
+    /**
+     * 职位
+     */
+    @ApiModelProperty(value="职位")
+    private String finalPostName;
+
+    /**
+     * 参加工作日期
+     */
+    @ApiModelProperty(value="参加工作日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date workdate;
+
+    /**
+     * 国籍
+     */
+    @ApiModelProperty(value="国籍")
+    private String nationality;
 }
