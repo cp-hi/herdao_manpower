@@ -41,7 +41,6 @@ public class EntryJobController {
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
-    private final RecruitmentService recruitmentService;
 
     /**
      * 入职管理-待入职-列表分页

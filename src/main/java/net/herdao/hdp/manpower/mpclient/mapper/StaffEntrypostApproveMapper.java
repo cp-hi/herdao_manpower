@@ -26,9 +26,10 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
      * @param orgId 组织ID
      * @param searchText 关键字
      * @param status 状态：1 填报中，2 审批中，3 已审批
+     * @param ehrDataScope 数据权限过滤
      * @return
      */
-    Page<EntryApproveDTO> findApprovePage(Page<EntryApproveDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText,@Param("status") String status);
+    Page<EntryApproveDTO> findApprovePage(Page<EntryApproveDTO> page, @Param("orgId") String orgId, @Param("searchText") String searchText,@Param("status") String status,@Param("ehrDataScope") EhrDataScope ehrDataScope);
 
     /**
      * 录用审批-流程审批-详情

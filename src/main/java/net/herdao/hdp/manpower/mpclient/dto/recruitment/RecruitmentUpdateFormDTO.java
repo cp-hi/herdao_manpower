@@ -125,4 +125,6 @@ public class RecruitmentUpdateFormDTO   {
      */
     @ApiModelProperty(value="国籍")
     private String nationality;
+
+
 }

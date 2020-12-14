@@ -211,7 +211,10 @@
                 GROUP_CONCAT(t.rc_label) talent_label,
                 t.age,
                 t.work_age,
-                t.final_post_name
+                t.final_post_name,
+                t.birthday,
+                t.workdate,
+                t.email
           FROM (
                  SELECT rec.talent_name,
                         rec.mobile,
@@ -221,10 +224,12 @@
                         xb.label sex,
                         TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
                         TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
-                        rec.final_post_name
+                        rec.final_post_name,
+                        rec.birthday,
+                        rec.workdate,
+                        rec.email
                 FROM  mp_recruitment rec
-                LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX'
-                AND dirc.VALUE = rec.talent_type
+                LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX' AND dirc.VALUE = rec.talent_type
                 LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
                 LEFT JOIN mp_organization org on org.id= rec.org_id
                 LEFT JOIN sys_dict_item xb ON xb.type = 'SEX' AND xb.VALUE = rec.sex
@@ -234,10 +239,13 @@
                     </if>
                 </where>
                 )t  GROUP BY  t.talent_name,
-                t.mobile,
-                t.talent_type,
-                t.org_full_name,
-                t.sex
+                              t.mobile,
+                              t.talent_type,
+                              t.org_full_name,
+                              t.sex,
+                              t.birthday,
+                              t.workdate,
+                              t.email
     </select>
 
     <!-- 人才简历编辑-获取求职意向 -->
