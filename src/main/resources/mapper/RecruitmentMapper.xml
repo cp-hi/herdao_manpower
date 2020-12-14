@@ -426,7 +426,8 @@
 					rec.specialty,
 					rec.advantage,
 					rec.shortcoming,
-                    rec.characteristics
+                    rec.characteristics,
+                    rec.nationality
             FROM  mp_recruitment rec
              <where>
                 <if test="id != null ">

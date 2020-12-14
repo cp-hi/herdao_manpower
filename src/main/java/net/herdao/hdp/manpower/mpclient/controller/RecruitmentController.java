@@ -373,7 +373,6 @@ public class RecruitmentController {
              });
         }
 
-
         //家庭状况
         List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
         List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();

@@ -176,4 +176,10 @@ public class RecruitmentBaseInfo {
     @ApiModelProperty(value="性格特点")
     private String characteristics;
 
+    /**
+     * 国籍
+     */
+    @ApiModelProperty(value="国籍")
+    private String nationality;
+
 }
