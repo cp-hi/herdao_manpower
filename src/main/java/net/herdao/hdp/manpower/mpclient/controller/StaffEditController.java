@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -80,6 +81,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-个人信息", notes = "个人信息")
     @SysLog("个人信息" )
     @PutMapping("/staffinfo" )
+    @PreAuthorize("@pms.hasPermission('employees_detailsedit','employees_details_info_personalinfo_edit')" )
     public R<Boolean> updateById(@RequestBody StaffInfoDTO staffInfo) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffInfo, staff);
@@ -89,6 +91,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-在职信息", notes = "在职信息")
     @SysLog("在职信息" )
     @PutMapping("/staffjobinfo" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_jobinfo_edit')" )
     public R<Boolean> updateById(@RequestBody StaffJobInfoDTO staffJobInfo) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffJobInfo, staff);
@@ -98,6 +101,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-其他个人信息", notes = "其他个人信息")
     @SysLog("其他个人信息" )
     @PutMapping("/staffinfoother" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_otherinfo_edit')" )
     public R<Boolean> updateById(@RequestBody StaffInfoOtherDTO staffInfoOther) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffInfoOther, staff);
@@ -107,6 +111,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-紧急联系人", notes = "紧急联系人")
     @SysLog("紧急联系人" )
     @PutMapping("/staffemergency" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_emergency_edit ')" )
     public R<Boolean> updateById(@RequestBody StaffEmergencyDTO staffEmergency) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffEmergency, staff);
@@ -116,6 +121,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-社保信息", notes = "社保信息")
     @SysLog("社保信息" )
     @PutMapping("/staffsecurity" )
+    @PreAuthorize("@pms.hasPermission('employees_details_laborinfo_social_edit')" )
     public R<Boolean> updateById(@RequestBody StaffSecurityDTO staffSecurity) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffSecurity, staff);
@@ -125,6 +131,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-公积金信息", notes = "公积金信息")
     @SysLog("公积金信息" )
     @PutMapping("/stafffund" )
+    @PreAuthorize("@pms.hasPermission('employees_details_laborinfo_accumulation_edit')" )
     public R<Boolean> updateById(@RequestBody StaffFundDTO staffFund) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffFund, staff);
@@ -134,6 +141,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-薪资信息", notes = "薪资信息")
     @SysLog("薪资信息" )
     @PutMapping("/staffsalary" )
+    @PreAuthorize("@pms.hasPermission('employees_details_laborinfo_salary_edit')" )
     public R<Boolean> updateById(@RequestBody StaffSalaryDTO staffSalary) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(staffSalary, staff);
@@ -143,6 +151,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-修改家庭情况", notes = "家庭情况")
     @SysLog("修改家庭情况" )
     @PutMapping("/stafffamily" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_family_edit')" )
     public R<Boolean> updateById(@RequestBody StaffFamilyDTO staffFamily) {
     	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
@@ -163,6 +172,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-新增家庭情况", notes = "家庭情况")
     @SysLog("新增家庭情况" )
     @PostMapping("/stafffamily" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_family_new')")
     public R<Boolean> save(@RequestBody StaffFamilyDTO staffFamily) {
     	UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
@@ -186,6 +196,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-删除家庭情况", notes = "家庭情况")
     @SysLog("删除家庭情况" )
     @DeleteMapping("/stafffamily/{id}" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_family_delete')")
     public R<Boolean> deleteFamily(@PathVariable Long id) {
         return R.ok(familystatusService.removeById(id));
     }
@@ -193,6 +204,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-修改劳动合同", notes = "劳动合同")
     @SysLog("修改劳动合同" )
     @PutMapping("/staffcontract" )
+    @PreAuthorize("@pms.hasPermission('employees_details_laborinfo_contract_edit')")
     public R<Boolean> updateById(@RequestBody StaffContractDetailDTO staffContract) {
         Staffcontract contract = new Staffcontract();
         BeanUtils.copyProperties(staffContract, contract);
@@ -201,7 +213,7 @@ public class StaffEditController {
 
     @ApiOperation(value = "员工详情-新增劳动合同", notes = "劳动合同")
     @SysLog("新增劳动合同" )
-    @PostMapping("/staffcontract" )
+    @PostMapping("/staffcontract")
     public R<Boolean> save(@RequestBody StaffContractDetailDTO staffContract) {
         Staffcontract contract = new Staffcontract();
         BeanUtils.copyProperties(staffContract, contract);
@@ -211,6 +223,7 @@ public class StaffEditController {
     @ApiOperation(value = "员工详情-删除劳动合同", notes = "劳动合同")
     @SysLog("删除劳动合同" )
     @DeleteMapping("/staffcontract/{id}" )
+    @PreAuthorize("@pms.hasPermission('employees_details_laborinfo_contract_delete')")
     public R<Boolean> deleteContract(@PathVariable Long id) {
         return R.ok(staffcontractService.removeById(id));
     }

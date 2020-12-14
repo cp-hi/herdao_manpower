@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -91,7 +92,6 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
     public R getStaffPage(Page page, StaffListDTO staff, String tab, String searchText) {
         staff.setJobType(jobTypeMap.get(tab));
         return R.ok(staffService.staffPage(page, staff, searchText));
@@ -140,7 +140,7 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "花名册快速编辑员工", notes = "快速编辑员工")
     @SysLog("快速编辑员工" )
     @PutMapping("/quickedit" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_edit')" )
+    @PreAuthorize("@pms.hasPermission('employees_fastediting')" )
     public R<Boolean> updateById(@RequestBody StaffQuickEditDTO quickEdit) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(quickEdit, staff);
@@ -154,7 +154,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询个人主页", notes = "通过id查询")
     @GetMapping("/staffhomepage/{id}" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    @PreAuthorize("@pms.hasPermission('employees_homepage')" )
     public R getHomePage(@PathVariable("id" ) Long id) {
         return R.ok(staffService.getHomePage(id));
     }
@@ -166,7 +166,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询员工详情", notes = "通过id查询")
     @GetMapping("/staffdetail/{id}" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    @PreAuthorize("@pms.hasPermission('employees_details')" )
     public R getStaffDetail(@PathVariable("id" ) Long id) {
         return R.ok(staffService.getStaffDetail(id));
     }
@@ -311,7 +311,7 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "新增员工表", notes = "新增员工表")
     @SysLog("新增员工表" )
     @PostMapping
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_add')" )
+    @PreAuthorize("@pms.hasPermission('employees_new')" )
     public R<StaffDetailDTO> save(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffSave(staffForm));
     }

@@ -121,6 +121,7 @@ public class StaffEducationController extends HdpBaseController {
     @ApiOperation(value = "新增员工教育经历", notes = "新增员工教育经历")
     @PostMapping("/saveEducation")
    // @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_add')" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_edu_new')")
     public R saveEducation(@RequestBody Staffeducation staffeducation) {
         boolean status = staffeducationService.saveEdu(staffeducation);
         return R.ok(status);
@@ -134,6 +135,7 @@ public class StaffEducationController extends HdpBaseController {
     @ApiOperation(value = "修改员工教育经历", notes = "修改员工教育经历")
     @PutMapping("/updateEducation")
     // @PreAuthorize("@pms.hasPermission('mpclient_staffeducation_edit')" )
+     @PreAuthorize("@pms.hasPermission('employees_details_info_edu_edit')" )
     public R updateById(@RequestBody Staffeducation staffeducation) {
         boolean status = staffeducationService.updateEdu(staffeducation);
         return R.ok(status);
@@ -146,7 +148,7 @@ public class StaffEducationController extends HdpBaseController {
      */
     @ApiOperation(value = "通过id删除员工教育经历", notes = "通过id删除员工教育经历")
     @DeleteMapping("/del/{id}" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffeducation_del')" )
+    @PreAuthorize("@pms.hasPermission('employees_details_info_edu_delete')" )
     public R removeById(@PathVariable Long id) {
         return R.ok(staffeducationService.removeById(id));
     }
