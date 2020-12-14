@@ -201,21 +201,27 @@
         </where>
     </select>
 
-    <!-- 人才简历-顶部-->
+    <!--人才简历-顶部-->
     <select id="fetchResumeTop" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO">
         SELECT  t.talent_name,
                 t.mobile,
                 t.talent_type,
                 t.org_full_name,
                 t.sex,
-                GROUP_CONCAT(t.rc_label) talent_label
-                FROM (
-                SELECT rec.talent_name,
-                rec.mobile,
-                dirc.label talent_type,
-                rl.`name` rc_label,
-                org.ORG_FULLNAME org_full_name,
-                xb.label sex
+                GROUP_CONCAT(t.rc_label) talent_label,
+                t.age,
+                t.work_age,
+                t.final_post_name
+          FROM (
+                 SELECT rec.talent_name,
+                        rec.mobile,
+                        dirc.label talent_type,
+                        rl.`name` rc_label,
+                        org.ORG_FULLNAME org_full_name,
+                        xb.label sex,
+                        TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
+                        TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
+                        rec.final_post_name
                 FROM  mp_recruitment rec
                 LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX'
                 AND dirc.VALUE = rec.talent_type

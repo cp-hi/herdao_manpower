@@ -96,4 +96,25 @@ public class RecruitmentUpdateFormDTO   {
     @ApiModelProperty(value="性别")
     private String sex;
 
+    /**
+     * 年龄
+     */
+    @ApiModelProperty(value="年龄")
+    private String age;
+
+    /**
+     * 工作年限
+     */
+    @ApiModelProperty(value="工作年限")
+    private String workAge;
+
+    /**
+     * 职称
+     */
+    @ApiModelProperty(value="职称")
+    private String finalPostName;
+
+
+
+
 }
