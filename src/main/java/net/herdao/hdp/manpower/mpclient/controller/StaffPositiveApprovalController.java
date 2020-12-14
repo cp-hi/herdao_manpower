@@ -53,11 +53,10 @@ public class StaffPositiveApprovalController {
 
     /**
      * 分页查询
-     *
-     * @param page       分页对象
-     * @param searchText
-     * @param orgId
-     * @param status
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
+     * @param status 状态：1 填报中，2 审批中，3 已审批
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
@@ -70,6 +69,11 @@ public class StaffPositiveApprovalController {
     }
 
 
+    /**
+     * 获取转正详情
+     * @param id 主键ID
+     * @return
+     */
     @ApiOperation(value = "获取转正详情")
     @GetMapping("/{id}")
     public R<StaffPositiveApprovalInfoVO> getDetail(@PathVariable("id") Long id) {
@@ -77,6 +81,12 @@ public class StaffPositiveApprovalController {
     }
 
 
+    /**
+     * 新增、编辑页-确认发起
+     * @param id 主键ID
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "新增、编辑页-确认发起")
     @PostMapping("/affirm/start")
     public R affirmStart(Long id,
@@ -84,7 +94,12 @@ public class StaffPositiveApprovalController {
         return R.ok(staffPositiveApprovalService.affirmStart(id, dto));
     }
 
-
+    /**
+     * 新增、编辑页-确认发起
+     * @param id 主键ID
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "新增、编辑页-确认发起")
     @PutMapping("/affirm/{id}")
     public R affirm(@PathVariable("id") Long id) throws Exception {
@@ -92,6 +107,12 @@ public class StaffPositiveApprovalController {
     }
 
 
+    /**
+     * 编辑
+     * @param id 主键ID
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "编辑")
     @PutMapping("/{id}")
     private R<Long> update(@PathVariable("id") @NotNull Long id,
