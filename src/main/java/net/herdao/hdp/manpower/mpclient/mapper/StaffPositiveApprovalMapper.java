@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,9 +36,21 @@ public interface StaffPositiveApprovalMapper extends BaseMapper<StaffPositiveApp
 
     /**
      * 分页查询
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
+     * @param status 状态：1 填报中，2 审批中，3 已审批
+     * @return
      */
     Page<StaffPositiveApprovalPage> getPositiveApprovalPageInfo(Page<StaffPositiveApproval> page,
                                                                 @Param("orgId") Long orgId,
                                                                 @Param("status") String status,
                                                                 @Param("searchText") String searchText);
+
+    /**
+     * 获取转正详情
+     * @param id 主键ID
+     * @return
+     */
+    StaffPositiveApprovalDetailDTO getPositiveApprovalById(Long id);
 }

@@ -65,6 +65,20 @@ public class EntryDTO implements Serializable {
     private String orgName;
 
     /**
+     * 所属组织id
+     */
+    @ApiModelProperty(value="所属组织id")
+    @ExcelIgnore
+    private Long orgId;
+
+    /**
+     * 所属岗位id
+     */
+    @ApiModelProperty(value = "所属岗位id")
+    @ExcelIgnore
+    private Long postId;
+
+    /**
      * 岗位
      */
     @ApiModelProperty(value="岗位")

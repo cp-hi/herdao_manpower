@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPositiveApprovalMapper;
@@ -54,11 +55,10 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
 
     /**
      * 分页查询
-     *
-     * @param page       分页对象
-     * @param searchText
-     * @param orgId
-     * @param status
+     * @param page 分页对象
+     * @param orgId 组织ID
+     * @param searchText 关键字搜索
+     * @param status 状态：1 填报中，2 审批中，3 已审批
      * @return
      */
     @Override
@@ -88,6 +88,9 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
             }
             if (record.getPositiveTime() != null) {
                 vo.setPositiveTime(LocalDateTimeUtils.convert2Long(record.getPositiveTime()));
+            }
+            if (record.getCreatorTime() != null) {
+                vo.setCreatorTime(LocalDateTimeUtils.convert2Long(record.getCreatorTime()));
             }
             String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
             vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
@@ -119,7 +122,7 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
      * 新增转正审批表
      *
      * @param dto 转正审批表
-     * @return R
+     * @return
      */
     @Override
     public Long insert(StaffPositiveApprovalSaveDTO dto) {
@@ -133,12 +136,15 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         return entity.getId();
     }
 
+
     /**
      * 获取转正详情
+     * @param id 主键ID
+     * @return
      */
     @Override
     public StaffPositiveApprovalInfoVO getStaffPositive(Long id) {
-        StaffPositiveApproval entity = this.baseMapper.selectById(id);
+        StaffPositiveApprovalDetailDTO entity = this.baseMapper.getPositiveApprovalById(id);
         if (entity != null) {
             StaffPositiveApprovalInfoVO vo = new StaffPositiveApprovalInfoVO();
             BeanUtils.copyProperties(entity, vo);

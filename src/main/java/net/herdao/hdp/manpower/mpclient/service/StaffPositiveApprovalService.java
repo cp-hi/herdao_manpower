@@ -34,12 +34,10 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
 
     /**
      * 分页查询
-     *
      * @return
      */
     Page<StaffPositiveApprovalPageVO> getPositiveApprovalPageInfo(Page<StaffPositiveApproval> page, Long orgId,
                                                                   String status, String searchText);
-
 
     /**
      * 通过id删除转正审批表
@@ -49,8 +47,6 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
 
     /**
      * 新增转正审批表
-     *
-     * @param staffPositiveApproval
      * @return
      */
     Long insert(StaffPositiveApprovalSaveDTO staffPositiveApproval);

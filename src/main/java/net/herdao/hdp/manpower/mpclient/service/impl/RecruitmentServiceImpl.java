@@ -105,7 +105,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         }
 
         super.updateById(recruitment);
-
         BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
         return R.ok(recruitmentUpdateFormVO,"快速编辑-保存成功");
     }

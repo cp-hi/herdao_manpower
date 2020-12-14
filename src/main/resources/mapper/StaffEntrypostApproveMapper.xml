@@ -280,7 +280,9 @@
                             app.mobile_no,
                             app.email,
                             org.org_name,
+                            app.org_id,
                             app.certificate_no,
+                            app.post_id,
                             pst.post_name,
                             jl.JOB_LEVEL_NAME job_level_name,
                             app.entry_post_time,
@@ -565,18 +567,18 @@
 
     <!--入职管理-办理入职-入职信息 -->
     <select id="findEntryJobInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryJobDTO">
-        SELECT  app.id,
-                app.staff_status,
-                app.office_type,
-                app.personnel_nature,
-                org.org_name,
-                pst.post_name,
-                app.job_level_id,
-                app.entry_post_time,
-                app.probation
-        FROM mp_staff_entrypost_approve app
-        LEFT JOIN mp_organization org on org.id=app.org_id
-        LEFT JOIN mp_post pst on pst.id= app.post_id
+            SELECT  app.id,
+                    app.staff_status,
+                    app.office_type,
+                    app.personnel_nature,
+                    app.org_id,
+                    app.post_id,
+                    app.job_level_id,
+                    app.entry_post_time,
+                    app.probation
+            FROM mp_staff_entrypost_approve app
+            LEFT JOIN mp_organization org ON org.id = app.org_id
+            LEFT JOIN mp_post pst ON pst.id = app.post_id
         <where>
             <if test="id != null ">
                 AND  app.id= #{id}

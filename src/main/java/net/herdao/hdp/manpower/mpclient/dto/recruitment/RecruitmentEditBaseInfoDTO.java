@@ -187,4 +187,9 @@ public class RecruitmentEditBaseInfoDTO {
     @ApiModelProperty(value="有亲戚朋友在本公司")
     private Boolean isRelativeCompany;
 
+    /**
+     * 国籍
+     */
+    @ApiModelProperty(value="国籍")
+    private String nationality;
 }
