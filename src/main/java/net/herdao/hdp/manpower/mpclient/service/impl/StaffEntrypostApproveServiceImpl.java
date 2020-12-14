@@ -218,12 +218,10 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
     @Transactional(rollbackFor = Exception.class)
     public StaffEntrypostApprove confirmEntry(Long recruitmentId, String approveId, String certificateType, String certificateNo) {
         StaffEntrypostApprove approve = super.getById(approveId);
-        //修改更新入职登记状态 入职状态
+        //修改更新入职登记状态
         if (ObjectUtil.isNotNull(approve)){
             //入职登记状态 (1:未提交，2：已提交，3：已确认）
             approve.setEntryCheckStatus("3");
-            //入职状态  (待入职:RZZT01,已入职:RZZT02,报废:RZZT03)
-            approve.setEntryStatus("RZZT02");
             super.updateById(approve);
         }
 
