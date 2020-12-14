@@ -280,6 +280,7 @@
                             app.mobile_no,
                             app.email,
                             org.org_name,
+                            app.org_id,
                             app.certificate_no,
                             pst.post_name,
                             jl.JOB_LEVEL_NAME job_level_name,
