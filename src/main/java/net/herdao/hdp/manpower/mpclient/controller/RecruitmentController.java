@@ -1,28 +1,70 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import cn.hutool.core.util.ObjectUtil;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.*;
+
+import cn.hutool.core.util.ObjectUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.annotation.Inner;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDetailsDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditBaseInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditDetailsDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditOtherInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentResultDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentPersonDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentWorkDetailsDTO;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import lombok.AllArgsConstructor;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentActivitiService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentAwardsService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentTitleService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentTrainService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 人才表
@@ -483,13 +525,11 @@ public class RecruitmentController {
     @ApiOperation(value = "发起流程", notes = "发起流程")
     @PostMapping("/generateWorkflow")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="主键ID"),
+        @ApiImplicitParam(name="recordId",value="业务表单ID",required = true),
+        @ApiImplicitParam(name="flowType",value="主键ID",required = true)
     })
-    public R generateWorkflow(Long id) {
-    	
-    	
-    	
-    	return R.ok();
+    public R generateWorkflow(String recordId,String flowType) {
+    	return recruitmentService.generateWorkflow(recordId, flowType);
     }
     
 }
