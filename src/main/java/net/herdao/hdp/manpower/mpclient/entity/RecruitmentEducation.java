@@ -41,7 +41,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "人才教育情况")
 public class RecruitmentEducation extends Model<RecruitmentEducation> {
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id

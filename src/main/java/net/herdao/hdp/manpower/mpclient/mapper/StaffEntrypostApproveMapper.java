@@ -104,10 +104,10 @@ public interface StaffEntrypostApproveMapper extends BaseMapper<StaffEntrypostAp
 
     /**
      * 入职管理-办理入职-入职信息
-     * @param recruitmentId 人才ID
+     * @param id 主键ID
      * @return EntryJobDTO
      */
-    EntryJobDTO findEntryJobInfo(@Param("recruitmentId") String recruitmentId);
+    EntryJobDTO findEntryJobInfo(@Param("id") String id);
 
     /**
      * 录用审批-填报中-修改-通过主键ID获取详情

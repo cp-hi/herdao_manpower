@@ -17,17 +17,23 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentEducationMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,6 +47,7 @@ import java.util.List;
  */
 @Service
 public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEducationMapper, RecruitmentEducation> implements RecruitmentEducationService {
+
 
     @Override
     public Page<RecruitmentEduDTO> fetchResumeEduPage(Page page, Long recruitmentId) {
@@ -97,4 +104,6 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         List<RecruitmentEduDTO> list = this.baseMapper.fetchResumeEduList(recruitmentId);
         return list;
     }
+
+
 }

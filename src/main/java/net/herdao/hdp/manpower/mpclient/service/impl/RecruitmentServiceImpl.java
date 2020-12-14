@@ -37,7 +37,9 @@ import net.herdao.hdp.common.message.config.SmsTemplate;
 import net.herdao.hdp.common.message.constant.SmsConstant;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -64,6 +66,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     private final RedisTemplate redisTemplate;
 
     private final SmsTemplate smsTemplate;
+
+    private final RecruitmentEducationService recruitmentEducationService;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -93,10 +97,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         BeanUtils.copyProperties(recruitmentUpdateFormVO,recruitment);
         recruitment.setOrgId(Long.parseLong(recruitmentUpdateFormVO.getOrgId()));
 
-        /*SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
+
         super.updateById(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentUpdateFormVO);
@@ -122,10 +129,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentAddFormDTO,recruitment);
 
-       /* SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setCreatorTime(LocalDateTime.now());
-        recruitment.setCreatorCode(sysUser.getUsername());
-        recruitment.setCreatorName(sysUser.getAliasName());*/
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setCreatorTime(LocalDateTime.now());
+            recruitment.setCreatorCode(sysUser.getUsername());
+            recruitment.setCreatorName(sysUser.getAliasName());
+        }
         super.save(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentAddFormDTO);
@@ -190,10 +199,30 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(dto,recruitment);
         recruitment.setCharacteristics(dto.getCharacteristics());
-        /*SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
+        if (ObjectUtil.isNotNull(dto.getIsAcceptAssignment())){
+            if (dto.getIsAcceptAssignment()){
+                recruitment.setIsAcceptAssignment(1);
+            }
+            if (!dto.getIsAcceptAssignment()){
+                recruitment.setIsAcceptAssignment(0);
+            }
+        }
+        if (ObjectUtil.isNotNull(dto.getIsRelativeCompany())){
+            if (dto.getIsRelativeCompany()){
+                recruitment.setIsRelativeCompany(1);
+            }
+            if (!dto.getIsRelativeCompany()){
+                recruitment.setIsRelativeCompany(0);
+            }
+        }
+
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
+
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,dto);
 
@@ -219,13 +248,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             recruitment.setRecruitmentPostId(dto.getIntentionPostId());
         }
 
-       /* SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
-
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
         super.updateById(recruitment);
-
         BeanUtils.copyProperties(recruitment,dto);
 
         return dto;
@@ -251,8 +280,39 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
-        RecruitmentTopEduDTO recruitmentTopEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
-        return recruitmentTopEduDTO;
+        //获取人才教育表的最高学历信息
+        LambdaQueryWrapper<RecruitmentEducation> eduQueryWrapper = Wrappers.lambdaQuery();
+        eduQueryWrapper.eq( RecruitmentEducation::getRecruitmentId,id).orderByDesc(RecruitmentEducation::getPeriod);
+        List<RecruitmentEducation> eduList = recruitmentEducationService.list(eduQueryWrapper);
+
+        //获取人才表的最高教育信息
+        RecruitmentTopEduDTO recruitmentTopEdu = this.baseMapper.fetchRecruitmentTopEdu(id);
+
+        //如果人才教育表的最高学历信息不为空 则进行赋值和更新操作
+        if (ObjectUtil.isNotEmpty(eduList)){
+            RecruitmentEducation education = eduList.get(0);
+
+            //把“人才教育表的最高学历信息”赋值到“人才表的最高教育信息”
+            if (ObjectUtil.isNotEmpty(education)){
+                BeanUtils.copyProperties(education,recruitmentTopEdu);
+                recruitmentTopEdu.setBeginDate(education.getPeriod());
+                recruitmentTopEdu.setEndDate(education.getTodate());
+                recruitmentTopEdu.setHighestEducation(education.getEducationQua());
+                recruitmentTopEdu.setEducationDegree(education.getDegree());
+                recruitmentTopEdu.setGraduated(education.getSchoolName());
+                //recruitmentTopEdu.setProfessional(education.getProfessional());
+                //recruitmentTopEdu.setLearnForm(education.getLearnForm());
+            }
+
+            //更新人才表的最高学历教育信息
+            Recruitment recruitment=new Recruitment();
+            if (ObjectUtil.isNotEmpty(recruitmentTopEdu)){
+                BeanUtils.copyProperties(recruitmentTopEdu,recruitment);
+                super.updateById(recruitment);
+            }
+        }
+
+        return recruitmentTopEdu;
     }
 
     @Override
@@ -304,10 +364,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentEditOtherInfoDTO updateOtherInfo(RecruitmentEditOtherInfoDTO otherInfo) {
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(otherInfo,recruitment);
-       /* SysUser sysUser = SysUserUtils.getSysUser();
-        recruitment.setModifierTime(LocalDateTime.now());
-        recruitment.setModifierCode(sysUser.getUsername());
-        recruitment.setModifierName(sysUser.getAliasName());*/
+        SysUser sysUser = SysUserUtils.getSysUser();
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitment.setModifierTime(LocalDateTime.now());
+            recruitment.setModifierCode(sysUser.getUsername());
+            recruitment.setModifierName(sysUser.getAliasName());
+        }
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,otherInfo);
 
@@ -336,8 +398,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 CacheConstants.DEFAULT_CODE_KEY + LoginTypeEnum.SMS.getType() + StringPool.AT + mobile, code,
                 SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
         MessageData message = new MessageData(mobile, String.format(SmsConstant.MP_TEMPLATE,code));
-        R r = smsTemplate.doSendSingleSmsForSingle(message);
-        log.info("执行短信通知结果: {}，消息体: {}", r.getMsg(), message);
-        return r;
+        R result = smsTemplate.doSendSingleSmsForSingle(message);
+        log.info("执行短信通知结果: {}，消息体: {}", result.getMsg(), message);
+        return result;
     }
 }

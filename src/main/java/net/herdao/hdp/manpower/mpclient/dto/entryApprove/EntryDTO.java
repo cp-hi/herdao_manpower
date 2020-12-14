@@ -25,9 +25,16 @@ public class EntryDTO implements Serializable {
     /**
      * id
      */
-    @ApiModelProperty(value="id")
+    @ApiModelProperty(value="审批表主键id")
     @ExcelIgnore
     private Long id;
+
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才表主键id")
+    @ExcelIgnore
+    private Long recruitmentId;
 
     /**
      * 姓名

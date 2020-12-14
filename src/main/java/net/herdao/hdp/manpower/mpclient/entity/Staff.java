@@ -157,9 +157,11 @@ private static final long serialVersionUID = 1L;
     private String schoolName;
 
     @ApiModelProperty(value="入学日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date beginDate;
 
     @ApiModelProperty(value="毕业日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endDate;
 
     @ApiModelProperty(value="专业")
