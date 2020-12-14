@@ -294,5 +294,18 @@ public class EntryJobController {
         return R.ok(approve,"确认入职登记成功");
     }
 
-
+    /**
+     * 提醒重新登记
+     * @param id 主键id
+     * @return
+     */
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="入职表(审批表)主键id",required = true)
+    })
+    @ApiOperation(value = "提醒重新登记", notes = "提醒重新登记")
+    @PostMapping("/remindRegister")
+    public R<StaffEntrypostApprove> remindRegister(String id) {
+        // TODO: 要与小明沟通 进一步确定与完善业务代码
+        return R.ok();
+    }
 }

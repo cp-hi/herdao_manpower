@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.dto.entryApprove;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -72,5 +73,19 @@ public class EntryJobDTO implements Serializable {
      */
     @ApiModelProperty(value="试用期")
     private String probation;
+
+    /**
+     * 所属组织id
+     */
+    @ApiModelProperty(value="所属组织id")
+    @ExcelIgnore
+    private Long orgId;
+
+    /**
+     * 所属岗位id
+     */
+    @ApiModelProperty(value = "所属岗位id")
+    @ExcelIgnore
+    private Long postId;
 
 }
