@@ -138,5 +138,5 @@ public interface RecruitmentService extends IService<Recruitment> {
 	 * @param flowType 流程类型（录用流程）
 	 * @return
 	 */
-	R generateWorkflow(String recordId, String flowType);
+	R generateWorkflow(String recordId, String flowType,String contentUrl);
 }
