@@ -118,7 +118,7 @@ public class RecruitmentController {
     }
 
      /**
-     * 修改更新人才表
+     * 快速编辑-修改更新
      *
      * @param recruitmentUpdateFormVO 人才表
      * @return R
@@ -127,6 +127,17 @@ public class RecruitmentController {
     @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
          return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
+    }
+
+    /**
+     * 快速编辑-修改更新-手机端
+     * @param recruitmentUpdateFormVO 人才表
+     * @return R
+     */
+    @ApiOperation(value = "快速编辑-修改更新-手机端", notes = "快速编辑-修改更新-手机端")
+    @PostMapping("/updateRecruitmentByMobile")
+    public R<RecruitmentUpdateFormDTO> updateRecruitmentByMobile(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
+        return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
     }
 
     /**
