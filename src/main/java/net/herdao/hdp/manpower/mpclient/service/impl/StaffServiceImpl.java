@@ -350,55 +350,69 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				.eq("id", id);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
-		// 查看 人员归属范围和任职类型的字典类型
-		if (staff == null) {
-			throw new Exception("该员工不存在");
-		}
-		QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
-		SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
-				.eq("value", staff.getStaffScope()));
-		QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
-		SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
-				.eq("value", staff.getJobType()));
+		if (staff != null) {
+			StaffBasicVO.StaffInfo staffInfo = new StaffBasicVO.StaffInfo();
+			// 查看人员归属范围的字典对象
+			if (staff.getStaffScope() != null) {
+				QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
+				SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
+						.eq("value", staff.getStaffScope()));
+				staffInfo.setStaffScope(staffScope);
+			}
 
-		StaffBasicVO vo = new StaffBasicVO();
-		vo.setUserId(staff.getUserId());
-		vo.setStaffName(staff.getStaffName());
-		vo.setStaffCode(staff.getStaffCode());
-		vo.setStaffScope(staffScope);
-		vo.setJobType(jobType);
-		vo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
+			// 查看人员任职类型的字典对象
+			if (staff.getJobType() != null) {
+				QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
+				SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
+						.eq("value", staff.getJobType()));
+				staffInfo.setStaffJobType(jobType);
+			}
 
-		// 查询员工任职信息
-		if (staff != null && staff.getUserId() != null) {
-			QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
-			Userpost userpost = userpostService.getOne(upWrapper
-					.eq("user_id", staff.getUserId())
-					.eq("main_post", 1));
-			// 查询员工组织信息
-			if (userpost != null && userpost.getOrgId() != null) {
-				Organization org = organizationService.getById(userpost.getOrgId());
-				if (org != null) {
-					vo.setOrgId(org.getId());
-					vo.setOrgName(org.getOrgName());
+			if (staff.getUserId() != null) {
+				staffInfo.setUserId(staff.getUserId());
+			}
+			String staffName = staff.getStaffName() != null ? staff.getStaffName() : "";
+			String staffCode = staff.getStaffCode() != null ? staff.getStaffCode() : "";
+			staffInfo.setStaffNameAndCode(staffName + "(" + staffCode + ")");
+			staffInfo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
+
+			// 查询员工主任职信息
+			StaffBasicVO.StaffPostInfo staffPostInfo = new StaffBasicVO.StaffPostInfo();
+			if (staff.getUserId() != null) {
+				QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
+				Userpost userpost = userpostService.getOne(upWrapper
+						.eq("user_id", staff.getUserId())
+						.eq("main_post", 1));
+
+				// 查询员工组织信息
+				if (userpost != null && userpost.getOrgId() != null) {
+					Organization org = organizationService.getById(userpost.getOrgId());
+					if (org != null) {
+						staffPostInfo.setOrgId(org.getId());
+						staffPostInfo.setOrgName(org.getOrgName());
+					}
+				}
+				// 查看员工岗位信息
+				if (userpost != null &&  userpost.getPostId() != null) {
+					Post post = postService.getById(userpost.getPostId());
+					if (post != null) {
+						staffPostInfo.setPostId(post.getId());
+						staffPostInfo.setPostName(post.getPostName());
+					}
+				}
+				// 查看员工职级信息
+				if (userpost != null && userpost.getJobLevelId() != null) {
+					JobLevel jobLevel = jobLevelService.getById(userpost.getJobLevelId());
+					if (jobLevel != null) {
+						staffPostInfo.setJobLevelId(jobLevel.getId());
+						staffPostInfo.setJobLevelName(jobLevel.getJobLevelName());
+					}
 				}
 			}
-			// 查看员工岗位信息
-			if (userpost != null &&  userpost.getPostId() != null) {
-				Post post = postService.getById(userpost.getPostId());
-				if (post != null) {
-					vo.setPostId(post.getId());
-					vo.setPostName(post.getPostName());
-				}
-			}
-			// 查看员工职级信息
-			if (userpost != null && userpost.getJobLevelId() != null) {
-				JobLevel jobLevel = jobLevelService.getById(userpost.getJobLevelId());
-				if (jobLevel != null) {
-					vo.setJobLevelId(jobLevel.getId());
-					vo.setJobLevelName(jobLevel.getJobLevelName());
-				}
-			}
+
+			StaffBasicVO vo = new StaffBasicVO();
+			vo.setStaffInfo(staffInfo);
+			vo.setStaffPostInfo(staffPostInfo);
 			return vo;
 		}
 		return null;
