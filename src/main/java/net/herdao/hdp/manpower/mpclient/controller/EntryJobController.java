@@ -253,13 +253,9 @@ public class EntryJobController {
 
     /**
      * 办理入职-确认入职
-     * @param recruitmentId 人才表主键id
-     * @param approveId 审批录用表主键id
-     * @param certificateType 证件类型
-     * @param certificateNo 证件号码
+     * @param entryJobVO 入职VO
      * @return
      */
-
     @ApiOperation(value = "办理入职-确认入职", notes = "办理入职-确认入职")
     @PostMapping("/confirmEntry")
     public R<StaffEntrypostApprove> confirmEntry(@RequestBody EntryJobVO entryJobVO) {
