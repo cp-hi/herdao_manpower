@@ -61,11 +61,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="附件大小")
     private String fileSize;
-    /**
-     * 附件所属字典分类
-     */
-    @ApiModelProperty(value="附件所属字典分类")
-    private String fileDicType;
+
     /**
      * 文件上传ID (上传ftp后成功返回的ID)
      */
@@ -151,4 +147,4 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="修改人时间")
     private LocalDateTime modifierTime;
-    }
+}
