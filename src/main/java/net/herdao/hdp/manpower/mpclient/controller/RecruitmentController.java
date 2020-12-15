@@ -543,7 +543,7 @@ public class RecruitmentController {
         @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true),
         @ApiImplicitParam(name="status",value="状态",required = true)
     })
-    public R workflowNotify(String recordId,String flowType) {
+    public R workflowNotify(String recordId,String flowType,Integer status) {
     	
     	//TODO 根据流程类型找到 对应的 需要修改的表单
     	//TODO 更新表单的状态 
