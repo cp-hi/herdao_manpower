@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
+import net.herdao.hdp.manpower.mpclient.vo.EntryJobVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -112,13 +113,10 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
 
     /**
      * 入职登记详情-确认入职登记
-     * @param recruitmentId 人才表ID
-     * @param approveId  审批表ID
-     * @param certificateType 证书类型
-     * @param certificateNo 证书编号
+     * @param entryJobVO 人才表ID
      * @return
      */
-    StaffEntrypostApprove confirmEntry(Long recruitmentId, String approveId, String certificateType, String certificateNo);
+    StaffEntrypostApprove confirmEntry(EntryJobVO entryJobVO);
 
 
  }

@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffEntrypostApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.vo.EntryJobVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.jetbrains.annotations.NotNull;
@@ -217,8 +218,8 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public StaffEntrypostApprove confirmEntry(Long recruitmentId, String approveId, String certificateType, String certificateNo) {
-        StaffEntrypostApprove approve = super.getById(approveId);
+    public StaffEntrypostApprove confirmEntry(EntryJobVO entryJobVO) {
+        StaffEntrypostApprove approve = super.getById(entryJobVO.getApproveId());
         //修改更新入职状态
         if (ObjectUtil.isNotNull(approve)){
             //入职状态(待入职:RZZT01,已入职:RZZT02,报废:RZZT03)
@@ -227,26 +228,21 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         }
 
         //修改更新人才表
-        Recruitment recruitment = recruitmentService.getById(recruitmentId);
+        Recruitment recruitment = recruitmentService.getById(entryJobVO.getRecruitmentId());
         if (ObjectUtil.isNotNull(recruitment)){
             //更新人才表
-            recruitment.setId(recruitmentId);
-            recruitment.setCertificateType(certificateType);
-            recruitment.setCertificateNo(certificateNo);
+            recruitment.setId(entryJobVO.getRecruitmentId());
+            recruitment.setCertificateType(entryJobVO.getCertificateType());
+            recruitment.setCertificateNo(entryJobVO.getCertificateNo());
             recruitmentService.updateById(recruitment);
 
             //同步人才表（mp_recruitment)到mp_user表
             User user = updateUser(approve, recruitment);
-
             //同步人才表（mp_recruitment)到mp_userpost表
             updateUserpost(recruitment, user);
-
             //同步人才表（mp_recruitment)到mp_staff表
-            Staff staff = updateStaff(approve, recruitment, user);
-
-            staffService.save(staff);
+            updateStaff(approve, recruitment, user,staffService);
         }
-
 
         return approve;
     }
@@ -289,7 +285,7 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
      * @return
      */
     @NotNull
-    private Staff updateStaff(StaffEntrypostApprove approve, Recruitment recruitment, User user) {
+    private void updateStaff(StaffEntrypostApprove approve, Recruitment recruitment, User user,StaffService staffService) {
         Staff staff=new Staff();
         BeanUtils.copyProperties(recruitment,staff);
         staff.setId(null);
@@ -372,7 +368,8 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         if (recruitment.getEndDate()!=null){
             staff.setEndDate(recruitment.getEndDate());
         }
-        return staff;
+
+        staffService.save(staff);
     }
 
     /**

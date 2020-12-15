@@ -17,6 +17,7 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.EntryJobVO;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -258,16 +259,11 @@ public class EntryJobController {
      * @param certificateNo 证件号码
      * @return
      */
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
-        @ApiImplicitParam(name="approveId",value="审批录用表主键id",required = true),
-        @ApiImplicitParam(name="certificateType",value="证件类型"),
-        @ApiImplicitParam(name="certificateNo",value="证件号码")
-    })
+
     @ApiOperation(value = "办理入职-确认入职", notes = "办理入职-确认入职")
     @PostMapping("/confirmEntry")
-    public R<StaffEntrypostApprove> confirmEntry(Long recruitmentId,String approveId,String certificateType,String certificateNo) {
-        StaffEntrypostApprove approve = staffEntrypostApproveService.confirmEntry(recruitmentId, approveId, certificateType, certificateNo);
+    public R<StaffEntrypostApprove> confirmEntry(@RequestBody EntryJobVO entryJobVO) {
+        StaffEntrypostApprove approve = staffEntrypostApproveService.confirmEntry(entryJobVO);
         return R.ok(approve);
     }
 
