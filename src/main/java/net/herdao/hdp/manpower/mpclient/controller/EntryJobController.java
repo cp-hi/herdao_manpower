@@ -56,7 +56,7 @@ public class EntryJobController {
         @ApiImplicitParam(name="orgId",value="组织ID"),
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
-    public R<Page<EntryDTO>> findEntryPage(Page<EntryDTO> page, String orgId, String searchText,String status) {
+    public R<Page<EntryDTO>> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
         Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
         return R.ok(pageResult);
     }
