@@ -191,6 +191,22 @@ public class RecruitmentController {
     }
 
     /**
+     * 人才简历-顶部-手机端
+     *
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-顶部-手机端", notes = "人才简历-顶部-手机端")
+    @GetMapping("/fetchResumeTopByMobile")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id")
+    })
+    public R<RecruitmentUpdateFormDTO> fetchResumeTopByMobile(Long id) {
+        RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
+        return R.ok(entity);
+    }
+
+    /**
      * 简历详情-求职意向-详情
      * @param id
      * @return R
@@ -371,18 +387,6 @@ public class RecruitmentController {
     public R<RecruitmentEditDetailsDTO> fetchResumeEditDetails(Long id) {
         RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
 
-        //获奖情况
-        /*List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
-        RecruitmentEditAwardsDTO editAwardsDTO=new RecruitmentEditAwardsDTO();
-        List<RecruitmentEditAwardsDTO> editAwardsList=new ArrayList<RecruitmentEditAwardsDTO>();
-        if (ObjectUtil.isNotEmpty(recruitmentAwardsList)){
-            recruitmentAwardsList.forEach(e->{
-                BeanUtils.copyProperties(e,editAwardsDTO);
-                editAwardsList.add(editAwardsDTO);
-            });
-        }
-        result.setRecruitmentEditAwardsDTO(editAwardsList);*/
-
         //教育经历
         List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
         List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
@@ -395,6 +399,64 @@ public class RecruitmentController {
                     result.setRecruitmentEditEduDTO(editEduList);
                 }
              });
+        }
+
+        //家庭状况
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
+        if (ObjectUtil.isNotEmpty(familyList)){
+            familyList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
+                    BeanUtils.copyProperties(e,editFamilyDTO);
+                    editFamilyList.add(editFamilyDTO);
+                    result.setRecruitmentEditFamilyDTO(editFamilyList);
+                }
+            });
+        }
+
+        //其他个人信息
+        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
+        if (ObjectUtil.isNotNull(otherInfo)){
+            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
+            BeanUtils.copyProperties(otherInfo,editOtherInfo);
+            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        }
+
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
+        if (ObjectUtil.isNotNull(baseInfo)){
+            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
+            BeanUtils.copyProperties(baseInfo,editBaseInfo);
+            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        }
+
+        return R.ok(result);
+    }
+
+    /**
+     * 简历详情-基础信息-个人基本信息-手机端
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "简历详情-基础信息-个人基本信息-手机端", notes = "简历详情-基础信息-个人基本信息-手机端")
+    @GetMapping("/fetchResumeEditDetailsByMobile")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentEditDetailsDTO> fetchResumeEditDetailsByMobile(Long id) {
+        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
+
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
+            recruitmentEduList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+                    BeanUtils.copyProperties(e,editEduDTO);
+                    editEduList.add(editEduDTO);
+                    result.setRecruitmentEditEduDTO(editEduList);
+                }
+            });
         }
 
         //家庭状况
@@ -461,6 +523,39 @@ public class RecruitmentController {
         return recruitmentService.sendSmsCode(mobile);
     }
 
+    /**
+     * 简历详情-工作情况-手机端
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "简历详情-工作情况-手机端", notes = "简历详情-工作情况-手机端")
+    @GetMapping("/fetchResumeWorkDetailsByMobile")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetailsByMobile(Long id) {
+        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
+
+        //获奖情况
+        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        result.setRecruitmentAwardsDTO(awardsList);
+
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        result.setWorkExperienceDTO(workList);
+
+        //职称及职业资格
+        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
+        result.setRecruitmentTitleDTO(titleList);
+
+        //培训经历
+        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
+        result.setRecruitmentTrainDTO(trainList);
+
+        //人才活动
+        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
+        result.setRecruitmentActivitiDTO(activitiList);
+
+        return R.ok(result);
+    }
 
     /**
      * 简历详情-工作情况
@@ -495,9 +590,6 @@ public class RecruitmentController {
 
         return R.ok(result);
     }
-
-    
-    
 
     /**
      * 	发起流程

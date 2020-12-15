@@ -15,7 +15,6 @@ import lombok.Data;
 @ApiModel(value = "人才家庭情况-编辑DTO")
 public class RecruitmentEditFamilyDTO {
 
-
     /**
      * id
      */
