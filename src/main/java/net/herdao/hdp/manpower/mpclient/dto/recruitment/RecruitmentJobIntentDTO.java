@@ -182,6 +182,7 @@ public class RecruitmentJobIntentDTO  {
     /**
      * 应聘聘岗位ID
      */
+    @ApiModelProperty(value="应聘聘岗位ID")
     private Long intentionPostId;
 
 }
