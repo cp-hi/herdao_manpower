@@ -343,14 +343,17 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private SysDictItemMapper sysDictItemMapper;
 	@Override
-	public StaffBasicVO selectBasicByUserId(Long userId) {
+	public StaffBasicVO selectBasicById(Long id) throws Exception {
 		// 查询员工信息
 		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
 		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
-				.eq("user_id", userId);
+				.eq("id", id);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
 		// 查看 人员归属范围和任职类型的字典类型
+		if (staff == null) {
+			throw new Exception("该员工不存在");
+		}
 		QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
 		SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
 				.eq("value", staff.getStaffScope()));
@@ -369,7 +372,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		// 查询员工任职信息
 		if (staff != null && staff.getUserId() != null) {
 			QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
-			Userpost userpost = userpostService.getOne(upWrapper.eq("user_id", staff.getUserId()));
+			Userpost userpost = userpostService.getOne(upWrapper
+					.eq("user_id", staff.getUserId())
+					.eq("main_post", 1));
 			// 查询员工组织信息
 			if (userpost != null && userpost.getOrgId() != null) {
 				Organization org = organizationService.getById(userpost.getOrgId());

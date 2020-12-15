@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, herdao All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the herdao.net developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: liang
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper">
+
+  <resultMap id="attachFileMap" type="net.herdao.hdp.manpower.mpclient.entity.AttachFile">
+                  <id property="id" column="id"/>
+                        <result property="fileName" column="file_name"/>
+                        <result property="fileType" column="file_type"/>
+                        <result property="fileSize" column="file_size"/>
+                        <result property="fileDicType" column="file_dic_type"/>
+                        <result property="fileId" column="file_id"/>
+                        <result property="moduleType" column="module_type"/>
+                        <result property="moduleValue" column="module_value"/>
+                        <result property="bizId" column="biz_id"/>
+                        <result property="field1" column="FIELD1"/>
+                        <result property="field2" column="FIELD2"/>
+                        <result property="field3" column="FIELD3"/>
+                        <result property="field4" column="FIELD4"/>
+                        <result property="field5" column="FIELD5"/>
+                        <result property="tenantId" column="TENANT_ID"/>
+                        <result property="delFlag" column="DEL_FLAG"/>
+                        <result property="creatorCode" column="creator_code"/>
+                        <result property="creatorName" column="creator_name"/>
+                        <result property="creatorTime" column="creator_time"/>
+                        <result property="modifierCode" column="modifier_code"/>
+                        <result property="modifierName" column="modifier_name"/>
+                        <result property="modifierTime" column="modifier_time"/>
+            </resultMap>
+</mapper>
