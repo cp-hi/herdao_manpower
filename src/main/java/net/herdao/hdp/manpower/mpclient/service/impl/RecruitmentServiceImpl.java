@@ -432,16 +432,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public R generateWorkflow(String recordId,String flowType){
     	
     	HdpUser user = SecurityUtils.getUser();
-    	String loginCode = "100048";
-    	if(user != null) {
-    		loginCode = user.getUsername();
-    	}
+    	
     	String parameterJson = "{ CreateUser:\"22\", ReferenceUser:\"22\", Org_Code:\"011\", Condition:\"\"}";
     	String contentUrl = "www.baidu.com";
     	String contentFK = recordId;
     	String flowContent = flowType;
-    	
-    	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent,loginCode, SecurityConstants.FROM_IN);
+    	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent);
     	
     }
     
