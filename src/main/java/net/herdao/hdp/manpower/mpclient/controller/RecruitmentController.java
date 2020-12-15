@@ -510,7 +510,7 @@ public class RecruitmentController {
         @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true)
     })
     public R generateWorkflow(@RequestBody GenerateWorkflowDTO dto) {
-    	return recruitmentService.generateWorkflow(dto.getRecordId(),dto.getFlowType());
+    	return recruitmentService.generateWorkflow(dto.getRecordId(),dto.getFlowType(),dto.getContentUrl());
     }
     
     

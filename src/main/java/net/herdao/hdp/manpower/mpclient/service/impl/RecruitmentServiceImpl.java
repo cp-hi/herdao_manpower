@@ -24,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -429,12 +430,14 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
      * @return
      */
     @Override
-    public R generateWorkflow(String recordId,String flowType){
+    public R generateWorkflow(String recordId,String flowType,String contentUrl){
     	
     	HdpUser user = SecurityUtils.getUser();
     	
     	String parameterJson = "{ CreateUser:\"22\", ReferenceUser:\"22\", Org_Code:\"011\", Condition:\"\"}";
-    	String contentUrl = "www.baidu.com";
+    	if(StringUtils.isEmpty(contentUrl)) {
+    		contentUrl = "www.baidu.com";
+    	}
     	String contentFK = recordId;
     	String flowContent = flowType;
     	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent);

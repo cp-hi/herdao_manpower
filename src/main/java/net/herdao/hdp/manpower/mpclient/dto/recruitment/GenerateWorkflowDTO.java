@@ -14,4 +14,7 @@ public class GenerateWorkflowDTO {
 	@ApiModelProperty(value="流程类型(录用审批)",required = true)
 	private String flowType;
 	
+	@ApiModelProperty(value = "业务表单URL")
+	private String contentUrl;
+	
 }
