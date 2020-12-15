@@ -19,6 +19,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -141,7 +142,7 @@ public class StaffFileController {
      */
     @ApiOperation(value = "查询员工上传附件", notes = "查询员工上传附件")
     @GetMapping("/findStaffFile" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_stafffile_view')" )
+    @PreAuthorize("@pms.hasPermission('employees_details_enclosure_job_view')" )
     public R findStaffFile(StaffFile staffFile) {
         List<StaffFile> list = staffFileService.list(Wrappers.query(staffFile));
         return R.ok(list);

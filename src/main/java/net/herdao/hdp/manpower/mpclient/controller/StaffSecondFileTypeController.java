@@ -56,7 +56,7 @@ public class StaffSecondFileTypeController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('mpclient_staffsecondfiletype_view')" )
+    @PreAuthorize("@pms.hasPermission('mpclient_staffsecondfiletype_view')")
     public R getById(@PathVariable("id" ) Long id) {
         return R.ok(staffSecondFileTypeService.getById(id));
     }
@@ -69,6 +69,7 @@ public class StaffSecondFileTypeController {
     @ApiOperation(value = "新增员工附件二级分类", notes = "新增员工附件二级分类")
     @SysLog("新增员工附件二级分类" )
     @PostMapping("/saveOrUpdate")
+    @PreAuthorize("@pms.hasPermission('employees_details_enclosure_basicinfo_new','employees_details_enclosure_job_new')")
     public R saveOrUpdate(@RequestBody StaffSecondFileType entity) {
         boolean status = staffSecondFileTypeService.saveOrUpdate(entity);
         return R.ok(status);
@@ -82,7 +83,8 @@ public class StaffSecondFileTypeController {
     @ApiOperation(value = "通过id删除员工附件二级分类", notes = "通过id删除员工附件二级分类")
     @SysLog("通过id删除员工附件二级分类" )
     @DeleteMapping("/del/{id}" )
-    //@PreAuthorize("@pms.hasPermission('mpclient_staffsecondfiletype_del')" )
+    @PreAuthorize("@pms.hasPermission('employees_details_enclosure_job_delete'," +
+            "'employees_details_enclosure_resign_delete')" )
     public R removeById(@PathVariable Long id,String extraKey,String module) {
         StaffSecondFileType entity=new StaffSecondFileType();
         entity.setId(id);

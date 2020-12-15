@@ -191,7 +191,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询员工工作情况", notes = "通过id查询")
     @GetMapping("/staffwork/{id}" )
-//    @PreAuthorize("@pms.hasPermission('mpclient_staff_view')" )
+    @PreAuthorize("@pms.hasPermission('employees_details_workinfo')" )
     public R getStaffWork(@PathVariable("id" ) Long id) {
         Staff staff = staffService.getById(id);
         Map<String, Object> map = staffService.getStaffWork(id);
@@ -206,6 +206,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询工作情况-目前任职", notes = "通过id查询工作情况-目前任职")
     @GetMapping("/getStaffWorkCurrentJob/{id}" )
+    @PreAuthorize("@pms.hasPermission('employees_details_workinfo_appointment_view ')" )
     public R<UserpostDTO> getStaffWorkCurrentJob(@PathVariable("id" ) Long id) {
         Staff staff = staffService.getById(id);
         UserpostDTO userpostDTO = staffService.getStaffWorkCurrentJob(id);
@@ -220,6 +221,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询工作情况-异动情况", notes = "通过id查询工作情况-异动情况")
     @GetMapping("/getStafftransaction/{id}" )
+    @PreAuthorize("@pms.hasPermission('employees_details_workinfo_change_view')" )
     public R<List<StafftransactionDTO>> getStafftransaction(@PathVariable("id" ) Long id) {
         List<StafftransactionDTO> stafftransactionDTOList = staffService.getStafftransaction(id);
         return R.ok(stafftransactionDTOList);
@@ -233,6 +235,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询工作情况-工作年限", notes = "通过id查询工作情况-工作年限")
     @GetMapping("/getStaffWorkYear/{id}" )
+    @PreAuthorize("@pms.hasPermission('employees_details_workinfo_workingseniority_view')" )
     public R<StaffWorkYearDTO> getStaffWorkYear(@PathVariable("id" ) Long id) {
     	StaffWorkYearDTO staffWorkYearDTO = staffService.getStaffWorkYear(id);
         return R.ok(staffWorkYearDTO);
@@ -246,6 +249,7 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "通过id查询工作情况-工作经历", notes = "通过id查询工作情况-工作经历")
     @GetMapping("/getStaffWorkexperience/{id}" )
+    @PreAuthorize("@pms.hasPermission('employees_details_workinfo_workingexp_view')" )
     public R<List<WorkexperienceDTO>> getWorkexperience(@PathVariable("id" ) Long id) {
     	List<WorkexperienceDTO> workexperienceDTOList = staffService.getWorkexperienceDTO(id);
         return R.ok(workexperienceDTOList);
@@ -298,7 +302,8 @@ public class StaffController extends HdpBaseController{
      */
     @ApiOperation(value = "修改员工工作年限", notes = "修改员工工作年限")
     @SysLog("修改员工工作年限" )
-    @PostMapping("/updateStaffWorkYear" )
+    @PostMapping("/updateStaffWorkYear")
+    @PreAuthorize("@pms.hasPermission('employees_details_workinfo_workingseniority_edit')" )
     public R updateStaffWorkYear(@RequestBody StaffWorkYearDTO staffWorkYearDTO) {
         return R.ok(staffService.updateStaffWorkYear(staffWorkYearDTO));
     }
@@ -311,7 +316,7 @@ public class StaffController extends HdpBaseController{
     @ApiOperation(value = "新增员工表", notes = "新增员工表")
     @SysLog("新增员工表" )
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('employees_new')" )
+    @PreAuthorize("@pms.hasPermission('employees_new')")
     public R<StaffDetailDTO> save(@RequestBody StaffDetailDTO staffForm) {
         return R.ok(staffService.staffSave(staffForm));
     }
