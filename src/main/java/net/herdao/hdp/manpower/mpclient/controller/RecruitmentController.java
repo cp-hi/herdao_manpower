@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.security.annotation.Inner;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.GenerateWorkflowDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO;
@@ -52,6 +52,7 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentWorkDetailsDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.WorkflowNotifyDTO;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentActivitiService;
@@ -508,8 +509,8 @@ public class RecruitmentController {
         @ApiImplicitParam(name="recordId",value="业务表单ID",required = true),
         @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true)
     })
-    public R generateWorkflow(String recordId,String flowType) {
-    	return recruitmentService.generateWorkflow(recordId, flowType);
+    public R generateWorkflow(@RequestBody GenerateWorkflowDTO dto) {
+    	return recruitmentService.generateWorkflow(dto.getRecordId(),dto.getFlowType());
     }
     
     
@@ -518,12 +519,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "流程回调 更新业务表单的状态 ", notes = "流程回调 更新业务表单的状态 ")
     @PostMapping("/workflowNotify")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recordId",value="业务表单ID",required = true),
-        @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true),
-        @ApiImplicitParam(name="status",value="状态",required = true)
-    })
-    public R workflowNotify(String recordId,String flowType,Integer status) {
+    public R workflowNotify(@RequestBody WorkflowNotifyDTO dto) {
     	
     	//TODO 根据流程类型找到 对应的 需要修改的表单
     	//TODO 更新表单的状态 
