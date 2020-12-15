@@ -369,7 +369,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		// 查询员工任职信息
 		if (staff != null && staff.getUserId() != null) {
 			QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
-			Userpost userpost = userpostService.getOne(upWrapper.eq("user_id", staff.getUserId()));
+			Userpost userpost = userpostService.getOne(upWrapper
+					.eq("user_id", staff.getUserId())
+					.eq("main_post", 1));
 			// 查询员工组织信息
 			if (userpost != null && userpost.getOrgId() != null) {
 				Organization org = organizationService.getById(userpost.getOrgId());
