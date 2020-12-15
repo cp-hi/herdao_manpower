@@ -437,8 +437,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     	String contentUrl = "www.baidu.com";
     	String contentFK = recordId;
     	String flowContent = flowType;
-    	
-    	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent, SecurityConstants.FROM_IN);
+
+    	return null;
+    	//return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent, SecurityConstants.FROM_IN);
     	
     }
     
