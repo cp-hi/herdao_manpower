@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
 import org.springframework.beans.BeanUtils;
@@ -104,5 +106,21 @@ public class RecruitmentEducationController {
         return R.ok(result);
     }
 
+    /**
+     * 手机端--教育情况-新增或保存
+     * @param dto 人才教育情况
+     * @return R
+     */
+    @ApiOperation(value = "手机端--教育情况-新增或保存", notes = "手机端--教育情况-新增或保存")
+    @PostMapping("/saveOrUpdateEducation")
+    public R saveOrUpdateEducation(@RequestBody RecruitmentEduDTO[] dtoArray) {
+        if (ObjectUtil.isNotEmpty(dtoArray)){
+            for (RecruitmentEduDTO dto : dtoArray) {
+                 recruitmentEducationService.saveOrUpdateEducation(dto);
+            }
+        }
+
+        return R.ok("新增保存成功");
+    }
 
 }

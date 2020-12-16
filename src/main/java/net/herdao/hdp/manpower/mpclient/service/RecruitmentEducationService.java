@@ -48,6 +48,11 @@ public interface RecruitmentEducationService extends IService<RecruitmentEducati
      */
     List<RecruitmentEduDTO> fetchResumeEduList(Long recruitmentId);
 
-
+    /**
+     * 人才简历-教育情况-新增或保存
+     * @param dto 人才教育
+     * @return RecruitmentEduDTO
+     */
+    RecruitmentEduDTO saveOrUpdateEducation(RecruitmentEduDTO dto);
 
 }

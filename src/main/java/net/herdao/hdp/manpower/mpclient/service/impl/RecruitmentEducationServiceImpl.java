@@ -105,5 +105,16 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         return list;
     }
 
-
+    @Override
+    public RecruitmentEduDTO saveOrUpdateEducation(RecruitmentEduDTO dto) {
+        if (ObjectUtil.isNotNull(dto)){
+            if (ObjectUtil.isNotNull(dto.getId())){
+                this.updateEdu(dto);
+            }
+            if (ObjectUtil.isNull(dto.getId())){
+                this.saveEdu(dto);
+            }
+        }
+        return null;
+    }
 }
