@@ -68,7 +68,7 @@ public class StaffTransferController {
 
     @ApiOperation(value = "人事调动详情")
     @GetMapping("/{id}" )
-    public R<StaffTransferInfoVO> getStaffTransferInfo(@PathVariable("id") Long id) {
+    public R<StaffTransferInfoVO> getStaffTransferInfo(@PathVariable("id") Long id) throws Exception {
         return R.ok(service.getDetail(id), "success");
     }
 
