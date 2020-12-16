@@ -302,7 +302,7 @@ public class EntryJobController {
      * @return R
      */
     @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
-    @GetMapping("/confirmRegisterListEmail")
+    @PostMapping("/confirmRegisterListEmail")
     @ApiImplicitParams({
         @ApiImplicitParam(name="recruitmentIds",value="人才表主键id数组",required = true),
     })

@@ -639,12 +639,30 @@ public class RecruitmentController {
     }
 
     /**
-     * 批量邀请更新简历页面-下载二维码
+     * 预览-批量邀请更新简历页面-二维码
      * @return R
      */
-    @ApiOperation(value = "批量邀请更新简历页面-下载二维码", notes = "批量邀请更新简历页面-下载二维码")
+    @ApiOperation(value = "预览-批量邀请更新简历页面-二维码", notes = "预览-批量邀请更新简历页面-二维码")
     @GetMapping("/batchInviteResumeQrCode")
     public R batchInviteResumeQrCode() {
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        String result="";
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            result = QrCodeUtils.createBase64QrCode(address);
+        }
+
+        return R.ok(result);
+    }
+
+    /**
+     * 下载-批量邀请更新简历页面-二维码
+     * @return R
+     */
+    @ApiOperation(value = "下载-批量邀请更新简历页面-二维码", notes = "下载-批量邀请更新简历页面-二维码")
+    @GetMapping("/downloadInviteResumeQrCode")
+    public R downloadInviteResumeQrCode() {
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         String result="";
         if (ObjectUtil.isNotNull(tenantId)){
@@ -661,7 +679,7 @@ public class RecruitmentController {
      * @return R
      */
     @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
-    @GetMapping("/confirmInviteResumeEmail")
+    @PostMapping("/confirmInviteResumeEmail")
     @ApiImplicitParams({
        @ApiImplicitParam(name="ids",value="主键id数组",required = true),
     })
