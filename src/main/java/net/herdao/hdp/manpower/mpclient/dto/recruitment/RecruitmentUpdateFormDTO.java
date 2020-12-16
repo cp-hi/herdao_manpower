@@ -23,7 +23,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "人才表单编辑")
-public class RecruitmentUpdateFormDTO   {
+public class  RecruitmentUpdateFormDTO   {
 
     /**
      * id

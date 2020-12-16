@@ -16,5 +16,5 @@ public interface StaffCallInService extends HdpService<StaffTransferApprove> {
 
     Long saveInfo(SaveStaffCallInDTO dto) throws Exception;
 
-    StaffCallInInfoVO getDetail(Long id);
+    StaffCallInInfoVO getDetail(Long id) throws Exception;
 }

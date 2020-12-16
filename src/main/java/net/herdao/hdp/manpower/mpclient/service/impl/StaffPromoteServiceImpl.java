@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
@@ -37,6 +38,8 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     private PostService postService;
     @Autowired
     private JobLevelService jobLevelService;
+    @Autowired
+    private StaffService staffService;
 
     @Autowired
     private StaffPromoteApproveMapper mapper;
@@ -130,7 +133,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
 
     @Override
-    public StaffPromoteInfoVO getDetail(Long id) {
+    public StaffPromoteInfoVO getDetail(Long id) throws Exception {
         StaffPromoteApprove promoteApprove = mapper.selectById(id);
         if (promoteApprove != null) {
             return StaffPromoteApprove2StaffPromoteInfoVO(promoteApprove);
@@ -138,7 +141,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         return null;
     }
 
-    private StaffPromoteInfoVO StaffPromoteApprove2StaffPromoteInfoVO(StaffPromoteApprove from) {
+    private StaffPromoteInfoVO StaffPromoteApprove2StaffPromoteInfoVO(StaffPromoteApprove from) throws Exception {
         StaffPromoteInfoVO to = new StaffPromoteInfoVO();
         BeanUtils.copyProperties(from, to);
 
@@ -173,6 +176,10 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         if (promoteJobLevel != null) {
             to.setPromoteJobLevelName(promoteJobLevel.getJobLevelName() );
         }
+
+        StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
+        BeanUtils.copyProperties(staffBasicVO, to);
+
         return to;
     }
 

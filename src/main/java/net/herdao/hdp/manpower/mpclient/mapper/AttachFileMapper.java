@@ -19,7 +19,10 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
+import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 通用附件表
@@ -30,4 +33,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AttachFileMapper extends BaseMapper<AttachFile> {
 
+    void insertBatch(List<AttachFileDTO> attachFile);
 }

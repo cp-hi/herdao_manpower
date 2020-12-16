@@ -20,7 +20,7 @@ public interface StaffPromoteService extends HdpService<StaffPromoteApprove>{
 
     Long saveInfo(SavaStaffPromoteDTO dto) throws Exception;
 
-    StaffPromoteInfoVO getDetail(Long id);
+    StaffPromoteInfoVO getDetail(Long id) throws Exception;
 
     Page<StaffPromotePageVO> pageStaffPromote(Page page, String searchText, Long orgId, String status);
 }

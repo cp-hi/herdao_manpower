@@ -26,7 +26,7 @@ public class StaffCallInController {
 
     @ApiOperation(value = "员工调入记录详情")
     @GetMapping("/{id}" )
-    public R<StaffCallInInfoVO> getStaffCallInInfo(@PathVariable("id") Long id) {
+    public R<StaffCallInInfoVO> getStaffCallInInfo(@PathVariable("id") Long id) throws Exception {
         return R.ok(service.getDetail(id), "success");
     }
 

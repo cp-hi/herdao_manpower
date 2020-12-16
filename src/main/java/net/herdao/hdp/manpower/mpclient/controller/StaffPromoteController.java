@@ -65,7 +65,7 @@ public class StaffPromoteController {
 
     @ApiOperation(value = "员工职级变更记录详情")
     @GetMapping("/{id}" )
-    public R<StaffPromoteInfoVO> getStaffPromote(@PathVariable("id") Long id) {
+    public R<StaffPromoteInfoVO> getStaffPromote(@PathVariable("id") Long id) throws Exception {
         return R.ok(service.getDetail(id), "success");
     }
 
