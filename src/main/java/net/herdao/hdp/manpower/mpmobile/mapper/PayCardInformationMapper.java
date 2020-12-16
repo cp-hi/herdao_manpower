@@ -15,35 +15,19 @@
  * Author: liang
  */
 
-package net.herdao.hdp.manpower.mpclient.service;
+package net.herdao.hdp.manpower.mpmobile.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
-import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
-
-import java.util.List;
-import java.util.Map;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 通用附件表
+ * 工资卡信息表
  *
- * @author Andy
- * @date 2020-12-15 10:55:40
+ * @author liang
+ * @date 2020-12-16 09:46:03
  */
-public interface AttachFileService extends IService<AttachFile> {
+@Mapper
+public interface PayCardInformationMapper extends BaseMapper<PayCardInformation> {
 
-
-    /**
-     * 上传后绑定数据
-     *
-     * @return R
-     */
-    void bindDataAfterUploading(List<AttachFileDTO> attachFile);
-
-    /*    *
-     * 通过id查询通用文件表数据
-     * @param id id   业务表ID
-     * @return R
-     * */
-    List<AttachFileDTO> getAttachFileById(Long id);
 }
