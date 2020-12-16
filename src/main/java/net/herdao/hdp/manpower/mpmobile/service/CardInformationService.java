@@ -15,35 +15,23 @@
  * Author: liang
  */
 
-package net.herdao.hdp.manpower.mpclient.service;
+package net.herdao.hdp.manpower.mpmobile.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
-import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
+import net.herdao.hdp.manpower.mpmobile.entity.CardInformation;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 通用附件表
+ * 身份证信息表
  *
- * @author Andy
- * @date 2020-12-15 10:55:40
+ * @author liang
+ * @date 2020-12-16 09:43:28
  */
-public interface AttachFileService extends IService<AttachFile> {
+public interface CardInformationService extends IService<CardInformation> {
+
+    CardInformation getIdentityById(Long id);
 
 
-    /**
-     * 上传后绑定数据
-     *
-     * @return R
-     */
-    void bindDataAfterUploading(List<AttachFileDTO> attachFile);
-
-    /*    *
-     * 通过id查询通用文件表数据
-     * @param id id   业务表ID
-     * @return R
-     * */
-    List<AttachFileDTO> getAttachFileById(Long id);
 }
