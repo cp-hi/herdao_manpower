@@ -72,4 +72,9 @@ public class RecruitmentOtherInfo {
     @ApiModelProperty(value="备注")
     private String remark;
 
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
 }

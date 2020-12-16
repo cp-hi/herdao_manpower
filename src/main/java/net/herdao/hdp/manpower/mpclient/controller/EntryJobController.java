@@ -347,7 +347,7 @@ public class EntryJobController {
     @ApiOperation(value = "入职登记记录-发送请确认", notes = "入职登记记录-发送请确认")
     @GetMapping("/confirmRegisterEmail")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
+        @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
     })
     public R<ModuleVO> confirmRegisterEmail(Long recruitmentId) {
         ModuleVO moduleVO=new ModuleVO();

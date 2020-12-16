@@ -62,6 +62,7 @@
                 edu.education_qua,
                 edu.degree,
                 edu.learn_form,
+                edu.recruitment_id,
                 CONCAT( edu.modifier_name, " 于 ", edu.modifier_name, " 更新" ) update_desc
         FROM  mp_recruitment_education edu
          <where>
