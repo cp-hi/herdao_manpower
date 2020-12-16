@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -82,5 +83,18 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
         super.updateById(familyStatus);
         BeanUtils.copyProperties(familyStatus,familyDTO);
         return familyDTO;
+    }
+
+    @Override
+    public RecruitmentFamilyDTO saveOrUpdateFamily(RecruitmentFamilyDTO familyDTO) {
+        if (ObjectUtil.isNotNull(familyDTO)){
+            if (ObjectUtil.isNotNull(familyDTO.getId())){
+                this.updateFamily(familyDTO);
+            }
+            if (ObjectUtil.isNull(familyDTO.getId())){
+                this.saveFamily(familyDTO);
+            }
+        }
+        return null;
     }
 }
