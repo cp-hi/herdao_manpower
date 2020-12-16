@@ -29,10 +29,10 @@ public class StaffBasicVO {
         private String staffNameAndCode;
 
         @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
-        private SysDictItem staffScope;
+        private String staffScope;
 
         @ApiModelProperty(value = "人员任职类型", name = "staffJobType", example = "在职人员")
-        private SysDictItem staffJobType;
+        private String staffJobType;
 
         @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
         private Long entryTime;
