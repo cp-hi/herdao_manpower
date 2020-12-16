@@ -669,7 +669,7 @@ public class RecruitmentController {
     @ApiImplicitParams({
        @ApiImplicitParam(name="ids",value="主键id数组",required = true),
     })
-    public R<ModuleVO> confirmInviteResumeEmail(String[] ids) {
+    public R<ModuleVO> confirmInviteResumeEmail(Long[] ids) {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -702,5 +702,38 @@ public class RecruitmentController {
 
         return R.ok(moduleVO);
     }
+
+    /**
+     * 邀请更新简历-候选人简历补充邀请确认（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "邀请更新简历-候选人简历补充邀请确认", notes = "邀请更新简历-候选人简历补充邀请确认")
+    @GetMapping("/confirmSupplementResumeEmail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="主键id",required = true),
+    })
+    public R<ModuleVO> confirmSupplementResumeEmail(Long id) {
+        ModuleVO moduleVO=new ModuleVO();
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String code = QrCodeUtils.createBase64QrCode(address);
+            moduleVO.setCode(code);
+        }
+
+        if (ObjectUtil.isNotEmpty(id)){
+            Recruitment recruitment = recruitmentService.getById(id);
+            if (ObjectUtil.isNotNull(recruitment)){
+                 String title="姓名："+recruitment.getTalentName()+"   邮箱："+recruitment.getEmail();
+                 moduleVO.setTitle(title);
+            }
+        }
+
+        //todo:调用系统模板接口，获取模板配置信息。
+
+        return R.ok(moduleVO);
+    }
+
 
 }

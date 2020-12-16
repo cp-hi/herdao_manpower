@@ -39,5 +39,4 @@ public class ModuleVO {
     @ApiModelProperty(value="姓名-邮箱")
     private List<Map<String,String>> nameEmailList;
 
-
 }
