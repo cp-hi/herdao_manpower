@@ -1,10 +1,21 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.codec.Base64;
+import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
+import org.apache.commons.io.IOUtils;
+import org.iherus.codegen.qrcode.QrcodeGenerator;
+import org.iherus.codegen.qrcode.SimpleQrcodeGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -77,6 +88,7 @@ import net.herdao.hdp.manpower.sys.service.OperationLogService;
 @AllArgsConstructor
 @RequestMapping("/recruitment")
 @Api(value = "recruitment", tags = "人才表管理")
+@Slf4j
 public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
@@ -629,5 +641,20 @@ public class RecruitmentController {
     	
     	return R.ok();
     }
-    
+
+    /**
+     * 批量邀请更新简历页面-下载二维码
+     * @return R
+     */
+    @ApiOperation(value = "批量邀请更新简历页面-下载二维码", notes = "批量邀请更新简历页面-下载二维码")
+    @GetMapping("/batchInviteResumeQrCode")
+    public R batchInviteResumeQrCode() {
+        //手机端极速入职页面地址
+        String content="http://10.1.69.173:8076/#/login";
+        String result = QrCodeUtils.createBase64QrCode(content);
+        return R.ok(result);
+    }
+
+
+
 }
