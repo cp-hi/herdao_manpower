@@ -1,4 +1,4 @@
-package net.herdao.hdp.manpower.mpclient.vo;
+package net.herdao.hdp.manpower.mpclient.vo.recruitment;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;

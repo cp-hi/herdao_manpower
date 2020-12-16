@@ -3,8 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +12,7 @@ import cn.hutool.core.codec.Base64;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
 import org.apache.commons.io.IOUtils;
 import org.iherus.codegen.qrcode.QrcodeGenerator;
 import org.iherus.codegen.qrcode.SimpleQrcodeGenerator;
@@ -649,12 +649,58 @@ public class RecruitmentController {
     @ApiOperation(value = "批量邀请更新简历页面-下载二维码", notes = "批量邀请更新简历页面-下载二维码")
     @GetMapping("/batchInviteResumeQrCode")
     public R batchInviteResumeQrCode() {
-        //手机端极速入职页面地址
-        String content="http://10.1.69.173:8076/#/login";
-        String result = QrCodeUtils.createBase64QrCode(content);
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        String result="";
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            result = QrCodeUtils.createBase64QrCode(address);
+        }
+
         return R.ok(result);
     }
 
+    /**
+     * 批量邀请更新简历-确认邮件内容（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
+    @GetMapping("/confirmInviteResumeEmail")
+    @ApiImplicitParams({
+       @ApiImplicitParam(name="ids",value="主键id数组",required = true),
+    })
+    public R<ModuleVO> confirmInviteResumeEmail(String[] ids) {
+        ModuleVO moduleVO=new ModuleVO();
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String code = QrCodeUtils.createBase64QrCode(address);
+            moduleVO.setCode(code);
+        }
 
+        if (ObjectUtil.isNotEmpty(ids)){
+            int length = ids.length;
+            String title="您已选中"+length+"名待入职员工，请在下方编辑邮件内容，确认后将为你批量发送邀请邮件。";
+            moduleVO.setTitle(title);
+
+            List<Recruitment> recruitmentList = recruitmentService.listByIds(Arrays.asList(ids));
+            if (ObjectUtil.isNotEmpty(recruitmentList)){
+                List<Map<String,String>> nameEmailList=new ArrayList<>();
+                recruitmentList.forEach(r->{
+                    if(ObjectUtil.isNotNull(r)){
+                        Map<String,String> nameEmailMap=new HashMap<>();
+                        nameEmailMap.put(r.getTalentName(),r.getEmail());
+                        nameEmailList.add(nameEmailMap);
+                    }
+                 });
+                moduleVO.setNameEmailList(nameEmailList);
+            }
+        }
+
+        //todo:调用系统模板接口，获取模板配置信息。
+
+        return R.ok(moduleVO);
+    }
 
 }

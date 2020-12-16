@@ -7,26 +7,16 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.SneakyThrows;
-import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.EntryJobVO;
-import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeanUtils;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
