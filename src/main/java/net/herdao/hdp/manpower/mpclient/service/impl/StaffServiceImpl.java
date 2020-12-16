@@ -357,7 +357,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
 				SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
 						.eq("value", staff.getStaffScope()));
-				staffInfo.setStaffScope(staffScope);
+				staffInfo.setStaffScope(staffScope.getLabel());
 			}
 
 			// 查看人员任职类型的字典对象
@@ -365,7 +365,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
 				SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
 						.eq("value", staff.getJobType()));
-				staffInfo.setStaffJobType(jobType);
+				staffInfo.setStaffJobType(jobType.getLabel());
 			}
 
 			if (staff.getUserId() != null) {

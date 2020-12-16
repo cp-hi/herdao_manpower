@@ -21,7 +21,7 @@ public class StaffPromotePageVO {
     private Long userId;
 
     @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
-    private String  staffName;
+    private String staffName;
 
     @ApiModelProperty(value = "员工工号", name = "staffCode", example = "123456")
     private String staffCode;

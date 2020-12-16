@@ -30,7 +30,7 @@ public class SaveStaffCallInDTO {
     @NotNull
     private Long nowPostId;
 
-    @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123", required = true)
     @NotNull
     private Long nowJobLevelId;
 
