@@ -49,6 +49,7 @@
                    r.awards_time,
                    r.awards_content,
                    r.issued_units,
+                   r.recruitment_id,
                    CONCAT( r.modifier_name, " 于 ", r.modifier_name, " 更新" ) update_desc
             FROM  mp_recruitment_awards r
             <where>
