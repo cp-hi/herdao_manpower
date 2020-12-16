@@ -34,7 +34,8 @@
                   t.begin_date,
                   t.end_date,
                   t.content,
-                  t.result
+                  t.result,
+                  t.recruitment_id
           FROM   mp_recruitment_activiti t
             <where>
                   t.DEL_FLAG =0

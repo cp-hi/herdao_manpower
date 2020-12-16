@@ -37,7 +37,8 @@
                   t.content,
                   t.certificate_name,
                   t.certificate_no,
-                  t.organizer
+                  t.organizer,
+                  t.recruitment_id
              FROM mp_recruitment_train t
             <where>
                   t.DEL_FLAG =0

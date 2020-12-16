@@ -18,7 +18,6 @@ import java.util.Date;
 @ApiModel(value = "人才教育情况-编辑DTO")
 public class RecruitmentEditEduDTO {
 
-
     /**
      * id
      */

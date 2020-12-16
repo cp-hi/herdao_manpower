@@ -82,5 +82,17 @@ public class RecruitmentWorkexperienceController {
     }
 
 
-
+    /**
+     * 手机端-简历详情-工作情况-工作经历-新增保存
+     * @param dtoArray 人才工作经历表数组
+     * @return R
+     */
+    @ApiOperation(value = "手机端-简历详情-工作情况-工作经历-新增保存", notes = "手机端-简历详情-工作情况-工作经历-新增保存")
+    @PostMapping("/saveOrUpdateWorkExperienceByMobile")
+    public R saveOrUpdateWorkExperienceByMobile(@RequestBody RecruitmentWorkExperienceDTO[] dtoArray) {
+        for (RecruitmentWorkExperienceDTO dto : dtoArray) {
+            recruitmentWorkexperienceService.saveOrUpdateWorkExperience(dto);
+        }
+        return R.ok("新增保存成功");
+    }
 }

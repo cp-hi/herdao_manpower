@@ -26,6 +26,10 @@ public class JobGradeListVO {
     @ApiModelProperty("职等名称")
     private String jobGradeName;
 
+    @ExcelProperty(value = "职衔")
+    @ApiModelProperty(value = "职衔")
+    private String jobTitle;
+
     @ExcelProperty("在职员工数")
     @ApiModelProperty("在职员工数")
     private Integer onJobStaffs;

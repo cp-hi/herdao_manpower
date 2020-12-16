@@ -8,12 +8,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffEntrypostApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.vo.EntryJobVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**

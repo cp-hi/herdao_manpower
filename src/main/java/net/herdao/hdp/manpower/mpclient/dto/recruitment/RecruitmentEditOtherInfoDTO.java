@@ -24,21 +24,21 @@ public class RecruitmentEditOtherInfoDTO {
     private Long id;
 
     /**
-     * 有亲戚朋友在本公司
+     * 是否有亲戚朋友在本公司
      */
-    @ApiModelProperty(value="有亲戚朋友在本公司")
-    private String isRelativeCompany;
+    @ApiModelProperty(value="是否有亲戚朋友在本公司")
+    private Boolean isRelativeCompany;
 
     /**
      * 是否接受外派
      */
     @ApiModelProperty(value="是否接受外派")
-    private String isAcceptAssignment;
+    private Boolean isAcceptAssignment;
 
     /**
-     * 其职位与姓名
+     * 亲戚朋友其职位与姓名
      */
-    @ApiModelProperty(value="其职位与姓名")
+    @ApiModelProperty(value="亲戚朋友其职位与姓名")
     private String relativePostName;
 
     /**

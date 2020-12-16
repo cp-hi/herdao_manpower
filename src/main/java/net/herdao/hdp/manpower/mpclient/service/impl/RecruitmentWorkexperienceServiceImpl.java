@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
@@ -75,5 +76,19 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
         super.updateById(workExperience);
         BeanUtils.copyProperties(workExperience,dto);
         return dto;
+    }
+
+    @Override
+    public RecruitmentWorkExperienceDTO saveOrUpdateWorkExperience(RecruitmentWorkExperienceDTO dto) {
+        if (ObjectUtil.isNotNull(dto)){
+            if (ObjectUtil.isNotNull(dto.getId())){
+                this.updateWorkExperience(dto);
+            }
+            if (ObjectUtil.isNull(dto.getId())){
+                this.saveWorkExperience(dto);
+            }
+        }
+
+        return null;
     }
 }

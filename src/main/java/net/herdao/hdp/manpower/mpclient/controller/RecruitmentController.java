@@ -1,10 +1,21 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.*;
+import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.codec.Base64;
+import lombok.extern.slf4j.Slf4j;
+import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
+import org.apache.commons.io.IOUtils;
+import org.iherus.codegen.qrcode.QrcodeGenerator;
+import org.iherus.codegen.qrcode.SimpleQrcodeGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -77,6 +88,7 @@ import net.herdao.hdp.manpower.sys.service.OperationLogService;
 @AllArgsConstructor
 @RequestMapping("/recruitment")
 @Api(value = "recruitment", tags = "人才表管理")
+@Slf4j
 public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
@@ -118,7 +130,7 @@ public class RecruitmentController {
     }
 
      /**
-     * 修改更新人才表
+     * 快速编辑-修改更新
      *
      * @param recruitmentUpdateFormVO 人才表
      * @return R
@@ -127,6 +139,17 @@ public class RecruitmentController {
     @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
          return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
+    }
+
+    /**
+     * 快速编辑-修改更新-手机端
+     * @param recruitmentUpdateFormVO 人才表
+     * @return R
+     */
+    @ApiOperation(value = "快速编辑-修改更新-手机端", notes = "快速编辑-修改更新-手机端")
+    @PostMapping("/updateRecruitmentByMobile")
+    public R<RecruitmentUpdateFormDTO> updateRecruitmentByMobile(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
+        return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
     }
 
     /**
@@ -187,6 +210,22 @@ public class RecruitmentController {
         @ApiImplicitParam(name = "id", value = "主键id")
     })
     public R<RecruitmentUpdateFormDTO> fetchResumeTop(Long id) {
+        RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
+        return R.ok(entity);
+    }
+
+    /**
+     * 人才简历-顶部-手机端
+     *
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "人才简历-顶部-手机端", notes = "人才简历-顶部-手机端")
+    @GetMapping("/fetchResumeTopByMobile")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "主键id")
+    })
+    public R<RecruitmentUpdateFormDTO> fetchResumeTopByMobile(Long id) {
         RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
         return R.ok(entity);
     }
@@ -372,18 +411,6 @@ public class RecruitmentController {
     public R<RecruitmentEditDetailsDTO> fetchResumeEditDetails(Long id) {
         RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
 
-        //获奖情况
-        /*List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
-        RecruitmentEditAwardsDTO editAwardsDTO=new RecruitmentEditAwardsDTO();
-        List<RecruitmentEditAwardsDTO> editAwardsList=new ArrayList<RecruitmentEditAwardsDTO>();
-        if (ObjectUtil.isNotEmpty(recruitmentAwardsList)){
-            recruitmentAwardsList.forEach(e->{
-                BeanUtils.copyProperties(e,editAwardsDTO);
-                editAwardsList.add(editAwardsDTO);
-            });
-        }
-        result.setRecruitmentEditAwardsDTO(editAwardsList);*/
-
         //教育经历
         List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
         List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
@@ -396,6 +423,64 @@ public class RecruitmentController {
                     result.setRecruitmentEditEduDTO(editEduList);
                 }
              });
+        }
+
+        //家庭状况
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
+        if (ObjectUtil.isNotEmpty(familyList)){
+            familyList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
+                    BeanUtils.copyProperties(e,editFamilyDTO);
+                    editFamilyList.add(editFamilyDTO);
+                    result.setRecruitmentEditFamilyDTO(editFamilyList);
+                }
+            });
+        }
+
+        //其他个人信息
+        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
+        if (ObjectUtil.isNotNull(otherInfo)){
+            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
+            BeanUtils.copyProperties(otherInfo,editOtherInfo);
+            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        }
+
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
+        if (ObjectUtil.isNotNull(baseInfo)){
+            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
+            BeanUtils.copyProperties(baseInfo,editBaseInfo);
+            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        }
+
+        return R.ok(result);
+    }
+
+    /**
+     * 简历详情-基础信息-个人基本信息-手机端
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "简历详情-基础信息-个人基本信息-手机端", notes = "简历详情-基础信息-个人基本信息-手机端")
+    @GetMapping("/fetchResumeEditDetailsByMobile")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentEditDetailsDTO> fetchResumeEditDetailsByMobile(Long id) {
+        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
+
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
+            recruitmentEduList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+                    BeanUtils.copyProperties(e,editEduDTO);
+                    editEduList.add(editEduDTO);
+                    result.setRecruitmentEditEduDTO(editEduList);
+                }
+            });
         }
 
         //家庭状况
@@ -462,6 +547,39 @@ public class RecruitmentController {
         return recruitmentService.sendSmsCode(mobile);
     }
 
+    /**
+     * 简历详情-工作情况-手机端
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "简历详情-工作情况-手机端", notes = "简历详情-工作情况-手机端")
+    @GetMapping("/fetchResumeWorkDetailsByMobile")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetailsByMobile(Long id) {
+        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
+
+        //获奖情况
+        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        result.setRecruitmentAwardsDTO(awardsList);
+
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        result.setWorkExperienceDTO(workList);
+
+        //职称及职业资格
+        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
+        result.setRecruitmentTitleDTO(titleList);
+
+        //培训经历
+        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
+        result.setRecruitmentTrainDTO(trainList);
+
+        //人才活动
+        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
+        result.setRecruitmentActivitiDTO(activitiList);
+
+        return R.ok(result);
+    }
 
     /**
      * 简历详情-工作情况
@@ -497,9 +615,6 @@ public class RecruitmentController {
         return R.ok(result);
     }
 
-    
-    
-
     /**
      * 	发起流程
      */
@@ -522,5 +637,99 @@ public class RecruitmentController {
     	
     	return R.ok();
     }
-    
+
+    /**
+     * 批量邀请更新简历页面-下载二维码
+     * @return R
+     */
+    @ApiOperation(value = "批量邀请更新简历页面-下载二维码", notes = "批量邀请更新简历页面-下载二维码")
+    @GetMapping("/batchInviteResumeQrCode")
+    public R batchInviteResumeQrCode() {
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        String result="";
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            result = QrCodeUtils.createBase64QrCode(address);
+        }
+
+        return R.ok(result);
+    }
+
+    /**
+     * 批量邀请更新简历-确认邮件内容（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
+    @GetMapping("/confirmInviteResumeEmail")
+    @ApiImplicitParams({
+       @ApiImplicitParam(name="ids",value="主键id数组",required = true),
+    })
+    public R<ModuleVO> confirmInviteResumeEmail(Long[] ids) {
+        ModuleVO moduleVO=new ModuleVO();
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String code = QrCodeUtils.createBase64QrCode(address);
+            moduleVO.setCode(code);
+        }
+
+        if (ObjectUtil.isNotEmpty(ids)){
+            int length = ids.length;
+            String title="您已选中"+length+"名待入职员工，请在下方编辑邮件内容，确认后将为你批量发送邀请邮件。";
+            moduleVO.setTitle(title);
+
+            List<Recruitment> recruitmentList = recruitmentService.listByIds(Arrays.asList(ids));
+            if (ObjectUtil.isNotEmpty(recruitmentList)){
+                List<Map<String,String>> nameEmailList=new ArrayList<>();
+                recruitmentList.forEach(r->{
+                    if(ObjectUtil.isNotNull(r)){
+                        Map<String,String> nameEmailMap=new HashMap<>();
+                        nameEmailMap.put(r.getTalentName(),r.getEmail());
+                        nameEmailList.add(nameEmailMap);
+                    }
+                 });
+                moduleVO.setNameEmailList(nameEmailList);
+            }
+        }
+
+        //todo:调用系统模板接口，获取模板配置信息。
+
+        return R.ok(moduleVO);
+    }
+
+    /**
+     * 邀请更新简历-候选人简历补充邀请确认（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "邀请更新简历-候选人简历补充邀请确认", notes = "邀请更新简历-候选人简历补充邀请确认")
+    @GetMapping("/confirmSupplementResumeEmail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="主键id",required = true),
+    })
+    public R<ModuleVO> confirmSupplementResumeEmail(Long id) {
+        ModuleVO moduleVO=new ModuleVO();
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String code = QrCodeUtils.createBase64QrCode(address);
+            moduleVO.setCode(code);
+        }
+
+        if (ObjectUtil.isNotEmpty(id)){
+            Recruitment recruitment = recruitmentService.getById(id);
+            if (ObjectUtil.isNotNull(recruitment)){
+                 String title="姓名："+recruitment.getTalentName()+"   邮箱："+recruitment.getEmail();
+                 moduleVO.setTitle(title);
+            }
+        }
+
+        //todo:调用系统模板接口，获取模板配置信息。
+
+        return R.ok(moduleVO);
+    }
+
+
 }

@@ -2,11 +2,9 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
-import net.herdao.hdp.manpower.mpclient.vo.EntryJobVO;
-import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 

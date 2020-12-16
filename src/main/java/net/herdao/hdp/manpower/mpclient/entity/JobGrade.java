@@ -30,4 +30,6 @@ public class JobGrade extends BaseEntity<JobGrade> {
     private Long groupId;
     @ApiModelProperty(value = "职等编码", hidden = true)
     private Integer sortNo;
+    @ApiModelProperty(value = "职衔")
+    private String jobTitle;
 }

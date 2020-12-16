@@ -391,9 +391,9 @@
     <!-- 获取人才简历-其他个人信息-详情 -->
     <select id="fetchRecruitmentOtherInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo">
         SELECT  rec.id,
-                IF( rec.is_relative_company=0,'否','是') is_relative_company,
-                IF( rec.is_accept_assignment=0,'否','是') is_accept_assignment,
-                IF( rec.relative_post_name=0,'否','是') relative_post_name,
+                rec.is_relative_company,
+                rec.is_accept_assignment,
+                rec.relative_post_name,
                 rec.accept_assignment_location,
                 rec.applicant_sign,
                 rec.resume_access_time,

@@ -24,16 +24,16 @@ public class RecruitmentOtherInfo {
     private Long id;
 
     /**
-     * 有亲戚朋友在本公司
+     * 是否有亲戚朋友在本公司
      */
-    @ApiModelProperty(value="有亲戚朋友在本公司")
-    private String isRelativeCompany;
+    @ApiModelProperty(value="是否有亲戚朋友在本公司")
+    private Boolean isRelativeCompany;
 
     /**
      * 是否接受外派
      */
     @ApiModelProperty(value="是否接受外派")
-    private String isAcceptAssignment;
+    private Boolean isAcceptAssignment;
 
     /**
      * 其职位与姓名
@@ -72,4 +72,9 @@ public class RecruitmentOtherInfo {
     @ApiModelProperty(value="备注")
     private String remark;
 
+    /**
+     * 人才id
+     */
+    @ApiModelProperty(value="人才id")
+    private Long recruitmentId;
 }

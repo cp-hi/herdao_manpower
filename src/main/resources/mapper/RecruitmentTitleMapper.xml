@@ -37,7 +37,8 @@
                       t.awards_unite,
                       t.certificate_no,
                       t.certificate_time,
-                      t.qualification_unit
+                      t.qualification_unit,
+                      t.recruitment_id
               FROM  mp_recruitment_title t
                 <where>
                       t.DEL_FLAG =0

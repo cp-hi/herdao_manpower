@@ -182,9 +182,9 @@ public class RecruitmentEditBaseInfoDTO {
     private Boolean isAcceptAssignment;
 
     /**
-     * 有亲戚朋友在本公司
+     * 是否有亲戚朋友在本公司
      */
-    @ApiModelProperty(value="有亲戚朋友在本公司")
+    @ApiModelProperty(value="是否有亲戚朋友在本公司")
     private Boolean isRelativeCompany;
 
     /**
