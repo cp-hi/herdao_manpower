@@ -340,12 +340,36 @@ public class EntryJobController {
         return R.ok(moduleVO);
     }
 
+    /**
+     * 入职登记记录-发送请确认（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "入职登记记录-发送请确认", notes = "入职登记记录-发送请确认")
+    @GetMapping("/confirmRegisterEmail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
+    })
+    public R<ModuleVO> confirmRegisterEmail(Long recruitmentId) {
+        ModuleVO moduleVO=new ModuleVO();
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String code = QrCodeUtils.createBase64QrCode(address);
+            moduleVO.setCode(code);
+        }
 
+        if (ObjectUtil.isNotEmpty(recruitmentId)){
+            Recruitment recruitment = recruitmentService.getById(recruitmentId);
+            if (ObjectUtil.isNotNull(recruitment)){
+                String title="姓名："+recruitment.getTalentName()+"   邮箱："+recruitment.getEmail();
+                moduleVO.setTitle(title);
+            }
+        }
 
+        //todo:调用系统模板接口，获取模板配置信息。
 
-
-
-
-
+        return R.ok(moduleVO);
+    }
 
 }
