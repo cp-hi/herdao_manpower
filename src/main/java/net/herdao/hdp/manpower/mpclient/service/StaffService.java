@@ -93,5 +93,7 @@ public interface StaffService extends HdpService<Staff> {
 
 	StaffBasicVO selectBasicById(Long id) throws Exception;
 
+	StaffBasicVO selectBasicByUserId(Long userId) throws Exception;
+
 	Staff getByUserId(Long userId);
 }
