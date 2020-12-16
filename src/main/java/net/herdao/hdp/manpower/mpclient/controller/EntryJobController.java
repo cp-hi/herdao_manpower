@@ -9,14 +9,18 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 
 /**
@@ -32,6 +36,7 @@ public class EntryJobController {
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
+    private final RecruitmentService recruitmentService;
 
     /**
      * 入职管理-待入职-列表分页
@@ -291,4 +296,56 @@ public class EntryJobController {
         // TODO: 要与小明沟通 进一步确定与完善业务代码
         return R.ok();
     }
+
+    /**
+     * 邀请入职登记-确认邮件内容（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
+    @GetMapping("/confirmRegisterListEmail")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="recruitmentIds",value="人才表主键id数组",required = true),
+    })
+    public R<ModuleVO> confirmRegisterListEmail(Long[] recruitmentIds) {
+        ModuleVO moduleVO=new ModuleVO();
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String code = QrCodeUtils.createBase64QrCode(address);
+            moduleVO.setCode(code);
+        }
+
+        if (ObjectUtil.isNotEmpty(recruitmentIds)){
+            int length = recruitmentIds.length;
+            String title="您已选中"+length+"名待入职员工，请在下方编辑邮件内容，确认后将为你批量发送邀请邮件。";
+            moduleVO.setTitle(title);
+
+            List<Recruitment> recruitmentList = recruitmentService.listByIds(Arrays.asList(recruitmentIds));
+            if (ObjectUtil.isNotEmpty(recruitmentList)){
+                List<Map<String,String>> nameEmailList=new ArrayList<>();
+                recruitmentList.forEach(r->{
+                    if(ObjectUtil.isNotNull(r)){
+                        Map<String,String> nameEmailMap=new HashMap<>();
+                        nameEmailMap.put(r.getTalentName(),r.getEmail());
+                        nameEmailList.add(nameEmailMap);
+                    }
+                });
+                moduleVO.setNameEmailList(nameEmailList);
+            }
+        }
+
+        //todo:调用系统模板接口，获取模板配置信息。
+
+        return R.ok(moduleVO);
+    }
+
+
+
+
+
+
+
+
+
 }
