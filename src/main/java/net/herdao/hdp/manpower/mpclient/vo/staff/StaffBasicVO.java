@@ -31,7 +31,7 @@ public class StaffBasicVO {
         @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
         private SysDictItem staffScope;
 
-        @ApiModelProperty(value = "人员任职类型", name = "staffScope", example = "在职人员")
+        @ApiModelProperty(value = "人员任职类型", name = "staffJobType", example = "在职人员")
         private SysDictItem staffJobType;
 
         @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
