@@ -7,6 +7,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -139,4 +140,12 @@ public interface RecruitmentService extends IService<Recruitment> {
 	 * @return
 	 */
 	R generateWorkflow(String recordId, String flowType,String contentUrl);
+
+    /**
+     * 手机端-基本信息-个人信息-新增或修改
+     * @param dto 人才表
+     * @return
+     */
+    R saveOrUpdateRecruitment(RecruitmentBaseInfoMobileDTO dto);
+
 }

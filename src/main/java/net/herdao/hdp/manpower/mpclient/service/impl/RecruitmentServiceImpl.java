@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -47,18 +48,6 @@ import net.herdao.hdp.common.message.config.SmsTemplate;
 import net.herdao.hdp.common.message.constant.SmsConstant;
 import net.herdao.hdp.common.security.service.HdpUser;
 import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditBaseInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditOtherInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentPersonDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
@@ -133,14 +122,13 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     @Override
     //@OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentAddFormDTO.class)
     public R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
+        //先校检再新增
         RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitmentAddFormDTO,updateFormVO);
-
         //校检手机号码
         if (checkMobile(updateFormVO)){
             return R.failed("当前手机号码已被占用，请重新检查手机号码!");
         }
-
         //校检姓名+手机号码
         if (checkTalentNameAndMobile(updateFormVO)){
             return R.failed("候选人已存在!");
@@ -148,7 +136,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         Recruitment recruitment=new Recruitment();
         BeanUtils.copyProperties(recruitmentAddFormDTO,recruitment);
-
         SysUser sysUser = SysUserUtils.getSysUser();
         if (ObjectUtil.isNotNull(sysUser)){
             recruitment.setCreatorTime(LocalDateTime.now());
@@ -443,5 +430,47 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent);
     	
     }
-    
+
+    @Override
+    public R saveOrUpdateRecruitment(RecruitmentBaseInfoMobileDTO dto) {
+        if (ObjectUtil.isNotNull(dto)){
+            //先校检
+            RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
+            BeanUtils.copyProperties(dto,updateFormVO);
+            //校检手机号码
+            if (checkMobile(updateFormVO)){
+                return R.failed("当前手机号码已被占用，请重新检查手机号码!");
+            }
+            //校检姓名+手机号码
+            if (checkTalentNameAndMobile(updateFormVO)){
+                return R.failed("候选人已存在!");
+            }
+
+            Recruitment recruitment=new Recruitment();
+            BeanUtils.copyProperties(dto,recruitment);
+            SysUser sysUser = SysUserUtils.getSysUser();
+
+            //新增
+            if (ObjectUtil.isNull(dto.getId())){
+                if (ObjectUtil.isNotNull(sysUser)){
+                    recruitment.setCreatorTime(LocalDateTime.now());
+                    recruitment.setCreatorCode(sysUser.getUsername());
+                    recruitment.setCreatorName(sysUser.getAliasName());
+                }
+                super.save(recruitment);
+            }
+
+            //修改
+            if (ObjectUtil.isNotNull(dto.getId())){
+                if (ObjectUtil.isNotNull(sysUser)){
+                    recruitment.setModifierTime(LocalDateTime.now());
+                    recruitment.setModifierCode(sysUser.getUsername());
+                    recruitment.setModifierName(sysUser.getAliasName());
+                }
+                super.updateById(recruitment);
+            }
+        }
+
+        return R.ok(dto);
+    }
 }

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -26,7 +28,9 @@ public class RecruitmentBaseInfoMobileDTO {
     /**
      * 姓名
      */
-    @ApiModelProperty(value="姓名")
+    @ApiModelProperty(value="姓名",required = true)
+    @Length(max = 20,message = "候选人不超过20个字")
+    @NotBlank(message = "候选人姓名不能为空")
     private String talentName;
 
     /**
@@ -38,7 +42,8 @@ public class RecruitmentBaseInfoMobileDTO {
     /**
      * 手机号码
      */
-    @ApiModelProperty(value="手机号码")
+    @ApiModelProperty(value="手机号码",required = true)
+    @NotBlank(message = "手机号码不能为空")
     private String mobile;
 
     /**

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.hutool.core.codec.Base64;
 import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
 import org.apache.commons.io.IOUtils;
@@ -39,32 +40,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.GenerateWorkflowDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDetailsDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditBaseInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditDetailsDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditEduDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditFamilyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditOtherInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentResultDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentPersonDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentWorkDetailsDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.WorkflowNotifyDTO;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentActivitiService;
@@ -711,5 +686,16 @@ public class RecruitmentController {
         return R.ok(moduleVO);
     }
 
+    /**
+     * 手机端-基本信息-个人信息-新增或修改
+     * @param dto 人才表
+     * @return R
+     */
+    @ApiOperation(value = "手机端-基本信息-个人信息-新增或修改", notes = "手机端-基本信息-个人信息-新增或修改")
+    @PostMapping("/saveOrUpdateRecruitment")
+    public R saveOrUpdateRecruitment(@Validated @RequestBody RecruitmentBaseInfoMobileDTO  dto) {
+        R result = recruitmentService.saveOrUpdateRecruitment(dto);
+        return R.ok(result);
+    }
 
 }
