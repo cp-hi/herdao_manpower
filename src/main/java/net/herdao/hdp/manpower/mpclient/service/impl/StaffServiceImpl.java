@@ -350,14 +350,29 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				.eq("id", id);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
 
+		return convert2StaffBasicVO(staff);
+	}
+
+	@Override
+	public StaffBasicVO selectBasicByUserId(Long userId) throws Exception {
+		// 查询员工信息
+		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
+		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
+				.eq("user_id", userId);
+		Staff staff = staffMapper.selectOne(staffQueryWrapper);
+
+		return convert2StaffBasicVO(staff);
+	}
+
+	private StaffBasicVO convert2StaffBasicVO(Staff staff) throws Exception {
 		if (staff != null) {
-			StaffBasicVO.StaffInfo staffInfo = new StaffBasicVO.StaffInfo();
+			StaffBasicVO vo = new StaffBasicVO();
 			// 查看人员归属范围的字典对象
 			if (staff.getStaffScope() != null) {
 				QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
 				SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
 						.eq("value", staff.getStaffScope()));
-				staffInfo.setStaffScope(staffScope.getLabel());
+				vo.setStaffScope(staffScope.getLabel());
 			}
 
 			// 查看人员任职类型的字典对象
@@ -365,19 +380,18 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
 				SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
 						.eq("value", staff.getJobType()));
-				staffInfo.setStaffJobType(jobType.getLabel());
+				vo.setStaffJobType(jobType.getLabel());
 			}
 
 			if (staff.getUserId() != null) {
-				staffInfo.setUserId(staff.getUserId());
+				vo.setUserId(staff.getUserId());
 			}
 			String staffName = staff.getStaffName() != null ? staff.getStaffName() : "";
 			String staffCode = staff.getStaffCode() != null ? staff.getStaffCode() : "";
-			staffInfo.setStaffNameAndCode(staffName + "(" + staffCode + ")");
-			staffInfo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
+			vo.setStaffNameAndCode(staffName + "(" + staffCode + ")");
+			vo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
 
 			// 查询员工主任职信息
-			StaffBasicVO.StaffPostInfo staffPostInfo = new StaffBasicVO.StaffPostInfo();
 			if (staff.getUserId() != null) {
 				QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
 				Userpost userpost = userpostService.getOne(upWrapper
@@ -388,31 +402,27 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				if (userpost != null && userpost.getOrgId() != null) {
 					Organization org = organizationService.getById(userpost.getOrgId());
 					if (org != null) {
-						staffPostInfo.setOrgId(org.getId());
-						staffPostInfo.setOrgName(org.getOrgName());
+						vo.setOrgId(org.getId());
+						vo.setOrgName(org.getOrgName());
 					}
 				}
 				// 查看员工岗位信息
 				if (userpost != null &&  userpost.getPostId() != null) {
 					Post post = postService.getById(userpost.getPostId());
 					if (post != null) {
-						staffPostInfo.setPostId(post.getId());
-						staffPostInfo.setPostName(post.getPostName());
+						vo.setPostId(post.getId());
+						vo.setPostName(post.getPostName());
 					}
 				}
 				// 查看员工职级信息
 				if (userpost != null && userpost.getJobLevelId() != null) {
 					JobLevel jobLevel = jobLevelService.getById(userpost.getJobLevelId());
 					if (jobLevel != null) {
-						staffPostInfo.setJobLevelId(jobLevel.getId());
-						staffPostInfo.setJobLevelName(jobLevel.getJobLevelName());
+						vo.setJobLevelId(jobLevel.getId());
+						vo.setJobLevelName(jobLevel.getJobLevelName());
 					}
 				}
 			}
-
-			StaffBasicVO vo = new StaffBasicVO();
-			vo.setStaffInfo(staffInfo);
-			vo.setStaffPostInfo(staffPostInfo);
 			return vo;
 		}
 		return null;

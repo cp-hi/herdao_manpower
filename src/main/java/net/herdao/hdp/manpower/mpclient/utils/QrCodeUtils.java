@@ -41,8 +41,7 @@ public class QrCodeUtils {
 				result="data:image/png;base64,"+base64;
 			}catch (Exception ex){
 				log.error("生成二维码的Base64编码失败",ex);
- 			}
-			finally {
+ 			}finally {
 				try {
 					stream.close();
 				} catch (IOException e) {

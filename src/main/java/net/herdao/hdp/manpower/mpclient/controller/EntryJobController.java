@@ -36,7 +36,6 @@ public class EntryJobController {
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
-    private final RecruitmentService recruitmentService;
 
     /**
      * 入职管理-待入职-列表分页
@@ -298,15 +297,12 @@ public class EntryJobController {
     }
 
     /**
-     * 邀请入职登记-确认邮件内容（内含二维码）
+     * 获取-批量邀请更新简历-确认邮件内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
-    @GetMapping("/confirmRegisterListEmail")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentIds",value="人才表主键id数组",required = true),
-    })
-    public R<ModuleVO> confirmRegisterListEmail(Long[] recruitmentIds) {
+    @ApiOperation(value = "获取-批量邀请更新简历-确认邮件内容", notes = "获取-批量邀请更新简历-确认邮件内容")
+    @GetMapping("/fetchConfirmRegisterListEmail")
+    public R<ModuleVO> confirmRegisterListEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -316,40 +312,17 @@ public class EntryJobController {
             moduleVO.setCode(code);
         }
 
-        if (ObjectUtil.isNotEmpty(recruitmentIds)){
-            int length = recruitmentIds.length;
-            String title="您已选中"+length+"名待入职员工，请在下方编辑邮件内容，确认后将为你批量发送邀请邮件。";
-            moduleVO.setTitle(title);
-
-            List<Recruitment> recruitmentList = recruitmentService.listByIds(Arrays.asList(recruitmentIds));
-            if (ObjectUtil.isNotEmpty(recruitmentList)){
-                List<Map<String,String>> nameEmailList=new ArrayList<>();
-                recruitmentList.forEach(r->{
-                    if(ObjectUtil.isNotNull(r)){
-                        Map<String,String> nameEmailMap=new HashMap<>();
-                        nameEmailMap.put(r.getTalentName(),r.getEmail());
-                        nameEmailList.add(nameEmailMap);
-                    }
-                });
-                moduleVO.setNameEmailList(nameEmailList);
-            }
-        }
-
         //todo:调用系统模板接口，获取模板配置信息。
-
         return R.ok(moduleVO);
     }
 
     /**
-     * 入职登记记录-发送请确认（内含二维码）
+     * 获取-入职登记记录-发送请确认内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "入职登记记录-发送请确认", notes = "入职登记记录-发送请确认")
-    @GetMapping("/confirmRegisterEmail")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recruitmentId",value="人才表主键id",required = true),
-    })
-    public R<ModuleVO> confirmRegisterEmail(Long recruitmentId) {
+    @ApiOperation(value = "获取-入职登记记录-发送请确认内容", notes = "获取-入职登记记录-发送请确认内容")
+    @GetMapping("/fetchConfirmRegisterEmail")
+    public R<ModuleVO> fetchConfirmRegisterEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -357,14 +330,6 @@ public class EntryJobController {
             String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
             String code = QrCodeUtils.createBase64QrCode(address);
             moduleVO.setCode(code);
-        }
-
-        if (ObjectUtil.isNotEmpty(recruitmentId)){
-            Recruitment recruitment = recruitmentService.getById(recruitmentId);
-            if (ObjectUtil.isNotNull(recruitment)){
-                String title="姓名："+recruitment.getTalentName()+"   邮箱："+recruitment.getEmail();
-                moduleVO.setTitle(title);
-            }
         }
 
         //todo:调用系统模板接口，获取模板配置信息。

@@ -476,29 +476,26 @@
             dt4.label FERTILITY,
             dt5.label MARITAL_STATUS,
             dt6.label ACCOUNT_TYPE,
-            dt7.label COUNTRY
-        FROM
-            mp_staff f
+            dt7.label COUNTRY,
+			o.ORG_FULLNAME org_Fullname,
+			s.SECTION_NAME section_Name,
+			pip.PIPELINE_NAME pipeline_Name
+        FROM mp_staff f
         LEFT JOIN mp_user u ON f.user_id = u.ID
         LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
         LEFT JOIN (
-                SELECT * FROM mp_userpost  WHERE MAIN_POST = TRUE
-            ) up ON u.ID = up.USER_ID
+					SELECT * FROM mp_userpost  WHERE MAIN_POST = TRUE
+        ) up ON u.ID = up.USER_ID
         LEFT JOIN mp_post p ON p.ID = up.POST_ID
-        LEFT JOIN sys_dict_item dt1 ON f.STAFF_SCOPE = dt1.VALUE
-            AND dt1.type = 'RYGSFW'
-        LEFT JOIN sys_dict_item dt2 ON f.JOB_TYPE = dt2.VALUE
-            AND dt2.type = 'JOB_TYPE'
-        LEFT JOIN sys_dict_item dt3 ON f.SEX = dt3.VALUE
-            AND dt3.type = 'SEX'
-        LEFT JOIN sys_dict_item dt4 ON f.FERTILITY = dt4.VALUE
-            AND dt4.type = 'SYZK'
-        LEFT JOIN sys_dict_item dt5 ON f.MARITAL_STATUS = dt5.VALUE
-            AND dt5.type = 'HYZK'
-        LEFT JOIN sys_dict_item dt6 ON f.ACCOUNT_TYPE = dt6.VALUE
-            AND dt6.type = 'HKLX'
-        LEFT JOIN sys_dict_item dt7 ON f.COUNTRY = dt7.VALUE
-            AND dt7.type = 'GJ'
+        LEFT JOIN sys_dict_item dt1 ON f.STAFF_SCOPE = dt1.VALUE AND dt1.type = 'RYGSFW'
+        LEFT JOIN sys_dict_item dt2 ON f.JOB_TYPE = dt2.VALUE AND dt2.type = 'JOB_TYPE'
+        LEFT JOIN sys_dict_item dt3 ON f.SEX = dt3.VALUE AND dt3.type = 'SEX'
+        LEFT JOIN sys_dict_item dt4 ON f.FERTILITY = dt4.VALUE AND dt4.type = 'SYZK'
+        LEFT JOIN sys_dict_item dt5 ON f.MARITAL_STATUS = dt5.VALUE AND dt5.type = 'HYZK'
+        LEFT JOIN sys_dict_item dt6 ON f.ACCOUNT_TYPE = dt6.VALUE AND dt6.type = 'HKLX'
+        LEFT JOIN sys_dict_item dt7 ON f.COUNTRY = dt7.VALUE AND dt7.type = 'GJ'
+		left join mp_section s on up.section_id=s.id
+		left join mp_pipeline pip on up.pipeline_id=pip.id
         <where>
             AND f.del_flag = 0
             <if test="searchText != null and searchText !='' ">

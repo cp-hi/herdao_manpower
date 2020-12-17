@@ -53,9 +53,11 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
         BeanUtils.copyProperties(dto,workExperience);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        workExperience.setCreatorTime(LocalDateTime.now());
-        workExperience.setCreatorCode(sysUser.getUsername());
-        workExperience.setCreatorName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            workExperience.setCreatorTime(LocalDateTime.now());
+            workExperience.setCreatorCode(sysUser.getUsername());
+            workExperience.setCreatorName(sysUser.getAliasName());
+        }
 
         super.save(workExperience);
         BeanUtils.copyProperties(workExperience,dto);
@@ -69,9 +71,11 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
         BeanUtils.copyProperties(dto,workExperience);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        workExperience.setModifierTime(LocalDateTime.now());
-        workExperience.setModifierCode(sysUser.getUsername());
-        workExperience.setModifierName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            workExperience.setModifierTime(LocalDateTime.now());
+            workExperience.setModifierCode(sysUser.getUsername());
+            workExperience.setModifierName(sysUser.getAliasName());
+        }
 
         super.updateById(workExperience);
         BeanUtils.copyProperties(workExperience,dto);

@@ -620,10 +620,6 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "发起流程", notes = "发起流程")
     @PostMapping("/generateWorkflow")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="recordId",value="业务表单ID",required = true),
-        @ApiImplicitParam(name="flowType",value="流程类型(录用审批)",required = true)
-    })
     public R generateWorkflow(@RequestBody GenerateWorkflowDTO dto) {
     	return recruitmentService.generateWorkflow(dto.getRecordId(),dto.getFlowType(),dto.getContentUrl());
     }
@@ -643,12 +639,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 批量邀请更新简历页面-下载二维码
+     * 获取-批量邀请更新简历页面-二维码
      * @return R
      */
-    @ApiOperation(value = "批量邀请更新简历页面-下载二维码", notes = "批量邀请更新简历页面-下载二维码")
-    @GetMapping("/batchInviteResumeQrCode")
-    public R batchInviteResumeQrCode() {
+    @ApiOperation(value = "获取-批量邀请更新简历页面-二维码", notes = "获取-批量邀请更新简历页面-二维码")
+    @GetMapping("/fetchBatchInviteResumeQrCode")
+    public R fetchBatchInviteResumeQrCode() {
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         String result="";
         if (ObjectUtil.isNotNull(tenantId)){
@@ -661,15 +657,46 @@ public class RecruitmentController {
     }
 
     /**
-     * 批量邀请更新简历-确认邮件内容（内含二维码）
+     * 下载-批量邀请更新简历页面-二维码
      * @return R
      */
-    @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
-    @GetMapping("/confirmInviteResumeEmail")
-    @ApiImplicitParams({
-       @ApiImplicitParam(name="ids",value="主键id数组",required = true),
-    })
-    public R<ModuleVO> confirmInviteResumeEmail(Long[] ids) {
+    @ApiOperation(value = "下载-批量邀请更新简历页面-二维码", notes = "下载-批量邀请更新简历页面-二维码")
+    @GetMapping("/downloadInviteResumeQrCode")
+    public R downloadInviteResumeQrCode(HttpServletResponse response) {
+        Integer tenantId = SecurityUtils.getUser().getTenantId();
+
+        if (ObjectUtil.isNotNull(tenantId)){
+            //手机端极速入职页面地址
+            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try {
+                QrcodeGenerator generator = new SimpleQrcodeGenerator();
+                BufferedImage image = generator.generate(address).getImage();
+                ImageIO.write(image, "png", stream);
+
+            }catch (Exception ex){
+                log.error("生成二维码的Base64编码失败",ex);
+            }finally {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+         }
+
+        return R.ok("");
+    }
+
+    /**
+     * 获取-获取批量邀请更新简历-确认邮件内容（内含二维码）
+     * @return R
+     */
+    @ApiOperation(value = "获取-批量邀请更新简历-确认邮件内容", notes = "获取-批量邀请更新简历-确认邮件内容")
+    @GetMapping("/fetchConfirmInviteResumeEmail")
+    public R<ModuleVO> fetchConfirmInviteResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -677,25 +704,6 @@ public class RecruitmentController {
             String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
             String code = QrCodeUtils.createBase64QrCode(address);
             moduleVO.setCode(code);
-        }
-
-        if (ObjectUtil.isNotEmpty(ids)){
-            int length = ids.length;
-            String title="您已选中"+length+"名待入职员工，请在下方编辑邮件内容，确认后将为你批量发送邀请邮件。";
-            moduleVO.setTitle(title);
-
-            List<Recruitment> recruitmentList = recruitmentService.listByIds(Arrays.asList(ids));
-            if (ObjectUtil.isNotEmpty(recruitmentList)){
-                List<Map<String,String>> nameEmailList=new ArrayList<>();
-                recruitmentList.forEach(r->{
-                    if(ObjectUtil.isNotNull(r)){
-                        Map<String,String> nameEmailMap=new HashMap<>();
-                        nameEmailMap.put(r.getTalentName(),r.getEmail());
-                        nameEmailList.add(nameEmailMap);
-                    }
-                 });
-                moduleVO.setNameEmailList(nameEmailList);
-            }
         }
 
         //todo:调用系统模板接口，获取模板配置信息。
@@ -704,15 +712,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 邀请更新简历-候选人简历补充邀请确认（内含二维码）
+     * 获取-邀请更新简历-候选人简历补充邀请确认内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "邀请更新简历-候选人简历补充邀请确认", notes = "邀请更新简历-候选人简历补充邀请确认")
-    @GetMapping("/confirmSupplementResumeEmail")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="id",value="主键id",required = true),
-    })
-    public R<ModuleVO> confirmSupplementResumeEmail(Long id) {
+    @ApiOperation(value = "获取-邀请更新简历-候选人简历补充邀请确认内容", notes = "获取-邀请更新简历-候选人简历补充邀请确认内容")
+    @GetMapping("/fetchConfirmSupplementResumeEmail")
+    public R<ModuleVO> fetchConfirmSupplementResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -722,16 +727,7 @@ public class RecruitmentController {
             moduleVO.setCode(code);
         }
 
-        if (ObjectUtil.isNotEmpty(id)){
-            Recruitment recruitment = recruitmentService.getById(id);
-            if (ObjectUtil.isNotNull(recruitment)){
-                 String title="姓名："+recruitment.getTalentName()+"   邮箱："+recruitment.getEmail();
-                 moduleVO.setTitle(title);
-            }
-        }
-
         //todo:调用系统模板接口，获取模板配置信息。
-
         return R.ok(moduleVO);
     }
 
