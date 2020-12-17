@@ -27,19 +27,20 @@
             <result property="modifierName" column="modifier_name"/>
             <result property="modifierTime" column="modifier_time"/>
       </resultMap>
-      <insert id="insertBatch" parameterType="java.util.List" >
+      <insert id="insertBatch" parameterType="net.herdao.hdp.manpower.mpclient.entity.AttachFile" >
             insert into mp_attach_file
-            (file_type,file_size,file_id,module_type,biz_id,creator_time,creator_name)
+            (file_name,file_type,file_size,file_id,module_type,creator_time,creator_name,biz_id)
             values
             <foreach collection="list" item="item" index="index" separator=",">
                   (
+                  #{item.fileName},
                   #{item.fileType},
+                  #{item.fileSize},
                   #{item.fileId},
                   #{item.moduleType},
                   #{item.creatorName},
                   #{item.creatorTime},
-                  #{item.bizId},
-                  #{item.fileSize}
+                  #{item.bizId}
                   )
             </foreach>
       </insert>
