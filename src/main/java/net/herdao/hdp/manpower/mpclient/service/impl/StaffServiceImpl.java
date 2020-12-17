@@ -37,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +77,10 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Autowired
 	private StaffcontractService staffcontractService;
 
-    @Autowired
+	@Autowired
+	private PostOrgService postOrgService;
+
+	@Autowired
     private RemoteUserService remoteUserService;
 
 	@Autowired
@@ -400,15 +402,21 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 				// 查询员工组织信息
 				if (userpost != null && userpost.getOrgDeptId() != null) {
+					// 在员工任职表中org_dept_id 对应 人事调动表中的 org_id
 					Organization org = organizationService.getById(userpost.getOrgDeptId());
 					if (org != null) {
 						vo.setOrgId(org.getId());
 						vo.setOrgName(org.getOrgName());
 					}
 				}
+
 				// 查看员工岗位信息
+				// mp_userpost(就职员工表) 中的 postId 表示的是 mp_post_org(岗位表) 中的 id
+				// 获取到岗位的信息，需要从 mp_post(标准岗) 中获取
+				// 而 mp_post 中的 id 对应 mp_post_org 中的 postId
 				if (userpost != null &&  userpost.getPostId() != null) {
-					Post post = postService.getById(userpost.getPostId());
+					PostOrg postOrg = postOrgService.getById(userpost.getPostId());
+					Post post = postService.getById(postOrg.getPostId());
 					if (post != null) {
 						vo.setPostId(post.getId());
 						vo.setPostName(post.getPostName());
