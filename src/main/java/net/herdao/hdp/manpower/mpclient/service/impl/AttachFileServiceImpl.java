@@ -18,6 +18,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.common.core.util.R;
@@ -29,6 +30,7 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalP
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
+import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 通用附件表
@@ -64,11 +67,20 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         attachFile.forEach(item -> {
             AttachFile file = new AttachFile();
             BeanUtils.copyProperties(item,file);
+            AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
+                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+            //不为空 修改
+            if (attach != null){
+                this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
+                        eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+            }
+
             file.setFileType(item.getExtend());
             file.setCreatorTime(LocalDateTime.now());
             list.add(file);
                 }
         );
+        //否则  新增
         this.baseMapper.insertBatch(list);
     }
 

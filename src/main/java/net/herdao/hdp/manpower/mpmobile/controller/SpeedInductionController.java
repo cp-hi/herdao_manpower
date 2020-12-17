@@ -89,7 +89,7 @@ public class SpeedInductionController {
     @SysLog("新增工资卡信息表")
     @PostMapping("/savePayCardInfo")
 //    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_add')")
-    public R savePayCardInfo(@RequestBody PayCardInformationDTO dto) {
+    public R savePayCardInfo(@RequestBody PayCardInformationDTO dto) throws Exception {
         return R.ok(payCardInformationService.insertPayCard(dto));
     }
 }
