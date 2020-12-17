@@ -45,11 +45,11 @@ import java.util.List;
 public class SendEmailController {
     private final MsgService msgService;
 
-    @ApiOperation(value = "批量邀请更新简历-发送邮件", notes = "批量邀请更新简历-发送邮件")
-    @PostMapping("/resumeSend")
-    public R<Boolean> sendEmail(@RequestBody EmailSendInfo emailSendInfo) {
-        msgService.sendEmail(emailSendInfo);
-        return null;
+    @ApiOperation(value = "候选人简历补充邀请确认-发送邮件", notes = "候选人简历补充邀请确认-发送邮件")
+    @PostMapping("/candidateSend")
+    public R<Boolean> candidateSend(@RequestBody EmailSendInfo emailSendInfo) {
+        Boolean status = msgService.sendEmail(emailSendInfo);
+        return R.ok(status,"发送成功");
     }
 
 }

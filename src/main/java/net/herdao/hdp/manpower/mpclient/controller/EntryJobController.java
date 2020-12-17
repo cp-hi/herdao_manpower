@@ -297,12 +297,12 @@ public class EntryJobController {
     }
 
     /**
-     * 获取-批量邀请更新简历-确认邮件内容（内含二维码）
+     * 2.获取-邀请更新简历-页面内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "获取-批量邀请更新简历-确认邮件内容", notes = "获取-批量邀请更新简历-确认邮件内容")
-    @GetMapping("/fetchConfirmRegisterListEmail")
-    public R<ModuleVO> confirmRegisterListEmail() {
+    @ApiOperation(value = "获取-邀请更新简历-页面内容", notes = "获取-邀请更新简历-页面内容")
+    @GetMapping("/fetchInviteListEmail")
+    public R<ModuleVO> fetchInviteListEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -320,7 +320,7 @@ public class EntryJobController {
      * 获取-入职登记记录-发送请确认内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "获取-入职登记记录-发送请确认内容", notes = "获取-入职登记记录-发送请确认内容")
+    @ApiOperation(value = "获取-入职登记记录-页面email内容", notes = "获取-入职登记记录-页面email内容")
     @GetMapping("/fetchConfirmRegisterEmail")
     public R<ModuleVO> fetchConfirmRegisterEmail() {
         ModuleVO moduleVO=new ModuleVO();

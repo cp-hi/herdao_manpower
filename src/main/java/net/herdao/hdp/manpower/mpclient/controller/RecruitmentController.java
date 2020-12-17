@@ -672,11 +672,11 @@ public class RecruitmentController {
 
 
     /**
-     * 获取-获取批量邀请更新简历-确认邮件内容（内含二维码）
+     * 获取-入职登记记录-发送邀请确认-页面内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "获取-批量邀请更新简历-确认邮件内容", notes = "获取-批量邀请更新简历-确认邮件内容")
-    @GetMapping("/fetchConfirmInviteResumeEmail")
+    @ApiOperation(value = "获取-入职登记记录-发送邀请确认-页面内容", notes = "获取-入职登记记录-发送邀请确认-页面内容")
+    @GetMapping("/fetchRegisterEmail")
     public R<ModuleVO> fetchConfirmInviteResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
@@ -693,11 +693,11 @@ public class RecruitmentController {
     }
 
     /**
-     * 获取-邀请更新简历-候选人简历补充邀请确认内容（内含二维码）
+     * 获取-候选人简历补充邀请确认-页面内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "获取-邀请更新简历-候选人简历补充邀请确认内容", notes = "获取-邀请更新简历-候选人简历补充邀请确认内容")
-    @GetMapping("/fetchConfirmSupplementResumeEmail")
+    @ApiOperation(value = "获取-候选人简历补充邀请确认-页面内容", notes = "获取-候选人简历补充邀请确认-页面内容")
+    @GetMapping("/fetchCandidate")
     public R<ModuleVO> fetchConfirmSupplementResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();

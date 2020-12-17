@@ -18,12 +18,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Andy
+ */
 @Service
 @AllArgsConstructor
 public class MsgServiceImpl implements MsgService {
 
     private final RemoteMsgService remoteMsgService;
+
     private final RecruitmentService recruitmentService;
+
     /**
      * 发送邮件
      * @param emailSendInfo
