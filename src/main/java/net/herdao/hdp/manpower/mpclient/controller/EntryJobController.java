@@ -1,6 +1,9 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,11 +33,11 @@ import java.util.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/entryJob" )
+@RequestMapping("/entryJob")
 @Api(value = "entryJob", tags = "入职审批管理")
 public class EntryJobController {
 
-    private final StaffEntrypostApproveService staffEntrypostApproveService;
+    private final StaffEntrypostApproveService approveService;
 
 
     /**
@@ -52,7 +55,7 @@ public class EntryJobController {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     public R<Page<EntryDTO>> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = approveService.findEntryPage(page, orgId, searchText);
         return R.ok(pageResult);
     }
 
@@ -71,7 +74,7 @@ public class EntryJobController {
     public R<EntryDTO> exportEntry(HttpServletResponse response, String orgId, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = approveService.findEntryPage(page, orgId, searchText);
         ExcelUtils.export2Web(response, "入职管理待入职表", "入职管理待入职表", EntryDTO.class, pageResult.getRecords());
         EntryDTO dto=new EntryDTO();
         return R.ok(dto);
@@ -92,7 +95,7 @@ public class EntryJobController {
     public R<EntryDTO> exportInviteEntry(HttpServletResponse response, String orgId, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = approveService.findEntryPage(page, orgId, searchText);
         ExcelUtils.export2Web(response, "入职管理待入职表", "入职管理待入职表", EntryDTO.class, pageResult.getRecords());
         EntryDTO dto=new EntryDTO();
         return R.ok(dto);
@@ -113,7 +116,7 @@ public class EntryJobController {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     public R<Page<EntryDTO>> findInJobPage(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findInJobPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = approveService.findInJobPage(page, orgId, searchText);
         return R.ok(pageResult);
     }
 
@@ -132,7 +135,7 @@ public class EntryJobController {
     public R<EntryDTO> exportInJob(HttpServletResponse response, String orgId, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findInJobPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = approveService.findInJobPage(page, orgId, searchText);
         ExcelUtils.export2Web(response, "入职管理待已入职表", "入职管理待已入职表", EntryDTO.class, pageResult.getRecords());
         EntryDTO dto=new EntryDTO();
         return R.ok(dto);
@@ -153,7 +156,7 @@ public class EntryJobController {
         @ApiImplicitParam(name="searchText",value="关键字搜索"),
     })
     public R<Page<EntryDTO>> findEntryInvitePage(Page<EntryDTO> page, String orgId, String searchText) {
-        Page<EntryDTO> pageResult = staffEntrypostApproveService.findEntryInvitePage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = approveService.findEntryInvitePage(page, orgId, searchText);
         return R.ok(pageResult);
     }
 
@@ -170,11 +173,11 @@ public class EntryJobController {
     @ApiImplicitParams({
         @ApiImplicitParam(name="page",value="分页对象",required = true),
         @ApiImplicitParam(name="orgId",value="组织ID"),
-        @ApiImplicitParam(name="entryCheckStatus",value="入职登记记录 (1:已提交，2：已提交，3：已确认）"),
+        @ApiImplicitParam(name="entryCheckStatus",value="入职登记记录 (1:未提交，2：已提交，3：已确认）"),
         @ApiImplicitParam(name="searchText",value="关键字搜索")
     })
     public R<Page<EntryRegisterDTO>> findEntryRegisterPage(Page<EntryRegisterDTO> page, String orgId, String entryCheckStatus, String searchText) {
-        Page<EntryRegisterDTO> pageResult = staffEntrypostApproveService.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        Page<EntryRegisterDTO> pageResult = approveService.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
         return R.ok(pageResult);
     }
 
@@ -198,7 +201,7 @@ public class EntryJobController {
     public R<EntryRegisterDTO> exportEntryRegisterPage(HttpServletResponse response,  String orgId, String entryCheckStatus, String searchText) {
         Page page = new Page();
         page.setSize(-1);
-        Page<EntryRegisterDTO> pageResult = staffEntrypostApproveService.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        Page<EntryRegisterDTO> pageResult = approveService.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
         String excelName="入职登记记录";
         String sheetName="入职登记记录";
         String key1="1";
@@ -235,8 +238,8 @@ public class EntryJobController {
     })
     @GetMapping("/findEntryInfo")
     public R<EntryInfoDTO> findEntryInfo(String recruitmentId,String id) {
-        EntryPersonInfoDTO entryPersonInfo = staffEntrypostApproveService.findEntryPersonInfo(recruitmentId);
-        EntryJobDTO entryJobInfo = staffEntrypostApproveService.findEntryJobInfo(id);
+        EntryPersonInfoDTO entryPersonInfo = approveService.findEntryPersonInfo(recruitmentId);
+        EntryJobDTO entryJobInfo = approveService.findEntryJobInfo(id);
 
         EntryInfoDTO entryInfo=new EntryInfoDTO();
         entryInfo.setEntryPersonInfoDTO(entryPersonInfo);
@@ -253,7 +256,7 @@ public class EntryJobController {
     @ApiOperation(value = "办理入职-确认入职", notes = "办理入职-确认入职")
     @PostMapping("/confirmEntry")
     public R<StaffEntrypostApprove> confirmEntry(@RequestBody EntryJobVO entryJobVO) {
-        StaffEntrypostApprove approve = staffEntrypostApproveService.confirmEntry(entryJobVO);
+        StaffEntrypostApprove approve = approveService.confirmEntry(entryJobVO);
         return R.ok(approve);
     }
 
@@ -268,14 +271,14 @@ public class EntryJobController {
     @ApiOperation(value = "确认入职登记", notes = "确认入职登记")
     @PostMapping("/confirmEntryRegister")
     public R<StaffEntrypostApprove> confirmEntryRegister(String id) {
-        StaffEntrypostApprove approve = staffEntrypostApproveService.getById(id);
+        StaffEntrypostApprove approve = approveService.getById(id);
         //修改更新入职登记状态
         if (ObjectUtil.isNotNull(approve)){
             //入职登记状态 (1:未提交，2：已提交，3：已确认）
             approve.setEntryCheckStatus("3");
             //状态：1 填报中，2 审批中，3 已审批
             approve.setStatus("3");
-            staffEntrypostApproveService.updateById(approve);
+            approveService.updateById(approve);
         }
 
         return R.ok(approve,"确认入职登记成功");
@@ -337,4 +340,31 @@ public class EntryJobController {
         return R.ok(moduleVO);
     }
 
+
+    /**
+     * 手机端-极速入职-提交 修改入职登记状态
+     * @param id 人才ID
+     * @return
+     */
+    @ApiOperation(value = "手机端-极速入职-提交", notes = "手机端-极速入职-提交")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="id",value="人才ID",required = true)
+    })
+    @PostMapping("/confirmRegisterByMobile")
+    public R  confirmRegisterByMobile(Long id) {
+        //获取人才审批表的最新记录
+        LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
+        entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,id).orderByDesc(StaffEntrypostApprove::getCreatorTime);
+        List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
+
+        if (CollectionUtil.isNotEmpty(entryList)){
+            StaffEntrypostApprove approve = entryList.get(0);
+            if (ObjectUtil.isNotNull(approve)){
+                //入职登记状态 (1:未提交，2：已提交，3：已确认）
+                approve.setEntryCheckStatus("3");
+            }
+        }
+
+        return R.ok("提交成功");
+    }
 }
