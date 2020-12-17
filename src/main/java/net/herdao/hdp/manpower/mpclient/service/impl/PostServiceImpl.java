@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysStation;
 import net.herdao.hdp.admin.api.feign.RemoteStationService;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.data.datascope.EhrDataScope;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Group;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
@@ -65,7 +64,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     
     @Override
 	public IPage<PostListVO> page(Page page, Post post) {
-		return this.baseMapper.page(page, post, new EhrDataScope());
+		return this.baseMapper.page(page, post);
 	}
 
     @Override
