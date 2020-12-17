@@ -665,7 +665,6 @@ public class RecruitmentController {
     public R downloadInviteResumeQrCode(HttpServletResponse response) {
         Integer tenantId = SecurityUtils.getUser().getTenantId();
 
-
         if (ObjectUtil.isNotNull(tenantId)){
             //手机端极速入职页面地址
             String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;

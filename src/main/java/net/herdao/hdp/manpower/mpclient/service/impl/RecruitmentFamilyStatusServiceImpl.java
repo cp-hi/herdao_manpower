@@ -60,9 +60,11 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
         BeanUtils.copyProperties(familyDTO,familyStatus);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        familyStatus.setCreatorTime(LocalDateTime.now());
-        familyStatus.setCreatorCode(sysUser.getUsername());
-        familyStatus.setCreatorName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            familyStatus.setCreatorTime(LocalDateTime.now());
+            familyStatus.setCreatorCode(sysUser.getUsername());
+            familyStatus.setCreatorName(sysUser.getAliasName());
+        }
 
         super.save(familyStatus);
         BeanUtils.copyProperties(familyStatus,familyDTO);
@@ -76,9 +78,11 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
         BeanUtils.copyProperties(familyDTO,familyStatus);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        familyStatus.setModifierTime(LocalDateTime.now());
-        familyStatus.setModifierCode(sysUser.getUsername());
-        familyStatus.setModifierName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            familyStatus.setModifierTime(LocalDateTime.now());
+            familyStatus.setModifierCode(sysUser.getUsername());
+            familyStatus.setModifierName(sysUser.getAliasName());
+        }
 
         super.updateById(familyStatus);
         BeanUtils.copyProperties(familyStatus,familyDTO);

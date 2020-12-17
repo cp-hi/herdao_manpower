@@ -67,9 +67,11 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         BeanUtils.copyProperties(dto,education);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        education.setCreatorTime(LocalDateTime.now());
-        education.setCreatorCode(sysUser.getUsername());
-        education.setCreatorName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            education.setCreatorTime(LocalDateTime.now());
+            education.setCreatorCode(sysUser.getUsername());
+            education.setCreatorName(sysUser.getAliasName());
+        }
 
         BeanUtils.copyProperties(education,dto);
         super.save(education);
@@ -89,9 +91,11 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
         BeanUtils.copyProperties(dto,education);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        education.setModifierTime(LocalDateTime.now());
-        education.setModifierCode(sysUser.getUsername());
-        education.setModifierName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            education.setModifierTime(LocalDateTime.now());
+            education.setModifierCode(sysUser.getUsername());
+            education.setModifierName(sysUser.getAliasName());
+        }
 
         BeanUtils.copyProperties(education,dto);
         super.updateById(education);
