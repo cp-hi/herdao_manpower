@@ -1,6 +1,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.constant.MsgType;
@@ -12,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.entity.EmailSendInfo;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.service.MsgService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,8 @@ public class MsgServiceImpl implements MsgService {
 
     private final RecruitmentService recruitmentService;
 
+    private final StaffEntrypostApproveService approveService;
+
     /**
      * 发送邮件
      * @param emailSendInfo
@@ -37,35 +41,48 @@ public class MsgServiceImpl implements MsgService {
     @Override
     @SneakyThrows
     public Boolean sendEmail(EmailSendInfo emailSendInfo) {
-        List<SysMsgDTO> sysMsgs = new ArrayList<>();
-        //人才管理发送简历更新邮件
-        if("1".equals(emailSendInfo.getType())){
-            List<Recruitment> recruitments = recruitmentService.listByIds(emailSendInfo.getIds());
-            recruitments.forEach(e->{
-                SysMsgDTO sysMsg = new SysMsgDTO();
-                sysMsg.setReceptEmail(e.getEmail());
-                sysMsg.setContent(emailSendInfo.getTemplate());
-                sysMsg.setTitle("人才管理");
-                sysMsg.setReceptPhone(e.getHomePhone());
-                sysMsgs.add(sysMsg);
-            });
+        try {
+            List<Recruitment> recruitmentList =null;
+            if (CollectionUtil.isNotEmpty(emailSendInfo.getIds())){
+                recruitmentList=recruitmentService.listByIds(emailSendInfo.getIds());
+                List<SysMsgDTO> sysMsgs = new ArrayList<>();
+
+                //人才管理发送简历更新邮件
+                if("1".equals(emailSendInfo.getType())){
+                    if (ObjectUtil.isNotEmpty(recruitmentList)){
+                        recruitmentList.forEach(e->{
+                            SysMsgDTO sysMsg = new SysMsgDTO();
+                            sysMsg.setReceptEmail(e.getEmail());
+                            sysMsg.setContent(emailSendInfo.getTemplate());
+                            sysMsg.setTitle("人才管理");
+                            sysMsg.setReceptPhone(e.getHomePhone());
+                            sysMsgs.add(sysMsg);
+                        });
+                    }
+                }
+                //入职邀请发送入职邀请邮件
+                if("2".equals(emailSendInfo.getType())){
+                    if (ObjectUtil.isNotEmpty(recruitmentList)){
+                        recruitmentList.forEach(e->{
+                            SysMsgDTO sysMsg = new SysMsgDTO();
+                            sysMsg.setReceptEmail(e.getEmail());
+                            sysMsg.setContent(emailSendInfo.getTemplate());
+                            sysMsg.setTitle("入职邀请");
+                            sysMsg.setReceptPhone(e.getHomePhone());
+                            sysMsgs.add(sysMsg);
+                        });
+                    }
+                }
+
+                if(CollectionUtil.isNotEmpty(sysMsgs)){
+                    R<Boolean> r = remoteMsgService.sendMailBatch(sysMsgs);
+                    RemoteCallUtils.checkData(r);
+                }
+            }
+        }catch (Exception ex){
+            return Boolean.FALSE;
         }
-        //入职邀请发送入职邀请邮件
-        if("2".equals(emailSendInfo.getType())){
-            List<Recruitment> recruitments = recruitmentService.listByIds(emailSendInfo.getIds());
-            recruitments.forEach(e->{
-                SysMsgDTO sysMsg = new SysMsgDTO();
-                sysMsg.setReceptEmail(e.getEmail());
-                sysMsg.setContent(emailSendInfo.getTemplate());
-                sysMsg.setTitle("人才管理");
-                sysMsg.setReceptPhone(e.getHomePhone());
-                sysMsgs.add(sysMsg);
-            });
-        }
-        if(CollectionUtil.isNotEmpty(sysMsgs)){
-            R<Boolean> r = remoteMsgService.sendMailBatch(sysMsgs);
-            RemoteCallUtils.checkData(r);
-        }
+
         return Boolean.TRUE;
     }
 

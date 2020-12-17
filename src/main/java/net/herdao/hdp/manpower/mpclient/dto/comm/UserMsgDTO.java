@@ -20,6 +20,9 @@ public class UserMsgDTO implements Serializable{
 	@ApiModelProperty(value="用户id")
     private long id;
 
+	@ApiModelProperty(value = "用户名")
+	private String userName;
+
 	@ApiModelProperty(value="工号")
     private String staffCode;
 	
@@ -43,6 +46,9 @@ public class UserMsgDTO implements Serializable{
 	
 	@ApiModelProperty(value="职级id")
     private long jobLevelId;
+
+	@ApiModelProperty(value="职级名称")
+	private String jobLevelName;
 	
 	@ApiModelProperty(value="人员归属范围")
     private String staffScope;

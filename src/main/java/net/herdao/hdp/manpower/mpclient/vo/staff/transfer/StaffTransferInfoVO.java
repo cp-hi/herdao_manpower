@@ -98,7 +98,7 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "工资发放单位", name = "payUnit")
     private Dictionary payUnit;
 
-    @ApiModelProperty(value = "工资发放单位", name = "payUnit")
+    @ApiModelProperty(value = "公积金发放单位", name = "payUnit")
     private Dictionary fundUnit;
 
     @ApiModelProperty(value = "社保购买单位", name = "securityUnit")
