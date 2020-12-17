@@ -30,20 +30,20 @@ public class StaffBasicVO {
     private Long entryTime;
 
     @ApiModelProperty(value = "组织/部门 id", name = "orgId")
-    private Long orgId;
+    private Long nowOrgId;
 
     @ApiModelProperty(value = "组织/部门名称", name = "orgName")
-    private String orgName;
+    private String nowOrgName;
 
     @ApiModelProperty(value = "岗位 id", name = "postId")
-    private Long postId;
+    private Long nowPostId;
 
     @ApiModelProperty(value = "岗位名称", name = "postName")
-    private String postName;
+    private String nowPostName;
 
     @ApiModelProperty(value = "职级 id", name = "jobLevelId")
-    private Long  jobLevelId;
+    private Long  nowJobLevelId;
 
     @ApiModelProperty(value = "职级名称", name = "jobLevelName")
-    private String jobLevelName;
+    private String nowJobLevelName;
 }

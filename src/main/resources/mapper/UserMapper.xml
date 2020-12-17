@@ -41,6 +41,7 @@
     <!-- 获取员工信息 -->
     <select id="getUserMsg" resultType="net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO">
        select a.id,
+       a.USER_NAME user_name,
        a.LOGIN_CODE staff_code,
        c.ORG_DEPT_ID org_id,
        d.ORG_FULLNAME org_name,
@@ -49,6 +50,7 @@
 		case when po.post_name is null then e.POST_NAME else po.post_name end post_name,
 		e.POST_LEVEL post_level,
 		po.JOB_LEVEL_ID job_level_id,
+		jl.JOB_LEVEL_NAME job_level_name,
 		b.STAFF_SCOPE staff_scope,
 		b.job_type,
 		UNIX_TIMESTAMP(b.ENTRY_TIME) entry_time,
@@ -61,6 +63,7 @@
 		left join mp_organization d on c.ORG_DEPT_ID=d.id
 		left join mp_post e on c.POST_ID=e.id
 		left join mp_post_org po on c.post_org_id=po.id
+		left join mp_job_level jl on po.job_level_id=jl.id
 	   <where>
 	  		 <if test="id != null">
 	  		 	AND a.id=#{id}

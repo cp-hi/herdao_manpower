@@ -18,6 +18,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.common.core.util.R;
@@ -29,6 +30,7 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalP
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
+import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 通用附件表
@@ -60,18 +63,53 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      */
     @Override
     public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
-        List<AttachFile> list = new ArrayList<>(10);
+        //多张图片上传后绑定保存
+        if (attachFile != null && attachFile.size() > 1){
+            bind(attachFile);
+            return;
+        }
+        AttachFile file = new AttachFile();
+        AttachFileDTO item = attachFile.get(0);
+        BeanUtils.copyProperties(item,file);
+        AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
+                eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+        //不为空 修改
+        if (attach != null){
+            this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
+                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+            return;
+        }
+        file.setFileType(item.getExtend());
+        file.setCreatorTime(LocalDateTime.now());
+
+        //否则  新增
+        this.baseMapper.insert(file);
+    }
+
+    /**
+     * 多张图片上传后绑定保存
+     *
+     * @param attachFile
+     */
+    private void bind(List<AttachFileDTO> attachFile) {
         attachFile.forEach(item -> {
             AttachFile file = new AttachFile();
             BeanUtils.copyProperties(item,file);
+            AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
+                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+            //不为空 修改
+            if (attach != null){
+                this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
+                        eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+                return;
+            }
+
             file.setFileType(item.getExtend());
             file.setCreatorTime(LocalDateTime.now());
-            list.add(file);
+            this.baseMapper.insert(file);
                 }
         );
-        this.baseMapper.insertBatch(list);
     }
-
 
 
     /*    *
