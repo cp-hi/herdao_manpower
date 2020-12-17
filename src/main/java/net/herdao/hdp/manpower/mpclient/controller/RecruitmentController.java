@@ -639,12 +639,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 预览-批量邀请更新简历页面-二维码
+     * 获取-批量邀请更新简历页面-二维码
      * @return R
      */
-    @ApiOperation(value = "预览-批量邀请更新简历页面-二维码", notes = "预览-批量邀请更新简历页面-二维码")
-    @GetMapping("/viewBatchInviteResumeQrCode")
-    public R batchInviteResumeQrCode() {
+    @ApiOperation(value = "获取-批量邀请更新简历页面-二维码", notes = "获取-批量邀请更新简历页面-二维码")
+    @GetMapping("/fetchBatchInviteResumeQrCode")
+    public R fetchBatchInviteResumeQrCode() {
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         String result="";
         if (ObjectUtil.isNotNull(tenantId)){
@@ -692,12 +692,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 批量邀请更新简历-确认邮件内容（内含二维码）
+     * 获取-获取批量邀请更新简历-确认邮件内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "批量邀请更新简历-确认邮件内容", notes = "批量邀请更新简历-确认邮件内容")
-    @GetMapping("/confirmInviteResumeEmail")
-    public R<ModuleVO> confirmInviteResumeEmail() {
+    @ApiOperation(value = "获取-批量邀请更新简历-确认邮件内容", notes = "获取-批量邀请更新简历-确认邮件内容")
+    @GetMapping("/fetchConfirmInviteResumeEmail")
+    public R<ModuleVO> fetchConfirmInviteResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
@@ -713,12 +713,12 @@ public class RecruitmentController {
     }
 
     /**
-     * 邀请更新简历-候选人简历补充邀请确认（内含二维码）
+     * 获取-邀请更新简历-候选人简历补充邀请确认内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "邀请更新简历-候选人简历补充邀请确认", notes = "邀请更新简历-候选人简历补充邀请确认")
-    @GetMapping("/confirmSupplementResumeEmail")
-    public R<ModuleVO> confirmSupplementResumeEmail() {
+    @ApiOperation(value = "获取-邀请更新简历-候选人简历补充邀请确认内容", notes = "获取-邀请更新简历-候选人简历补充邀请确认内容")
+    @GetMapping("/fetchConfirmSupplementResumeEmail")
+    public R<ModuleVO> fetchConfirmSupplementResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
         if (ObjectUtil.isNotNull(tenantId)){
