@@ -33,7 +33,7 @@ public class SaveStaffCallOutDTO {
     @NotNull
     private Long nowPostId;
 
-    @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123", required = true)
     @NotNull
     private Long nowJobLevelId;
 
@@ -45,7 +45,7 @@ public class SaveStaffCallOutDTO {
     @NotNull
     private Long transPostId;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "调动后职级 id", name = "transJobLevelId", example = "123", required = true)
     @NotNull
     private Long transJobLevelId;
 

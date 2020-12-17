@@ -145,4 +145,19 @@ public class StaffListDTO {
     @ExcelProperty(value = "修改时间",order = 6)
     private Date modifiedTime;
 
+    @ApiModelProperty(value = "组织全称" )
+    @ExcelProperty(value = "组织全称",order = 5)
+    private String orgFullname;
+
+    @ApiModelProperty(value = "管线" )
+    @ExcelProperty(value = "管线",order = 5)
+    private String pipelineName;
+
+    @ApiModelProperty(value = "板块" )
+    @ExcelProperty(value = "板块",order = 5)
+    private String sectionName;
+    
+    @ApiModelProperty(value = "职级" )
+    @ExcelProperty(value = "职级",order = 5)
+    private String jobLevelName;
 }

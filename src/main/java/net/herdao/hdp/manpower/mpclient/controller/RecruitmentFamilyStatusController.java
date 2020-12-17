@@ -1,22 +1,7 @@
-/*
- *    Copyright (c) 2018-2025, herdao All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the herdao.net developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: liang
- */
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -103,7 +88,21 @@ public class RecruitmentFamilyStatusController {
         return R.ok(recruitmentFamilyStatusService.removeById(id));
     }
 
-
+    /**
+     * 个人简历-家庭情况-新增保存
+     * @param dto 人才家庭情况
+     * @return R
+     */
+    @ApiOperation(value = "个人简历-家庭情况-新增保存", notes = "个人简历-家庭情况-新增保存")
+    @PostMapping("/saveOrUpdateFamily")
+    public R saveOrUpdateFamily(@RequestBody RecruitmentFamilyDTO[] dtoArray) {
+        if (ObjectUtil.isNotEmpty(dtoArray)){
+            for (RecruitmentFamilyDTO dto : dtoArray) {
+                recruitmentFamilyStatusService.saveOrUpdateFamily(dto);
+            }
+        }
+        return R.ok("新增保存成功");
+    }
 
 
 }

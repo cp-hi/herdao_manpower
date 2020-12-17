@@ -49,9 +49,9 @@
                    wr.contact,
                    wr.contact_tel,
                    wr.main_performance,
-                   wr.role
-               FROM
-                  mp_recruitment_workexperience wr
+                   wr.role,
+                   wr.recruitment_id
+              FROM mp_recruitment_workexperience wr
              <where>
                     wr.DEL_FLAG =0
                   <if test="recruitmentId != null and recruitmentId != '' ">

@@ -127,8 +127,6 @@ public class LocalFileController {
  			log.error("文件下载失败。",e);
 			/*return R.failed("文件下载失败");*/
 		}
-
-		//return null;
 	}
 
 	/**

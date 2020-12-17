@@ -50,4 +50,11 @@ public interface RecruitmentWorkexperienceService extends IService<RecruitmentWo
      * @return
      */
     RecruitmentWorkExperienceDTO updateWorkExperience(RecruitmentWorkExperienceDTO dto);
+
+    /**
+     * 个人简历-工作经历-新增或修改
+     * @param dto 人才实体
+     * @return
+     */
+    RecruitmentWorkExperienceDTO saveOrUpdateWorkExperience(RecruitmentWorkExperienceDTO dto);
 }
