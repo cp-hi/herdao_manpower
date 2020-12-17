@@ -39,7 +39,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param recruitmentAddFormDTO 人才实体
      * @return
      */
-    R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO);
+    R saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO);
 
     /**
      * 人才简历-顶部

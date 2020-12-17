@@ -136,9 +136,8 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "人才管理-添加候选人-新增保存", notes = "人才管理-添加候选人-新增保存")
     @PostMapping("/saveRecruitment")
-    public R<RecruitmentAddFormDTO> saveRecruitment(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
-        R<RecruitmentAddFormDTO> result = recruitmentService.saveRecruitment(recruitmentAddFormDTO);
-        return result;
+    public R saveRecruitment(@Validated @RequestBody RecruitmentAddFormDTO recruitmentAddFormDTO) {
+        return recruitmentService.saveRecruitment(recruitmentAddFormDTO);
     }
 
     /**
@@ -693,7 +692,7 @@ public class RecruitmentController {
      */
     @ApiOperation(value = "手机端-基本信息-个人信息-新增或修改", notes = "手机端-基本信息-个人信息-新增或修改")
     @PostMapping("/saveOrUpdateRecruitment")
-    public R saveOrUpdateRecruitment(@Validated @RequestBody RecruitmentBaseInfoMobileDTO  dto) {
+    public R saveOrUpdateRecruitment(@Validated @RequestBody RecruitmentBaseInfoMobileDTO dto) {
         R result = recruitmentService.saveOrUpdateRecruitment(dto);
         return R.ok(result);
     }

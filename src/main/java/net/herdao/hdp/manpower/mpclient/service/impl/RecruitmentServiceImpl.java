@@ -121,7 +121,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     //@OperationEntity(operation = "人才表单新增",module="人才简历", clazz = RecruitmentAddFormDTO.class)
-    public R<RecruitmentAddFormDTO> saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
+    public R saveRecruitment(RecruitmentAddFormDTO recruitmentAddFormDTO) {
         //先校检再新增
         RecruitmentUpdateFormDTO updateFormVO=new RecruitmentUpdateFormDTO();
         BeanUtils.copyProperties(recruitmentAddFormDTO,updateFormVO);
@@ -471,6 +471,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             }
         }
 
-        return R.ok(dto);
+        return R.ok(dto,"新增或修改成功！");
     }
 }
