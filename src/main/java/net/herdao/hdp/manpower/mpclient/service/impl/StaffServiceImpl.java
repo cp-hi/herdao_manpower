@@ -391,7 +391,7 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			vo.setStaffNameAndCode(staffName + "(" + staffCode + ")");
 			vo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
 
-			// 查询员工主任职信息
+			// 查询员工任职信息
 			if (staff.getUserId() != null) {
 				QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
 				Userpost userpost = userpostService.getOne(upWrapper
@@ -399,8 +399,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 						.eq("main_post", 1));
 
 				// 查询员工组织信息
-				if (userpost != null && userpost.getOrgId() != null) {
-					Organization org = organizationService.getById(userpost.getOrgId());
+				if (userpost != null && userpost.getOrgDeptId() != null) {
+					Organization org = organizationService.getById(userpost.getOrgDeptId());
 					if (org != null) {
 						vo.setOrgId(org.getId());
 						vo.setOrgName(org.getOrgName());
