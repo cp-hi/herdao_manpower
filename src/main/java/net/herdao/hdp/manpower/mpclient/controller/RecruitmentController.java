@@ -683,7 +683,7 @@ public class RecruitmentController {
                 long length = imageOutput.length();
 
                 //设置response
-                response.setContentType("application/x-msdownload");
+                response.setContentType("image/png");
                 response.setContentLength((int)length);
                 String fileName="qrCode.png";
                 response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gbk"),"iso-8859-1"));
