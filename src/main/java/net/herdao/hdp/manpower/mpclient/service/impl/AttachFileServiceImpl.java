@@ -61,7 +61,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     @Override
     public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
         List<AttachFile> list = new ArrayList<>(10);
-        attachFile.forEach(item ->{
+        attachFile.forEach(item -> {
             AttachFile file = new AttachFile();
             BeanUtils.copyProperties(item,file);
             file.setFileType(item.getExtend());
@@ -85,7 +85,8 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         List<AttachFile> attachfile = this.baseMapper.selectList(new QueryWrapper<AttachFile>().select("file_id").lambda().
                 eq(AttachFile::getBizId,
                         String.valueOf(id)).like(AttachFile::getModuleType,moduleType));
-        return  convert2DtoList(attachfile);
+        List<AttachFileInfoDTO> attachFileInfoDTOS = convert2DtoList(attachfile);
+        return attachFileInfoDTOS;
     }
 
     /**
@@ -98,7 +99,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         List<AttachFileInfoDTO> list = new ArrayList<>();
         for (AttachFile record : attachfile) {
             AttachFileInfoDTO attachFileDTO = new AttachFileInfoDTO();
-            BeanUtils.copyProperties(attachFileDTO,record);
+            BeanUtils.copyProperties(record,attachFileDTO);
             list.add(attachFileDTO);
         }
         return list;
