@@ -124,14 +124,17 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
     @Override
     public StaffContractRenewalInfoVO getDetail(Long id) {
         StaffContractRenewal entity = mapper.selectById(id);
-        StaffContractRenewalInfoVO vo = new StaffContractRenewalInfoVO();
-        BeanUtils.copyProperties(entity, vo);
-        String renewalCompanyName = companyService.getById(vo.getRenewalCompanyId()).getCompanyName();
-        vo.setRenewalCompanyName(renewalCompanyName);
-        vo.setContractStartTime(LocalDateTimeUtils.convert2Long(entity.getContractStartTime()));
-        vo.setContractEndTime(LocalDateTimeUtils.convert2Long(entity.getContractEndTime()));
-        vo.setRenewalStartTime(LocalDateTimeUtils.convert2Long(entity.getRenewalStartTime()));
-        vo.setRenewalEndTime(LocalDateTimeUtils.convert2Long(entity.getRenewalEndTime()));
-        return vo;
+        if (entity != null) {
+            StaffContractRenewalInfoVO vo = new StaffContractRenewalInfoVO();
+            BeanUtils.copyProperties(entity, vo);
+            String renewalCompanyName = companyService.getById(vo.getRenewalCompanyId()).getCompanyName();
+            vo.setRenewalCompanyName(renewalCompanyName);
+            vo.setContractStartTime(LocalDateTimeUtils.convert2Long(entity.getContractStartTime()));
+            vo.setContractEndTime(LocalDateTimeUtils.convert2Long(entity.getContractEndTime()));
+            vo.setRenewalStartTime(LocalDateTimeUtils.convert2Long(entity.getRenewalStartTime()));
+            vo.setRenewalEndTime(LocalDateTimeUtils.convert2Long(entity.getRenewalEndTime()));
+            return vo;
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -94,27 +95,27 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
     private Double threeGroupSeniority;
 
-    @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitsId")
-    private Long paidUnitsId;
+    @ApiModelProperty(value = "工资发放单位", name = "payUnit")
+    private Dictionary payUnit;
 
-    @ApiModelProperty(value = "工资发放单位名称", name = "paidUnitsName")
-    private String paidUnitsName;
+    @ApiModelProperty(value = "工资发放单位", name = "payUnit")
+    private Dictionary fundUnit;
 
-    @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitsId")
-    private Long fundUnitsId;
-
-    @ApiModelProperty(value = "公积金购买单位名称", name = "fundUnitsName")
-    private String fundUnitsName;
-
-    @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitsId;
-
-    @ApiModelProperty(value = "社保购买单位名称", name = "securityUnitName")
-    private String securityUnitsName;
+    @ApiModelProperty(value = "社保购买单位", name = "securityUnit")
+    private Dictionary securityUnit;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
     private List<String> appendixIds;
+
+    @Data
+    // 公司字典
+    public static class Dictionary {
+        // 公司名
+        private String label;
+        // 公司 id
+        private Long value;
+    }
 }

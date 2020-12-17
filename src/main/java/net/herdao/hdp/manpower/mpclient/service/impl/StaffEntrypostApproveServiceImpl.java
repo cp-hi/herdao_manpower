@@ -400,5 +400,18 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         userpostService.save(userpost);
     }
 
-
+    /**
+     * 	修改状态
+     * @param recordId
+     * @param status
+     */
+    @Override
+    public void modifyStatus(String recordId,String status){
+    	
+    	StaffEntrypostApprove staffEntrypostApprove = this.getById(recordId);
+    	staffEntrypostApprove.setStatus(status);
+    	this.updateById(staffEntrypostApprove);
+    	
+    }
+    
 }

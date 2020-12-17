@@ -147,38 +147,40 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
         to.setPromoteDate(LocalDateTimeUtils.convert2Long(from.getPromoteDate()));
 
-        Post nowPost = postService.getById(to.getNowPostId());
+        Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
         }
 
-        Post promotePost = postService.getById(to.getPromotePostId());
+        Post promotePost = postService.getById(from.getPromotePostId());
         if (promotePost != null) {
             to.setPromotePostName(promotePost.getPostName());
         }
 
-        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        Organization nowOrg = orgService.getById(from.getNowOrgId());
         if (nowOrg != null) {
             to.setNowOrgName(nowOrg.getOrgName());
         }
 
-        Organization promoteOrg = orgService.getById(to.getPromoteOrgId());
+        Organization promoteOrg = orgService.getById(from.getPromoteOrgId());
         if (promoteOrg != null) {
             to.setPromoteOrgName(promoteOrg.getOrgName());
         }
 
-        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
             to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
-        JobLevel promoteJobLevel = jobLevelService.getById(to.getPromoteJobLevelId());
+        JobLevel promoteJobLevel = jobLevelService.getById(from.getPromoteJobLevelId());
         if (promoteJobLevel != null) {
             to.setPromoteJobLevelName(promoteJobLevel.getJobLevelName() );
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
-        BeanUtils.copyProperties(staffBasicVO, to);
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
+        }
 
         return to;
     }

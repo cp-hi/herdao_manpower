@@ -16,5 +16,5 @@ public class WorkflowNotifyDTO {
 	private String flowType;
 	
 	@ApiModelProperty(value="状态",required = true)
-	private Integer status;
+	private String status;
 }

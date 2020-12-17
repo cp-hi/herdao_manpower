@@ -95,38 +95,40 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
-        Post nowPost = postService.getById(to.getNowPostId());
+        Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
         }
 
-        Post transPost = postService.getById(to.getTransPostId());
+        Post transPost = postService.getById(from.getTransPostId());
         if (transPost != null) {
             to.setTransPostName(transPost.getPostName());
         }
 
-        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        Organization nowOrg = orgService.getById(from.getNowOrgId());
         if (nowOrg != null) {
             to.setNowOrgName(nowOrg.getOrgName());
         }
 
-        Organization transOrg = orgService.getById(to.getTransOrgId());
+        Organization transOrg = orgService.getById(from.getTransOrgId());
         if (transOrg != null) {
             to.setTransOrgName(transOrg.getOrgName());
         }
 
-        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
             to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
-        JobLevel transJobLevel = jobLevelService.getById(to.getTransJobLevelId());
+        JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
             to.setTransJobLevelName(transJobLevel.getJobLevelName() );
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
-        BeanUtils.copyProperties(staffBasicVO, to);
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
+        }
 
         return to;
     }
