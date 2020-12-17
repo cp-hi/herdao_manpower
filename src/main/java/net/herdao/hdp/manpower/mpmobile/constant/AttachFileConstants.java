@@ -9,7 +9,7 @@ public interface AttachFileConstants {
     /**
      * 身份证  正面
      */
-    String IDENTITY_CARD = "IDENTITY_CARD_AGAINST";
+    String IDENTITY_CARD = "IDENTITY_CARD";
 
 
     /**
