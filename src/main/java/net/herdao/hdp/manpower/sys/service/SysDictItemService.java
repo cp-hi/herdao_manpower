@@ -96,4 +96,11 @@ public interface SysDictItemService extends IService<SysDictItem> {
             throw new Exception(buffer.toString());
         return value;
     }
+
+    default SysDictItem getDictItemByTypeAndValue(String type, String value) {
+        SysDictItem dictItem = this.getOne(new QueryWrapper<SysDictItem>()
+                .eq("type", type).eq("value", value));
+
+        return dictItem;
+    }
 }

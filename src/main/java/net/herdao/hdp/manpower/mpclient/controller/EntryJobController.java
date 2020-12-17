@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
@@ -20,6 +21,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +40,8 @@ import java.util.*;
 public class EntryJobController {
 
     private final StaffEntrypostApproveService approveService;
+
+    private final SysDictItemService dictItemService;
 
 
     /**
@@ -75,7 +79,17 @@ public class EntryJobController {
         Page page = new Page();
         page.setSize(-1);
         Page<EntryDTO> pageResult = approveService.findEntryPage(page, orgId, searchText);
-        ExcelUtils.export2Web(response, "入职管理待入职表", "入职管理待入职表", EntryDTO.class, pageResult.getRecords());
+        List<EntryDTO> list = pageResult.getRecords();
+        if (CollectionUtil.isNotEmpty(list)){
+            list.forEach(e->{
+                SysDictItem entryLoginStatusItem = dictItemService.getDictItemByTypeAndValue("RZDJQK", e.getEntryLoginStatus());
+                if (ObjectUtil.isNotNull(entryLoginStatusItem)){
+                    e.setEntryLoginStatus(entryLoginStatusItem.getLabel());
+                }
+            });
+        }
+
+        ExcelUtils.export2Web(response, "入职管理待入职表", "入职管理待入职表", EntryDTO.class,list);
         EntryDTO dto=new EntryDTO();
         return R.ok(dto);
     }
@@ -136,6 +150,25 @@ public class EntryJobController {
         Page page = new Page();
         page.setSize(-1);
         Page<EntryDTO> pageResult = approveService.findInJobPage(page, orgId, searchText);
+        List<EntryDTO> list = pageResult.getRecords();
+        if (CollectionUtil.isNotEmpty(list)){
+            list.forEach(e->{
+                SysDictItem entryLoginStatusItem = dictItemService.getDictItemByTypeAndValue("RZDJQK", e.getEntryLoginStatus());
+                if (ObjectUtil.isNotNull(entryLoginStatusItem)){
+                    e.setEntryLoginStatus(entryLoginStatusItem.getLabel());
+                }
+
+                SysDictItem jobTypeItem = dictItemService.getDictItemByTypeAndValue("JOB_TYPE", e.getOfficeType());
+                if (ObjectUtil.isNotNull(jobTypeItem)){
+                    e.setOfficeType(jobTypeItem.getLabel());
+                }
+
+                SysDictItem staffStatusItem = dictItemService.getDictItemByTypeAndValue("RYGSFW", e.getStaffStatus());
+                if (ObjectUtil.isNotNull(staffStatusItem)){
+                    e.setStaffStatus(staffStatusItem.getLabel());
+                }
+            });
+        }
         ExcelUtils.export2Web(response, "入职管理待已入职表", "入职管理待已入职表", EntryDTO.class, pageResult.getRecords());
         EntryDTO dto=new EntryDTO();
         return R.ok(dto);
@@ -339,7 +372,6 @@ public class EntryJobController {
 
         return R.ok(moduleVO);
     }
-
 
     /**
      * 手机端-极速入职-提交 修改入职登记状态
