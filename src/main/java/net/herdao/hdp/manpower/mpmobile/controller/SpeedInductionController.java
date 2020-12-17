@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/mobile/speed")
+@RequestMapping("mobile/speed")
 @Api(tags = "极速入职-移动端")
 public class SpeedInductionController {
 
@@ -42,9 +42,10 @@ public class SpeedInductionController {
      *
      * @return R
      */
+    @ApiOperation(value = "上传后绑定数据", notes = "上传后绑定数据")
     @PostMapping("/bindDataAfterUploading")
     @ResponseBody
-    public R bindDataAfterUploading(List<AttachFileDTO> attachFile) throws IOException {
+    public R bindDataAfterUploading(@RequestBody  List<AttachFileDTO> attachFile) throws IOException {
         attachFileService.bindDataAfterUploading(attachFile);
         return R.ok();
     }
@@ -53,11 +54,11 @@ public class SpeedInductionController {
      * 通过id查询通用文件表数据
      * @param id id   业务表ID
      * @return R*/
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
     @GetMapping("/attach/{id}")
 //    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
-    public R getAttachById(@PathVariable("id") Long id) {
-        return R.ok(attachFileService.getAttachFileById(id));
+    public R getAttachById(@PathVariable("id") Long id,String moduleTyp) {
+        return R.ok(attachFileService.getAttachFileById(id,moduleTyp));
     }
 
     /*    *
@@ -93,9 +94,9 @@ public class SpeedInductionController {
      * @return R
      *
      * */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
     @GetMapping("/payCard/{id}")
-    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_view')")
+//    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_view')")
     public R getCardById(@PathVariable("id") Long id) {
         return R.ok(payCardInformationService.getCardById(id));
     }
@@ -107,8 +108,8 @@ public class SpeedInductionController {
 
     @ApiOperation(value = "新增工资卡信息表", notes = "新增工资卡信息表")
     @SysLog("新增工资卡信息表")
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_add')")
+    @PostMapping("/savePayCardInfo")
+//    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_add')")
     public R savePayCardInfo(@RequestBody PayCardInformationDTO dto) {
         return R.ok(payCardInformationService.insertPayCard(dto));
     }

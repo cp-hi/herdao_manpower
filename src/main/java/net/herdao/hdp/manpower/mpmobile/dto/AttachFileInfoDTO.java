@@ -38,8 +38,8 @@ import java.time.LocalDateTime;
 @Data
 @TableName("mp_attach_file")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "通用附件表")
-public class AttachFileDTO extends Model<AttachFile> {
+@ApiModel(value = "通过id查询通用文件表数据")
+public class AttachFileInfoDTO extends Model<AttachFile> {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -57,7 +57,7 @@ public class AttachFileDTO extends Model<AttachFile> {
      * 文件类型
      */
     @ApiModelProperty(value="文件类型")
-    private String extend;
+    private String fileType;
     /**
      * 附件大小
      */

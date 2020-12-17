@@ -20,6 +20,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
+import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -45,5 +46,5 @@ public interface AttachFileService extends IService<AttachFile> {
      * @param id id   业务表ID
      * @return R
      * */
-    List<AttachFileDTO> getAttachFileById(Long id);
+    List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleTyp);
 }

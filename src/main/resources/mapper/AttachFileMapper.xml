@@ -27,22 +27,19 @@
             <result property="modifierName" column="modifier_name"/>
             <result property="modifierTime" column="modifier_time"/>
       </resultMap>
-      <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="false">
+      <insert id="insertBatch" parameterType="java.util.List" >
             insert into mp_attach_file
+            (file_type,file_size,file_id,module_type,biz_id,creator_time,creator_name)
             values
             <foreach collection="list" item="item" index="index" separator=",">
                   (
-                  #{item.id},
+                  #{item.fileType},
                   #{item.fileId},
                   #{item.moduleType},
-                  #{item.dateX},
-                  #{item.dataY},
-                  #{item.createBy},
-                  #{item.createDate},
-                  #{item.updateBy},
-                  #{item.updateDate},
-                  #{item.remarks},
-                  #{item.delFlag}
+                  #{item.creatorName},
+                  #{item.creatorTime},
+                  #{item.bizId},
+                  #{item.fileSize}
                   )
             </foreach>
       </insert>

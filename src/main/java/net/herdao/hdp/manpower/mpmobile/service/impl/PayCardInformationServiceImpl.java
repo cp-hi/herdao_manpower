@@ -23,9 +23,10 @@ public class PayCardInformationServiceImpl extends ServiceImpl<PayCardInformatio
      * */
     @Override
     public PayCardInformation getCardById(Long id) {
-        return  this.baseMapper.selectOne(new QueryWrapper<PayCardInformation>().select("cardholder","location_of_bank",
-                "branch_name_of_receiving_bank","payroll_bank_name","salary_bank_account").
-                lambda().eq(PayCardInformation::getBizId,id));
+        PayCardInformation payCardInformation = this.baseMapper.selectOne(new QueryWrapper<PayCardInformation>().select("cardholder", "location_of_bank",
+                "branch_name_of_receiving_bank", "payroll_bank_name", "salary_bank_account").
+                lambda().eq(PayCardInformation::getBizId, id));
+        return payCardInformation;
     }
 
     /*

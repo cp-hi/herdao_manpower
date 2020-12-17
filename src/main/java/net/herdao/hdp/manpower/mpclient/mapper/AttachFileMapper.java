@@ -33,5 +33,5 @@ import java.util.List;
 @Mapper
 public interface AttachFileMapper extends BaseMapper<AttachFile> {
 
-    void insertBatch(List<AttachFileDTO> attachFile);
+    void insertBatch(List<AttachFile> attachFile);
 }
