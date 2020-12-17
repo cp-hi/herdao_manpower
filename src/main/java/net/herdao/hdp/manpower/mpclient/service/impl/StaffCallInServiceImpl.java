@@ -13,6 +13,7 @@ import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.in.StaffCallInInfoVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,53 +166,64 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
-        Post nowPost = postService.getById(to.getNowPostId());
+        Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
         }
 
-        Post transPost = postService.getById(to.getTransPostId());
+        Post transPost = postService.getById(from.getTransPostId());
         if (transPost != null) {
             to.setTransPostName(transPost.getPostName());
         }
 
-        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        Organization nowOrg = orgService.getById(from.getNowOrgId());
         if (nowOrg != null) {
             to.setNowOrgName(nowOrg.getOrgName());
         }
 
-        Organization transOrg = orgService.getById(to.getTransOrgId());
+        Organization transOrg = orgService.getById(from.getTransOrgId());
         if (transOrg != null) {
             to.setTransOrgName(transOrg.getOrgName());
         }
 
-        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
             to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
-        JobLevel transJobLevel = jobLevelService.getById(to.getTransJobLevelId());
+        JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
             to.setTransJobLevelName(transJobLevel.getJobLevelName() );
         }
 
-        Company paidUnits = companyService.getById(to.getPaidUnitsId());
+        Company paidUnits = companyService.getById(from.getPaidUnitsId());
         if (paidUnits != null) {
-            to.setPaidUnitsName(paidUnits.getCompanyName());
+            StaffTransferInfoVO.Dictionary payUnit = new StaffTransferInfoVO.Dictionary();
+            payUnit.setLabel(paidUnits.getCompanyName());
+            payUnit.setValue(paidUnits.getId());
+            to.setPayUnit(payUnit);
         }
 
-        Company fundUnits = companyService.getById(to.getFundUnitsId());
+        Company fundUnits = companyService.getById(from.getFundUnitsId());
         if (fundUnits != null) {
-            to.setFundUnitsName(fundUnits.getCompanyName());
+            StaffTransferInfoVO.Dictionary fundUnit = new StaffTransferInfoVO.Dictionary();
+            fundUnit.setLabel(fundUnits.getCompanyName());
+            fundUnit.setValue(fundUnits.getId());
+            to.setFundUnit(fundUnit);
         }
 
-        Company securityUnits = companyService.getById(to.getSecurityUnitsId());
+        Company securityUnits = companyService.getById(from.getSecurityUnitsId());
         if (securityUnits != null) {
-            to.setSecurityUnitsName(securityUnits.getCompanyName());
+            StaffTransferInfoVO.Dictionary securityUnit = new StaffTransferInfoVO.Dictionary();
+            securityUnit.setValue(securityUnits.getId());
+            securityUnit.setLabel(securityUnits.getCompanyName());
+            to.setSecurityUnit(securityUnit);
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
-        BeanUtils.copyProperties(staffBasicVO, to);
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
+        }
         return to;
     }
 
