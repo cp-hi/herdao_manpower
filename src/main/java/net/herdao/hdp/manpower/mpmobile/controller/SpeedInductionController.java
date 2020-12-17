@@ -54,38 +54,14 @@ public class SpeedInductionController {
      * 通过id查询通用文件表数据
      * @param id id   业务表ID
      * @return R*/
-    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
-    @GetMapping("/attach/{id}")
+    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID)", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
+    @GetMapping("/attach")
 //    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
-    public R getAttachById(@PathVariable("id") Long id,String moduleTyp) {
+    public R getAttachById( Long id, String moduleTyp) {
         return R.ok(attachFileService.getAttachFileById(id,moduleTyp));
     }
 
-    /*    *
-     * 通过id查询身份证信息表
-     * @param id id   业务表ID
-     * @return R*/
 
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/identity/{id}")
-//    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
-    public R getIdentityById(@PathVariable("id") Long id) {
-        return R.ok(cardInformationService.getIdentityById(id));
-    }
-
-
-    /*    *
-     * 新增身份证信息表
-     * @param cardInformation 身份证信息表
-     * @return R*/
-
-    @ApiOperation(value = "新增身份证信息表", notes = "新增身份证信息表")
-    @SysLog("新增身份证信息表")
-    @PostMapping("/saveIdentity")
-//    @PreAuthorize("@pms.hasPermission('generator_cardinformation_add')" )
-    public R saveIdentity(@RequestBody CardInformation cardInformation) {
-        return R.ok(cardInformationService.save(cardInformation));
-    }
 
 
     /*    *

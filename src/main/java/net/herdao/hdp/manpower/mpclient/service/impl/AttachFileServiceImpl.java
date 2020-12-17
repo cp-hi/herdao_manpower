@@ -16,9 +16,11 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
@@ -32,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +59,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      * @return R
      */
     @Override
-    public void bindDataAfterUploading(List<AttachFileDTO> attachFile) {
+    public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
         List<AttachFile> list = new ArrayList<>(10);
         attachFile.forEach(item ->{
             AttachFile file = new AttachFile();
