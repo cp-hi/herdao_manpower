@@ -55,7 +55,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 
     /**
      * 上传后绑定数据
-     *
+     * @param attachFile 通用附件表
      * @return R
      */
     @Override
@@ -65,6 +65,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
             AttachFile file = new AttachFile();
             BeanUtils.copyProperties(item,file);
             file.setFileType(item.getExtend());
+            file.setCreatorTime(LocalDateTime.now());
             list.add(file);
                 }
         );
@@ -72,9 +73,11 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     }
 
 
+
     /*    *
      * 通过id查询通用文件表数据
-     * @param id id   业务表ID
+     * @param id id   业务表ID (例如：人才表的主键ID)
+     * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
      * @return R
      * */
     @Override

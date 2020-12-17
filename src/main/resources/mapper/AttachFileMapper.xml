@@ -38,8 +38,8 @@
                   #{item.fileSize},
                   #{item.fileId},
                   #{item.moduleType},
-                  #{item.creatorName},
                   #{item.creatorTime},
+                  #{item.creatorName},
                   #{item.bizId}
                   )
             </foreach>
