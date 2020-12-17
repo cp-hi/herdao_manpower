@@ -2,6 +2,7 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
@@ -81,18 +82,20 @@ public class RecruitmentWorkexperienceController {
         return R.ok(recruitmentWorkexperienceService.removeById(id));
     }
 
-
     /**
-     * 手机端-简历详情-工作情况-工作经历-新增保存
+     * 手机端-工作经历-新增或保存
      * @param dtoArray 人才工作经历表数组
      * @return R
      */
-    @ApiOperation(value = "手机端-简历详情-工作情况-工作经历-新增保存", notes = "手机端-简历详情-工作情况-工作经历-新增保存")
+    @ApiOperation(value = "手机端-工作经历-新增或保存", notes = "手机端-工作经历-新增或保存")
     @PostMapping("/saveOrUpdateWorkExperienceByMobile")
     public R saveOrUpdateWorkExperienceByMobile(@RequestBody RecruitmentWorkExperienceDTO[] dtoArray) {
-        for (RecruitmentWorkExperienceDTO dto : dtoArray) {
-            recruitmentWorkexperienceService.saveOrUpdateWorkExperience(dto);
+        if(ObjectUtil.isNotEmpty(dtoArray)){
+            for (RecruitmentWorkExperienceDTO dto : dtoArray) {
+                recruitmentWorkexperienceService.saveOrUpdateWorkExperience(dto);
+            }
         }
+
         return R.ok("新增保存成功");
     }
 }

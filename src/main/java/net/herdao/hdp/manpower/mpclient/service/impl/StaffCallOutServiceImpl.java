@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.call.out.StaffCallOutInfoVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     private PostService postService;
     @Autowired
     private JobLevelService jobLevelService;
+    @Autowired
+    private StaffService staffService;
 
     @Autowired
     private StaffTransferApproveMapper mapper;
@@ -79,7 +82,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     }
 
     @Override
-    public StaffCallOutInfoVO getDetail(Long id) {
+    public StaffCallOutInfoVO getDetail(Long id) throws Exception {
         StaffTransferApprove staffTransferApprove = mapper.selectById(id);
         if (staffTransferApprove != null) {
             return staffChangesConvert2StaffCallOutInfoVo(staffTransferApprove);
@@ -87,39 +90,44 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         return null;
     }
 
-    private StaffCallOutInfoVO staffChangesConvert2StaffCallOutInfoVo(StaffTransferApprove from) {
+    private StaffCallOutInfoVO staffChangesConvert2StaffCallOutInfoVo(StaffTransferApprove from) throws Exception {
         StaffCallOutInfoVO to = new StaffCallOutInfoVO();
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
-        Post nowPost = postService.getById(to.getNowPostId());
+        Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
         }
 
-        Post transPost = postService.getById(to.getTransPostId());
+        Post transPost = postService.getById(from.getTransPostId());
         if (transPost != null) {
             to.setTransPostName(transPost.getPostName());
         }
 
-        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        Organization nowOrg = orgService.getById(from.getNowOrgId());
         if (nowOrg != null) {
             to.setNowOrgName(nowOrg.getOrgName());
         }
 
-        Organization transOrg = orgService.getById(to.getTransOrgId());
+        Organization transOrg = orgService.getById(from.getTransOrgId());
         if (transOrg != null) {
             to.setTransOrgName(transOrg.getOrgName());
         }
 
-        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
             to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
-        JobLevel transJobLevel = jobLevelService.getById(to.getTransJobLevelId());
+        JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
             to.setTransJobLevelName(transJobLevel.getJobLevelName() );
+        }
+
+        StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
         }
 
         return to;

@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -59,9 +60,11 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
         BeanUtils.copyProperties(familyDTO,familyStatus);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        familyStatus.setCreatorTime(LocalDateTime.now());
-        familyStatus.setCreatorCode(sysUser.getUsername());
-        familyStatus.setCreatorName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            familyStatus.setCreatorTime(LocalDateTime.now());
+            familyStatus.setCreatorCode(sysUser.getUsername());
+            familyStatus.setCreatorName(sysUser.getAliasName());
+        }
 
         super.save(familyStatus);
         BeanUtils.copyProperties(familyStatus,familyDTO);
@@ -75,12 +78,27 @@ public class RecruitmentFamilyStatusServiceImpl extends ServiceImpl<RecruitmentF
         BeanUtils.copyProperties(familyDTO,familyStatus);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        familyStatus.setModifierTime(LocalDateTime.now());
-        familyStatus.setModifierCode(sysUser.getUsername());
-        familyStatus.setModifierName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            familyStatus.setModifierTime(LocalDateTime.now());
+            familyStatus.setModifierCode(sysUser.getUsername());
+            familyStatus.setModifierName(sysUser.getAliasName());
+        }
 
         super.updateById(familyStatus);
         BeanUtils.copyProperties(familyStatus,familyDTO);
         return familyDTO;
+    }
+
+    @Override
+    public RecruitmentFamilyDTO saveOrUpdateFamily(RecruitmentFamilyDTO familyDTO) {
+        if (ObjectUtil.isNotNull(familyDTO)){
+            if (ObjectUtil.isNotNull(familyDTO.getId())){
+                this.updateFamily(familyDTO);
+            }
+            if (ObjectUtil.isNull(familyDTO.getId())){
+                this.saveFamily(familyDTO);
+            }
+        }
+        return null;
     }
 }

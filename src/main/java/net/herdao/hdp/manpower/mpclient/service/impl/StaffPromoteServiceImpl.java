@@ -10,6 +10,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPromoteApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromoteInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.promote.StaffPromotePageVO;
@@ -37,6 +38,8 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     private PostService postService;
     @Autowired
     private JobLevelService jobLevelService;
+    @Autowired
+    private StaffService staffService;
 
     @Autowired
     private StaffPromoteApproveMapper mapper;
@@ -130,7 +133,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
 
     @Override
-    public StaffPromoteInfoVO getDetail(Long id) {
+    public StaffPromoteInfoVO getDetail(Long id) throws Exception {
         StaffPromoteApprove promoteApprove = mapper.selectById(id);
         if (promoteApprove != null) {
             return StaffPromoteApprove2StaffPromoteInfoVO(promoteApprove);
@@ -138,41 +141,47 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         return null;
     }
 
-    private StaffPromoteInfoVO StaffPromoteApprove2StaffPromoteInfoVO(StaffPromoteApprove from) {
+    private StaffPromoteInfoVO StaffPromoteApprove2StaffPromoteInfoVO(StaffPromoteApprove from) throws Exception {
         StaffPromoteInfoVO to = new StaffPromoteInfoVO();
         BeanUtils.copyProperties(from, to);
 
         to.setPromoteDate(LocalDateTimeUtils.convert2Long(from.getPromoteDate()));
 
-        Post nowPost = postService.getById(to.getNowPostId());
+        Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
         }
 
-        Post promotePost = postService.getById(to.getPromotePostId());
+        Post promotePost = postService.getById(from.getPromotePostId());
         if (promotePost != null) {
             to.setPromotePostName(promotePost.getPostName());
         }
 
-        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        Organization nowOrg = orgService.getById(from.getNowOrgId());
         if (nowOrg != null) {
             to.setNowOrgName(nowOrg.getOrgName());
         }
 
-        Organization promoteOrg = orgService.getById(to.getPromoteOrgId());
+        Organization promoteOrg = orgService.getById(from.getPromoteOrgId());
         if (promoteOrg != null) {
             to.setPromoteOrgName(promoteOrg.getOrgName());
         }
 
-        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
             to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
-        JobLevel promoteJobLevel = jobLevelService.getById(to.getPromoteJobLevelId());
+        JobLevel promoteJobLevel = jobLevelService.getById(from.getPromoteJobLevelId());
         if (promoteJobLevel != null) {
             to.setPromoteJobLevelName(promoteJobLevel.getJobLevelName() );
         }
+
+        StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
+        }
+
         return to;
     }
 

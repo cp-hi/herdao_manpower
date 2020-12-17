@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
@@ -33,5 +34,11 @@ import java.util.List;
 @Mapper
 public interface AttachFileMapper extends BaseMapper<AttachFile> {
 
-    void insertBatch(List<AttachFileDTO> attachFile);
+    /**
+     * 上传后绑定数据
+     * @param attachFile 通用附件表
+     * @return R
+     */
+    void insertBatch(List<AttachFile> attachFile);
+
 }

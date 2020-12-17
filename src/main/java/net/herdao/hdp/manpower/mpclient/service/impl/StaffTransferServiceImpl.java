@@ -11,6 +11,7 @@ import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffTransferApproveMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
@@ -41,6 +42,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     private JobLevelService jobLevelService;
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private StaffService staffService;
 
     @Autowired
     private StaffTransferApproveMapper mapper;
@@ -62,6 +65,9 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
 
+        staffTransferApprove.setFundUnitsId(dto.getFundUnit());
+        staffTransferApprove.setPaidUnitsId(dto.getPaidUnit());
+        staffTransferApprove.setSecurityUnitsId(dto.getSecurityUnit());
         staffTransferApprove.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         staffTransferApprove.setTransferType(StaffChangesApproveTypeConstants.TRANSFER);
         staffTransferApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
@@ -98,22 +104,22 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
         jobLevelService.validityCheck(dto.getTransJobLevelId(), "调动后职级信息有误，请再次确认");
 
-        if (dto.getFundUnitsId() != null) {
-            companyService.validityCheck(dto.getFundUnitsId(), "公积金缴纳单位信息有误，请再次确认");
+        if (dto.getFundUnit() != null) {
+            companyService.validityCheck(dto.getFundUnit(), "公积金缴纳单位信息有误，请再次确认");
         }
 
-        if (dto.getPaidUnitsId() != null) {
-            companyService.validityCheck(dto.getPaidUnitsId(), "工资发放单位信息有误，请再次确认");
+        if (dto.getPaidUnit() != null) {
+            companyService.validityCheck(dto.getPaidUnit(), "工资发放单位信息有误，请再次确认");
         }
 
-        if (dto.getSecurityUnitId() != null) {
-            companyService.validityCheck(dto.getSecurityUnitId(), "社保发放单位信息有误，请再次确认");
+        if (dto.getSecurityUnit() != null) {
+            companyService.validityCheck(dto.getSecurityUnit(), "社保发放单位信息有误，请再次确认");
         }
 
     }
 
     @Override
-    public StaffTransferInfoVO getDetail(Long id) {
+    public StaffTransferInfoVO getDetail(Long id) throws Exception {
         StaffTransferApprove staffTransferApprove = mapper.selectById(id);
         if (staffTransferApprove != null) {
             return staffChangesConvert2StaffTransferInfoVo(staffTransferApprove);
@@ -137,6 +143,9 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
             throw new Exception("该记录不可更新");
         }
         BeanUtils.copyProperties(dto, entity);
+        entity.setFundUnitsId(dto.getFundUnit());
+        entity.setPaidUnitsId(dto.getPaidUnit());
+        entity.setSecurityUnitsId(dto.getSecurityUnit());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         mapper.updateById(entity);
         return id;
@@ -203,55 +212,69 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         return pageVO;
     }
 
-    private StaffTransferInfoVO staffChangesConvert2StaffTransferInfoVo(StaffTransferApprove from) {
+    private StaffTransferInfoVO staffChangesConvert2StaffTransferInfoVo(StaffTransferApprove from) throws Exception {
         StaffTransferInfoVO to = new StaffTransferInfoVO();
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
 
-        Post nowPost = postService.getById(to.getNowPostId());
+        Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());
         }
 
-        Post transPost = postService.getById(to.getTransPostId());
+        Post transPost = postService.getById(from.getTransPostId());
         if (transPost != null) {
             to.setTransPostName(transPost.getPostName());
         }
 
-        Organization nowOrg = orgService.getById(to.getNowOrgId());
+        Organization nowOrg = orgService.getById(from.getNowOrgId());
         if (nowOrg != null) {
             to.setNowOrgName(nowOrg.getOrgName());
         }
 
-        Organization transOrg = orgService.getById(to.getTransOrgId());
+        Organization transOrg = orgService.getById(from.getTransOrgId());
         if (transOrg != null) {
             to.setTransOrgName(transOrg.getOrgName());
         }
 
-        JobLevel nowJobLevel = jobLevelService.getById(to.getNowJobLevelId());
+        JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
             to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
-        JobLevel transJobLevel = jobLevelService.getById(to.getTransJobLevelId());
+        JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
             to.setTransJobLevelName(transJobLevel.getJobLevelName() );
         }
 
-        Company paidUnits = companyService.getById(to.getPaidUnitsId());
+        Company paidUnits = companyService.getById(from.getPaidUnitsId());
         if (paidUnits != null) {
-            to.setPaidUnitsName(paidUnits.getCompanyName());
+            StaffTransferInfoVO.Dictionary payUnit = new StaffTransferInfoVO.Dictionary();
+            payUnit.setLabel(paidUnits.getCompanyName());
+            payUnit.setValue(paidUnits.getId());
+            to.setPayUnit(payUnit);
         }
 
-        Company fundUnits = companyService.getById(to.getFundUnitsId());
+        Company fundUnits = companyService.getById(from.getFundUnitsId());
         if (fundUnits != null) {
-            to.setFundUnitsName(fundUnits.getCompanyName());
+            StaffTransferInfoVO.Dictionary fundUnit = new StaffTransferInfoVO.Dictionary();
+            fundUnit.setLabel(fundUnits.getCompanyName());
+            fundUnit.setValue(fundUnits.getId());
+            to.setFundUnit(fundUnit);
         }
 
-        Company securityUnits = companyService.getById(to.getSecurityUnitsId());
+        Company securityUnits = companyService.getById(from.getSecurityUnitsId());
         if (securityUnits != null) {
-            to.setSecurityUnitsName(securityUnits.getCompanyName());
+            StaffTransferInfoVO.Dictionary securityUnit = new StaffTransferInfoVO.Dictionary();
+            securityUnit.setValue(securityUnits.getId());
+            securityUnit.setLabel(securityUnits.getCompanyName());
+            to.setSecurityUnit(securityUnit);
+        }
+
+        StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
         }
         return to;
     }

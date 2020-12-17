@@ -16,9 +16,11 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
@@ -26,11 +28,13 @@ import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
+import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,25 +55,36 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 
     /**
      * 上传后绑定数据
-     *
+     * @param attachFile 通用附件表
      * @return R
      */
     @Override
-    public void bindDataAfterUploading(List<AttachFileDTO> attachFile) {
-        this.baseMapper.insertBatch(attachFile);
+    public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
+        List<AttachFile> list = new ArrayList<>(10);
+        attachFile.forEach(item ->{
+            AttachFile file = new AttachFile();
+            BeanUtils.copyProperties(item,file);
+            file.setFileType(item.getExtend());
+            file.setCreatorTime(LocalDateTime.now());
+            list.add(file);
+                }
+        );
+        this.baseMapper.insertBatch(list);
     }
+
 
 
     /*    *
      * 通过id查询通用文件表数据
-     * @param id id   业务表ID
+     * @param id id   业务表ID (例如：人才表的主键ID)
+     * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
      * @return R
      * */
     @Override
-    public List<AttachFileDTO> getAttachFileById(Long id) {
+    public List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleType) {
         List<AttachFile> attachfile = this.baseMapper.selectList(new QueryWrapper<AttachFile>().select("file_id").lambda().
                 eq(AttachFile::getBizId,
-                        String.valueOf(id)));
+                        String.valueOf(id)).like(AttachFile::getModuleType,moduleType));
         return  convert2DtoList(attachfile);
     }
 
@@ -79,10 +94,10 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      * @param attachfile
      * @return
      */
-    private List<AttachFileDTO> convert2DtoList(List<AttachFile> attachfile) {
-        List<AttachFileDTO> list = new ArrayList<>();
+    private List<AttachFileInfoDTO> convert2DtoList(List<AttachFile> attachfile) {
+        List<AttachFileInfoDTO> list = new ArrayList<>();
         for (AttachFile record : attachfile) {
-            AttachFileDTO attachFileDTO = new AttachFileDTO();
+            AttachFileInfoDTO attachFileDTO = new AttachFileInfoDTO();
             BeanUtils.copyProperties(attachFileDTO,record);
             list.add(attachFileDTO);
         }
