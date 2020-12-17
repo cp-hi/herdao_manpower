@@ -39,17 +39,23 @@ import java.util.List;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/email")
+@RequestMapping("/sendEmail")
 @Api(value = "sendEmail", tags = "发送邮件管理")
 @Slf4j
 public class SendEmailController {
     private final MsgService msgService;
 
-    @ApiOperation(value = "候选人简历补充邀请确认-发送邮件", notes = "候选人简历补充邀请确认-发送邮件")
-    @PostMapping("/candidateSend")
-    public R<Boolean> candidateSend(@RequestBody EmailSendInfo emailSendInfo) {
+    @ApiOperation(value = "发送邮件", notes = "发送邮件")
+    @PostMapping("/sendConfirm")
+    public R<Boolean> sendConfirm(@RequestBody EmailSendInfo emailSendInfo) {
         Boolean status = msgService.sendEmail(emailSendInfo);
-        return R.ok(status,"发送成功");
+        String result="";
+        if (status){
+            result="发送成功";
+        }else {
+            result="发送失败";
+        }
+        return R.ok(status,result);
     }
 
 }
