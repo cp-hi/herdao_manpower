@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("mobile/speed")
+@RequestMapping("/mobile/speed")
 @Api(tags = "极速入职-移动端")
 public class SpeedInductionController {
 
@@ -59,7 +59,7 @@ public class SpeedInductionController {
             @ApiImplicitParam(name = "moduleTyp", value = "字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT )", required = true)
     })
 //    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
-    public R getAttachById(@RequestParam("id") Long id,@RequestParam("moduleTyp") String moduleTyp) {
+    public R getAttachById( Long id, String moduleTyp) {
         return R.ok(attachFileService.getAttachFileById(id, moduleTyp));
     }
 
