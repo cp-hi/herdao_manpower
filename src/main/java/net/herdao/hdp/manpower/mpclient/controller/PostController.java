@@ -1,27 +1,41 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.*;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Post;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.vo.post.*;
-import net.herdao.hdp.manpower.sys.utils.AnnotationUtils;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchAddVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchUpdateVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostFormVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostListVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostShortVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import net.herdao.hdp.manpower.sys.utils.ExceptionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
-
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
-import java.util.List;
 
 
 /**
@@ -46,7 +60,6 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
         return postService;
     }
 
-    @Override
     @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "postName", value = "字符串搜索"),
@@ -56,12 +69,11 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
             @ApiImplicitParam(name = "pipelineId", value = "管线ID"),
             @ApiImplicitParam(name = "stop", value = "是否停用，0启用：1停用，不填查所有"),
             @ApiImplicitParam(name = "current", value = "当前页"),
-            @ApiImplicitParam(name = "size", value = "每页条数"),
-            @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
+            @ApiImplicitParam(name = "size", value = "每页条数")
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<PostListVO>> page(HttpServletResponse response, @ApiIgnore Page page, Post post, Integer type) throws Exception {
-        return super.page(response, page, post, type);
+    public R<IPage<PostListVO>> page(Page page, Post post){
+        return R.ok(postService.page(page, post));
     }
 
     @Override
