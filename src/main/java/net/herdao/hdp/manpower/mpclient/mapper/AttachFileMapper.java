@@ -34,6 +34,11 @@ import java.util.List;
 @Mapper
 public interface AttachFileMapper extends BaseMapper<AttachFile> {
 
+    /**
+     * 上传后绑定数据
+     * @param attachFile 通用附件表
+     * @return R
+     */
     void insertBatch(List<AttachFile> attachFile);
 
 }

@@ -2,8 +2,6 @@ package net.herdao.hdp.manpower.mpmobile.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
-import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpmobile.dto.PayCardInformationDTO;
 import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
 import net.herdao.hdp.manpower.mpmobile.mapper.PayCardInformationMapper;
@@ -17,9 +15,8 @@ public class PayCardInformationServiceImpl extends ServiceImpl<PayCardInformatio
 
     /*    *
      * 通过id查询工资卡信息表
-     * @param id id   业务表ID
+     * @param id id 业务表ID (例如：人才表的主键ID)
      * @return R
-     *
      * */
     @Override
     public PayCardInformation getCardById(Long id) {
