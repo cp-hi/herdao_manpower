@@ -664,54 +664,11 @@ public class RecruitmentController {
     @ApiOperation(value = "下载-批量邀请更新简历页面-二维码", notes = "下载-批量邀请更新简历页面-二维码")
     @GetMapping("/downloadInviteResumeQrCode")
     public R downloadInviteResumeQrCode(HttpServletResponse response) {
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-
-        if (ObjectUtil.isNotNull(tenantId)){
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            try {
-                //手机端极速入职页面地址
-                String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-                QrcodeGenerator generator = new SimpleQrcodeGenerator();
-                BufferedImage image = generator.generate(address).getImage();
-
-                //BufferedImage 转 InputStream
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                ImageOutputStream imageOutput = ImageIO.createImageOutputStream(byteArrayOutputStream);
-                ImageIO.write(image, "png", imageOutput);
-                InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-                long length = imageOutput.length();
-
-                //设置response
-                response.setContentType("image/png");
-                response.setContentLength((int)length);
-                String fileName="qrCode.png";
-                response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gbk"),"iso-8859-1"));
-
-                //输出流
-                byte[] bytes = new byte[1024];
-                OutputStream outputStream = response.getOutputStream();
-                long count = 0;
-                while(count < length){
-                    int len = inputStream.read(bytes, 0, 1024);
-                    count +=len;
-                    outputStream.write(bytes, 0, len);
-                }
-                outputStream.flush();
-            }catch (Exception ex){
-                log.error("生成二维码的Base64编码失败",ex);
-            }finally {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-         }
-
+        QrCodeUtils.downloadQrCode(response);
         return R.ok("下载二维码成功！");
     }
+
+
 
     /**
      * 获取-获取批量邀请更新简历-确认邮件内容（内含二维码）
