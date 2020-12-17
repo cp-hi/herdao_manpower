@@ -54,7 +54,7 @@ public class Recruitment extends Model<Recruitment> {
      * 英文名称
      */
     @ApiModelProperty(value="英文名称")
-    private String engshName;
+    private String englishName;
     /**
      * 应聘岗位ID
      */

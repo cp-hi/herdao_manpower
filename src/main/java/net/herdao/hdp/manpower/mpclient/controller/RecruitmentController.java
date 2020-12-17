@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.*;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.hutool.core.codec.Base64;
@@ -663,32 +664,11 @@ public class RecruitmentController {
     @ApiOperation(value = "下载-批量邀请更新简历页面-二维码", notes = "下载-批量邀请更新简历页面-二维码")
     @GetMapping("/downloadInviteResumeQrCode")
     public R downloadInviteResumeQrCode(HttpServletResponse response) {
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            try {
-                QrcodeGenerator generator = new SimpleQrcodeGenerator();
-                BufferedImage image = generator.generate(address).getImage();
-                ImageIO.write(image, "png", stream);
-
-            }catch (Exception ex){
-                log.error("生成二维码的Base64编码失败",ex);
-            }finally {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-         }
-
-        return R.ok("");
+        QrCodeUtils.downloadQrCode(response);
+        return R.ok("下载二维码成功！");
     }
+
+
 
     /**
      * 获取-获取批量邀请更新简历-确认邮件内容（内含二维码）

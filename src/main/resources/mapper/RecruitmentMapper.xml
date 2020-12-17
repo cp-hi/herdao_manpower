@@ -9,7 +9,7 @@
                 <result property="talentType" column="talent_type"/>
                 <result property="fromType" column="from_type"/>
                 <result property="talentName" column="talent_name"/>
-                <result property="engshName" column="engsh_name"/>
+                <result property="englishName" column="english_name"/>
                 <result property="recruitmentPostId" column="recruitment_post_id"/>
                 <result property="recruitmentPostOid" column="recruitment_post_oid"/>
                 <result property="sex" column="sex"/>

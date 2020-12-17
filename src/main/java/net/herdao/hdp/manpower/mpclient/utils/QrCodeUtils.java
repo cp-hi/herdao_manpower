@@ -8,9 +8,10 @@ import org.iherus.codegen.qrcode.QrcodeGenerator;
 import org.iherus.codegen.qrcode.SimpleQrcodeGenerator;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @Description 二维码工具
@@ -50,6 +51,55 @@ public class QrCodeUtils {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 下载二维码图片
+	 * @param response
+	 */
+	public static void downloadQrCode(HttpServletResponse response) {
+		Integer tenantId = SecurityUtils.getUser().getTenantId();
+		if (ObjectUtil.isNotNull(tenantId)){
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			try {
+				//手机端极速入职页面地址
+				String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+				QrcodeGenerator generator = new SimpleQrcodeGenerator();
+				BufferedImage image = generator.generate(address).getImage();
+
+				//BufferedImage 转 InputStream
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				ImageOutputStream imageOutput = ImageIO.createImageOutputStream(byteArrayOutputStream);
+				ImageIO.write(image, "png", imageOutput);
+				InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+				long length = imageOutput.length();
+
+				//设置response
+				response.setContentType("image/png");
+				response.setContentLength((int)length);
+				String fileName="qrCode.png";
+				response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gbk"),"iso-8859-1"));
+
+				//输出流
+				byte[] bytes = new byte[1024];
+				OutputStream outputStream = response.getOutputStream();
+				long count = 0;
+				while(count < length){
+					int len = inputStream.read(bytes, 0, 1024);
+					count +=len;
+					outputStream.write(bytes, 0, len);
+				}
+				outputStream.flush();
+			}catch (Exception ex){
+				log.error("生成二维码的Base64编码失败",ex);
+			}finally {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
