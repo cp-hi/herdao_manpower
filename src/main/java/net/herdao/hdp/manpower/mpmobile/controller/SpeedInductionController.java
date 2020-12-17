@@ -52,7 +52,7 @@ public class SpeedInductionController {
      * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
      * @return R
      * */
-    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID)", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
+    @ApiOperation(value = "通过id查询通用文件表数据", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
     @GetMapping("/getAttachById")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "业务表ID(例如：人才表的主键ID)", required = true),
@@ -70,7 +70,7 @@ public class SpeedInductionController {
      * @return R
      *
      * */
-    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
+    @ApiOperation(value = "通过id查询工资卡信息表", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
     @GetMapping("/getPayCardById/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "业务表ID(例如：人才表的主键ID)", required = true)
