@@ -42,6 +42,7 @@ public class SpeedInductionController {
      *
      * @return R
      */
+    @ApiOperation(value = "上传后绑定数据", notes = "上传后绑定数据")
     @PostMapping("/bindDataAfterUploading")
     @ResponseBody
     public R bindDataAfterUploading(@RequestBody  List<AttachFileDTO> attachFile) throws IOException {
@@ -53,7 +54,7 @@ public class SpeedInductionController {
      * 通过id查询通用文件表数据
      * @param id id   业务表ID
      * @return R*/
-    @ApiOperation(value = "通过业务表ID查询", notes = "通过业务表ID查询")
+    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
     @GetMapping("/attach/{id}")
 //    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
     public R getAttachById(@PathVariable("id") Long id,String moduleTyp) {
@@ -93,7 +94,7 @@ public class SpeedInductionController {
      * @return R
      *
      * */
-    @ApiOperation(value = "通过业务表ID查询", notes = "通过业务表ID查询")
+    @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
     @GetMapping("/payCard/{id}")
 //    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_view')")
     public R getCardById(@PathVariable("id") Long id) {
