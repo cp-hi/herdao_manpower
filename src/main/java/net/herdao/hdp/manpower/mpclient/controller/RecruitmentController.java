@@ -1,21 +1,13 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.hutool.core.codec.Base64;
-import lombok.extern.slf4j.Slf4j;
-import net.herdao.hdp.common.security.util.SecurityUtils;
-import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
-import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
-import org.apache.commons.io.IOUtils;
-import org.iherus.codegen.qrcode.QrcodeGenerator;
-import org.iherus.codegen.qrcode.SimpleQrcodeGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +29,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.security.annotation.Inner;
+import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.GenerateWorkflowDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
@@ -74,7 +69,10 @@ import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentTitleService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentTrainService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
 import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.service.OperationLogService;
 
@@ -109,6 +107,7 @@ public class RecruitmentController {
 
     private final  RecruitmentActivitiService recruitmentActivitiService;
 
+    private final StaffEntrypostApproveService staffEntrypostApproveService;
     /**
      * 人才管理-快速编辑
      *
@@ -628,12 +627,17 @@ public class RecruitmentController {
     /**
      * 	流程回调 更新业务表单的状态 
      */
+    @Inner(false)
     @ApiOperation(value = "流程回调 更新业务表单的状态 ", notes = "流程回调 更新业务表单的状态 ")
     @PostMapping("/workflowNotify")
     public R workflowNotify(@RequestBody WorkflowNotifyDTO dto) {
     	
     	//TODO 根据流程类型找到 对应的 需要修改的表单
     	//TODO 更新表单的状态 
+    	String flowType = dto.getFlowType();
+    	if("录用审批流程".equals(flowType)) {
+    		staffEntrypostApproveService.modifyStatus(dto.getRecordId(), dto.getStatus());
+    	}
     	
     	return R.ok();
     }

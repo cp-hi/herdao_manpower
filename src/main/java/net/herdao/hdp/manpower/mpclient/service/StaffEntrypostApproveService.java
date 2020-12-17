@@ -116,5 +116,12 @@ public interface StaffEntrypostApproveService extends IService<StaffEntrypostApp
      */
     StaffEntrypostApprove confirmEntry(EntryJobVO entryJobVO);
 
+	/**
+	 * 	修改状态
+	 * @param recordId
+	 * @param status
+	 */
+	void modifyStatus(String recordId, String status);
+
 
  }
