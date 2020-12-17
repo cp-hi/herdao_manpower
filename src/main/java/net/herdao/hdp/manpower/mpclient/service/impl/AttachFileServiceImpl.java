@@ -26,6 +26,7 @@ import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
+import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,15 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      */
     @Override
     public void bindDataAfterUploading(List<AttachFileDTO> attachFile) {
-        this.baseMapper.insertBatch(attachFile);
+        List<AttachFile> list = new ArrayList<>(10);
+        attachFile.forEach(item ->{
+            AttachFile file = new AttachFile();
+            BeanUtils.copyProperties(item,file);
+            file.setFileType(item.getExtend());
+            list.add(file);
+                }
+        );
+        this.baseMapper.insertBatch(list);
     }
 
 
@@ -66,10 +75,10 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      * @return R
      * */
     @Override
-    public List<AttachFileDTO> getAttachFileById(Long id) {
+    public List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleType) {
         List<AttachFile> attachfile = this.baseMapper.selectList(new QueryWrapper<AttachFile>().select("file_id").lambda().
                 eq(AttachFile::getBizId,
-                        String.valueOf(id)));
+                        String.valueOf(id)).like(AttachFile::getModuleType,moduleType));
         return  convert2DtoList(attachfile);
     }
 
@@ -79,10 +88,10 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      * @param attachfile
      * @return
      */
-    private List<AttachFileDTO> convert2DtoList(List<AttachFile> attachfile) {
-        List<AttachFileDTO> list = new ArrayList<>();
+    private List<AttachFileInfoDTO> convert2DtoList(List<AttachFile> attachfile) {
+        List<AttachFileInfoDTO> list = new ArrayList<>();
         for (AttachFile record : attachfile) {
-            AttachFileDTO attachFileDTO = new AttachFileDTO();
+            AttachFileInfoDTO attachFileDTO = new AttachFileInfoDTO();
             BeanUtils.copyProperties(attachFileDTO,record);
             list.add(attachFileDTO);
         }

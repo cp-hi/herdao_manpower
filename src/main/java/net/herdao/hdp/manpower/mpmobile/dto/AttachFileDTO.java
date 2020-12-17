@@ -57,7 +57,7 @@ public class AttachFileDTO extends Model<AttachFile> {
      * 文件类型
      */
     @ApiModelProperty(value="文件类型")
-    private String fileType;
+    private String extend;
     /**
      * 附件大小
      */
