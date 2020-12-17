@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.*;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.hutool.core.codec.Base64;
@@ -666,15 +667,37 @@ public class RecruitmentController {
         Integer tenantId = SecurityUtils.getUser().getTenantId();
 
         if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             try {
+                //手机端极速入职页面地址
+                String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
                 QrcodeGenerator generator = new SimpleQrcodeGenerator();
                 BufferedImage image = generator.generate(address).getImage();
-                ImageIO.write(image, "png", stream);
 
+                //BufferedImage 转 InputStream
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ImageOutputStream imageOutput = ImageIO.createImageOutputStream(byteArrayOutputStream);
+                ImageIO.write(image, "png", imageOutput);
+                InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+                long length = imageOutput.length();
+
+                //设置response
+                response.setContentType("application/x-msdownload");
+                response.setContentLength((int)length);
+                String fileName="qrCode.png";
+                response.setHeader("Content-Disposition","attachment;filename="+new String(fileName.getBytes("gbk"),"iso-8859-1"));
+
+                //输出流
+                byte[] bytes = new byte[1024];
+                OutputStream outputStream = response.getOutputStream();
+                long count = 0;
+                while(count < length){
+                    int len = inputStream.read(bytes, 0, 1024);
+                    count +=len;
+                    outputStream.write(bytes, 0, len);
+                }
+                outputStream.flush();
             }catch (Exception ex){
                 log.error("生成二维码的Base64编码失败",ex);
             }finally {
@@ -687,7 +710,7 @@ public class RecruitmentController {
 
          }
 
-        return R.ok("");
+        return R.ok("下载二维码成功！");
     }
 
     /**
