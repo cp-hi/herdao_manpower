@@ -63,7 +63,35 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
      */
     @Override
     public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
-        List<AttachFile> list = new ArrayList<>(10);
+        //多张图片上传后绑定保存
+        if (attachFile != null && attachFile.size() > 1){
+            bind(attachFile);
+            return;
+        }
+        AttachFile file = new AttachFile();
+        AttachFileDTO item = attachFile.get(0);
+        BeanUtils.copyProperties(item,file);
+        AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
+                eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+        //不为空 修改
+        if (attach != null){
+            this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
+                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+            return;
+        }
+        file.setFileType(item.getExtend());
+        file.setCreatorTime(LocalDateTime.now());
+
+        //否则  新增
+        this.baseMapper.insert(file);
+    }
+
+    /**
+     * 多张图片上传后绑定保存
+     *
+     * @param attachFile
+     */
+    private void bind(List<AttachFileDTO> attachFile) {
         attachFile.forEach(item -> {
             AttachFile file = new AttachFile();
             BeanUtils.copyProperties(item,file);
@@ -73,17 +101,15 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
             if (attach != null){
                 this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
                         eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
+                return;
             }
 
             file.setFileType(item.getExtend());
             file.setCreatorTime(LocalDateTime.now());
-            list.add(file);
+            this.baseMapper.insert(file);
                 }
         );
-        //否则  新增
-        this.baseMapper.insertBatch(list);
     }
-
 
 
     /*    *
