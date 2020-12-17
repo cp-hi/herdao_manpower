@@ -74,14 +74,14 @@ public class SaveStaffCallInDTO {
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
     private Double threeGroupSeniority;
 
-    @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitsId")
-    private Long paidUnitsId;
+    @ApiModelProperty(value = "工资发放单位 id", name = "paidUnit")
+    private Long paidUnit;
 
-    @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitsId")
-    private Long fundUnitsId;
+    @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnit")
+    private Long fundUnit;
 
-    @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitId;
+    @ApiModelProperty(value = "社保购买单位 id", name = "securityUnit")
+    private Long securityUnit;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
