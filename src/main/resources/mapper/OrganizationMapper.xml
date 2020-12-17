@@ -268,6 +268,7 @@
 	<sql id="organizationTreeSQL">
 		SELECT
             org.id,
+            org.id AS org_id,
             org.org_name,
             org.org_code,
             CASE IFNULL(nbs, 0) WHEN 0 THEN 1 ELSE 0 END leaf_node,

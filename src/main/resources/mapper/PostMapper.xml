@@ -31,24 +31,30 @@
     </resultMap>
 
     <select id="page" resultMap="postDTOMap" parameterType="post">
-        select * from mp_post where del_flag !=1 and group_id = #{t.groupId}
+        SELECT ps.*,
+        	   org.id AS org_id
+        FROM mp_post ps 
+        LEFT JOIN mp_group gp ON ps.group_id = gp.id
+		LEFT JOIN mp_organization org ON gp.org_id = org.id
+        WHERE ps.del_flag !=1 AND ps.group_id = #{t.groupId}
+        
         <if test="t.isStop != null">
-            and is_stop = #{t.isStop}
+            and ps.is_stop = #{t.isStop}
         </if>
         <if test="t.sectionId != null">
-            AND section_id = #{t.sectionId}
+            AND ps.section_id = #{t.sectionId}
         </if>
         <if test="t.pipelineId != null">
-            AND pipeline_id = #{t.pipelineId}
+            AND ps.pipeline_id = #{t.pipelineId}
         </if>
         <if test="t.jobLevelId1 != null">
-            AND (job_level_id1 = #{t.jobLevelId1} or job_level_id2 = #{t.jobLevelId1})
+            AND (ps.job_level_id1 = #{t.jobLevelId1} or ps.job_level_id2 = #{t.jobLevelId1})
         </if>
         <if test="t.postName != null">
             <bind name="likeTxt" value="'%'+t.postName+'%'"/>
-            and (POST_CODE like #{likeTxt} or POST_NAME like #{likeTxt})
+            and (ps.POST_CODE like #{likeTxt} or ps.POST_NAME like #{likeTxt})
         </if>
-        and exists (select * from mp_group g where g.id = GROUP_ID and g.DEL_FLAG !=1)
+        and exists (select * from mp_group g where g.id = ps.GROUP_ID and g.DEL_FLAG !=1)
     </select>
 
     <select id="form" resultMap="postDTOMap">
