@@ -53,13 +53,13 @@ public class SpeedInductionController {
      * @return R
      * */
     @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID)", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
-    @GetMapping("/attach")
+    @GetMapping("/getAttachById")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "业务表ID(例如：人才表的主键ID)", required = true),
             @ApiImplicitParam(name = "moduleTyp", value = "字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT )", required = true)
     })
 //    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
-    public R getAttachById(Long id, String moduleTyp) {
+    public R getAttachById(@RequestParam("id") Long id,@RequestParam("moduleTyp") String moduleTyp) {
         return R.ok(attachFileService.getAttachFileById(id, moduleTyp));
     }
 
@@ -71,12 +71,12 @@ public class SpeedInductionController {
      *
      * */
     @ApiOperation(value = "通过业务表ID查询(例如：人才表的主键ID) ", notes = "通过业务表ID查询(例如：人才表的主键ID) ")
-    @GetMapping("/payCard/{id}")
+    @GetMapping("/getPayCardById/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "业务表ID(例如：人才表的主键ID)", required = true)
     })
 //    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_view')")
-    public R getCardById(@PathVariable("id") Long id) {
+    public R getPayCardById(@PathVariable("id") Long id) {
         return R.ok(payCardInformationService.getCardById(id));
     }
     /*
