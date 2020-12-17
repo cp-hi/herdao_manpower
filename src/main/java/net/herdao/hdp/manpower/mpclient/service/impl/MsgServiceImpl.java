@@ -45,6 +45,7 @@ public class MsgServiceImpl implements MsgService {
                 sysMsgs.add(sysMsg);
             });
         }
+        //入职邀请发送入职邀请邮件
         if("2".equals(emailSendInfo.getType())){
             List<Recruitment> recruitments = recruitmentService.listByIds(emailSendInfo.getIds());
             recruitments.forEach(e->{

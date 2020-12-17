@@ -224,7 +224,6 @@ public class RecruitmentController {
 
     /**
      * 简历详情-求职意向-修改更新
-     *
      * @param dto 人才简历-求职意向
      * @return R
      */
@@ -258,13 +257,15 @@ public class RecruitmentController {
     /**
      * 人才管理-导出Excel
      * @param response
-     * @return R
+     * @param orgId
+     * @param searchText
+     * @return
      */
     @ApiOperation(value = "人才管理-导出Excel", notes = "人才管理-导出Excel")
     @GetMapping("/exportRecruitment")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgId", value = "组织ID"),
-            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
+        @ApiImplicitParam(name = "orgId", value = "组织ID"),
+        @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     @SneakyThrows
     public R<RecruitmentDTO> exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
