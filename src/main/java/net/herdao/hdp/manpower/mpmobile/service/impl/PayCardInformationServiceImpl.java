@@ -45,14 +45,16 @@ public class PayCardInformationServiceImpl extends ServiceImpl<PayCardInformatio
         PayCardInformation payCardInformations = this.baseMapper.
                 selectOne(new QueryWrapper<PayCardInformation>().lambda().
                         eq(PayCardInformation::getBizId, dto.getBizId()));
-        payCardInformation.setCreatorTime(LocalDateTime.now());
         //不为空 就修改
         if (payCardInformations != null){
+            payCardInformation.setModifierTime(LocalDateTime.now());
             this.baseMapper.update(payCardInformation,new LambdaUpdateWrapper<PayCardInformation>().
                     eq(PayCardInformation::getBizId, dto.getBizId()));
             return payCardInformation.getId();
         }
+
         //否则新增
+        payCardInformation.setCreatorTime(LocalDateTime.now());
         payCardInformation.setDelFlag(false);
         this.baseMapper.insert(payCardInformation);
         return payCardInformation.getId();

@@ -75,6 +75,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
                 eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
         //不为空 修改
         if (attach != null){
+            file.setModifierTime(LocalDateTime.now());
             this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
                     eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
             return;
@@ -99,6 +100,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
                     eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
             //不为空 修改
             if (attach != null){
+                file.setModifierTime(LocalDateTime.now());
                 this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
                         eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
                 return;

@@ -59,8 +59,8 @@ public class SpeedInductionController {
             @ApiImplicitParam(name = "moduleTyp", value = "字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT )", required = true)
     })
 //    @PreAuthorize("@pms.hasPermission('generator_cardinformation_view')" )
-    public R getAttachById( Long id, String moduleTyp) {
-        return R.ok(attachFileService.getAttachFileById(id, moduleTyp));
+    public R getAttachById( Long id,String moduleType) {
+        return R.ok(attachFileService.getAttachFileById(id, moduleType));
     }
 
 

@@ -49,5 +49,5 @@ public interface AttachFileService extends IService<AttachFile> {
      * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
      * @return R
      * */
-    List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleTyp);
+    List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleType);
 }
