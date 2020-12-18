@@ -1,20 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, herdao All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the herdao.net developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: liang
- */
-
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -23,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.POST;
+import java.util.List;
 
 
 /**
@@ -61,7 +46,6 @@ public class AttachFileController {
         Page<AttachFile> pageResult = attachFileService.page(page, Wrappers.query(attachFile));
         return R.ok(pageResult);
     }
-
 
     /**
      * 通过id查询通用附件表
@@ -118,4 +102,27 @@ public class AttachFileController {
         return R.ok(attachFileService.removeById(id));
     }
 
+    /**
+     * 获取-个人简历-简历附件;入职登记详情页面-简历附件
+     * @return R
+     */
+    @ApiOperation(value = "获取-个人简历-简历附件;入职登记详情页面-简历附件", notes = "获取-个人简历-简历附件;入职登记详情页面-简历附件")
+    @GetMapping("/fetchResumeAttachFileInfo")
+    //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_edit')" )
+    public R<List<AttachFileSituationDTO>> fetchResumeAttachFileInfo() {
+        List<AttachFileSituationDTO> list = attachFileService.fetchResumeAttachFileInfo();
+        return R.ok(list);
+    }
+
+    /**
+     * 获取-入职登记详情-入职附件
+     * @return R
+     */
+    @ApiOperation(value = "获取-入职登记详情-入职附件", notes = "获取-入职登记详情-入职附件")
+    @GetMapping("/fetchEntryAttachFileInfo")
+    //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_edit')" )
+    public R<List<AttachFileSituationDTO>> fetchEntryAttachFileInfo() {
+        List<AttachFileSituationDTO> list = attachFileService.fetchEntryAttachFileInfo();
+        return R.ok(list);
+    }
 }

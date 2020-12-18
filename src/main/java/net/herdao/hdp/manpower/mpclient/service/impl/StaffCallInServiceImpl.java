@@ -194,12 +194,18 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 
         JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
-            to.setNowJobLevelName(nowJobLevel.getJobLevelName());
+            StaffCallInInfoVO.Dictionary dict = new StaffCallInInfoVO.Dictionary();
+            dict.setLabel(nowJobLevel.getJobLevelName());
+            dict.setValue(nowJobLevel.getId());
+            to.setNowJobLevel(dict);
         }
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
-            to.setTransJobLevelName(transJobLevel.getJobLevelName() );
+            StaffCallInInfoVO.Dictionary dict = new StaffCallInInfoVO.Dictionary();
+            dict.setLabel(transJobLevel.getJobLevelName());
+            dict.setValue(transJobLevel.getId());
+            to.setTransJobLevel(dict);
         }
 
         Company paidUnits = companyService.getById(from.getPaidUnitsId());

@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
@@ -50,7 +51,6 @@ import java.util.Objects;
  */
 @Service
 public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachFile> implements AttachFileService {
-
 
     @Autowired
     private AttachFileMapper mapper;
@@ -112,12 +112,12 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     }
 
 
-    /*    *
+    /**
      * 通过id查询通用文件表数据
      * @param id id   业务表ID (例如：人才表的主键ID)
      * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
      * @return R
-     * */
+     */
     @Override
     public List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleType) {
         List<AttachFile> attachfile = this.baseMapper.selectList(new QueryWrapper<AttachFile>().select("file_id").lambda().
@@ -141,5 +141,15 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
             list.add(attachFileDTO);
         }
         return list;
+    }
+
+    @Override
+    public List<AttachFileSituationDTO> fetchResumeAttachFileInfo() {
+        return this.baseMapper.fetchResumeAttachFileInfo();
+    }
+
+    @Override
+    public List<AttachFileSituationDTO> fetchEntryAttachFileInfo() {
+        return this.baseMapper.fetchEntryAttachFileInfo();
     }
 }
