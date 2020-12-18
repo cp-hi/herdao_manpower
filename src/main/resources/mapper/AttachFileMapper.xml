@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper">
       <resultMap id="attachFileMap" type="net.herdao.hdp.manpower.mpclient.entity.AttachFile">
@@ -27,6 +24,7 @@
             <result property="modifierName" column="modifier_name"/>
             <result property="modifierTime" column="modifier_time"/>
       </resultMap>
+
       <insert id="insertBatch" parameterType="net.herdao.hdp.manpower.mpclient.entity.AttachFile" >
             insert into mp_attach_file
             (file_name,file_type,file_size,file_id,module_type,creator_time,creator_name,biz_id)
@@ -44,5 +42,40 @@
                   )
             </foreach>
       </insert>
+
+      <!-- 获取-个人简历-简历附件 -->
+      <select id="fetchResumeAttachFileInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO">
+          SELECT t1.label file_type,
+				 t2.file_count,
+			     t2.file_total_size
+          FROM
+          (
+               SELECT di.label,
+                      di.`value`
+                  FROM
+                      sys_dict_item di
+                  WHERE
+                      di.type = 'JLFJ'
+          )t1 LEFT JOIN
+          (
+               SELECT t.module_value,
+                      count( t.module_value ) file_count,
+                      sum(t.file_size) file_total_size
+                  FROM
+                      (
+                            SELECT
+                                fi.id,
+                                fi.file_name,
+                                fi.file_size,
+                                fi.module_value
+                            FROM
+                                mp_attach_file fi
+                            WHERE
+                                fi.module_type = 'JLFJ'
+                                AND fi.DEL_FLAG = 0
+                      ) t
+                  GROUP BY t.module_value
+                )t2  on t1.value=t2.module_value
+      </select>
 
 </mapper>
