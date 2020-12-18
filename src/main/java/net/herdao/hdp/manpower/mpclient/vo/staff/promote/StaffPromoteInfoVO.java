@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -45,11 +44,8 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "调动前岗位名称", name = "nowPostName", example = "1234")
     private String nowPostName;
 
-    @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123")
-    private Long nowJobLevelId;
-
-    @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName", example = "1234")
-    private String nowJobLevelName;
+    @ApiModelProperty(value = "调动前职级", name = "nowJobLevel", example = "123")
+    private Dictionary nowJobLevel;
 
     @ApiModelProperty(value = "调动后部门 id", name = "promoteOrgId", example = "4321", required = true)
     private Long promoteOrgId;
@@ -63,11 +59,8 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "调动后岗位名称", name = "promotePostName", example = "1234")
     private String promotePostName;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelId", example = "123", required = true)
-    private Long promoteJobLevelId;
-
-    @ApiModelProperty(value = "调动后职级名称", name = "promoteJobLevelName", example = "1234")
-    private String promoteJobLevelName;
+    @ApiModelProperty(value = "调动前职级", name = "promoteJobLevel", example = "123")
+    private Dictionary promoteJobLevel;
 
     @ApiModelProperty(value = "生效日期", name = "promoteDate", example = "20200901", required = true)
     private Long promoteDate;
@@ -92,4 +85,13 @@ public class StaffPromoteInfoVO {
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
     private List<String> appendixIds;
+
+    @Data
+    // 字典
+    public static class Dictionary {
+        // 字符串名成
+        private String label;
+        // id
+        private Long value;
+    }
 }

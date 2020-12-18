@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -44,11 +43,8 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
     private String nowPostName;
 
-    @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123")
-    private Long nowJobLevelId;
-
-    @ApiModelProperty(value = "原职级名称", name = "jobLevelName", example = "M3-6")
-    private String nowJobLevelName;
+    @ApiModelProperty(value = "调动前职级", name = "nowJobLevel", example = "123")
+    private Dictionary nowJobLevel;
 
     @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321")
     private Long transOrgId;
@@ -62,11 +58,8 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
     private String transPostName;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123")
-    private Long transJobLevelId;
-
-    @ApiModelProperty(value = "调动后好职级名称", name = "jobLevelName", example = "M3-6")
-    private String transJobLevelName;
+    @ApiModelProperty(value = "调动后职级", name = "transJobLevel", example = "123")
+    private Dictionary transJobLevel;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
@@ -111,11 +104,11 @@ public class StaffTransferInfoVO {
     private List<String> appendixIds;
 
     @Data
-    // 公司字典
+    // 字典
     public static class Dictionary {
-        // 公司名
+        // 字符串名称
         private String label;
-        // 公司 id
+        // id
         private Long value;
     }
 }
