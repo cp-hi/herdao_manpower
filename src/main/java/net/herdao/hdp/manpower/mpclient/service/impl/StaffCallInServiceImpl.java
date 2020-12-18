@@ -194,10 +194,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 
         JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
-            StaffCallInInfoVO.Dictionary dict = new StaffCallInInfoVO.Dictionary();
-            dict.setLabel(nowJobLevel.getJobLevelName());
-            dict.setValue(nowJobLevel.getId());
-            to.setNowJobLevel(dict);
+            to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());

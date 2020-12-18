@@ -169,10 +169,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
         JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
-            StaffPromoteInfoVO.Dictionary dict = new StaffPromoteInfoVO.Dictionary();
-            dict.setLabel(nowJobLevel.getJobLevelName());
-            dict.setValue(nowJobLevel.getId());
-            to.setNowJobLevel(dict);
+            to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
         JobLevel promoteJobLevel = jobLevelService.getById(from.getPromoteJobLevelId());
