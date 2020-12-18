@@ -60,9 +60,11 @@ public class RecruitmentActivitiController {
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmentactiviti_add')" )
     public R<RecruitmentActiviti> saveActiviti(@RequestBody RecruitmentActiviti recruitmentActiviti) {
         SysUser sysUser = SysUserUtils.getSysUser();
-        recruitmentActiviti.setCreatorTime(LocalDateTime.now());
-        recruitmentActiviti.setCreatorCode(sysUser.getUsername());
-        recruitmentActiviti.setCreatorName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitmentActiviti.setCreatorTime(LocalDateTime.now());
+            recruitmentActiviti.setCreatorCode(sysUser.getUsername());
+            recruitmentActiviti.setCreatorName(sysUser.getAliasName());
+        }
         recruitmentActivitiService.save(recruitmentActiviti);
         return R.ok(recruitmentActiviti);
     }
@@ -77,10 +79,13 @@ public class RecruitmentActivitiController {
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitmentactiviti_edit')" )
     public R<RecruitmentActiviti> updateActiviti(@RequestBody RecruitmentActiviti recruitmentActiviti) {
         SysUser sysUser = SysUserUtils.getSysUser();
-        recruitmentActiviti.setModifierTime(LocalDateTime.now());
-        recruitmentActiviti.setModifierCode(sysUser.getUsername());
-        recruitmentActiviti.setModifierName(sysUser.getAliasName());
-        recruitmentActivitiService.updateById(recruitmentActiviti);
+        if (ObjectUtil.isNotNull(sysUser)){
+            recruitmentActiviti.setModifierTime(LocalDateTime.now());
+            recruitmentActiviti.setModifierCode(sysUser.getUsername());
+            recruitmentActiviti.setModifierName(sysUser.getAliasName());
+            recruitmentActivitiService.updateById(recruitmentActiviti);
+        }
+
         return R.ok(recruitmentActiviti);
     }
 
