@@ -73,7 +73,10 @@ public class PostController extends BaseController<Post, PostListVO, PostFormVO>
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<PostListVO>> page(Page page, Post post){
-        return R.ok(postService.page(page, post));
+    	IPage p = postService.page(page, post);
+        List<PostListVO> vos = DtoConverter.dto2vo(p.getRecords(), PostListVO.class);
+        p.setRecords(vos);
+        return R.ok(p);
     }
 
     @Override
