@@ -383,10 +383,16 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				vo.setStaffNameAndCode(name + "(" + code + ")");
 			}
 			if (user.getStaffScope() != null) {
-				vo.setStaffScope(user.getStaffScope());
+				QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
+				SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
+						.eq("value", user.getStaffScope()));
+				vo.setStaffScope(staffScope.getLabel());
 			}
 			if (user.getJobType() != null) {
-				vo.setStaffJobType(user.getJobType());
+				QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
+				SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
+						.eq("value", user.getJobType()));
+				vo.setStaffJobType(jobType.getLabel());
 			}
 			vo.setNowOrgId(user.getOrgId());
 			if (user.getOrgName() != null){
