@@ -41,15 +41,15 @@
               0 trail_count,
               0 establish_count,
               (
-               SELECT
-                  count(po.POST_ID) post_count
-                FROM  mp_post_org po
-                  LEFT JOIN mp_organization org on po.ORG_ID=org.id
-               <where>
-                  <if test="orgCode != null">
-                      AND org.ORG_CODE LIKE concat(#{orgCode},'%')
-                  </if>
-               </where>
+                   SELECT
+                      count(po.POST_ID) post_count
+                    FROM  mp_post_org po
+                      LEFT JOIN mp_organization org on po.ORG_ID=org.id
+                   <where>
+                      <if test="orgCode != null">
+                          AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+                      </if>
+                   </where>
               ) post_count
             FROM mp_staff s
           LEFT JOIN mp_user u ON s.user_id = u.ID
@@ -97,16 +97,19 @@
                                 sum( CASE WHEN t.JOB_TYPE = 8 THEN 1 ELSE 0 END ) retire_job_count -- 退休返聘
                         FROM
                       (
-                         SELECT  s.JOB_TYPE
-                               FROM mp_organization a
-                            INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
-                            INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
-                            WHERE  1 =1
-                             AND u.MAIN_POST = 1
-                             <if test="orgCode != null">
-                                AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
-                            </if>
-                      ) t
+                        SELECT  s.JOB_TYPE
+                             FROM  mp_staff s
+                            LEFT JOIN mp_user u ON s.user_id = u.ID
+                            LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID AND up.MAIN_POST = 1
+                            LEFT JOIN mp_post p ON p.ID = up.POST_ID
+                            LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+                            LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
+                          <where>
+                              <if test="orgCode != null">
+                                  AND  o.ORG_CODE LIKE concat(#{orgCode},'%')
+                              </if>
+                          </where>
+                       ) t
                 ) t
         )t
     </select>
@@ -129,18 +132,20 @@
                     COUNT(t.staff_id) total
             FROM
             (
-                SELECT  s.id staff_id,
-                        DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(s.BIRTHDAY)), '%Y')+0 AS age
-                        FROM  mp_organization a
-                        INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
-                        INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
-                        WHERE 1=1
-                        AND u.MAIN_POST = 1
-                        AND s.JOB_TYPE = 1
-                        AND s.STAFF_SCOPE = 1
-                        <if test="orgCode != null">
-                            AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
-                        </if>
+                 SELECT s.id staff_id,
+                        DATE_FORMAT( FROM_DAYS( TO_DAYS( NOW())- TO_DAYS( s.BIRTHDAY )), '%Y' )+ 0 AS age
+                    FROM mp_staff s
+                        LEFT JOIN mp_user u ON s.user_id = u.ID
+                        LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID
+                        AND up.MAIN_POST = 1
+                        LEFT JOIN mp_post p ON p.ID = up.POST_ID
+                        LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+                        LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
+                        <where>
+                            <if test="orgCode != null">
+                                AND  o.ORG_CODE LIKE concat(#{orgCode},'%')
+                            </if>
+                        </where>
             ) t
          )t
      </select>
@@ -148,36 +153,38 @@
     <!-- 岗位人数分布 -->
     <select id="fetchOrgSituationByPostCode" resultMap="orgSituationMap">
         SELECT  t.POST_NAME,
-                t.post_count,
-                ROUND(t.post_count/t.post_total,2)*100 post_zb
-        from  (
-          SELECT  p.POST_CODE,
-                  p.POST_NAME,
-                  count(s.id) post_count ,
-                 (
-                    SELECT
-                    count(s.id) post_total
-                    FROM
-                    mp_post p
-                    INNER JOIN mp_userpost up ON p.id = up.POST_ID
-                    INNER JOIN mp_staff s ON s.user_id = up.USER_ID
-                    INNER JOIN mp_organization o ON up.ORG_DEPT_ID = o.id
-                    where 1=1
-                     AND up.MAIN_POST = 1
+                count(t.staff_id) post_count,
+                ROUND(count(t.staff_id)/t.post_total,2)*100 post_zb
+        FROM (
+             SELECT p.ID post_id,
+                    p.POST_NAME,
+                    s.id staff_id,
+                    (
+                     SELECT  count(s.id) post_total
+                        FROM mp_staff s
+                        LEFT JOIN mp_user u ON s.user_id = u.ID
+                        LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID
+                        AND up.MAIN_POST = 1
+                        LEFT JOIN mp_post p ON p.ID = up.POST_ID
+                        LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+                        LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
+                        <where>
+                            <if test="orgCode != null">
+                                AND  o.ORG_CODE LIKE concat(#{orgCode},'%')
+                            </if>
+                        </where>
+                    ) post_total
+              FROM 	mp_staff s
+                LEFT JOIN mp_user u ON s.user_id = u.ID
+                LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID AND up.MAIN_POST = 1
+                LEFT JOIN mp_post p ON p.ID = up.POST_ID
+                LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+                LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
+                <where>
                     <if test="orgCode != null">
-                        AND   o.ORG_CODE LIKE concat(#{orgCode},'%')
+                        AND  o.ORG_CODE LIKE concat(#{orgCode},'%')
                     </if>
-                ) post_total
-        FROM  mp_post p
-                INNER JOIN mp_userpost up ON p.id = up.POST_ID
-                INNER JOIN mp_staff s ON s.user_id = up.USER_ID
-                INNER JOIN mp_organization o ON up.ORG_DEPT_ID = o.id
-                where  1=1
-                 AND up.MAIN_POST = 1
-                 <if test="orgCode != null">
-                    AND   o.ORG_CODE LIKE concat(#{orgCode},'%')
-                </if>
-                GROUP BY p.POST_NAME,p.POST_CODE
-      )t
+                </where>
+        ) t  GROUP BY t.post_id, t.POST_NAME
     </select>
 </mapper>
