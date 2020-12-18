@@ -29,6 +29,7 @@ import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
@@ -85,6 +86,19 @@ public class StaffPositiveApprovalController {
     @GetMapping("/{id}")
     public R<StaffPositiveApprovalInfoVO> getDetail(@PathVariable("id") Long id) {
         return R.ok(staffPositiveApprovalService.getStaffPositive(id));
+    }
+
+
+
+    /**
+     * 执行转正
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "执行转正")
+    @GetMapping("/execute")
+    public R<Long> execute(StaffPositiveApprovalExecuteDTO executeDTO) {
+        return R.ok(staffPositiveApprovalService.execute(executeDTO));
     }
 
 
