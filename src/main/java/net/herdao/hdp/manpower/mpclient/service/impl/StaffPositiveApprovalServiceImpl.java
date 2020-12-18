@@ -17,10 +17,12 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPositiveApprovalMapper;
@@ -215,6 +217,18 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
             id = insert(dto);
         }
         return affirm(id);
+    }
+
+    /**
+     * 执行转正
+     * @param executeDTO
+     */
+    @Override
+    public Long execute(StaffPositiveApprovalExecuteDTO executeDTO) {
+        StaffPositiveApproval approval = new StaffPositiveApproval();
+        BeanUtils.copyProperties(executeDTO,approval);
+        this.baseMapper.updateById(approval);
+        return approval.getId();
     }
 
 
