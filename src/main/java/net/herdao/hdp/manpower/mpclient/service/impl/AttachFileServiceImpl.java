@@ -16,11 +16,13 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
@@ -32,6 +34,7 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalP
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
 import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,73 +61,60 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 
     /**
      * 上传后绑定数据
+     *
      * @param attachFile 通用附件表
      * @return R
      */
     @Override
-    public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
+    public void bindDataAfterUploading(List<AttachFileDTO> attachFile) {
         //多张图片上传后绑定保存
-        if (attachFile != null && attachFile.size() > 1){
-            bind(attachFile);
-            return;
+        if (attachFile != null) {
+            attachFile.forEach(item -> {
+                        AttachFile file = new AttachFile();
+                        BeanUtils.copyProperties(item, file);
+                        AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
+                                eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType, item.getModuleType()));
+                        SysUser sysUser = SysUserUtils.getSysUser();
+                        //不为空 修改
+                        if (attach != null) {
+                            if (ObjectUtil.isNotNull(sysUser)) {
+                                file.setModifierTime(LocalDateTime.now());
+                                file.setModifierCode(sysUser.getUsername());
+                                file.setModifierName(sysUser.getAliasName());
+                            }
+                            this.baseMapper.update(file, new LambdaUpdateWrapper<AttachFile>().
+                                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType, item.getModuleType()));
+                            return;
+                        }
+
+                        if (ObjectUtil.isNotNull(sysUser)) {
+                            file.setCreatorTime(LocalDateTime.now());
+                            file.setCreatorCode(sysUser.getUsername());
+                            file.setCreatorName(sysUser.getAliasName());
+                        }
+                        //否则  新增
+                        file.setFileType(item.getExtend());
+                        this.baseMapper.insert(file);
+                    }
+            );
         }
-        AttachFile file = new AttachFile();
-        AttachFileDTO item = attachFile.get(0);
-        BeanUtils.copyProperties(item,file);
-        AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
-                eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
-        //不为空 修改
-        if (attach != null){
-            file.setModifierTime(LocalDateTime.now());
-            this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
-                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
-            return;
-        }
-        file.setFileType(item.getExtend());
-        file.setCreatorTime(LocalDateTime.now());
 
-        //否则  新增
-        this.baseMapper.insert(file);
-    }
 
-    /**
-     * 多张图片上传后绑定保存
-     *
-     * @param attachFile
-     */
-    private void bind(List<AttachFileDTO> attachFile) {
-        attachFile.forEach(item -> {
-            AttachFile file = new AttachFile();
-            BeanUtils.copyProperties(item,file);
-            AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
-                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
-            //不为空 修改
-            if (attach != null){
-                file.setModifierTime(LocalDateTime.now());
-                this.baseMapper.update(file,new LambdaUpdateWrapper<AttachFile>().
-                        eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType,item.getModuleType()));
-                return;
-            }
-
-            file.setFileType(item.getExtend());
-            file.setCreatorTime(LocalDateTime.now());
-            this.baseMapper.insert(file);
-                }
-        );
     }
 
 
     /**
      * 通过id查询通用文件表数据
-     * @param id id   业务表ID (例如：人才表的主键ID)
-     * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
+     *
+     * @param id         id   业务表ID (例如：人才表的主键ID)
+     * @param moduleType 字典类型(文件所属字典类型 例  如:   体检报告:MEDICAL_REPORT)
      * @return R
      */
     @Override
-    public List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleType) {
+    public List<AttachFileInfoDTO> getAttachFileById(Long id, String moduleType) {
         List<AttachFile> attachfile = this.baseMapper.selectList(new QueryWrapper<AttachFile>().select("file_id").lambda().
                 eq(AttachFile::getBizId,
-                        String.valueOf(id)).like(AttachFile::getModuleType,moduleType));
+                        String.valueOf(id)).like(AttachFile::getModuleType, moduleType));
         List<AttachFileInfoDTO> attachFileInfoDTOS = convert2DtoList(attachfile);
         return attachFileInfoDTOS;
     }
@@ -139,7 +129,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         List<AttachFileInfoDTO> list = new ArrayList<>();
         for (AttachFile record : attachfile) {
             AttachFileInfoDTO attachFileDTO = new AttachFileInfoDTO();
-            BeanUtils.copyProperties(record,attachFileDTO);
+            BeanUtils.copyProperties(record, attachFileDTO);
             list.add(attachFileDTO);
         }
         return list;
@@ -154,4 +144,6 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     public List<AttachFileSituationDTO> fetchEntryAttachFileInfo() {
         return this.baseMapper.fetchEntryAttachFileInfo();
     }
+
+
 }
