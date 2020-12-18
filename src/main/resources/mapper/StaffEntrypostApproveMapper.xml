@@ -682,5 +682,9 @@
         </where>
     </select>
 
+    <!-- 统计移动端个人信息填写进度 -->
+    <select id="fetchProgress" resultType="net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO">
+
+    </select>
 
 </mapper>
