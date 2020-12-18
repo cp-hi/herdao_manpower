@@ -46,6 +46,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         StaffTransferApprove entity = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, entity);
 
+        entity.setTransJobLevelId(dto.getTransJobLevel());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         entity.setTransferType(StaffChangesApproveTypeConstants.CALL_OUT);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
@@ -66,6 +67,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         }
 
         BeanUtils.copyProperties(dto, entity);
+        entity.setTransJobLevelId(dto.getTransJobLevel());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         mapper.updateById(entity);
         return id;
@@ -117,10 +119,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 
         JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
-            StaffCallOutInfoVO.Dictionary dict = new StaffCallOutInfoVO.Dictionary();
-            dict.setLabel(nowJobLevel.getJobLevelName());
-            dict.setValue(nowJobLevel.getId());
-            to.setNowJobLevel(dict);
+            to.setNowJobLevelName(nowJobLevel.getJobLevelName());
         }
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
@@ -164,7 +163,7 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
-        jobLevelService.validityCheck(dto.getTransJobLevelId(), "调动后职级信息有误，请再次确认");
+        jobLevelService.validityCheck(dto.getTransJobLevel(), "调动后职级信息有误，请再次确认");
 
     }
 
