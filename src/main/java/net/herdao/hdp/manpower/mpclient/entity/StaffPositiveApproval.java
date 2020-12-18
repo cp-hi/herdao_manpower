@@ -337,6 +337,6 @@ private static final long serialVersionUID = 1L;
      * 是否通知
      */
     @ApiModelProperty(value = "是否通知(0:通知,1:不通知)")
-    private Long whetherOrNotNoticeOf;
+    private Boolean whetherOrNotNoticeOf;
 
 }
