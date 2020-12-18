@@ -64,7 +64,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
 
         StaffTransferApprove staffTransferApprove = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, staffTransferApprove);
-
+        staffTransferApprove.setTransJobLevelId(dto.getTransJobLevel());
         staffTransferApprove.setFundUnitsId(dto.getFundUnit());
         staffTransferApprove.setPaidUnitsId(dto.getPaidUnit());
         staffTransferApprove.setSecurityUnitsId(dto.getSecurityUnit());
@@ -102,7 +102,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
-        jobLevelService.validityCheck(dto.getTransJobLevelId(), "调动后职级信息有误，请再次确认");
+        jobLevelService.validityCheck(dto.getTransJobLevel(), "调动后职级信息有误，请再次确认");
 
         if (dto.getFundUnit() != null) {
             companyService.validityCheck(dto.getFundUnit(), "公积金缴纳单位信息有误，请再次确认");
@@ -143,6 +143,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
             throw new Exception("该记录不可更新");
         }
         BeanUtils.copyProperties(dto, entity);
+        entity.setTransJobLevelId(dto.getTransJobLevel());
         entity.setFundUnitsId(dto.getFundUnit());
         entity.setPaidUnitsId(dto.getPaidUnit());
         entity.setSecurityUnitsId(dto.getSecurityUnit());
