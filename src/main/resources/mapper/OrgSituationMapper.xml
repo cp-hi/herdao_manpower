@@ -31,33 +31,37 @@
 
       <!-- 获取组织概况 -->
       <select id="fetchOrgSituation" resultMap="orgSituationMap">
-          SELECT  sum(
-                    case when t.JOB_TYPE=1 THEN 1 ELSE 0 END
-                  ) full_time_job_count,
-                  sum(
-                     CASE WHEN t.JOB_TYPE = 1 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END
-                  ) on_job_count,
-                  count(
-                    DISTINCT ( t.post_id )
-                  ) post_count,
-                  0 trail_count,
-                  0 establish_count
-          from 	(
-                  SELECT
-                      s.JOB_TYPE,
-                      s.STAFF_SCOPE,
-                      u.post_id,
-                      0 trail_count,
-                      0 establish_count
-                  FROM mp_organization a
-                  INNER JOIN mp_userpost u ON u.ORG_DEPT_ID = a.ID
-                  INNER JOIN mp_staff s ON u.USER_ID = s.USER_ID
-                  WHERE 1 =1
-                  AND u.MAIN_POST = 1
+          SELECT
+              sum(
+                case when s.JOB_TYPE=1 THEN 1 ELSE 0 END
+              ) full_time_job_count,
+              sum(
+                case when s.STAFF_SCOPE =1 THEN 1 ELSE 0 END
+              ) on_job_count,
+              0 trail_count,
+              0 establish_count,
+              (
+               SELECT
+                  count(po.POST_ID) post_count
+                FROM  mp_post_org po
+                  LEFT JOIN mp_organization org on po.ORG_ID=org.id
+               <where>
                   <if test="orgCode != null">
-                      AND  a.ORG_CODE LIKE concat(#{orgCode},'%')
+                      AND org.ORG_CODE LIKE concat(#{orgCode},'%')
                   </if>
-         ) t
+               </where>
+              ) post_count
+            FROM mp_staff s
+          LEFT JOIN mp_user u ON s.user_id = u.ID
+          LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID  AND up.MAIN_POST = 1
+          LEFT JOIN mp_post p ON p.ID = up.POST_ID
+          LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
+          LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
+          <where>
+              <if test="orgCode != null">
+                  AND o.ORG_CODE LIKE concat(#{orgCode},'%')
+              </if>
+          </where>
     </select>
 
     <!-- 员工任职类型分布 -->
