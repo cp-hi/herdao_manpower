@@ -192,4 +192,46 @@ public class RecruitmentEditBaseInfoDTO {
      */
     @ApiModelProperty(value="国籍")
     private String nationality;
+
+    /**
+     * 英文名称
+     */
+    @ApiModelProperty(value="英文名称")
+    private String englishName;
+
+    /**
+     * 邮箱
+     */
+    @ApiModelProperty(value="邮箱")
+    private String email;
+
+    /**
+     * 证件类型
+     */
+    @ApiModelProperty(value="证件类型")
+    private String certificateType;
+
+    /**
+     * 职称证号
+     */
+    @ApiModelProperty(value="职称证号")
+    private String certificateNo;
+
+    /**
+     * 移动电话
+     */
+    @ApiModelProperty(value="移动电话")
+    private String mobile;
+
+    /**
+     * 户口类型
+     */
+    @ApiModelProperty(value="户口类型")
+    private String accountType;
+
+    /**
+     * 简历来源
+     */
+    @ApiModelProperty(value="简历来源")
+    private String resumeSource;
 }
