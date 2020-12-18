@@ -44,8 +44,12 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
     private String nowPostName;
 
-    @ApiModelProperty(value = "调动前职级", name = "nowJobLevel", example = "123")
-    private Dictionary nowJobLevel;
+    @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123")
+    private Long nowJobLevelId;
+
+    @ApiModelProperty(value = "原职级名称", name = "nowJobLevelName", example = "M3-6")
+    private String nowJobLevelName;
+
 
     @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321")
     private Long transOrgId;
