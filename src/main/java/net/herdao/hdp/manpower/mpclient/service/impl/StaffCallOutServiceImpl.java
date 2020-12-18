@@ -117,12 +117,18 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 
         JobLevel nowJobLevel = jobLevelService.getById(from.getNowJobLevelId());
         if (nowJobLevel != null) {
-            to.setNowJobLevelName(nowJobLevel.getJobLevelName());
+            StaffCallOutInfoVO.Dictionary dict = new StaffCallOutInfoVO.Dictionary();
+            dict.setLabel(nowJobLevel.getJobLevelName());
+            dict.setValue(nowJobLevel.getId());
+            to.setNowJobLevel(dict);
         }
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
-            to.setTransJobLevelName(transJobLevel.getJobLevelName() );
+            StaffCallOutInfoVO.Dictionary dict = new StaffCallOutInfoVO.Dictionary();
+            dict.setLabel(transJobLevel.getJobLevelName());
+            dict.setValue(transJobLevel.getId());
+            to.setTransJobLevel(dict);
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
