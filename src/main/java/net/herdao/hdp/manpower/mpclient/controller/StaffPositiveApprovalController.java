@@ -52,7 +52,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("staff/positiveApproval")
+@RequestMapping("/staff/positiveApproval")
 @Api(value = "staffPositiveApproval", tags = "转正审批表管理")
 public class StaffPositiveApprovalController {
 
@@ -189,7 +189,7 @@ public class StaffPositiveApprovalController {
         Page page = new Page();
         page.setSize(-1);
         Page<StaffPositiveApprovalPageVO> pageResult = staffPositiveApprovalService.getPositiveApprovalPageInfo(page, orgId, String.valueOf(5), searchText);
-        ExcelUtils.export2Web(response, "转正管理表", "转正管理表", RecruitmentDTO.class, pageResult.getRecords());
+        ExcelUtils.export2Web(response, "转正管理表", "转正管理表", StaffPositiveApprovalPageVO.class, pageResult.getRecords());
         StaffPositiveApprovalPageVO vo = new StaffPositiveApprovalPageVO();
         return R.ok(vo);
     }

@@ -46,4 +46,5 @@ public interface AttachFileService extends IService<AttachFile> {
      */
     List<AttachFileSituationDTO> fetchEntryAttachFileInfo();
 
+    void delDataAfterUploading(AttachFileDTO attachFile);
 }

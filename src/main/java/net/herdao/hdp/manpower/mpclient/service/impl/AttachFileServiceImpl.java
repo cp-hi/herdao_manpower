@@ -17,6 +17,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -41,10 +42,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 通用附件表
@@ -77,8 +75,8 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
                         SysUser sysUser = SysUserUtils.getSysUser();
                         //不为空 修改
                         if (attach != null) {
+                            file.setModifierTime(LocalDateTime.now());
                             if (ObjectUtil.isNotNull(sysUser)) {
-                                file.setModifierTime(LocalDateTime.now());
                                 file.setModifierCode(sysUser.getUsername());
                                 file.setModifierName(sysUser.getAliasName());
                             }
@@ -87,8 +85,8 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
                             return;
                         }
 
+                        file.setCreatorTime(LocalDateTime.now());
                         if (ObjectUtil.isNotNull(sysUser)) {
-                            file.setCreatorTime(LocalDateTime.now());
                             file.setCreatorCode(sysUser.getUsername());
                             file.setCreatorName(sysUser.getAliasName());
                         }
@@ -143,6 +141,14 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     @Override
     public List<AttachFileSituationDTO> fetchEntryAttachFileInfo() {
         return this.baseMapper.fetchEntryAttachFileInfo();
+    }
+
+    @Override
+    public void delDataAfterUploading(AttachFileDTO attachFile) {
+        Map<String, Object> paraMap = new HashMap<>(16);
+        paraMap.put("module_type",attachFile.getModuleType());
+        paraMap.put("biz_id",attachFile.getBizId());
+        this.baseMapper.deleteByMap(paraMap);
     }
 
 
