@@ -48,4 +48,11 @@ public interface AttachFileMapper extends BaseMapper<AttachFile> {
      * @return AttachFileSituationDTO
      */
     List<AttachFileSituationDTO> fetchResumeAttachFileInfo();
+
+    /**
+     * 获取-入职登记详情-入职附件
+     * @return List<AttachFileSituationDTO>
+     */
+    List<AttachFileSituationDTO> fetchEntryAttachFileInfo();
+
 }

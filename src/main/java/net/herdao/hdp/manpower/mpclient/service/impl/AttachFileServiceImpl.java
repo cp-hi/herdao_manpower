@@ -52,7 +52,6 @@ import java.util.Objects;
 @Service
 public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachFile> implements AttachFileService {
 
-
     @Autowired
     private AttachFileMapper mapper;
 
@@ -147,5 +146,10 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     @Override
     public List<AttachFileSituationDTO> fetchResumeAttachFileInfo() {
         return this.baseMapper.fetchResumeAttachFileInfo();
+    }
+
+    @Override
+    public List<AttachFileSituationDTO> fetchEntryAttachFileInfo() {
+        return this.baseMapper.fetchEntryAttachFileInfo();
     }
 }

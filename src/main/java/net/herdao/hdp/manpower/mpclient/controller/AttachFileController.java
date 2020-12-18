@@ -47,7 +47,6 @@ public class AttachFileController {
         return R.ok(pageResult);
     }
 
-
     /**
      * 通过id查询通用附件表
      * @param id id
@@ -104,14 +103,26 @@ public class AttachFileController {
     }
 
     /**
-     * 获取-个人简历-简历附件
+     * 获取-个人简历-简历附件;入职登记详情页面-简历附件
      * @return R
      */
-    @ApiOperation(value = "获取-个人简历-简历附件", notes = "获取-个人简历-简历附件")
+    @ApiOperation(value = "获取-个人简历-简历附件;入职登记详情页面-简历附件", notes = "获取-个人简历-简历附件;入职登记详情页面-简历附件")
     @GetMapping("/fetchResumeAttachFileInfo")
     //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_edit')" )
     public R<List<AttachFileSituationDTO>> fetchResumeAttachFileInfo() {
         List<AttachFileSituationDTO> list = attachFileService.fetchResumeAttachFileInfo();
+        return R.ok(list);
+    }
+
+    /**
+     * 获取-入职登记详情-入职附件
+     * @return R
+     */
+    @ApiOperation(value = "获取-入职登记详情-入职附件", notes = "获取-入职登记详情-入职附件")
+    @GetMapping("/fetchEntryAttachFileInfo")
+    //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_edit')" )
+    public R<List<AttachFileSituationDTO>> fetchEntryAttachFileInfo() {
+        List<AttachFileSituationDTO> list = attachFileService.fetchEntryAttachFileInfo();
         return R.ok(list);
     }
 }

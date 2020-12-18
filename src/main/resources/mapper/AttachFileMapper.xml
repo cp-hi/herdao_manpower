@@ -78,4 +78,38 @@
                 )t2  on t1.value=t2.module_value
       </select>
 
+    <!-- 获取-入职登记详情-入职附件 -->
+    <select id="fetchEntryAttachFileInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO">
+          SELECT t1.label file_type,
+				 t2.file_count,
+			     t2.file_total_size
+          FROM
+          (
+               SELECT di.label,
+                      di.`value`
+                  FROM
+                      sys_dict_item di
+                  WHERE
+                      di.type = 'JLFJ'
+          )t1 LEFT JOIN
+          (
+               SELECT t.module_value,
+                      count( t.module_value ) file_count,
+                      sum(t.file_size) file_total_size
+                  FROM
+                      (
+                            SELECT
+                                fi.id,
+                                fi.file_name,
+                                fi.file_size,
+                                fi.module_value
+                            FROM
+                                mp_attach_file fi
+                            WHERE
+                                fi.module_type = 'JLFJ'
+                                AND fi.DEL_FLAG = 0
+                      ) t
+                  GROUP BY t.module_value
+                )t2  on t1.value=t2.module_value
+      </select>
 </mapper>
