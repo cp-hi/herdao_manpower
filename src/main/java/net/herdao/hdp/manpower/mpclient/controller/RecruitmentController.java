@@ -1,10 +1,16 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.collection.CollectionUtil;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -106,6 +112,7 @@ public class RecruitmentController {
     private final  RecruitmentActivitiService recruitmentActivitiService;
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
+
     /**
      * 人才管理-快速编辑
      *
@@ -723,5 +730,20 @@ public class RecruitmentController {
         R result = recruitmentService.saveOrUpdateRecruitment(dto);
         return R.ok(result);
     }
+
+    /**
+     * 获取-手机端个人信息-填写进度
+     * @param id 主键id
+     * @return R
+     */
+    @ApiOperation(value = "获取-手机端个人信息-填写进度", notes = "获取-手机端个人信息-填写进度")
+    @GetMapping("/fetchMobileInfoProgress")
+    @ApiImplicitParam(name = "id", value = "主键id")
+    public R<RecruitmentMobileProgressVO> fetchMobileInfoProgress(Long id)  {
+        RecruitmentMobileProgressVO reslult = recruitmentService.fetchMobileInfoProgress(id);
+        return R.ok(reslult);
+    }
+
+
 
 }
