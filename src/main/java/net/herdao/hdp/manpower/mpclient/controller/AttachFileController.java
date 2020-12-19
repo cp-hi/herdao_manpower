@@ -1,22 +1,27 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import javax.ws.rs.POST;
-import java.util.List;
 
 
 /**
@@ -67,11 +72,11 @@ public class AttachFileController {
      */
     @ApiOperation(value = "新增通用附件表", notes = "新增通用附件表")
     @SysLog("新增通用附件表" )
-    @PostMapping
+    @PostMapping("/add")
     //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_add')" )
-    public R<AttachFile> save(@RequestBody AttachFile attachFile) {
-        attachFileService.save(attachFile);
-        return R.ok(attachFile);
+    public R<AttachFile> save(@RequestBody AttachFileAddDTO attachFile) {
+        attachFileService.saveAttachFile(attachFile);
+        return R.ok();
     }
 
     /**

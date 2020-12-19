@@ -62,4 +62,14 @@ public interface AttachFileService extends IService<AttachFile> {
      * @return R
      */
     Map<String,Boolean> getFinishCase(String id);
+
+    /**
+     * 	根据业务表单ID查询附件列表
+     * @param bizId
+     * @return
+     */
+	List<AttachFile> getAttachFileByBizId(Long bizId);
+
+	Boolean saveAttachFile(AttachFileAddDTO attachFile);
+
 }
