@@ -36,6 +36,8 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     private JobLevelService jobLevelService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private StaffTransferApproveMapper mapper;
@@ -97,6 +99,12 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
+
+        Group group = groupService.getGroupByOrgId(from.getNowOrgId());
+        if (group != null) {
+            to.setGroupId(group.getId());
+        }
+
         Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
             to.setNowPostName(nowPost.getPostName());

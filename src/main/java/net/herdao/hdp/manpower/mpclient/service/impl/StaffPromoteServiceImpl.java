@@ -40,6 +40,8 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     private JobLevelService jobLevelService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private StaffPromoteApproveMapper mapper;
@@ -148,6 +150,11 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         BeanUtils.copyProperties(from, to);
 
         to.setPromoteDate(LocalDateTimeUtils.convert2Long(from.getPromoteDate()));
+
+        Group group = groupService.getGroupByOrgId(from.getNowOrgId());
+        if (group != null) {
+            to.setGroupId(group.getId());
+        }
 
         Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {

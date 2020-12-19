@@ -20,6 +20,9 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
     private Long userId;
 
+    @ApiModelProperty(value = "集团 id", name = "groupId", example = "1")
+    private Long groupId;
+
     @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
     private String staffNameAndCode;
 
@@ -49,7 +52,6 @@ public class StaffCallInInfoVO {
 
     @ApiModelProperty(value = "原职级名称", name = "nowJobLevelName", example = "M3-6")
     private String nowJobLevelName;
-
 
     @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321")
     private Long transOrgId;

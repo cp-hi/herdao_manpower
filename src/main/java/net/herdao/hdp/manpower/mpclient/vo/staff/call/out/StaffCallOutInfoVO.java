@@ -19,6 +19,9 @@ public class StaffCallOutInfoVO {
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
     private Long userId;
 
+    @ApiModelProperty(value = "集团 id", name = "groupId", example = "1")
+    private Long groupId;
+
     @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
     private String staffNameAndCode;
 

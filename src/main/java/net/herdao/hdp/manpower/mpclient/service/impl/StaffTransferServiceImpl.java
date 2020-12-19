@@ -44,6 +44,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     private CompanyService companyService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private StaffTransferApproveMapper mapper;
@@ -218,6 +220,11 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
+
+        Group group = groupService.getGroupByOrgId(from.getNowOrgId());
+        if (group != null) {
+            to.setGroupId(group.getId());
+        }
 
         Post nowPost = postService.getById(from.getNowPostId());
         if (nowPost != null) {
