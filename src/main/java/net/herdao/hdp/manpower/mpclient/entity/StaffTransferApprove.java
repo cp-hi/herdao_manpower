@@ -173,8 +173,19 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     @ApiModelProperty(value = "调出时对应调入 id")
     private Long transApproveId;
 
-    @ApiModelProperty(value = "变更后组织 id")
-    private Long postOrgId;
+    /**
+     * 该 id 对应页面上的"调动前岗位"的 id
+     */
+    @ApiModelProperty(value = "调动前岗位-组织关系 id")
+    @NotNull
+    private Long nowPostOrgId;
+
+    /**
+     * 该 id 对应页面上的"晋升、降级后岗位"的 id
+     */
+    @ApiModelProperty(value = "调动后岗位-组织关系 id")
+    @NotNull
+    private Long transPostOrgId;
 
     @TableLogic
     private Boolean delFlag;

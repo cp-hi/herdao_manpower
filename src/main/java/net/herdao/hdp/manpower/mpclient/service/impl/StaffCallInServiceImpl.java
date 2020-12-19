@@ -91,7 +91,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
                 if (!dto.getNowOrgId().equals(userpost.getOrgId())) {
                     throw new Exception("原部门信息有误，请再次确认");
                 }
-                if (!dto.getNowPostId().equals(userpost.getPostId())) {
+                if (!dto.getNowPostOrgId().equals(userpost.getPostOrgId())) {
                     throw new Exception("原岗位信息有误，请再次确认");
                 }
             }
@@ -102,8 +102,8 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         orgService.validityCheck(dto.getTransOrgId(), "调动后部门信息有误，请再次确认");
 
         // 校验岗位有效性
-        postService.validityCheck(dto.getNowPostId(), "原岗位信息有误，请再次确认");
-        postService.validityCheck(dto.getTransPostId(), "调动后岗位信息有误，请再次确认");
+        postOrgService.validityCheck(dto.getNowPostOrgId(), "原岗位信息有误，请再次确认");
+        postOrgService.validityCheck(dto.getTransPostOrgId(), "调动后岗位信息有误，请再次确认");
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");

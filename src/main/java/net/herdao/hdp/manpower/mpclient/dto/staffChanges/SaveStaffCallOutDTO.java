@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @Author Liu Chang
@@ -43,7 +42,7 @@ public class SaveStaffCallOutDTO {
 
     @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432", required = true)
     @NotNull
-    private Long transPostId;
+    private Long transPostOrgId;
 
     @ApiModelProperty(value = "调动后职级 id", name = "transJobLevelId", example = "123", required = true)
     @NotNull
