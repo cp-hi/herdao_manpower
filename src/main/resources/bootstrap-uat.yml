@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:hdp-register}:${NACOS_PORT:8848}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${MYSQL-USER:hdpmampower}
+      password: ${MYSQL-PWD:hdpmampower123}
+      url: jdbc:mysql://10.1.65.88:3306/hdpx_manpower?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+# 短信平台配置
+sms:
+  platform:
+    account: hdwfw
+    password: x123456w
+    address: 10.1.16.80
+    port: 8090
