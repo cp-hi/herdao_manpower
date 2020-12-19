@@ -145,7 +145,7 @@ public class AttachFileController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "删除附件", notes = "通过文件id删除通用附件表")
+    @ApiOperation(value = "fileId删除附件", notes = "通过文件id删除通用附件表")
     @PostMapping("/del/{fileId}")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "fileId", value = "文件id")
