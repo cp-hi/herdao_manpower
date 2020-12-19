@@ -39,10 +39,10 @@ public class StaffBasicVO {
     private String nowOrgName;
 
     @ApiModelProperty(value = "岗位 id", name = "postId")
-    private Long nowPostId;
+    private Long nowPostOrgId;
 
     @ApiModelProperty(value = "岗位名称", name = "postName")
-    private String nowPostName;
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "职级 id", name = "jobLevelId")
     private Long  nowJobLevelId;

@@ -393,9 +393,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			}
 			Group group = groupService.getGroupByOrgId(user.getOrgId());
 			vo.setGroupId(group.getId());
-			vo.setNowPostId(user.getPostId());
+			vo.setNowPostOrgId(user.getPostOrgId());
 			if (user.getPostName() != null) {
-				vo.setNowPostName(user.getPostName());
+				vo.setNowPostOrgName(user.getPostName());
 			}
 			vo.setNowJobLevelId(user.getJobLevelId());
 			if (user.getJobLevelName() != null) {
