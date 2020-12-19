@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -146,7 +147,7 @@ public class AttachFileController {
      * @return R
      */
     @ApiOperation(value = "fileId删除附件", notes = "通过文件id删除通用附件表")
-    @PostMapping("/del/{fileId}")
+    @DeleteMapping("/del/{fileId}")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "fileId", value = "文件id")
     })
