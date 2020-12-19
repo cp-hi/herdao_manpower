@@ -58,24 +58,31 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
     @Override
     public boolean saveOrModify(StaffSecondFileTypeDTO dto) {
     	
-    	QueryWrapper<SysDictItem> query = new QueryWrapper<>();
-    	query.eq("type", dto.getType());
-    	query.orderByAsc("value");
-    	List<SysDictItem> list = sysDictItemService.list(query);
+    	boolean add = false;
     	Integer sort = 1;
     	String value = "1";
-    	if(!CollectionUtils.isEmpty(list)) {
-    		sort = list.get(0).getSort()+1;
-    		value = String.valueOf( Integer.valueOf( list.get(0).getValue() ) + 1 );
+    	if( null == dto.getId()) {
+    		add = true;
+    		QueryWrapper<SysDictItem> query = new QueryWrapper<>();
+        	query.eq("type", dto.getType());
+        	query.orderByDesc("value");
+        	List<SysDictItem> list = sysDictItemService.list(query);
+        	if(!CollectionUtils.isEmpty(list)) {
+        		sort = list.get(0).getSort()+1;
+        		value = String.valueOf( Integer.valueOf( list.get(0).getValue() ) + 1 );
+        	}
     	}
-    	
     	SysDictItem item = new SysDictItem();
     	item.setId(dto.getId());
     	item.setDictId(dto.getDictId());
     	item.setLabel(dto.getLabel());
     	item.setType(dto.getType());
-    	item.setSort(sort);
-    	item.setValue(value);
+    	if(add) {
+    		item.setSort(sort);
+        	item.setValue(value);
+    	}
+    	
+    	item.setDescription(dto.getLabel());
     	Boolean success = sysDictItemService.saveOrUpdate(item);
         
         return success;
