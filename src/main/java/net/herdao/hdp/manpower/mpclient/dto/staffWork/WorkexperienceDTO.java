@@ -1,20 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.dto.staffWork;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -53,7 +48,7 @@ public class WorkexperienceDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "开始时间")
     @ApiModelProperty(value="开始时间")
-    private String beginDate;
+    private Long beginDate;
 
     /**
      * 结束时间
@@ -62,7 +57,7 @@ public class WorkexperienceDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty(value = "结束时间")
     @ApiModelProperty(value="结束时间")
-    private String endDate;
+    private Long endDate;
 
     /**
      * 单位名称

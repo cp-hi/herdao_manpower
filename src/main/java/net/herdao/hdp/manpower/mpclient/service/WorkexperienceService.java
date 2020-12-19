@@ -76,16 +76,18 @@ public interface WorkexperienceService extends HdpService<Workexperience> {
 
     /**
      * 新增员工工作经历
-     * @param orkexperience
+     * 
+     * @param workexperienceDTO
      * @return
      */
-    boolean saveWork(Workexperience orkexperience);
+    boolean saveWork(WorkexperienceDTO workexperienceDTO);
 
     /**
      * 更新员工工作经历
-     * @param orkexperience
+     * 
+     * @param workexperienceDTO
      * @return
      */
-    boolean updateWork(Workexperience orkexperience);
+    boolean updateWork(WorkexperienceDTO workexperienceDTO);
 
 }

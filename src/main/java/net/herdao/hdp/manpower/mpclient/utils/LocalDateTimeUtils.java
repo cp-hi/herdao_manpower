@@ -1,18 +1,19 @@
 package net.herdao.hdp.manpower.mpclient.utils;
 
-import org.springframework.security.core.parameters.P;
-
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+import cn.hutool.core.util.ObjectUtil;
+
 /**
  * @Author Liu Chang
  * @Date 2020/12/8 9:56 上午
  */
 public abstract class LocalDateTimeUtils {
+	
     public static LocalDateTime convert2LocalDateTime (Long from) {
         if (from != null) {
             return LocalDateTime.ofInstant(Instant.ofEpochMilli(from), ZoneId.systemDefault());
@@ -34,4 +35,19 @@ public abstract class LocalDateTimeUtils {
         }
         return null;
     }
+    
+    /**
+     * 字符串日期转 LocalDateTime
+     * 
+     * @param dateTime 字符串
+     * @param format
+     * @return
+     */
+	public static LocalDateTime convertStr2DateTime(String dateTime, String format) {
+		if (!ObjectUtil.isAllEmpty(dateTime, format)) {
+			DateTimeFormatter dfm = DateTimeFormatter.ofPattern(format);
+			return LocalDateTime.parse(dateTime, dfm);
+		}
+		return null;
+	}
 }
