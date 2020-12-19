@@ -23,11 +23,11 @@ public class SaveStaffTransferInfoDTO {
     @NotBlank
     private Long nowOrgId;
 
-    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345", required = true)
+    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostOrgId", example = "2345", required = true)
     @NotBlank
-    private Long nowPostId;
+    private Long nowPostOrgId;
 
-    @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123", required = true)
+    @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123", required = true)
     @NotBlank
     private Long nowJobLevelId;
 
@@ -35,9 +35,9 @@ public class SaveStaffTransferInfoDTO {
     @NotBlank
     private Long transOrgId;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432", required = true)
+    @ApiModelProperty(value = "调动后岗位 id", name = "transPostOrgId", example = "5432", required = true)
     @NotBlank
-    private Long transPostId;
+    private Long transPostOrgId;
 
     @ApiModelProperty(value = "调动后职级 id", name = "transJobLevelId", example = "123", required = true)
     @NotBlank

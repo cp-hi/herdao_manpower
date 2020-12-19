@@ -30,9 +30,9 @@ public class SavaStaffPromoteDTO {
     @NotNull
     private Long nowOrgId;
 
-    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345", required = true)
+    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostOrgId", example = "2345", required = true)
     @NotNull
-    private Long nowPostId;
+    private Long nowPostOrgId;
 
     @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123", required = true)
     @NotNull
@@ -42,9 +42,9 @@ public class SavaStaffPromoteDTO {
     @NotNull
     private Long promoteOrgId;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostId", example = "5432", required = true)
+    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostOrgId", example = "5432", required = true)
     @NotNull
-    private Long promotePostId;
+    private Long promotePostOrgId;
 
     @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelId", example = "123", required = true)
     @NotNull
