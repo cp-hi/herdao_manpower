@@ -128,19 +128,33 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
     public Long saveInfo(SaveStaffCallInDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
 
-        StaffTransferApprove entity = new StaffTransferApprove();
-        BeanUtils.copyProperties(dto, entity);
-        LocalDateTime transStartDate = LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate());
-        entity.setTransStartDate(transStartDate);
-        entity.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
-        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        entity.setDelFlag(false);
+        StaffTransferApprove entity = initCallInData(dto);
+
         mapper.insert(entity);
 
         // 插入一条对应的调出数据
         staffCallOutService.saveInfo(getOutDTO(entity));
 
         return entity.getId();
+    }
+
+    private StaffTransferApprove initCallInData(SaveStaffCallInDTO dto) {
+        StaffTransferApprove entity = new StaffTransferApprove();
+        BeanUtils.copyProperties(dto, entity);
+
+        // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
+        // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
+        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+        PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
+
+        entity.setNowPostId(nowPostOrg.getPostId());
+        entity.setTransPostId(transPostOrg.getPostId());
+        LocalDateTime transStartDate = LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate());
+        entity.setTransStartDate(transStartDate);
+        entity.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
+        return entity;
     }
 
     private SaveStaffCallOutDTO getOutDTO(StaffTransferApprove callInEntity) {

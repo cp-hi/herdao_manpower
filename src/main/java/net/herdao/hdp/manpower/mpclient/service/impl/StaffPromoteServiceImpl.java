@@ -98,14 +98,30 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     @Override
     public Long saveInfo(SavaStaffPromoteDTO dto) throws Exception {
         // dtoValidityCheck(null, dto);
-        StaffPromoteApprove promoteApprove = new StaffPromoteApprove();
-        BeanUtils.copyProperties(dto, promoteApprove);
-        promoteApprove.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
-        promoteApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        promoteApprove.setDelFlag(false);
-        mapper.insert(promoteApprove);
-        return promoteApprove.getId();
+
+        StaffPromoteApprove entity = initStaffPromoteData(dto);
+
+        mapper.insert(entity);
+        return entity.getId();
     }
+
+    private StaffPromoteApprove initStaffPromoteData(SavaStaffPromoteDTO dto) {
+        StaffPromoteApprove entity = new StaffPromoteApprove();
+        BeanUtils.copyProperties(dto, entity);
+
+        // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
+        // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
+        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+        PostOrg promotePostOrg = postOrgService.getById(dto.getPromotePostOrgId());
+
+        entity.setNowPostId(nowPostOrg.getPostId());
+        entity.setPromotePostId(promotePostOrg.getPostId());
+        entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
+        return entity;
+    }
+
 
     private void dtoValidityCheck(Long id, SavaStaffPromoteDTO dto) throws Exception {
         if (id != null) {

@@ -47,15 +47,28 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     @Override
     public Long saveInfo(SaveStaffCallOutDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
+        StaffTransferApprove entity = initCallOutData(dto);
+
+        mapper.insert(entity);
+        return entity.getId();
+    }
+
+    private StaffTransferApprove initCallOutData(SaveStaffCallOutDTO dto) {
         StaffTransferApprove entity = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, entity);
 
+        // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
+        // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
+        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+        PostOrg promotePostOrg = postOrgService.getById(dto.getTransPostOrgId());
+
+        entity.setNowPostId(nowPostOrg.getPostId());
+        entity.setTransPostId(promotePostOrg.getPostId());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         entity.setTransferType(StaffChangesApproveTypeConstants.CALL_OUT);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         entity.setDelFlag(false);
-        mapper.insert(entity);
-        return entity.getId();
+        return entity;
     }
 
     @Override
