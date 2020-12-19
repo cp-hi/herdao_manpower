@@ -3,6 +3,7 @@ package net.herdao.hdp.manpower.mpclient.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,20 +67,6 @@ public class AttachFileController {
     }
 
     /**
-     * 新增通用附件表
-     * @param attachFile 通用附件表
-     * @return R
-     */
-    @ApiOperation(value = "新增通用附件表", notes = "新增通用附件表")
-    @SysLog("新增通用附件表" )
-    @PostMapping("/add")
-    //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_add')" )
-    public R<AttachFile> save(@RequestBody AttachFileAddDTO attachFile) {
-        attachFileService.saveAttachFile(attachFile);
-        return R.ok();
-    }
-
-    /**
      * 修改通用附件表
      * @param attachFile 通用附件表
      * @return R
@@ -93,7 +80,7 @@ public class AttachFileController {
     }
 
     /**
-     * 通过id删除通用附件表
+     * 	通过id删除通用附件表
      * @param id id
      * @return R
      */
@@ -129,5 +116,42 @@ public class AttachFileController {
     public R<List<AttachFileSituationDTO>> fetchEntryAttachFileInfo() {
         List<AttachFileSituationDTO> list = attachFileService.fetchEntryAttachFileInfo();
         return R.ok(list);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * 新增通用附件表
+     * @param attachFile 通用附件表
+     * @return R
+     */
+    @ApiOperation(value = "新增通用附件表", notes = "新增通用附件表")
+    @SysLog("新增通用附件表" )
+    @PostMapping("/add")
+    //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_add')" )
+    public R<AttachFile> save(@RequestBody AttachFileAddDTO attachFile) {
+        attachFileService.saveAttachFile(attachFile);
+        return R.ok();
+    }
+    
+    /**
+     * 	通过FileId删除通用附件表
+     * @param id id
+     * @return R
+     */
+    @ApiOperation(value = "删除附件", notes = "通过文件id删除通用附件表")
+    @PostMapping("/del/{fileId}")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "fileId", value = "文件id")
+    })
+    //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_del')" )
+    public R delByFileId(@PathVariable String fileId) {
+        return R.ok(attachFileService.deleteByFileId(fileId));
     }
 }

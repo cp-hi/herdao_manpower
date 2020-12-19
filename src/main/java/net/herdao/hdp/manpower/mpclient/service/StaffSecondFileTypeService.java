@@ -2,12 +2,14 @@
 
 package net.herdao.hdp.manpower.mpclient.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.StaffSecondFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
-
-import java.util.List;
 
 /**
  * 员工附件二级分类
@@ -46,5 +48,19 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
      * @return
      */
     List<StaffFileTypeDTO> findStaffFileType(String type,Long bizId);
+
+    /**
+     * 	保存或修改 二级 字典
+     * @param dto
+     * @return
+     */
+	boolean saveOrModify(StaffSecondFileTypeDTO dto);
+
+	/**
+	 * 删除二级字典
+	 * @param id
+	 * @return
+	 */
+	boolean deleteStaffSecondFileType(Long id);
 
 }

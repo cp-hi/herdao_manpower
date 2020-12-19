@@ -71,6 +71,18 @@ public interface AttachFileService extends IService<AttachFile> {
      */
 	List<AttachFile> getAttachFileByBizId(Long bizId);
 
+	/**
+	 * 保存附件
+	 * @param attachFile
+	 * @return
+	 */
 	Boolean saveAttachFile(AttachFileAddDTO attachFile);
+
+	/**
+	 * 	删除文件
+	 * @param fileId
+	 * @return
+	 */
+	Boolean deleteByFileId(String fileId);
 
 }

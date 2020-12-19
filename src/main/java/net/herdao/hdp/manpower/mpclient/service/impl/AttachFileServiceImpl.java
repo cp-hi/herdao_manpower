@@ -229,5 +229,13 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 		return this.save(attachFile);
 	}
 
+	@Override
+	public Boolean deleteByFileId(String fileId) {
+
+		QueryWrapper<AttachFile> queryWrapper = new QueryWrapper<>();
+    	queryWrapper.eq("file_id", fileId);
+        //List<AttachFile> attachfile = this.baseMapper.selectList(queryWrapper);
+		return this.remove(queryWrapper);
+	}
 
 }

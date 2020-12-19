@@ -49,13 +49,12 @@ public class StaffFileTypeDTO {
     private Long superId;
 	*/
 
-	/*
+	
 	@ApiModelProperty("字典项id")
 	private Integer id;
 	
 	@ApiModelProperty("所属字典类id")
 	private Integer dictId;
-	*/
 	
 	@ApiModelProperty("数据值")
 	private String value;
