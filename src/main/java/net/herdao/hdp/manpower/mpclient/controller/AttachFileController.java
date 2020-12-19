@@ -72,7 +72,7 @@ public class AttachFileController {
      */
     @ApiOperation(value = "新增通用附件表", notes = "新增通用附件表")
     @SysLog("新增通用附件表" )
-    @PostMapping
+    @PostMapping("/add")
     //@PreAuthorize("@pms.hasPermission('mpclient_attachfile_add')" )
     public R<AttachFile> save(@RequestBody AttachFileAddDTO attachFile) {
         attachFileService.saveAttachFile(attachFile);
