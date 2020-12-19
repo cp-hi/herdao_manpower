@@ -44,10 +44,10 @@ public class StaffTransferInfoVO {
      * 页面上岗位对应的是 mp_post_org（组织岗位关系表）的语义
      */
     @ApiModelProperty(value = "调动前岗位 id", name = "nowPosOrgId", example = "2345")
-    private Long nowPosOrgId;
+    private Long nowPostOrgId;
 
     @ApiModelProperty(value = "调动前岗位名称", name = "nowPosOrgName", example = "岗位 a")
-    private String nowPosOrgName;
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123")
     private Long nowJobLevelId;
@@ -62,7 +62,7 @@ public class StaffTransferInfoVO {
     private String transOrgName;
 
     @ApiModelProperty(value = "调动后岗位 id", name = "transPosOrgId", example = "5432")
-    private Long transPosOrgId;
+    private Long transPostOrgId;
 
     @ApiModelProperty(value = "调动后岗位名称", name = "transPostOrgName", example = "岗位 b")
     private String transPostOrgName;

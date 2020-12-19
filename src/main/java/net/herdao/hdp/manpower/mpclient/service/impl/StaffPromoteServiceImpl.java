@@ -37,6 +37,8 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     @Autowired
     private PostService postService;
     @Autowired
+    private PostOrgService postOrgService;
+    @Autowired
     private JobLevelService jobLevelService;
     @Autowired
     private StaffService staffService;
@@ -154,14 +156,14 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
             to.setGroupId(group.getId());
         }
 
-        Post nowPost = postService.getById(from.getNowPostId());
-        if (nowPost != null) {
-            to.setNowPostName(nowPost.getPostName());
+        PostOrg nowPostOrg = postOrgService.getById(from.getNowPostOrgId());
+        if (nowPostOrg != null) {
+            to.setNowPostOrgName(nowPostOrg.getPostName());
         }
 
-        Post promotePost = postService.getById(from.getPromotePostId());
-        if (promotePost != null) {
-            to.setPromotePostName(promotePost.getPostName());
+        PostOrg promotePostOrg = postOrgService.getById(from.getPromotePostOrgId());
+        if (promotePostOrg != null) {
+            to.setPromotePostOrgName(promotePostOrg.getPostName());
         }
 
         Organization nowOrg = orgService.getById(from.getNowOrgId());

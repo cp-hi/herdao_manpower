@@ -33,6 +33,8 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
     @Autowired
     private PostService postService;
     @Autowired
+    private PostOrgService postOrgService;
+    @Autowired
     private JobLevelService jobLevelService;
     @Autowired
     private StaffService staffService;
@@ -103,14 +105,14 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
             to.setGroupId(group.getId());
         }
 
-        Post nowPost = postService.getById(from.getNowPostId());
-        if (nowPost != null) {
-            to.setNowPostName(nowPost.getPostName());
+        PostOrg nowPostOrg = postOrgService.getById(from.getNowPostOrgId());
+        if (nowPostOrg != null) {
+            to.setNowPostOrgName(nowPostOrg.getPostName());
         }
 
-        Post transPost = postService.getById(from.getTransPostId());
-        if (transPost != null) {
-            to.setTransPostName(transPost.getPostName());
+        PostOrg transPostOrg = postOrgService.getById(from.getTransPostOrgId());
+        if (transPostOrg != null) {
+            to.setTransPostOrgName(transPostOrg.getPostName());
         }
 
         Organization nowOrg = orgService.getById(from.getNowOrgId());
@@ -130,10 +132,8 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
-            StaffCallOutInfoVO.Dictionary dict = new StaffCallOutInfoVO.Dictionary();
-            dict.setLabel(transJobLevel.getJobLevelName());
-            dict.setValue(transJobLevel.getId());
-            to.setTransJobLevel(dict);
+            to.setTransJobLevelId(transJobLevel.getId());
+            to.setTransJobLevelName(transJobLevel.getJobLevelName());
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
@@ -164,8 +164,8 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
         orgService.validityCheck(dto.getTransOrgId(), "调动后部门信息有误，请再次确认");
 
         // 校验岗位有效性
-        postService.validityCheck(dto.getNowPostId(), "原岗位信息有误，请再次确认");
-        postService.validityCheck(dto.getTransPostId(), "调动后岗位信息有误，请再次确认");
+        postService.validityCheck(dto.getNowPostOrgId(), "原岗位信息有误，请再次确认");
+        postService.validityCheck(dto.getTransPostOrgId(), "调动后岗位信息有误，请再次确认");
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");

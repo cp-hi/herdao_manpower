@@ -17,7 +17,6 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.transfer.StaffTransferPageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +37,8 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
     private OrganizationService orgService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private PostOrgService postOrgService;
     @Autowired
     private JobLevelService jobLevelService;
     @Autowired
@@ -218,14 +219,14 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
             to.setGroupId(group.getId());
         }
 
-        Post nowPost = postService.getById(from.getNowPostId());
-        if (nowPost != null) {
-            to.setNowPostName(nowPost.getPostName());
+        PostOrg nowPostOrg = postOrgService.getById(from.getNowPostOrgId());
+        if (nowPostOrg != null) {
+            to.setNowPostOrgName(nowPostOrg.getPostName());
         }
 
-        Post transPost = postService.getById(from.getTransPostId());
-        if (transPost != null) {
-            to.setTransPostName(transPost.getPostName());
+        PostOrg transPostOrg = postOrgService.getById(from.getTransPostOrgId());
+        if (transPostOrg != null) {
+            to.setTransPostOrgName(transPostOrg.getPostName());
         }
 
         Organization nowOrg = orgService.getById(from.getNowOrgId());
