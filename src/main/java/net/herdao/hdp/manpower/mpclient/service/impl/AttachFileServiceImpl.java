@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -230,12 +230,29 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 	}
 
 	@Override
-	public Boolean deleteByFileId(String fileId) {
+	public String deleteByFileId(String fileId) {
 
 		QueryWrapper<AttachFile> queryWrapper = new QueryWrapper<>();
     	queryWrapper.eq("file_id", fileId);
-        //List<AttachFile> attachfile = this.baseMapper.selectList(queryWrapper);
-		return this.remove(queryWrapper);
+        AttachFile attachfile = this.baseMapper.selectOne(queryWrapper);
+        String bizId = attachfile.getBizId();
+        String type = attachfile.getModuleType();
+        String value = attachfile.getModuleValue();
+		this.removeById(attachfile.getId());
+		
+		QueryWrapper<AttachFile> queryWrapper2 = new QueryWrapper<>();
+		queryWrapper2.eq("biz_id", bizId);
+		queryWrapper2.eq("module_type", type);
+		queryWrapper2.eq("module_value", value);
+		queryWrapper2.eq("DEL_FLAG", 0);
+        List<AttachFile> fileList = this.baseMapper.selectList(queryWrapper2);
+        List<String> fileIdList = new ArrayList<>();
+        for (AttachFile attachFile : fileList) {
+			fileIdList.add(attachFile.getFileId());
+		}
+		String fileIds = StringUtils.join(fileIdList.toArray(), ",");
+		
+		return fileIds;
 	}
 
 }
