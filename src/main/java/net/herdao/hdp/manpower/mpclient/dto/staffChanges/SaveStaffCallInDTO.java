@@ -42,12 +42,9 @@ public class SaveStaffCallInDTO {
     @NotNull
     private Long transPostId;
 
-    /**
-     * 为了适配前端获取职级组件，要和 vo 中的字典类型的字段名一致
-     */
-    @ApiModelProperty(value = "调动后职级 id", name = "transJobLevel", example = "123", required = true)
+    @ApiModelProperty(value = "调动后职级 id", name = "transJobLevelId", example = "123", required = true)
     @NotNull
-    private Long transJobLevel;
+    private Long transJobLevelId;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901", required = true)
     @NotNull
@@ -77,18 +74,18 @@ public class SaveStaffCallInDTO {
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
     private Double threeGroupSeniority;
 
-    @ApiModelProperty(value = "工资发放单位 id", name = "paidUnit")
-    private Long paidUnit;
+    @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitId")
+    private Long paidUnitId;
 
-    @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnit")
-    private Long fundUnit;
+    @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitId")
+    private Long fundUnitId;
 
-    @ApiModelProperty(value = "社保购买单位 id", name = "securityUnit")
-    private Long securityUnit;
+    @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
+    private Long securityUnitId;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
+    private String appendixIds;
 }

@@ -88,7 +88,6 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
             throw new Exception("该记录不可更新");
         }
         BeanUtils.copyProperties(dto, entity);
-        entity.setPromoteJobLevelId(dto.getPromoteJobLevel());
         entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
         mapper.updateById(entity);
         return id;
@@ -99,7 +98,6 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         // dtoValidityCheck(null, dto);
         StaffPromoteApprove promoteApprove = new StaffPromoteApprove();
         BeanUtils.copyProperties(dto, promoteApprove);
-        promoteApprove.setPromoteJobLevelId(dto.getPromoteJobLevel());
         promoteApprove.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
         promoteApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         promoteApprove.setDelFlag(false);
@@ -132,7 +130,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
-        jobLevelService.validityCheck(dto.getPromoteJobLevel(), "调动后职级信息有误，请再次确认");
+        jobLevelService.validityCheck(dto.getPromoteJobLevelId(), "调动后职级信息有误，请再次确认");
     }
 
 

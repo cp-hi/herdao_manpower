@@ -24,7 +24,6 @@ import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
@@ -33,7 +32,6 @@ import net.herdao.hdp.manpower.sys.mapper.SysDictItemMapper;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,9 +78,6 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	private StaffcontractService staffcontractService;
 
 	@Autowired
-	private PostOrgService postOrgService;
-
-	@Autowired
     private RemoteUserService remoteUserService;
 
 	@Autowired
@@ -93,11 +88,9 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Autowired
 	private OrganizationService organizationService;
+	@Autowired
+	private GroupService groupService;
 
-	@Autowired
-	private PostService postService;
-	@Autowired
-	private JobLevelService jobLevelService;
 
 	private final static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -398,6 +391,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			if (user.getOrgName() != null){
 				vo.setNowOrgName(user.getOrgName());
 			}
+			Group group = groupService.getGroupByOrgId(user.getOrgId());
+			vo.setGroupId(group.getId());
 			vo.setNowPostId(user.getPostId());
 			if (user.getPostName() != null) {
 				vo.setNowPostName(user.getPostName());
