@@ -26,6 +26,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 转正审批表
@@ -46,21 +47,13 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="录用审批id")
     private Long id;
-    /**
-     * 旧人力OID
-     */
-    @ApiModelProperty(value="旧人力OID")
-    private String oid;
+
     /**
      * 员工id
      */
     @ApiModelProperty(value="员工id")
     private Long userId;
-    /**
-     * 员工oid
-     */
-    @ApiModelProperty(value="员工oid")
-    private String userOid;
+
     /**
      * 部门id
      */
@@ -101,11 +94,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="转正时间")
     private Long positiveTime;
-    /**
-     * 转正前月度总收入
-     */
-    @ApiModelProperty(value="转正前月度总收入")
-    private BigDecimal previousMonthIncome;
+
     /**
      * 其他
      */
@@ -133,81 +122,13 @@ private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "所属组织")
     private String nowOrgName;
-    /**
-     * 年度岗位编制
-     */
-    @ApiModelProperty(value="年度岗位编制")
-    private Integer yearPostPrepareCount;
-    /**
-     * 月度岗位编制
-     */
-    @ApiModelProperty(value="月度岗位编制")
+
     private Integer monthPostPrepareCount;
-    /**
-     * 已到岗人数
-     */
-    @ApiModelProperty(value="已到岗人数")
-    private Integer postHasCount;
-    /**
-     * 是否编制置换
-     */
-    @ApiModelProperty(value="是否编制置换")
-    private Integer isPrepareChange;
-    /**
-     * 转正前岗位id
-     */
-    @ApiModelProperty(value="转正前岗位id")
-    private Long beforePostId;
-    /**
-     * 转正前岗位oid
-     */
-    @ApiModelProperty(value="转正前岗位oid")
-    private String beforePostOid;
-    /**
-     * 现年度岗位编制
-     */
-    @ApiModelProperty(value="现年度岗位编制")
-    private Integer nowYearPostPrepareCount;
-    /**
-     * 现月度岗位编制
-     */
-    @ApiModelProperty(value="现月度岗位编制")
-    private Integer nowMonthPostPrepareCount;
-    /**
-     * 现已到岗人数
-     */
-    @ApiModelProperty(value="现已到岗人数")
-    private Integer nowPostHasCount;
-    /**
-     * 面谈时间
-     */
-    @ApiModelProperty(value="面谈时间")
-    private Long interviewsTime;
-    /**
-     * 面谈地点
-     */
-    @ApiModelProperty(value="面谈地点")
-    private String interviewsPlace;
-    /**
-     * 入职引导人
-     */
-    @ApiModelProperty(value="入职引导人")
-    private String entryLeader;
-    /**
-     * 面谈主持人
-     */
-    @ApiModelProperty(value="面谈主持人")
-    private String interviewsHost;
-    /**
-     * 面谈参与人
-     */
-    @ApiModelProperty(value="面谈参与人")
-    private String interviewsParticipants;
-    /**
-     * 记录人
-     */
-    @ApiModelProperty(value="记录人")
-    private String recordMan;
+
+
+
+
+
     /**
      * 转正问题1回答
      */
@@ -243,16 +164,8 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="转正问题7回答")
     private String positiveQuestionAns7;
-    /**
-     * 改善建议
-     */
-    @ApiModelProperty(value="改善建议")
-    private String improveProposal;
-    /**
-     * 面谈总结
-     */
-    @ApiModelProperty(value="面谈总结")
-    private String interviewSummary;
+
+
     /**
      * 新建人工号
      */
@@ -283,31 +196,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="修改人时间")
     private Long modifierTime;
-    /**
-     * 预留字段1
-     */
-    @ApiModelProperty(value="预留字段1")
-    private String field1;
-    /**
-     * 预留字段2
-     */
-    @ApiModelProperty(value="预留字段2")
-    private String field2;
-    /**
-     * 预留字段3
-     */
-    @ApiModelProperty(value="预留字段3")
-    private String field3;
-    /**
-     * 预留字段4
-     */
-    @ApiModelProperty(value="预留字段4")
-    private String field4;
-    /**
-     * 预留字段5
-     */
-    @ApiModelProperty(value="预留字段5")
-    private String field5;
+
     /**
      * 租户ID
      */
@@ -346,4 +235,39 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "转正类型")
     private String positiveType;
 
+
+    /**
+     * 试任岗位薪酬级别
+     */
+    @ApiModelProperty(value = "试任岗位薪酬级别")
+    private String tryAnyJobPay;
+
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private List<String> appendixIds;
+
+//--------------------------------------------------------------->'
+    /**
+     * 所在组织
+     */
+    @ApiModelProperty(value = "所在组织")
+    private String orgName;
+
+    /**
+     * 入职日期
+     */
+    @ApiModelProperty(value = "入职日期")
+    private String entryDate;
+
+    /**
+     * 试任岗位
+     */
+    @ApiModelProperty(value = "试任岗位")
+    private String tryAnyJob;
+
+    /**
+     * 试任日期
+     */
+    @ApiModelProperty(value = "试任日期")
+    private String tryAnyDate;
 }

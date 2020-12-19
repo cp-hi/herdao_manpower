@@ -107,4 +107,21 @@ public class SpeedInductionController {
     public R savePayCardInfo(@RequestBody PayCardInformationDTO dto) throws Exception {
         return R.ok(payCardInformationService.insertPayCard(dto));
     }
+
+
+    /**
+     * 极速入职-入职完成情况
+     *
+     * @param id 业务表ID (例如：人才表的主键ID)
+     * @return R
+     */
+    @ApiOperation(value = "极速入职-入职完成情况", notes = "上传后绑定数据")
+    @GetMapping ("/getFinishCase")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "业务表ID(例如：人才表的主键ID)", required = true)
+    })
+    @ResponseBody
+    public R getFinishCase(String id) {
+        return R.ok(attachFileService.getFinishCase(id));
+    }
 }

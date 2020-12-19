@@ -16,27 +16,33 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
+import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPositiveApprovalMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,16 +57,17 @@ import java.util.List;
 public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveApprovalMapper, StaffPositiveApproval> implements StaffPositiveApprovalService {
 
 
-    @Resource
+    @Autowired
     private StaffPositiveApprovalMapper staffPositiveApprovalMapper;
 
 
     /**
      * 分页查询
-     * @param page 分页对象
-     * @param orgId 组织ID
+     *
+     * @param page       分页对象
+     * @param orgId      组织ID
      * @param searchText 关键字搜索
-     * @param status 状态：1 填报中，2 审批中，3 已审批
+     * @param status     状态：1 填报中，2 审批中，3 已审批
      * @return
      */
     @Override
@@ -129,18 +136,29 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
     @Override
     public Long insert(StaffPositiveApprovalSaveDTO dto) {
         StaffPositiveApproval entity = new StaffPositiveApproval();
+
+
         BeanUtils.copyProperties(dto, entity);
         entity.setEntryTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getEntryTime()));
         entity.setPositiveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getPositiveTime()));
-        entity.setCreatorTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getCreatorTime()));
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         entity.setDelFlag(false);
+
+        SysUser sysUser = SysUserUtils.getSysUser();
+        //不为空 修改
+        entity.setCreatorTime(LocalDateTime.now());
+        if (ObjectUtil.isNotNull(sysUser)) {
+            entity.setCreatorCode(sysUser.getUsername());
+            entity.setCreatorName(sysUser.getAliasName());
+        }
+        this.baseMapper.insert(entity);
         return entity.getId();
     }
 
 
     /**
      * 获取转正详情
+     *
      * @param id 主键ID
      * @return
      */
@@ -221,12 +239,13 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
 
     /**
      * 执行转正
+     *
      * @param executeDTO
      */
     @Override
     public Long execute(StaffPositiveApprovalExecuteDTO executeDTO) {
         StaffPositiveApproval approval = new StaffPositiveApproval();
-        BeanUtils.copyProperties(executeDTO,approval);
+        BeanUtils.copyProperties(executeDTO, approval);
         this.baseMapper.updateById(approval);
         return approval.getId();
     }

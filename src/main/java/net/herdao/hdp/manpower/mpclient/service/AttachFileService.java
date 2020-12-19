@@ -46,5 +46,20 @@ public interface AttachFileService extends IService<AttachFile> {
      */
     List<AttachFileSituationDTO> fetchEntryAttachFileInfo();
 
+    /**
+     * 上传后删除数据
+     *
+     * @param attachFile 通用附件表
+     * @return R
+     */
     void delDataAfterUploading(AttachFileDTO attachFile);
+
+
+    /**
+     * 极速入职-入职完成情况
+     *
+     * @param id 业务表ID (例如：人才表的主键ID)
+     * @return R
+     */
+    Map<String,Boolean> getFinishCase(String id);
 }
