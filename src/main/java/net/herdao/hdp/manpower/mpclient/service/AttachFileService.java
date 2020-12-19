@@ -1,14 +1,15 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.service.IService;
-
+import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 通用附件表
@@ -46,7 +47,22 @@ public interface AttachFileService extends IService<AttachFile> {
      */
     List<AttachFileSituationDTO> fetchEntryAttachFileInfo();
 
+    /**
+     * 上传后删除数据
+     *
+     * @param attachFile 通用附件表
+     * @return R
+     */
     void delDataAfterUploading(AttachFileDTO attachFile);
+
+
+    /**
+     * 极速入职-入职完成情况
+     *
+     * @param id 业务表ID (例如：人才表的主键ID)
+     * @return R
+     */
+    Map<String,Boolean> getFinishCase(String id);
 
     /**
      * 	根据业务表单ID查询附件列表
@@ -54,7 +70,7 @@ public interface AttachFileService extends IService<AttachFile> {
      * @return
      */
 	List<AttachFile> getAttachFileByBizId(Long bizId);
-	
+
 	Boolean saveAttachFile(AttachFileAddDTO attachFile);
-	
+
 }
