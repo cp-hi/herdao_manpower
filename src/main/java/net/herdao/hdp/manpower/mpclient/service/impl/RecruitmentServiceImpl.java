@@ -432,7 +432,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     	
     	HdpUser user = SecurityUtils.getUser();
     	
-    	Long userId = user.getId();
+    	String userId = user.getUsername();
     	Long deptId = user.getDeptId();
     	
     	//String parameterJson = "{ CreateUser:\"22\", ReferenceUser:\"22\", Org_Code:\"011\", Condition:\"\"}";
