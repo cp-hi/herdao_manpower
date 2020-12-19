@@ -40,11 +40,15 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
     @Autowired
     private PostService postService;
     @Autowired
+    private PostOrgService postOrgService;
+    @Autowired
     private JobLevelService jobLevelService;
     @Autowired
     private CompanyService companyService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private StaffTransferApproveMapper mapper;
@@ -73,10 +77,6 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
             throw new Exception("该记录不可更改");
         }
         BeanUtils.copyProperties(dto, entity);
-        entity.setTransJobLevelId(dto.getTransJobLevel());
-        entity.setFundUnitsId(dto.getFundUnit());
-        entity.setPaidUnitsId(dto.getPaidUnit());
-        entity.setSecurityUnitsId(dto.getSecurityUnit());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         mapper.updateById(entity);
         return id;
@@ -91,7 +91,7 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
                 if (!dto.getNowOrgId().equals(userpost.getOrgId())) {
                     throw new Exception("原部门信息有误，请再次确认");
                 }
-                if (!dto.getNowPostId().equals(userpost.getPostId())) {
+                if (!dto.getNowPostOrgId().equals(userpost.getPostOrgId())) {
                     throw new Exception("原岗位信息有误，请再次确认");
                 }
             }
@@ -102,23 +102,23 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         orgService.validityCheck(dto.getTransOrgId(), "调动后部门信息有误，请再次确认");
 
         // 校验岗位有效性
-        postService.validityCheck(dto.getNowPostId(), "原岗位信息有误，请再次确认");
-        postService.validityCheck(dto.getTransPostId(), "调动后岗位信息有误，请再次确认");
+        postOrgService.validityCheck(dto.getNowPostOrgId(), "原岗位信息有误，请再次确认");
+        postOrgService.validityCheck(dto.getTransPostOrgId(), "调动后岗位信息有误，请再次确认");
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
-        jobLevelService.validityCheck(dto.getTransJobLevel(), "调动后职级信息有误，请再次确认");
+        jobLevelService.validityCheck(dto.getTransJobLevelId(), "调动后职级信息有误，请再次确认");
 
-        if (dto.getFundUnit() != null) {
-            companyService.validityCheck(dto.getFundUnit(), "公积金缴纳单位信息有误，请再次确认");
+        if (dto.getFundUnitId() != null) {
+            companyService.validityCheck(dto.getFundUnitId(), "公积金缴纳单位信息有误，请再次确认");
         }
 
-        if (dto.getPaidUnit() != null) {
-            companyService.validityCheck(dto.getPaidUnit(), "工资发放单位信息有误，请再次确认");
+        if (dto.getPaidUnitId() != null) {
+            companyService.validityCheck(dto.getPaidUnitId(), "工资发放单位信息有误，请再次确认");
         }
 
-        if (dto.getSecurityUnit() != null) {
-            companyService.validityCheck(dto.getSecurityUnit(), "社保发放单位信息有误，请再次确认");
+        if (dto.getSecurityUnitId() != null) {
+            companyService.validityCheck(dto.getSecurityUnitId(), "社保发放单位信息有误，请再次确认");
         }
 
     }
@@ -128,23 +128,33 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
     public Long saveInfo(SaveStaffCallInDTO dto) throws Exception {
 //        dtoValidityCheck(null, dto);
 
-        StaffTransferApprove entity = new StaffTransferApprove();
-        BeanUtils.copyProperties(dto, entity);
-        entity.setTransJobLevelId(dto.getTransJobLevel());
-        entity.setFundUnitsId(dto.getFundUnit());
-        entity.setPaidUnitsId(dto.getPaidUnit());
-        entity.setSecurityUnitsId(dto.getSecurityUnit());
-        LocalDateTime transStartDate = LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate());
-        entity.setTransStartDate(transStartDate);
-        entity.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
-        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        entity.setDelFlag(false);
+        StaffTransferApprove entity = initCallInData(dto);
+
         mapper.insert(entity);
 
         // 插入一条对应的调出数据
         staffCallOutService.saveInfo(getOutDTO(entity));
 
         return entity.getId();
+    }
+
+    private StaffTransferApprove initCallInData(SaveStaffCallInDTO dto) {
+        StaffTransferApprove entity = new StaffTransferApprove();
+        BeanUtils.copyProperties(dto, entity);
+
+        // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
+        // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
+        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+        PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
+
+        entity.setNowPostId(nowPostOrg.getPostId());
+        entity.setTransPostId(transPostOrg.getPostId());
+        LocalDateTime transStartDate = LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate());
+        entity.setTransStartDate(transStartDate);
+        entity.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
+        return entity;
     }
 
     private SaveStaffCallOutDTO getOutDTO(StaffTransferApprove callInEntity) {
@@ -174,14 +184,20 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         BeanUtils.copyProperties(from, to);
 
         to.setTransStartDate(LocalDateTimeUtils.convert2Long(from.getTransStartDate()));
-        Post nowPost = postService.getById(from.getNowPostId());
-        if (nowPost != null) {
-            to.setNowPostName(nowPost.getPostName());
+
+        Group group = groupService.getGroupByOrgId(from.getNowOrgId());
+        if (group != null) {
+            to.setGroupId(group.getId());
         }
 
-        Post transPost = postService.getById(from.getTransPostId());
-        if (transPost != null) {
-            to.setTransPostName(transPost.getPostName());
+        PostOrg nowPostOrg = postOrgService.getById(from.getNowPostOrgId());
+        if (nowPostOrg != null) {
+            to.setNowPostOrgName(nowPostOrg.getPostName());
+        }
+
+        PostOrg transPostOrg = postOrgService.getById(from.getTransPostOrgId());
+        if (transPostOrg != null) {
+            to.setTransPostOrgName(transPostOrg.getPostName());
         }
 
         Organization nowOrg = orgService.getById(from.getNowOrgId());
@@ -201,34 +217,22 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
-            StaffCallInInfoVO.Dictionary dict = new StaffCallInInfoVO.Dictionary();
-            dict.setLabel(transJobLevel.getJobLevelName());
-            dict.setValue(transJobLevel.getId());
-            to.setTransJobLevel(dict);
+            to.setTransJobLevelName(transJobLevel.getJobLevelName());
         }
 
-        Company paidUnits = companyService.getById(from.getPaidUnitsId());
-        if (paidUnits != null) {
-            StaffTransferInfoVO.Dictionary payUnit = new StaffTransferInfoVO.Dictionary();
-            payUnit.setLabel(paidUnits.getCompanyName());
-            payUnit.setValue(paidUnits.getId());
-            to.setPayUnit(payUnit);
+        Company paidUnit = companyService.getById(from.getPaidUnitsId());
+        if (paidUnit != null) {
+            to.setPayUnitName(paidUnit.getCompanyName());
         }
 
-        Company fundUnits = companyService.getById(from.getFundUnitsId());
-        if (fundUnits != null) {
-            StaffTransferInfoVO.Dictionary fundUnit = new StaffTransferInfoVO.Dictionary();
-            fundUnit.setLabel(fundUnits.getCompanyName());
-            fundUnit.setValue(fundUnits.getId());
-            to.setFundUnit(fundUnit);
+        Company fundUnit = companyService.getById(from.getFundUnitsId());
+        if (fundUnit != null) {
+            to.setFundUnitName(fundUnit.getCompanyName());
         }
 
-        Company securityUnits = companyService.getById(from.getSecurityUnitsId());
-        if (securityUnits != null) {
-            StaffTransferInfoVO.Dictionary securityUnit = new StaffTransferInfoVO.Dictionary();
-            securityUnit.setValue(securityUnits.getId());
-            securityUnit.setLabel(securityUnits.getCompanyName());
-            to.setSecurityUnit(securityUnit);
+        Company securityUnit = companyService.getById(from.getSecurityUnitsId());
+        if (securityUnit != null) {
+            to.setSecurityUnitName(securityUnit.getCompanyName());
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());

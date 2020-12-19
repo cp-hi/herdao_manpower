@@ -20,6 +20,9 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
     private Long userId;
 
+    @ApiModelProperty(value = "集团 id", name = "groupId", example = "1")
+    private Long groupId;
+
     @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
     private String staffNameAndCode;
 
@@ -38,11 +41,11 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
 
-    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345")
-    private Long nowPostId;
+    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostOrgId", example = "2345")
+    private Long nowPostOrgId;
 
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostOrgName", example = "岗位 a")
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123")
     private Long nowJobLevelId;
@@ -50,21 +53,23 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "原职级名称", name = "nowJobLevelName", example = "M3-6")
     private String nowJobLevelName;
 
-
     @ApiModelProperty(value = "调动后部门 id", name = "transOrgId", example = "4321")
     private Long transOrgId;
 
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
     private String transOrgName;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432")
-    private Long transPostId;
+    @ApiModelProperty(value = "调动后岗位 id", name = "transPostOrgId", example = "5432")
+    private Long transPostOrgId;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "transPostOrgName", example = "岗位 b")
+    private String transPostOrgName;
 
-    @ApiModelProperty(value = "调动后职级", name = "transJobLevel", example = "123")
-    private Dictionary transJobLevel;
+    @ApiModelProperty(value = "调动后职级Id", name = "transJobLevelId", example = "123")
+    private Long transJobLevelId;
+
+    @ApiModelProperty(value = "调动后职级名称", name = "transJobLevelName")
+    private String transJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
@@ -90,28 +95,28 @@ public class StaffCallInInfoVO {
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
     private Double threeGroupSeniority;
 
-    @ApiModelProperty(value = "工资发放单位", name = "payUnit")
-    private StaffTransferInfoVO.Dictionary payUnit;
+    @ApiModelProperty(value = "工资发放单位 id", name = "payUnitId")
+    private Long payUnitId;
 
-    @ApiModelProperty(value = "工资发放单位", name = "payUnit")
-    private StaffTransferInfoVO.Dictionary fundUnit;
+    @ApiModelProperty(value = "工资发放单位名称", name = "payUnitName")
+    private String payUnitName;
 
-    @ApiModelProperty(value = "社保购买单位", name = "securityUnit")
-    private StaffTransferInfoVO.Dictionary securityUnit;
+    @ApiModelProperty(value = "公积金发放单位 id", name = "fundUnitId")
+    private Long fundUnitId;
+
+    @ApiModelProperty(value = "公积金发放单位名称", name = "fundUnitName")
+    private String fundUnitName;
+
+    @ApiModelProperty(value = "社保购买id", name = "securityUnitId")
+    private Long securityUnitId;
+
+    @ApiModelProperty(value = "社保购买名称", name = "securityUnitName")
+    private String securityUnitName;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
-
-    @Data
-    // 公司字典
-    public static class Dictionary {
-        // 公司名
-        private String label;
-        // 公司 id
-        private Long value;
-    }
+    private String appendixIds;
 
 }

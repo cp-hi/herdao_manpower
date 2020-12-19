@@ -41,6 +41,9 @@ public class StaffPromoteApprove extends BaseModel<StaffPromoteApprove> {
 
     private String nowOrgOid;
 
+    /**
+     * 页面上的"岗位"对应的不是这里的 post 语义，而是 post_org
+     */
     @ApiModelProperty(value = "变更前岗位 id")
     @NotNull
     private Long nowPostId;
@@ -60,6 +63,9 @@ public class StaffPromoteApprove extends BaseModel<StaffPromoteApprove> {
 
     private String promoteOrgOid;
 
+    /**
+     * 页面上的"岗位"对应的不是这里的 post 语义，而是 post_org
+     */
     @ApiModelProperty(value = "变更后岗位 id")
     @NotNull
     private Long promotePostId;
@@ -146,8 +152,19 @@ public class StaffPromoteApprove extends BaseModel<StaffPromoteApprove> {
     @ApiModelProperty(value = "租户 id")
     private Long tenantId;
 
-    @ApiModelProperty(value = "岗位-组织关系 id")
-    private Long postOrgId;
+    /**
+     * 该 id 对应页面上的"调动前岗位"的 id
+     */
+    @ApiModelProperty(value = "调动前岗位-组织关系 id")
+    @NotNull
+    private Long nowPostOrgId;
+
+    /**
+     * 该 id 对应页面上的"晋升、降级后岗位"的 id
+     */
+    @ApiModelProperty(value = "调动后岗位-组织关系 id")
+    @NotNull
+    private Long promotePostOrgId;
 
     @ApiModelProperty(value = "晋升类型：1-晋升，2-降级")
     private Integer approveType;

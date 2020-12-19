@@ -163,4 +163,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="是否定制岗位")
     private String officePostType;
+
+    @ApiModelProperty(value = "组织岗位关系 id(任职 id)")
+    private Long postOrgId;
 }

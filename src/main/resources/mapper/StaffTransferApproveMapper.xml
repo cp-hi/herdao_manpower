@@ -11,18 +11,18 @@
             s.staff_code,
             sta.trans_start_date,
         	norg.ORG_NAME now_org_name,
-            np.POST_NAME now_post_name,
+            npo.POST_NAME now_post_org_name,
         	torg.ORG_NAME trans_org_name,
-        	tp.POST_NAME trans_post_name,
+        	tpo.POST_NAME trans_post_org_name,
         	sta.modifier_name,
         	sta.modifier_time
 
         FROM mp_staff_transfer_approve sta
         LEFT JOIN mp_staff s ON sta.user_id = s.user_id
         LEFT JOIN mp_organization norg ON sta.now_org_id = norg.id
-        LEFT JOIN mp_post np ON sta.now_post_id = np.id
+        LEFT JOIN mp_post_org npo ON sta.now_post_org_id = npo.id
         LEFT JOIN mp_organization torg ON sta.trans_org_id = torg.id
-        LEFT JOIN mp_post tp ON sta.trans_post_id = tp.id
+        LEFT JOIN mp_post_org tpo ON sta.trans_post_org_id = tpo.id
 
         <where>
             and transfer_type = '3'
@@ -33,9 +33,9 @@
                      IFNULL(s.staff_code,''),
                      IFNULL(sta.trans_start_date,''),
                      IFNULL(norg.ORG_NAME,''),
-                     IFNULL(np.POST_NAME,''),
+                     IFNULL(npo.POST_NAME,''),
                      IFNULL(torg.ORG_NAME,''),
-                     IFNULL(tp.POST_NAME,'')
+                     IFNULL(tpo.POST_NAME,'')
                  ) LIKE concat(#{searchText},'%')
             </if>
             <if test="status != '' and status != null">
@@ -56,9 +56,9 @@
         s.staff_code,
         sta.trans_start_date,
         norg.ORG_NAME now_org_name,
-        np.POST_NAME now_post_name,
+        npo.POST_NAME now_post_org_name,
         torg.ORG_NAME trans_org_name,
-        tp.POST_NAME trans_post_name,
+        tpo.POST_NAME trans_post_org_name,
         njl.JOB_LEVEL_NAME now_job_level_name ,
         tjl.JOB_LEVEL_NAME trans_job_level_name,
         sta.modifier_name,
@@ -67,9 +67,9 @@
         FROM mp_staff_transfer_approve sta
         LEFT JOIN mp_staff s ON sta.user_id = s.user_id
         LEFT JOIN mp_organization norg ON sta.now_org_id = norg.id
-        LEFT JOIN mp_post np ON sta.now_post_id = np.id
+        LEFT JOIN mp_post_org npo ON sta.now_post_org_id = npo.id
         LEFT JOIN mp_organization torg ON sta.trans_org_id = torg.id
-        LEFT JOIN mp_post tp ON sta.trans_post_id = tp.id
+        LEFT JOIN mp_post_org tpo ON sta.trans_post_org_id = tpo.id
         LEFT JOIN mp_job_level njl ON sta.now_job_level_id = njl.id
         LEFT JOIN mp_job_level tjl ON sta.trans_job_level_id = tjl.id
 
@@ -88,10 +88,10 @@
                 IFNULL(s.staff_code,''),
                 IFNULL(sta.trans_start_date,''),
                 IFNULL(norg.ORG_NAME,''),
-                IFNULL(np.POST_NAME,''),
+                IFNULL(npo.POST_NAME,''),
                 IFNULL(njl.JOB_LEVEL_NAME,''),
                 IFNULL(torg.ORG_NAME,''),
-                IFNULL(tp.POST_NAME,''),
+                IFNULL(tpo.POST_NAME,''),
                 IFNULL(tjl.JOB_LEVEL_NAME,'')
                 ) LIKE concat(#{searchText},'%')
 

@@ -117,5 +117,5 @@ public class SaveStaffLeavePostDTO {
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
+    private String appendixIds;
 }

@@ -30,14 +30,14 @@ public class StaffTransferPageVO {
     @ApiModelProperty(value = "调动前所在部门", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
 
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostOrgName", example = "岗位 a")
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
     private String transOrgName;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "transPostOrgName", example = "岗位 b")
+    private String transPostOrgName;
 
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
     private String updateInfo;

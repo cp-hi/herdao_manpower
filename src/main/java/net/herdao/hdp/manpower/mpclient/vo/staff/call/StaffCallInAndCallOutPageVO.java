@@ -30,8 +30,8 @@ public class StaffCallInAndCallOutPageVO {
     @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
 
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostOrgName", example = "岗位 a")
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName", example = "123")
     private String nowJobLevelName;
@@ -39,8 +39,8 @@ public class StaffCallInAndCallOutPageVO {
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
     private String transOrgName;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "transPostOrgName", example = "岗位 b")
+    private String transPostOrgName;
 
     @ApiModelProperty(value = "调动后职级名称", name = "transJobLevelName", example = "123")
     private String transJobLevelName;
