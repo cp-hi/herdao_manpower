@@ -38,14 +38,14 @@ public class StaffTransferPage {
     @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
 
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostOrgName", example = "岗位 a")
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
     private String transOrgName;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "transPostOrgName", example = "岗位 b")
+    private String transPostOrgName;
 
     @ApiModelProperty(value = "更新人名", name = "modifierName", example = "李四")
     private String modifierName;

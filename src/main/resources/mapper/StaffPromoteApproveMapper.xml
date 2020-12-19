@@ -11,10 +11,10 @@
         s.staff_code,
         spa.promote_date,
         norg.ORG_NAME now_org_name,
-        np.POST_NAME now_post_name,
+        npo.POST_NAME now_post_org_name,
         njl.JOB_LEVEL_NAME now_job_level_name,
         porg.ORG_NAME promote_org_name,
-        pp.POST_NAME promote_post_name,
+        ppo.POST_NAME promote_post_org_name,
         pjl.JOB_LEVEL_NAME promote_job_level_name,
         spa.modifier_name,
         spa.modifier_time
@@ -22,9 +22,9 @@
         FROM mp_staff_promote_approve spa
         LEFT JOIN mp_staff s ON spa.user_id = s.user_id
         LEFT JOIN mp_organization norg ON spa.now_org_id = norg.id
-        LEFT JOIN mp_post np ON spa.now_post_id = np.id
+        LEFT JOIN mp_post_org npo ON spa.now_post_org_id = npo.id
         LEFT JOIN mp_organization porg ON spa.promote_org_id = porg.id
-        LEFT JOIN mp_post pp ON spa.promote_post_id = pp.id
+        LEFT JOIN mp_post_org ppo ON spa.promote_post_org_id = ppo.id
         LEFT JOIN mp_job_level njl ON spa.now_job_level_id = njl.id
         LEFT JOIN mp_job_level pjl ON spa.promote_job_level_id = pjl.id
 
@@ -36,10 +36,10 @@
                 IFNULL(s.staff_code, ''),
                 IFNULL(spa.promote_date, ''),
                 IFNULL(norg.ORG_NAME, ''),
-                IFNULL(np.POST_NAME, ''),
+                IFNULL(npo.POST_NAME, ''),
                 IFNULL(njl.JOB_LEVEL_NAME, ''),
                 IFNULL(porg.ORG_NAME, ''),
-                IFNULL(pp.POST_NAME, ''),
+                IFNULL(ppo.POST_NAME, ''),
                 IFNULL(pjl.JOB_LEVEL_NAME, '')
                 ) LIKE concat(#{searchText},'%')
             </if>
