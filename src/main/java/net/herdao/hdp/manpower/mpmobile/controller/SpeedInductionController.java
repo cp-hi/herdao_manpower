@@ -64,6 +64,21 @@ public class SpeedInductionController {
     }
 
 
+
+    /**
+     * 上传后删除数据
+     *
+     * @param attachFile 通用附件表
+     * @return R
+     */
+    @ApiOperation(value = "上传后删除数据", notes = "上传后删除数据")
+    @DeleteMapping("/delDataAfterUploading")
+    @ResponseBody
+    public R delDataAfterUploading(AttachFileDTO attachFile) {
+        attachFileService.delDataAfterUploading(attachFile);
+        return R.ok();
+    }
+
     /*    *
      * 通过id查询工资卡信息表
      * @param id id 业务表ID (例如：人才表的主键ID)
@@ -91,5 +106,22 @@ public class SpeedInductionController {
 //    @PreAuthorize("@pms.hasPermission('generator_paycardinformation_add')")
     public R savePayCardInfo(@RequestBody PayCardInformationDTO dto) throws Exception {
         return R.ok(payCardInformationService.insertPayCard(dto));
+    }
+
+
+    /**
+     * 极速入职-入职完成情况
+     *
+     * @param id 业务表ID (例如：人才表的主键ID)
+     * @return R
+     */
+    @ApiOperation(value = "极速入职-入职完成情况", notes = "上传后绑定数据")
+    @GetMapping ("/getFinishCase")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "业务表ID(例如：人才表的主键ID)", required = true)
+    })
+    @ResponseBody
+    public R getFinishCase(String id) {
+        return R.ok(attachFileService.getFinishCase(id));
     }
 }

@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Map;
 
 /**
  * 人才表
@@ -148,4 +151,10 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     R saveOrUpdateRecruitment(RecruitmentBaseInfoMobileDTO dto);
 
+    /**
+     * 获取-手机端个人信息-填写进度
+     * @param id 主键ID
+     * @return
+     */
+    RecruitmentMobileProgressVO fetchMobileInfoProgress(Long id);
 }

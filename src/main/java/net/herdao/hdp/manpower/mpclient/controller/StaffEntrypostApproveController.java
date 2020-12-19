@@ -58,7 +58,6 @@ public class StaffEntrypostApproveController {
         return R.ok(result,"新增保存成功");
     }
 
-
     /**
      * 录用审批-删除
      * @param id 主键ID
@@ -158,9 +157,11 @@ public class StaffEntrypostApproveController {
         approve.setOrgId(dto.getOrgId());
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        approve.setModifierTime(LocalDateTime.now());
-        approve.setModifierCode(sysUser.getUsername());
-        approve.setModifierName(sysUser.getAliasName());
+        if (ObjectUtil.isNotNull(sysUser)){
+            approve.setModifierTime(LocalDateTime.now());
+            approve.setModifierCode(sysUser.getUsername());
+            approve.setModifierName(sysUser.getAliasName());
+        }
 
         if (ObjectUtil.isNotNull(dto.getIsAppointment())){
             //true 1 , false 0

@@ -26,4 +26,9 @@ public interface AttachFileConstants {
      */
     String MEDICAL_REPORT = "MEDICAL_REPORT";
 
+
+    /**
+     * 工卡照片
+     */
+    String JOB_CARD_PHOTO = "JOB_CARD_PHOTO";
 }

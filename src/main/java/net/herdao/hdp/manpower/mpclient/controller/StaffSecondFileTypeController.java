@@ -2,23 +2,31 @@
 
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.StaffSecondFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -61,43 +69,7 @@ public class StaffSecondFileTypeController {
         return R.ok(staffSecondFileTypeService.getById(id));
     }
 
-    /**
-     * 新增员工附件二级分类
-     * @param entity 员工附件二级分类
-     * @return R
-     */
-    @ApiOperation(value = "新增员工附件二级分类", notes = "新增员工附件二级分类")
-    @SysLog("新增员工附件二级分类" )
-    @PostMapping("/saveOrUpdate")
-    @PreAuthorize("@pms.hasPermission('employees_details_enclosure_basicinfo_new','employees_details_enclosure_job_new')")
-    public R saveOrUpdate(@RequestBody StaffSecondFileType entity) {
-        boolean status = staffSecondFileTypeService.saveOrUpdate(entity);
-        return R.ok(status);
-    }
 
-    /**
-     * 通过id删除员工附件二级分类
-     * @param id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除员工附件二级分类", notes = "通过id删除员工附件二级分类")
-    @SysLog("通过id删除员工附件二级分类" )
-    @DeleteMapping("/del/{id}" )
-    @PreAuthorize("@pms.hasPermission('employees_details_enclosure_job_delete'," +
-            "'employees_details_enclosure_resign_delete')" )
-    public R removeById(@PathVariable Long id,String extraKey,String module) {
-        StaffSecondFileType entity=new StaffSecondFileType();
-        entity.setId(id);
-        if (StringUtils.isNotBlank(extraKey)){
-            entity.setExtraKey(extraKey);
-        }
-        if (StringUtils.isNotBlank(module)){
-            entity.setModule(module);
-        }
-
-        boolean status = staffSecondFileTypeService.delEntity(entity);
-        return R.ok(status);
-    }
 
     /**
      * 员工附件分类分页
@@ -124,11 +96,41 @@ public class StaffSecondFileTypeController {
     @ApiOperation(value = "员工附件二级分类", notes = "员工附件二级分类")
     @GetMapping("/findStaffFileType")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="superId",value="员工一级附件分类ID"),
+        @ApiImplicitParam(name="superId",value="员工一级附件分类 value"),
+        @ApiImplicitParam(name="bizId",value="当前业务表单的ID"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffFileType(StaffFileTypeDTO entity) {
-        List<StaffFileTypeDTO> list = staffSecondFileTypeService.findStaffFileType(entity);
+    public R findStaffFileType(String superId,Long bizId) {
+        List<StaffFileTypeDTO> list = staffSecondFileTypeService.findStaffFileType(superId,bizId);
         return R.ok(list);
+    }
+    
+    /**
+     * 	新增员工附件二级分类
+     * @param entity 员工附件二级分类
+     * @return R
+     */
+    @ApiOperation(value = "新增员工附件二级分类", notes = "新增员工附件二级分类")
+    @SysLog("新增/修改 员工附件二级分类" )
+    @PostMapping("/saveOrUpdate")
+    //@PreAuthorize("@pms.hasPermission('employees_details_enclosure_basicinfo_new','employees_details_enclosure_job_new')")
+    public R saveOrUpdate(@RequestBody StaffSecondFileTypeDTO dto) {
+        boolean status = staffSecondFileTypeService.saveOrModify(dto);
+        return R.ok(status);
+    }
+    
+    /**
+     * 	通过id删除员工附件二级分类
+     * @param id
+     * @return R
+     */
+    @ApiOperation(value = "通过id删除员工附件二级分类", notes = "通过id删除员工附件二级分类")
+    @SysLog("通过id删除员工附件二级分类" )
+    @DeleteMapping("/del/{id}" )
+    //@PreAuthorize("@pms.hasPermission('employees_details_enclosure_job_delete'," +
+     //       "'employees_details_enclosure_resign_delete')" )
+    public R removeById(@PathVariable Long id) {
+        boolean status = staffSecondFileTypeService.deleteStaffSecondFileType(id);
+        return R.ok(status);
     }
 }

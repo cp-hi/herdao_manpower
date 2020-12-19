@@ -2,6 +2,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
@@ -45,5 +46,43 @@ public interface AttachFileService extends IService<AttachFile> {
      * @return List<AttachFileSituationDTO>
      */
     List<AttachFileSituationDTO> fetchEntryAttachFileInfo();
+
+    /**
+     * 上传后删除数据
+     *
+     * @param attachFile 通用附件表
+     * @return R
+     */
+    void delDataAfterUploading(AttachFileDTO attachFile);
+
+
+    /**
+     * 极速入职-入职完成情况
+     *
+     * @param id 业务表ID (例如：人才表的主键ID)
+     * @return R
+     */
+    Map<String,Boolean> getFinishCase(String id);
+
+    /**
+     * 	根据业务表单ID查询附件列表
+     * @param bizId
+     * @return
+     */
+	List<AttachFile> getAttachFileByBizId(Long bizId);
+
+	/**
+	 * 保存附件
+	 * @param attachFile
+	 * @return
+	 */
+	Boolean saveAttachFile(AttachFileAddDTO attachFile);
+
+	/**
+	 * 	删除文件
+	 * @param fileId
+	 * @return
+	 */
+	Boolean deleteByFileId(String fileId);
 
 }

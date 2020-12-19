@@ -1,16 +1,14 @@
 package net.herdao.hdp.manpower.mpclient.dto.staff;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @ApiModel(value = "员工附件二级分类")
 public class StaffFileTypeDTO {
 
+	/*
     @ApiModelProperty(value="主键ID")
     private Long id;
 
@@ -49,5 +47,27 @@ public class StaffFileTypeDTO {
 
     @ApiModelProperty(value="一级附件分类ID")
     private Long superId;
+	*/
 
+	
+	@ApiModelProperty("字典项id")
+	private Integer id;
+	
+	@ApiModelProperty("所属字典类id")
+	private Integer dictId;
+	
+	@ApiModelProperty("数据值")
+	private String value;
+	
+	@ApiModelProperty("标签名")
+	private String label;
+	
+	@ApiModelProperty("类型")
+	private String type;
+	
+	@ApiModelProperty("文件IDS逗号分隔")
+	private String fileIds;
+	
+	@ApiModelProperty(value="附件数量")
+    private Integer fileCount;
 }

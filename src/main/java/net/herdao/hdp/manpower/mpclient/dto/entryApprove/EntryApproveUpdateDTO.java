@@ -10,14 +10,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 审批录用新增DTO
+ * 审批录用-修改DTO
  * @author Andy
  */
 @Data
-@ApiModel(value = "审批录用新增DTO")
-public class EntryApproveUpdateDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel(value = "审批录用-修改DTO")
+public class EntryApproveUpdateDTO  {
 
     /**
      * id
@@ -84,7 +82,7 @@ public class EntryApproveUpdateDTO implements Serializable {
     /**
      * 是否需要任命
      */
-    @ApiModelProperty(value="是否需要任命--后台保存传参")
+    @ApiModelProperty(value="是否需要任命")
     private Boolean isAppointment;
 
     /**
@@ -179,7 +177,7 @@ public class EntryApproveUpdateDTO implements Serializable {
     private String paidUnitsName;
 
     /**
-     * 公积金购买单位id
+     * 公积金购买单位ID
      */
     @ApiModelProperty(value="公积金购买单位ID")
     private Long fundUnitsId;

@@ -16,11 +16,19 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import cn.hutool.core.collection.CollectionUtil;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -73,8 +81,11 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     private final RecruitmentEducationService recruitmentEducationService;
     
-    
     private RemoteWorkflowService remoteWorkflowService;
+
+    private RecruitmentFamilyStatusService recruitmentFamilyStatusService;
+
+    private RecruitmentWorkexperienceService recruitmentWorkexperienceService;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -421,7 +432,11 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     	
     	HdpUser user = SecurityUtils.getUser();
     	
-    	String parameterJson = "{ CreateUser:\"22\", ReferenceUser:\"22\", Org_Code:\"011\", Condition:\"\"}";
+    	String userId = user.getUsername();
+    	Long deptId = user.getDeptId();
+    	
+    	//String parameterJson = "{ CreateUser:\"22\", ReferenceUser:\"22\", Org_Code:\"011\", Condition:\"\"}";
+    	String parameterJson = "{\"CreateUser\":"+userId+", \"ReferenceUser\":"+userId+", \"Org_Code\":\"011\", \"Condition\":\"\"}";
     	if(StringUtils.isEmpty(contentUrl)) {
     		contentUrl = "www.baidu.com";
     	}
@@ -473,4 +488,122 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         return R.ok(dto,"新增或修改成功！");
     }
+
+    @Override
+    public RecruitmentMobileProgressVO fetchMobileInfoProgress(Long id) {
+        //总字段数
+        int total=0;
+        //字段填写完成数
+        int finishCount=0;
+
+        //获取匹配字段
+        Field[] targetFields = RecruitmentMobileVO.class.getDeclaredFields();
+        //家庭状况
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = this.fetchRecruitmentBaseInfo(id);
+
+        for (Field field : targetFields) {
+            String targetName = field.getName();
+
+            //统计家庭情况的命中数
+            if (CollectionUtil.isNotEmpty(familyList)){
+                for (RecruitmentFamilyDTO familyDTO : familyList) {
+                    Map<String, Integer> hitMap = getHitCount(familyDTO, targetName);
+                    finishCount+=hitMap.get("hitCount");
+                    total+=hitMap.get("fieldCount");
+                }
+            }
+
+            //统计教育经历的命中数
+            if (CollectionUtil.isNotEmpty(recruitmentEduList)){
+                for (RecruitmentEduDTO eduDTO : recruitmentEduList) {
+                    Map<String, Integer> hitMap = getHitCount(eduDTO, targetName);
+                    finishCount+=hitMap.get("hitCount");
+                    total+=hitMap.get("fieldCount");
+                }
+            }
+
+            //统计工作经历的命中数
+            if (CollectionUtil.isNotEmpty(workList)){
+                for (RecruitmentWorkExperienceDTO workExperienceDTO : workList) {
+                    Map<String, Integer> hitMap = getHitCount(workExperienceDTO, targetName);
+                    finishCount+=hitMap.get("hitCount");
+                    total+=hitMap.get("fieldCount");
+                }
+            }
+
+            //统计个人基本信息的命中数
+            if (ObjectUtil.isNotNull(baseInfo)){
+                Map<String, Integer> hitMap = getHitCount(baseInfo, targetName);
+                finishCount+=hitMap.get("hitCount");
+                total+=hitMap.get("fieldCount");
+            }
+        }
+
+        //创建一个数值格式化对象
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        //设置精确到小数点后2位
+        numberFormat.setMaximumFractionDigits(2);
+        //统计填写进度
+        String progress = numberFormat.format((float)finishCount/(float)total*100)+"%";
+        String status="";
+        if (finishCount==total){
+            status="已完成";
+        }else{
+            status="未完成";
+        }
+
+        RecruitmentMobileProgressVO result=new RecruitmentMobileProgressVO();
+        result.setTotal(total);
+        result.setFinishCount(finishCount);
+        result.setProgress(progress);
+        result.setStatus(status);
+        return result;
+    }
+
+    /**
+     * 获取填报命中数
+     * @param obj
+     * @param targetName
+     */
+    private Map<String,Integer> getHitCount(Object obj, String targetName){
+        //命中数
+        int hitCount=0;
+        //字段数
+        int fieldCount=0;
+        //返回map
+        Map<String,Integer> resultMap=new HashMap<>();
+
+        try {
+            //得到所有属性
+            Field[] fields = obj.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                //打开私有访问
+                field.setAccessible(true);
+                //获取属性
+                String originalName = field.getName();
+                if (originalName.equals(targetName)) {
+                    fieldCount++;
+                    //获取属性值
+                    Object originalValue = field.get(obj);
+                    if (ObjectUtil.isNotNull(originalValue)) {
+                        hitCount++;
+                    }
+                }
+            }
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+
+        resultMap.put("hitCount",hitCount);
+        resultMap.put("fieldCount",fieldCount);
+        return resultMap;
+    }
+
+
 }

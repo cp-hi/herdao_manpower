@@ -37,7 +37,6 @@ public class StaffPositiveApprovalExecuteDTO {
     private static final long serialVersionUID = 1L;
 
 
-
     /**
      * 录用审批id
      */
@@ -48,13 +47,11 @@ public class StaffPositiveApprovalExecuteDTO {
     /**
      * 转正申请id
      */
-    @ApiModelProperty(value = "转正申请id")
     private Long staffpositiveapplicationId;
 
     /**
      * 员工id
      */
-    @ApiModelProperty(value="员工id")
     private Long userId;
 
     /**
@@ -67,7 +64,7 @@ public class StaffPositiveApprovalExecuteDTO {
     /**
      * 是否通知
      */
-    @ApiModelProperty(value = "是否通知(0:通知,1:不通知)")
-    private Long whetherOrNotNoticeOf;
+    @ApiModelProperty(value = "是否通知(true:通知,false:不通知)")
+    private Boolean whetherOrNotNoticeOf;
 
 }

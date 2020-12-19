@@ -43,7 +43,6 @@ public class EntryJobController {
 
     private final SysDictItemService dictItemService;
 
-
     /**
      * 入职管理-待入职-列表分页
      * @param page 分页对象

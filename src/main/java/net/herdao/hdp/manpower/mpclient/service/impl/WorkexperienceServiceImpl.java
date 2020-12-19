@@ -1,37 +1,39 @@
 
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import cn.hutool.core.util.ObjectUtil;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkUpdateDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.StaffWorkAddDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
-
 import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ImportCheckUtils;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 员工工作经历
@@ -115,7 +117,11 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     }
 
     @Override
-    public boolean saveWork(Workexperience workexperience) {
+    public boolean saveWork(WorkexperienceDTO workexperienceDTO) {
+    	Workexperience workexperience = new Workexperience();
+    	BeanUtils.copyProperties(workexperienceDTO, workexperience);
+    	workexperience.setBeginDate(LocalDateTimeUtils.convert2LocalDateTime(workexperienceDTO.getBeginDate()));
+        workexperience.setEndDate(LocalDateTimeUtils.convert2LocalDateTime(workexperienceDTO.getEndDate()));
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
@@ -130,7 +136,11 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
      }
 
     @Override
-    public boolean updateWork(Workexperience workexperience) {
+    public boolean updateWork(WorkexperienceDTO workexperienceDTO) {
+    	Workexperience workexperience = new Workexperience();
+    	BeanUtils.copyProperties(workexperienceDTO, workexperience);
+    	workexperience.setBeginDate(LocalDateTimeUtils.convert2LocalDateTime(workexperienceDTO.getBeginDate()));
+        workexperience.setEndDate(LocalDateTimeUtils.convert2LocalDateTime(workexperienceDTO.getEndDate()));
         UserInfo userInfo = remoteUserService.info(SecurityUtils.getUser().getUsername(), SecurityConstants.FROM_IN).getData();
         String userName=userInfo.getSysUser().getAliasName();
         String loginCode=userInfo.getSysUser().getUsername();
@@ -205,8 +215,9 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
                 BeanUtils.copyProperties(addDTO, workexperience);
                 workexperience.setStaffId(Long.parseLong(addDTO.getStaffId()));
                 workexperience.setSubordinates(Integer.parseInt(addDTO.getSubordinates()));
-                workexperience.setBeginDate(DateUtils.parseDate(addDTO.getBeginDate(),pattern));
-                workexperience.setEndDate(DateUtils.parseDate(addDTO.getEndDate(),pattern));
+                
+                workexperience.setBeginDate(LocalDateTimeUtils.convertStr2DateTime(addDTO.getBeginDate(),pattern));
+                workexperience.setEndDate(LocalDateTimeUtils.convertStr2DateTime(addDTO.getEndDate(),pattern));
 
                 SysUser sysUser = SysUserUtils.getSysUser();
                 workexperience.setCreatedTime(LocalDateTime.now());

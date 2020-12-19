@@ -15,10 +15,10 @@ public class StaffWorkExpDTO {
     private Long id;
 
     @ApiModelProperty(value="开始时间")
-    private LocalDateTime beginDate;
+    private Long beginDate;
 
     @ApiModelProperty(value="结束时间")
-    private LocalDateTime endDate;
+    private Long endDate;
 
     @ApiModelProperty(value="单位名称")
     private String companyName;
