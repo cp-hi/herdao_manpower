@@ -17,19 +17,18 @@
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 员工工作经历
@@ -123,13 +122,13 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="结束时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
-    private Date endDate;
+    private LocalDateTime endDate;
     /**
      * 开始时间
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "GMT+8")
     @ApiModelProperty(value="开始时间")
-    private Date beginDate;
+    private LocalDateTime beginDate;
     /**
      * 租户ID
      */

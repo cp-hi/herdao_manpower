@@ -136,8 +136,8 @@ public class WorkexperienceController extends HdpBaseController {
     @ApiOperation(value = "新增员工工作经历", notes = "新增员工工作经历")
     @SysLog("新增员工工作经历" )
     @PostMapping("/saveWork")
-    public R saveWork(@RequestBody Workexperience workexperience) {
-        boolean flag = workexperienceService.saveWork(workexperience);
+    public R saveWork(@RequestBody WorkexperienceDTO workexperienceDto) {
+        boolean flag = workexperienceService.saveWork(workexperienceDto);
         return R.ok(flag);
     }
 
@@ -150,8 +150,8 @@ public class WorkexperienceController extends HdpBaseController {
     @SysLog("编辑员工工作经历" )
     @PostMapping("/updateWork")
     @PreAuthorize("@pms.hasPermission('employees_details_workinfo_workingexp_edit')" )
-    public R updateWork(@RequestBody Workexperience workexperience) {
-        boolean flag = workexperienceService.updateWork(workexperience);
+    public R updateWork(@RequestBody WorkexperienceDTO workexperienceDto) {
+        boolean flag = workexperienceService.updateWork(workexperienceDto);
         return R.ok(flag);
     }
 
