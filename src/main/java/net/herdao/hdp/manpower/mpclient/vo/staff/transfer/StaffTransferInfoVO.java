@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -62,11 +61,8 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
     private String transPostName;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123")
-    private Long transJobLevelId;
-
-    @ApiModelProperty(value = "调动后好职级名称", name = "jobLevelName", example = "M3-6")
-    private String transJobLevelName;
+    @ApiModelProperty(value = "调动后职级", name = "transJobLevel", example = "123")
+    private Dictionary transJobLevel;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
@@ -98,7 +94,7 @@ public class StaffTransferInfoVO {
     @ApiModelProperty(value = "工资发放单位", name = "payUnit")
     private Dictionary payUnit;
 
-    @ApiModelProperty(value = "工资发放单位", name = "payUnit")
+    @ApiModelProperty(value = "公积金发放单位", name = "payUnit")
     private Dictionary fundUnit;
 
     @ApiModelProperty(value = "社保购买单位", name = "securityUnit")
@@ -111,11 +107,11 @@ public class StaffTransferInfoVO {
     private List<String> appendixIds;
 
     @Data
-    // 公司字典
+    // 字典
     public static class Dictionary {
-        // 公司名
+        // 字符串名称
         private String label;
-        // 公司 id
+        // id
         private Long value;
     }
 }

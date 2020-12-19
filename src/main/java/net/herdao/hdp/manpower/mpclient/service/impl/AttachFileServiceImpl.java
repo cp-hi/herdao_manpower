@@ -16,11 +16,16 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
@@ -29,15 +34,15 @@ import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalP
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
+import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 通用附件表
@@ -48,44 +53,68 @@ import java.util.Map;
 @Service
 public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachFile> implements AttachFileService {
 
-
     @Autowired
     private AttachFileMapper mapper;
 
 
     /**
      * 上传后绑定数据
+     *
      * @param attachFile 通用附件表
      * @return R
      */
     @Override
-    public void bindDataAfterUploading(List<AttachFileDTO> attachFile)   {
-        List<AttachFile> list = new ArrayList<>(10);
-        attachFile.forEach(item ->{
-            AttachFile file = new AttachFile();
-            BeanUtils.copyProperties(item,file);
-            file.setFileType(item.getExtend());
-            file.setCreatorTime(LocalDateTime.now());
-            list.add(file);
-                }
-        );
-        this.baseMapper.insertBatch(list);
+    public void bindDataAfterUploading(List<AttachFileDTO> attachFile) {
+        //多张图片上传后绑定保存
+        if (attachFile != null) {
+            attachFile.forEach(item -> {
+                        AttachFile file = new AttachFile();
+                        BeanUtils.copyProperties(item, file);
+                        AttachFile attach = this.baseMapper.selectOne(new QueryWrapper<AttachFile>().lambda().
+                                eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType, item.getModuleType()));
+                        SysUser sysUser = SysUserUtils.getSysUser();
+                        //不为空 修改
+                        if (attach != null) {
+                            file.setModifierTime(LocalDateTime.now());
+                            if (ObjectUtil.isNotNull(sysUser)) {
+                                file.setModifierCode(sysUser.getUsername());
+                                file.setModifierName(sysUser.getAliasName());
+                            }
+                            this.baseMapper.update(file, new LambdaUpdateWrapper<AttachFile>().
+                                    eq(AttachFile::getBizId, item.getBizId()).eq(AttachFile::getModuleType, item.getModuleType()));
+                            return;
+                        }
+
+                        file.setCreatorTime(LocalDateTime.now());
+                        if (ObjectUtil.isNotNull(sysUser)) {
+                            file.setCreatorCode(sysUser.getUsername());
+                            file.setCreatorName(sysUser.getAliasName());
+                        }
+                        //否则  新增
+                        file.setFileType(item.getExtend());
+                        this.baseMapper.insert(file);
+                    }
+            );
+        }
+
+
     }
 
 
-
-    /*    *
+    /**
      * 通过id查询通用文件表数据
-     * @param id id   业务表ID (例如：人才表的主键ID)
-     * @param  moduleTyp   字典类型(文件所属字典类型 例如: 体检报告:MEDICAL_REPORT)
+     *
+     * @param id         id   业务表ID (例如：人才表的主键ID)
+     * @param moduleType 字典类型(文件所属字典类型 例  如:   体检报告:MEDICAL_REPORT)
      * @return R
-     * */
+     */
     @Override
-    public List<AttachFileInfoDTO> getAttachFileById(Long id,String moduleType) {
+    public List<AttachFileInfoDTO> getAttachFileById(Long id, String moduleType) {
         List<AttachFile> attachfile = this.baseMapper.selectList(new QueryWrapper<AttachFile>().select("file_id").lambda().
                 eq(AttachFile::getBizId,
-                        String.valueOf(id)).like(AttachFile::getModuleType,moduleType));
-        return  convert2DtoList(attachfile);
+                        String.valueOf(id)).like(AttachFile::getModuleType, moduleType));
+        List<AttachFileInfoDTO> attachFileInfoDTOS = convert2DtoList(attachfile);
+        return attachFileInfoDTOS;
     }
 
     /**
@@ -98,9 +127,29 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         List<AttachFileInfoDTO> list = new ArrayList<>();
         for (AttachFile record : attachfile) {
             AttachFileInfoDTO attachFileDTO = new AttachFileInfoDTO();
-            BeanUtils.copyProperties(attachFileDTO,record);
+            BeanUtils.copyProperties(record, attachFileDTO);
             list.add(attachFileDTO);
         }
         return list;
     }
+
+    @Override
+    public List<AttachFileSituationDTO> fetchResumeAttachFileInfo() {
+        return this.baseMapper.fetchResumeAttachFileInfo();
+    }
+
+    @Override
+    public List<AttachFileSituationDTO> fetchEntryAttachFileInfo() {
+        return this.baseMapper.fetchEntryAttachFileInfo();
+    }
+
+    @Override
+    public void delDataAfterUploading(AttachFileDTO attachFile) {
+        Map<String, Object> paraMap = new HashMap<>(16);
+        paraMap.put("module_type",attachFile.getModuleType());
+        paraMap.put("biz_id",attachFile.getBizId());
+        this.baseMapper.deleteByMap(paraMap);
+    }
+
+
 }

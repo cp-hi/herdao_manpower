@@ -245,7 +245,6 @@ public class RecruitmentController {
 
     /**
      * 简历详情-求职意向-修改更新
-     *
      * @param dto 人才简历-求职意向
      * @return R
      */
@@ -279,13 +278,15 @@ public class RecruitmentController {
     /**
      * 人才管理-导出Excel
      * @param response
-     * @return R
+     * @param orgId
+     * @param searchText
+     * @return
      */
     @ApiOperation(value = "人才管理-导出Excel", notes = "人才管理-导出Excel")
     @GetMapping("/exportRecruitment")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgId", value = "组织ID"),
-            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
+        @ApiImplicitParam(name = "orgId", value = "组织ID"),
+        @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     @SneakyThrows
     public R<RecruitmentDTO> exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
@@ -671,11 +672,11 @@ public class RecruitmentController {
 
 
     /**
-     * 获取-获取批量邀请更新简历-确认邮件内容（内含二维码）
+     * 获取-入职登记记录-发送邀请确认-页面内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "获取-批量邀请更新简历-确认邮件内容", notes = "获取-批量邀请更新简历-确认邮件内容")
-    @GetMapping("/fetchConfirmInviteResumeEmail")
+    @ApiOperation(value = "获取-入职登记记录-发送邀请确认-页面内容", notes = "获取-入职登记记录-发送邀请确认-页面内容")
+    @GetMapping("/fetchRegisterEmail")
     public R<ModuleVO> fetchConfirmInviteResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();
@@ -692,11 +693,11 @@ public class RecruitmentController {
     }
 
     /**
-     * 获取-邀请更新简历-候选人简历补充邀请确认内容（内含二维码）
+     * 获取-候选人简历补充邀请确认-页面内容（内含二维码）
      * @return R
      */
-    @ApiOperation(value = "获取-邀请更新简历-候选人简历补充邀请确认内容", notes = "获取-邀请更新简历-候选人简历补充邀请确认内容")
-    @GetMapping("/fetchConfirmSupplementResumeEmail")
+    @ApiOperation(value = "获取-候选人简历补充邀请确认-页面内容", notes = "获取-候选人简历补充邀请确认-页面内容")
+    @GetMapping("/fetchCandidate")
     public R<ModuleVO> fetchConfirmSupplementResumeEmail() {
         ModuleVO moduleVO=new ModuleVO();
         Integer tenantId = SecurityUtils.getUser().getTenantId();

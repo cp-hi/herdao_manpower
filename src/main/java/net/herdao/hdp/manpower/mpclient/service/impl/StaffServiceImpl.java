@@ -13,6 +13,7 @@ import net.herdao.hdp.common.core.constant.SecurityConstants;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
@@ -32,6 +33,7 @@ import net.herdao.hdp.manpower.sys.mapper.SysDictItemMapper;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -348,89 +350,64 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	public StaffBasicVO selectBasicById(Long id) throws Exception {
 		// 查询员工信息
 		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
-		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
-				.eq("id", id);
+		staffQueryWrapper.eq("id", id);
 		Staff staff = staffMapper.selectOne(staffQueryWrapper);
+		if (staff == null) {
+			throw new Exception("该员工不存在");
+		}
+		UserMsgDTO user = userService.getUserMsg(staff.getUserId());
+		if (user == null) {
+			throw new Exception("该用户不存在");
+		}
+		return convert2StaffBasicVO(user);
 
-		return convert2StaffBasicVO(staff);
 	}
 
 	@Override
 	public StaffBasicVO selectBasicByUserId(Long userId) throws Exception {
 		// 查询员工信息
-		QueryWrapper<Staff> staffQueryWrapper = new QueryWrapper();
-		staffQueryWrapper.select("user_id", "staff_name", "staff_code", "staff_scope", "job_type", "entry_time")
-				.eq("user_id", userId);
-		Staff staff = staffMapper.selectOne(staffQueryWrapper);
-
-		return convert2StaffBasicVO(staff);
+		UserMsgDTO user = userService.getUserMsg(userId);
+		if (user == null) {
+			throw new Exception("该用户不存在");
+		}
+		return convert2StaffBasicVO(user);
 	}
 
-	private StaffBasicVO convert2StaffBasicVO(Staff staff) throws Exception {
-		if (staff != null) {
+	private StaffBasicVO convert2StaffBasicVO(UserMsgDTO user) throws Exception {
+		if (user != null) {
 			StaffBasicVO vo = new StaffBasicVO();
-			// 查看人员归属范围的字典对象
-			if (staff.getStaffScope() != null) {
+			vo.setUserId(user.getId());
+			if ((user.getUserName() != null) && (user.getStaffCode()!= null)) {
+				String name = user.getUserName();
+				String code = user.getStaffCode();
+				vo.setStaffNameAndCode(name + "(" + code + ")");
+			}
+			if (user.getStaffScope() != null) {
 				QueryWrapper<SysDictItem> staffScopeQueryWrapper = new QueryWrapper<>();
 				SysDictItem staffScope = sysDictItemMapper.selectOne(staffScopeQueryWrapper.eq("type", "RYGSFW")
-						.eq("value", staff.getStaffScope()));
+						.eq("value", user.getStaffScope()));
 				vo.setStaffScope(staffScope.getLabel());
 			}
-
-			// 查看人员任职类型的字典对象
-			if (staff.getJobType() != null) {
+			if (user.getJobType() != null) {
 				QueryWrapper<SysDictItem> jobTypeQueryWrapper = new QueryWrapper<>();
 				SysDictItem jobType = sysDictItemMapper.selectOne(jobTypeQueryWrapper.eq("type","JOB_TYPE")
-						.eq("value", staff.getJobType()));
+						.eq("value", user.getJobType()));
 				vo.setStaffJobType(jobType.getLabel());
 			}
-
-			if (staff.getUserId() != null) {
-				vo.setUserId(staff.getUserId());
+			vo.setNowOrgId(user.getOrgId());
+			if (user.getOrgName() != null){
+				vo.setNowOrgName(user.getOrgName());
 			}
-			String staffName = staff.getStaffName() != null ? staff.getStaffName() : "";
-			String staffCode = staff.getStaffCode() != null ? staff.getStaffCode() : "";
-			vo.setStaffNameAndCode(staffName + "(" + staffCode + ")");
-			vo.setEntryTime(LocalDateTimeUtils.convert2Long(staff.getEntryTime()));
-
-			// 查询员工任职信息
-			if (staff.getUserId() != null) {
-				QueryWrapper<Userpost> upWrapper = new QueryWrapper<>();
-				Userpost userpost = userpostService.getOne(upWrapper
-						.eq("user_id", staff.getUserId())
-						.eq("main_post", 1));
-
-				// 查询员工组织信息
-				if (userpost != null && userpost.getOrgDeptId() != null) {
-					// 在员工任职表中org_dept_id 对应 人事调动表中的 org_id
-					Organization org = organizationService.getById(userpost.getOrgDeptId());
-					if (org != null) {
-						vo.setOrgId(org.getId());
-						vo.setOrgName(org.getOrgName());
-					}
-				}
-
-				// 查看员工岗位信息
-				// mp_userpost(就职员工表) 中的 postId 表示的是 mp_post_org(岗位表) 中的 id
-				// 获取到岗位的信息，需要从 mp_post(标准岗) 中获取
-				// 而 mp_post 中的 id 对应 mp_post_org 中的 postId
-				if (userpost != null &&  userpost.getPostId() != null) {
-					PostOrg postOrg = postOrgService.getById(userpost.getPostId());
-					Post post = postService.getById(postOrg.getPostId());
-					if (post != null) {
-						vo.setPostId(post.getId());
-						vo.setPostName(post.getPostName());
-					}
-				}
-				// 查看员工职级信息
-				if (userpost != null && userpost.getJobLevelId() != null) {
-					JobLevel jobLevel = jobLevelService.getById(userpost.getJobLevelId());
-					if (jobLevel != null) {
-						vo.setJobLevelId(jobLevel.getId());
-						vo.setJobLevelName(jobLevel.getJobLevelName());
-					}
-				}
+			vo.setNowPostId(user.getPostId());
+			if (user.getPostName() != null) {
+				vo.setNowPostName(user.getPostName());
 			}
+			vo.setNowJobLevelId(user.getJobLevelId());
+			if (user.getJobLevelName() != null) {
+				vo.setNowJobLevelName(user.getJobLevelName());
+			}
+			vo.setEntryTime(user.getEntryTime());
+
 			return vo;
 		}
 		return null;

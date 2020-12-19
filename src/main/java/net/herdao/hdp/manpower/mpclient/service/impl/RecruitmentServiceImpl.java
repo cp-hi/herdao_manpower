@@ -432,7 +432,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     	String contentFK = recordId;
     	String flowContent = flowType;
     	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent);
-    	
+
     }
 
     @Override

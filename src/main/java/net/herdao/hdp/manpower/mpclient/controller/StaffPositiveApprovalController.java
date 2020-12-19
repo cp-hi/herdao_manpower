@@ -29,6 +29,7 @@ import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
@@ -51,7 +52,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("staff/positiveApproval")
+@RequestMapping("/staff/positiveApproval")
 @Api(value = "staffPositiveApproval", tags = "转正审批表管理")
 public class StaffPositiveApprovalController {
 
@@ -85,6 +86,19 @@ public class StaffPositiveApprovalController {
     @GetMapping("/{id}")
     public R<StaffPositiveApprovalInfoVO> getDetail(@PathVariable("id") Long id) {
         return R.ok(staffPositiveApprovalService.getStaffPositive(id));
+    }
+
+
+
+    /**
+     * 执行转正
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "执行转正")
+    @GetMapping("/execute")
+    public R<Long> execute(StaffPositiveApprovalExecuteDTO executeDTO) {
+        return R.ok(staffPositiveApprovalService.execute(executeDTO));
     }
 
 
@@ -175,7 +189,7 @@ public class StaffPositiveApprovalController {
         Page page = new Page();
         page.setSize(-1);
         Page<StaffPositiveApprovalPageVO> pageResult = staffPositiveApprovalService.getPositiveApprovalPageInfo(page, orgId, String.valueOf(5), searchText);
-        ExcelUtils.export2Web(response, "转正管理表", "转正管理表", RecruitmentDTO.class, pageResult.getRecords());
+        ExcelUtils.export2Web(response, "转正管理表", "转正管理表", StaffPositiveApprovalPageVO.class, pageResult.getRecords());
         StaffPositiveApprovalPageVO vo = new StaffPositiveApprovalPageVO();
         return R.ok(vo);
     }

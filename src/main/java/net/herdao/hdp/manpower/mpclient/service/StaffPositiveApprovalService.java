@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
@@ -70,4 +71,10 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
      * 新增、编辑页-确认发起
      */
     Long affirmStart(Long id, StaffPositiveApprovalSaveDTO dto) throws Exception;
+
+    /**
+     * 执行转正
+     * @param
+     */
+    Long execute(StaffPositiveApprovalExecuteDTO executeDTO);
 }

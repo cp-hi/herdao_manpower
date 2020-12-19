@@ -171,11 +171,11 @@
                                     GROUP BY recruitment_id
                               ) invr on  rec.id = invr.recruitment_id
                               <where>
-                                        and rec.del_flag = 0
-                                    <if test="orgId != null  ">
-                                        and rec.org_id= #{orgId}
-                                    </if>
-                              </where>
+                                      and rec.del_flag = 0
+                                   <if test="orgId != null">
+                                      AND org.ORG_CODE like (select CONCAT(o.ORG_CODE,'%') from mp_organization o where o.id=#{orgId} limit 1)
+                                  </if>
+                               </where>
                         ) t
                         GROUP BY  t.id, t.talent_name
                )t
@@ -410,32 +410,39 @@
     <!-- 编辑人才简历-个人基本信息-详情 -->
     <select id="fetchRecruitmentBaseInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo">
         	SELECT  rec.id,
-					rec.talent_name,
-					rec.birthday,
+                    rec.talent_name,
+                    rec.birthday,
                     rec.sex,
-					rec.nation,
+                    rec.nation,
                     rec.marital_status,
                     rec.fertility,
                     rec.health_status,
-					rec.height,
-			        rec.weight,
+                    rec.height,
+                    rec.weight,
                     rec.political_landscape,
-					rec.emergency_contacts,
-					rec.emergency_phone,
+                    rec.emergency_contacts,
+                    rec.emergency_phone,
                     rec.highest_education,
-					rec.professional,
-					rec.highest_diplomano,
-					rec.graduated,
-					rec.home_phone,
-					rec.now_address,
-					rec.zipcode,
-					rec.account_address,
-					rec.interests,
-					rec.specialty,
-					rec.advantage,
-					rec.shortcoming,
+                    rec.professional,
+                    rec.highest_diplomano,
+                    rec.graduated,
+                    rec.home_phone,
+                    rec.now_address,
+                    rec.zipcode,
+                    rec.account_address,
+                    rec.interests,
+                    rec.specialty,
+                    rec.advantage,
+                    rec.shortcoming,
                     rec.characteristics,
-                    rec.nationality
+                    rec.nationality,
+                    rec.english_name,
+                    rec.email,
+                    rec.certificate_type,
+                    rec.certificate_no,
+                    rec.mobile,
+                    rec.account_type,
+                    rec.resume_source
             FROM  mp_recruitment rec
              <where>
                 <if test="id != null ">

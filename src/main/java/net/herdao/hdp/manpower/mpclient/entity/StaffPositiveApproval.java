@@ -333,5 +333,10 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="试用期/月")
     private String probation;
 
+    /**
+     * 是否通知
+     */
+    @ApiModelProperty(value = "是否通知(0:通知,1:不通知)")
+    private Boolean whetherOrNotNoticeOf;
 
 }

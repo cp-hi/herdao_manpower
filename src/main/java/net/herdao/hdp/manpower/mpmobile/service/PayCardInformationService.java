@@ -31,7 +31,7 @@ public interface PayCardInformationService extends IService<PayCardInformation> 
 
 
 
-    /*    *
+    /*
      * 通过id查询工资卡信息表
      * @param id id 业务表ID (例如：人才表的主键ID)
      * @return R
@@ -44,5 +44,5 @@ public interface PayCardInformationService extends IService<PayCardInformation> 
      * @param payCardInformation 工资卡信息表
      * @return R
      * */
-    Long insertPayCard(PayCardInformationDTO payCardInformation);
+    Long insertPayCard(PayCardInformationDTO payCardInformation) throws Exception;
 }

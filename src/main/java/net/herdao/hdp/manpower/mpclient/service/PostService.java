@@ -1,15 +1,25 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
-import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostDetailVO;
-import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
-
 import java.util.List;
 import java.util.Map;
 
-public interface PostService extends  EntityService<Post> {
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Post;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostListVO;
+import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
+
+public interface PostService extends  EntityService<Post> {
+	/**
+	 * 分页查询
+	 * 
+	 * @param page
+	 * @param post
+	 * @return
+	 */
+	IPage<PostListVO> page(Page page, Post post);
     /**
      * 岗位列表
      *

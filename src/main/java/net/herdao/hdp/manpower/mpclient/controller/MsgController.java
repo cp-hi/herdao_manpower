@@ -21,12 +21,14 @@ public class MsgController {
     public R<String> getEmailTemplate(String type) {
         return R.ok("邮件模板");
     }
+
     @ApiOperation(value = "发送邮件", notes = "发送邮件")
     @PostMapping("/email/send")
     public R<Boolean> sendEmail(@RequestBody EmailSendInfo emailSendInfo) {
         msgService.sendEmail(emailSendInfo);
         return null;
     }
+
     @ApiOperation(value = "消息重发", notes = "消息重发")
     @PostMapping("/msg/resend")
     public R<Boolean> msgResend(List<Integer> ids) {

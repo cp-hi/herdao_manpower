@@ -39,9 +39,12 @@ public class SaveStaffTransferInfoDTO {
     @NotBlank
     private Long transPostId;
 
-    @ApiModelProperty(value = "调动后职级 id", name = "jobLevelId", example = "123", required = true)
+    /**
+     * 为了适配前端获取职级组件，要和 vo 中的字典类型的字段名一致
+     */
+    @ApiModelProperty(value = "调动后职级 id", name = "transJobLevel", example = "123", required = true)
     @NotBlank
-    private Long transJobLevelId;
+    private Long transJobLevel;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901", required = true)
     @NotBlank

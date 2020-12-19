@@ -29,7 +29,6 @@ import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.admin.api.entity.SysDept;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteDeptService;
-import net.herdao.hdp.admin.api.feign.RemoteUserService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.constant.ManpowerContants;
@@ -49,7 +48,6 @@ import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
@@ -72,10 +70,6 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private UserService userService;
     @Autowired
     private StaffService staffService;
-    @Autowired
-    private UserpostService userpostService;
-    @Autowired
-    private RemoteUserService remoteUserService;
     @Autowired
     private SysDictItemService sysDictItemService;
     @Autowired
