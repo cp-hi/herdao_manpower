@@ -46,21 +46,7 @@ private static final long serialVersionUID = 1L;
     @TableId
     @ApiModelProperty(value="id")
     private Long id;
-    /**
-     * 附件名称
-     */
-    @ApiModelProperty(value="附件名称")
-    private String fileName;
-    /**
-     * 文件类型
-     */
-    @ApiModelProperty(value="文件类型")
-    private String fileType;
-    /**
-     * 附件大小
-     */
-    @ApiModelProperty(value="附件大小")
-    private String fileSize;
+    
 
     /**
      * 文件上传ID (上传ftp后成功返回的ID)
@@ -82,36 +68,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="业务表ID(例如：人才表的主键ID)")
     private String bizId;
-    /**
-     * 预留字段1
-     */
-    @ApiModelProperty(value="预留字段1")
-    private String field1;
-    /**
-     * 预留字段2
-     */
-    @ApiModelProperty(value="预留字段2")
-    private String field2;
-    /**
-     * 预留字段3
-     */
-    @ApiModelProperty(value="预留字段3")
-    private String field3;
-    /**
-     * 预留字段4
-     */
-    @ApiModelProperty(value="预留字段4")
-    private String field4;
-    /**
-     * 预留字段5
-     */
-    @ApiModelProperty(value="预留字段5")
-    private String field5;
-    /**
-     * 租户ID
-     */
-    @ApiModelProperty(value="租户ID")
-    private Long tenantId;
+    
     /**
      * 逻辑删除
      */

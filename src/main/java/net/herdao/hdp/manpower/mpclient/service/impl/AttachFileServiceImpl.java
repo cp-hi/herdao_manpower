@@ -16,33 +16,30 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
-import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
-import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
-import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
-import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
-import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
-import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
-import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
-import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
-import net.herdao.hdp.manpower.mpmobile.entity.PayCardInformation;
-import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
-import java.time.LocalDateTime;
-import java.util.*;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import cn.hutool.core.util.ObjectUtil;
+import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
+import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
+import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
+import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
+import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
+import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 
 /**
  * 通用附件表
@@ -91,7 +88,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
                             file.setCreatorName(sysUser.getAliasName());
                         }
                         //否则  新增
-                        file.setFileType(item.getExtend());
+                        //file.setFileType(item.getExtend());
                         this.baseMapper.insert(file);
                     }
             );
@@ -116,7 +113,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         List<AttachFileInfoDTO> attachFileInfoDTOS = convert2DtoList(attachfile);
         return attachFileInfoDTOS;
     }
-
+    
     /**
      * 适配数据库中获取的原始数据为传给前端
      *
@@ -152,4 +149,28 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     }
 
 
+    
+    @Override
+    public List<AttachFile> getAttachFileByBizId(Long bizId) {
+    	
+    	QueryWrapper<AttachFile> queryWrapper = new QueryWrapper<>();
+    	queryWrapper.eq("biz_id", bizId);
+        List<AttachFile> attachfile = this.baseMapper.selectList(queryWrapper);
+        return attachfile;
+    }
+
+
+	@Override
+	public Boolean saveAttachFile(AttachFileAddDTO dto) {
+		
+		AttachFile attachFile = new AttachFile();
+		attachFile.setBizId(dto.getBizId());
+		attachFile.setFileId(dto.getFileId());
+		attachFile.setModuleType(dto.getModuleType());
+		attachFile.setModuleValue(dto.getModuleValue());
+		
+		return this.save(attachFile);
+	}
+    
+    
 }

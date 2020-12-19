@@ -45,6 +45,6 @@ public interface StaffSecondFileTypeService extends IService<StaffSecondFileType
      * @param entity
      * @return
      */
-    List<StaffFileTypeDTO> findStaffFileType(StaffFileTypeDTO entity);
+    List<StaffFileTypeDTO> findStaffFileType(String type,Long bizId);
 
 }

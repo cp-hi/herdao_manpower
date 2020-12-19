@@ -124,11 +124,12 @@ public class StaffSecondFileTypeController {
     @ApiOperation(value = "员工附件二级分类", notes = "员工附件二级分类")
     @GetMapping("/findStaffFileType")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="superId",value="员工一级附件分类ID"),
+        @ApiImplicitParam(name="superId",value="员工一级附件分类 value"),
+        @ApiImplicitParam(name="bizId",value="当前业务表单的ID"),
     })
     //@PreAuthorize("@pms.hasPermission('oa_organization_view')" )
-    public R findStaffFileType(StaffFileTypeDTO entity) {
-        List<StaffFileTypeDTO> list = staffSecondFileTypeService.findStaffFileType(entity);
+    public R findStaffFileType(String superId,Long bizId) {
+        List<StaffFileTypeDTO> list = staffSecondFileTypeService.findStaffFileType(superId,bizId);
         return R.ok(list);
     }
 }
