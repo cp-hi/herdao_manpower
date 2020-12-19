@@ -39,8 +39,8 @@ public abstract class LocalDateTimeUtils {
     /**
      * 字符串日期转 LocalDateTime
      * 
-     * @param dateTime 字符串
-     * @param format
+     * @param dateTime 字符串日期
+     * @param format 格式
      * @return
      */
 	public static LocalDateTime convertStr2DateTime(String dateTime, String format) {
