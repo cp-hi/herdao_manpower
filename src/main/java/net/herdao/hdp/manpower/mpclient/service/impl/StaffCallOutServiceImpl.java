@@ -132,7 +132,6 @@ public class StaffCallOutServiceImpl extends ServiceImpl<StaffTransferApproveMap
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
-            to.setTransJobLevelId(transJobLevel.getId());
             to.setTransJobLevelName(transJobLevel.getJobLevelName());
         }
 

@@ -246,34 +246,22 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
 
         JobLevel transJobLevel = jobLevelService.getById(from.getTransJobLevelId());
         if (transJobLevel != null) {
-            StaffTransferInfoVO.Dictionary dict = new StaffTransferInfoVO.Dictionary();
-            dict.setLabel(transJobLevel.getJobLevelName());
-            dict.setValue(transJobLevel.getId());
-            to.setTransJobLevel(dict);
+            to.setTransJobLevelName(transJobLevel.getJobLevelName());
         }
 
-        Company paidUnits = companyService.getById(from.getPaidUnitsId());
-        if (paidUnits != null) {
-            StaffTransferInfoVO.Dictionary payUnit = new StaffTransferInfoVO.Dictionary();
-            payUnit.setLabel(paidUnits.getCompanyName());
-            payUnit.setValue(paidUnits.getId());
-            to.setPayUnit(payUnit);
+        Company paidUnit = companyService.getById(from.getPaidUnitsId());
+        if (paidUnit != null) {
+            to.setPayUnitName(paidUnit.getCompanyName());
         }
 
-        Company fundUnits = companyService.getById(from.getFundUnitsId());
-        if (fundUnits != null) {
-            StaffTransferInfoVO.Dictionary fundUnit = new StaffTransferInfoVO.Dictionary();
-            fundUnit.setLabel(fundUnits.getCompanyName());
-            fundUnit.setValue(fundUnits.getId());
-            to.setFundUnit(fundUnit);
+        Company fundUnit = companyService.getById(from.getFundUnitsId());
+        if (fundUnit != null) {
+            to.setFundUnitName(fundUnit.getCompanyName());
         }
 
-        Company securityUnits = companyService.getById(from.getSecurityUnitsId());
-        if (securityUnits != null) {
-            StaffTransferInfoVO.Dictionary securityUnit = new StaffTransferInfoVO.Dictionary();
-            securityUnit.setValue(securityUnits.getId());
-            securityUnit.setLabel(securityUnits.getCompanyName());
-            to.setSecurityUnit(securityUnit);
+        Company securityUnit = companyService.getById(from.getSecurityUnitsId());
+        if (securityUnit != null) {
+            to.setSecurityUnitName(securityUnit.getCompanyName());
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
