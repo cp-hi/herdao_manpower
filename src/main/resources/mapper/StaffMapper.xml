@@ -502,6 +502,7 @@
 		left join mp_job_level jl on up.JOB_LEVEL_ID=jl.id
         <where>
             AND f.del_flag = 0
+            AND f.staff_scope = 1
             <if test="searchText != null and searchText !='' ">
                 AND  CONCAT(f.STAFF_NAME,o.ORG_NAME,p.POST_NAME) like CONCAT('%',#{searchText},'%')
             </if>
@@ -531,6 +532,7 @@
             </if>
         </where>
     </select>
+
     <select id="getStaffCount" resultType="int">
         SELECT
             count(1)
@@ -548,6 +550,9 @@
             </if>
             <if test="jobType != null">
                 and s.job_type = #{jobType}
+            </if>
+            <if test="staffScope != null">
+                and s.staff_scope = #{staffScope}
             </if>
             <if test="orgId != null">
                 AND o.ORG_CODE like (select CONCAT(org.ORG_CODE,'%') from mp_organization org where org.id=#{orgId} limit 1)

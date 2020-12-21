@@ -25,15 +25,16 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,8 @@ public class StaffPositiveApprovalController {
     @Autowired
     private StaffPositiveApprovalService staffPositiveApprovalService;
 
+    private final StaffService staffService;
+
     /**
      * 分页查询
      * @param page 分页对象
@@ -80,6 +83,9 @@ public class StaffPositiveApprovalController {
     /**
      * 获取转正详情
      * @param id 主键ID
+     *
+     *
+     *
      * @return
      */
     @ApiOperation(value = "获取转正详情")
@@ -136,8 +142,8 @@ public class StaffPositiveApprovalController {
      */
     @ApiOperation(value = "编辑")
     @PutMapping("/{id}")
-    private R<Long> update(@PathVariable("id") @NotNull Long id,
-                           @RequestBody @NotNull StaffPositiveApprovalSaveDTO dto) throws Exception {
+    public R<Long> update(@PathVariable("id") @NotNull Long id,
+                           @RequestBody StaffPositiveApprovalSaveDTO dto) throws Exception {
         return R.ok(staffPositiveApprovalService.updateStaffLeave(id, dto));
     }
 
@@ -193,24 +199,18 @@ public class StaffPositiveApprovalController {
         StaffPositiveApprovalPageVO vo = new StaffPositiveApprovalPageVO();
         return R.ok(vo);
     }
-/*
-    @Autowired
-    SysDictItem
 
-    *//**
-     * 通过id删除转正审批表
-     *
-     * @param ids id
-     * @return R
-     *//*
-    @ApiOperation(value = "通过id删除转正审批表", notes = "通过id删除转正审批表")
-    @SysLog("取消转正")
-    @DeleteMapping("/{ids}")
-//    @PreAuthorize("@pms.hasPermission('generator_StaffPositiveApproval_del')" )
-    public R getSysDictItem(String status) {
-        String[] inputIds = ids.split(StringPool.COMMA);
-        staffPositiveApprovalService.deleteById(inputIds);
-        return R.ok();
-    }*/
+
+    /**
+     * 转正管理(员工)基础信息-（根据id查询基本信息）
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "转正管理(员工)基础信息-（根据id查询基本信息）")
+    @GetMapping("/changes/basic")
+    public R<StaffBasicPositiveVO> getStaffPositiveBasic(@RequestParam("id") Long id) throws Exception {
+        return R.ok(staffService.getStaffPositiveBasic(id));
+    }
 
 }

@@ -22,5 +22,5 @@ public interface StaffContractRenewalService extends IService<StaffContractRenew
 
     Long updateInfo(Long id, SaveStaffContractRenewalDTO dto) throws Exception;
 
-    StaffContractRenewalInfoVO getDetail(Long id);
+    StaffContractRenewalInfoVO getDetail(Long id) throws Exception;
 }

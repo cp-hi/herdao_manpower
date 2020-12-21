@@ -1,11 +1,28 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
@@ -42,13 +59,19 @@ import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.entity.*;
+import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.Organization;
+import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
+import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
+import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import net.herdao.hdp.manpower.mpclient.service.GroupService;
 import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
-import net.herdao.hdp.manpower.mpclient.service.PostOrgService;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
 import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
@@ -59,26 +82,12 @@ import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
-import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.sys.mapper.SysDictItemMapper;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 员工表
@@ -291,10 +300,14 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Override
 	public Map<String, Object> queryCount(Long groupId,Long orgId){
-		int total = baseMapper.getStaffCount(groupId,null,orgId);
-		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId);
-		int jobType2 = baseMapper.getStaffCount(groupId,"2",orgId);
-		int jobType3 = baseMapper.getStaffCount(groupId,"7",orgId);
+		//统计全部员工 ，全部员工=在职员工， jobType=1.(全职),staffScope=1 (在职）
+		int total =  baseMapper.getStaffCount(groupId,null,orgId,"1");
+
+		//统计全职员工数  jobType=1(全职)
+		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId,"1");
+
+		int jobType2 = baseMapper.getStaffCount(groupId,"2",orgId,"1");
+		int jobType3 = baseMapper.getStaffCount(groupId,"7",orgId,"1");
 		int toJoin = 0;
 		int toLeave = 0;
 		Map<String, Object> map = new HashMap<>();
@@ -375,6 +388,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	private StaffMapper staffMapper;
 	@Autowired
 	private SysDictItemMapper sysDictItemMapper;
+
+
 	@Override
 	public StaffBasicVO selectBasicById(Long id) throws Exception {
 		// 查询员工信息
@@ -427,8 +442,24 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			if (user.getOrgName() != null){
 				vo.setNowOrgName(user.getOrgName());
 			}
-			Group group = groupService.getGroupByOrgId(user.getOrgId());
-			vo.setGroupId(group.getId());
+			// TODO:: 待抽象出去
+			// 获取 group 不能根据 orgId 直接去拿，
+			// 现根据当前的 orgId 获取到当前的 orgCode
+			// 再根据当前的 orgCode 左边高3位数据获取到当前组织的顶层组织 topOrgId
+			// 再将 topOrgId 作为参数传给 groupId
+			Organization currentOrg = organizationService.getById(user.getOrgId());
+			String currentOrgCode = currentOrg.getOrgCode();
+			String currentTopOrgCode = currentOrgCode.substring(0,3);
+
+			QueryWrapper<Organization> wrapper = new QueryWrapper();
+			Organization currentTopOrg = organizationService.getOne(wrapper.eq("org_code", currentTopOrgCode));
+			if (currentTopOrg != null) {
+				QueryWrapper<Group> groupQueryWrapper = new QueryWrapper();
+				Group group = groupService.getOne(groupQueryWrapper.eq("org_id", currentTopOrg.getId()));
+				if (group != null) {
+					vo.setGroupId(group.getId());
+				}
+			}
 			vo.setNowPostOrgId(user.getPostOrgId());
 			if (user.getPostName() != null) {
 				vo.setNowPostOrgName(user.getPostName());
@@ -438,7 +469,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				vo.setNowJobLevelName(user.getJobLevelName());
 			}
 			vo.setEntryTime(user.getEntryTime());
-
+			vo.setAge(user.getAge());
+			if (StringUtils.isNotBlank(user.getSex())) {
+				vo.setSex(user.getSex());
+			}
+			if (StringUtils.isNotBlank(user.getBirthplace())) {
+				vo.setBirthplace(user.getBirthplace());
+			}
 			return vo;
 		}
 		return null;
@@ -535,6 +572,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		for(int i=0;i<expList.size();i++){
 			workExp = new StaffWorkExpDTO();
 			BeanUtils.copyProperties(expList.get(i), workExp);
+			workExp.setBeginDate(LocalDateTimeUtils.convert2Long(expList.get(i).getBeginDate()));
+			workExp.setEndDate(LocalDateTimeUtils.convert2Long(expList.get(i).getEndDate()));
 			expDtoList.add(workExp);
 		}
 		map.put("staffWorkExpDTO", expDtoList);
@@ -785,5 +824,25 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staffWorkYearDTO, staff);
 		return this.updateById(staff);
 	}
+
+
+	/**
+	 * 转正管理(员工)基础信息-（根据id查询基本信息）
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public StaffBasicPositiveVO getStaffPositiveBasic(Long id)  throws  Exception{
+		//封装员工基本信息接口
+		StaffBasicVO staffBasicVO = this.selectBasicById(id);
+		StaffBasicPositiveVO staffBasicPositiveVO = new StaffBasicPositiveVO();
+		BeanUtils.copyProperties(staffBasicVO,staffBasicPositiveVO);
+		staffBasicPositiveVO.setEntryTime1(staffBasicPositiveVO.getEntryTime());
+		return staffBasicPositiveVO;
+	}
+
+
+
+
 
 }

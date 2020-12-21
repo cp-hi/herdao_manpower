@@ -25,6 +25,7 @@ import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalInfoDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
@@ -136,16 +137,14 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
     @Override
     public Long insert(StaffPositiveApprovalSaveDTO dto) {
         StaffPositiveApproval entity = new StaffPositiveApproval();
-
-
         BeanUtils.copyProperties(dto, entity);
         entity.setEntryTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getEntryTime()));
         entity.setPositiveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getPositiveTime()));
-        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
+        //更改
+        entity.setOrgId(dto.getNowOrgId());
         entity.setDelFlag(false);
-
         SysUser sysUser = SysUserUtils.getSysUser();
-        //不为空 修改
         entity.setCreatorTime(LocalDateTime.now());
         if (ObjectUtil.isNotNull(sysUser)) {
             entity.setCreatorCode(sysUser.getUsername());
@@ -164,7 +163,7 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
      */
     @Override
     public StaffPositiveApprovalInfoVO getStaffPositive(Long id) {
-        StaffPositiveApprovalDetailDTO entity = this.baseMapper.getPositiveApprovalById(id);
+        StaffPositiveApprovalInfoDTO entity = this.baseMapper.getPositiveApprovalById(id);
         if (entity != null) {
             StaffPositiveApprovalInfoVO vo = new StaffPositiveApprovalInfoVO();
             BeanUtils.copyProperties(entity, vo);

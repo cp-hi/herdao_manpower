@@ -1,19 +1,16 @@
-package net.herdao.hdp.manpower.mpclient.vo.staff;
+package net.herdao.hdp.manpower.mpclient.vo.staff.positive;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.admin.api.entity.SysDictItem;
-
-import javax.validation.Valid;
 
 /**
  * @Author Liu Chang
  * @Date 2020/11/24 2:57 下午
  */
 @Data
-@ApiModel(value = "人事调动详情页-员工基本信息")
-public class StaffBasicVO {
+@ApiModel(value = "转正管理(员工)基础信息-（根据id查询基本信息")
+public class StaffBasicPositiveVO {
     @ApiModelProperty(value = "用户 id", name = "userId", example = "1")
     private Long userId;
 
@@ -50,12 +47,7 @@ public class StaffBasicVO {
     @ApiModelProperty(value = "职级名称", name = "jobLevelName")
     private String nowJobLevelName;
 
-    @ApiModelProperty(value="性别")
-    private String sex;
 
-    @ApiModelProperty(value="年龄")
-    private int age;
-
-    @ApiModelProperty(value="籍贯")
-    private String birthplace;
+    @ApiModelProperty(value="试用日期")
+    private long entryTime1;
 }

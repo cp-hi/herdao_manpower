@@ -26,7 +26,6 @@ public class WorkexperienceDTO {
     @ApiModelProperty(value="ID")
     private Long id;
 
-
     /**
      * 员工姓名
      */

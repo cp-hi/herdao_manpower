@@ -137,31 +137,37 @@
 
     </select>
     <select id="getPositiveApprovalById"
-            resultType="net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO">
-    SELECT
-        mspa.ENTRY_TIME AS entryTime,
-        mspa.ENTRY_TIME AS tryTime,
-        mspa.`user_id`,
-        mspa.try_any_job_pay AS try_any_job_pay,
-        mspa.`positive_question_ans1`,
-        mspa.`positive_question_ans2`,
-        mspa.`positive_question_ans3`,
-        mspa.`positive_question_ans4`,
-        mspa.`positive_question_ans5`,
-        mspa.`positive_question_ans6`,
-        mspa.positive_type AS positive_type,
-        mpo.`POST_NAME` AS postName,
-        np.POST_NAME AS now_post_name,
-        mpo.`POST_NAME` AS old_post_name,
-        ms.`STAFF_NAME` AS staff_name
-        FROM
-        mp_staff_positive_approval AS mspa
-        LEFT JOIN mp_post AS np
-        ON mspa.post_id = np.id
-        LEFT JOIN `mp_post_org` AS mpo
-        ON mspa.post_org_id = mpo.`ID`
-        LEFT JOIN mp_staff AS ms
-        ON mspa.user_id = ms.user_id
+            resultType="net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalInfoDTO">
+        SELECT
+        mspa.id,
+        mspa.user_id,
+        s.staff_name,
+        s.staff_code,
+        s.entry_time,
+        dt2.label AS JOB_TYPE,
+        s.company_seniority,
+        mspa.positive_time,
+        mspa.creator_time AS creator_time,
+        mspa.modifier_name,
+        mspa.modifier_time,
+        mspa.positive_type,
+        mspa.status,
+        mspa.positive_question_ans1,
+        mspa.positive_question_ans2,
+        mspa.positive_question_ans3,
+        mspa.positive_question_ans4,
+        mspa.positive_question_ans5,
+        mspa.positive_question_ans6,
+        mspa.appendix_ids AS  appendixIds,
+        norg.ORG_NAME AS now_org_name,
+        njl.JOB_LEVEL_NAME AS now_JOB_LEVEL_NAME,
+        np.POST_NAME now_post_name
+        FROM mp_staff_positive_approval AS  mspa
+        LEFT JOIN mp_staff s ON mspa.user_id = s.user_id
+        LEFT JOIN mp_organization norg ON mspa.org_id = norg.id
+        LEFT JOIN sys_dict_item dt2 ON s.JOB_TYPE = dt2.VALUE AND dt2.type = 'JOB_TYPE'
+        LEFT JOIN mp_post np ON mspa.before_post_id = np.id
+        LEFT JOIN mp_job_level njl ON mspa.now_job_level_id = njl.id
         <where>
             <if test="id != null">
                 and mspa.id = #{id}

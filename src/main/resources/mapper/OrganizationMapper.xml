@@ -517,48 +517,32 @@
 
     <!-- 组织架构详情 -->
     <select id="findOrgDetails" resultType="net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO">
-        SELECT  
-          	org.id,
-            org.org_name,
-            org.org_simple_desc,
-            org.org_code,
-            org.parent_id, 
-            orgp.org_name AS parent_name, 
-			orgp.org_code AS parent_code,
-			org.org_level,
-			dicc.label AS org_level_name,
-			org.org_type,
-			dict.label AS org_type_name,
-			org.org_charge_work_id,
-			org.org_charge_work_name,
-			org.org_charge_work_no,
-			org.post_id,
-			pt.post_name,
-			pt.post_code,
-			0 staff_total,
-	        org.organizational,
-	        org.welfare_type,
-	        org.sort_no,
-	        ws.version AS welfare_type_name,
-	        org.org_desc,
-	        org.is_stop,
-	        org.start_date,
-	        org.stop_date,
-	        CASE (
-				 SELECT COUNT(1) FROM mp_user us 
-				 WHERE us.org_dept_id IN( SELECT orgt.id FROM mp_organization orgt WHERE orgt.org_code like CONCAT(org.org_code,'%') )
-			) WHEN 0 THEN 1 ELSE 0 END canDelete
-         FROM mp_organization org
-         LEFT JOIN mp_organization orgp ON org.parent_id = orgp.id
-         LEFT JOIN sys_dict_item dicc ON dicc.type = 'ZZCJ' AND dicc.value = org.org_level AND dicc.del_flag = 0
-         LEFT JOIN sys_dict_item dict ON dict.type = 'ZZLX' AND dict.value = org.org_type AND dict.del_flag = 0
-         LEFT JOIN mp_welfare_standards ws ON org.welfare_type = ws.welfarestandards_oid
-         LEFT JOIN mp_post pt ON org.post_id = pt.id
-         <where>
-          <if test="id != null">
-              AND  org.id = #{id}
-          </if>
-         </where>
+      SELECT
+        a.id, a.org_name, a.org_simple_desc, a.org_code, a.parent_id,
+        b.org_name AS parent_name, b.org_code AS parent_code, a.org_level,
+        c.label AS org_level_name, a.org_type, d.label AS org_type_name,
+        a.org_charge_work_id, a.org_charge_work_name, a.org_charge_work_no,
+        a.post_id, a.post_org_id, f.post_name post_org_name, f.post_name, f.post_code,
+        0 staff_total, a.organizational, a.welfare_type, a.sort_no,
+        e.version AS welfare_type_name,
+        a.org_desc,
+        a.is_stop, a.start_date, a.stop_date,
+        CASE (
+          SELECT COUNT(1)
+          FROM mp_user us
+          WHERE us.org_dept_id IN (
+            SELECT orgt.id
+            FROM mp_organization orgt
+            WHERE orgt.org_code LIKE CONCAT(a.org_code,'%')
+          )
+        ) WHEN 0 THEN 1 ELSE 0 END can_delete
+      FROM mp_organization a
+      LEFT JOIN mp_organization b ON b.id = a.parent_id
+      LEFT JOIN sys_dict_item c ON c.type = 'ZZCJ' AND c.value = a.org_level AND c.del_flag = 0
+      LEFT JOIN sys_dict_item d ON d.type = 'ZZLX' AND d.value = a.org_type AND d.del_flag = 0
+      LEFT JOIN mp_welfare_standards e ON e.welfarestandards_oid = a.welfare_type
+      LEFT JOIN mp_post_org f ON f.id = a.post_org_id
+      WHERE a.id = #{id}
     </select>
     
     <!-- 组织树组件sql查询子信息 -->

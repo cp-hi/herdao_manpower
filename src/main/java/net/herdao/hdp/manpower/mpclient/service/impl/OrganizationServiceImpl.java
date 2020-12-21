@@ -450,7 +450,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         BeanUtils.copyProperties(organizationVO, organization);
         // 获取排序
         String sortNo = organizationVO.getSortNo();
-        organization.setSortNo(StrUtil.isBlank(sortNo) ? null : Long.parseLong(sortNo));
+        organization.setSortNo(StrUtil.isBlank(sortNo) ? null : Integer.parseInt(sortNo));
         // 组织id
         Long id = organizationVO.getId();
 

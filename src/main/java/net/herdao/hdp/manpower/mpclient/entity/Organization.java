@@ -96,7 +96,7 @@ public class Organization extends BaseEntity<Organization> {
 	 * 排序
 	 */
 	@ApiModelProperty(value = "排序")
-	private Long sortNo;
+	private Integer sortNo;
 	/**
 	 * 是否停用(0 停用 ，1启用（默认），不传或者传3 查询全部)
 	 */
@@ -230,6 +230,9 @@ public class Organization extends BaseEntity<Organization> {
 	 */
 	@ApiModelProperty(value = "岗位id")
 	private Long postId;
+
+	@ApiModelProperty(value = "岗位组织关系id")
+	private Long postOrgId;
 
 	/**
 	 * 负责岗位名称

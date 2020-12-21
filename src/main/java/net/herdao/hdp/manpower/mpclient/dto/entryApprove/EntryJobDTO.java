@@ -52,7 +52,7 @@ public class EntryJobDTO {
      * 入职时间
      */
     @ApiModelProperty(value="入职时间")
-    private String entryPostTime;
+    private Long entryPostTime;
 
     /**
      * 试用期
@@ -73,5 +73,11 @@ public class EntryJobDTO {
     @ApiModelProperty(value = "所属岗位id")
     @ExcelIgnore
     private Long postId;
+
+    /**
+     * 入职日期-LocalDateTime
+     */
+    @ApiModelProperty(value="入职日期-LocalDateTime",hidden = true)
+    private LocalDateTime entryPostTimeLocal;
 
 }
