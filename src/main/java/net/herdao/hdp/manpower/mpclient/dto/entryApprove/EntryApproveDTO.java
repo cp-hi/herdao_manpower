@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "审批录用")
-public class EntryApproveDTO {
+public class EntryApproveDTO   {
 
     /**
      * id
