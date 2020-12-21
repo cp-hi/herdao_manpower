@@ -17,9 +17,11 @@ import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import net.herdao.hdp.manpower.mpclient.service.HdpService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.CompanyVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -136,5 +138,26 @@ public class CompanyController extends HdpBaseController{
         List<Company> list = companyService.list();
         return R.ok(list);
     }
+
+
+    /**
+     * 公司列表-下拉-前端调用
+     * @return
+     */
+    @ApiOperation(value = "公司列表-下拉-前端调用", notes = "公司列表-下拉-前端调用")
+    @GetMapping("/getCompanyListVO" )
+    public R<List<CompanyVO>> getCompanyListVO() {
+        List<Company> list = companyService.list();
+        List<CompanyVO> resultList=new ArrayList<>();
+        for (Company company : list) {
+            CompanyVO companyVO=new CompanyVO();
+            companyVO.setLabel(company.getCompanyName());
+            companyVO.setId(company.getId());
+            resultList.add(companyVO);
+        }
+
+        return R.ok(resultList);
+    }
+
 
 }
