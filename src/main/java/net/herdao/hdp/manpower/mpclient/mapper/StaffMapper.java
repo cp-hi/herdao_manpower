@@ -169,6 +169,6 @@ public interface StaffMapper extends BaseMapper<Staff> {
 	 * @param jobType
 	 * @return
 	 */
-	Integer getStaffCount(@Param("groupId") Long groupId,@Param("jobType")String jobType,@Param("orgId")Long orgId);
+	Integer getStaffCount(@Param("groupId") Long groupId,@Param("jobType")String jobType,@Param("orgId")Long orgId,@Param("staffScope")String staffScope);
 
 }
