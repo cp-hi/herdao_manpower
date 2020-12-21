@@ -34,12 +34,11 @@ import java.math.BigDecimal;
  */
 @Data
 @TableName("mp_company")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "注册公司VO")
-public class CompanyVO extends BaseEntity<CompanyVO> {
+public class CompanyVO {
 
     /**
-     * 公司编码
+     * 公司名称
      */
     @ApiModelProperty(value="公司名称")
     private String label;
@@ -48,6 +47,6 @@ public class CompanyVO extends BaseEntity<CompanyVO> {
      * 公司ID
      */
     @ApiModelProperty(value="公司ID")
-    private String value;
+    private Long value;
 
 }

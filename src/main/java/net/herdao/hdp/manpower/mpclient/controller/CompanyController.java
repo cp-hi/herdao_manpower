@@ -152,7 +152,7 @@ public class CompanyController extends HdpBaseController{
         for (Company company : list) {
             CompanyVO companyVO=new CompanyVO();
             companyVO.setLabel(company.getCompanyName());
-            companyVO.setId(company.getId());
+            companyVO.setValue(company.getId());
             resultList.add(companyVO);
         }
 
