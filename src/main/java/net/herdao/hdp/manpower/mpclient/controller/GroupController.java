@@ -89,6 +89,7 @@ public class GroupController extends HdpBaseController {
     public R getMpGroupPage(Page page, GroupListDTO group, String searchText) {
         return R.ok(groupService.groupPage(page, group, searchText));
     }
+
     @ApiOperation(value = "导出集团", notes = "导出集团")
     @GetMapping("/export" )
     @SneakyThrows

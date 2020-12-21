@@ -74,7 +74,7 @@ public class OrganizationFormVO {
 	 * 组织负责人ID
 	 */
 	@ApiModelProperty(value = "组织负责人ID")
-	private Long orgChargeWorkId;
+	private String orgChargeWorkId;
 	/**
 	 * 组织负责人姓名
 	 */
@@ -86,12 +86,14 @@ public class OrganizationFormVO {
 	 */
 	@ApiModelProperty(value = "组织负责人工号")
 	private String orgChargeWorkNo;
-	
 	/**
 	 * 负责岗位id
 	 */
 	@ApiModelProperty(value = "负责岗位id")
 	private Long postId;
+
+	@ApiModelProperty(value = "岗位组织关系id")
+	private Long postOrgId;
 	/**
 	 * 负责岗位
 	 */
@@ -132,7 +134,7 @@ public class OrganizationFormVO {
 	 * 排序
 	 */
 	@ApiModelProperty(value = "排序")
-	private Long sortNo;
+	private Integer sortNo;
 	
 	/**
 	 * 组织描述
