@@ -17,6 +17,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -264,6 +265,15 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         }
         if (ObjectUtil.isNotNull(dto.getIntentionPostId())){
             recruitment.setRecruitmentPostId(dto.getIntentionPostId());
+        }
+        if (ObjectUtil.isNotNull(dto.getMinimumLevelincome())){
+            recruitment.setMinimumLevelincome(new BigDecimal(dto.getMinimumLevelincome()));
+        }
+        if (ObjectUtil.isNotNull(dto.getMinimumLevelincome())){
+            recruitment.setMinimumLevelincome(new BigDecimal(dto.getMinimumLevelincome()));
+        }
+        if (ObjectUtil.isNotNull(dto.getExpectedLevelincome())){
+            recruitment.setExpectedLevelincome(new BigDecimal(dto.getExpectedLevelincome()));
         }
 
         SysUser sysUser = SysUserUtils.getSysUser();
