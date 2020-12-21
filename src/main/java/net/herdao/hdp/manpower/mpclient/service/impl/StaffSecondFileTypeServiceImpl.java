@@ -119,16 +119,37 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
     		dto.setType(dType);
     		dto.setValue(dValue);
     		List<String> fileIdList = new ArrayList<>();
+    		List<AttachFile> tempList = new ArrayList<>();
+    		String extend = "";
+    		String url = "";
     		for (AttachFile attachFile : fileList) {
     			String aType = attachFile.getModuleType();
     			String aValue = attachFile.getModuleValue();
     			if(aType.equals(dType) && aValue.equals(dValue)) {
     				fileIdList.add(attachFile.getFileId());
+    				tempList.add(attachFile);
+    				//获取第一张图片
+        			if(StringUtils.isEmpty(extend)) {
+        				String fileType = attachFile.getExtend();
+        				if("png".equals(fileType.toLowerCase()) || "jpg".equals(fileType.toLowerCase()) || 
+        				   "jpeg".equals(fileType.toLowerCase())|| "bmp".equals(fileType.toLowerCase()) ) {
+        					extend = fileType;
+        					url = attachFile.getUrl();
+        				}
+        			}
     			}
     		}
+    		//没有图片给第一个附件的 文件
+    		if(StringUtils.isEmpty(extend) && tempList.size() > 0) {
+    			extend = tempList.get(0).getExtend();
+				url = tempList.get(0).getUrl();
+    		}
+    		
     		String fileIds = StringUtils.join(fileIdList.toArray(), ",");
     		dto.setFileCount(fileIdList.size());
     		dto.setFileIds(fileIds);
+    		dto.setUrl(url);
+    		dto.setExtend(extend);
     		fileIdList = null;
     		dtoList.add(dto);
 		}

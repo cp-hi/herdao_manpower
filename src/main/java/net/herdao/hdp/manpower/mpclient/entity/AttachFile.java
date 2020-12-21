@@ -104,4 +104,43 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="修改人时间")
     private LocalDateTime modifierTime;
+    
+    
+    /**
+	 * 源文件名称
+	 */
+	@ApiModelProperty(value = "源文件名称")
+	private String originalFilename;
+	
+	/**
+	 * 保存文件名
+	 */
+	@ApiModelProperty(value = "保存文件名")
+	private String fileName;
+
+	/**
+	 * 拓展名
+	 */
+	@ApiModelProperty(value = "拓展名")
+	private String extend;
+	
+	/**
+	 * 文件路径
+	 */
+	@ApiModelProperty(value = "文件路径")
+	private String ftpFilePath;
+	
+	
+	/**
+	 * 文件大小
+	 */
+	@ApiModelProperty(value = "文件大小")
+	private Long fileSize;
+	
+	/**
+	 * 直接下载的URL
+	 */
+	@ApiModelProperty(value = "直接下载的URL")
+	private String url;
+    
 }
