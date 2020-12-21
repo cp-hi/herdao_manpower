@@ -54,11 +54,7 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="员工id")
     private Long userId;
 
-    /**
-     * 部门id
-     */
-    @ApiModelProperty(value="部门id")
-    private Long orgId;
+
     /**
      * 部门oid
      */
@@ -244,7 +240,7 @@ private static final long serialVersionUID = 1L;
 
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
+    private String appendixIds;
 
 //--------------------------------------------------------------->'
     /**
@@ -270,4 +266,12 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value = "试任日期")
     private String tryAnyDate;
+
+
+
+    /**
+     * 部门id
+     */
+    @ApiModelProperty(value="部门id")
+    private Long nowOrgId;
 }
