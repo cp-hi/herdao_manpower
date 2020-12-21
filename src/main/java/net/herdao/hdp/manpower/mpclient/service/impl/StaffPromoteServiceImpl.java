@@ -205,7 +205,6 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
         if (staffBasicVO != null) {
             BeanUtils.copyProperties(staffBasicVO, to);
-            to.setStaffNameInfo(staffBasicVO.getStaffNameAndCode());
         }
 
         return to;
