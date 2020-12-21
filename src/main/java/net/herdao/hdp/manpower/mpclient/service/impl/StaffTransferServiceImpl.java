@@ -280,7 +280,6 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
         if (staffBasicVO != null) {
             BeanUtils.copyProperties(staffBasicVO, to);
-            to.setStaffNameInfo(staffBasicVO.getStaffNameAndCode());
         }
         return to;
     }

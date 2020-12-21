@@ -22,12 +22,8 @@ public class StaffCallOutInfoVO {
     @ApiModelProperty(value = "集团 id", name = "groupId", example = "1")
     private Long groupId;
 
-    /**
-     *
-     * 该字段对应 staffNameAndCode，但是为了适配前端，需要改成不同的名字
-     */
-    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameInfo", example = "张三")
-    private String staffNameInfo;
+    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
+    private String staffNameAndCode;
 
     @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
     private String staffScope;

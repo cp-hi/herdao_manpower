@@ -238,7 +238,6 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
         if (staffBasicVO != null) {
             BeanUtils.copyProperties(staffBasicVO, to);
-            to.setStaffNameInfo(staffBasicVO.getStaffNameAndCode());
         }
         return to;
     }
