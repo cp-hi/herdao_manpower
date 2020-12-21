@@ -13,9 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "入职管理-办理入职DTO")
-public class EntryInfoDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class EntryInfoDTO {
 
     /**
      * 入职管理-办理入职-个人信息
