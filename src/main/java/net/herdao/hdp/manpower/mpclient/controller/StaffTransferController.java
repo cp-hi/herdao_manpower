@@ -74,7 +74,7 @@ public class StaffTransferController {
 
     @ApiOperation(value = "新增人事调动-保存")
     @PostMapping
-    public R<Long> addStaffTransfer(@RequestBody @NotNull SaveStaffTransferInfoDTO dto) throws Exception {
+    public R<Long> addStaffTransfer(@RequestBody SaveStaffTransferInfoDTO dto) throws Exception {
        return R.ok(service.saveInfo(dto), "success");
     }
 

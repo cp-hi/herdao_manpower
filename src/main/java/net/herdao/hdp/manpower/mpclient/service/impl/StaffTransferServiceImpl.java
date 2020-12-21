@@ -71,7 +71,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         return entity.getId();
     }
 
-    private StaffTransferApprove initStaffTransferData(SaveStaffTransferInfoDTO dto) {
+    private StaffTransferApprove initStaffTransferData(SaveStaffTransferInfoDTO dto) throws Exception {
         StaffTransferApprove entity = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, entity);
 
@@ -80,6 +80,12 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
         PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
 
+        if (nowPostOrg == null) {
+            throw new Exception("无法找到原岗位信息");
+        }
+        if (transPostOrg == null) {
+            throw new Exception("无法找到调动后的应岗位");
+        }
         entity.setNowPostId(nowPostOrg.getPostId());
         entity.setTransPostId(transPostOrg.getPostId());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
