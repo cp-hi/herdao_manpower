@@ -3,6 +3,7 @@ spring:
     nacos:
       discovery:
         server-addr: ${NACOS_HOST:hdp-register}:${NACOS_PORT:8848}
+        ip: 10.1.69.173 # 开发环境及本地调试时打开
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yml
