@@ -299,14 +299,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	@Override
 	public Map<String, Object> queryCount(Long groupId,Long orgId){
 		//统计全部员工 ，全部员工=在职员工， jobType=1.(全职),staffScope=1 (在职）
-		//int total = baseMapper.getStaffCount(groupId,null,orgId);
-		int total =  baseMapper.getStaffCount(groupId,"1",orgId,"1");
+		int total =  baseMapper.getStaffCount(groupId,null,orgId,"1");
 
 		//统计全职员工数  jobType=1(全职)
-		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId,null);
+		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId,"1");
 
-		int jobType2 = baseMapper.getStaffCount(groupId,"2",orgId,null);
-		int jobType3 = baseMapper.getStaffCount(groupId,"7",orgId,null);
+		int jobType2 = baseMapper.getStaffCount(groupId,"2",orgId,"1");
+		int jobType3 = baseMapper.getStaffCount(groupId,"7",orgId,"1");
 		int toJoin = 0;
 		int toLeave = 0;
 		Map<String, Object> map = new HashMap<>();
