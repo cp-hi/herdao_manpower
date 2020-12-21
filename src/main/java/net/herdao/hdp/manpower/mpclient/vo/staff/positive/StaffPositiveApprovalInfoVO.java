@@ -78,10 +78,41 @@ public class StaffPositiveApprovalInfoVO {
     private String nowPostName;
 
 
-
-
-
-
+    /**
+     * 转正问题1回答
+     */
+    @ApiModelProperty(value="转正问题1回答")
+    private String positiveQuestionAns1;
+    /**
+     * 转正问题2回答
+     */
+    @ApiModelProperty(value="转正问题2回答")
+    private String positiveQuestionAns2;
+    /**
+     * 转正问题3回答
+     */
+    @ApiModelProperty(value="转正问题3回答")
+    private String positiveQuestionAns3;
+    /**
+     * 转正问题4回答
+     */
+    @ApiModelProperty(value="转正问题4回答")
+    private String positiveQuestionAns4;
+    /**
+     * 转正问题5回答
+     */
+    @ApiModelProperty(value="转正问题5回答")
+    private String positiveQuestionAns5;
+    /**
+     * 转正问题6回答
+     */
+    @ApiModelProperty(value="转正问题6回答")
+    private String positiveQuestionAns6;
+    /**
+     * 转正问题7回答
+     */
+    @ApiModelProperty(value="转正问题7回答")
+    private String positiveQuestionAns7;
 
 
     /**
@@ -92,5 +123,5 @@ public class StaffPositiveApprovalInfoVO {
 
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
+    private String appendixIds;
 }

@@ -498,6 +498,7 @@
 		left join mp_pipeline pip on up.pipeline_id=pip.id
         <where>
             AND f.del_flag = 0
+            AND f.staff_scope = 1
             <if test="searchText != null and searchText !='' ">
                 AND  CONCAT(f.STAFF_NAME,o.ORG_NAME,p.POST_NAME) like CONCAT('%',#{searchText},'%')
             </if>
