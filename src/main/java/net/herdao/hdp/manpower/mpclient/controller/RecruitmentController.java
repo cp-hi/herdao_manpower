@@ -185,11 +185,6 @@ public class RecruitmentController {
     })
     public R<Page<RecruitmentDTO>> findRecruitmentPage(Page page, String orgId, String searchText) {
         Page<RecruitmentDTO> recruitmentPage = recruitmentService.findRecruitmentPage(page, orgId, searchText);
-        List<RecruitmentDTO> records = recruitmentPage.getRecords();
-        for (RecruitmentDTO record : records) {
-            record.setEmail("xxxx");
-        }
-
         return R.ok(recruitmentPage);
     }
 
