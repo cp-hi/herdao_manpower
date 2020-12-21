@@ -25,14 +25,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.log.annotation.SysLog;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalExecuteDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
@@ -58,6 +57,8 @@ public class StaffPositiveApprovalController {
 
     @Autowired
     private StaffPositiveApprovalService staffPositiveApprovalService;
+
+    private final StaffService staffService;
 
     /**
      * 分页查询
@@ -193,24 +194,6 @@ public class StaffPositiveApprovalController {
         StaffPositiveApprovalPageVO vo = new StaffPositiveApprovalPageVO();
         return R.ok(vo);
     }
-/*
-    @Autowired
-    SysDictItem
 
-    *//**
-     * 通过id删除转正审批表
-     *
-     * @param ids id
-     * @return R
-     *//*
-    @ApiOperation(value = "通过id删除转正审批表", notes = "通过id删除转正审批表")
-    @SysLog("取消转正")
-    @DeleteMapping("/{ids}")
-//    @PreAuthorize("@pms.hasPermission('generator_StaffPositiveApproval_del')" )
-    public R getSysDictItem(String status) {
-        String[] inputIds = ids.split(StringPool.COMMA);
-        staffPositiveApprovalService.deleteById(inputIds);
-        return R.ok();
-    }*/
 
 }

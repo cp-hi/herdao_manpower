@@ -32,12 +32,8 @@
       <!-- 获取组织概况 -->
       <select id="fetchOrgSituation" resultMap="orgSituationMap">
           SELECT
-              sum(
-                case when s.JOB_TYPE=1 THEN 1 ELSE 0 END
-              ) full_time_job_count,
-              sum(
-                case when s.JOB_TYPE=1 and s.STAFF_SCOPE =1 THEN 1 ELSE 0 END
-              ) on_job_count,
+              SUM(CASE WHEN s.JOB_TYPE = 1 AND s.STAFF_SCOPE = 1 THEN 1 ELSE 0 END) AS full_time_job_count,
+              SUM(CASE WHEN s.STAFF_SCOPE = 1 THEN 1 ELSE 0 END) AS on_job_count,
               0 trail_count,
               0 establish_count,
               (
