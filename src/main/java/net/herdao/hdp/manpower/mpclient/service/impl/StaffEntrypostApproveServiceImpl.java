@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -196,22 +197,43 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryDTO> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findEntryPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = this.baseMapper.findEntryPage(page, orgId, searchText);
+        List<EntryDTO> records = pageResult.getRecords();
+        for (EntryDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+        return pageResult;
     }
 
     @Override
     public Page<EntryDTO> findInJobPage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findInJobPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = this.baseMapper.findInJobPage(page, orgId, searchText);
+        List<EntryDTO> records = pageResult.getRecords();
+        for (EntryDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+        return pageResult;
     }
 
     @Override
     public Page<EntryDTO> findEntryInvitePage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findEntryInvitePage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = this.baseMapper.findEntryInvitePage(page, orgId, searchText);
+        List<EntryDTO> records = pageResult.getRecords();
+        for (EntryDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+        return pageResult;
     }
 
     @Override
     public Page<EntryRegisterDTO> findEntryRegisterPage(Page<EntryRegisterDTO> page, String orgId, String entryCheckStatus, String searchText) {
-         return this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        Page<EntryRegisterDTO> pageResult = this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        List<EntryRegisterDTO> records = pageResult.getRecords();
+        for (EntryRegisterDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+
+        return pageResult;
     }
 
     @Override
@@ -221,7 +243,12 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public EntryJobDTO findEntryJobInfo(String id) {
-         return this.baseMapper.findEntryJobInfo(id);
+        EntryJobDTO entity = this.baseMapper.findEntryJobInfo(id);
+        if (ObjectUtil.isNotNull(entity)){
+            entity.setEntryPostTime(LocalDateTimeUtils.convert2Long(entity.getEntryPostTimeLocal()));
+
+        }
+        return entity;
     }
 
     @Override
