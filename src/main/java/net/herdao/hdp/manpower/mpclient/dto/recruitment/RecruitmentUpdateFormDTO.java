@@ -132,4 +132,10 @@ public class  RecruitmentUpdateFormDTO   {
     @ApiModelProperty(value="候选人头像ID")
     private String photo;
 
+    /**
+     * 提交状态
+     */
+    @ApiModelProperty(value="提交状态")
+    private String entryCheckStatus;
+
 }
