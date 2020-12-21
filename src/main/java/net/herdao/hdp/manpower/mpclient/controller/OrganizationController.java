@@ -123,7 +123,7 @@ public class OrganizationController extends HdpBaseController{
      * 更新组织
      *
      */
-    @ApiOperation(value = "组织信息", notes = "修改组织信息")
+    @ApiOperation(value = "更新组织", notes = "描述：更新组织")
     @SysLog("修改组织信息")
     @PutMapping("/updateOrg")
     public R<Organization> updateOrg(@Validated @RequestBody OrganizationVO organizationVO) {
