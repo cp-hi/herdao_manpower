@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffContractRenewalDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffContractRenewal;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import net.herdao.hdp.manpower.mpclient.service.StaffContractRenewalService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPageVO;
@@ -30,6 +34,10 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
 
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private StaffService staffService;
 
     @Autowired
     private StaffRenewContractMapper mapper;
@@ -87,18 +95,29 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
 
     @Override
     public Long add(SaveStaffContractRenewalDTO dto) {
+        StaffContractRenewal entity = initStaffContractRenewalData(dto);
+
+        mapper.insert(entity);
+        return entity.getId();
+    }
+
+    private StaffContractRenewal initStaffContractRenewalData(SaveStaffContractRenewalDTO dto) {
         StaffContractRenewal entity = new StaffContractRenewal();
         BeanUtils.copyProperties(dto, entity);
+
+        // 根据用户 id 获取到该用户的当前所在所在部门和岗位
+        UserMsgDTO userMsg = userService.getUserMsg(dto.getUserId());
+        if (userMsg != null) {
+            BeanUtils.copyProperties(userMsg, entity);
+        }
 
         entity.setContractStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractStartTime()));
         entity.setContractEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractEndTime()));
         entity.setRenewalStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalStartTime()));
         entity.setRenewalEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalEndTime()));
-
         entity.setDelFlag(false);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        mapper.insert(entity);
-        return entity.getId();
+        return entity;
     }
 
     @Override
@@ -122,19 +141,29 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
     }
 
     @Override
-    public StaffContractRenewalInfoVO getDetail(Long id) {
+    public StaffContractRenewalInfoVO getDetail(Long id) throws Exception {
         StaffContractRenewal entity = mapper.selectById(id);
         if (entity != null) {
-            StaffContractRenewalInfoVO vo = new StaffContractRenewalInfoVO();
-            BeanUtils.copyProperties(entity, vo);
-            String renewalCompanyName = companyService.getById(vo.getRenewalCompanyId()).getCompanyName();
-            vo.setRenewalCompanyName(renewalCompanyName);
-            vo.setContractStartTime(LocalDateTimeUtils.convert2Long(entity.getContractStartTime()));
-            vo.setContractEndTime(LocalDateTimeUtils.convert2Long(entity.getContractEndTime()));
-            vo.setRenewalStartTime(LocalDateTimeUtils.convert2Long(entity.getRenewalStartTime()));
-            vo.setRenewalEndTime(LocalDateTimeUtils.convert2Long(entity.getRenewalEndTime()));
-            return vo;
+            return convert2InfoVO(entity);
         }
         return null;
+    }
+
+    private StaffContractRenewalInfoVO convert2InfoVO(StaffContractRenewal from) throws Exception {
+        StaffContractRenewalInfoVO to = new StaffContractRenewalInfoVO();
+        BeanUtils.copyProperties(from, to);
+        String renewalCompanyName = companyService.getById(to.getRenewalCompanyId()).getCompanyName();
+        to.setRenewalCompanyName(renewalCompanyName);
+        to.setContractStartTime(LocalDateTimeUtils.convert2Long(from.getContractStartTime()));
+        to.setContractEndTime(LocalDateTimeUtils.convert2Long(from.getContractEndTime()));
+        to.setRenewalStartTime(LocalDateTimeUtils.convert2Long(from.getRenewalStartTime()));
+        to.setRenewalEndTime(LocalDateTimeUtils.convert2Long(from.getRenewalEndTime()));
+
+        StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
+        if (staffBasicVO != null) {
+            BeanUtils.copyProperties(staffBasicVO, to);
+            to.setStaffNameInfo(staffBasicVO.getStaffNameAndCode());
+        }
+        return to;
     }
 }

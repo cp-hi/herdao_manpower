@@ -42,4 +42,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	public UserMsgDTO getUserMsg(long id){
 		return this.baseMapper.getUserMsg(id);
 	}
+
+
 }

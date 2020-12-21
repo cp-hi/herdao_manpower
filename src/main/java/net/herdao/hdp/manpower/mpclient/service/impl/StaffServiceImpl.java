@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -467,7 +469,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				vo.setNowJobLevelName(user.getJobLevelName());
 			}
 			vo.setEntryTime(user.getEntryTime());
-
+			vo.setAge(user.getAge());
+			if (StringUtils.isNotBlank(user.getSex())) {
+				vo.setSex(user.getSex());
+			}
+			if (StringUtils.isNotBlank(user.getBirthplace())) {
+				vo.setBirthplace(user.getBirthplace());
+			}
 			return vo;
 		}
 		return null;
@@ -816,5 +824,25 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		BeanUtils.copyProperties(staffWorkYearDTO, staff);
 		return this.updateById(staff);
 	}
+
+
+	/**
+	 * 转正管理(员工)基础信息-（根据id查询基本信息）
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public StaffBasicPositiveVO getStaffPositiveBasic(Long id)  throws  Exception{
+		//封装员工基本信息接口
+		StaffBasicVO staffBasicVO = this.selectBasicById(id);
+		StaffBasicPositiveVO staffBasicPositiveVO = new StaffBasicPositiveVO();
+		BeanUtils.copyProperties(staffBasicVO,staffBasicPositiveVO);
+		staffBasicPositiveVO.setEntryTime1(staffBasicPositiveVO.getEntryTime());
+		return staffBasicPositiveVO;
+	}
+
+
+
+
 
 }

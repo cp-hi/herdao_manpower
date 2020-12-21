@@ -154,7 +154,6 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     public void delDataAfterUploading(AttachFileDTO attachFile) {
         LambdaQueryWrapper<AttachFile> lambdaQuery = Wrappers.lambdaQuery();
         this.baseMapper.delete(lambdaQuery.eq(AttachFile::getFileId, attachFile.getFileId()));
-
     }
 
 

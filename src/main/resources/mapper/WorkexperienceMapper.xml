@@ -34,7 +34,7 @@
       </resultMap>
 
       <!-- 员工工作经历分页-->
-      <select id="findStaffWorkPage" resultType="net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO">
+      <select id="findStaffWorkPage" resultType="net.herdao.hdp.manpower.mpclient.entity.Workexperience">
            SELECT t.id,
                   t.staff_name,
                   t.staff_code,
@@ -98,7 +98,7 @@
       </select>
 
     <!-- 员工工作经历-->
-    <select id="findStaffWork" resultType="net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO">
+    <select id="findStaffWork" resultType="net.herdao.hdp.manpower.mpclient.entity.Workexperience">
          SELECT t.id,
                 t.staff_name,
                 t.staff_code,
@@ -147,7 +147,7 @@
     </select>
       
     <!-- 工作情况-员工工作经历-->
-    <select id="findWorkexperienceDTO" resultType="net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO">
+    <select id="findWorkexperience" resultType="net.herdao.hdp.manpower.mpclient.entity.Workexperience">
           SELECT  f.id,
                   f.BEGIN_DATE,
                   f.END_DATE,
