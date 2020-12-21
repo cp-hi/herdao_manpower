@@ -136,16 +136,15 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
     @Override
     public Long insert(StaffPositiveApprovalSaveDTO dto) {
         StaffPositiveApproval entity = new StaffPositiveApproval();
-
-
         BeanUtils.copyProperties(dto, entity);
         entity.setEntryTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getEntryTime()));
         entity.setPositiveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getPositiveTime()));
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        //更改
+        entity.setOrgId(dto.getNowOrgId());
         entity.setDelFlag(false);
 
         SysUser sysUser = SysUserUtils.getSysUser();
-        //不为空 修改
         entity.setCreatorTime(LocalDateTime.now());
         if (ObjectUtil.isNotNull(sysUser)) {
             entity.setCreatorCode(sysUser.getUsername());
