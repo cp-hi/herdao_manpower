@@ -33,6 +33,8 @@ import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,5 +200,17 @@ public class StaffPositiveApprovalController {
         return R.ok(vo);
     }
 
+
+    /**
+     * 转正管理(员工)基础信息-（根据id查询基本信息）
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "转正管理(员工)基础信息-（根据id查询基本信息）")
+    @GetMapping("/changes/basic")
+    public R<StaffBasicPositiveVO> getStaffPositiveBasic(@RequestParam("id") Long id) throws Exception {
+        return R.ok(staffService.getStaffPositiveBasic(id));
+    }
 
 }
