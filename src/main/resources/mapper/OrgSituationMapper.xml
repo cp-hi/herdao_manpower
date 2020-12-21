@@ -36,7 +36,7 @@
                 case when s.JOB_TYPE=1 THEN 1 ELSE 0 END
               ) full_time_job_count,
               sum(
-                case when s.STAFF_SCOPE =1 THEN 1 ELSE 0 END
+                case when s.JOB_TYPE=1 and s.STAFF_SCOPE =1 THEN 1 ELSE 0 END
               ) on_job_count,
               0 trail_count,
               0 establish_count,
