@@ -682,8 +682,6 @@ public class RecruitmentController {
         return R.ok("下载二维码成功！");
     }
 
-
-
     /**
      * 获取-入职登记记录-发送邀请确认-页面内容（内含二维码）
      * @return R
