@@ -37,6 +37,7 @@ import cn.hutool.core.util.ObjectUtil;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.HerDaoFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
@@ -220,9 +221,19 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 	@Override
 	public Boolean saveAttachFile(AttachFileAddDTO dto) {
 
+		HerDaoFileDTO file = dto.getFileMsg();
+		
 		AttachFile attachFile = new AttachFile();
 		attachFile.setBizId(dto.getBizId());
-		attachFile.setFileId(dto.getFileId());
+		
+		attachFile.setFileId(file.getFileId());
+		attachFile.setOriginalFilename(file.getOriginalFilename());
+		attachFile.setFileName(file.getFileName());
+		attachFile.setExtend(file.getExtend());
+		attachFile.setFtpFilePath(file.getFtpFilePath());
+		attachFile.setFileSize(file.getFileSize());
+		attachFile.setUrl(file.getUrl());
+		
 		attachFile.setModuleType(dto.getModuleType());
 		attachFile.setModuleValue(dto.getModuleValue());
 

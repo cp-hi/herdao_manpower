@@ -70,4 +70,10 @@ public class StaffFileTypeDTO {
 	
 	@ApiModelProperty(value="附件数量")
     private Integer fileCount;
+	
+	@ApiModelProperty(value="文件扩展名")
+	private String extend;
+	
+	@ApiModelProperty(value="文件下载URL")
+	private String url;
 }
