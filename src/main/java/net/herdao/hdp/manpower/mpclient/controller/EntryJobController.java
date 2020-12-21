@@ -388,11 +388,12 @@ public class EntryJobController {
         entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,id).orderByDesc(StaffEntrypostApprove::getCreatorTime);
         List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
 
+        //修改入职登记状态
         if (CollectionUtil.isNotEmpty(entryList)){
             StaffEntrypostApprove approve = entryList.get(0);
             if (ObjectUtil.isNotNull(approve)){
                 //入职登记状态 (1:未提交，2：已提交，3：已确认）
-                approve.setEntryCheckStatus("3");
+                approve.setEntryCheckStatus("2");
             }
         }
 
