@@ -339,4 +339,28 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "是否通知(0:通知,1:不通知)")
     private Boolean whetherOrNotNoticeOf;
 
+
+
+    //
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
+
+
+    /**
+     * 所在组织
+     */
+    @ApiModelProperty(value = "所在组织")
+    private String orgName;
+
+    /**
+     * 入职日期
+     */
+    @ApiModelProperty(value = "入职日期")
+    private String entryDate;
+
+    /**
+     * 试任岗位
+     */
+    @ApiModelProperty(value = "试任岗位")
+    private String tryAnyJob;
 }

@@ -81,6 +81,9 @@ public class StaffPositiveApprovalController {
     /**
      * 获取转正详情
      * @param id 主键ID
+     *
+     *
+     *
      * @return
      */
     @ApiOperation(value = "获取转正详情")
@@ -137,8 +140,8 @@ public class StaffPositiveApprovalController {
      */
     @ApiOperation(value = "编辑")
     @PutMapping("/{id}")
-    private R<Long> update(@PathVariable("id") @NotNull Long id,
-                           @RequestBody @NotNull StaffPositiveApprovalSaveDTO dto) throws Exception {
+    public R<Long> update(@PathVariable("id") @NotNull Long id,
+                           @RequestBody StaffPositiveApprovalSaveDTO dto) throws Exception {
         return R.ok(staffPositiveApprovalService.updateStaffLeave(id, dto));
     }
 
