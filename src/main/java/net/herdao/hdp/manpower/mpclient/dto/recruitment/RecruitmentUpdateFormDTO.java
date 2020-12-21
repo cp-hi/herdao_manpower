@@ -126,5 +126,10 @@ public class  RecruitmentUpdateFormDTO   {
     @ApiModelProperty(value="国籍")
     private String nationality;
 
+    /**
+     * 候选人头像ID
+     */
+    @ApiModelProperty(value="候选人头像ID")
+    private String photo;
 
 }

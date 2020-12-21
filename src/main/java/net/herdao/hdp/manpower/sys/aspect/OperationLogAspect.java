@@ -40,36 +40,39 @@ import java.lang.reflect.Field;
 public class OperationLogAspect {
     @Autowired
     private OperationLogService operationLogService;
-
-
+    
+    
     /**
      * 记录操作的切入点
      */
+    /**
     @Pointcut("@annotation(net.herdao.hdp.manpower.sys.annotation.OperationEntity)")
     public void pointCutOperate() {
         System.out.println("pointCutOperate");
-    }
+    }*/
 
     /**
      * 保存时设置操作人信息的切入点
      */
+    /**
     @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.saveOrUpdate(..)) || execution(public * net.herdao.hdp.manpower.mpclient.service..*.*(..))")
     public void pointCutSave() {
         System.out.println("pointCutSave");
     }
-
+    
     @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.stopEntity(..))")
     public void pointCutStop() {
         System.out.println("pointCutStop");
     }
-
+     */
+    /**
     @Pointcut("execution(public * net.herdao.hdp.manpower.mpclient.service..*.delEntity(..))")
     public void pointDelete() {
         System.out.println("pointDelete");
-    }
+    }*/
 
     //region 保存实体 设置操作人信息以及实体主键
-
+    /**
     @Before("pointCutSave()")
     public void beforeSave(JoinPoint point) {
         Method method = getJoinPointMethod(point);
@@ -286,13 +289,14 @@ public class OperationLogAspect {
         OperationEntity operation = method.getAnnotation(OperationEntity.class);
         return operation;
     }
-
+	*/
     /**
      * 通过注解获取对象主键值
      *
      * @param arg
      * @return
      */
+    /**
     private Object getTableIdValue(Object arg) {
         Field objId = AnnotationUtils.getOneAnnotationFields(arg, TableId.class);
         if (null == objId) return null;
@@ -307,4 +311,6 @@ public class OperationLogAspect {
     }
 
     //endregion
+     */
+
 }
