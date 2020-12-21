@@ -298,12 +298,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Override
 	public Map<String, Object> queryCount(Long groupId,Long orgId){
-		//统计全部员工 ，全部员工=在职员工， jobType=1.(全职)
+		//统计全部员工 ，全部员工=在职员工， jobType=1.(全职),staffScope=1 (在职）
 		//int total = baseMapper.getStaffCount(groupId,null,orgId);
-		int total = baseMapper.getStaffCount(groupId,"1",orgId,null);
+		int total =  baseMapper.getStaffCount(groupId,"1",orgId,"1");
 
-		//统计全职员工数  jobType=1(全职) ,staffScope=1 (在职）
-		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId,"1");
+		//统计全职员工数  jobType=1(全职)
+		int jobType1 = baseMapper.getStaffCount(groupId,"1",orgId,null);
 
 		int jobType2 = baseMapper.getStaffCount(groupId,"2",orgId,null);
 		int jobType3 = baseMapper.getStaffCount(groupId,"7",orgId,null);
@@ -387,6 +387,8 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	private StaffMapper staffMapper;
 	@Autowired
 	private SysDictItemMapper sysDictItemMapper;
+
+
 	@Override
 	public StaffBasicVO selectBasicById(Long id) throws Exception {
 		// 查询员工信息
