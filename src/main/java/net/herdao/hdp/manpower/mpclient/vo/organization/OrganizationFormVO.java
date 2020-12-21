@@ -94,6 +94,10 @@ public class OrganizationFormVO {
 
 	@ApiModelProperty(value = "岗位组织关系id")
 	private Long postOrgId;
+
+	@ApiModelProperty(value = "岗位组织关系名称")
+	private String postOrgName;
+	
 	/**
 	 * 负责岗位
 	 */

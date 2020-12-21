@@ -522,7 +522,7 @@
         b.org_name AS parent_name, b.org_code AS parent_code, a.org_level,
         c.label AS org_level_name, a.org_type, d.label AS org_type_name,
         a.org_charge_work_id, a.org_charge_work_name, a.org_charge_work_no,
-        a.post_id, a.post_org_id, f.post_name, f.post_code,
+        a.post_id, a.post_org_id, f.post_name post_org_name, f.post_name, f.post_code,
         0 staff_total, a.organizational, a.welfare_type, a.sort_no,
         e.version AS welfare_type_name,
         a.org_desc,
