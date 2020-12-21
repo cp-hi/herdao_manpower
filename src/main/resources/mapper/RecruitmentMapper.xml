@@ -214,7 +214,8 @@
                 t.final_post_name,
                 t.birthday,
                 t.workdate,
-                t.email
+                t.email,
+                t.photo
           FROM (
                  SELECT rec.talent_name,
                         rec.mobile,
@@ -227,7 +228,8 @@
                         rec.final_post_name,
                         rec.birthday,
                         rec.workdate,
-                        rec.email
+                        rec.email,
+                        rec.photo
                 FROM  mp_recruitment rec
                 LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX' AND dirc.VALUE = rec.talent_type
                 LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
