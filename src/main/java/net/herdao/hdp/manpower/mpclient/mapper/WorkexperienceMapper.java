@@ -17,17 +17,15 @@
 
 package net.herdao.hdp.manpower.mpclient.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
-
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 
 /**
  * 员工工作经历
@@ -44,7 +42,7 @@ public interface WorkexperienceMapper extends BaseMapper<Workexperience> {
      * @param searchText 关键字搜索
      * @return
      */
-    List<WorkexperienceDTO> findStaffWorkPage(Map<String, Object> map);
+    List<Workexperience> findStaffWorkPage(Map<String, Object> map);
 
     /**
      * 员工工作经历
@@ -52,7 +50,7 @@ public interface WorkexperienceMapper extends BaseMapper<Workexperience> {
      * @param staffId 员工ID
      * @return
      */
-    List<WorkexperienceDTO> findStaffWork(@Param("searchText") String searchText,@Param("staffId") String staffId);
+    List<Workexperience> findStaffWork(@Param("searchText") String searchText,@Param("staffId") String staffId);
 
     /**
      * author
@@ -60,5 +58,5 @@ public interface WorkexperienceMapper extends BaseMapper<Workexperience> {
      * @param staffid
      * @return
      */
-    List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid);
+    List<Workexperience> findWorkexperience(Long staffid);
 }
