@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -468,7 +469,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 				vo.setNowJobLevelName(user.getJobLevelName());
 			}
 			vo.setEntryTime(user.getEntryTime());
-
+			vo.setAge(user.getAge());
+			if (StringUtils.isNotBlank(user.getSex())) {
+				vo.setSex(user.getSex());
+			}
+			if (StringUtils.isNotBlank(user.getBirthplace())) {
+				vo.setBirthplace(user.getBirthplace());
+			}
 			return vo;
 		}
 		return null;
@@ -479,7 +486,6 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		QueryWrapper<Staff> wrapper = new QueryWrapper<>();
 		return staffMapper.selectOne(wrapper.eq("user_id", userId));
 	}
-
 
 	@Override
     public Map<String, Object> getStaffDetail(Long id){

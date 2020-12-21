@@ -20,6 +20,31 @@ public class StaffLeavePostInfoVO {
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
     private Long userId;
 
+    /**
+     *
+     * 该字段对应 staffNameAndCode，但是为了适配前端，需要改成不同的名字
+     */
+    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameInfo", example = "张三")
+    private String staffNameInfo;
+
+    @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
+    private String staffScope;
+
+    @ApiModelProperty(value = "人员任职类型", name = "staffJobType", example = "在职人员")
+    private String staffJobType;
+
+    @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
+    private Long entryTime;
+
+    @ApiModelProperty(value="性别")
+    private String sex;
+
+    @ApiModelProperty(value="年龄")
+    private int age;
+
+    @ApiModelProperty(value="籍贯")
+    private String birthplace;
+
     @ApiModelProperty(value = "离职申请日期")
     private Long leaveApplicationTime;
 

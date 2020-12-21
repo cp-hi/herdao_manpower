@@ -23,6 +23,25 @@ public class StaffContractRenewalInfoVO {
     @NotNull
     private Long userId;
 
+    /**
+     *
+     * 该字段对应 staffNameAndCode，但是为了适配前端，需要改成不同的名字
+     */
+    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameInfo", example = "张三")
+    private String staffNameInfo;
+
+    @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
+    private String staffScope;
+
+    @ApiModelProperty(value = "人员任职类型", name = "staffJobType", example = "在职人员")
+    private String staffJobType;
+
+    @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
+    private Long entryTime;
+
+    @ApiModelProperty(value = "所在部门 id", name = "orgId", example = "1234")
+    private Long orgId;
+
     @ApiModelProperty(value = "原合同 id")
     @NotNull
     private Long staffContractId;
