@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffContractRenewalDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffContractRenewal;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
 import net.herdao.hdp.manpower.mpclient.service.StaffContractRenewalService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.renew.contract.StaffContractRenewalPage;
@@ -30,6 +32,8 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
 
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private StaffRenewContractMapper mapper;
@@ -87,18 +91,29 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
 
     @Override
     public Long add(SaveStaffContractRenewalDTO dto) {
+        StaffContractRenewal entity = initStaffContractRenewalData(dto);
+
+        mapper.insert(entity);
+        return entity.getId();
+    }
+
+    private StaffContractRenewal initStaffContractRenewalData(SaveStaffContractRenewalDTO dto) {
         StaffContractRenewal entity = new StaffContractRenewal();
         BeanUtils.copyProperties(dto, entity);
+
+        // 根据用户 id 获取到该用户的当前所在所在部门和岗位
+        UserMsgDTO userMsg = userService.getUserMsg(dto.getUserId());
+        if (userMsg != null) {
+            BeanUtils.copyProperties(userMsg, entity);
+        }
 
         entity.setContractStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractStartTime()));
         entity.setContractEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractEndTime()));
         entity.setRenewalStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalStartTime()));
         entity.setRenewalEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalEndTime()));
-
         entity.setDelFlag(false);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        mapper.insert(entity);
-        return entity.getId();
+        return entity;
     }
 
     @Override
