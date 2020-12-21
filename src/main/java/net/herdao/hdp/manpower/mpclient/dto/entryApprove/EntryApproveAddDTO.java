@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 @ApiModel(value = "审批录用-新增DTO")
-public class EntryApproveAddDTO  {
+public class EntryApproveAddDTO {
 
     /**
      * id

@@ -527,6 +527,7 @@
             </if>
         </where>
     </select>
+
     <select id="getStaffCount" resultType="int">
         SELECT
             count(1)
@@ -544,6 +545,9 @@
             </if>
             <if test="jobType != null">
                 and s.job_type = #{jobType}
+            </if>
+            <if test="staffScope != null">
+                and s.staff_scope = #{staffScope}
             </if>
             <if test="orgId != null">
                 AND o.ORG_CODE like (select CONCAT(org.ORG_CODE,'%') from mp_organization org where org.id=#{orgId} limit 1)
