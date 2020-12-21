@@ -18,9 +18,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "入职DTO")
-public class EntryDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class EntryDTO {
 
     /**
      * id

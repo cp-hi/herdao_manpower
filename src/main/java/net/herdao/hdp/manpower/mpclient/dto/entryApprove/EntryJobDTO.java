@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ApiModel(value = "入职信息")
-public class EntryJobDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class EntryJobDTO {
 
     /**
      * 审批表主键ID
