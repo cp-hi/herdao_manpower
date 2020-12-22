@@ -52,7 +52,6 @@ public class StaffContractRenewalInfoVO {
     @ApiModelProperty(value = "合同试用期")
     private BigDecimal contractProbation;
 
-
     @ApiModelProperty(value = "续签主体单位id")
     private Long renewalCompanyId;
 

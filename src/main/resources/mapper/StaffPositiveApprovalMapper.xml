@@ -140,7 +140,6 @@
             resultType="net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO">
     SELECT
         mspa.ENTRY_TIME AS entryTime,
-        mspa.ENTRY_TIME AS tryTime,
         mspa.`user_id`,
         mspa.try_any_job_pay AS try_any_job_pay,
         mspa.`positive_question_ans1`,
@@ -150,15 +149,19 @@
         mspa.`positive_question_ans5`,
         mspa.`positive_question_ans6`,
         mspa.`positive_question_ans7`,
-        mspa.positive_type AS positive_type,
+        mspa.ENTRY_TIME AS entryTime1,
+        mspa.`positive_question_ans7`,
+        mspa.appendix_ids,
         mpo.`POST_NAME` AS postName,
         np.POST_NAME AS now_post_name,
         mpo.`POST_NAME` AS old_post_name,
-        ms.`STAFF_NAME` AS staff_name
+        ms.`STAFF_NAME` AS staff_name,
+        norg.ORG_NAME as now_org_name
         FROM
         mp_staff_positive_approval AS mspa
         LEFT JOIN mp_post AS np
         ON mspa.post_id = np.id
+        LEFT JOIN mp_organization norg ON mspa.org_id = norg.id
         LEFT JOIN `mp_post_org` AS mpo
         ON mspa.post_org_id = mpo.`ID`
         LEFT JOIN mp_staff AS ms

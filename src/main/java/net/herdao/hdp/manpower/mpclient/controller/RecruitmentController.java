@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.hutool.core.collection.CollectionUtil;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,33 +47,15 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDetailsDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditBaseInfoDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditDetailsDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditEduDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditFamilyDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditOtherInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentResultDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentPersonDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTitleDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentWorkDetailsDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.WorkflowNotifyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentActivitiService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentAwardsService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentTitleService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentTrainService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
@@ -96,20 +79,6 @@ public class RecruitmentController {
     private final RecruitmentService recruitmentService;
 
     private final OperationLogService operationLogService;
-
-    private final RecruitmentWorkexperienceService recruitmentWorkexperienceService;
-
-    private final RecruitmentFamilyStatusService recruitmentFamilyStatusService;
-
-    private final RecruitmentAwardsService recruitmentAwardsService;
-
-    private final RecruitmentEducationService recruitmentEducationService;
-
-    private final  RecruitmentTitleService recruitmentTitleService;
-
-    private final  RecruitmentTrainService recruitmentTrainService;
-
-    private final  RecruitmentActivitiService recruitmentActivitiService;
 
     private final StaffEntrypostApproveService staffEntrypostApproveService;
 
@@ -273,9 +242,9 @@ public class RecruitmentController {
     @ApiOperation(value = "获取人才管理操作日志")
     @GetMapping("/getOperateLogPage")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "分页对象"),
-            @ApiImplicitParam(name = "operationLog", value = "操作记录"),
-            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
+        @ApiImplicitParam(name = "page", value = "分页对象"),
+        @ApiImplicitParam(name = "operationLog", value = "操作记录"),
+        @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     public R getOperateLogPage(Page page, OperationLog operationLog, String searchText) {
         Page<OperationLog> pageResult = operationLogService.findOperationLog(page, operationLog, searchText);
@@ -371,24 +340,7 @@ public class RecruitmentController {
     @GetMapping("/fetchResumeDetails")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentDetailsDTO> fetchResumeDetails(Long id) {
-        RecruitmentDetailsDTO result = new RecruitmentDetailsDTO();
-
-        RecruitmentPersonDTO personDTO = recruitmentService.fetchRecruitmentPerson(id);
-        RecruitmentIntentDTO intentDTO = recruitmentService.fetchRecruitmentIntent(id);
-        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
-
-        //获取最高学历
-        RecruitmentTopEduDTO topEduDTO = recruitmentService.fetchRecruitmentTopEdu(id);
-
-        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
-        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
-
-        result.setRecruitmentPersonDTO(personDTO);
-        result.setRecruitmentIntentDTO(intentDTO);
-        result.setRecruitmentWorkexperienceDTO(workList);
-        result.setRecruitmentTopEduDTO(topEduDTO);
-        result.setRecruitmentFamilyDTO(familyDTOList);
-        result.setRecruitmentAwardsDTO(recruitmentAwardsList);
+        RecruitmentDetailsDTO result = recruitmentService.fetchRecruitmentDetailsDTO(id);
         return R.ok(result);
     }
 
@@ -413,52 +365,7 @@ public class RecruitmentController {
     @GetMapping("/fetchResumeEditDetails")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentEditDetailsDTO> fetchResumeEditDetails(Long id) {
-        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
-
-        //教育经历
-        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
-        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
-        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
-            recruitmentEduList.forEach(e->{
-                if (ObjectUtil.isNotNull(e)){
-                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
-                    BeanUtils.copyProperties(e,editEduDTO);
-                    editEduList.add(editEduDTO);
-                    result.setRecruitmentEditEduDTO(editEduList);
-                }
-             });
-        }
-
-        //家庭状况
-        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
-        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
-        if (ObjectUtil.isNotEmpty(familyList)){
-            familyList.forEach(e->{
-                if (ObjectUtil.isNotNull(e)){
-                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
-                    BeanUtils.copyProperties(e,editFamilyDTO);
-                    editFamilyList.add(editFamilyDTO);
-                    result.setRecruitmentEditFamilyDTO(editFamilyList);
-                }
-            });
-        }
-
-        //其他个人信息
-        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
-        if (ObjectUtil.isNotNull(otherInfo)){
-            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
-            BeanUtils.copyProperties(otherInfo,editOtherInfo);
-            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
-        }
-
-        //个人基本信息
-        RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
-        if (ObjectUtil.isNotNull(baseInfo)){
-            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
-            BeanUtils.copyProperties(baseInfo,editBaseInfo);
-            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
-        }
-
+        RecruitmentEditDetailsDTO result = recruitmentService.fetchResumeEditDetails(id);
         return R.ok(result);
     }
 
@@ -471,52 +378,7 @@ public class RecruitmentController {
     @GetMapping("/fetchResumeEditDetailsByMobile")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentEditDetailsDTO> fetchResumeEditDetailsByMobile(Long id) {
-        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
-
-        //教育经历
-        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
-        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
-        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
-            recruitmentEduList.forEach(e->{
-                if (ObjectUtil.isNotNull(e)){
-                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
-                    BeanUtils.copyProperties(e,editEduDTO);
-                    editEduList.add(editEduDTO);
-                    result.setRecruitmentEditEduDTO(editEduList);
-                }
-            });
-        }
-
-        //家庭状况
-        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
-        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
-        if (ObjectUtil.isNotEmpty(familyList)){
-            familyList.forEach(e->{
-                if (ObjectUtil.isNotNull(e)){
-                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
-                    BeanUtils.copyProperties(e,editFamilyDTO);
-                    editFamilyList.add(editFamilyDTO);
-                    result.setRecruitmentEditFamilyDTO(editFamilyList);
-                }
-            });
-        }
-
-        //其他个人信息
-        RecruitmentOtherInfo otherInfo = recruitmentService.fetchRecruitmentOtherInfo(id);
-        if (ObjectUtil.isNotNull(otherInfo)){
-            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
-            BeanUtils.copyProperties(otherInfo,editOtherInfo);
-            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
-        }
-
-        //个人基本信息
-        RecruitmentBaseInfo baseInfo = recruitmentService.fetchRecruitmentBaseInfo(id);
-        if (ObjectUtil.isNotNull(baseInfo)){
-            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
-            BeanUtils.copyProperties(baseInfo,editBaseInfo);
-            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
-        }
-
+        RecruitmentEditDetailsDTO result = recruitmentService.fetchResumeEditDetailsByMobile(id);
         return R.ok(result);
     }
 
@@ -560,29 +422,7 @@ public class RecruitmentController {
     @GetMapping("/fetchResumeWorkDetailsByMobile")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetailsByMobile(Long id) {
-        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
-
-        //获奖情况
-        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
-        result.setRecruitmentAwardsDTO(awardsList);
-
-        //工作经历
-        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
-        result.setWorkExperienceDTO(workList);
-
-        //职称及职业资格
-        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
-        result.setRecruitmentTitleDTO(titleList);
-
-        //培训经历
-        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
-        result.setRecruitmentTrainDTO(trainList);
-
-        //人才活动
-        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
-        result.setRecruitmentActivitiDTO(activitiList);
-
-        return R.ok(result);
+        return R.ok(recruitmentService.fetchResumeWorkDetailsByMobile(id));
     }
 
     /**
@@ -594,28 +434,7 @@ public class RecruitmentController {
     @GetMapping("/fetchResumeWorkDetails")
     @ApiImplicitParam(name = "id", value = "主键id")
     public R<RecruitmentWorkDetailsDTO> fetchResumeWorkDetails(Long id) {
-        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
-
-        //获奖情况
-        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
-        result.setRecruitmentAwardsDTO(awardsList);
-
-        //工作经历
-        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
-        result.setWorkExperienceDTO(workList);
-
-        //职称及职业资格
-        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
-        result.setRecruitmentTitleDTO(titleList);
-
-        //培训经历
-        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
-        result.setRecruitmentTrainDTO(trainList);
-
-        //人才活动
-        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
-        result.setRecruitmentActivitiDTO(activitiList);
-
+        RecruitmentWorkDetailsDTO result = recruitmentService.fetchResumeWorkDetails(id);
         return R.ok(result);
     }
 
@@ -742,7 +561,5 @@ public class RecruitmentController {
         RecruitmentMobileProgressVO reslult = recruitmentService.fetchMobileInfoProgress(id);
         return R.ok(reslult);
     }
-
-
 
 }

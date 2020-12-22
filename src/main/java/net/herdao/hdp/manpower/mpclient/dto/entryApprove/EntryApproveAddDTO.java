@@ -97,7 +97,6 @@ public class EntryApproveAddDTO {
     @ApiModelProperty(value="录用组织名称")
     private String orgName;
 
-
     /**
      * 录用岗位
      */
