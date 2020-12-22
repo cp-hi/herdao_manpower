@@ -31,6 +31,9 @@ public class CompanyDetailDTO {
 
     @ApiModelProperty(value="所属城市ID")
     private Long cityId;
+    
+    @ApiModelProperty(value="所属城市")
+    private String cityName;
 
     @ApiModelProperty(value="公积金标准")
     private String cityFund;
