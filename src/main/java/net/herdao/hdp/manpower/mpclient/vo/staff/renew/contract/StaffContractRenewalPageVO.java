@@ -26,7 +26,7 @@ public class StaffContractRenewalPageVO {
     private String staffCode;
 
     @ApiModelProperty(value = "续签主体单位id")
-    private Long renewalCompanyId;
+    private Long companyName;
 
     @ApiModelProperty(value = "合同类型")
     private String renewalType;
