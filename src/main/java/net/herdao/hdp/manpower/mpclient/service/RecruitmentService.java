@@ -157,4 +157,39 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @return
      */
     RecruitmentMobileProgressVO fetchMobileInfoProgress(Long id);
+
+    /**
+     *简历详情-工作情况-手机端
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentWorkDetailsDTO fetchResumeWorkDetailsByMobile(Long id);
+
+    /**
+     * 人才管理-人才简历
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentDetailsDTO fetchRecruitmentDetailsDTO(Long id);
+
+    /**
+     *简历详情-工作情况
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentWorkDetailsDTO fetchResumeWorkDetails(Long id);
+
+    /**
+     * 简历详情-基础信息-个人基本信息
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentEditDetailsDTO fetchResumeEditDetails(Long id);
+
+    /**
+     * 简历详情-基础信息-个人基本信息-手机端
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentEditDetailsDTO fetchResumeEditDetailsByMobile(Long id);
 }

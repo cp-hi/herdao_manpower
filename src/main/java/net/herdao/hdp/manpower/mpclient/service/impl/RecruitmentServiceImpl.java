@@ -26,8 +26,7 @@ import java.util.concurrent.TimeUnit;
 import cn.hutool.core.collection.CollectionUtil;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
 import org.springframework.beans.BeanUtils;
@@ -60,8 +59,6 @@ import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import net.herdao.hdp.middle.api.feign.RemoteWorkflowService;
 
@@ -87,6 +84,14 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     private RecruitmentFamilyStatusService recruitmentFamilyStatusService;
 
     private RecruitmentWorkexperienceService recruitmentWorkexperienceService;
+
+    private RecruitmentAwardsService recruitmentAwardsService;
+
+    private RecruitmentTitleService recruitmentTitleService;
+
+    private RecruitmentTrainService recruitmentTrainService;
+
+    private RecruitmentActivitiService recruitmentActivitiService;
 
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
@@ -615,5 +620,181 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         return resultMap;
     }
 
+    @Override
+    public RecruitmentWorkDetailsDTO fetchResumeWorkDetailsByMobile(Long id) {
+        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
 
+        //获奖情况
+        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        result.setRecruitmentAwardsDTO(awardsList);
+
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        result.setWorkExperienceDTO(workList);
+
+        //职称及职业资格
+        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
+        result.setRecruitmentTitleDTO(titleList);
+
+        //培训经历
+        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
+        result.setRecruitmentTrainDTO(trainList);
+
+        //人才活动
+        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
+        result.setRecruitmentActivitiDTO(activitiList);
+        return null;
+    }
+
+    @Override
+    public RecruitmentDetailsDTO fetchRecruitmentDetailsDTO(Long id) {
+        RecruitmentDetailsDTO result = new RecruitmentDetailsDTO();
+
+        RecruitmentPersonDTO personDTO = this.baseMapper.fetchRecruitmentPerson(id);
+        RecruitmentIntentDTO intentDTO = this.baseMapper.fetchRecruitmentIntent(id);
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+
+        //获取最高学历
+        RecruitmentTopEduDTO topEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
+
+        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+
+        result.setRecruitmentPersonDTO(personDTO);
+        result.setRecruitmentIntentDTO(intentDTO);
+        result.setRecruitmentWorkexperienceDTO(workList);
+        result.setRecruitmentTopEduDTO(topEduDTO);
+        result.setRecruitmentFamilyDTO(familyDTOList);
+        result.setRecruitmentAwardsDTO(recruitmentAwardsList);
+        return result;
+    }
+
+    @Override
+    public RecruitmentWorkDetailsDTO fetchResumeWorkDetails(Long id) {
+        RecruitmentWorkDetailsDTO result=new RecruitmentWorkDetailsDTO();
+
+        //获奖情况
+        List<RecruitmentAwardsDTO> awardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        result.setRecruitmentAwardsDTO(awardsList);
+
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        result.setWorkExperienceDTO(workList);
+
+        //职称及职业资格
+        List<RecruitmentTitleDTO> titleList = recruitmentTitleService.findRecruitmentTitleList(id);
+        result.setRecruitmentTitleDTO(titleList);
+
+        //培训经历
+        List<RecruitmentTrainDTO> trainList = recruitmentTrainService.findRecruitmentTrainList(id);
+        result.setRecruitmentTrainDTO(trainList);
+
+        //人才活动
+        List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
+        result.setRecruitmentActivitiDTO(activitiList);
+
+        return result;
+    }
+
+    @Override
+    public RecruitmentEditDetailsDTO fetchResumeEditDetails(Long id) {
+        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
+
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
+            recruitmentEduList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+                    BeanUtils.copyProperties(e,editEduDTO);
+                    editEduList.add(editEduDTO);
+                    result.setRecruitmentEditEduDTO(editEduList);
+                }
+            });
+        }
+
+        //家庭状况
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
+        if (ObjectUtil.isNotEmpty(familyList)){
+            familyList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
+                    BeanUtils.copyProperties(e,editFamilyDTO);
+                    editFamilyList.add(editFamilyDTO);
+                    result.setRecruitmentEditFamilyDTO(editFamilyList);
+                }
+            });
+        }
+
+        //其他个人信息
+        RecruitmentOtherInfo otherInfo = this.baseMapper.fetchRecruitmentOtherInfo(id);
+        if (ObjectUtil.isNotNull(otherInfo)){
+            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
+            BeanUtils.copyProperties(otherInfo,editOtherInfo);
+            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        }
+
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
+        if (ObjectUtil.isNotNull(baseInfo)){
+            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
+            BeanUtils.copyProperties(baseInfo,editBaseInfo);
+            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        }
+
+        return result;
+    }
+
+    @Override
+    public RecruitmentEditDetailsDTO fetchResumeEditDetailsByMobile(Long id) {
+        RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
+
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
+            recruitmentEduList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+                    BeanUtils.copyProperties(e,editEduDTO);
+                    editEduList.add(editEduDTO);
+                    result.setRecruitmentEditEduDTO(editEduList);
+                }
+            });
+        }
+
+        //家庭状况
+        List<RecruitmentFamilyDTO> familyList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+        List<RecruitmentEditFamilyDTO> editFamilyList=new ArrayList<RecruitmentEditFamilyDTO>();
+        if (ObjectUtil.isNotEmpty(familyList)){
+            familyList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditFamilyDTO editFamilyDTO=new RecruitmentEditFamilyDTO();
+                    BeanUtils.copyProperties(e,editFamilyDTO);
+                    editFamilyList.add(editFamilyDTO);
+                    result.setRecruitmentEditFamilyDTO(editFamilyList);
+                }
+            });
+        }
+
+        //其他个人信息
+        RecruitmentOtherInfo otherInfo = this.baseMapper.fetchRecruitmentOtherInfo(id);
+        if (ObjectUtil.isNotNull(otherInfo)){
+            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
+            BeanUtils.copyProperties(otherInfo,editOtherInfo);
+            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        }
+
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
+        if (ObjectUtil.isNotNull(baseInfo)){
+            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
+            BeanUtils.copyProperties(baseInfo,editBaseInfo);
+            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        }
+
+        return result;
+    }
 }
