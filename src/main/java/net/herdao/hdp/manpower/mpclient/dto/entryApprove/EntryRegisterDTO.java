@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 入职登记DTO
@@ -14,9 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "入职登记DTO")
-public class EntryRegisterDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class EntryRegisterDTO {
 
     /**
      * id
@@ -71,8 +70,15 @@ public class EntryRegisterDTO implements Serializable {
      * 入职日期
      */
     @ApiModelProperty(value="入职日期")
+    @ExcelIgnore
+    private Long entryPostTime;
+
+    /**
+     * 入职日期-LocalDateTime
+     */
+    @ApiModelProperty(value="入职日期-LocalDateTime",hidden = true)
     @ExcelProperty(value = "入职日期")
-    private String entryPostTime;
+    private LocalDateTime entryPostTimeLocal;
 
     /**
      * 入职登记状态

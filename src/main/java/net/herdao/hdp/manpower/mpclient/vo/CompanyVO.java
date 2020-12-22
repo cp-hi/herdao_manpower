@@ -14,34 +14,39 @@
  * this software without specific prior written permission.
  * Author: hdp
  */
-package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+package net.herdao.hdp.manpower.mpclient.vo;
 
-import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
-import net.herdao.hdp.manpower.mpclient.entity.User;
-import net.herdao.hdp.manpower.mpclient.mapper.UserMapper;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
-import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
+
+import java.math.BigDecimal;
 
 /**
- * 
+ * 注册公司VO
  *
- * @author andy
- * @date 2020-09-15 17:59:33
+ * @author Andy
+ * @date 2020-09-15 17:10:12
  */
-@Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+@Data
+@TableName("mp_company")
+@ApiModel(value = "注册公司VO")
+public class CompanyVO {
 
-	@Override
-	public Integer getCountUser(String orgCode, Integer isStop) {
-		return this.baseMapper.getCountUser(orgCode, isStop);
-	}
-	
-	@Override
-	public UserMsgDTO getUserMsg(long id){
-		return this.baseMapper.getUserMsg(id);
-	}
+    /**
+     * 公司名称
+     */
+    @ApiModelProperty(value="公司名称")
+    private String label;
 
+    /**
+     * 公司ID
+     */
+    @ApiModelProperty(value="公司ID")
+    private Long value;
 
 }

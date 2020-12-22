@@ -22,27 +22,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import cn.hutool.core.util.ObjectUtil;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.attachFile.AttachFileSituationDTO;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.HerDaoFileDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.mapper.AttachFileMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
-import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
-import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
-import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.mpmobile.constant.AttachFileConstants;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileDTO;
 import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
@@ -155,8 +153,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     @Override
     public void delDataAfterUploading(AttachFileDTO attachFile) {
         LambdaQueryWrapper<AttachFile> lambdaQuery = Wrappers.lambdaQuery();
-        lambdaQuery.eq(AttachFile::getBizId, attachFile.getBizId()).
-                eq(AttachFile::getModuleType, attachFile.getModuleType());
+        this.baseMapper.delete(lambdaQuery.eq(AttachFile::getFileId, attachFile.getFileId()));
     }
 
 
@@ -223,14 +220,49 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
 	@Override
 	public Boolean saveAttachFile(AttachFileAddDTO dto) {
 
+		HerDaoFileDTO file = dto.getFileMsg();
+		
 		AttachFile attachFile = new AttachFile();
 		attachFile.setBizId(dto.getBizId());
-		attachFile.setFileId(dto.getFileId());
+		
+		attachFile.setFileId(file.getFileId());
+		attachFile.setOriginalFilename(file.getOriginalFilename());
+		attachFile.setFileName(file.getFileName());
+		attachFile.setExtend(file.getExtend());
+		attachFile.setFtpFilePath(file.getFtpFilePath());
+		attachFile.setFileSize(file.getFileSize());
+		attachFile.setUrl(file.getUrl());
+		
 		attachFile.setModuleType(dto.getModuleType());
 		attachFile.setModuleValue(dto.getModuleValue());
 
 		return this.save(attachFile);
 	}
 
+	@Override
+	public String deleteByFileId(String fileId) {
+
+		QueryWrapper<AttachFile> queryWrapper = new QueryWrapper<>();
+    	queryWrapper.eq("file_id", fileId);
+        AttachFile attachfile = this.baseMapper.selectOne(queryWrapper);
+        String bizId = attachfile.getBizId();
+        String type = attachfile.getModuleType();
+        String value = attachfile.getModuleValue();
+		this.removeById(attachfile.getId());
+		
+		QueryWrapper<AttachFile> queryWrapper2 = new QueryWrapper<>();
+		queryWrapper2.eq("biz_id", bizId);
+		queryWrapper2.eq("module_type", type);
+		queryWrapper2.eq("module_value", value);
+		queryWrapper2.eq("DEL_FLAG", 0);
+        List<AttachFile> fileList = this.baseMapper.selectList(queryWrapper2);
+        List<String> fileIdList = new ArrayList<>();
+        for (AttachFile attachFile : fileList) {
+			fileIdList.add(attachFile.getFileId());
+		}
+		String fileIds = StringUtils.join(fileIdList.toArray(), ",");
+		
+		return fileIds;
+	}
 
 }

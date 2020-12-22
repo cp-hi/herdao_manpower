@@ -14,9 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "审批录用")
-public class EntryApproveDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class EntryApproveDTO {
 
     /**
      * id

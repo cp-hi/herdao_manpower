@@ -30,9 +30,9 @@ public class SavaStaffPromoteDTO {
     @NotNull
     private Long nowOrgId;
 
-    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345", required = true)
+    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostOrgId", example = "2345", required = true)
     @NotNull
-    private Long nowPostId;
+    private Long nowPostOrgId;
 
     @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123", required = true)
     @NotNull
@@ -42,16 +42,13 @@ public class SavaStaffPromoteDTO {
     @NotNull
     private Long promoteOrgId;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostId", example = "5432", required = true)
+    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostOrgId", example = "5432", required = true)
     @NotNull
-    private Long promotePostId;
+    private Long promotePostOrgId;
 
-    /**
-     * 为了适配前端获取职级组件，要和 vo 中的字典类型的字段名一致
-     */
-    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevel", example = "123", required = true)
+    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelId", example = "123", required = true)
     @NotNull
-    private Long promoteJobLevel;
+    private Long promoteJobLevelId;
 
     @ApiModelProperty(value = "生效日期", name = "promoteDate", example = "20200901", required = true)
     @NotNull
@@ -76,5 +73,5 @@ public class SavaStaffPromoteDTO {
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
+    private String appendixIds;
 }

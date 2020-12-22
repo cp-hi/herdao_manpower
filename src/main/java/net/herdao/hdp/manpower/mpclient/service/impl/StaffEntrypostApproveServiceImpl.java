@@ -1,28 +1,49 @@
 
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.herdao.hdp.admin.api.entity.SysUser;
-import net.herdao.hdp.manpower.mpclient.dto.entryApprove.*;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.mapper.StaffEntrypostApproveMapper;
-import net.herdao.hdp.manpower.mpclient.service.*;
-import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
-import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
-import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.jetbrains.annotations.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import net.herdao.hdp.admin.api.entity.SysUser;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveUpdateDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryJobDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryPersonInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryRegisterDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.entity.Staff;
+import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
+import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.entity.Userpost;
+import net.herdao.hdp.manpower.mpclient.mapper.StaffEntrypostApproveMapper;
+import net.herdao.hdp.manpower.mpclient.service.GroupService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.StaffCodePrefixVO;
+import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 
 /**
  * 录用审批表
@@ -176,22 +197,43 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public Page<EntryDTO> findEntryPage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findEntryPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = this.baseMapper.findEntryPage(page, orgId, searchText);
+        List<EntryDTO> records = pageResult.getRecords();
+        for (EntryDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+        return pageResult;
     }
 
     @Override
     public Page<EntryDTO> findInJobPage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findInJobPage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = this.baseMapper.findInJobPage(page, orgId, searchText);
+        List<EntryDTO> records = pageResult.getRecords();
+        for (EntryDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+        return pageResult;
     }
 
     @Override
     public Page<EntryDTO> findEntryInvitePage(Page<EntryDTO> page, String orgId, String searchText) {
-        return this.baseMapper.findEntryInvitePage(page, orgId, searchText);
+        Page<EntryDTO> pageResult = this.baseMapper.findEntryInvitePage(page, orgId, searchText);
+        List<EntryDTO> records = pageResult.getRecords();
+        for (EntryDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+        return pageResult;
     }
 
     @Override
     public Page<EntryRegisterDTO> findEntryRegisterPage(Page<EntryRegisterDTO> page, String orgId, String entryCheckStatus, String searchText) {
-         return this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        Page<EntryRegisterDTO> pageResult = this.baseMapper.findEntryRegisterPage(page, orgId, entryCheckStatus, searchText);
+        List<EntryRegisterDTO> records = pageResult.getRecords();
+        for (EntryRegisterDTO record : records) {
+            record.setEntryPostTime(LocalDateTimeUtils.convert2Long(record.getEntryPostTimeLocal()));
+        }
+
+        return pageResult;
     }
 
     @Override
@@ -201,7 +243,12 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
 
     @Override
     public EntryJobDTO findEntryJobInfo(String id) {
-         return this.baseMapper.findEntryJobInfo(id);
+        EntryJobDTO entity = this.baseMapper.findEntryJobInfo(id);
+        if (ObjectUtil.isNotNull(entity)){
+            entity.setEntryPostTime(LocalDateTimeUtils.convert2Long(entity.getEntryPostTimeLocal()));
+
+        }
+        return entity;
     }
 
     @Override

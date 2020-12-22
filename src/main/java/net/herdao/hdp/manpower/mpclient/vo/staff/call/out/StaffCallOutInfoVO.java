@@ -19,6 +19,9 @@ public class StaffCallOutInfoVO {
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
     private Long userId;
 
+    @ApiModelProperty(value = "集团 id", name = "groupId", example = "1")
+    private Long groupId;
+
     @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
     private String staffNameAndCode;
 
@@ -38,10 +41,10 @@ public class StaffCallOutInfoVO {
     private String nowOrgName;
 
     @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345")
-    private Long nowPostId;
+    private Long nowPostOrgId;
 
     @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "原职级 id", name = "jobLevelId", example = "123")
     private Long nowJobLevelId;
@@ -55,14 +58,17 @@ public class StaffCallOutInfoVO {
     @ApiModelProperty(value = "调动后部门名称", name = "transOrgName", example = "部门 ")
     private String transOrgName;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "transPostId", example = "5432")
-    private Long transPostId;
+    @ApiModelProperty(value = "调动后岗位 id", name = "transPostOrgId", example = "5432")
+    private Long transPostOrgId;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "transPostName", example = "岗位 b")
-    private String transPostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "transPostOrgName", example = "岗位 b")
+    private String transPostOrgName;
 
-    @ApiModelProperty(value = "调动后职级", name = "transJobLevel", example = "123")
-    private Dictionary transJobLevel;
+    @ApiModelProperty(value = "调动后职级Id", name = "transJobLevelId", example = "123")
+    private Long transJobLevelId;
+
+    @ApiModelProperty(value = "调动后职级名称", name = "transJobLevelName")
+    private String transJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "transStartDate", example = "20200901")
     private Long transStartDate;
@@ -80,14 +86,5 @@ public class StaffCallOutInfoVO {
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
-
-    @Data
-    // 字典
-    public static class Dictionary {
-        // 名称
-        private String label;
-        // id
-        private Long value;
-    }
+    private String appendixIds;
 }

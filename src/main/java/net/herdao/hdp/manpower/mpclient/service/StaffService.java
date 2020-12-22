@@ -34,6 +34,7 @@ import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Staff;
 import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 
 /**
  * 员工表
@@ -96,4 +97,11 @@ public interface StaffService extends HdpService<Staff> {
 	StaffBasicVO selectBasicByUserId(Long userId) throws Exception;
 
 	Staff getByUserId(Long userId);
+
+	/**
+	 * 转正管理(员工)基础信息-（根据id查询基本信息）
+	 * @return
+	 * @throws Exception
+	 */
+	StaffBasicPositiveVO getStaffPositiveBasic(Long id) throws Exception;
 }

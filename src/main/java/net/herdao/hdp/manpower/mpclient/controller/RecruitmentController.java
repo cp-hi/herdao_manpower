@@ -640,11 +640,12 @@ public class RecruitmentController {
     	//TODO 根据流程类型找到 对应的 需要修改的表单
     	//TODO 更新表单的状态 
     	String flowType = dto.getFlowType();
-    	if("录用审批流程".equals(flowType)) {
+    	if("jy201606".equals(flowType)) {
     		staffEntrypostApproveService.modifyStatus(dto.getRecordId(), dto.getStatus());
+    		return R.ok();
     	}
     	
-    	return R.ok();
+    	return R.failed("没有找到相关编码");
     }
 
     /**
@@ -675,8 +676,6 @@ public class RecruitmentController {
         QrCodeUtils.downloadQrCode(response);
         return R.ok("下载二维码成功！");
     }
-
-
 
     /**
      * 获取-入职登记记录-发送邀请确认-页面内容（内含二维码）

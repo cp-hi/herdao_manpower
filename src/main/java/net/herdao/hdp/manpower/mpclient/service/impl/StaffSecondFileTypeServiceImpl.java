@@ -7,19 +7,21 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import net.herdao.hdp.admin.api.entity.SysDictItem;
+import net.herdao.hdp.manpower.mpclient.dto.attachFile.StaffSecondFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFileTypeDTO;
 import net.herdao.hdp.manpower.mpclient.entity.AttachFile;
 import net.herdao.hdp.manpower.mpclient.entity.StaffSecondFileType;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffSecondFileTypeMapper;
 import net.herdao.hdp.manpower.mpclient.service.AttachFileService;
 import net.herdao.hdp.manpower.mpclient.service.StaffSecondFileTypeService;
-import net.herdao.hdp.manpower.mpmobile.dto.AttachFileInfoDTO;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 
@@ -50,6 +52,47 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
         return status;
     }
 
+    /**
+     * 	修改或新增 二级 字典
+     */
+    @Override
+    public boolean saveOrModify(StaffSecondFileTypeDTO dto) {
+    	
+    	boolean add = false;
+    	Integer sort = 1;
+    	String value = "1";
+    	if( null == dto.getId()) {
+    		add = true;
+    		QueryWrapper<SysDictItem> query = new QueryWrapper<>();
+        	query.eq("type", dto.getType());
+        	query.orderByDesc("value");
+        	List<SysDictItem> list = sysDictItemService.list(query);
+        	if(!CollectionUtils.isEmpty(list)) {
+        		sort = list.get(0).getSort()+1;
+        		value = String.valueOf( Integer.valueOf( list.get(0).getValue() ) + 1 );
+        	}
+    	}
+    	SysDictItem item = new SysDictItem();
+    	item.setId(dto.getId());
+    	item.setDictId(dto.getDictId());
+    	item.setLabel(dto.getLabel());
+    	item.setType(dto.getType());
+    	if(add) {
+    		item.setSort(sort);
+        	item.setValue(value);
+    	}
+    	
+    	item.setDescription(dto.getLabel());
+    	Boolean success = sysDictItemService.saveOrUpdate(item);
+        
+        return success;
+    }
+    
+    @Override
+    public boolean deleteStaffSecondFileType(Long id) {
+    	return sysDictItemService.removeById(id);
+    }
+    
     @Override
     @OperationEntity(operation = "删除", clazz = StaffSecondFileType.class)
     public boolean delEntity(StaffSecondFileType entity) {
@@ -70,20 +113,43 @@ public class StaffSecondFileTypeServiceImpl extends ServiceImpl<StaffSecondFileT
     		String dType = sysDictItem.getType();
     		String dValue = sysDictItem.getValue();
     		StaffFileTypeDTO dto = new StaffFileTypeDTO();
+    		dto.setId(sysDictItem.getId());
+    		dto.setDictId(sysDictItem.getDictId());
     		dto.setLabel(sysDictItem.getLabel());
     		dto.setType(dType);
     		dto.setValue(dValue);
     		List<String> fileIdList = new ArrayList<>();
+    		List<AttachFile> tempList = new ArrayList<>();
+    		String extend = "";
+    		String url = "";
     		for (AttachFile attachFile : fileList) {
     			String aType = attachFile.getModuleType();
     			String aValue = attachFile.getModuleValue();
     			if(aType.equals(dType) && aValue.equals(dValue)) {
     				fileIdList.add(attachFile.getFileId());
+    				tempList.add(attachFile);
+    				//获取第一张图片
+        			if(StringUtils.isEmpty(extend)) {
+        				String fileType = attachFile.getExtend();
+        				if("png".equals(fileType.toLowerCase()) || "jpg".equals(fileType.toLowerCase()) || 
+        				   "jpeg".equals(fileType.toLowerCase())|| "bmp".equals(fileType.toLowerCase()) ) {
+        					extend = fileType;
+        					url = attachFile.getUrl();
+        				}
+        			}
     			}
     		}
+    		//没有图片给第一个附件的 文件
+    		if(StringUtils.isEmpty(extend) && tempList.size() > 0) {
+    			extend = tempList.get(0).getExtend();
+				url = tempList.get(0).getUrl();
+    		}
+    		
     		String fileIds = StringUtils.join(fileIdList.toArray(), ",");
     		dto.setFileCount(fileIdList.size());
     		dto.setFileIds(fileIds);
+    		dto.setUrl(url);
+    		dto.setExtend(extend);
     		fileIdList = null;
     		dtoList.add(dto);
 		}

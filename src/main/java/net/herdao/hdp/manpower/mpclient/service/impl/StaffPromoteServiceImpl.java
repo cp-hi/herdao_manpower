@@ -37,9 +37,13 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     @Autowired
     private PostService postService;
     @Autowired
+    private PostOrgService postOrgService;
+    @Autowired
     private JobLevelService jobLevelService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private StaffPromoteApproveMapper mapper;
@@ -86,7 +90,6 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
             throw new Exception("该记录不可更新");
         }
         BeanUtils.copyProperties(dto, entity);
-        entity.setPromoteJobLevelId(dto.getPromoteJobLevel());
         entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
         mapper.updateById(entity);
         return id;
@@ -95,15 +98,30 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
     @Override
     public Long saveInfo(SavaStaffPromoteDTO dto) throws Exception {
         // dtoValidityCheck(null, dto);
-        StaffPromoteApprove promoteApprove = new StaffPromoteApprove();
-        BeanUtils.copyProperties(dto, promoteApprove);
-        promoteApprove.setPromoteJobLevelId(dto.getPromoteJobLevel());
-        promoteApprove.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
-        promoteApprove.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
-        promoteApprove.setDelFlag(false);
-        mapper.insert(promoteApprove);
-        return promoteApprove.getId();
+
+        StaffPromoteApprove entity = initStaffPromoteData(dto);
+
+        mapper.insert(entity);
+        return entity.getId();
     }
+
+    private StaffPromoteApprove initStaffPromoteData(SavaStaffPromoteDTO dto) {
+        StaffPromoteApprove entity = new StaffPromoteApprove();
+        BeanUtils.copyProperties(dto, entity);
+
+        // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
+        // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
+        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+        PostOrg promotePostOrg = postOrgService.getById(dto.getPromotePostOrgId());
+
+        entity.setNowPostId(nowPostOrg.getPostId());
+        entity.setPromotePostId(promotePostOrg.getPostId());
+        entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
+        entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
+        entity.setDelFlag(false);
+        return entity;
+    }
+
 
     private void dtoValidityCheck(Long id, SavaStaffPromoteDTO dto) throws Exception {
         if (id != null) {
@@ -114,7 +132,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
                 if (!dto.getNowOrgId().equals(userpost.getOrgId())) {
                     throw new Exception("原部门信息有误，请再次确认");
                 }
-                if (!dto.getNowPostId().equals(userpost.getPostId())) {
+                if (!dto.getNowPostOrgId().equals(userpost.getPostId())) {
                     throw new Exception("原岗位信息有误，请再次确认");
                 }
             }
@@ -125,12 +143,12 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         orgService.validityCheck(dto.getPromoteOrgId(), "调动后部门信息有误，请再次确认");
 
         // 校验岗位有效性
-        postService.validityCheck(dto.getNowPostId(), "原岗位信息有误，请再次确认");
-        postService.validityCheck(dto.getPromotePostId(), "调动后岗位信息有误，请再次确认");
+        postOrgService.validityCheck(dto.getNowPostOrgId(), "原岗位信息有误，请再次确认");
+        postOrgService.validityCheck(dto.getPromotePostOrgId(), "调动后岗位信息有误，请再次确认");
 
         // 校验职级有效性
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
-        jobLevelService.validityCheck(dto.getPromoteJobLevel(), "调动后职级信息有误，请再次确认");
+        jobLevelService.validityCheck(dto.getPromoteJobLevelId(), "调动后职级信息有误，请再次确认");
     }
 
 
@@ -149,14 +167,19 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
         to.setPromoteDate(LocalDateTimeUtils.convert2Long(from.getPromoteDate()));
 
-        Post nowPost = postService.getById(from.getNowPostId());
-        if (nowPost != null) {
-            to.setNowPostName(nowPost.getPostName());
+        Group group = groupService.getGroupByOrgId(from.getNowOrgId());
+        if (group != null) {
+            to.setGroupId(group.getId());
         }
 
-        Post promotePost = postService.getById(from.getPromotePostId());
-        if (promotePost != null) {
-            to.setPromotePostName(promotePost.getPostName());
+        PostOrg nowPostOrg = postOrgService.getById(from.getNowPostOrgId());
+        if (nowPostOrg != null) {
+            to.setNowPostOrgName(nowPostOrg.getPostName());
+        }
+
+        PostOrg promotePostOrg = postOrgService.getById(from.getPromotePostOrgId());
+        if (promotePostOrg != null) {
+            to.setPromotePostOrgName(promotePostOrg.getPostName());
         }
 
         Organization nowOrg = orgService.getById(from.getNowOrgId());
@@ -176,10 +199,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
 
         JobLevel promoteJobLevel = jobLevelService.getById(from.getPromoteJobLevelId());
         if (promoteJobLevel != null) {
-            StaffPromoteInfoVO.Dictionary dict = new StaffPromoteInfoVO.Dictionary();
-            dict.setLabel(promoteJobLevel.getJobLevelName());
-            dict.setValue(promoteJobLevel.getId());
-            to.setPromoteJobLevel(dict);
+          to.setPromoteJobLevelName(promoteJobLevel.getJobLevelName());
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());

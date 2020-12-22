@@ -20,6 +20,8 @@ package net.herdao.hdp.manpower.mpclient.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalSaveDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import org.apache.ibatis.annotations.Mapper;
@@ -52,5 +54,5 @@ public interface StaffPositiveApprovalMapper extends BaseMapper<StaffPositiveApp
      * @param id 主键ID
      * @return
      */
-    StaffPositiveApprovalDetailDTO getPositiveApprovalById(Long id);
+    StaffPositiveApprovalInfoDTO getPositiveApprovalById(Long id);
 }

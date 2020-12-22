@@ -128,6 +128,9 @@ public class StaffContractRenewal {
     @ApiModelProperty(value = "租户ID")
     private Long tenantId;
 
+    @ApiModelProperty(value = "合同续签所在的组织部门关系 id（业务岗 id）")
+    private Long postOrgId;
+
     @ApiModelProperty(value = "逻辑删除")
     @TableLogic
     private Boolean delFlag;

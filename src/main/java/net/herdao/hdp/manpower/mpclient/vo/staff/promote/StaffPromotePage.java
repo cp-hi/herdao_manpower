@@ -40,8 +40,8 @@ public class StaffPromotePage {
     @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "部门 A")
     private String nowOrgName;
 
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowOrgName", example = "岗位 a")
-    private String nowPostName;
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostOrgName", example = "岗位 a")
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "调动前职级名称", name = "nowJobLevelName")
     private String nowJobLevelName;
@@ -49,8 +49,8 @@ public class StaffPromotePage {
     @ApiModelProperty(value = "调动后部门名称", name = "promoteOrgName", example = "4321", required = true)
     private String promoteOrgName;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "promotePostName", example = "5432", required = true)
-    private String promotePostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "promotePostOrgName", example = "5432", required = true)
+    private String promotePostOrgName;
 
     @ApiModelProperty(value = "调动后职级名称", name = "promoteJobLevelName", example = "123", required = true)
     private String promoteJobLevelName;

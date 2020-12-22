@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ApiModel(value = "入职信息")
-public class EntryJobDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class EntryJobDTO {
 
     /**
      * 审批表主键ID
@@ -54,7 +52,7 @@ public class EntryJobDTO implements Serializable {
      * 入职时间
      */
     @ApiModelProperty(value="入职时间")
-    private String entryPostTime;
+    private Long entryPostTime;
 
     /**
      * 试用期
@@ -75,5 +73,11 @@ public class EntryJobDTO implements Serializable {
     @ApiModelProperty(value = "所属岗位id")
     @ExcelIgnore
     private Long postId;
+
+    /**
+     * 入职日期-LocalDateTime
+     */
+    @ApiModelProperty(value="入职日期-LocalDateTime",hidden = true)
+    private LocalDateTime entryPostTimeLocal;
 
 }

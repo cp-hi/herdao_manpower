@@ -26,7 +26,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * 转正审批表
@@ -37,8 +37,8 @@ import java.util.List;
 @Data
 @TableName("mp_staff_positive_approval")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "转正审批保存DTO")
-public class StaffPositiveApprovalSaveDTO extends Model<StaffPositiveApprovalSaveDTO> {
+@ApiModel(value = "转正审批详情DTO")
+public class StaffPositiveApprovalInfoDTO extends Model<StaffPositiveApprovalInfoDTO> {
 private static final long serialVersionUID = 1L;
 
     /**
@@ -80,12 +80,16 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="转正申请id")
     private Long staffpositiveapplicationId;
-
+    /**
+     * 入职日期
+     */
+    @ApiModelProperty(value="入职日期")
+    private LocalDateTime entryTime;
     /**
      * 转正时间
      */
     @ApiModelProperty(value="转正时间")
-    private Long positiveTime;
+    private LocalDateTime positiveTime;
 
     /**
      * 其他
@@ -108,21 +112,15 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="")
     private String posExamScore;
 
-    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
-    private String staffNameAndCode;
+    @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
+    private String staffName;
 
 
-    @ApiModelProperty(value = "组织/部门名称", name = "orgName")
+    @ApiModelProperty(value = "所属组织")
     private String nowOrgName;
-
-
-    @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
-    private Long entryTime;
 
     private Integer monthPostPrepareCount;
 
-    @ApiModelProperty(value = "岗位名称", name = "postName")
-    private String nowPostName;
 
 
 
@@ -178,7 +176,7 @@ private static final long serialVersionUID = 1L;
      * 新建时间
      */
     @ApiModelProperty(value="新建时间")
-    private Long creatorTime;
+    private LocalDateTime creatorTime;
     /**
      * 修改人工号
      */
@@ -193,7 +191,7 @@ private static final long serialVersionUID = 1L;
      * 修改人时间
      */
     @ApiModelProperty(value="修改人时间")
-    private Long modifierTime;
+    private LocalDateTime modifierTime;
 
     /**
      * 租户ID

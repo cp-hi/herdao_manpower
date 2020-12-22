@@ -18,6 +18,7 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -92,6 +93,16 @@ public class PostOrgServiceImpl extends ServiceImpl<PostOrgMapper, PostOrg> impl
         this.saveOrUpdate(postOrg);
         return postOrg;
     }
+
+    @Override
+    public void validityCheck(Long id, String msg) throws Exception {
+        QueryWrapper<PostOrg> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        if (postOrgMapper.selectOne(queryWrapper) == null) {
+            throw new Exception(msg);
+        }
+    }
+
     private String getCode(Long groupId){
         String maxCode = postOrgMapper.getMaxCode(groupId);
         String code = StringUtils.isEmpty(maxCode)?"000000":maxCode;

@@ -49,13 +49,12 @@ public class StaffFileTypeDTO {
     private Long superId;
 	*/
 
-	/*
+	
 	@ApiModelProperty("字典项id")
 	private Integer id;
 	
 	@ApiModelProperty("所属字典类id")
 	private Integer dictId;
-	*/
 	
 	@ApiModelProperty("数据值")
 	private String value;
@@ -71,4 +70,10 @@ public class StaffFileTypeDTO {
 	
 	@ApiModelProperty(value="附件数量")
     private Integer fileCount;
+	
+	@ApiModelProperty(value="文件扩展名")
+	private String extend;
+	
+	@ApiModelProperty(value="文件下载URL")
+	private String url;
 }

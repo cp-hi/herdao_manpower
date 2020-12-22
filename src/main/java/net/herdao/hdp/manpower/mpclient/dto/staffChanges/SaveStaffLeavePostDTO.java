@@ -21,15 +21,6 @@ public class SaveStaffLeavePostDTO {
     @NotNull
     private Long userId;
 
-    @ApiModelProperty(value = "就职部门")
-    private Long nowOrgId;
-
-    @ApiModelProperty(value = "就职岗位")
-    private Long nowPostId;
-
-    @ApiModelProperty(value = "职级")
-    private Long nowJobLevelId;
-
     @ApiModelProperty(value = "离职申请日期")
     @NotNull
     private Long leaveApplicationTime;
@@ -117,5 +108,5 @@ public class SaveStaffLeavePostDTO {
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
+    private String appendixIds;
 }

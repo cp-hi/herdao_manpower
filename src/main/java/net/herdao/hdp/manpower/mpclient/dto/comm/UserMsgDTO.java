@@ -37,7 +37,11 @@ public class UserMsgDTO implements Serializable{
 
 	@ApiModelProperty(value="岗位组织id")
     private long postOrgId;
-	
+
+	/**
+	 * 该字段为 mp_post_org（业务岗位） 表中的 post_name
+	 * 而不是 mp_post（标准岗位） 表中的 post_name
+	 */
 	@ApiModelProperty(value="岗位名称")
     private String postName;
 	

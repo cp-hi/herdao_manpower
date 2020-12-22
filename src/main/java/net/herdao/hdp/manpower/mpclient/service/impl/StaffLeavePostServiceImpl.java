@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
+import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffLeavePostDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffLeavePostApprove;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffLeavePostMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffLeaveService;
+import net.herdao.hdp.manpower.mpclient.service.UserService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.leave.post.StaffLeavePostPage;
@@ -28,6 +30,9 @@ import java.util.List;
  */
 @Service
 public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper, StaffLeavePostApprove> implements StaffLeaveService {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private StaffLeavePostMapper mapper;
@@ -121,16 +126,28 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
 
     @Override
     public Long insert(SaveStaffLeavePostDTO dto) {
+        StaffLeavePostApprove entity = initStaffLeavePostData(dto);
+
+        mapper.insert(entity);
+        return entity.getId();
+    }
+
+    private StaffLeavePostApprove initStaffLeavePostData(SaveStaffLeavePostDTO dto) {
         StaffLeavePostApprove entity = new StaffLeavePostApprove();
         BeanUtils.copyProperties(dto, entity);
+
+        // 根据用户 id 获取到该用户的当前所在所在部门和岗位
+        UserMsgDTO userMsg = userService.getUserMsg(dto.getUserId());
+        if (userMsg != null) {
+            BeanUtils.copyProperties(userMsg, entity);
+        }
 
         entity.setInterviewsTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getInterviewsTime()));
         entity.setLeaveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveTime()));
         entity.setLeaveApplicationTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveApplicationTime()));
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         entity.setDelFlag(false);
-        mapper.insert(entity);
-        return entity.getId();
+        return entity;
     }
 
     @Override

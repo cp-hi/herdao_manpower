@@ -50,4 +50,6 @@ public interface PostOrgService extends IService<PostOrg> {
      * @return
      */
     PostOrg saveOrUpdatePostOrg(PostOrg postOrg);
+
+    void validityCheck(Long postOrgId, String msg) throws Exception;
 }

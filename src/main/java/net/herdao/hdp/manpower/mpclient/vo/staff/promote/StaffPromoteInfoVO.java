@@ -20,6 +20,9 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
     private Long userId;
 
+    @ApiModelProperty(value = "集团 id", name = "groupId", example = "1")
+    private Long groupId;
+
     @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
     private String staffNameAndCode;
 
@@ -38,11 +41,11 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "调动前部门名称", name = "nowOrgName", example = "1234")
     private String nowOrgName;
 
-    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostId", example = "2345")
-    private Long nowPostId;
+    @ApiModelProperty(value = "调动前岗位 id", name = "nowPostOrgId", example = "2345")
+    private Long nowPostOrgId;
 
-    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostName", example = "1234")
-    private String nowPostName;
+    @ApiModelProperty(value = "调动前岗位名称", name = "nowPostOrgName", example = "1234")
+    private String nowPostOrgName;
 
     @ApiModelProperty(value = "原职级 id", name = "nowJobLevelId", example = "123")
     private Long nowJobLevelId;
@@ -56,14 +59,17 @@ public class StaffPromoteInfoVO {
     @ApiModelProperty(value = "调动后部门名称", name = "promoteOrgName", example = "1234")
     private String promoteOrgName;
 
-    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostId", example = "5432", required = true)
-    private Long promotePostId;
+    @ApiModelProperty(value = "调动后岗位 id", name = "promotePostOrgId", example = "5432", required = true)
+    private Long promotePostOrgId;
 
-    @ApiModelProperty(value = "调动后岗位名称", name = "promotePostName", example = "1234")
-    private String promotePostName;
+    @ApiModelProperty(value = "调动后岗位名称", name = "promotePostOrgName", example = "1234")
+    private String promotePostOrgName;
 
-    @ApiModelProperty(value = "调动后职级", name = "promoteJobLevel", example = "123")
-    private Dictionary promoteJobLevel;
+    @ApiModelProperty(value = "调动后职级 id", name = "promoteJobLevelId", example = "123")
+    private Long promoteJobLevelId;
+
+    @ApiModelProperty(value = "调动后职级名称", name = "promoteJobLevelName", example = "123")
+    private String promoteJobLevelName;
 
     @ApiModelProperty(value = "生效日期", name = "promoteDate", example = "20200901", required = true)
     private Long promoteDate;
@@ -87,14 +93,5 @@ public class StaffPromoteInfoVO {
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private List<String> appendixIds;
-
-    @Data
-    // 字典
-    public static class Dictionary {
-        // 字符串名成
-        private String label;
-        // id
-        private Long value;
-    }
+    private String appendixIds;
 }
