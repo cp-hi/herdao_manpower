@@ -367,13 +367,14 @@
     <select id="fetchRecruitmentIntent" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO">
         SELECT  rec.id,
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age,
+                rec.induction_time,
                 rec.workdate,
                 mp.POST_NAME,
                 rec.minimum_levelIncome,
                 rec.expected_levelIncome,
                 rec.other_request
           FROM  mp_recruitment rec
-          left join mp_post mp on mp.ID=rec.intention_post_id
+          LEFT JOIN mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}

@@ -105,12 +105,6 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
         StaffContractRenewal entity = new StaffContractRenewal();
         BeanUtils.copyProperties(dto, entity);
 
-        // 根据用户 id 获取到该用户的当前所在所在部门和岗位
-        UserMsgDTO userMsg = userService.getUserMsg(dto.getUserId());
-        if (userMsg != null) {
-            BeanUtils.copyProperties(userMsg, entity);
-        }
-
         entity.setContractStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractStartTime()));
         entity.setContractEndTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getContractEndTime()));
         entity.setRenewalStartTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getRenewalStartTime()));
@@ -162,6 +156,12 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());
         if (staffBasicVO != null) {
             BeanUtils.copyProperties(staffBasicVO, to);
+        }
+
+        // 根据用户 id 获取到该用户的当前所在所在部门和岗位
+        UserMsgDTO userMsg = userService.getUserMsg(from.getUserId());
+        if (userMsg != null) {
+            BeanUtils.copyProperties(userMsg, to);
         }
         return to;
     }

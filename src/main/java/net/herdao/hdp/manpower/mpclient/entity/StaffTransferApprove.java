@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseModel;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -70,22 +71,22 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
     private LocalDateTime transStartDate;
 
     @ApiModelProperty(value = "合同期限（年）")
-    private Double contractPeriod;
+    private BigDecimal contractPeriod;
 
     @ApiModelProperty(value = "试用期（月）")
-    private Double probation;
+    private BigDecimal probation;
 
     @ApiModelProperty(value = "本公司工龄")
-    private Double companySeniority;
+    private BigDecimal companySeniority;
 
     @ApiModelProperty(value = "合生珠江系工龄")
-    private Double threeGroupSeniority;
+    private BigDecimal threeGroupSeniority;
 
     @ApiModelProperty(value = "现月度总收入")
-    private Double previousIncome;
+    private BigDecimal previousIncome;
 
     @ApiModelProperty(value = "其它")
-    private Double otherSubsides;
+    private BigDecimal otherSubsides;
 
     @ApiModelProperty(value = "年度岗位编制")
     private Integer yearPostPrepareCount;
