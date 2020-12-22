@@ -89,13 +89,13 @@ public class EntryDTO {
     @ApiModelProperty(value="职级")
     @ExcelProperty(value = "职级")
     private String jobLevelName;
-
     /**
      * 入职日期
      */
     @ApiModelProperty(value="入职日期")
     @ExcelIgnore
     private Long entryPostTime;
+
 
     /**
      * 入职日期-LocalDateTime
