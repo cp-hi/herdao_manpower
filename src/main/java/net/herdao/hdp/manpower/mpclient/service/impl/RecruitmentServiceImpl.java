@@ -240,10 +240,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             }
         }
         if (ObjectUtil.isNotNull(dto.getHeight())){
-            recruitment.setHeight(new BigDecimal(dto.getHeight()));
+            recruitment.setHeight(Integer.parseInt(dto.getHeight()));
         }
         if (ObjectUtil.isNotNull(dto.getWeight())){
-            recruitment.setWeight(new BigDecimal(dto.getWeight()));
+            recruitment.setWeight(Integer.parseInt(dto.getWeight()));
         }
 
         SysUser sysUser = SysUserUtils.getSysUser();

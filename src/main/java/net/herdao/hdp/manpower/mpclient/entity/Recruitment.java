@@ -227,12 +227,12 @@ public class Recruitment extends Model<Recruitment> {
      * 身高
      */
     @ApiModelProperty(value="身高")
-    private BigDecimal height;
+    private Integer height;
     /**
      * 体重
      */
     @ApiModelProperty(value="体重")
-    private BigDecimal weight;
+    private Integer weight;
     /**
      * 政治面貌
      */
