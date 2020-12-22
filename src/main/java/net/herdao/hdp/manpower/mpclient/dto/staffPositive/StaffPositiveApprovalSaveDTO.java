@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -80,15 +82,12 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="转正申请id")
     private Long staffpositiveapplicationId;
-    /**
-     * 入职日期
-     */
-    @ApiModelProperty(value="入职日期")
-    private Long entryTime;
+
     /**
      * 转正时间
      */
     @ApiModelProperty(value="转正时间")
+    @NotNull
     private Long positiveTime;
 
     /**
@@ -112,18 +111,21 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="")
     private String posExamScore;
 
-    @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
-    private String staffName;
+    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
+    private String staffNameAndCode;
 
 
-    @ApiModelProperty(value = "所属组织")
+    @ApiModelProperty(value = "组织/部门名称", name = "orgName")
     private String nowOrgName;
+
+
+    @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
+    private Long entryTime;
 
     private Integer monthPostPrepareCount;
 
-
-
-
+    @ApiModelProperty(value = "岗位名称", name = "postName")
+    private String nowPostName;
 
     /**
      * 转正问题1回答
@@ -229,6 +231,7 @@ private static final long serialVersionUID = 1L;
      * 转正类型
      */
     @ApiModelProperty(value = "转正类型")
+    @NotNull
     private String positiveType;
 
 

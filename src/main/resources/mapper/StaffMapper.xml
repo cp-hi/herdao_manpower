@@ -452,8 +452,11 @@
             o.ORG_NAME,
             p.POST_NAME,
             p.SECTION_ID,
+            S.section_name,
             p.PIPELINE_ID,
-            p.JOB_LEVEL_ID1,
+            pip.pipeline_name,
+            up.JOB_LEVEL_ID JOB_LEVEL_ID1,
+			jl.JOB_LEVEL_NAME,
             f.ENTRY_TIME,
             f.regular_time,
             f.prob_period,
@@ -496,6 +499,7 @@
         LEFT JOIN sys_dict_item dt7 ON f.COUNTRY = dt7.VALUE AND dt7.type = 'GJ'
 		left join mp_section s on up.section_id=s.id
 		left join mp_pipeline pip on up.pipeline_id=pip.id
+		left join mp_job_level jl on up.JOB_LEVEL_ID=jl.id
         <where>
             AND f.del_flag = 0
             AND f.staff_scope = 1

@@ -77,6 +77,15 @@ public class StaffPositiveApprovalInfoVO {
     @ApiModelProperty(value = "岗位")
     private String nowPostName;
 
+    /**
+     * 转正类型
+     */
+    @ApiModelProperty(value = "转正类型")
+    private String positiveType;
+
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
 
     /**
      * 转正问题1回答
@@ -114,14 +123,20 @@ public class StaffPositiveApprovalInfoVO {
     @ApiModelProperty(value="转正问题7回答")
     private String positiveQuestionAns7;
 
+    /**
+     * 所在组织
+     */
+    @ApiModelProperty(value = "所在组织")
+    private String orgName;
+    /**
+     * 试任岗位
+     */
+    @ApiModelProperty(value = "试任岗位")
+    private String tryAnyJob;
 
     /**
-     * 转正类型
+     * 试任日期
      */
-    @ApiModelProperty(value = "转正类型")
-    private String positiveType;
-
-
-    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
-    private String appendixIds;
+    @ApiModelProperty(value = "试任日期")
+    private String entryTime1;
 }

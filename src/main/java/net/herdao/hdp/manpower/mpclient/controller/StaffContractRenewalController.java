@@ -69,7 +69,7 @@ public class StaffContractRenewalController {
 
     @ApiOperation(value = "更新合同续签-保存")
     @GetMapping("/{id}")
-    public R<StaffContractRenewalInfoVO> getDetail(@PathVariable("id") Long id) {
+    public R<StaffContractRenewalInfoVO> getDetail(@PathVariable("id") Long id) throws Exception {
         return R.ok(service.getDetail(id), "success");
     }
 }

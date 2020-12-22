@@ -285,7 +285,7 @@
                             app.post_id,
                             pst.post_name,
                             jl.JOB_LEVEL_NAME job_level_name,
-                            app.entry_post_time,
+                            app.entry_post_time entry_post_time_local,
                             app.entry_login_status,
                             CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
                             IF(invite_count>0,'已邀请','未邀请') invite_status
@@ -342,7 +342,7 @@
                     org.org_name,
                     pst.post_name,
                     jl.job_level_name,
-                    app.entry_post_time,
+                    app.entry_post_time entry_post_time_local,
                     app.entry_login_status,
                     app.staff_status,
                     app.office_type,
@@ -419,7 +419,7 @@
                         app.certificate_no,
                         pst.post_name,
                         jl.JOB_LEVEL_NAME job_level_name,
-                        app.entry_post_time,
+                        app.entry_post_time entry_post_time_local,
                         app.entry_login_status,
                         CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
                         IF(invite_count>0,'已邀请','未邀请') invite_status
@@ -475,7 +475,7 @@
                             org.org_name,
                             pst.post_name,
                             jl.JOB_LEVEL_NAME job_level_name,
-                            app.entry_post_time,
+                            app.entry_post_time entry_post_time_local,
                             app.entry_login_status,
                             app.staff_status,
                             app.office_type,
@@ -571,7 +571,7 @@
                     app.org_id,
                     app.post_id,
                     app.job_level_id,
-                    app.entry_post_time,
+                    app.entry_post_time entry_post_time_local,
                     app.probation
             FROM mp_staff_entrypost_approve app
             LEFT JOIN mp_organization org ON org.id = app.org_id

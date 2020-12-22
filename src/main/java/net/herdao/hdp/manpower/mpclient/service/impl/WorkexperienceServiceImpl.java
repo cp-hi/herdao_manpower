@@ -30,7 +30,6 @@ import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.WorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
-import net.herdao.hdp.manpower.mpclient.utils.DateUtils;
 import net.herdao.hdp.manpower.mpclient.utils.ImportCheckUtils;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
@@ -57,15 +56,31 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
 		map.put("searchText", searchText);
 		map.put("groupId",workexperienceDTO.getGroupId());
 		map.put("orgId",workexperienceDTO.getOrgId());
-		
-        page = page.setRecords(this.baseMapper.findStaffWorkPage(map));
+		List<Workexperience> workexperienceList = this.baseMapper.findStaffWorkPage(map);
+		List<WorkexperienceDTO> workexperienceDTOList = new ArrayList<WorkexperienceDTO>();
+    	workexperienceList.forEach(wk ->{
+    		WorkexperienceDTO wp = new WorkexperienceDTO();
+    		BeanUtils.copyProperties(wk, wp);
+    		wp.setBeginDate(LocalDateTimeUtils.convert2Long(wk.getBeginDate()));
+    		wp.setEndDate(LocalDateTimeUtils.convert2Long(wk.getEndDate()));
+    		workexperienceDTOList.add(wp);
+    	});
+        page = page.setRecords(workexperienceDTOList);
         return page;
     }
 
     @Override
     public List<WorkexperienceDTO> findStaffWork(String searchText,String staffId) {
-        List<WorkexperienceDTO> list = this.baseMapper.findStaffWork(searchText,staffId);
-        return list;
+    	List<Workexperience> workexperienceList = this.baseMapper.findStaffWork(searchText,staffId);
+    	List<WorkexperienceDTO> workexperienceDTOList = new ArrayList<WorkexperienceDTO>();
+    	workexperienceList.forEach(wk ->{
+    		WorkexperienceDTO wp = new WorkexperienceDTO();
+    		BeanUtils.copyProperties(wk, wp);
+    		wp.setBeginDate(LocalDateTimeUtils.convert2Long(wk.getBeginDate()));
+    		wp.setEndDate(LocalDateTimeUtils.convert2Long(wk.getEndDate()));
+    		workexperienceDTOList.add(wp);
+    	});
+        return workexperienceDTOList;
     }
 
     @Override
@@ -112,7 +127,15 @@ public class WorkexperienceServiceImpl extends ServiceImpl<WorkexperienceMapper,
     
     @Override
     public List<WorkexperienceDTO> findWorkexperienceDTO(Long staffid){
-    	List<WorkexperienceDTO> workexperienceDTOList = this.baseMapper.findWorkexperienceDTO(staffid);
+    	List<Workexperience> workexperienceList = this.baseMapper.findWorkexperience(staffid);
+    	List<WorkexperienceDTO> workexperienceDTOList = new ArrayList<WorkexperienceDTO>();
+    	workexperienceList.forEach(wk ->{
+    		WorkexperienceDTO workexperienceDTO = new WorkexperienceDTO();
+    		BeanUtils.copyProperties(wk, workexperienceDTO);
+    		workexperienceDTO.setBeginDate(LocalDateTimeUtils.convert2Long(wk.getBeginDate()));
+    		workexperienceDTO.setEndDate(LocalDateTimeUtils.convert2Long(wk.getEndDate()));
+    		workexperienceDTOList.add(workexperienceDTO);
+    	});
     	return workexperienceDTOList;
     }
 
