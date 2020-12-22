@@ -239,6 +239,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 recruitment.setIsRelativeCompany(0);
             }
         }
+        if (ObjectUtil.isNotNull(dto.getHeight())){
+            recruitment.setHeight(new BigDecimal(dto.getHeight()));
+        }
+        if (ObjectUtil.isNotNull(dto.getWeight())){
+            recruitment.setWeight(new BigDecimal(dto.getWeight()));
+        }
 
         SysUser sysUser = SysUserUtils.getSysUser();
         if (ObjectUtil.isNotNull(sysUser)){
@@ -249,7 +255,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,dto);
-
         return dto;
     }
 
