@@ -58,5 +58,6 @@
                         AND r.recruitment_id = #{recruitmentId}
                   </if>
             </where>
+            ORDER BY r.awards_time desc
       </select>
 </mapper>
