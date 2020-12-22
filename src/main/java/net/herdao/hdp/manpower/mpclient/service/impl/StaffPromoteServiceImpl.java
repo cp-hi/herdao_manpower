@@ -226,8 +226,7 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
             if (record.getPromoteStartDate() != null) {
                 vo.setPromoteStartDate(LocalDateTimeUtils.convert2Long(record.getPromoteStartDate()));
             }
-            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
-            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), record.getModifierTime()));
             list.add(vo);
         }
         BeanUtils.copyProperties(page, pageVO);
