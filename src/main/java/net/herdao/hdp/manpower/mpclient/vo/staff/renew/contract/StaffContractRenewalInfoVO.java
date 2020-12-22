@@ -55,6 +55,9 @@ public class StaffContractRenewalInfoVO {
     @ApiModelProperty(value = "合同开始日期(原合同生效时间)")
     private Long contractStartTime;
 
+    @ApiModelProperty(value = "合同签订年限")
+    private BigDecimal contractYears;
+
     @ApiModelProperty(value = "合同结束日期(原合同到期时间)")
     private Long contractEndTime;
 
