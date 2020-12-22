@@ -33,7 +33,7 @@ public class StaffContractRenewalPage {
     private String staffCode;
 
     @ApiModelProperty(value = "续签主体单位id")
-    private Long companyName;
+    private String companyName;
 
     @ApiModelProperty(value = "合同类型")
     private String renewalType;
