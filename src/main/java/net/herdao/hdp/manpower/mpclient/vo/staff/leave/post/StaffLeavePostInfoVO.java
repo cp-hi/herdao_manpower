@@ -32,6 +32,18 @@ public class StaffLeavePostInfoVO {
     @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
     private Long entryTime;
 
+    @ApiModelProperty(value = "所在部门 id", name = "orgId", example = "1234")
+    private String orgId;
+
+    @ApiModelProperty(value = "所在部门名称", name = "orgName", example = "1234")
+    private String orgName;
+
+    @ApiModelProperty(value = "岗位 id", name = "postOrgId", example = "1234")
+    private Long postOrgId;
+
+    @ApiModelProperty(value = "岗位名称", name = "orgName", example = "1234")
+    private String postOrgName;
+
     @ApiModelProperty(value="性别")
     private String sex;
 
