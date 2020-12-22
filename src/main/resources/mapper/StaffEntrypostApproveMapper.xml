@@ -330,7 +330,7 @@
          </where>
     </select>
 
-    <!-- 入职管理-已入职-列表 -->
+    <!-- 入职管理-已入职(最新入职)-列表 -->
     <select id="findInJobPage" resultType="net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryDTO">
          select  * from (
              SELECT app.id,
@@ -349,7 +349,8 @@
                     app.probation,
                     jb.job_count,
                     CONCAT( app.modifier_name, " 于 ", app.modifier_time, " 更新" ) update_desc,
-                    IF(invite_count>0,'已邀请','未邀请') invite_status
+                    IF(invite_count>0,'已邀请','未邀请') invite_status,
+                    org.org_charge_work_name
             FROM  mp_staff_entrypost_approve app
                   LEFT JOIN mp_organization org ON org.id = app.org_id
                   LEFT JOIN mp_post pst ON pst.id = app.post_id
