@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
@@ -157,7 +158,7 @@ public class StaffPositiveApprovalController {
     @SysLog("新增转正审批表")
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('generator_StaffPositiveApproval_add')" )
-    public R<Long> save(@RequestBody @NotNull StaffPositiveApprovalSaveDTO dto) {
+    public R<Long> save(@RequestBody @NotNull @Valid StaffPositiveApprovalSaveDTO dto) {
         return R.ok(staffPositiveApprovalService.insert(dto));
     }
 

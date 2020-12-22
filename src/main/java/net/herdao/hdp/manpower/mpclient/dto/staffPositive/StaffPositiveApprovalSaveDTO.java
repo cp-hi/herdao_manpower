@@ -25,6 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -85,6 +87,7 @@ private static final long serialVersionUID = 1L;
      * 转正时间
      */
     @ApiModelProperty(value="转正时间")
+    @NotNull
     private Long positiveTime;
 
     /**
@@ -123,9 +126,6 @@ private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "岗位名称", name = "postName")
     private String nowPostName;
-
-
-
 
     /**
      * 转正问题1回答
@@ -231,6 +231,7 @@ private static final long serialVersionUID = 1L;
      * 转正类型
      */
     @ApiModelProperty(value = "转正类型")
+    @NotNull
     private String positiveType;
 
 
