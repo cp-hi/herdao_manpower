@@ -54,5 +54,5 @@ public interface StaffPositiveApprovalMapper extends BaseMapper<StaffPositiveApp
      * @param id 主键ID
      * @return
      */
-    StaffPositiveApprovalInfoDTO getPositiveApprovalById(Long id);
+    StaffPositiveApprovalDetailDTO getPositiveApprovalById(Long id);
 }

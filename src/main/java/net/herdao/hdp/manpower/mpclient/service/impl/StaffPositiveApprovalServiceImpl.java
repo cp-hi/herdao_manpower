@@ -163,16 +163,15 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
      */
     @Override
     public StaffPositiveApprovalInfoVO getStaffPositive(Long id) {
-        StaffPositiveApprovalInfoDTO entity = this.baseMapper.getPositiveApprovalById(id);
+        StaffPositiveApprovalDetailDTO entity = this.baseMapper.getPositiveApprovalById(id);
         if (entity != null) {
             StaffPositiveApprovalInfoVO vo = new StaffPositiveApprovalInfoVO();
-            BeanUtils.copyProperties(entity, vo);
             BeanUtils.copyProperties(entity, vo);
             vo.setEntryTime(LocalDateTimeUtils.convert2Long(entity.getEntryTime()));
             vo.setPositiveTime(LocalDateTimeUtils.convert2Long(entity.getPositiveTime()));
             vo.setCreatorTime(LocalDateTimeUtils.convert2Long(entity.getCreatorTime()));
+            vo.setEntryTime1(LocalDateTimeUtils.convert2Long(entity.getEntryTime1()));
             return vo;
-
         }
         return null;
     }
