@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -74,13 +75,13 @@ public class StaffCallOutInfoVO {
     private Long transStartDate;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
-    private Double contractPeriod;
+    private BigDecimal contractPeriod;
 
     @ApiModelProperty(value = "本公司工龄", name = "companySeniority")
-    private Double companySeniority;
+    private BigDecimal companySeniority;
 
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
-    private Double threeGroupSeniority;
+    private BigDecimal threeGroupSeniority;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

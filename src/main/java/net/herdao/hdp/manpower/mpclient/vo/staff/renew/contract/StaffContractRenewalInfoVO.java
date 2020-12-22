@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class StaffContractRenewalInfoVO {
     private Long contractEndTime;
 
     @ApiModelProperty(value = "合同试用期")
-    private Double contractProbation;
+    private BigDecimal contractProbation;
 
 
     @ApiModelProperty(value = "续签主体单位id")
@@ -59,7 +60,7 @@ public class StaffContractRenewalInfoVO {
     private String renewalCompanyName;
 
     @ApiModelProperty(value = "合同签定基本工资")
-    private Double signedBasicWage;
+    private BigDecimal signedBasicWage;
 
     @ApiModelProperty(value = "续签开始日期(续签合同生效日期)")
     private Long renewalStartTime;
@@ -68,13 +69,13 @@ public class StaffContractRenewalInfoVO {
     private Long renewalEndTime;
 
     @ApiModelProperty(value = "拟续签年数")
-    private Double proposedSigningYears;
+    private BigDecimal proposedSigningYears;
 
     @ApiModelProperty(value = "劳动合同续签类型")
     private String renewalType;
 
     @ApiModelProperty(value = "拟续合同签定基本工资")
-    private Double proposedBasicWage;
+    private BigDecimal proposedBasicWage;
 
     @ApiModelProperty(value = "经办人意见")
     private String remark;

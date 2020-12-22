@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -60,16 +61,16 @@ public class SaveStaffTransferInfoDTO {
     private Boolean isPrepareChange;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
-    private Double contractPeriod;
+    private BigDecimal contractPeriod;
 
     @ApiModelProperty(value = "使用期", name = "probation")
-    private Double probation;
+    private BigDecimal probation;
 
     @ApiModelProperty(value = "本公司工龄", name = "probation")
-    private Double companySeniority;
+    private BigDecimal companySeniority;
 
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
-    private Double threeGroupSeniority;
+    private BigDecimal threeGroupSeniority;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnit")
     private Long paidUnitId;
