@@ -394,6 +394,7 @@ public class EntryJobController {
             if (ObjectUtil.isNotNull(approve)){
                 //入职登记状态 (1:未提交，2：已提交，3：已确认）
                 approve.setEntryCheckStatus("2");
+                approveService.updateById(approve);
             }
         }
 
