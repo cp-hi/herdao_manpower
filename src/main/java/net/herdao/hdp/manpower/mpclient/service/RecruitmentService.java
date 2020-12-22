@@ -93,12 +93,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     RecruitmentIntentDTO fetchRecruitmentIntent(Long id);
 
-    /**
-     * 获取人才简历-最高教育经历-详情
-     * @param id 主键ID
-     * @return RecruitmentTopEduDTO
-     */
-    RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
+
 
     /**
      * 候选人H5登录

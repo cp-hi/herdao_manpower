@@ -313,8 +313,12 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         return recruitmentIntentDTO;
     }
 
-    @Override
-    public RecruitmentTopEduDTO fetchRecruitmentTopEdu(Long id) {
+    /**
+     * 更新最高教育详情
+     * @param id 人才ID
+     * @return
+     */
+    public RecruitmentTopEduDTO updateRecruitmentTopEdu(Long id) {
         //获取人才教育表的最高学历信息
         LambdaQueryWrapper<RecruitmentEducation> eduQueryWrapper = Wrappers.lambdaQuery();
         eduQueryWrapper.eq( RecruitmentEducation::getRecruitmentId,id).orderByDesc(RecruitmentEducation::getPeriod);
@@ -335,8 +339,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 recruitmentTopEdu.setHighestEducation(education.getEducationQua());
                 recruitmentTopEdu.setEducationDegree(education.getDegree());
                 recruitmentTopEdu.setGraduated(education.getSchoolName());
-                //recruitmentTopEdu.setProfessional(education.getProfessional());
-                //recruitmentTopEdu.setLearnForm(education.getLearnForm());
             }
 
             //更新人才表的最高学历教育信息
@@ -655,12 +657,11 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         RecruitmentPersonDTO personDTO = this.baseMapper.fetchRecruitmentPerson(id);
         RecruitmentIntentDTO intentDTO = this.baseMapper.fetchRecruitmentIntent(id);
         List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
-
-        //获取最高学历
-        RecruitmentTopEduDTO topEduDTO = this.baseMapper.fetchRecruitmentTopEdu(id);
-
         List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
         List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+
+        //更新最高学历
+        RecruitmentTopEduDTO topEduDTO = updateRecruitmentTopEdu(id);
 
         result.setRecruitmentPersonDTO(personDTO);
         result.setRecruitmentIntentDTO(intentDTO);
