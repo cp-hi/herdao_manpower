@@ -1,16 +1,20 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +90,7 @@ import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import net.herdao.hdp.manpower.sys.mapper.SysDictItemMapper;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
 
@@ -819,12 +824,42 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO){
+	public boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO) {
 		Staff staff = this.getById(staffWorkYearDTO.getStaffid());
 		BeanUtils.copyProperties(staffWorkYearDTO, staff);
+		// 处理workDate和entryTime属性内容无法拷贝问题 start
+		LocalDate workDate = staffWorkYearDTO.getWorkDate();
+		staff.setWorkDate(toLocalDateTime(workDate));
+		
+		LocalDate entryTime = staffWorkYearDTO.getEntryTime();
+		staff.setEntryTime(toLocalDateTime(entryTime));
+		// 处理workDate和entryTime属性内容无法拷贝问题 end
 		return this.updateById(staff);
 	}
 
+	/**
+	 * LocalDate转换成LocalDateTime
+	 * 
+	 * @author yeks
+	 */
+	private LocalDateTime toLocalDateTime(LocalDate localDate) {
+		if (localDate == null) {
+			return null;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(false);
+		Date date;
+		try {
+			date = sdf.parse(localDate.toString());
+			Instant instant = date.toInstant();
+			ZoneId zoneId = ZoneId.systemDefault();
+			LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
+			return localDateTime;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * 转正管理(员工)基础信息-（根据id查询基本信息）
