@@ -150,7 +150,6 @@
         mspa.`positive_question_ans6`,
         mspa.`positive_question_ans7`,
         mspa.ENTRY_TIME AS entryTime1,
-        mspa.`positive_question_ans7`,
         mspa.appendix_ids,
         mpo.`POST_NAME` AS postName,
         np.POST_NAME AS now_post_name,

@@ -587,7 +587,7 @@ public class Recruitment extends Model<Recruitment> {
      * 意向岗位
      */
     @ApiModelProperty(value="意向岗位")
-    private String intentionPostId;
+    private String intentionPostName;
     /**
      * 联系号码
      */

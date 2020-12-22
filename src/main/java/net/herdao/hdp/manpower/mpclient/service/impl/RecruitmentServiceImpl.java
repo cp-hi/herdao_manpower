@@ -273,9 +273,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         if (ObjectUtil.isNotNull(dto.getOrgId())){
             recruitment.setOrgId(dto.getOrgId());
         }
-        if (ObjectUtil.isNotNull(dto.getIntentionPostId())){
-            recruitment.setRecruitmentPostId(dto.getIntentionPostId());
-        }
         if (ObjectUtil.isNotNull(dto.getMinimumLevelincome())){
             recruitment.setMinimumLevelincome(new BigDecimal(dto.getMinimumLevelincome()));
         }

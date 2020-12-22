@@ -179,10 +179,4 @@ public class RecruitmentJobIntentDTO  {
     @ApiModelProperty(value="应聘聘组织ID")
     private Long orgId;
 
-    /**
-     * 应聘聘岗位ID
-     */
-    @ApiModelProperty(value="应聘聘岗位ID")
-    private Long intentionPostId;
-
 }

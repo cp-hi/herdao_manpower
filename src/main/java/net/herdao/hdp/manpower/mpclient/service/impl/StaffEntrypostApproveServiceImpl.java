@@ -345,9 +345,6 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         if (ObjectUtil.isNotNull(recruitment.getPoliticalLandscape())){
             staff.setPoliticsStatus(recruitment.getPoliticalLandscape());
         }
-        if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
-            staff.setGoalPosts(recruitment.getIntentionPostId());
-        }
         if (ObjectUtil.isNotNull(recruitment.getZipcode())){
             staff.setPostCode(recruitment.getZipcode());
         }
@@ -432,9 +429,6 @@ public class StaffEntrypostApproveServiceImpl extends ServiceImpl<StaffEntrypost
         }
         if (ObjectUtil.isNotNull(recruitment.getOrgId())){
             userpost.setOrgId(recruitment.getOrgId());
-        }
-        if (ObjectUtil.isNotNull(recruitment.getIntentionPostId())){
-            userpost.setPostId(Long.parseLong(recruitment.getIntentionPostId()));
         }
         if (ObjectUtil.isNotNull(recruitment.getInductionTime())){
             //任职日期
