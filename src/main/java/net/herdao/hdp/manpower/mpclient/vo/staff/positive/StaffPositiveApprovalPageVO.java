@@ -122,6 +122,7 @@ public class StaffPositiveApprovalPageVO {
     private String positiveType;
 
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
+    @ExcelProperty(value = "最近更新情况")
     private String updateInfo;
 
 

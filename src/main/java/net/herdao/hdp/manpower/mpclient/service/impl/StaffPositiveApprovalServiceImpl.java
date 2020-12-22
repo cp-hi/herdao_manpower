@@ -167,7 +167,6 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         if (entity != null) {
             StaffPositiveApprovalInfoVO vo = new StaffPositiveApprovalInfoVO();
             BeanUtils.copyProperties(entity, vo);
-            BeanUtils.copyProperties(entity, vo);
             vo.setEntryTime(LocalDateTimeUtils.convert2Long(entity.getEntryTime()));
             vo.setPositiveTime(LocalDateTimeUtils.convert2Long(entity.getPositiveTime()));
             vo.setCreatorTime(LocalDateTimeUtils.convert2Long(entity.getCreatorTime()));

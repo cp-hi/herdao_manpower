@@ -347,4 +347,9 @@ public class StaffPositiveApprovalDetailDTO  {
      */
     @ApiModelProperty(value="试任日期")
     private LocalDateTime entryTime1;
+
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
+
 }
