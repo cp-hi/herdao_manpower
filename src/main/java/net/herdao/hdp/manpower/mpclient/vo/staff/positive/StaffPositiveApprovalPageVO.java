@@ -62,12 +62,6 @@ public class StaffPositiveApprovalPageVO {
     @ExcelProperty(value = "状态")
     private String status;
 
-    /*    *//**
-     *
-     *//*
-    @ApiModelProperty(value = "")
-    private String posExamScore;*/
-
 
     /**
      * 新建时间
@@ -90,6 +84,7 @@ public class StaffPositiveApprovalPageVO {
     private String staffName;
 
     @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
+    @ExcelProperty(value = "员工编码")
     private String staffCode;
 
     @ApiModelProperty(value = "所属组织")
@@ -124,6 +119,13 @@ public class StaffPositiveApprovalPageVO {
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
     @ExcelProperty(value = "最近更新情况")
     private String updateInfo;
+
+    /**
+     * 执行状态
+     */
+    @ApiModelProperty(value = "执行状态")
+    @ExcelProperty(value = "执行状态")
+    private String executingStatus;
 
 
 }

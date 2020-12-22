@@ -160,10 +160,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     @Override
     public CompanyDetailDTO getCompanyById(Long id){
-        Company company = this.getById(id);
-        CompanyDetailDTO form = new CompanyDetailDTO();
-        BeanUtils.copyProperties(company, form);
-        return form;
+        return this.baseMapper.getCompanyById(id);
     }
 
     @Autowired

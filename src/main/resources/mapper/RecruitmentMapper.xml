@@ -113,7 +113,7 @@
                 <result property="resumeSource" column="resume_source"/>
                 <result property="certificateType" column="certificate_type"/>
                 <result property="photo" column="photo"/>
-                <result property="intentionPostId" column="intention_post_id"/>
+                <result property="intentionPostName" column="intention_post_name"/>
                 <result property="contactNumber" column="contact_number"/>
                 <result property="certificateNumber" column="certificate_number"/>
                 <result property="recruitOrgName" column="recruit_org_name"/>
@@ -265,7 +265,6 @@
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age ,
 				rec.workdate,
 				org.org_name,
-				ps.POST_NAME intentionPostName,
 				rec.minimum_levelIncome,
 				rec.expected_levelIncome,
 				rec.induction_time,
@@ -287,10 +286,9 @@
 				rec.address,
 				rec.other_request,
                 rec.org_id,
-                rec.intention_post_id
+                rec.intention_post_name
           FROM 	mp_recruitment rec
           LEFT JOIN mp_organization org on org.id=rec.org_id
-          LEFT JOIN mp_post ps on ps.id =  rec.recruitment_post_id
          <where>
              rec.DEL_FLAG = 0
             <if test="id != null ">
@@ -355,7 +353,6 @@
                 rec.emergency_contacts,
                 rec.EMERGENCY_PHONE
                 FROM  mp_recruitment rec
-           left join mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
@@ -369,12 +366,11 @@
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age,
                 rec.induction_time,
                 rec.workdate,
-                mp.POST_NAME,
+                rec.intention_post_name post_name,
                 rec.minimum_levelIncome,
                 rec.expected_levelIncome,
                 rec.other_request
           FROM  mp_recruitment rec
-          LEFT JOIN mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
