@@ -167,5 +167,11 @@ public class EntryDTO {
     @ExcelProperty(value = "证件号码")
     private String certificateNo;
 
+    /**
+     * 直属主管
+     */
+    @ApiModelProperty(value="直属主管")
+    @ExcelProperty(value = "直属主管")
+    private String orgChargeWorkName;
 
 }
