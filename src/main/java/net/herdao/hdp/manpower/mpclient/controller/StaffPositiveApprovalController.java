@@ -84,9 +84,6 @@ public class StaffPositiveApprovalController {
     /**
      * 获取转正详情
      * @param id 主键ID
-     *
-     *
-     *
      * @return
      */
     @ApiOperation(value = "获取转正详情")

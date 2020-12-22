@@ -25,7 +25,7 @@ public class StaffContractRenewalPageVO {
     @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
     private String staffCode;
 
-    @ApiModelProperty(value = "续签主体单位id")
+    @ApiModelProperty(value = "续签主体单位")
     private String companyName;
 
     @ApiModelProperty(value = "合同类型")
@@ -34,7 +34,7 @@ public class StaffContractRenewalPageVO {
     @ApiModelProperty(value = "续签合同生效日期")
     private Long renewalStartTime;
 
-    @ApiModelProperty(value = "续签合同结束日期")
+    @ApiModelProperty(value = "续签合同到期日期")
     private Long renewalEndTime;
 
     @ApiModelProperty(value = "状态")

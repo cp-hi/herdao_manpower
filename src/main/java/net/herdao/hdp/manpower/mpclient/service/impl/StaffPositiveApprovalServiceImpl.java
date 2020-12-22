@@ -93,6 +93,9 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         for (StaffPositiveApprovalPage record : page.getRecords()) {
             StaffPositiveApprovalPageVO vo = new StaffPositiveApprovalPageVO();
             BeanUtils.copyProperties(record, vo);
+           if (Integer.parseInt(record.getStatus()) == 3){
+               vo.setExecutingStatus("未执行");
+           }
             if (record.getEntryTime() != null) {
                 vo.setEntryTime(LocalDateTimeUtils.convert2Long(record.getEntryTime()));
             }
@@ -207,10 +210,16 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         if (entity == null) {
             throw new Exception("该审批记录不可编辑");
         }
+
+        SysUser sysUser = SysUserUtils.getSysUser();
+        entity.setModifierTime(LocalDateTime.now());
+        if (ObjectUtil.isNotNull(sysUser)) {
+            entity.setModifierCode(sysUser.getUsername());
+            entity.setModifierName(sysUser.getAliasName());
+        }
         BeanUtils.copyProperties(dto, entity);
         entity.setEntryTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getEntryTime()));
         entity.setPositiveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getPositiveTime()));
-        entity.setCreatorTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getCreatorTime()));
         this.baseMapper.updateById(entity);
         return id;
     }
