@@ -132,11 +132,17 @@ public class StaffPositiveApprovalInfoVO {
      * 试任岗位
      */
     @ApiModelProperty(value = "试任岗位")
-    private String tryAnyJob;
+    private String nowPostOrgName;
 
     /**
      * 试任日期
      */
     @ApiModelProperty(value = "试任日期")
-    private String entryTime1;
+    private Long entryTime1;
+
+    /**
+     * 试任岗位薪酬级别
+     */
+    @ApiModelProperty(value = "试任岗位薪酬级别")
+    private String tryAnyJobPay;
 }
