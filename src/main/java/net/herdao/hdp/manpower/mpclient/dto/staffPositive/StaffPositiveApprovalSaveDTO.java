@@ -84,11 +84,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="转正申请id")
     private Long staffpositiveapplicationId;
-    /**
-     * 入职日期
-     */
-    @ApiModelProperty(value="入职日期")
-    private Long entryTime;
+
     /**
      * 转正时间
      */
@@ -116,15 +112,21 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="")
     private String posExamScore;
 
-    @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
-    private String staffName;
+    @ApiModelProperty(value = "员工姓名(员工工号)", name = "staffNameAndCode", example = "张三")
+    private String staffNameAndCode;
 
 
-    @ApiModelProperty(value = "所属组织")
+    @ApiModelProperty(value = "组织/部门名称", name = "orgName")
     private String nowOrgName;
+
+
+    @ApiModelProperty(value = "入职日期", name = "entryTime", example = "20201003")
+    private Long entryTime;
 
     private Integer monthPostPrepareCount;
 
+    @ApiModelProperty(value = "岗位名称", name = "postName")
+    private String nowPostName;
 
 
 

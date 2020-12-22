@@ -173,7 +173,6 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
             vo.setPositiveTime(LocalDateTimeUtils.convert2Long(entity.getPositiveTime()));
             vo.setCreatorTime(LocalDateTimeUtils.convert2Long(entity.getCreatorTime()));
             return vo;
-
         }
         return null;
     }

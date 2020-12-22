@@ -17,6 +17,8 @@
 
 package net.herdao.hdp.manpower.mpclient.vo.staff.positive;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -38,22 +40,26 @@ public class StaffPositiveApprovalPageVO {
      * 转正申请id
      */
     @ApiModelProperty(value = "转正申请id")
+    @ExcelIgnore
     private Long staffpositiveapplicationId;
     /**
      * 入职日期
      */
     @ApiModelProperty(value = "入职日期")
+    @ExcelProperty(value = "入职日期")
     private Long entryTime;
     /**
      * 转正时间
      */
     @ApiModelProperty(value = "转正时间")
+    @ExcelProperty(value = "转正时间")
     private Long positiveTime;
 
     /**
      * 状态
      */
     @ApiModelProperty(value = "状态")
+    @ExcelProperty(value = "状态")
     private String status;
 
     /*    *//**
@@ -67,35 +73,44 @@ public class StaffPositiveApprovalPageVO {
      * 新建时间
      */
     @ApiModelProperty(value = "新建时间")
+    @ExcelProperty(value = "新建时间")
     private Long creatorTime;
 
 
     @ApiModelProperty(value = "人事调动 id", name = "id", example = "1")
+    @ExcelIgnore
     private Long id;
 
     @ApiModelProperty(value = "员工 id", name = "userId", example = "1")
+    @ExcelIgnore
     private Long userId;
 
     @ApiModelProperty(value = "员工姓名", name = "staffName", example = "张三")
+    @ExcelProperty(value = "员工姓名")
     private String staffName;
 
     @ApiModelProperty(value = "员工编码", name = "staffCode", example = "123456")
     private String staffCode;
 
     @ApiModelProperty(value = "所属组织")
+    @ExcelProperty(value = "所属组织")
     private String nowOrgName;
 
     @ApiModelProperty(value = "岗位")
+    @ExcelProperty(value = "岗位")
     private String nowPostName;
 
     @ApiModelProperty(value = "职级")
+    @ExcelProperty(value = "职级")
     private String nowJobLevelName;
 
     @ApiModelProperty(value = "任职类型")
+    @ExcelProperty(value = "任职类型")
     private String jobType;
 
 
     @ApiModelProperty(value = "司龄")
+    @ExcelProperty(value = "司龄")
     private Double companySeniority;
 
 
@@ -103,6 +118,7 @@ public class StaffPositiveApprovalPageVO {
      * 转正类型
      */
     @ApiModelProperty(value = "转正类型")
+    @ExcelProperty(value = "转正类型")
     private String positiveType;
 
     @ApiModelProperty(value = "更新信息", name = "updateInfo", example = "由李四于2020-01-02更新")
