@@ -85,15 +85,15 @@
                         + t.labor_job_count + t.outer_job_count + t.retire_job_count ) job_type_total
                FROM
                 (
-                        SELECT  sum( CASE WHEN t.JOB_TYPE = 1 THEN 1 ELSE 0 END ) full_time_job_count, -- 全职
-                                sum( CASE WHEN t.JOB_TYPE = 5 THEN 1 ELSE 0 END ) trainee_job_count, -- 实习生
-                                sum( CASE WHEN t.JOB_TYPE = 2 THEN 1 ELSE 0 END ) part_time_job_count,  -- 兼职
-                                sum( CASE WHEN t.JOB_TYPE = 6 THEN 1 ELSE 0 END ) labor_job_count,  -- 劳务派遣
-                                sum( CASE WHEN t.JOB_TYPE = 7 THEN 1 ELSE 0 END ) outer_job_count, -- 外包
-                                sum( CASE WHEN t.JOB_TYPE = 8 THEN 1 ELSE 0 END ) retire_job_count -- 退休返聘
+                        SELECT  sum( CASE WHEN t.JOB_TYPE = 1 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END ) full_time_job_count, -- 全职
+                                sum( CASE WHEN t.JOB_TYPE = 5 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END ) trainee_job_count, -- 实习生
+                                sum( CASE WHEN t.JOB_TYPE = 2 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END ) part_time_job_count,  -- 兼职
+                                sum( CASE WHEN t.JOB_TYPE = 6 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END ) labor_job_count,  -- 劳务派遣
+                                sum( CASE WHEN t.JOB_TYPE = 7 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END ) outer_job_count, -- 外包
+                                sum( CASE WHEN t.JOB_TYPE = 8 AND t.STAFF_SCOPE = 1 THEN 1 ELSE 0 END ) retire_job_count -- 退休返聘
                         FROM
                       (
-                        SELECT  s.JOB_TYPE
+                        SELECT  s.JOB_TYPE,s.STAFF_SCOPE
                              FROM  mp_staff s
                             LEFT JOIN mp_user u ON s.user_id = u.ID
                             LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID AND up.MAIN_POST = 1
@@ -121,15 +121,15 @@
                 t.large_than_40,
                 ROUND(t.large_than_40/t.total,2)*100 large_than_40_zb
         from (
-             SELECT SUM(case when t.age &lt;20 then 1 else 0 end ) less_than_20,
-                    SUM(case when t.age >=20 and t.age &lt;= 30 then 1 else 0 end ) in_20_30,
-                    SUM(case when t.age >=30 and t.age &lt;= 40 then 1 else 0 end ) in_30_40,
-                    SUM(case when t.age >=40 then 1 else 0 end ) large_than_40,
+             SELECT SUM(case when t.age &lt;=20 then 1 else 0 end ) less_than_20,
+                    SUM(case when t.age >20 and t.age &lt;= 30 then 1 else 0 end ) in_20_30,
+                    SUM(case when t.age >30 and t.age &lt;= 40 then 1 else 0 end ) in_30_40,
+                    SUM(case when t.age >40 then 1 else 0 end ) large_than_40,
                     COUNT(t.staff_id) total
             FROM
             (
                  SELECT s.id staff_id,
-                        DATE_FORMAT( FROM_DAYS( TO_DAYS( NOW())- TO_DAYS( s.BIRTHDAY )), '%Y' )+ 0 AS age
+                        IFNULL(DATE_FORMAT( FROM_DAYS( TO_DAYS( NOW())- TO_DAYS( s.BIRTHDAY )), '%Y' )+ 0,0) AS age
                     FROM mp_staff s
                         LEFT JOIN mp_user u ON s.user_id = u.ID
                         LEFT JOIN mp_userpost up ON s.USER_ID = up.USER_ID
@@ -137,11 +137,10 @@
                         LEFT JOIN mp_post p ON p.ID = up.POST_ID
                         LEFT JOIN mp_group g ON p.GROUP_ID = g.ID
                         LEFT JOIN mp_organization o ON u.ORG_DEPT_ID = o.ID
-                        <where>
+                        WHERE s.STAFF_SCOPE = 1
                             <if test="orgCode != null">
                                 AND  o.ORG_CODE LIKE concat(#{orgCode},'%')
                             </if>
-                        </where>
             ) t
          )t
      </select>

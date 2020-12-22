@@ -111,7 +111,7 @@
 	        po.job_staffs,
 	        po.sort_no,
 	        p.post_name main_post_name,
-	        o.ORG_NAME,
+	        o.ORG_FULLNAME ORG_NAME,
 	        jg.job_grade_name,
 	        jl.job_level_name,
 	        s.section_name,
