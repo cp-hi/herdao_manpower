@@ -116,6 +116,11 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
         if (entity != null) {
             StaffLeavePostInfoVO vo = new StaffLeavePostInfoVO();
             BeanUtils.copyProperties(entity, vo);
+            // 根据用户 id 获取到该用户的当前所在所在部门和岗位
+            UserMsgDTO userMsg = userService.getUserMsg(entity.getUserId());
+            if (userMsg != null) {
+                BeanUtils.copyProperties(userMsg, entity);
+            }
             vo.setInterviewsTime(LocalDateTimeUtils.convert2Long(entity.getInterviewsTime()));
             vo.setLeaveTime(LocalDateTimeUtils.convert2Long(entity.getLeaveTime()));
             vo.setLeaveApplicationTime(LocalDateTimeUtils.convert2Long(entity.getLeaveApplicationTime()));
@@ -135,12 +140,6 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
     private StaffLeavePostApprove initStaffLeavePostData(SaveStaffLeavePostDTO dto) {
         StaffLeavePostApprove entity = new StaffLeavePostApprove();
         BeanUtils.copyProperties(dto, entity);
-
-        // 根据用户 id 获取到该用户的当前所在所在部门和岗位
-        UserMsgDTO userMsg = userService.getUserMsg(dto.getUserId());
-        if (userMsg != null) {
-            BeanUtils.copyProperties(userMsg, entity);
-        }
 
         entity.setInterviewsTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getInterviewsTime()));
         entity.setLeaveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getLeaveTime()));
