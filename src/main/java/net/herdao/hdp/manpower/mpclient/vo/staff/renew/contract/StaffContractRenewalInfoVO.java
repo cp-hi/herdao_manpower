@@ -39,6 +39,15 @@ public class StaffContractRenewalInfoVO {
     @ApiModelProperty(value = "所在部门 id", name = "orgId", example = "1234")
     private Long orgId;
 
+    @ApiModelProperty(value = "所在部门名称", name = "orgName", example = "1234")
+    private String orgName;
+
+    @ApiModelProperty(value = "岗位 id", name = "postOrgId", example = "1234")
+    private Long postOrgId;
+
+    @ApiModelProperty(value = "岗位名称", name = "orgName", example = "1234")
+    private String postOrgName;
+
     @ApiModelProperty(value = "原合同 id")
     @NotNull
     private Long staffContractId;

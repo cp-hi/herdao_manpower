@@ -34,7 +34,7 @@ public class StaffContractRenewalPageVO {
     @ApiModelProperty(value = "续签合同生效日期")
     private Long renewalStartTime;
 
-    @ApiModelProperty(value = "续签合同结束日期")
+    @ApiModelProperty(value = "续签合同到期日期")
     private Long renewalEndTime;
 
     @ApiModelProperty(value = "状态")
