@@ -71,17 +71,24 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
         return entity.getId();
     }
 
-    private StaffTransferApprove initStaffTransferData(SaveStaffTransferInfoDTO dto) {
+    private StaffTransferApprove initStaffTransferData(SaveStaffTransferInfoDTO dto) throws Exception {
         StaffTransferApprove entity = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, entity);
 
+        // 为了适配前端
         // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
         // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
-        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
-        PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
-
-        entity.setNowPostId(nowPostOrg.getPostId());
-        entity.setTransPostId(transPostOrg.getPostId());
+//        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+//        PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
+//
+//        if (nowPostOrg == null) {
+//            throw new Exception("无法找到原岗位信息");
+//        }
+//        if (transPostOrg == null) {
+//            throw new Exception("无法找到调动后的应岗位");
+//        }
+//        entity.setNowPostId(nowPostOrg.getPostId());
+//        entity.setTransPostId(transPostOrg.getPostId());
         entity.setTransStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate()));
         entity.setTransferType(StaffChangesApproveTypeConstants.TRANSFER);
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
