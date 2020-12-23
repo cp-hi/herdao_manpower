@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,9 +139,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Autowired
 	private OrganizationService organizationService;
+
 	@Autowired
 	private GroupService groupService;
 
+	@Autowired
+	private SysDictItemService sysDictItemService;
 
 	private final static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -589,9 +593,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		);
 		List<StaffFamilyDTO> familyDtoList = new ArrayList<>();
 		StaffFamilyDTO family;
-		for(int i=0;i<familyList.size();i++){
+		for (Familystatus familystatus : familyList) {
 			family = new StaffFamilyDTO();
-			BeanUtils.copyProperties(familyList.get(i), family);
+			SysDictItem relationsType = sysDictItemService.getDictItemByTypeAndValue("RELATIONS_TYPE", familystatus.getRelations());
+			familystatus.setRelations(relationsType.getLabel());
+
+			BeanUtils.copyProperties(familystatus, family);
 			familyDtoList.add(family);
 		}
 		map.put("staffFamilyDTO", familyDtoList);
