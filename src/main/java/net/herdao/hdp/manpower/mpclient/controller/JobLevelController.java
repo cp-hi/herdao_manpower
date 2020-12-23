@@ -1,17 +1,29 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import net.herdao.hdp.manpower.mpclient.dto.jobLevel.*;
+import io.swagger.annotations.ApiOperation;
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobGradeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevelDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDTO;
+import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDetailDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelFormVO;
@@ -19,13 +31,7 @@ import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelListVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.ShortJobLevelVO;
 import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 import net.herdao.hdp.manpower.sys.utils.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @ClassName JobLevelController
@@ -57,7 +63,6 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
         return R.ok(jobLevelService.jobLevelList(groupId));
     }
 
-    @Override
     @GetMapping("/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jobLevelName", value = "搜索字符串"),
@@ -66,9 +71,8 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
             @ApiImplicitParam(name = "type", value = "查询选项 ，不填为查询，1为下载，下载时把上一个返回的total当成size传递"),
     })
     @ApiOperation(value = "分页查询", notes = "分页查询")
-    public R<IPage<JobLevelListVO>> page(HttpServletResponse response, @ApiIgnore Page page, JobLevel jobLevel, Integer type)
-            throws Exception {
-        return super.page(response, page, jobLevel, type);
+    public R<IPage<JobLevelListVO>> page(@ApiIgnore Page page, JobLevel jobLevel){
+        return jobLevelService.getPage(page, jobLevel);
     }
 
     @Autowired
