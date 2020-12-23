@@ -144,14 +144,17 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         entity.setEntryTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getEntryTime()));
         entity.setPositiveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getPositiveTime()));
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
-        //更改
+
         entity.setOrgId(dto.getNowOrgId());
         entity.setDelFlag(false);
         SysUser sysUser = SysUserUtils.getSysUser();
         entity.setCreatorTime(LocalDateTime.now());
+        entity.setModifierTime(LocalDateTime.now());
         if (ObjectUtil.isNotNull(sysUser)) {
             entity.setCreatorCode(sysUser.getUsername());
             entity.setCreatorName(sysUser.getAliasName());
+            entity.setModifierCode(sysUser.getUsername());
+            entity.setModifierName(sysUser.getAliasName());
         }
         this.baseMapper.insert(entity);
         return entity.getId();
