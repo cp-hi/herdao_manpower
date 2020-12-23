@@ -419,7 +419,7 @@
     <select id="fetchRecruitmentBaseInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo">
         	SELECT  rec.id,
                     rec.talent_name,
-                    rec.birthday,
+                    rec.birthday birthday_local,
                     rec.sex,
                     rec.nation,
                     rec.marital_status,

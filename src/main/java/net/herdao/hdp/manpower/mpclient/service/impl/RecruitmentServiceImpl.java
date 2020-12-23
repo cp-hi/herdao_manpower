@@ -743,18 +743,25 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentEditDetailsDTO fetchResumeEditDetails(Long id) {
         RecruitmentEditDetailsDTO result=new RecruitmentEditDetailsDTO();
 
-        //教育经历
-        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
-        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
-        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
-            recruitmentEduList.forEach(e->{
-                if (ObjectUtil.isNotNull(e)){
-                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
-                    BeanUtils.copyProperties(e,editEduDTO);
-                    editEduList.add(editEduDTO);
-                    result.setRecruitmentEditEduDTO(editEduList);
-                }
-            });
+        //个人基本信息
+        RecruitmentBaseInfo baseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
+        if (ObjectUtil.isNotNull(baseInfo)){
+
+            if (ObjectUtil.isNotNull(baseInfo.getBirthday())){
+
+            }
+
+            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
+            BeanUtils.copyProperties(baseInfo,editBaseInfo);
+            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
+        }
+
+        //其他个人信息
+        RecruitmentOtherInfo otherInfo = this.baseMapper.fetchRecruitmentOtherInfo(id);
+        if (ObjectUtil.isNotNull(otherInfo)){
+            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
+            BeanUtils.copyProperties(otherInfo,editOtherInfo);
+            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
         }
 
         //家庭状况
@@ -771,21 +778,20 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             });
         }
 
-        //其他个人信息
-        RecruitmentOtherInfo otherInfo = this.baseMapper.fetchRecruitmentOtherInfo(id);
-        if (ObjectUtil.isNotNull(otherInfo)){
-            RecruitmentEditOtherInfoDTO editOtherInfo=new RecruitmentEditOtherInfoDTO();
-            BeanUtils.copyProperties(otherInfo,editOtherInfo);
-            result.setRecruitmentEditOtherInfoDTO(editOtherInfo);
+        //教育经历
+        List<RecruitmentEduDTO> recruitmentEduList = recruitmentEducationService.fetchResumeEduList(id);
+        List<RecruitmentEditEduDTO> editEduList=new ArrayList<RecruitmentEditEduDTO>();
+        if (ObjectUtil.isNotEmpty(recruitmentEduList)){
+            recruitmentEduList.forEach(e->{
+                if (ObjectUtil.isNotNull(e)){
+                    RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
+                    BeanUtils.copyProperties(e,editEduDTO);
+                    editEduList.add(editEduDTO);
+                    result.setRecruitmentEditEduDTO(editEduList);
+                }
+            });
         }
 
-        //个人基本信息
-        RecruitmentBaseInfo baseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
-        if (ObjectUtil.isNotNull(baseInfo)){
-            RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
-            BeanUtils.copyProperties(baseInfo,editBaseInfo);
-            result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
-        }
 
         return result;
     }

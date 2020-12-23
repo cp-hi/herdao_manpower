@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -34,8 +35,13 @@ public class RecruitmentBaseInfo {
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+    private Long birthday;
+
+    /**
+     * 出生日期
+     */
+    @ApiModelProperty(value="出生日期",hidden = true)
+    private LocalDateTime birthdayLocal;
 
     /**
      * 性别
