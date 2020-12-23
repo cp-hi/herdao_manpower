@@ -110,7 +110,7 @@ public interface EntityService<T> extends IService<T> {
      * 删除同步平台数据
      *
      */
-    default Boolean deleteSync(Serializable id){return null;}
+    default void deleteSync(Serializable id){}
 
     /**
      * 批量保存或更新
@@ -122,7 +122,7 @@ public interface EntityService<T> extends IService<T> {
      * 删除同步平台数据
      *
      */
-    default Boolean stop(Serializable id,Boolean stop){return null;}
+    default void stopSync(Serializable id,Boolean stop){}
 
     /**
      * 导入校验
