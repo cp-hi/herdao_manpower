@@ -13,12 +13,12 @@ import java.util.List;
 @ApiModel(value = "邮件发送")
 public class EmailSendInfo {
 
-    @ApiModelProperty(value = "邮件接收人-业务表主键ID 例如：人才ID(人才表主键ID)数组")
-    private List<Long> ids;
+    @ApiModelProperty(value = "id数组字符串")
+    private String id;
 
     @ApiModelProperty(value = "模板配置-邮件发送内容")
-    private String template;
+    private String content;
 
-    @ApiModelProperty(value = "邮件类型：")
+    @ApiModelProperty(value = "邮件类型：人才|入职")
     private String type;
 }

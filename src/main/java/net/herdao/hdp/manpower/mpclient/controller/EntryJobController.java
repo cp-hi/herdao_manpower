@@ -339,11 +339,11 @@ public class EntryJobController {
     @ApiOperation(value = "获取模板发送请内容", notes = "获取模板发送请内容")
     @GetMapping("/fetchConfirmEmail")
     @ApiImplicitParams({
-         @ApiImplicitParam(name="type",value="类型",required = true)
+         @ApiImplicitParam(name="type",value="类型（人才，入职）",required = true)
     })
     public R<ModuleVO> fetchConfirmEmail(String type) {
         ModuleVO moduleVO=new ModuleVO();
-        //todo:调用系统模板接口，获取模板配置信息。
+        //todo:调用系统模板接口，获取模板配置信息。根据类型（人才，入职）。
         if (ObjectUtil.isNotNull(type)){
 
         }

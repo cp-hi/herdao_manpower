@@ -11,6 +11,7 @@ import net.herdao.hdp.admin.api.feign.RemoteMsgService;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.entity.EmailSendInfo;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
+import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.service.MsgService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
@@ -18,6 +19,7 @@ import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,35 +44,47 @@ public class MsgServiceImpl implements MsgService {
     @SneakyThrows
     public Boolean sendEmail(EmailSendInfo emailSendInfo) {
         try {
-            List<Recruitment> recruitmentList =null;
-            if (CollectionUtil.isNotEmpty(emailSendInfo.getIds())){
-                recruitmentList=recruitmentService.listByIds(emailSendInfo.getIds());
+            if (ObjectUtil.isNotEmpty(emailSendInfo.getId())){
+                String[] idArray = emailSendInfo.getId().split(",");
                 List<SysMsgDTO> sysMsgs = new ArrayList<>();
 
                 //人才管理发送简历更新邮件
-                if("1".equals(emailSendInfo.getType())){
+                if("人才".equals(emailSendInfo.getType())){
+                    List<Recruitment> recruitmentList=recruitmentService.listByIds(Arrays.asList(idArray));
                     if (ObjectUtil.isNotEmpty(recruitmentList)){
                         recruitmentList.forEach(e->{
                             SysMsgDTO sysMsg = new SysMsgDTO();
                             sysMsg.setReceptEmail(e.getEmail());
-                            sysMsg.setContent(emailSendInfo.getTemplate());
+                            sysMsg.setContent(emailSendInfo.getContent());
                             sysMsg.setTitle("人才管理");
                             sysMsg.setReceptPhone(e.getHomePhone());
                             sysMsgs.add(sysMsg);
                         });
                     }
                 }
+
                 //入职邀请发送入职邀请邮件
-                if("2".equals(emailSendInfo.getType())){
-                    if (ObjectUtil.isNotEmpty(recruitmentList)){
-                        recruitmentList.forEach(e->{
-                            SysMsgDTO sysMsg = new SysMsgDTO();
-                            sysMsg.setReceptEmail(e.getEmail());
-                            sysMsg.setContent(emailSendInfo.getTemplate());
-                            sysMsg.setTitle("入职邀请");
-                            sysMsg.setReceptPhone(e.getHomePhone());
-                            sysMsgs.add(sysMsg);
-                        });
+                if("入职".equals(emailSendInfo.getType())){
+                    List<StaffEntrypostApprove> approveList = approveService.listByIds(Arrays.asList(idArray));
+                    if (CollectionUtil.isNotEmpty(approveList)){
+                        List<Long> recruitmentIdArray=new ArrayList<>();
+                        for (StaffEntrypostApprove approve : approveList) {
+                            Long recruitmentId = approve.getRecruitmentId();
+                            recruitmentIdArray.add(recruitmentId);
+                        }
+                        if (CollectionUtil.isNotEmpty(recruitmentIdArray)){
+                            List<Recruitment> recruitmentList=recruitmentService.listByIds(recruitmentIdArray);
+                            if (ObjectUtil.isNotEmpty(recruitmentList)){
+                                recruitmentList.forEach(e->{
+                                    SysMsgDTO sysMsg = new SysMsgDTO();
+                                    sysMsg.setReceptEmail(e.getEmail());
+                                    sysMsg.setContent(emailSendInfo.getContent());
+                                    sysMsg.setTitle("入职邀请");
+                                    sysMsg.setReceptPhone(e.getHomePhone());
+                                    sysMsgs.add(sysMsg);
+                                });
+                            }
+                        }
                     }
                 }
 
