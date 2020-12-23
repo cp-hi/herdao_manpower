@@ -109,13 +109,20 @@ public class StaffPromoteServiceImpl extends ServiceImpl<StaffPromoteApproveMapp
         StaffPromoteApprove entity = new StaffPromoteApprove();
         BeanUtils.copyProperties(dto, entity);
 
+        // 前端应传 postOrgId，但现在组件传值为 postId，为了调通，需要先注释掉
         // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
         // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
-        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
-        PostOrg promotePostOrg = postOrgService.getById(dto.getPromotePostOrgId());
+//        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+//        PostOrg promotePostOrg = postOrgService.getById(dto.getPromotePostOrgId());
 
-        entity.setNowPostId(nowPostOrg.getPostId());
-        entity.setPromotePostId(promotePostOrg.getPostId());
+//        if (nowPostOrg == null) {
+//            throw new Exception("无法找到原岗位信息");
+//        }
+//        if (transPostOrg == null) {
+//            throw new Exception("无法找到调动后的应岗位");
+//        }
+//        entity.setNowPostId(nowPostOrg.getPostId());
+//        entity.setPromotePostId(promotePostOrg.getPostId());
         entity.setPromoteDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getPromoteDate()));
         entity.setStatus(StaffChangesApproveStatusConstants.FILLING_IN);
         entity.setDelFlag(false);

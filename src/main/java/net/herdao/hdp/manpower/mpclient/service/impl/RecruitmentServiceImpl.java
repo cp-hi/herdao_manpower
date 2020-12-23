@@ -411,6 +411,10 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             recruitment.setModifierCode(sysUser.getUsername());
             recruitment.setModifierName(sysUser.getAliasName());
         }
+        if (ObjectUtil.isNotNull(otherInfo.getResumeAccessTime())){
+            recruitment.setResumeAccessTime(LocalDateTimeUtils.convert2LocalDateTime(otherInfo.getResumeAccessTime()));
+        }
+
         super.updateById(recruitment);
         BeanUtils.copyProperties(recruitment,otherInfo);
 

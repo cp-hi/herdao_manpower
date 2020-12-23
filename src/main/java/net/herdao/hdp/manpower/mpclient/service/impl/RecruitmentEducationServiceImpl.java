@@ -75,6 +75,13 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
             education.setCreatorName(sysUser.getAliasName());
         }
 
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            education.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            education.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
+        }
+
         BeanUtils.copyProperties(education,dto);
         super.save(education);
 
@@ -99,8 +106,14 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
             education.setModifierName(sysUser.getAliasName());
         }
 
-        BeanUtils.copyProperties(education,dto);
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            education.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            education.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
+        }
         super.updateById(education);
+        BeanUtils.copyProperties(education,dto);
 
         return dto;
     }
