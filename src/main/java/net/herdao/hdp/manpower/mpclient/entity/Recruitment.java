@@ -74,8 +74,7 @@ public class Recruitment extends Model<Recruitment> {
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+    private LocalDateTime birthday;
     /**
      * 移动电话
      */

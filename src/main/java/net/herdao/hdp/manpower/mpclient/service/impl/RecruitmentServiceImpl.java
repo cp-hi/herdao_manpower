@@ -246,6 +246,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         if (ObjectUtil.isNotNull(dto.getWeight())){
             recruitment.setWeight(Integer.parseInt(dto.getWeight()));
         }
+        if (ObjectUtil.isNotNull(dto.getBirthday())){
+            recruitment.setBirthday(LocalDateTimeUtils.convert2LocalDateTime(dto.getBirthday()));
+        }
 
         SysUser sysUser = SysUserUtils.getSysUser();
         if (ObjectUtil.isNotNull(sysUser)){

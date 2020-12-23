@@ -493,47 +493,6 @@ public class RecruitmentController {
     }
 
     /**
-     * 获取-入职登记记录-发送邀请确认-页面内容（内含二维码）
-     * @return R
-     */
-    @ApiOperation(value = "获取-入职登记记录-发送邀请确认-页面内容", notes = "获取-入职登记记录-发送邀请确认-页面内容")
-    @GetMapping("/fetchRegisterEmail")
-    public R<ModuleVO> fetchConfirmInviteResumeEmail() {
-        ModuleVO moduleVO=new ModuleVO();
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-            String code = QrCodeUtils.createBase64QrCode(address);
-            moduleVO.setCode(code);
-        }
-
-        //todo:调用系统模板接口，获取模板配置信息。
-
-        return R.ok(moduleVO);
-    }
-
-    /**
-     * 获取-候选人简历补充邀请确认-页面内容（内含二维码）
-     * @return R
-     */
-    @ApiOperation(value = "获取-候选人简历补充邀请确认-页面内容", notes = "获取-候选人简历补充邀请确认-页面内容")
-    @GetMapping("/fetchCandidate")
-    public R<ModuleVO> fetchConfirmSupplementResumeEmail() {
-        ModuleVO moduleVO=new ModuleVO();
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-            String code = QrCodeUtils.createBase64QrCode(address);
-            moduleVO.setCode(code);
-        }
-
-        //todo:调用系统模板接口，获取模板配置信息。
-        return R.ok(moduleVO);
-    }
-
-    /**
      * 手机端-基本信息-个人信息-新增或修改
      * @param dto 人才表
      * @return R
