@@ -38,10 +38,7 @@ import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.common.security.annotation.Inner;
 import net.herdao.hdp.common.security.util.SecurityUtils;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.GenerateWorkflowDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfoMobileDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDetailsDTO;
@@ -446,7 +443,6 @@ public class RecruitmentController {
     public R generateWorkflow(@RequestBody GenerateWorkflowDTO dto) {
     	return recruitmentService.generateWorkflow(dto.getRecordId(),dto.getFlowType(),dto.getContentUrl());
     }
-    
     
     /**
      * 	流程回调 更新业务表单的状态 

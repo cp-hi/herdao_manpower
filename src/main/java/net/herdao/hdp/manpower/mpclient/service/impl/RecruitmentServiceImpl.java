@@ -27,6 +27,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
 import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.service.*;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
 import org.springframework.beans.BeanUtils;
@@ -314,7 +315,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     /**
-     * 更新最高教育详情
+     * 更新和获取最高教育详情
      * @param id 人才ID
      * @return
      */
@@ -334,8 +335,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             //把“人才教育表的最高学历信息”赋值到“人才表的最高教育信息”
             if (ObjectUtil.isNotEmpty(education)){
                 BeanUtils.copyProperties(education,recruitmentTopEdu);
-                recruitmentTopEdu.setBeginDate(education.getPeriod());
-                recruitmentTopEdu.setEndDate(education.getTodate());
+                recruitmentTopEdu.setBeginDate(LocalDateTimeUtils.convert2Long(education.getPeriod()));
+                recruitmentTopEdu.setEndDate(LocalDateTimeUtils.convert2Long(education.getTodate()));
                 recruitmentTopEdu.setHighestEducation(education.getEducationQua());
                 recruitmentTopEdu.setEducationDegree(education.getDegree());
                 recruitmentTopEdu.setGraduated(education.getSchoolName());
@@ -654,14 +655,53 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     public RecruitmentDetailsDTO fetchRecruitmentDetailsDTO(Long id) {
         RecruitmentDetailsDTO result = new RecruitmentDetailsDTO();
 
+        //个人基本情况
         RecruitmentPersonDTO personDTO = this.baseMapper.fetchRecruitmentPerson(id);
-        RecruitmentIntentDTO intentDTO = this.baseMapper.fetchRecruitmentIntent(id);
-        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
-        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
-        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        if (ObjectUtil.isNotNull(personDTO)&&ObjectUtil.isNotNull(personDTO.getBirthdayLocal())){
+            personDTO.setBirthday(LocalDateTimeUtils.convert2Long(personDTO.getBirthdayLocal()));
+        }
 
-        //更新最高学历
+        //从业情况与求职意向
+        RecruitmentIntentDTO intentDTO = this.baseMapper.fetchRecruitmentIntent(id);
+        if (ObjectUtil.isNotNull(intentDTO)){
+            if(ObjectUtil.isNotNull(intentDTO.getInductionTimeLocal())){
+                intentDTO.setInductionTime(LocalDateTimeUtils.convert2Long(intentDTO.getInductionTimeLocal()));
+            }
+            if(ObjectUtil.isNotNull(intentDTO.getWorkDateLocal())){
+                intentDTO.setWorkdate(LocalDateTimeUtils.convert2Long(intentDTO.getInductionTimeLocal()));
+            }
+        }
+
+        //工作经历
+        List<RecruitmentWorkExperienceDTO> workList = recruitmentWorkexperienceService.findWorkExperienceList(id);
+        if (CollectionUtil.isNotEmpty(workList)){
+            for (RecruitmentWorkExperienceDTO dto : workList) {
+                if (ObjectUtil.isNotNull(dto.getToDateLocal())){
+                    dto.setTodate(LocalDateTimeUtils.convert2Long(dto.getToDateLocal()));
+                }
+                if (ObjectUtil.isNotNull(dto.getPeriodLocal())){
+                    dto.setPeriod(LocalDateTimeUtils.convert2Long(dto.getPeriodLocal()));
+                }
+            }
+        }
+
+        //家庭情况
+        List<RecruitmentFamilyDTO> familyDTOList = recruitmentFamilyStatusService.fetchResumeFamilyList(id);
+
+        //获奖资格
+        List<RecruitmentAwardsDTO> recruitmentAwardsList = recruitmentAwardsService.fetchResumeAwardsList(id);
+        if (CollectionUtil.isNotEmpty(recruitmentAwardsList)){
+            for (RecruitmentAwardsDTO dto : recruitmentAwardsList) {
+                if (ObjectUtil.isNotNull(dto)){
+                    dto.setAwardsTime(LocalDateTimeUtils.convert2Long(dto.getAwardsTimeLocal()));
+                }
+            }
+        }
+
+        //更新和获取最高教育详情
         RecruitmentTopEduDTO topEduDTO = updateRecruitmentTopEdu(id);
+
+
 
         result.setRecruitmentPersonDTO(personDTO);
         result.setRecruitmentIntentDTO(intentDTO);

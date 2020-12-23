@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -33,16 +34,27 @@ public class RecruitmentWorkExperienceDTO {
     /**
      * 开始日期
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="开始日期")
-    private Date period;
+    private Long period;
 
     /**
      * 结束日期
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="结束日期")
-    private Date todate;
+    private Long todate;
+
+    /**
+     * 开始日期-LocalDateTime
+     */
+    @ApiModelProperty(value="开始日期-LocalDateTime",hidden = true)
+    private LocalDateTime periodLocal;
+
+    /**
+     * 结束日期-LocalDateTime
+     */
+    @ApiModelProperty(value="结束日期-LocalDateTime",hidden = true)
+    private LocalDateTime toDateLocal;
+
 
     /**
      * 单位名称

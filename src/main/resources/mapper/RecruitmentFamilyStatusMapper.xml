@@ -36,14 +36,13 @@
        <select id="fetchResumeFamilyList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO">
            SELECT  f.id,
                    f.`name`,
-                   gx.label relations,
+                   f.relations,
                    f.professional,
                    f.work_unit,
                    f.ADDRESS,
                    f.age,
                    f.recruitment_id
              FROM mp_recruitment_family_status f
-             LEFT JOIN sys_dict_item gx ON gx.type = 'RELATIONS_TYPE' AND gx.value = f.relations AND gx.del_flag = 0
               <where>
                   f.del_flag = 0
                   <if test="recruitmentId != null ">
