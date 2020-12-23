@@ -655,7 +655,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         //人才活动
         List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
         result.setRecruitmentActivitiDTO(activitiList);
-        return null;
+        return result;
     }
 
     @Override
@@ -707,8 +707,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         //更新和获取最高教育详情
         RecruitmentTopEduDTO topEduDTO = updateRecruitmentTopEdu(id);
-
-
 
         result.setRecruitmentPersonDTO(personDTO);
         result.setRecruitmentIntentDTO(intentDTO);
@@ -802,7 +800,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             });
         }
 
-
         return result;
     }
 
@@ -818,6 +815,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 if (ObjectUtil.isNotNull(e)){
                     RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
                     BeanUtils.copyProperties(e,editEduDTO);
+                    editEduDTO.setTodate(LocalDateTimeUtils.convert2Long(e.getPeriodLocal()));
+                    editEduDTO.setPeriod(LocalDateTimeUtils.convert2Long(e.getPeriodLocal()));
                     editEduList.add(editEduDTO);
                     result.setRecruitmentEditEduDTO(editEduList);
                 }
@@ -849,6 +848,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         //个人基本信息
         RecruitmentBaseInfo baseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
         if (ObjectUtil.isNotNull(baseInfo)){
+            if (ObjectUtil.isNotNull(baseInfo.getBirthdayLocal())){
+                baseInfo.setBirthday(LocalDateTimeUtils.convert2Long(baseInfo.getBirthdayLocal()));
+            }
             RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
             BeanUtils.copyProperties(baseInfo,editBaseInfo);
             result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
