@@ -264,8 +264,15 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     @Override
     public RecruitmentJobIntentDTO fetchResumeJobIntent(Long id) {
-        RecruitmentJobIntentDTO result = this.baseMapper.fetchResumeJobIntent(id);
-        return result;
+        RecruitmentJobIntentDTO entity = this.baseMapper.fetchResumeJobIntent(id);
+        if (ObjectUtil.isNotNull(entity)){
+            entity.setWorkdate(LocalDateTimeUtils.convert2Long(entity.getWorkdateLocal()));
+            entity.setInductionTime(LocalDateTimeUtils.convert2Long(entity.getInductionTimeLocal()));
+            entity.setManagementExperience(LocalDateTimeUtils.convert2Long(entity.getManagementExperienceLocal()));
+            entity.setProfessionalExperience(LocalDateTimeUtils.convert2Long(entity.getProfessionalExperienceLocal()));
+            entity.setRealEstateExperience(LocalDateTimeUtils.convert2Long(entity.getRealEstateExperienceLocal()));
+        }
+        return entity;
     }
 
     @Override
