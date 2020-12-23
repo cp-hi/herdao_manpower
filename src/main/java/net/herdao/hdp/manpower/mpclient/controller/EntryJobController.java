@@ -382,7 +382,7 @@ public class EntryJobController {
         @ApiImplicitParam(name="id",value="人才ID",required = true)
     })
     @PostMapping("/confirmRegisterByMobile")
-    public R  confirmRegisterByMobile(@RequestBody Long id) {
+    public R confirmRegisterByMobile(@RequestBody Long id) {
         //获取人才审批表的最新记录
         LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
         entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,id).orderByDesc(StaffEntrypostApprove::getCreatorTime);
