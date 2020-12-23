@@ -100,6 +100,7 @@
          mspa.modifier_time,
          mspa.positive_type,
          mspa.status,
+         mspa.probation,
          norg.ORG_NAME as now_org_name,
          njl.JOB_LEVEL_NAME as now_JOB_LEVEL_NAME,
          np.POST_NAME  as nowPostName
