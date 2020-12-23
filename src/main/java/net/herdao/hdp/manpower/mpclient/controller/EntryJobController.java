@@ -353,7 +353,7 @@ public class EntryJobController {
 
     /**
      * 手机端-极速入职-提交 修改入职登记状态
-     * @param id 人才ID
+     * @param vo 入职登记确认VO
      * @return
      */
     @ApiOperation(value = "手机端-极速入职-提交", notes = "手机端-极速入职-提交")
