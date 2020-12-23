@@ -359,20 +359,23 @@ public class EntryJobController {
     @ApiOperation(value = "手机端-极速入职-提交", notes = "手机端-极速入职-提交")
     @PostMapping("/confirmRegisterByMobile")
     public R confirmRegisterByMobile(@RequestBody RegisterConfirmVO vo) {
-        //获取人才审批表的最新记录
-        LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
-        entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,vo.getId()).orderByDesc(StaffEntrypostApprove::getCreatorTime);
-        List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
+        if (ObjectUtil.isNotEmpty(vo)&&ObjectUtil.isNotNull(vo.getId())){
+            //获取人才审批表的最新记录
+            LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
+            entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,Long.parseLong(vo.getId())).orderByDesc(StaffEntrypostApprove::getCreatorTime);
+            List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
 
-        //修改入职登记状态
-        if (CollectionUtil.isNotEmpty(entryList)){
-            StaffEntrypostApprove approve = entryList.get(0);
-            if (ObjectUtil.isNotNull(approve)){
-                //入职登记状态 (1:未提交，2：已提交，3：已确认）
-                approve.setEntryCheckStatus("2");
-                approveService.updateById(approve);
+            //修改入职登记状态
+            if (CollectionUtil.isNotEmpty(entryList)){
+                StaffEntrypostApprove approve = entryList.get(0);
+                if (ObjectUtil.isNotNull(approve)){
+                    //入职登记状态 (1:未提交，2：已提交，3：已确认）
+                    approve.setEntryCheckStatus("2");
+                    approveService.updateById(approve);
+                }
             }
         }
+
 
         return R.ok("提交成功");
     }

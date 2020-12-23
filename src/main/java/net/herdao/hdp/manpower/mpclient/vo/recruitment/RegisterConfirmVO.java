@@ -16,6 +16,6 @@ public class RegisterConfirmVO {
      * 人才表主键id
      */
     @ApiModelProperty(value="人才表主键id")
-    private Long id;
+    private String id;
 
 }
