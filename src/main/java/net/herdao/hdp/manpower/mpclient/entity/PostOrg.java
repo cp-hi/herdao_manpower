@@ -75,12 +75,12 @@ private static final long serialVersionUID = 1L;
      * 是否一把手0不是1是
      */
     @ApiModelProperty(value="是否一把手0不是1是")
-    private String isLeader;
+    private Boolean isLeader;
     /**
      * 是否干部岗0不是1是
      */
     @ApiModelProperty(value="是否干部岗0不是1是")
-    private String isCadre;
+    private Boolean isCadre;
     /**
      * 板块id
      */
@@ -110,7 +110,7 @@ private static final long serialVersionUID = 1L;
      * 是否停用
      */
     @ApiModelProperty(value="是否停用")
-    private Integer isStop;
+    private Boolean isStop;
     /**
      * 新建用户ID
      */
