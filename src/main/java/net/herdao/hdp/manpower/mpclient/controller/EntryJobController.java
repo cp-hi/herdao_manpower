@@ -21,6 +21,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RegisterConfirmVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.springframework.web.bind.annotation.*;
 
@@ -378,14 +379,11 @@ public class EntryJobController {
      * @return
      */
     @ApiOperation(value = "手机端-极速入职-提交", notes = "手机端-极速入职-提交")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="人才ID",required = true)
-    })
     @PostMapping("/confirmRegisterByMobile")
-    public R confirmRegisterByMobile(@RequestBody Long id) {
+    public R confirmRegisterByMobile(@RequestBody RegisterConfirmVO vo) {
         //获取人才审批表的最新记录
         LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
-        entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,id).orderByDesc(StaffEntrypostApprove::getCreatorTime);
+        entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,vo.getId()).orderByDesc(StaffEntrypostApprove::getCreatorTime);
         List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
 
         //修改入职登记状态
