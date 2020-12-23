@@ -97,22 +97,22 @@ public class StaffCallInInfoVO {
     private BigDecimal threeGroupSeniority;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "payUnitId")
-    private Long payUnitId;
+    private Long payUnitsId;
 
     @ApiModelProperty(value = "工资发放单位名称", name = "payUnitName")
-    private String payUnitName;
+    private String payUnitsName;
 
     @ApiModelProperty(value = "公积金发放单位 id", name = "fundUnitId")
-    private Long fundUnitId;
+    private Long fundUnitsId;
 
     @ApiModelProperty(value = "公积金发放单位名称", name = "fundUnitName")
-    private String fundUnitName;
+    private String fundUnitsName;
 
     @ApiModelProperty(value = "社保购买id", name = "securityUnitId")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "社保购买名称", name = "securityUnitName")
-    private String securityUnitName;
+    private String securityUnitsName;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
