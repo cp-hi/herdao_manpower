@@ -534,6 +534,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             organization.setOrgChargeWorkNo(staff.getStaffCode());
             organization.setOrgChargeWorkName(staff.getStaffName());
         }
+        else{//删除负责人时删除负责人姓名、负责人工号
+        	organization.setOrgChargeWorkNo("");
+            organization.setOrgChargeWorkName("");
+        }
 
         // 保存组织
         this.saveOrUpdate(organization);
