@@ -404,7 +404,7 @@
                 rec.relative_post_name,
                 rec.accept_assignment_location,
                 rec.applicant_sign,
-                rec.resume_access_time,
+                rec.resume_access_time resume_access_time_local,
                 rec.resume_access,
                 rec.remark
         FROM  mp_recruitment rec
