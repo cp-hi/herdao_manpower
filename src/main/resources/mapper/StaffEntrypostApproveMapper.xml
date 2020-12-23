@@ -321,7 +321,7 @@
                     IFNULL(t.org_name,''),
                     IFNULL(t.post_name,''),
                     IFNULL(t.job_level_name,''),
-                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_post_time_local,''),
                     IFNULL(t.entry_login_status,''),
                     IFNULL(t.update_desc,''),
                     IFNULL(t.invite_status,'')
@@ -396,7 +396,7 @@
                     IFNULL(t.email,''),
                     IFNULL(t.post_name,''),
                     IFNULL(t.job_level_name,''),
-                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_post_time_local,''),
                     IFNULL(t.entry_login_status,''),
                     IFNULL(t.staff_status,''),
                     IFNULL(t.probation,''),
