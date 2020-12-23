@@ -815,6 +815,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 if (ObjectUtil.isNotNull(e)){
                     RecruitmentEditEduDTO editEduDTO=new RecruitmentEditEduDTO();
                     BeanUtils.copyProperties(e,editEduDTO);
+                    editEduDTO.setTodate(LocalDateTimeUtils.convert2Long(e.getPeriodLocal()));
+                    editEduDTO.setPeriod(LocalDateTimeUtils.convert2Long(e.getPeriodLocal()));
                     editEduList.add(editEduDTO);
                     result.setRecruitmentEditEduDTO(editEduList);
                 }

@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -44,6 +45,12 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
     @Override
     public List<RecruitmentWorkExperienceDTO> findWorkExperienceList(Long recruitmentId) {
         List<RecruitmentWorkExperienceDTO> workExperienceList = this.baseMapper.findWorkExperienceList(recruitmentId);
+        if (CollectionUtil.isNotEmpty(workExperienceList)){
+            for (RecruitmentWorkExperienceDTO workExperienceDTO : workExperienceList) {
+                workExperienceDTO.setPeriod(LocalDateTimeUtils.convert2Long(workExperienceDTO.getPeriodLocal()));
+                workExperienceDTO.setTodate(LocalDateTimeUtils.convert2Long(workExperienceDTO.getToDateLocal()));
+            }
+        }
         return workExperienceList;
     }
 
