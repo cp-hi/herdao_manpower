@@ -457,18 +457,20 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 			// 再根据当前的 orgCode 左边高3位数据获取到当前组织的顶层组织 topOrgId
 			// 再将 topOrgId 作为参数传给 groupId
 			Organization currentOrg = organizationService.getById(user.getOrgId());
-			String currentOrgCode = currentOrg.getOrgCode();
-			String currentTopOrgCode = currentOrgCode.substring(0,3);
-
-			QueryWrapper<Organization> wrapper = new QueryWrapper();
-			Organization currentTopOrg = organizationService.getOne(wrapper.eq("org_code", currentTopOrgCode));
-			if (currentTopOrg != null) {
-				QueryWrapper<Group> groupQueryWrapper = new QueryWrapper();
-				Group group = groupService.getOne(groupQueryWrapper.eq("org_id", currentTopOrg.getId()));
-				if (group != null) {
-					vo.setGroupId(group.getId());
+			if (currentOrg != null) {
+				String currentOrgCode = currentOrg.getOrgCode();
+				String currentTopOrgCode = currentOrgCode.substring(0,3);
+				QueryWrapper<Organization> wrapper = new QueryWrapper();
+				Organization currentTopOrg = organizationService.getOne(wrapper.eq("org_code", currentTopOrgCode));
+				if (currentTopOrg != null) {
+					QueryWrapper<Group> groupQueryWrapper = new QueryWrapper();
+					Group group = groupService.getOne(groupQueryWrapper.eq("org_id", currentTopOrg.getId()));
+					if (group != null) {
+						vo.setGroupId(group.getId());
+					}
 				}
 			}
+
 			vo.setNowPostOrgId(user.getPostOrgId());
 			if (user.getPostName() != null) {
 				vo.setNowPostOrgName(user.getPostName());
