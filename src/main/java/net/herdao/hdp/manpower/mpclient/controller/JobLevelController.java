@@ -2,6 +2,8 @@ package net.herdao.hdp.manpower.mpclient.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +17,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobGradeDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevelDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDTO;
 import net.herdao.hdp.manpower.mpclient.dto.jobLevel.OKJobLevleSysDetailDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staffTrans.StafftransDTO;
 import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
 import net.herdao.hdp.manpower.mpclient.entity.OKJobLevleSys;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
 import net.herdao.hdp.manpower.mpclient.service.OKJobLevleSysService;
+import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelFormVO;
 import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelListVO;
@@ -73,6 +78,25 @@ public class JobLevelController extends BaseController<JobLevel, JobLevelListVO,
     @ApiOperation(value = "分页查询", notes = "分页查询")
     public R<IPage<JobLevelListVO>> page(@ApiIgnore Page page, JobLevel jobLevel){
         return jobLevelService.getPage(page, jobLevel);
+    }
+    
+    /**
+     * 导出职级
+     * @param response
+     * @return R
+     */
+    @ApiOperation(value = "导出职级Excel", notes = "导出职级Excel")
+    @GetMapping("/export")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="searchText",value="搜索关键字"),
+        @ApiImplicitParam(name="staffId",value="员工ID")
+    })
+    @SneakyThrows
+    public void exportTrans(HttpServletResponse response, JobLevel jobLevel) {
+        Page page = new Page();
+        page.setSize(-1);
+        IPage pageResult = jobLevelService.getPage(page, jobLevel).getData();
+        ExcelUtils.export2Web(response, "职级表", "职级表", JobLevelListVO.class, pageResult.getRecords());
     }
 
     @Autowired
