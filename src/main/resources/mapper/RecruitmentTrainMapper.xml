@@ -32,8 +32,8 @@
       <!-- 简历详情-培训经历-list -->
       <select id="findRecruitmentTrainList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO">
           SELECT  t.id,
-                  t.begin_date,
-                  t.end_date,
+                  t.begin_date begin_date_local,
+                  t.end_date end_date_local,
                   t.content,
                   t.certificate_name,
                   t.certificate_no,

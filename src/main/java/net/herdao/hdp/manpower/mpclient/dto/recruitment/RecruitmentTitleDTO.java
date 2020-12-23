@@ -61,11 +61,16 @@ public class RecruitmentTitleDTO {
     private String certificateNo;
 
     /**
+     * 发证时间-LocalDateTime
+     */
+    @ApiModelProperty(value="发证时间-LocalDateTime")
+    private LocalDateTime certificateTimeLocal;
+
+    /**
      * 发证时间
      */
     @ApiModelProperty(value="发证时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date certificateTime;
+    private Long certificateTime;
 
     /**
      * 资质挂靠单位

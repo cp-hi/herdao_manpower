@@ -31,8 +31,8 @@
       <!-- 简历详情-人才活动-list -->
       <select id="findRecruitmentActivitiList" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentActivitiDTO">
           SELECT  t.id,
-                  t.begin_date,
-                  t.end_date,
+                  t.begin_date begin_date_local,
+                  t.end_date end_date_local,
                   t.content,
                   t.result,
                   t.recruitment_id

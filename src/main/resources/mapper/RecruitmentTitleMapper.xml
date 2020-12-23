@@ -36,7 +36,7 @@
                       t.qualification,
                       t.awards_unite,
                       t.certificate_no,
-                      t.certificate_time,
+                      t.certificate_time certificate_time_local,
                       t.qualification_unit,
                       t.recruitment_id
               FROM  mp_recruitment_title t
