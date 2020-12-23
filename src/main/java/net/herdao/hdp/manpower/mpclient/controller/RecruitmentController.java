@@ -88,7 +88,7 @@ public class RecruitmentController {
     @ApiOperation(value = "人才管理-快速编辑", notes = "人才管理-快速编辑")
     @GetMapping("/quickEdit")
     @ApiImplicitParams({
-         @ApiImplicitParam(name = "id", value = "主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
     //@PreAuthorize("@pms.hasPermission('mpclient_recruitment_view')" )
     public R<RecruitmentUpdateFormDTO> quickEdit(Long id) {
@@ -99,7 +99,7 @@ public class RecruitmentController {
         return R.ok(formVO);
     }
 
-     /**
+    /**
      * 快速编辑-修改更新
      *
      * @param recruitmentUpdateFormVO 人才表
@@ -108,11 +108,12 @@ public class RecruitmentController {
     @ApiOperation(value = "快速编辑-修改更新", notes = "快速编辑-修改更新")
     @PostMapping("/updateRecruitment")
     public R<RecruitmentUpdateFormDTO> updateRecruitment(@Validated @RequestBody RecruitmentUpdateFormDTO recruitmentUpdateFormVO) {
-         return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
+        return recruitmentService.updateRecruitment(recruitmentUpdateFormVO);
     }
 
     /**
      * 快速编辑-修改更新-手机端
+     *
      * @param recruitmentUpdateFormVO 人才表
      * @return R
      */
@@ -176,7 +177,7 @@ public class RecruitmentController {
     @ApiOperation(value = "人才简历-顶部", notes = "人才简历-顶部")
     @GetMapping("/fetchResumeTop")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "主键id")
+            @ApiImplicitParam(name = "id", value = "主键id")
     })
     public R<RecruitmentUpdateFormDTO> fetchResumeTop(Long id) {
         RecruitmentUpdateFormDTO entity = recruitmentService.fetchResumeTop(id);
@@ -201,23 +202,25 @@ public class RecruitmentController {
 
     /**
      * 简历详情-求职意向-详情
+     *
      * @param id
      * @return R
      */
     @ApiOperation(value = "简历详情-求职意向-详情", notes = "简历详情-求职意向-详情向")
     @GetMapping("/fetchResumeJobIntent")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "主键ID", required = true)
+            @ApiImplicitParam(name = "id", value = "主键ID", required = true)
     })
     public R<RecruitmentJobIntentResultDTO> fetchResumeJobIntent(Long id) {
         RecruitmentJobIntentDTO intent = recruitmentService.fetchResumeJobIntent(id);
-        RecruitmentJobIntentResultDTO result=new RecruitmentJobIntentResultDTO();
+        RecruitmentJobIntentResultDTO result = new RecruitmentJobIntentResultDTO();
         result.setRecruitmentJobIntentDTO(intent);
         return R.ok(result);
     }
 
     /**
      * 简历详情-求职意向-修改更新
+     *
      * @param dto 人才简历-求职意向
      * @return R
      */
@@ -239,9 +242,9 @@ public class RecruitmentController {
     @ApiOperation(value = "获取人才管理操作日志")
     @GetMapping("/getOperateLogPage")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "分页对象"),
-        @ApiImplicitParam(name = "operationLog", value = "操作记录"),
-        @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
+            @ApiImplicitParam(name = "page", value = "分页对象"),
+            @ApiImplicitParam(name = "operationLog", value = "操作记录"),
+            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     public R getOperateLogPage(Page page, OperationLog operationLog, String searchText) {
         Page<OperationLog> pageResult = operationLogService.findOperationLog(page, operationLog, searchText);
@@ -250,6 +253,7 @@ public class RecruitmentController {
 
     /**
      * 人才管理-导出Excel
+     *
      * @param response
      * @param orgId
      * @param searchText
@@ -258,8 +262,8 @@ public class RecruitmentController {
     @ApiOperation(value = "人才管理-导出Excel", notes = "人才管理-导出Excel")
     @GetMapping("/exportRecruitment")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "orgId", value = "组织ID"),
-        @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
+            @ApiImplicitParam(name = "orgId", value = "组织ID"),
+            @ApiImplicitParam(name = "searchText", value = "关键字搜索"),
     })
     @SneakyThrows
     public R<RecruitmentDTO> exportRecruitment(HttpServletResponse response, String orgId, String searchText) {
@@ -273,6 +277,7 @@ public class RecruitmentController {
 
     /**
      * 人才管理-邀请更新简历信息-导出Excel
+     *
      * @param response
      * @return R
      */
@@ -343,18 +348,20 @@ public class RecruitmentController {
 
     /**
      * 候选人H5手机验证码登录
+     *
      * @param mobile 手机号码
      * @param code
      * @return
      */
     @ApiOperation(value = "候选人H5手机验证码登录", notes = "候选人H5手机验证码登录")
     @GetMapping("/recruitmentLogin")
-    public R<Recruitment> recruitmentLogin(String mobile, String code){
+    public R<Recruitment> recruitmentLogin(String mobile, String code) {
         return recruitmentService.recruitmentLogin(mobile, code);
     }
 
     /**
      * 简历详情-基础信息-个人基本信息
+     *
      * @param id 主键id
      * @return R
      */
@@ -368,6 +375,7 @@ public class RecruitmentController {
 
     /**
      * 简历详情-基础信息-个人基本信息-手机端
+     *
      * @param id 主键id
      * @return R
      */
@@ -381,6 +389,7 @@ public class RecruitmentController {
 
     /**
      * 简历详情-个人基本情况-修改更新
+     *
      * @param baseInfo 个人基本情况
      * @return R
      */
@@ -388,11 +397,12 @@ public class RecruitmentController {
     @PostMapping("/updateBaseInfo")
     public R<RecruitmentEditBaseInfoDTO> updateBaseInfo(@RequestBody RecruitmentEditBaseInfoDTO baseInfo) {
         RecruitmentEditBaseInfoDTO result = recruitmentService.updateBaseInfo(baseInfo);
-        return R.ok(result,"修改更新成功");
+        return R.ok(result, "修改更新成功");
     }
 
     /**
      * 简历详情-其他个人信息-修改更新
+     *
      * @param otherInfo 人才简历-其他个人信息
      * @return R
      */
@@ -400,7 +410,7 @@ public class RecruitmentController {
     @PostMapping("/updateOtherInfo")
     public R<RecruitmentEditOtherInfoDTO> updateOtherInfo(@RequestBody RecruitmentEditOtherInfoDTO otherInfo) {
         RecruitmentEditOtherInfoDTO result = recruitmentService.updateOtherInfo(otherInfo);
-        return R.ok(result,"修改更新成功");
+        return R.ok(result, "修改更新成功");
     }
 
     @ApiOperation(value = "手机验证码", notes = "手机验证码")
@@ -412,6 +422,7 @@ public class RecruitmentController {
 
     /**
      * 简历详情-工作情况-手机端
+     *
      * @param id 主键id
      * @return R
      */
@@ -424,6 +435,7 @@ public class RecruitmentController {
 
     /**
      * 简历详情-工作情况
+     *
      * @param id 主键id
      * @return R
      */
@@ -436,45 +448,46 @@ public class RecruitmentController {
     }
 
     /**
-     * 	发起流程
+     * 发起流程
      */
     @ApiOperation(value = "发起流程", notes = "发起流程")
     @PostMapping("/generateWorkflow")
     public R generateWorkflow(@RequestBody GenerateWorkflowDTO dto) {
-    	return recruitmentService.generateWorkflow(dto.getRecordId(),dto.getFlowType(),dto.getContentUrl());
+        return recruitmentService.generateWorkflow(dto.getRecordId(), dto.getFlowType(), dto.getContentUrl());
     }
-    
+
     /**
-     * 	流程回调 更新业务表单的状态 
+     * 流程回调 更新业务表单的状态
      */
     @Inner(false)
     @ApiOperation(value = "流程回调 更新业务表单的状态 ", notes = "流程回调 更新业务表单的状态 ")
     @PostMapping("/workflowNotify")
     public R workflowNotify(@RequestBody WorkflowNotifyDTO dto) {
-    	
-    	//TODO 根据流程类型找到 对应的 需要修改的表单
-    	//TODO 更新表单的状态 
-    	String flowType = dto.getFlowType();
-    	if("jy201606".equals(flowType)) {
-    		staffEntrypostApproveService.modifyStatus(dto.getRecordId(), dto.getStatus());
-    		return R.ok();
-    	}
-    	
-    	return R.failed("没有找到相关编码");
+
+        //TODO 根据流程类型找到 对应的 需要修改的表单
+        //TODO 更新表单的状态
+        String flowType = dto.getFlowType();
+        if ("jy201606".equals(flowType)) {
+            staffEntrypostApproveService.modifyStatus(dto.getRecordId(), dto.getStatus());
+            return R.ok();
+        }
+
+        return R.failed("没有找到相关编码");
     }
 
     /**
      * 获取-批量邀请更新简历页面-二维码
+     *
      * @return R
      */
     @ApiOperation(value = "获取-批量邀请更新简历页面-二维码", notes = "获取-批量邀请更新简历页面-二维码")
     @GetMapping("/fetchBatchInviteResumeQrCode")
     public R fetchBatchInviteResumeQrCode() {
         Integer tenantId = SecurityUtils.getUser().getTenantId();
-        String result="";
-        if (ObjectUtil.isNotNull(tenantId)){
+        String result = "";
+        if (ObjectUtil.isNotNull(tenantId)) {
             //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
+            String address = "http://10.1.69.173:8076/#/login?tenantId=" + tenantId;
             result = QrCodeUtils.createBase64QrCode(address);
         }
 
@@ -483,6 +496,7 @@ public class RecruitmentController {
 
     /**
      * 下载-批量邀请更新简历页面-二维码
+     *
      * @return R
      */
     @ApiOperation(value = "下载-批量邀请更新简历页面-二维码", notes = "下载-批量邀请更新简历页面-二维码")
@@ -494,6 +508,7 @@ public class RecruitmentController {
 
     /**
      * 手机端-基本信息-个人信息-新增或修改
+     *
      * @param dto 人才表
      * @return R
      */
@@ -506,13 +521,14 @@ public class RecruitmentController {
 
     /**
      * 获取-手机端个人信息-填写进度
+     *
      * @param id 主键id
      * @return R
      */
     @ApiOperation(value = "获取-手机端个人信息-填写进度", notes = "获取-手机端个人信息-填写进度")
     @GetMapping("/fetchMobileInfoProgress")
     @ApiImplicitParam(name = "id", value = "主键id")
-    public R<RecruitmentMobileProgressVO> fetchMobileInfoProgress(Long id)  {
+    public R<RecruitmentMobileProgressVO> fetchMobileInfoProgress(Long id) {
         RecruitmentMobileProgressVO reslult = recruitmentService.fetchMobileInfoProgress(id);
         return R.ok(reslult);
     }
