@@ -333,42 +333,20 @@ public class EntryJobController {
     }
 
     /**
-     * 2.获取-邀请更新简历-页面内容（内含二维码）
+     * 获取模板发送请内容
      * @return R
      */
-    @ApiOperation(value = "获取-邀请更新简历-页面内容", notes = "获取-邀请更新简历-页面内容")
-    @GetMapping("/fetchInviteListEmail")
-    public R<ModuleVO> fetchInviteListEmail() {
+    @ApiOperation(value = "获取模板发送请内容", notes = "获取模板发送请内容")
+    @GetMapping("/fetchConfirmEmail")
+    @ApiImplicitParams({
+         @ApiImplicitParam(name="type",value="类型",required = true)
+    })
+    public R<ModuleVO> fetchConfirmEmail(String type) {
         ModuleVO moduleVO=new ModuleVO();
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-            String code = QrCodeUtils.createBase64QrCode(address);
-            moduleVO.setCode(code);
-        }
-
         //todo:调用系统模板接口，获取模板配置信息。
-        return R.ok(moduleVO);
-    }
+        if (ObjectUtil.isNotNull(type)){
 
-    /**
-     * 获取-入职登记记录-发送请确认内容（内含二维码）
-     * @return R
-     */
-    @ApiOperation(value = "获取-入职登记记录-页面email内容", notes = "获取-入职登记记录-页面email内容")
-    @GetMapping("/fetchConfirmRegisterEmail")
-    public R<ModuleVO> fetchConfirmRegisterEmail() {
-        ModuleVO moduleVO=new ModuleVO();
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-            String code = QrCodeUtils.createBase64QrCode(address);
-            moduleVO.setCode(code);
         }
-
-        //todo:调用系统模板接口，获取模板配置信息。
 
         return R.ok(moduleVO);
     }
