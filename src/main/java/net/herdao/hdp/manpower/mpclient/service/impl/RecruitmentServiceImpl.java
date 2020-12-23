@@ -846,6 +846,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         //个人基本信息
         RecruitmentBaseInfo baseInfo = this.baseMapper.fetchRecruitmentBaseInfo(id);
         if (ObjectUtil.isNotNull(baseInfo)){
+            if (ObjectUtil.isNotNull(baseInfo.getBirthdayLocal())){
+                baseInfo.setBirthday(LocalDateTimeUtils.convert2Long(baseInfo.getBirthdayLocal()));
+            }
             RecruitmentEditBaseInfoDTO editBaseInfo=new RecruitmentEditBaseInfoDTO();
             BeanUtils.copyProperties(baseInfo,editBaseInfo);
             result.setRecruitmentEditBaseInfoDTO(editBaseInfo);
