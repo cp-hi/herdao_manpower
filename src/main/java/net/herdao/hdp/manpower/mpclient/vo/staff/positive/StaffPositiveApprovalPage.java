@@ -17,6 +17,7 @@
 
 package net.herdao.hdp.manpower.mpclient.vo.staff.positive;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -128,4 +129,11 @@ public class StaffPositiveApprovalPage   {
      */
     @ApiModelProperty(value = "转正类型")
     private String positiveType;
+
+
+    /**
+     * 试用期/月
+     */
+    @ApiModelProperty(value="试用期/月")
+    private String probation;
 }

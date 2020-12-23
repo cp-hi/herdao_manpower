@@ -115,6 +115,9 @@ private static final long serialVersionUID = 1L;
     private String staffNameAndCode;
 
 
+
+
+
     @ApiModelProperty(value = "组织/部门名称", name = "orgName")
     private String nowOrgName;
 
@@ -277,4 +280,19 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="部门id")
     private Long nowOrgId;
+
+    /**
+     * 员工Id
+     *
+     */
+    @ApiModelProperty(value = "员工Id", name = "staffId")
+    private String staffId;
+
+    /**
+     * 员工姓名
+     *
+     */
+    @ApiModelProperty(value = "员工姓名", name = "staffName")
+    private String staffName;
+
 }
