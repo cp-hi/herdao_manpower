@@ -76,13 +76,13 @@ public class SaveStaffCallInDTO {
     private BigDecimal threeGroupSeniority;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitId")
-    private Long paidUnitId;
+    private Long paidUnitsId;
 
     @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitId")
-    private Long fundUnitId;
+    private Long fundUnitsId;
 
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
