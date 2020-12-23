@@ -655,7 +655,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         //人才活动
         List<RecruitmentActivitiDTO> activitiList = recruitmentActivitiService.findRecruitmentActivitiList(id);
         result.setRecruitmentActivitiDTO(activitiList);
-        return null;
+        return result;
     }
 
     @Override
@@ -707,8 +707,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         //更新和获取最高教育详情
         RecruitmentTopEduDTO topEduDTO = updateRecruitmentTopEdu(id);
-
-
 
         result.setRecruitmentPersonDTO(personDTO);
         result.setRecruitmentIntentDTO(intentDTO);
@@ -801,7 +799,6 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
                 }
             });
         }
-
 
         return result;
     }
