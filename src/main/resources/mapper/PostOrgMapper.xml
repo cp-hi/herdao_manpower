@@ -97,19 +97,7 @@
     </resultMap>
       <select id="findPostOrgPage" resultMap="PageResultMap">
         SELECT
-	        po.id,
-	        po.post_code,
-	        po.post_name,
-	        po.group_id,
-	        po.post_id,
-	        po.org_id,
-	        CASE IFNULL(po.is_leader, '0') WHEN '0' THEN '否' WHEN '1' THEN '是' ELSE '' END is_leader,
-	        CASE IFNULL(po.is_cadre, '0') WHEN '0' THEN '否' WHEN '1' THEN '是' ELSE '' END is_cadre,
-	        po.section_id,
-	        po.pipeline_id,
-	        po.job_level_id,
-	        po.job_staffs,
-	        po.sort_no,
+	        po.*,
 	        p.post_name main_post_name,
 	        o.ORG_FULLNAME ORG_NAME,
 	        jg.job_grade_name,
