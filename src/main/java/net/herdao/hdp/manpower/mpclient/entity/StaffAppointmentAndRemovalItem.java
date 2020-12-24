@@ -43,7 +43,7 @@ public class StaffAppointmentAndRemovalItem extends BaseEntity<StaffAppointmentA
      * 该表中的该字段默认都是 0 -- 兼岗（非主岗）
      */
     @ApiModelProperty(value = "是否主岗")
-    private Boolean mainPost;
+    private Integer mainPost;
 
     /**
      * 该字段当做 remark，当前版本（v1.2.0）该字段暂无意义
