@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.appointment.AppointmentPageVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.removal.RemovalPageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Author Liu Chang
@@ -31,19 +32,19 @@ public class AppointmentAndRemovalInfoVO {
     @ApiModelProperty(value = "人员任职类型", name = "staffJobType", example = "在职人员")
     private String staffJobType;
 
-    @ApiModelProperty(value = "主岗组织 id", name = "orgName")
+    @ApiModelProperty(value = "主岗组织 id")
+    private  Long orgId;
+
+    @ApiModelProperty(value = "主岗组织名称")
     private String orgName;
 
-    @ApiModelProperty(value = "主岗 id", name = "postOrgName")
+    @ApiModelProperty(value = "主岗 id")
+    private Long postOrgId;
+
+    @ApiModelProperty(value = "主岗名称")
     private String postOrgName;
 
-    @ApiModelProperty(value = "")
-    private Page<AppointmentPageVO> appointmentPage;
-
-    @ApiModelProperty(value = "")
-    private Page<RemovalPageVO> removalPage;
-
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "经办人意见")
     private String remark;
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
