@@ -299,7 +299,8 @@
 
     <!-- 人才简历-录用情况-列表分页 -->
     <select id="fetchEmploy" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO">
-           SELECT CASE WHEN
+           SELECT t.id,
+                    CASE WHEN
                     t.STATUS != 1 THEN
                     '录用' ELSE '未录用'
                     END result,
@@ -312,7 +313,8 @@
                   END duty_status
             FROM
               (
-                SELECT  app.STATUS,
+                SELECT  app.id,
+                        app.STATUS,
                         org.ORG_NAME,
                         pst.POST_NAME,
                         pp.PIPELINE_NAME,

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,7 +78,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param recruitmentId 人才ID
      * @return RecruitmentEmployeeDTO
      */
-    RecruitmentEmployeeDTO fetchEmploy(String recruitmentId);
+    List<RecruitmentEmployeeDTO> fetchEmploy(String recruitmentId);
 
     /**
      * 获取人才简历-个人基本情况-详情

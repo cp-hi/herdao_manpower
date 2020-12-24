@@ -16,9 +16,9 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 public class RecruitmentEmployeeDTO   {
 
     /**
-     * id
+     * 审批表id
      */
-    @ApiModelProperty(value="id",required = true)
+    @ApiModelProperty(value="审批表id",required = false)
     private Long id;
 
     /**

@@ -9,6 +9,8 @@ import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 人才表
  * @author Andy
@@ -45,7 +47,7 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param recruitmentId 人才ID
      * @return RecruitmentEmployeeDTO
      */
-    RecruitmentEmployeeDTO fetchEmploy(@Param("recruitmentId") String recruitmentId);
+    List<RecruitmentEmployeeDTO> fetchEmploy(@Param("recruitmentId") String recruitmentId);
 
     /**
      * 获取人才简历-个人基本情况-详情
