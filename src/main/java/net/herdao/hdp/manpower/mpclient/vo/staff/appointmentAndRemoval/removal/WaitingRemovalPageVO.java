@@ -33,7 +33,4 @@ public class WaitingRemovalPageVO {
 
     @ApiModelProperty("即将任免岗位名称(业务岗)")
     private String postOrgName;
-
-    @ApiModelProperty("即将任免岗位的生效日期")
-    private Long endDate;
 }

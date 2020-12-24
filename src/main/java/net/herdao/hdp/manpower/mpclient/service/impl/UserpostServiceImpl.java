@@ -17,6 +17,7 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -70,6 +71,15 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     public UserpostDTO findCurrentJob(Long staffid){
     	UserpostDTO userpostDTO = this.baseMapper.findCurrentJob(staffid);
     	return userpostDTO;
+    }
+
+    @Override
+    public Page<Userpost> pageUserAllAppointmentsByUserId(Page page, Long userId) {
+        QueryWrapper<Userpost> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId)
+                .eq("MAIN_POST", false)
+                .eq("IS_VIRTUAL", false);
+        return baseMapper.selectPage(page, wrapper);
     }
 
     @Override

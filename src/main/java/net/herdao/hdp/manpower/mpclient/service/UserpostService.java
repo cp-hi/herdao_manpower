@@ -60,4 +60,6 @@ public interface UserpostService extends HdpService<Userpost> {
      * @return
      */
     UserpostDTO findCurrentJob(Long staffid);
+
+    Page<Userpost> pageUserAllAppointmentsByUserId(Page page, Long userId);
 }
