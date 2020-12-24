@@ -194,4 +194,5 @@ public class EntryApproveUpdateDTO{
     @ApiModelProperty(value="经办人意见")
     private String remark;
 
+
 }
