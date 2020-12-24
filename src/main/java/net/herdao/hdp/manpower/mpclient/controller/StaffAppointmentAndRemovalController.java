@@ -11,8 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.staffAppointmentAndRemoval.SaveAppointAndRemovalDTO;
+import net.herdao.hdp.manpower.mpclient.service.StaffAppointmentAndRemovalService;
 import net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.AppointmentAndRemovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.AppointmentAndRemovalPageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "staffAppointmentAndRemoval", tags = "员工兼职任免")
 public class StaffAppointmentAndRemovalController {
 
+    @Autowired
+    private StaffAppointmentAndRemovalService service;
+
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
     public R<Page<AppointmentAndRemovalPageVO>> page(String searchText,
@@ -31,32 +36,32 @@ public class StaffAppointmentAndRemovalController {
                                                      Long orgId,
                                                      String status,
                                                      String type) {
-        return R.ok(null, "success");
+        return R.ok(service.pageAppointmentAndRemoval(searchText, page, orgId, status, type), "success");
     }
 
 
     @ApiOperation(value = "兼职任免详情")
     @GetMapping("/{id}")
-    public R<AppointmentAndRemovalInfoVO> get(@RequestParam("id") Long id) {
-        return R.ok(null, "success");
+    public R<AppointmentAndRemovalInfoVO> get(@PathVariable("id") Long id) throws Exception {
+        return R.ok(service.getAppointmentAndRemovalInfo(id), "success");
     }
 
     @ApiOperation(value = "新增兼职任免")
     @PostMapping
     public R<Long> insert(@RequestBody SaveAppointAndRemovalDTO dto) {
-        return R.ok(null, "success");
+        return R.ok(service.insert(dto), "success");
     }
 
     @ApiOperation(value = "编辑兼职任免")
     @PutMapping("/{id}")
     public R<Long> update(@RequestParam("id") Long id,
-                          @RequestBody SaveAppointAndRemovalDTO dto) {
-        return R.ok(null, "success");
+                          @RequestBody SaveAppointAndRemovalDTO dto) throws Exception {
+        return R.ok(service.update(id, dto), "success");
     }
 
     @ApiOperation(value = "删除兼职任免")
     @DeleteMapping("/{id}")
-    public R<Long> delete(@RequestParam("id") Long id) {
-        return R.ok(null, "success");
+    public R delete(@RequestParam("id") Long id) {
+        return R.ok(service.removeById(id), "success");
     }
 }

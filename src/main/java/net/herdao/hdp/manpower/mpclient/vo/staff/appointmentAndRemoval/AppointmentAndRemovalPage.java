@@ -23,8 +23,8 @@ public class AppointmentAndRemovalPage {
     @ApiModelProperty("兼职任免 id")
     private Long id;
 
-    @ApiModelProperty(value = "员工 id")
-    private Long staffId;
+    @ApiModelProperty(value = "用户 id")
+    private Long userId;
 
     @ApiModelProperty("员工姓名")
     private String staffName;

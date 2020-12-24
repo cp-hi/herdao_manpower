@@ -19,8 +19,11 @@ public class AppointmentAndRemovalInfoVO {
     @ApiModelProperty(value = "兼职任免列表 id")
     private Long id;
 
-    @ApiModelProperty(value = "员工 id")
-    private Long staffId;
+    @ApiModelProperty(value = "员工姓名")
+    private String staffName;
+
+    @ApiModelProperty(value = "员工工号")
+    private String staffCode;
 
     @ApiModelProperty(value = "人员归属范围", name = "staffScope", example = "在职人员")
     private String staffScope;

@@ -83,6 +83,14 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     }
 
     @Override
+    public Userpost getMainPostByUserId(Long userId) {
+        QueryWrapper<Userpost> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId)
+                .eq("MAIN_POST", true);
+        return baseMapper.selectOne(wrapper);
+    }
+
+    @Override
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         return null;
     }

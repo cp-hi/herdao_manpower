@@ -27,10 +27,10 @@ public class StaffAppointmentAndRemoval {
     @ApiModelProperty(value = "状态")
     private String status;
 
-    @ApiModelProperty(value = "任命部门id")
+    @ApiModelProperty(value = "主岗部门id")
     private Long orgId;
 
-    @ApiModelProperty(value = "任命岗位id(业务岗)")
+    @ApiModelProperty(value = "主岗位id(业务岗)")
     private Long postId;
 
     @ApiModelProperty(value = "新建人工号")
@@ -71,4 +71,6 @@ public class StaffAppointmentAndRemoval {
 
     @TableLogic
     private Boolean delFlag;
+
+    private Long postOrgId;
 }
