@@ -983,6 +983,16 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             throw new Exception(msg);
         }
     }
+
+    @Override
+    public String getOrgName(Long id) {
+        Organization organization = getById(id);
+        if (organization != null) {
+            return organization.getOrgName();
+        }
+        return "";
+    }
+
     private void saveOrUpdateSync(Organization organization) {
         SysDept dept = convert(organization);
         R<Long> r = remoteDeptService.saveOrUpdate(dept);
