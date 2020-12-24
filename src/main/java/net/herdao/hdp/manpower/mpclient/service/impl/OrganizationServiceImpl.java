@@ -475,6 +475,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             if (ObjectUtil.isNotNull(id) && parentId.equals(id)) {
                 return R.failed("上级组织不能是当前组织！");
             }
+            
+            //校验是否选中当前组织的下级组织
+            if(parentOrganization.getOrgCode().startsWith(organization.getOrgCode())){
+            	return R.failed("不能选中下级组织！");
+            }
         }
 
         if (StrUtil.isBlank(organization.getOrgCode()) || !StrUtil.toString(tpOrganization.getParentId()).equals(StrUtil.toString(organization.getParentId()))) {
