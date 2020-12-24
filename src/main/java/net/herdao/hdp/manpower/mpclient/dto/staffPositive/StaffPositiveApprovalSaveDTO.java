@@ -50,7 +50,7 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="录用审批id")
     private Long id;
 
-    /**
+      /**
      * 员工id
      */
     @ApiModelProperty(value="员工id")
@@ -294,5 +294,7 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value = "员工姓名", name = "staffName")
     private String staffName;
+
+
 
 }

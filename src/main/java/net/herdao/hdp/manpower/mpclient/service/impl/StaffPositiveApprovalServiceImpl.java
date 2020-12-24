@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.staffPositive.StaffPositiveApprovalDetailDTO;
@@ -31,11 +32,14 @@ import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffPositiveApprovalMapper;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
+import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +47,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,12 +61,16 @@ import java.util.List;
  * @author cp
  * @date 2020-12-08 11:02:30
  */
+@AllArgsConstructor
 @Service
 public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveApprovalMapper, StaffPositiveApproval> implements StaffPositiveApprovalService {
 
 
     @Autowired
     private StaffPositiveApprovalMapper staffPositiveApprovalMapper;
+
+
+    private final StaffService staffService;
 
 
     /**
@@ -138,13 +149,24 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
      * @return
      */
     @Override
-    public Long insert(StaffPositiveApprovalSaveDTO dto) {
+    public Long insert(StaffPositiveApprovalSaveDTO dto) throws Exception {
         StaffPositiveApproval entity = new StaffPositiveApproval();
         BeanUtils.copyProperties(dto, entity);
         entity.setEntryTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getEntryTime()));
         entity.setPositiveTime(LocalDateTimeUtils.convert2LocalDateTime(dto.getPositiveTime()));
-        entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
 
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        long probation = ChronoUnit.MONTHS.between(LocalDate.parse(df.format(entity.getEntryTime())),
+                LocalDate.parse(df.format(entity.getPositiveTime())));
+        //入职转正试用期不能超过3个月
+        if (StaffPositiveApproval.POSITIVE_IN.equals(entity.getPositiveType()) &&
+                probation > 3){
+            throw  new Exception("操作失败,转正类型选择不正确！");
+        }
+
+
+        entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
+        entity.setProbation(String.valueOf(probation));
         entity.setOrgId(dto.getNowOrgId());
         entity.setDelFlag(false);
         SysUser sysUser = SysUserUtils.getSysUser();
@@ -160,7 +182,6 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         return entity.getId();
     }
 
-
     /**
      * 获取转正详情
      *
@@ -168,15 +189,20 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
      * @return
      */
     @Override
-    public StaffPositiveApprovalInfoVO getStaffPositive(Long id) {
+    public StaffPositiveApprovalInfoVO getStaffPositive(Long id) throws Exception {
         StaffPositiveApprovalDetailDTO entity = this.baseMapper.getPositiveApprovalById(id);
         if (entity != null) {
             StaffPositiveApprovalInfoVO vo = new StaffPositiveApprovalInfoVO();
+            if (StringUtils.isNotEmpty(entity.getStaffId())){
+                StaffBasicPositiveVO staffPositiveBasic = staffService.getStaffPositiveBasic(Long.parseLong(entity.getStaffId()));
+                BeanUtils.copyProperties(staffPositiveBasic, vo);
+                vo.setEntryTime1(staffPositiveBasic.getEntryTime1());
+            }
             BeanUtils.copyProperties(entity, vo);
             vo.setEntryTime(LocalDateTimeUtils.convert2Long(entity.getEntryTime()));
             vo.setPositiveTime(LocalDateTimeUtils.convert2Long(entity.getPositiveTime()));
             vo.setCreatorTime(LocalDateTimeUtils.convert2Long(entity.getCreatorTime()));
-            vo.setEntryTime1(LocalDateTimeUtils.convert2Long(entity.getEntryTime1()));
+
             return vo;
         }
         return null;

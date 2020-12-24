@@ -70,4 +70,16 @@
 	  		 </if>
 	   </where>
     </select>
+	<select id="getUserStartDate"
+			resultType="net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage">
+		SELECT
+			a.start_date  as entryTime
+		FROM mp_userpost AS a
+		INNER JOIN mp_user AS mu ON a.`USER_ID` = mu.id
+		WHERE  1 = 1
+		<if test="userId != null">
+			AND mu.id=#{userId}
+		</if>
+	   	LIMIT 1
+	</select>
 </mapper>

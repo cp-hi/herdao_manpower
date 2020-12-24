@@ -22,6 +22,8 @@ import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.User;
 import net.herdao.hdp.manpower.mpclient.mapper.UserMapper;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,6 +43,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	@Override
 	public UserMsgDTO getUserMsg(long id){
 		return this.baseMapper.getUserMsg(id);
+	}
+
+
+	/**
+	 * 获取用户任职日期
+	 *
+	 * @param userId 用户id
+	 * @return
+	 */
+	@Override
+	public StaffPositiveApprovalPage getUserStartDate(Long userId) {
+		return this.baseMapper.getUserStartDate(userId);
 	}
 
 

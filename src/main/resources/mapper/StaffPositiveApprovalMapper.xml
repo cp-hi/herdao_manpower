@@ -152,6 +152,7 @@
         mspa.`positive_question_ans7`,
         mspa.ENTRY_TIME AS entryTime1,
         mspa.appendix_ids,
+        mspa.staff_id,
         mpo.`POST_NAME` AS postName,
         np.POST_NAME AS now_post_name,
         mpo.`POST_NAME` AS old_post_name,
