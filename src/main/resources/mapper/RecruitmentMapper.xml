@@ -307,7 +307,7 @@
                   t.ORG_NAME,
                   t.POST_NAME,
                   t.PIPELINE_NAME,
-                  t.entry_post_time,
+                  t.entry_post_time entry_post_time_local,
                   CASE WHEN t.entry_status = 'RZZT02' THEN
                      '已到岗' ELSE '未到岗'
                   END duty_status
