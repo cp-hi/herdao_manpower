@@ -9,10 +9,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
