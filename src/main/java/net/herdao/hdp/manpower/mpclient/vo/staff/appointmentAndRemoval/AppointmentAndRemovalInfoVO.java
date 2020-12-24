@@ -6,12 +6,8 @@
 
 package net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.appointment.AppointmentPageVO;
-import net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.removal.RemovalPageVO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Author Liu Chang
