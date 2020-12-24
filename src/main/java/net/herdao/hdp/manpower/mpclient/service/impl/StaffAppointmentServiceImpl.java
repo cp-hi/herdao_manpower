@@ -88,20 +88,20 @@ public class StaffAppointmentServiceImpl extends ServiceImpl<StaffAppointmentAnd
     }
 
     @Override
-    public Long insert(Long appointmentAdnRemovalId, SaveAppointmentDTO dto) {
-        StaffAppointmentAndRemovalItem entity = initAppointmentData(appointmentAdnRemovalId, dto);
+    public Long insert(SaveAppointmentDTO dto) {
+        StaffAppointmentAndRemovalItem entity = initAppointmentData(dto);
         itemMapper.insert(entity);
         return entity.getId();
     }
 
-    private StaffAppointmentAndRemovalItem initAppointmentData(Long appointmentAdnRemovalId, SaveAppointmentDTO dto) {
+    private StaffAppointmentAndRemovalItem initAppointmentData(SaveAppointmentDTO dto) {
         StaffAppointmentAndRemovalItem entity = new StaffAppointmentAndRemovalItem();
         BeanUtils.copyProperties(dto, entity);
         entity.setAppointType(AppointmentAndRemovalConstants.APPOINTMENT_TYPE);
         entity.setStartDate(LocalDateTimeUtils.convert2LocalDateTime(dto.getStartDate()));
         // 兼职任免表中，兼职默认非主岗
         entity.setMainPost(AppointmentAndRemovalConstants.IS_NOT_MAIN_POST);
-        entity.setStaffAppointmentRemovalId(appointmentAdnRemovalId);
+        entity.setDelFlag(false);
         return entity;
     }
 

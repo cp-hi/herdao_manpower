@@ -23,7 +23,7 @@ public interface StaffAppointmentService extends HdpService<StaffAppointmentAndR
 
     AppointmentInfoVO getAppointmentInfoVO(Long id);
 
-    Long insert(Long appointmentAdnRemovalId, SaveAppointmentDTO dto);
+    Long insert(SaveAppointmentDTO dto);
 
     Long update(Long id, SaveAppointmentDTO dto) throws Exception;
 }
