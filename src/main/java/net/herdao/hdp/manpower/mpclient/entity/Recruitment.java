@@ -36,9 +36,9 @@ public class Recruitment extends Model<Recruitment> {
     @ApiModelProperty(value="人才ID")
     private Long id;
     /**
-     * 人才类型
+     * 人才类别
      */
-    @ApiModelProperty(value="人才类型")
+    @ApiModelProperty(value="人才类别")
     private String talentType;
     /**
      * 来源类型

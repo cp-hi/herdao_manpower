@@ -41,11 +41,10 @@
                       count(po.POST_ID) post_count
                     FROM  mp_post_org po
                       LEFT JOIN mp_organization org on po.ORG_ID=org.id
-                   <where>
-                      <if test="orgCode != null">
-                          AND org.ORG_CODE LIKE concat(#{orgCode},'%')
-                      </if>
-                   </where>
+                   where po.del_flag = 0
+                   <if test="orgCode != null">
+                       AND org.ORG_CODE LIKE concat(#{orgCode},'%')
+                   </if>
               ) post_count
             FROM mp_staff s
           LEFT JOIN mp_user u ON s.user_id = u.ID

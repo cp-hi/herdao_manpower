@@ -44,6 +44,8 @@ public class EntryJobController {
 
     private final SysDictItemService dictItemService;
 
+    private final MsgService msgService;
+
     /**
      * 入职管理-待入职-列表分页
      * @param page 分页对象
@@ -318,18 +320,25 @@ public class EntryJobController {
     }
 
     /**
-     * 提醒重新登记
+     * 入职登记详情-提醒重新登记。（发送邮件提醒重新登记）
      * @param id 主键id
      * @return
      */
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="入职表(审批表)主键id",required = true)
     })
-    @ApiOperation(value = "提醒重新登记", notes = "提醒重新登记")
+    @ApiOperation(value = "入职登记详情-提醒重新登记", notes = "提醒重新登记")
     @PostMapping("/remindRegister")
-    public R<StaffEntrypostApprove> remindRegister(String id) {
+    public R<Boolean> remindRegister(@RequestBody EmailSendInfo emailSendInfo) {
         // TODO: 要与小明沟通 进一步确定与完善业务代码
-        return R.ok();
+        Boolean status = msgService.sendEmail(emailSendInfo);
+        String result="";
+        if (status){
+            result="发送成功";
+        }else {
+            result="发送失败";
+        }
+        return R.ok(status,result);
     }
 
     /**

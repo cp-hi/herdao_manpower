@@ -485,8 +485,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
                 return R.failed("上级组织不能是当前组织！");
             }
             
-            //校验是否选中当前组织的下级组织
-            if(parentOrganization.getOrgCode().startsWith(organization.getOrgCode())){
+            // 校验是否选中当前组织的下级组织
+            if(StrUtil.isNotBlank(organization.getOrgCode()) && parentOrganization.getOrgCode().startsWith(organization.getOrgCode())){
             	return R.failed("不能选中下级组织！");
             }
         }

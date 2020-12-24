@@ -48,49 +48,51 @@ public class MsgServiceImpl implements MsgService {
                 String[] idArray = emailSendInfo.getId().split(",");
                 List<SysMsgDTO> sysMsgs = new ArrayList<>();
 
-                //人才管理发送简历更新邮件
-                if("人才".equals(emailSendInfo.getType())){
-                    List<Recruitment> recruitmentList=recruitmentService.listByIds(Arrays.asList(idArray));
-                    if (ObjectUtil.isNotEmpty(recruitmentList)){
-                        recruitmentList.forEach(e->{
-                            SysMsgDTO sysMsg = new SysMsgDTO();
-                            sysMsg.setReceptEmail(e.getEmail());
-                            sysMsg.setContent(emailSendInfo.getContent());
-                            sysMsg.setTitle("人才管理");
-                            sysMsg.setReceptPhone(e.getHomePhone());
-                            sysMsgs.add(sysMsg);
-                        });
-                    }
-                }
-
-                //入职邀请发送入职邀请邮件
-                if("入职".equals(emailSendInfo.getType())){
-                    List<StaffEntrypostApprove> approveList = approveService.listByIds(Arrays.asList(idArray));
-                    if (CollectionUtil.isNotEmpty(approveList)){
-                        List<Long> recruitmentIdArray=new ArrayList<>();
-                        for (StaffEntrypostApprove approve : approveList) {
-                            Long recruitmentId = approve.getRecruitmentId();
-                            recruitmentIdArray.add(recruitmentId);
+                if (ObjectUtil.isNotEmpty(idArray)){
+                    //人才管理发送简历更新邮件
+                    if("人才".equals(emailSendInfo.getType())){
+                        List<Recruitment> recruitmentList=recruitmentService.listByIds(Arrays.asList(idArray));
+                        if (ObjectUtil.isNotEmpty(recruitmentList)){
+                            recruitmentList.forEach(e->{
+                                SysMsgDTO sysMsg = new SysMsgDTO();
+                                sysMsg.setReceptEmail(e.getEmail());
+                                sysMsg.setContent(emailSendInfo.getContent());
+                                sysMsg.setTitle("人才管理");
+                                sysMsg.setReceptPhone(e.getHomePhone());
+                                sysMsgs.add(sysMsg);
+                            });
                         }
-                        if (CollectionUtil.isNotEmpty(recruitmentIdArray)){
-                            List<Recruitment> recruitmentList=recruitmentService.listByIds(recruitmentIdArray);
-                            if (ObjectUtil.isNotEmpty(recruitmentList)){
-                                recruitmentList.forEach(e->{
-                                    SysMsgDTO sysMsg = new SysMsgDTO();
-                                    sysMsg.setReceptEmail(e.getEmail());
-                                    sysMsg.setContent(emailSendInfo.getContent());
-                                    sysMsg.setTitle("入职邀请");
-                                    sysMsg.setReceptPhone(e.getHomePhone());
-                                    sysMsgs.add(sysMsg);
-                                });
+                    }
+
+                    //入职邀请发送入职邀请邮件
+                    if("入职".equals(emailSendInfo.getType())){
+                        List<StaffEntrypostApprove> approveList = approveService.listByIds(Arrays.asList(idArray));
+                        if (CollectionUtil.isNotEmpty(approveList)){
+                            List<Long> recruitmentIdArray=new ArrayList<>();
+                            for (StaffEntrypostApprove approve : approveList) {
+                                Long recruitmentId = approve.getRecruitmentId();
+                                recruitmentIdArray.add(recruitmentId);
+                            }
+                            if (CollectionUtil.isNotEmpty(recruitmentIdArray)){
+                                List<Recruitment> recruitmentList=recruitmentService.listByIds(recruitmentIdArray);
+                                if (ObjectUtil.isNotEmpty(recruitmentList)){
+                                    recruitmentList.forEach(e->{
+                                        SysMsgDTO sysMsg = new SysMsgDTO();
+                                        sysMsg.setReceptEmail(e.getEmail());
+                                        sysMsg.setContent(emailSendInfo.getContent());
+                                        sysMsg.setTitle("入职邀请");
+                                        sysMsg.setReceptPhone(e.getHomePhone());
+                                        sysMsgs.add(sysMsg);
+                                    });
+                                }
                             }
                         }
                     }
-                }
 
-                if(CollectionUtil.isNotEmpty(sysMsgs)){
-                    R<Boolean> r = remoteMsgService.sendMailBatch(sysMsgs);
-                    RemoteCallUtils.checkData(r);
+                    if(CollectionUtil.isNotEmpty(sysMsgs)){
+                        R<Boolean> r = remoteMsgService.sendMailBatch(sysMsgs);
+                        RemoteCallUtils.checkData(r);
+                    }
                 }
             }
         }catch (Exception ex){

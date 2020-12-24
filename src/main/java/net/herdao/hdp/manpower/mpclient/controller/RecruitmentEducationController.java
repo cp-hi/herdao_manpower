@@ -116,7 +116,7 @@ public class RecruitmentEducationController {
     public R saveOrUpdateEducation(@RequestBody RecruitmentEduDTO[] dtoArray) {
         if (ObjectUtil.isNotEmpty(dtoArray)){
             for (RecruitmentEduDTO dto : dtoArray) {
-                 recruitmentEducationService.saveOrUpdateEducation(dto);
+                recruitmentEducationService.saveOrUpdateEducation(dto);
             }
         }
 

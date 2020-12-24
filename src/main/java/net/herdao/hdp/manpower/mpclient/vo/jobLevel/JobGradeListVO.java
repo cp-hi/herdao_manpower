@@ -1,5 +1,6 @@
 package net.herdao.hdp.manpower.mpclient.vo.jobLevel;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
@@ -25,6 +26,10 @@ public class JobGradeListVO {
     @ExcelProperty("职等名称")
     @ApiModelProperty("职等名称")
     private String jobGradeName;
+    
+    @ApiModelProperty("职等编码")
+    @ExcelIgnore
+    private String jobGradeCode;
 
     @ExcelProperty(value = "职衔")
     @ApiModelProperty(value = "职衔")

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.constant.StaffChangesApproveStatusConstants;
 import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffChanges.SaveStaffContractRenewalDTO;
+import net.herdao.hdp.manpower.mpclient.entity.Company;
 import net.herdao.hdp.manpower.mpclient.entity.StaffContractRenewal;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffRenewContractMapper;
 import net.herdao.hdp.manpower.mpclient.service.CompanyService;
@@ -145,8 +146,11 @@ public class StaffContractRenewalServiceImpl extends ServiceImpl<StaffRenewContr
     private StaffContractRenewalInfoVO convert2InfoVO(StaffContractRenewal from) throws Exception {
         StaffContractRenewalInfoVO to = new StaffContractRenewalInfoVO();
         BeanUtils.copyProperties(from, to);
-        String renewalCompanyName = companyService.getById(to.getRenewalCompanyId()).getCompanyName();
-        to.setRenewalCompanyName(renewalCompanyName);
+        Company renewalCompany = companyService.getById(from.getRenewalCompanyId());
+        if (renewalCompany != null) {
+            String renewalCompanyName = renewalCompany.getCompanyName();
+            to.setRenewalCompanyName(renewalCompanyName);
+        }
         to.setContractStartTime(LocalDateTimeUtils.convert2Long(from.getContractStartTime()));
         to.setContractEndTime(LocalDateTimeUtils.convert2Long(from.getContractEndTime()));
         to.setRenewalStartTime(LocalDateTimeUtils.convert2Long(from.getRenewalStartTime()));

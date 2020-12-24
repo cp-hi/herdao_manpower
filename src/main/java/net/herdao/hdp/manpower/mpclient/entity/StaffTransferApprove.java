@@ -190,4 +190,7 @@ public class StaffTransferApprove extends BaseModel<StaffTransferApprove> {
 
     @TableLogic
     private Boolean delFlag;
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
 }

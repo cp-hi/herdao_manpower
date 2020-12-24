@@ -200,9 +200,9 @@ public class RecruitmentEditBaseInfoDTO {
     private String nationality;
 
     /**
-     * 英文名称
+     * 姓名（英文）
      */
-    @ApiModelProperty(value="英文名称")
+    @ApiModelProperty(value="姓名（英文）")
     private String englishName;
 
     /**
@@ -218,15 +218,15 @@ public class RecruitmentEditBaseInfoDTO {
     private String certificateType;
 
     /**
-     * 职称证号
+     * 证件号码
      */
-    @ApiModelProperty(value="职称证号")
+    @ApiModelProperty(value="证件号码")
     private String certificateNo;
 
     /**
-     * 移动电话
+     * 手机号码
      */
-    @ApiModelProperty(value="移动电话")
+    @ApiModelProperty(value="手机号码")
     private String mobile;
 
     /**
@@ -240,4 +240,28 @@ public class RecruitmentEditBaseInfoDTO {
      */
     @ApiModelProperty(value="简历来源")
     private String resumeSource;
+
+    /**
+     * 年龄
+     */
+    @ApiModelProperty(value="年龄")
+    private String age;
+
+    /**
+     * 人才类别
+     */
+    @ApiModelProperty(value="人才类别")
+    private String talentType;
+
+    /**
+     * 归属组织
+     */
+    @ApiModelProperty(value="归属组织")
+    private Long orgId;
+
+    /**
+     * 籍贯
+     */
+    @ApiModelProperty(value="籍贯")
+    private String birthplace;
 }
