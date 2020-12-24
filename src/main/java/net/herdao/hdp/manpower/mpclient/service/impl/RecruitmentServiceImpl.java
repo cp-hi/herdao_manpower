@@ -715,6 +715,11 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
         //录用情况
         List<RecruitmentEmployeeDTO> employeeList = this.baseMapper.fetchEmploy(id);
+        if (CollectionUtil.isNotEmpty(employeeList)){
+            for (RecruitmentEmployeeDTO dto:employeeList){
+                dto.setEntryPostTime(LocalDateTimeUtils.convert2Long(dto.getEntryPostTimeLocal()));
+            }
+        }
 
         //更新和获取最高教育详情
         RecruitmentTopEduDTO topEduDTO = updateRecruitmentTopEdu(id);
