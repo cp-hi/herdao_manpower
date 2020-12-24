@@ -134,5 +134,8 @@ public class StaffContractRenewal {
     @ApiModelProperty(value = "逻辑删除")
     @TableLogic
     private Boolean delFlag;
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
 }
 

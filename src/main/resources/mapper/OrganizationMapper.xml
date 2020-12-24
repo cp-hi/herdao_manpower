@@ -526,6 +526,7 @@
         0 staff_total, a.organizational, a.welfare_type, a.sort_no,
         e.version AS welfare_type_name,
         a.org_desc,
+		a.IS_VIRTUAL is_virtual,
         a.is_stop, a.start_date, a.stop_date,
         CASE (
           SELECT COUNT(1)

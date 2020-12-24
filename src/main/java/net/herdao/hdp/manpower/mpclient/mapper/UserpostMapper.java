@@ -49,4 +49,11 @@ public interface UserpostMapper extends BaseMapper<Userpost> {
      * @return
      */
     UserpostDTO findCurrentJob(Long staffid);
+    
+    /**
+     * 是否存在用户任职
+     * @param org_id
+     * @return
+     */
+    Boolean hasUserPost(Long org_id);
 }

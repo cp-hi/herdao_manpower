@@ -21,4 +21,7 @@ public class SaveAppointAndRemovalDTO {
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
 }
