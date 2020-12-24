@@ -3,17 +3,12 @@
 package net.herdao.hdp.manpower.mpclient.dto.workExperience;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 /**
  * 人才工作经历表DTO
@@ -54,7 +49,6 @@ public class RecruitmentWorkExperienceDTO {
      */
     @ApiModelProperty(value="结束日期-LocalDateTime",hidden = true)
     private LocalDateTime toDateLocal;
-
 
     /**
      * 单位名称
