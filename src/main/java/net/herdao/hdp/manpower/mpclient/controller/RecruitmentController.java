@@ -319,20 +319,6 @@ public class RecruitmentController {
     }
 
     /**
-     * 人才简历-录用情况-列表分页
-     *
-     * @param recruitmentId 人才ID
-     * @return R
-     */
-    @ApiOperation(value = "人才简历-录用情况-列表分页", notes = "人才简历-录用情况-列表分页")
-    @GetMapping("/fetchEmploy")
-    @ApiImplicitParam(name = "recruitmentId", value = "人才ID")
-    public R<List<RecruitmentEmployeeDTO>> fetchEmploy(String recruitmentId) {
-        List<RecruitmentEmployeeDTO> list = recruitmentService.fetchEmploy(recruitmentId);
-        return R.ok(list);
-    }
-
-    /**
      * 人才管理-人才简历
      *
      * @param id 主键id

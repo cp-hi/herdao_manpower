@@ -94,6 +94,8 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
 
     private RecruitmentActivitiService recruitmentActivitiService;
 
+
+
     @Override
     public Page<RecruitmentDTO> findRecruitmentPage(Page<RecruitmentDTO> page, String orgId, String searchText) {
         Page<RecruitmentDTO> list = this.baseMapper.findRecruitmentPage(page, orgId, searchText);
@@ -307,7 +309,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     }
 
     @Override
-    public List<RecruitmentEmployeeDTO> fetchEmploy(String recruitmentId) {
+    public List<RecruitmentEmployeeDTO> fetchEmploy(Long recruitmentId) {
         return this.baseMapper.fetchEmploy(recruitmentId);
     }
 
@@ -711,6 +713,9 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             }
         }
 
+        //录用情况
+        List<RecruitmentEmployeeDTO> employeeList = this.baseMapper.fetchEmploy(id);
+
         //更新和获取最高教育详情
         RecruitmentTopEduDTO topEduDTO = updateRecruitmentTopEdu(id);
 
@@ -720,6 +725,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
         result.setRecruitmentTopEduDTO(topEduDTO);
         result.setRecruitmentFamilyDTO(familyDTOList);
         result.setRecruitmentAwardsDTO(recruitmentAwardsList);
+        result.setRecruitmentEmployeeDTO(employeeList);
         return result;
     }
 

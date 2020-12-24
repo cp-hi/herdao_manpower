@@ -53,4 +53,10 @@ public class RecruitmentDetailsDTO {
     @ApiModelProperty(value="人才简历-获奖资格")
     List<RecruitmentAwardsDTO> recruitmentAwardsDTO;
 
+    /**
+     * 人才简历-录用情况
+     */
+    @ApiModelProperty(value="人才简历-录用情况")
+    List<RecruitmentEmployeeDTO> recruitmentEmployeeDTO;
+
 }

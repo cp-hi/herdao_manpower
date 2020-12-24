@@ -47,7 +47,7 @@ public interface RecruitmentMapper extends BaseMapper<Recruitment> {
      * @param recruitmentId 人才ID
      * @return RecruitmentEmployeeDTO
      */
-    List<RecruitmentEmployeeDTO> fetchEmploy(@Param("recruitmentId") String recruitmentId);
+    List<RecruitmentEmployeeDTO> fetchEmploy(@Param("recruitmentId") Long recruitmentId);
 
     /**
      * 获取人才简历-个人基本情况-详情
