@@ -32,7 +32,7 @@ public class StaffAppointmentController {
 
     @ApiOperation(value = "分页列表")
     @GetMapping("/page/{appointmentAdnRemovalId}")
-    public R<Page<AppointmentPageVO>> page(@RequestParam("appointmentAdnRemovalId") Long appointmentAdnRemovalId,
+    public R<Page<AppointmentPageVO>> page(@PathVariable("appointmentAdnRemovalId") Long appointmentAdnRemovalId,
                                            Page page) {
         return R.ok(service.pageAppointment(appointmentAdnRemovalId, page), "success");
     }
