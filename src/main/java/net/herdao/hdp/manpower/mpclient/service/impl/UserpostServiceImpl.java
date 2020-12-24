@@ -76,4 +76,9 @@ public class UserpostServiceImpl extends ServiceImpl<UserpostMapper, Userpost> i
     public List<ExcelCheckErrDTO> checkImportExcel(List excelList, Integer importType) {
         return null;
     }
+    
+    @Override
+    public Boolean hasUserPost(Long org_id){
+    	return this.baseMapper.hasUserPost(org_id);
+    }
 }
