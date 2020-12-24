@@ -90,6 +90,12 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
             workExperience.setModifierCode(sysUser.getUsername());
             workExperience.setModifierName(sysUser.getAliasName());
         }
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            workExperience.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            workExperience.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
+        }
 
         super.updateById(workExperience);
         BeanUtils.copyProperties(workExperience,dto);
@@ -106,8 +112,6 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
                 this.saveWorkExperience(dto);
             }
         }
-
-
 
         return null;
     }
