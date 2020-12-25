@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
+import java.time.LocalDateTime;
+
 /**
  * 人才简历-录用情况
  * @author andy
@@ -16,9 +18,9 @@ import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 public class RecruitmentEmployeeDTO   {
 
     /**
-     * id
+     * 审批表id
      */
-    @ApiModelProperty(value="id",required = true)
+    @ApiModelProperty(value="审批表id")
     private Long id;
 
     /**
@@ -46,10 +48,16 @@ public class RecruitmentEmployeeDTO   {
     private String pipelineName;
 
     /**
+     * 可到岗日期-LocalDateTime
+     */
+    @ApiModelProperty(value="可到岗日期-LocalDateTime",hidden = true)
+    private LocalDateTime entryPostTimeLocal;
+
+    /**
      * 可到岗日期
      */
     @ApiModelProperty(value="可到岗日期")
-    private String entryPostTime;
+    private Long entryPostTime;
 
     /**
      * 是否到岗

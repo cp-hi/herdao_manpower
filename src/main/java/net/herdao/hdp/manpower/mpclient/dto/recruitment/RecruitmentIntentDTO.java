@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -30,12 +31,11 @@ public class RecruitmentIntentDTO  {
     @ApiModelProperty(value="工作年限")
     private String workAge;
 
-
     /**
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
-    private String workdate;
+    private Long workdate;
 
     /**
      * 意向岗位
@@ -59,11 +59,23 @@ public class RecruitmentIntentDTO  {
      * 可到职日期
      */
     @ApiModelProperty(value="可到职日期")
-    private String inductionTime;
+    private Long inductionTime;
 
     /**
      * 其他要求
      */
     @ApiModelProperty(value="其他要求")
     private String otherRequest;
+
+    /**
+     * 可到职日期-LocalDateTime
+     */
+    @ApiModelProperty(value="可到职日期-LocalDateTime",hidden = true)
+    private LocalDateTime inductionTimeLocal;
+
+    /**
+     * 参加工作日期-LocalDateTime
+     */
+    @ApiModelProperty(value="参加工作日期-LocalDateTime",hidden = true)
+    private LocalDateTime workDateLocal;
 }

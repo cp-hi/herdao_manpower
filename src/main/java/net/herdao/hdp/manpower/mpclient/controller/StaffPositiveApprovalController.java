@@ -33,7 +33,6 @@ import net.herdao.hdp.manpower.mpclient.entity.StaffPositiveApproval;
 import net.herdao.hdp.manpower.mpclient.service.StaffPositiveApprovalService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalInfoVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPageVO;
@@ -88,7 +87,7 @@ public class StaffPositiveApprovalController {
      */
     @ApiOperation(value = "获取转正详情")
     @GetMapping("/{id}")
-    public R<StaffPositiveApprovalInfoVO> getDetail(@PathVariable("id") Long id) {
+    public R<StaffPositiveApprovalInfoVO> getDetail(@PathVariable("id") Long id) throws Exception {
         return R.ok(staffPositiveApprovalService.getStaffPositive(id));
     }
 
@@ -155,7 +154,7 @@ public class StaffPositiveApprovalController {
     @SysLog("新增转正审批表")
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('generator_StaffPositiveApproval_add')" )
-    public R<Long> save(@RequestBody @NotNull @Valid StaffPositiveApprovalSaveDTO dto) {
+    public R<Long> save(@RequestBody @NotNull @Valid StaffPositiveApprovalSaveDTO dto) throws Exception{
         return R.ok(staffPositiveApprovalService.insert(dto));
     }
 

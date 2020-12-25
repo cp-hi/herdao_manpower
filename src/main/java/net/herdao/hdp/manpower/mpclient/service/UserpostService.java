@@ -61,6 +61,13 @@ public interface UserpostService extends HdpService<Userpost> {
      */
     UserpostDTO findCurrentJob(Long staffid);
 
+    /**
+     * 是否存在用户任职
+     * @param org_id
+     * @return
+     */
+    Boolean hasUserPost(Long org_id);
+
     Page<Userpost> pageUserAllAppointmentsByUserId(Page page, Long userId);
 
     Userpost getMainPostByUserId(Long userId);

@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
 import net.herdao.hdp.manpower.mpclient.service.EntityService;
 import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
@@ -69,5 +70,20 @@ public class JobGradeController extends BaseController<JobGrade, JobGradeListVO,
     public R<IPage<JobGradeListVO>> page(HttpServletResponse response, @ApiIgnore Page page, JobGrade jobGrade, Integer type)
             throws Exception {
         return super.page(response, page, jobGrade, type);
+    }
+    
+    /**
+     * 通过id删除职级
+     *
+     * @param id id
+     * @return R
+     */
+    @Override
+    @ApiOperation(value = "通过id删除职级", notes = "通过id删除职级")
+    @SysLog("通过id删除职级")
+    @DeleteMapping("/{id}")
+    public R<Boolean> delete(@PathVariable Long id) {
+        return R.ok(jobGradeService.removeById(id));
+
     }
 }

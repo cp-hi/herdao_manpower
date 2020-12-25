@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.admin.api.entity.SysUser;
@@ -23,6 +24,7 @@ import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperi
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentWorkexperience;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentWorkexperienceMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +45,12 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
     @Override
     public List<RecruitmentWorkExperienceDTO> findWorkExperienceList(Long recruitmentId) {
         List<RecruitmentWorkExperienceDTO> workExperienceList = this.baseMapper.findWorkExperienceList(recruitmentId);
+        if (CollectionUtil.isNotEmpty(workExperienceList)){
+            for (RecruitmentWorkExperienceDTO workExperienceDTO : workExperienceList) {
+                workExperienceDTO.setPeriod(LocalDateTimeUtils.convert2Long(workExperienceDTO.getPeriodLocal()));
+                workExperienceDTO.setTodate(LocalDateTimeUtils.convert2Long(workExperienceDTO.getToDateLocal()));
+            }
+        }
         return workExperienceList;
     }
 
@@ -50,8 +58,14 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
     @OperationEntity(operation = "人才工作经历表-新增保存",module="人才简历", clazz = RecruitmentWorkExperienceDTO.class)
     public RecruitmentWorkExperienceDTO saveWorkExperience(RecruitmentWorkExperienceDTO dto) {
         RecruitmentWorkexperience workExperience=new RecruitmentWorkexperience();
-        BeanUtils.copyProperties(dto,workExperience);
 
+        BeanUtils.copyProperties(dto,workExperience);
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            workExperience.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            workExperience.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
+        }
         SysUser sysUser = SysUserUtils.getSysUser();
         if (ObjectUtil.isNotNull(sysUser)){
             workExperience.setCreatorTime(LocalDateTime.now());
@@ -75,6 +89,12 @@ public class RecruitmentWorkexperienceServiceImpl extends ServiceImpl<Recruitmen
             workExperience.setModifierTime(LocalDateTime.now());
             workExperience.setModifierCode(sysUser.getUsername());
             workExperience.setModifierName(sysUser.getAliasName());
+        }
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            workExperience.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            workExperience.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
         }
 
         super.updateById(workExperience);

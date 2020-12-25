@@ -39,8 +39,7 @@ public class RecruitmentAwardsDTO {
      * 获奖时间
      */
     @ApiModelProperty(value="获奖时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date awardsTime;
+    private Long awardsTime;
 
     /**
      * 获奖内容
@@ -59,4 +58,10 @@ public class RecruitmentAwardsDTO {
      */
     @ApiModelProperty(value="最近更新情况")
     private String updateDesc;
+
+    /**
+     * 获奖时间-LocalDateTime
+     */
+    @ApiModelProperty(value="获奖时间-LocalDateTime",hidden = true)
+    private LocalDateTime awardsTimeLocal;
 }

@@ -184,7 +184,15 @@
 		</where>
     </select>
 
-
-
-
+	<!-- 是否存在用户任职-->
+    <select id="hasUserPost" resultType="java.lang.Boolean">
+        select case
+               when exists (select 1
+				from mp_organization a
+				inner join mp_user b on a.id=b.ORG_DEPT_ID
+				where a.ORG_CODE like (select CONCAT(o.ORG_CODE,'%') from mp_organization o where o.id=#{org_id}))
+					then 1
+				else 0
+			end
+    </select>
 </mapper>

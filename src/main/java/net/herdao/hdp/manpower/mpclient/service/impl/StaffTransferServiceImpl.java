@@ -219,8 +219,7 @@ public class StaffTransferServiceImpl extends ServiceImpl<StaffTransferApproveMa
             if (record.getTransStartDate() != null) {
                 vo.setTransStartDate(LocalDateTimeUtils.convert2Long(record.getTransStartDate()));
             }
-            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
-            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), record.getModifierTime()));
             list.add(vo);
         }
         BeanUtils.copyProperties(page, pageVO);

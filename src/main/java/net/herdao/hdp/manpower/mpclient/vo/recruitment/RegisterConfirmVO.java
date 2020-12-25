@@ -4,25 +4,18 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
-import java.util.Map;
-
 /**
- * 模板VO
+ * 入职登记确认VO
  * @author Andy
  */
 @Data
-@ApiModel(value = "模板VO")
-public class ModuleVO {
-
+@ApiModel(value = "入职登记确认VO")
+public class RegisterConfirmVO {
 
     /**
-     * 模板内容
+     * 人才表主键id
      */
-    @ApiModelProperty(value="模板内容")
-    private String content;
-
-
-
+    @ApiModelProperty(value="人才表主键id")
+    private String id;
 
 }

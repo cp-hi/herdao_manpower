@@ -3,16 +3,12 @@
 package net.herdao.hdp.manpower.mpclient.dto.workExperience;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * 人才工作经历表DTO
@@ -33,16 +29,26 @@ public class RecruitmentWorkExperienceDTO {
     /**
      * 开始日期
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="开始日期")
-    private Date period;
+    private Long period;
 
     /**
      * 结束日期
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="结束日期")
-    private Date todate;
+    private Long todate;
+
+    /**
+     * 开始日期-LocalDateTime
+     */
+    @ApiModelProperty(value="开始日期-LocalDateTime",hidden = true)
+    private LocalDateTime periodLocal;
+
+    /**
+     * 结束日期-LocalDateTime
+     */
+    @ApiModelProperty(value="结束日期-LocalDateTime",hidden = true)
+    private LocalDateTime toDateLocal;
 
     /**
      * 单位名称
@@ -103,7 +109,5 @@ public class RecruitmentWorkExperienceDTO {
      */
     @ApiModelProperty(value="人才主键ID")
     private Long recruitmentId;
-
-
 
  }

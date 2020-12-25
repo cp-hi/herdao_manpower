@@ -526,6 +526,7 @@
         0 staff_total, a.organizational, a.welfare_type, a.sort_no,
         e.version AS welfare_type_name,
         a.org_desc,
+		a.IS_VIRTUAL is_virtual,
         a.is_stop, a.start_date, a.stop_date,
         CASE (
           SELECT COUNT(1)
@@ -610,13 +611,13 @@
             f.mobile,
             f.email
         FROM mp_user u
-        LEFT JOIN mp_userpost up ON u.id = up.user_id
+        LEFT JOIN mp_userpost up ON u.id = up.user_id AND up.main_post = 1
         LEFT JOIN mp_post p ON p.id = up.post_id
         INNER JOIN mp_organization o ON o.id = u.org_dept_id
-        INNER JOIN mp_staff f ON f.user_id = u.id
+        INNER JOIN mp_staff f ON f.user_id = u.id AND f.STAFF_SCOPE = 1
         LEFT JOIN mp_job_level lv1 ON p.job_level_id1 = lv1.id
         LEFT JOIN mp_job_level lv2 ON p.job_level_id2 = lv2.id
-        WHERE o.org_code LIKE CONCAT(#{orgCode},'%') AND up.main_post = 1
+        WHERE o.org_code LIKE CONCAT(#{orgCode},'%')
     </select>
 
     <!-- 查询组织架构图根节点 -->

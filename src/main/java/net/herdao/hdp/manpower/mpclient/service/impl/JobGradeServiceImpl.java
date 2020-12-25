@@ -50,4 +50,13 @@ public class JobGradeServiceImpl extends EntityServiceImpl<JobGradeMapper, JobGr
             throw new RuntimeException("该职等下有职级不可删除");
         }
     }
+
+	@Override
+	public boolean removeById(Long id) {
+		int count = jobLevelService.count(Wrappers.<JobLevel>lambdaQuery().eq(JobLevel::getJobGradeId, id));
+        if(count>0){
+            throw new RuntimeException("该职等下有职级不可删除");
+        }
+		return super.removeById(id);
+	}
 }

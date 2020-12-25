@@ -1,28 +1,11 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import net.herdao.hdp.admin.api.dto.UserInfo;
 import net.herdao.hdp.admin.api.entity.SysDictItem;
 import net.herdao.hdp.admin.api.feign.RemoteUserService;
@@ -35,59 +18,37 @@ import net.herdao.hdp.manpower.mpclient.dto.easyexcel.ExcelCheckErrDTO;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffAddVM;
 import net.herdao.hdp.manpower.mpclient.dto.excelVM.staff.StaffUpdateVM;
 import net.herdao.hdp.manpower.mpclient.dto.organization.OrganizationImportDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffArchiveDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffBaseDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffCarreraDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffContractDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffDetailDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEducationLastDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffEmergencyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFamilyDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffFundDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffInfoOtherDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobInfoDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffJobTravelDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffListDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffPracticeDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffProTitleDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSalaryDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffSecurityDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWelfareDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkExpDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StaffWorkYearDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staff.StafftransactionDTO;
+import net.herdao.hdp.manpower.mpclient.dto.staff.*;
 import net.herdao.hdp.manpower.mpclient.dto.staffUserpost.UserpostDTO;
 import net.herdao.hdp.manpower.mpclient.dto.staffWork.WorkexperienceDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Familystatus;
-import net.herdao.hdp.manpower.mpclient.entity.Group;
-import net.herdao.hdp.manpower.mpclient.entity.Organization;
-import net.herdao.hdp.manpower.mpclient.entity.Staff;
-import net.herdao.hdp.manpower.mpclient.entity.Staffcontract;
-import net.herdao.hdp.manpower.mpclient.entity.Staffeducation;
-import net.herdao.hdp.manpower.mpclient.entity.User;
-import net.herdao.hdp.manpower.mpclient.entity.Userpost;
-import net.herdao.hdp.manpower.mpclient.entity.Workexperience;
+import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.StaffMapper;
-import net.herdao.hdp.manpower.mpclient.service.FamilystatusService;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
-import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
-import net.herdao.hdp.manpower.mpclient.service.StaffPracticeService;
-import net.herdao.hdp.manpower.mpclient.service.StaffProTitleService;
-import net.herdao.hdp.manpower.mpclient.service.StaffService;
-import net.herdao.hdp.manpower.mpclient.service.StaffcontractService;
-import net.herdao.hdp.manpower.mpclient.service.StaffeducationService;
-import net.herdao.hdp.manpower.mpclient.service.StafftransactionService;
-import net.herdao.hdp.manpower.mpclient.service.UserService;
-import net.herdao.hdp.manpower.mpclient.service.UserpostService;
-import net.herdao.hdp.manpower.mpclient.service.WorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.StaffComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffOrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.StaffTotalComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.staff.StaffBasicVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffBasicPositiveVO;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 import net.herdao.hdp.manpower.sys.mapper.SysDictItemMapper;
+import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import net.herdao.hdp.manpower.sys.service.SysSequenceService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 员工表
@@ -133,9 +94,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 
 	@Autowired
 	private OrganizationService organizationService;
+
 	@Autowired
 	private GroupService groupService;
 
+	@Autowired
+	private SysDictItemService sysDictItemService;
 
 	private final static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -586,9 +550,12 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		);
 		List<StaffFamilyDTO> familyDtoList = new ArrayList<>();
 		StaffFamilyDTO family;
-		for(int i=0;i<familyList.size();i++){
+		for (Familystatus familystatus : familyList) {
 			family = new StaffFamilyDTO();
-			BeanUtils.copyProperties(familyList.get(i), family);
+			SysDictItem relationsType = sysDictItemService.getDictItemByTypeAndValue("RELATIONS_TYPE", familystatus.getRelations());
+			familystatus.setRelations(relationsType.getLabel());
+
+			BeanUtils.copyProperties(familystatus, family);
 			familyDtoList.add(family);
 		}
 		map.put("staffFamilyDTO", familyDtoList);
@@ -821,12 +788,42 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 	}
 
 	@Override
-	public boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO){
+	public boolean updateStaffWorkYear(StaffWorkYearDTO staffWorkYearDTO) {
 		Staff staff = this.getById(staffWorkYearDTO.getStaffid());
 		BeanUtils.copyProperties(staffWorkYearDTO, staff);
+		// 处理workDate和entryTime属性内容无法拷贝问题 start
+		LocalDate workDate = staffWorkYearDTO.getWorkDate();
+		staff.setWorkDate(toLocalDateTime(workDate));
+		
+		LocalDate entryTime = staffWorkYearDTO.getEntryTime();
+		staff.setEntryTime(toLocalDateTime(entryTime));
+		// 处理workDate和entryTime属性内容无法拷贝问题 end
 		return this.updateById(staff);
 	}
 
+	/**
+	 * LocalDate转换成LocalDateTime
+	 * 
+	 * @author yeks
+	 */
+	private LocalDateTime toLocalDateTime(LocalDate localDate) {
+		if (localDate == null) {
+			return null;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(false);
+		Date date;
+		try {
+			date = sdf.parse(localDate.toString());
+			Instant instant = date.toInstant();
+			ZoneId zoneId = ZoneId.systemDefault();
+			LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
+			return localDateTime;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * 转正管理(员工)基础信息-（根据id查询基本信息）
@@ -839,7 +836,13 @@ public class StaffServiceImpl extends ServiceImpl<StaffMapper, Staff> implements
 		StaffBasicVO staffBasicVO = this.selectBasicById(id);
 		StaffBasicPositiveVO staffBasicPositiveVO = new StaffBasicPositiveVO();
 		BeanUtils.copyProperties(staffBasicVO,staffBasicPositiveVO);
-		staffBasicPositiveVO.setEntryTime1(staffBasicPositiveVO.getEntryTime());
+		//查询任职日期
+		if (ObjectUtil.isNotEmpty(staffBasicVO.getUserId())){
+			StaffPositiveApprovalPage user = userService.getUserStartDate(staffBasicVO.getUserId());
+			staffBasicPositiveVO.setEntryTime1(LocalDateTimeUtils.convert2Long(user.getEntryTime()));
+		}else {
+			staffBasicPositiveVO.setEntryTime1(staffBasicPositiveVO.getEntryTime());
+		}
 		return staffBasicPositiveVO;
 	}
 

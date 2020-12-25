@@ -127,5 +127,12 @@ public class StaffPositiveApprovalPageVO {
     @ExcelProperty(value = "执行状态")
     private String executingStatus;
 
+    /**
+     * 试用期/月
+     */
+    @ApiModelProperty(value="试用期/月")
+    @ExcelProperty(value = "试用期/月")
+    private String probation;
+
 
 }

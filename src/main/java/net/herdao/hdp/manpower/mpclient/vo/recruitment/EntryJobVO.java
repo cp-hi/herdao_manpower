@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class EntryJobVO {
 
     /**
-     * 人才表主键id
+     * 人才ID
      */
-    @ApiModelProperty(value="人才表主键id")
+    @ApiModelProperty(value="人才ID")
     private Long recruitmentId;
 
     /**

@@ -39,8 +39,8 @@
       <!-- 个人简历-工作经历-->
       <select id="findWorkExperienceList" resultType="net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO">
             SELECT wr.id,
-                   wr.period,
-                   wr.todate,
+                   wr.period period_local,
+                   wr.todate to_date_local,
                    wr.company_name,
                    wr.post,
                    wr.cash_income,
@@ -57,7 +57,8 @@
                   <if test="recruitmentId != null and recruitmentId != '' ">
                      AND wr.recruitment_id = #{recruitmentId}
                   </if>
-            </where>
+             </where>
+             order by wr.period desc
       </select>
 
 

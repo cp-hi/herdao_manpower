@@ -65,14 +65,12 @@ public class RecruitmentWorkexperience extends Model<RecruitmentWorkexperience> 
      * 开始日期
      */
     @ApiModelProperty(value="开始日期")
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date period;
+    private LocalDateTime period;
     /**
      * 结束日期
      */
     @ApiModelProperty(value="结束日期")
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date todate;
+    private LocalDateTime todate;
     /**
      * 单位名称
      */

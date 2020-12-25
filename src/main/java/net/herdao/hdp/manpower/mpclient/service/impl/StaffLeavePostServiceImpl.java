@@ -59,8 +59,7 @@ public class StaffLeavePostServiceImpl extends ServiceImpl<StaffLeavePostMapper,
             if (record.getLeaveTime() != null) {
                 vo.setLeaveTime(LocalDateTimeUtils.convert2Long(record.getLeaveTime()));
             }
-            String updatedAt = LocalDateTimeUtils.convert2String(record.getModifierTime());
-            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), updatedAt));
+            vo.setUpdateInfo(MessageFormat.format("{0} 于 {1} 更新", record.getModifierName(), record.getModifierTime()));
             list.add(vo);
         }
         BeanUtils.copyProperties(page, pageVO);

@@ -50,12 +50,12 @@ public interface StaffPositiveApprovalService extends IService<StaffPositiveAppr
      * 新增转正审批表
      * @return
      */
-    Long insert(StaffPositiveApprovalSaveDTO staffPositiveApproval);
+    Long insert(StaffPositiveApprovalSaveDTO staffPositiveApproval) throws Exception;
 
     /**
      * 获取转正详情
      */
-    StaffPositiveApprovalInfoVO getStaffPositive(Long id);
+    StaffPositiveApprovalInfoVO getStaffPositive(Long id) throws Exception;
 
     /**
      * 新增、编辑页-确认发起

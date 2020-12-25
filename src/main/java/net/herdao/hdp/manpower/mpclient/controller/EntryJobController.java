@@ -21,6 +21,7 @@ import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
 import net.herdao.hdp.manpower.mpclient.utils.QrCodeUtils;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.EntryJobVO;
 import net.herdao.hdp.manpower.mpclient.vo.recruitment.ModuleVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RegisterConfirmVO;
 import net.herdao.hdp.manpower.sys.service.SysDictItemService;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,8 @@ public class EntryJobController {
     private final StaffEntrypostApproveService approveService;
 
     private final SysDictItemService dictItemService;
+
+    private final MsgService msgService;
 
     /**
      * 入职管理-待入职-列表分页
@@ -317,85 +320,71 @@ public class EntryJobController {
     }
 
     /**
-     * 提醒重新登记
+     * 入职登记详情-提醒重新登记。（发送邮件提醒重新登记）
      * @param id 主键id
      * @return
      */
     @ApiImplicitParams({
         @ApiImplicitParam(name="id",value="入职表(审批表)主键id",required = true)
     })
-    @ApiOperation(value = "提醒重新登记", notes = "提醒重新登记")
+    @ApiOperation(value = "入职登记详情-提醒重新登记", notes = "提醒重新登记")
     @PostMapping("/remindRegister")
-    public R<StaffEntrypostApprove> remindRegister(String id) {
+    public R<Boolean> remindRegister(@RequestBody EmailSendInfo emailSendInfo) {
         // TODO: 要与小明沟通 进一步确定与完善业务代码
-        return R.ok();
+        Boolean status = msgService.sendEmail(emailSendInfo);
+        String result="";
+        if (status){
+            result="发送成功";
+        }else {
+            result="发送失败";
+        }
+        return R.ok(status,result);
     }
 
     /**
-     * 2.获取-邀请更新简历-页面内容（内含二维码）
+     * 获取模板发送请内容
      * @return R
      */
-    @ApiOperation(value = "获取-邀请更新简历-页面内容", notes = "获取-邀请更新简历-页面内容")
-    @GetMapping("/fetchInviteListEmail")
-    public R<ModuleVO> fetchInviteListEmail() {
+    @ApiOperation(value = "获取模板发送请内容", notes = "获取模板发送请内容")
+    @GetMapping("/fetchConfirmEmail")
+    @ApiImplicitParams({
+         @ApiImplicitParam(name="type",value="类型（人才，入职）",required = true)
+    })
+    public R<ModuleVO> fetchConfirmEmail(String type) {
         ModuleVO moduleVO=new ModuleVO();
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-            String code = QrCodeUtils.createBase64QrCode(address);
-            moduleVO.setCode(code);
+        //todo:调用系统模板接口，获取模板配置信息。根据类型（人才，入职）。
+        if (ObjectUtil.isNotNull(type)){
+
         }
-
-        //todo:调用系统模板接口，获取模板配置信息。
-        return R.ok(moduleVO);
-    }
-
-    /**
-     * 获取-入职登记记录-发送请确认内容（内含二维码）
-     * @return R
-     */
-    @ApiOperation(value = "获取-入职登记记录-页面email内容", notes = "获取-入职登记记录-页面email内容")
-    @GetMapping("/fetchConfirmRegisterEmail")
-    public R<ModuleVO> fetchConfirmRegisterEmail() {
-        ModuleVO moduleVO=new ModuleVO();
-        Integer tenantId = SecurityUtils.getUser().getTenantId();
-        if (ObjectUtil.isNotNull(tenantId)){
-            //手机端极速入职页面地址
-            String address="http://10.1.69.173:8076/#/login?tenantId="+tenantId;
-            String code = QrCodeUtils.createBase64QrCode(address);
-            moduleVO.setCode(code);
-        }
-
-        //todo:调用系统模板接口，获取模板配置信息。
 
         return R.ok(moduleVO);
     }
 
     /**
      * 手机端-极速入职-提交 修改入职登记状态
-     * @param id 人才ID
+     * @param vo 入职登记确认VO
      * @return
      */
     @ApiOperation(value = "手机端-极速入职-提交", notes = "手机端-极速入职-提交")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name="id",value="人才ID",required = true)
-    })
     @PostMapping("/confirmRegisterByMobile")
-    public R  confirmRegisterByMobile(Long id) {
-        //获取人才审批表的最新记录
-        LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
-        entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,id).orderByDesc(StaffEntrypostApprove::getCreatorTime);
-        List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
+    public R confirmRegisterByMobile(@RequestBody RegisterConfirmVO vo) {
+        if (ObjectUtil.isNotEmpty(vo)&&ObjectUtil.isNotNull(vo.getId())){
+            //获取人才审批表的最新记录
+            LambdaQueryWrapper<StaffEntrypostApprove> entryQueryWrapper = Wrappers.lambdaQuery();
+            entryQueryWrapper.eq(StaffEntrypostApprove::getRecruitmentId,Long.parseLong(vo.getId())).orderByDesc(StaffEntrypostApprove::getCreatorTime);
+            List<StaffEntrypostApprove> entryList = approveService.list(entryQueryWrapper);
 
-        //修改入职登记状态
-        if (CollectionUtil.isNotEmpty(entryList)){
-            StaffEntrypostApprove approve = entryList.get(0);
-            if (ObjectUtil.isNotNull(approve)){
-                //入职登记状态 (1:未提交，2：已提交，3：已确认）
-                approve.setEntryCheckStatus("2");
+            //修改入职登记状态
+            if (CollectionUtil.isNotEmpty(entryList)){
+                StaffEntrypostApprove approve = entryList.get(0);
+                if (ObjectUtil.isNotNull(approve)){
+                    //入职登记状态 (1:未提交，2：已提交，3：已确认）
+                    approve.setEntryCheckStatus("2");
+                    approveService.updateById(approve);
+                }
             }
         }
+
 
         return R.ok("提交成功");
     }

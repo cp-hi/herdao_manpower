@@ -29,8 +29,38 @@
                      select="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper.getPostSeqDTO"
                      javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
     </resultMap>
+    <select id="form" resultMap="postDTOMap">
+        select * from mp_post where id = #{id}
+    </select>
 
-    <select id="page" resultMap="postDTOMap" parameterType="post">
+    <resultMap id="postDTOPageMap" type="net.herdao.hdp.manpower.mpclient.dto.post.PostDTO">
+        <id column="id" property="id"/>
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="jobLevelId1" column="job_Level_id1"/>
+        <result property="jobLevelId2" column="job_Level_id2"/>
+        <result property="postSeqId" column="post_seq_id"/>
+
+        <association property="groupName" column="group_id" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.GroupMapper.selectEntityName"/>
+
+        <association property="jobLevelName1" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
+        <association property="jobLevelName2" column="job_level_id2" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper.selectEntityName"/>
+        <association property="jobGradeName" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
+        <association property="jobGradeName1" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
+        <association property="jobGradeName2" column="job_level_id1" javaType="string"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.JobGradeMapper.getJobGradeByJobLevelId"/>
+
+        <association property="postAuthorized" column="id" select="getPostAuthorized" javaType="int"/>
+        <association property="onJobStaffs" column="id" select="getOnJobStaffs" javaType="int"/>
+        <association property="postSeqDTO" column="post_seq_id"
+                     select="net.herdao.hdp.manpower.mpclient.mapper.PostSeqMapper.getPostSeqDTO"
+                     javaType="net.herdao.hdp.manpower.mpclient.dto.post.PostSeqDTO"/>
+    </resultMap>
+    <select id="page" resultMap="postDTOPageMap" parameterType="post">
         SELECT ps.*,
         	   org.id AS org_id
         FROM mp_post ps 
@@ -55,10 +85,6 @@
             and (ps.POST_CODE like #{likeTxt} or ps.POST_NAME like #{likeTxt})
         </if>
         and exists (select * from mp_group g where g.id = ps.GROUP_ID and g.DEL_FLAG !=1)
-    </select>
-
-    <select id="form" resultMap="postDTOMap">
-        select * from mp_post where id = #{id}
     </select>
 
     <!--     TODO 未实现编制统计 -->

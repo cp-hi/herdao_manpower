@@ -48,6 +48,7 @@ import net.herdao.hdp.manpower.mpclient.service.OrganizationService;
 import net.herdao.hdp.manpower.mpclient.service.PostService;
 import net.herdao.hdp.manpower.mpclient.service.StaffService;
 import net.herdao.hdp.manpower.mpclient.service.UserService;
+import net.herdao.hdp.manpower.mpclient.service.UserpostService;
 import net.herdao.hdp.manpower.mpclient.utils.StringBufferUtils;
 import net.herdao.hdp.manpower.mpclient.vo.OrganizationComponentVO;
 import net.herdao.hdp.manpower.mpclient.vo.organization.OrganizationFormVO;
@@ -76,6 +77,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     private OrgModifyRecordService orgModifyRecordService;
     @Autowired
     private RemoteDeptService remoteDeptService;
+    @Autowired
+    private UserpostService userpostService;
 
     @Override
     public List<Organization> selectOrganizationListByParentOid(String parentId) {
@@ -131,6 +134,12 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         Date stopDate = DateUtil.parseDate(stopDateStr);
         if (DateUtil.compare(stopDate, DateUtil.date()) < 0) {
             return R.failed("停用日期不能小于当前日期！");
+        }
+        
+        //组织架构有人任职情况下不能停用
+        Boolean isUserpost=userpostService.hasUserPost(id);
+        if(isUserpost){
+        	return R.failed("组织存在人员任职情况下不能停用！");
         }
 
         Organization organization = this.getById(id);
@@ -475,6 +484,11 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             if (ObjectUtil.isNotNull(id) && parentId.equals(id)) {
                 return R.failed("上级组织不能是当前组织！");
             }
+            
+            // 校验是否选中当前组织的下级组织
+            if(StrUtil.isNotBlank(organization.getOrgCode()) && parentOrganization.getOrgCode().startsWith(organization.getOrgCode())){
+            	return R.failed("不能选中下级组织！");
+            }
         }
 
         if (StrUtil.isBlank(organization.getOrgCode()) || !StrUtil.toString(tpOrganization.getParentId()).equals(StrUtil.toString(organization.getParentId()))) {
@@ -533,6 +547,10 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
             organization.setOrgChargeWorkId(staff.getId());
             organization.setOrgChargeWorkNo(staff.getStaffCode());
             organization.setOrgChargeWorkName(staff.getStaffName());
+        }
+        else{//删除负责人时删除负责人姓名、负责人工号
+        	organization.setOrgChargeWorkNo("");
+            organization.setOrgChargeWorkName("");
         }
 
         // 保存组织
@@ -650,11 +668,36 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
 
     @Override
     public boolean editOrgChart(OrgChartFormDTO form) {
-        Organization entity = new Organization();
+        Organization entity = this.getById(form.getId());
         BeanUtils.copyProperties(form, entity);
         if (entity.getParentId() != null && entity.getParentId().equals(entity.getId())) {
             throw new RuntimeException("上级组织不能是当前组织！");
         }
+        
+        Long id = entity.getId();
+        Long parentId = entity.getParentId();
+        // 父组织信息
+        Organization parentOrganization = ObjectUtil.isNull(parentId) ? null : this.getById(parentId);
+
+        // 校验同一个组织下不能存在组织名称一样的组织
+        if (ObjectUtil.isNotNull(parentOrganization)) {
+            List<Organization> orgs = this.lambdaQuery().eq(Organization::getOrgName, entity.getOrgName())
+                    .eq(Organization::getParentId, parentId)
+                    .ne(id != null, Organization::getId, id).list();
+            if (ObjectUtil.isNotEmpty(orgs)) {
+            	throw new RuntimeException("组织名称已经存在，请修改后保存！");
+            }
+            // 校验上级组织是否是当前组织
+            if (ObjectUtil.isNotNull(id) && parentId.equals(id)) {
+            	throw new RuntimeException("上级组织不能是当前组织！");
+            }
+            
+            //校验是否选中当前组织的下级组织
+            if(parentOrganization.getOrgCode().startsWith(entity.getOrgCode())){
+            	throw new RuntimeException("不能选中下级组织！");
+            }
+        }
+                
         return this.updateById(entity);
     }
 

@@ -36,9 +36,9 @@ public class Recruitment extends Model<Recruitment> {
     @ApiModelProperty(value="人才ID")
     private Long id;
     /**
-     * 人才类型
+     * 人才类别
      */
-    @ApiModelProperty(value="人才类型")
+    @ApiModelProperty(value="人才类别")
     private String talentType;
     /**
      * 来源类型
@@ -74,8 +74,7 @@ public class Recruitment extends Model<Recruitment> {
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+    private LocalDateTime birthday;
     /**
      * 移动电话
      */
@@ -624,8 +623,7 @@ public class Recruitment extends Model<Recruitment> {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date resumeAccessTime;
+    private LocalDateTime resumeAccessTime;
 
     /**
      * 职称证号

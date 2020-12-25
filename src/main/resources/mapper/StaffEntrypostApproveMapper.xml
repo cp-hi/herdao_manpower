@@ -321,7 +321,7 @@
                     IFNULL(t.org_name,''),
                     IFNULL(t.post_name,''),
                     IFNULL(t.job_level_name,''),
-                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_post_time_local,''),
                     IFNULL(t.entry_login_status,''),
                     IFNULL(t.update_desc,''),
                     IFNULL(t.invite_status,'')
@@ -396,7 +396,7 @@
                     IFNULL(t.email,''),
                     IFNULL(t.post_name,''),
                     IFNULL(t.job_level_name,''),
-                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_post_time_local,''),
                     IFNULL(t.entry_login_status,''),
                     IFNULL(t.staff_status,''),
                     IFNULL(t.probation,''),
@@ -512,13 +512,12 @@
                                       GROUP BY e.recruitment_id
                             ) jb on app.recruitment_id = jb.recruitment_id
                  <where>
-                        AND app.STATUS = 3
-                        AND app.del_flag = 0
+                         AND app.del_flag = 0
                      <if test="orgId != null">
                          AND org.ORG_CODE like (select CONCAT(o.ORG_CODE,'%') from mp_organization o where o.id=#{orgId} limit 1)
                      </if>
                      <if test="entryCheckStatus != null and entryCheckStatus != '' ">
-                        AND app.entry_check_status = #{entryCheckStatus}
+                         AND app.entry_check_status = #{entryCheckStatus}
                      </if>
                  </where>
            )t
@@ -532,7 +531,7 @@
                     IFNULL(t.email,''),
                     IFNULL(t.post_name,''),
                     IFNULL(t.job_level_name,''),
-                    IFNULL(t.entry_post_time,''),
+                    IFNULL(t.entry_post_time_local,''),
                     IFNULL(t.entry_login_status,''),
                     IFNULL(t.staff_status,''),
                     IFNULL(t.probation,''),

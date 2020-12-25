@@ -100,9 +100,10 @@
          mspa.modifier_time,
          mspa.positive_type,
          mspa.status,
+         mspa.probation,
          norg.ORG_NAME as now_org_name,
          njl.JOB_LEVEL_NAME as now_JOB_LEVEL_NAME,
-         np.POST_NAME now_post_name
+         np.POST_NAME  as nowPostName
       FROM mp_staff_positive_approval AS  mspa
       LEFT JOIN mp_staff s ON mspa.user_id = s.user_id
       LEFT JOIN mp_organization norg ON mspa.org_id = norg.id
@@ -151,6 +152,7 @@
         mspa.`positive_question_ans7`,
         mspa.ENTRY_TIME AS entryTime1,
         mspa.appendix_ids,
+        mspa.staff_id,
         mpo.`POST_NAME` AS postName,
         np.POST_NAME AS now_post_name,
         mpo.`POST_NAME` AS old_post_name,

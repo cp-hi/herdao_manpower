@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -35,15 +36,25 @@ public class RecruitmentEditEduDTO {
      * 入学日期
      */
     @ApiModelProperty(value="入学日期")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
-    private Date period;
+    private Long period;
+
+    /**
+     * 入学日期-LocalDateTime
+     */
+    @ApiModelProperty(value="入学日期-LocalDateTime",hidden = true)
+    private LocalDateTime periodLocal;
 
     /**
      * 毕业日期
      */
     @ApiModelProperty(value="毕业日期")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
-    private Date todate;
+    private Long todate;
+
+    /**
+     * 毕业日期
+     */
+    @ApiModelProperty(value="毕业日期",hidden = true)
+    private LocalDateTime toDateLocal;
 
     /**
      * 毕业院校

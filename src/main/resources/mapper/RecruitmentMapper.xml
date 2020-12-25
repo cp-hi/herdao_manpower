@@ -263,15 +263,15 @@
     <select id="fetchResumeJobIntent" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO">
        SELECT 	rec.id,
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age ,
-				rec.workdate,
+				rec.workdate work_date_local,
 				org.org_name,
 				rec.minimum_levelIncome,
 				rec.expected_levelIncome,
-				rec.induction_time,
+				rec.induction_time induction_time_local,
 				rec.career_plan,
-				rec.professional_experience,
-				rec.management_experience,
-				rec.real_estate_experience,
+				rec.professional_experience professional_experience_local,
+				rec.management_experience management_experience_local,
+				rec.real_estate_experience real_estate_experience_local,
 				rec.writing_ability,
 				rec.professional_competence,
 				rec.management,
@@ -299,20 +299,22 @@
 
     <!-- 人才简历-录用情况-列表分页 -->
     <select id="fetchEmploy" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO">
-           SELECT CASE WHEN
+           SELECT t.id,
+                    CASE WHEN
                     t.STATUS != 1 THEN
                     '录用' ELSE '未录用'
                     END result,
                   t.ORG_NAME,
                   t.POST_NAME,
                   t.PIPELINE_NAME,
-                  t.entry_post_time,
+                  t.entry_post_time entry_post_time_local,
                   CASE WHEN t.entry_status = 'RZZT02' THEN
                      '已到岗' ELSE '未到岗'
                   END duty_status
             FROM
               (
-                SELECT  app.STATUS,
+                SELECT  app.id,
+                        app.STATUS,
                         org.ORG_NAME,
                         pst.POST_NAME,
                         pp.PIPELINE_NAME,
@@ -341,7 +343,7 @@
                 TIMESTAMPDIFF(YEAR ,rec.birthday, now()) age,
                 rec.talent_type,
                 rec.resume_source,
-                rec.birthday,
+                rec.birthday birthday_local,
                 rec.nation,
                 rec.birthplace,
                 rec.fertility,
@@ -364,8 +366,8 @@
     <select id="fetchRecruitmentIntent" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO">
         SELECT  rec.id,
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age,
-                rec.induction_time,
-                rec.workdate,
+                rec.induction_time induction_time_local,
+                rec.workdate work_date_local,
                 rec.intention_post_name post_name,
                 rec.minimum_levelIncome,
                 rec.expected_levelIncome,
@@ -383,8 +385,8 @@
         SELECT     rec.id,
                    rec.highest_education,
                    rec.education_degree,
-                   rec.begin_date,
-                   rec.end_date,
+                   rec.begin_date begin_date_local,
+                   rec.end_date end_date_local,
                    rec.learn_form,
                    rec.graduated,
                    rec.professional
@@ -404,7 +406,7 @@
                 rec.relative_post_name,
                 rec.accept_assignment_location,
                 rec.applicant_sign,
-                rec.resume_access_time,
+                rec.resume_access_time resume_access_time_local,
                 rec.resume_access,
                 rec.remark
         FROM  mp_recruitment rec
@@ -417,41 +419,48 @@
 
     <!-- 编辑人才简历-个人基本信息-详情 -->
     <select id="fetchRecruitmentBaseInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo">
-        	SELECT  rec.id,
-                    rec.talent_name,
-                    rec.birthday,
-                    rec.sex,
-                    rec.nation,
-                    rec.marital_status,
-                    rec.fertility,
-                    rec.health_status,
-                    rec.height,
-                    rec.weight,
-                    rec.political_landscape,
-                    rec.emergency_contacts,
-                    rec.emergency_phone,
-                    rec.highest_education,
-                    rec.professional,
-                    rec.highest_diplomano,
-                    rec.graduated,
-                    rec.home_phone,
-                    rec.now_address,
-                    rec.zipcode,
-                    rec.account_address,
-                    rec.interests,
-                    rec.specialty,
-                    rec.advantage,
-                    rec.shortcoming,
-                    rec.characteristics,
-                    rec.nationality,
-                    rec.english_name,
-                    rec.email,
-                    rec.certificate_type,
-                    rec.certificate_no,
-                    rec.mobile,
-                    rec.account_type,
-                    rec.resume_source
-            FROM  mp_recruitment rec
+        SELECT  rec.id,
+                rec.talent_name,
+                rec.birthday birthday_local,
+                rec.sex,
+                rec.nation,
+                rec.marital_status,
+                rec.fertility,
+                rec.health_status,
+                rec.height,
+                rec.weight,
+                rec.political_landscape,
+                rec.emergency_contacts,
+                rec.emergency_phone,
+                rec.nationality,
+                rec.mobile,
+                rec.english_name,
+                rec.email,
+                rec.account_type,
+                rec.resume_source,
+                rec.certificate_type,
+                rec.certificate_no,
+                rec.highest_education,
+                rec.professional,
+                rec.highest_diplomano,
+                rec.graduated,
+                rec.home_phone,
+                rec.now_address,
+                rec.zipcode,
+                rec.account_type,
+                rec.account_address,
+                rec.interests,
+                rec.specialty,
+                rec.advantage,
+                rec.shortcoming,
+                rec.characteristics,
+                rec.birthplace,
+                rec.org_id,
+                rec.resume_access,
+                rec.talent_type,
+                TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age
+
+        FROM mp_recruitment rec
              <where>
                 <if test="id != null ">
                     AND rec.id = #{id}
