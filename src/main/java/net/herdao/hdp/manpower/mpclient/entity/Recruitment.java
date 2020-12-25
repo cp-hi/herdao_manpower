@@ -152,8 +152,7 @@ public class Recruitment extends Model<Recruitment> {
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date workdate;
+    private LocalDateTime workdate;
 
     /**
      * 最近工作单位名称

@@ -162,6 +162,15 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
             recruitment.setCreatorCode(sysUser.getUsername());
             recruitment.setCreatorName(sysUser.getAliasName());
         }
+
+        if (ObjectUtil.isNotNull(recruitmentAddFormDTO.getBirthday())){
+            recruitment.setBirthday(LocalDateTimeUtils.convert2LocalDateTime(recruitmentAddFormDTO.getBirthday()));
+        }
+
+        if (ObjectUtil.isNotNull(recruitmentAddFormDTO.getWorkdate())){
+            recruitment.setWorkdate(LocalDateTimeUtils.convert2LocalDateTime(recruitmentAddFormDTO.getWorkdate()));
+        }
+
         super.save(recruitment);
 
         BeanUtils.copyProperties(recruitment, recruitmentAddFormDTO);

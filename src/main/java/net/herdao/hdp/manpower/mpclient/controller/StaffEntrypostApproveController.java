@@ -171,5 +171,15 @@ public class StaffEntrypostApproveController {
         return R.ok(dto,"修改更新成功");
     }
 
+    /**
+     * 更新录用审批表的fileId
+     * @return R
+     */
+    @ApiOperation(value = "更新录用审批表的fileId", notes = "更新录用审批表的fileId")
+    @PostMapping("/updateFileId")
+    public R updateFileId(@RequestBody EntryApproveUpdateDTO dto) {
+
+        return R.ok(dto,"修改更新成功");
+    }
 
 }
