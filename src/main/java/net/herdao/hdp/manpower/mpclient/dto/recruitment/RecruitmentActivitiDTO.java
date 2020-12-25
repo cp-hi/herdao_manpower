@@ -31,18 +31,29 @@ public class RecruitmentActivitiDTO{
     private Long id;
 
     /**
+     * 活动开始时间-LocalDateTime
+     */
+    @ApiModelProperty(value="活动开始时间-LocalDateTime",hidden = true)
+    private LocalDateTime beginDateLocal;
+
+
+    /**
      * 活动开始时间
      */
     @ApiModelProperty(value="活动开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date beginDate;
+    private Long beginDate;
+
+    /**
+     * 活动结束时间-LocalDateTime
+     */
+    @ApiModelProperty(value="活动结束时间-LocalDateTime",hidden = true)
+    private LocalDateTime endDateLocal;
 
     /**
      * 活动结束时间
      */
     @ApiModelProperty(value="活动结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date endDate;
+    private Long endDate;
 
     /**
      * 活动内容

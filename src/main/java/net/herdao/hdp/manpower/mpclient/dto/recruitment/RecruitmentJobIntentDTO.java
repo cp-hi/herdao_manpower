@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -55,38 +56,10 @@ public class RecruitmentJobIntentDTO  {
     private String expectedLevelincome;
 
     /**
-     * 可到职日期
-     */
-    @ApiModelProperty(value="可到职日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date inductionTime;
-
-    /**
      * 目标岗位/职业规划
      */
     @ApiModelProperty(value="目标岗位/职业规划")
     private String careerPlan;
-
-    /**
-     * 专业经验
-     */
-    @ApiModelProperty(value="专业经验")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date professionalExperience;
-
-    /**
-     * 管理经验
-     */
-    @ApiModelProperty(value="管理经验")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date managementExperience;
-
-    /**
-     * 房地产行业经验
-     */
-    @ApiModelProperty(value="房地产行业经验")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date realEstateExperience;
 
     /**
      * 文字能力
@@ -167,22 +140,69 @@ public class RecruitmentJobIntentDTO  {
     private String otherRequest;
 
     /**
-     * 参加工作日期
-     */
-    @ApiModelProperty(value="参加工作日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date workdate;
-
-    /**
      * 应聘聘组织ID
      */
     @ApiModelProperty(value="应聘聘组织ID")
     private Long orgId;
 
     /**
-     * 应聘聘岗位ID
+     * 参加工作日期-LocalDateTime
      */
-    @ApiModelProperty(value="应聘聘岗位ID")
-    private Long intentionPostId;
+    @ApiModelProperty(value="参加工作日期-LocalDateTime",hidden = true)
+    private LocalDateTime workdateLocal;
+
+    /**
+     * 参加工作日期
+     */
+    @ApiModelProperty(value="参加工作日期")
+    private Long workdate;
+
+    /**
+     * 专业经验-LocalDateTime
+     */
+    @ApiModelProperty(value="专业经验-LocalDateTime",hidden = true)
+    private LocalDateTime professionalExperienceLocal;
+
+    /**
+     * 专业经验
+     */
+    @ApiModelProperty(value="专业经验")
+    private Long professionalExperience;
+
+    /**
+     * 管理经验-LocalDateTime
+     */
+    @ApiModelProperty(value="管理经验-LocalDateTime")
+    private LocalDateTime managementExperienceLocal;
+
+    /**
+     * 管理经验
+     */
+    @ApiModelProperty(value="管理经验")
+    private Long managementExperience;
+
+    /**
+     * 房地产行业经验-LocalDateTime
+     */
+    @ApiModelProperty(value="房地产行业经验-LocalDateTime",hidden = true)
+    private LocalDateTime realEstateExperienceLocal;
+
+    /**
+     * 房地产行业经验
+     */
+    @ApiModelProperty(value="房地产行业经验")
+    private Long realEstateExperience;
+
+    /**
+     * 可到职日期-LocalDateTime
+     */
+    @ApiModelProperty(value="可到职日期-LocalDateTime",hidden = true)
+    private LocalDateTime inductionTimeLocal;
+
+    /**
+     * 可到职日期
+     */
+    @ApiModelProperty(value="可到职日期")
+    private Long inductionTime;
 
 }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -25,17 +26,22 @@ public class RecruitmentBaseInfo {
     private Long id;
 
     /**
-     * 姓名
+     * 姓名（中文）
      */
-    @ApiModelProperty(value="姓名")
+    @ApiModelProperty(value="姓名（中文）")
     private String talentName;
 
     /**
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+    private Long birthday;
+
+    /**
+     * 出生日期
+     */
+    @ApiModelProperty(value="出生日期",hidden = true)
+    private LocalDateTime birthdayLocal;
 
     /**
      * 性别
@@ -183,9 +189,9 @@ public class RecruitmentBaseInfo {
     private String nationality;
 
     /**
-     * 英文名称
+     * 姓名（英文）
      */
-    @ApiModelProperty(value="英文名称")
+    @ApiModelProperty(value="姓名（英文）")
     private String englishName;
 
     /**
@@ -223,4 +229,41 @@ public class RecruitmentBaseInfo {
      */
     @ApiModelProperty(value="简历来源")
     private String resumeSource;
+
+    /**
+     * 是否接受外派
+     */
+    @ApiModelProperty(value="是否接受外派")
+    private Boolean isAcceptAssignment;
+
+    /**
+     * 是否有亲戚朋友在本公司
+     */
+    @ApiModelProperty(value="是否有亲戚朋友在本公司")
+    private Boolean isRelativeCompany;
+
+    /**
+     * 年龄
+     */
+    @ApiModelProperty(value="年龄")
+    private String age;
+
+    /**
+     * 人才类别
+     */
+    @ApiModelProperty(value="人才类别")
+    private String talentType;
+
+    /**
+     * 归属组织
+     */
+    @ApiModelProperty(value="归属组织")
+    private Long orgId;
+
+    /**
+     * 籍贯
+     */
+    @ApiModelProperty(value="籍贯")
+    private String birthplace;
+
 }

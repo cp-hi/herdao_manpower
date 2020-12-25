@@ -1,32 +1,25 @@
 package net.herdao.hdp.manpower.mpclient.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.SneakyThrows;
 import net.herdao.hdp.admin.api.entity.SysUser;
 import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.common.log.annotation.SysLog;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveAddDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveFormDTO;
 import net.herdao.hdp.manpower.mpclient.dto.entryApprove.EntryApproveUpdateDTO;
-import net.herdao.hdp.manpower.mpclient.dto.staffEdu.StaffEducationDTO;
 import net.herdao.hdp.manpower.mpclient.entity.StaffEntrypostApprove;
 import net.herdao.hdp.manpower.mpclient.service.StaffEntrypostApproveService;
 import net.herdao.hdp.manpower.mpclient.utils.ExcelUtils;
-import net.herdao.hdp.manpower.sys.entity.OperationLog;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -177,4 +170,16 @@ public class StaffEntrypostApproveController {
         BeanUtils.copyProperties(approve,dto);
         return R.ok(dto,"修改更新成功");
     }
+
+    /**
+     * 更新录用审批表的fileId
+     * @return R
+     */
+    @ApiOperation(value = "更新录用审批表的fileId", notes = "更新录用审批表的fileId")
+    @PostMapping("/updateFileId")
+    public R updateFileId(@RequestBody EntryApproveUpdateDTO dto) {
+
+        return R.ok(dto,"修改更新成功");
+    }
+
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -82,9 +83,8 @@ public class RecruitmentPersonDTO {
     /**
      * 出生日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value="出生日期")
-    private Date birthday;
+    private Long birthday;
 
     /**
      * 婚姻状况
@@ -133,5 +133,13 @@ public class RecruitmentPersonDTO {
      */
     @ApiModelProperty(value="紧急联系电话")
     private String emergencyPhone;
+
+
+    /**
+     * 出生日期-LocalDateTime
+     */
+    @ApiModelProperty(value="出生日期-LocalDateTime",hidden = true)
+    private LocalDateTime birthdayLocal;
+
 
 }

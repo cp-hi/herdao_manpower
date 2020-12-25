@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,6 +25,7 @@ import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAwardsDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentAwards;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentAwardsMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentAwardsService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
@@ -83,6 +85,13 @@ public class RecruitmentAwardsServiceImpl extends ServiceImpl<RecruitmentAwardsM
     @Override
     public List<RecruitmentAwardsDTO> fetchResumeAwardsList(Long recruitmentId) {
         List<RecruitmentAwardsDTO> list = this.baseMapper.fetchResumeAwardsList(recruitmentId);
+        if (CollectionUtil.isNotEmpty(list)){
+            for (RecruitmentAwardsDTO dto : list) {
+                if (ObjectUtil.isNotNull(dto)){
+                    dto.setAwardsTime(LocalDateTimeUtils.convert2Long(dto.getAwardsTimeLocal()));
+                }
+            }
+        }
         return list;
     }
 }

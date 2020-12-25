@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -63,25 +64,25 @@ public class SaveStaffCallInDTO {
     private Integer postHasCount;
 
     @ApiModelProperty(value = "合同年限", name = "contractPeriod")
-    private Double contractPeriod;
+    private BigDecimal contractPeriod;
 
     @ApiModelProperty(value = "试用期", name = "probation")
-    private Double probation;
+    private BigDecimal probation;
 
     @ApiModelProperty(value = "本公司工龄", name = "companySeniority")
-    private Double companySeniority;
+    private BigDecimal companySeniority;
 
     @ApiModelProperty(value = "合生珠江系工龄", name = "threeGroupSeniority")
-    private Double threeGroupSeniority;
+    private BigDecimal threeGroupSeniority;
 
     @ApiModelProperty(value = "工资发放单位 id", name = "paidUnitId")
-    private Long paidUnitId;
+    private Long paidUnitsId;
 
     @ApiModelProperty(value = "公积金购买单位 id", name = "fundUnitId")
-    private Long fundUnitId;
+    private Long fundUnitsId;
 
     @ApiModelProperty(value = "社保购买单位 id", name = "securityUnitId")
-    private Long securityUnitId;
+    private Long securityUnitsId;
 
     @ApiModelProperty(value = "经办人意见", name = "remark")
     private String remark;

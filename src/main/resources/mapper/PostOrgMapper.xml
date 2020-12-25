@@ -97,21 +97,9 @@
     </resultMap>
       <select id="findPostOrgPage" resultMap="PageResultMap">
         SELECT
-	        po.id,
-	        po.post_code,
-	        po.post_name,
-	        po.group_id,
-	        po.post_id,
-	        po.org_id,
-	        CASE IFNULL(po.is_leader, '0') WHEN '0' THEN '否' WHEN '1' THEN '是' ELSE '' END is_leader,
-	        CASE IFNULL(po.is_cadre, '0') WHEN '0' THEN '否' WHEN '1' THEN '是' ELSE '' END is_cadre,
-	        po.section_id,
-	        po.pipeline_id,
-	        po.job_level_id,
-	        po.job_staffs,
-	        po.sort_no,
+	        po.*,
 	        p.post_name main_post_name,
-	        o.ORG_NAME,
+	        o.ORG_FULLNAME ORG_NAME,
 	        jg.job_grade_name,
 	        jl.job_level_name,
 	        s.section_name,
@@ -125,51 +113,51 @@
         LEFT JOIN mp_section s ON po.section_id=s.id
         LEFT JOIN mp_pipeline pl ON po.pipeline_id=pl.id
         LEFT JOIN mp_job_level jl ON po.job_level_id=jl.id
-        LEFT join mp_job_grade jg ON jl.job_grade_id=jg.id
-        <where>
-            <if test="postOrgListVO.orgId != null">
-                o.org_code like CONCAT('%', (select org.org_code from mp_organization org where org.id =  9689), '%')
-            </if>
-            <if test="postOrgListVO.groupId != null">
-                po.group_id = #{postOrgListVO.groupId}
-            </if>
-            <if test="searchText != null and searchText !=''">
-               and CONCAT_WS(
-                ',',
-                po.POST_NAME,
-                po.POST_CODE,
-                p.post_name,
-                po.ORG_ID,
-                o.ORG_NAME,
-                jl.JOB_LEVEL_NAME,
-                jg.JOB_GRADE_NAME,
-                s.SECTION_NAME,
-                pl.PIPELINE_NAME,
-                ps.POST_SEQ_NAME
-                ) LIKE concat('%',#{searchText},'%')
-            </if>
-        </where>
-      </select>
-      <select id="findPostOrgById" resultMap="PageResultMap">
-          SELECT
-            po.*,
-            p.post_name main_post_name,
+        LEFT JOIN mp_job_grade jg ON jl.job_grade_id=jg.id
+        WHERE 1=1
+        AND po.del_flag = 0
+        <if test="postOrgListVO.orgId != null">
+            AND o.org_code like CONCAT('%', (select org.org_code from mp_organization org where org.id =  9689), '%')
+        </if>
+        <if test="postOrgListVO.groupId != null">
+            AND po.group_id = #{postOrgListVO.groupId}
+        </if>
+        <if test="searchText != null and searchText !=''">
+           and CONCAT_WS(
+            ',',
+            po.POST_NAME,
+            po.POST_CODE,
+            p.post_name,
+            po.ORG_ID,
             o.ORG_NAME,
-            jg.JOB_GRADE_NAME,
             jl.JOB_LEVEL_NAME,
+            jg.JOB_GRADE_NAME,
             s.SECTION_NAME,
             pl.PIPELINE_NAME,
             ps.POST_SEQ_NAME
-            from
-            mp_post_org po
-            INNER JOIN mp_post p on po.POST_ID=p.id
-            INNER JOIN mp_organization o on po.org_id=o.id
-            LEFT JOIN mp_post_seq ps on p.POST_SEQ_ID=ps.id
-            LEFT JOIN mp_section s on po.section_id=s.id
-            LEFT JOIN mp_pipeline pl on po.pipeline_id=pl.id
-            left join mp_job_level jl on po.job_level_id=jl.id
-            LEFT join mp_job_grade jg on jl.job_grade_id=jg.id
-        where po.id = #{id}
+            ) LIKE concat('%',#{searchText},'%')
+        </if>
+      </select>
+      <select id="findPostOrgById" resultMap="PageResultMap">
+        SELECT
+          po.*,
+          p.post_name main_post_name,
+          o.ORG_NAME,
+          jg.JOB_GRADE_NAME,
+          jl.JOB_LEVEL_NAME,
+          s.SECTION_NAME,
+          pl.PIPELINE_NAME,
+          ps.POST_SEQ_NAME
+          from
+          mp_post_org po
+        INNER JOIN mp_post p on po.POST_ID=p.id
+        INNER JOIN mp_organization o on po.org_id=o.id
+        LEFT JOIN mp_post_seq ps on p.POST_SEQ_ID=ps.id
+        LEFT JOIN mp_section s on po.section_id=s.id
+        LEFT JOIN mp_pipeline pl on po.pipeline_id=pl.id
+        LEFT JOIN mp_job_level jl on po.job_level_id=jl.id
+        LEFT JOIN mp_job_grade jg on jl.job_grade_id=jg.id
+        WHERE po.id = #{id}
       </select>
     <select id="getStaffCount" resultType="net.herdao.hdp.manpower.mpclient.dto.post.PostStaffCountDTO">
         SELECT

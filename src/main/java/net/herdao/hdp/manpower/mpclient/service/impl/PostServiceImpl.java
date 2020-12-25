@@ -1,46 +1,25 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import lombok.AllArgsConstructor;
-import net.herdao.hdp.admin.api.entity.SysStation;
-import net.herdao.hdp.admin.api.feign.RemoteStationService;
-import net.herdao.hdp.common.core.util.R;
 import net.herdao.hdp.manpower.mpclient.dto.post.PostDTO;
-import net.herdao.hdp.manpower.mpclient.entity.Group;
-import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
-import net.herdao.hdp.manpower.mpclient.entity.Pipeline;
-import net.herdao.hdp.manpower.mpclient.entity.Post;
-import net.herdao.hdp.manpower.mpclient.entity.PostSeq;
-import net.herdao.hdp.manpower.mpclient.entity.Section;
+import net.herdao.hdp.manpower.mpclient.entity.*;
 import net.herdao.hdp.manpower.mpclient.mapper.PostMapper;
-import net.herdao.hdp.manpower.mpclient.service.GroupService;
-import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import net.herdao.hdp.manpower.mpclient.service.PipelineService;
-import net.herdao.hdp.manpower.mpclient.service.PostSeqService;
-import net.herdao.hdp.manpower.mpclient.service.PostService;
-import net.herdao.hdp.manpower.mpclient.service.SectionService;
+import net.herdao.hdp.manpower.mpclient.service.*;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchAddVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostBatchUpdateVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostListVO;
 import net.herdao.hdp.manpower.mpclient.vo.post.PostStaffVO;
 import net.herdao.hdp.manpower.sys.service.CacheService;
-import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.function.Function;
 
 /**
  * @ClassName PostServiceImpl
@@ -60,8 +39,7 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
     final PipelineService pipelineService;
     final PostSeqService postSeqService;
     final JobLevelService jobLevelService;
-    final RemoteStationService remoteStationService;
-    
+
     @Override
 	public IPage<PostListVO> page(Page page, Post post) {
 		return this.baseMapper.page(page, post);
@@ -226,54 +204,6 @@ public class PostServiceImpl extends EntityServiceImpl<PostMapper, Post> impleme
         return Post::getGroupId;
     }
 
-    @Override
-    public Boolean isSync() {
-        return Boolean.FALSE;
-    }
-
-    @Override
-    public void saveOrUpdateSync(Post post) {
-        SysStation station = converterValue(post);
-        R<Long> r = remoteStationService.save(station);
-        Long aLong = RemoteCallUtils.checkData(r);
-        post.setId(aLong);
-    }
-
-    @Override
-    public Boolean deleteSync(Serializable id) {
-
-        R<Boolean> r = remoteStationService.delete(id);
-        return RemoteCallUtils.checkData(r);
-    }
-
-    @Override
-    public Boolean stop(Serializable id, Boolean stop) {
-        R<Boolean> r = remoteStationService.stop(id, stop);
-        return RemoteCallUtils.checkData(r);
-    }
-
-    @Override
-    public void saveOrUpdateBatchSync(List<Post> collection) {
-        List<SysStation> list = new ArrayList<>();
-        collection.forEach(post -> {
-            SysStation station = converterValue(post);
-        });
-        R<Boolean> r = remoteStationService.saveOrUpdateBatch(list);
-        Boolean aBoolean = RemoteCallUtils.checkData(r);
-
-    }
-
-    private SysStation converterValue(Post post) {
-        SysStation station = new SysStation();
-        station.setId(post.getId());
-        station.setCode(post.getPostCode());
-        station.setName(post.getPostName());
-        station.setGroupId(post.getGroupId());
-        station.setBeginGrade(post.getJobLevelId1());
-        station.setEndGrade(post.getJobLevelId2());
-        station.setSingleGrade(post.getSingleJobLevle().toString());
-        return station;
-    }
 
     @Autowired
     private final PostMapper mapper;

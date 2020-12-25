@@ -96,6 +96,8 @@ public class StaffPositiveApprovalDetailDTO  {
      */
     @ApiModelProperty(value="入职日期")
     private LocalDateTime entryTime;
+
+
     /**
      * 转正时间
      */
@@ -338,4 +340,23 @@ public class StaffPositiveApprovalDetailDTO  {
      */
     @ApiModelProperty(value="岗位名称")
     private Long postName;
+
+
+    /**
+     * 试任日期
+     */
+    @ApiModelProperty(value="试任日期")
+    private LocalDateTime entryTime1;
+
+
+    @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
+    private String appendixIds;
+
+
+    /**
+     * 员工ID
+     */
+    @ApiModelProperty(value="员工ID")
+    private String staffId;
+
 }

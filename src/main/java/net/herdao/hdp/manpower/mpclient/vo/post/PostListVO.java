@@ -52,6 +52,7 @@ public class PostListVO {
 
     @ExcelProperty("职等")
     @ApiModelProperty("职等")
+    @DtoField(objField = {"jobGradeName1", "jobGradeName2"}, separator = "~")
     private String jobGradeName;
 
     @ExcelProperty("职级")

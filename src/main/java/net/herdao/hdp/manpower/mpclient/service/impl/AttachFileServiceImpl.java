@@ -154,7 +154,6 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     public void delDataAfterUploading(AttachFileDTO attachFile) {
         LambdaQueryWrapper<AttachFile> lambdaQuery = Wrappers.lambdaQuery();
         this.baseMapper.delete(lambdaQuery.eq(AttachFile::getFileId, attachFile.getFileId()));
-
     }
 
 
@@ -176,6 +175,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         payCardAndPhotoFinishCase(id, resultMap, AttachFileConstants.JOB_CARD_PHOTO);
         //身份验证完成情况
         cardAndRerpotFinishCase(id, resultMap, AttachFileConstants.IDENTITY_CARD);
+
         return resultMap;
     }
 

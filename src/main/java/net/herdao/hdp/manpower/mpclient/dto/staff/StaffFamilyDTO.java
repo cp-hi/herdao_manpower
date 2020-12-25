@@ -22,9 +22,7 @@ public class StaffFamilyDTO {
 
     @ApiModelProperty(value="关系")
     private String relations;
-    
-    @ApiModelProperty(value="关系名称")
-    private String relationsName;
+
 
     @ApiModelProperty(value="年龄")
     private Integer age;

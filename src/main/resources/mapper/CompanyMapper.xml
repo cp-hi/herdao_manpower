@@ -52,29 +52,29 @@
 
       <select id="companyPage" resultType="net.herdao.hdp.manpower.mpclient.dto.CompanyListDTO">
             SELECT
-                  c.ID,
-                  c.COMPANY_NAME,
-                  c.COMPANY_CODE,
-                  c.ORG_ID,
-                  o.ORG_NAME,
-                  o.ORG_CODE,
-                  o.IS_VIRTUAL,
-                  o.IS_STOP,
-                  c.SORT,
-                  c.CITY_ID,
-                  c.TARGET_SYS,
-                  c.SECURITY_STANDARD,
-                  c.CITY_FUND,
+                  c.id,
+                  c.company_name,
+                  c.company_code,
+                  c.org_id,
+                  o.org_name,
+                  o.org_code,
+                  o.is_virtual,
+                  o.is_stop,
+                  c.sort,
+                  c.city_id,
+                  c.target_sys,
+                  c.security_standard,
+                  c.city_fund,
                   o.emp_in_service,
-                  c.CREATOR_NAME,
-                  c.CREATED_TIME,
-                  c.MODIFIER_NAME,
-                  c.MODIFIED_TIME,
-                  c.FIELD1,
-                  c.FIELD2,
-                  c.FIELD3,
-                  c.FIELD4,
-                  c.FIELD5,
+                  c.creator_name,
+                  c.created_time,
+                  c.modifier_name,
+                  c.modified_time,
+                  c.field1,
+                  c.field2,
+                  c.field3,
+                  c.field4,
+                  c.field5,
                   s.city_name cityName,
                   t.label targetSysName,
                   i.label securityStandardName,
@@ -95,5 +95,15 @@
                         AND  o.IS_STOP = #{isStop}
                   </if>
             </where>
+      </select>
+      
+      <!-- 公司详情 -->
+      <select id="getCompanyById" resultType="net.herdao.hdp.manpower.mpclient.dto.CompanyDetailDTO">
+      		SELECT mc.*, cs.city_name FROM mp_company mc LEFT JOIN mp_city_set cs ON cs.id = mc.city_id
+      		<where>
+      			<if test="id != null">
+      				mc.id = #{id}
+      			</if>
+      		</where>
       </select>
 </mapper>

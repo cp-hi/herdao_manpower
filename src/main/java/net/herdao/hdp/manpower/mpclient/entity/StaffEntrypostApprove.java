@@ -363,4 +363,10 @@ public class StaffEntrypostApprove extends Model<StaffEntrypostApprove> {
     @ApiModelProperty(value="入职信息确认-字典")
     private String entryInfoConfirm;
 
+    /**
+     * 文件上传ID
+     */
+    @ApiModelProperty(value="文件上传ID")
+    private String fileId;
+
  }

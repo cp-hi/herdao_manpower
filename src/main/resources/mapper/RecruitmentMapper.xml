@@ -113,7 +113,7 @@
                 <result property="resumeSource" column="resume_source"/>
                 <result property="certificateType" column="certificate_type"/>
                 <result property="photo" column="photo"/>
-                <result property="intentionPostId" column="intention_post_id"/>
+                <result property="intentionPostName" column="intention_post_name"/>
                 <result property="contactNumber" column="contact_number"/>
                 <result property="certificateNumber" column="certificate_number"/>
                 <result property="recruitOrgName" column="recruit_org_name"/>
@@ -215,31 +215,40 @@
                 t.birthday,
                 t.workdate,
                 t.email,
-                t.photo
+                t.photo,
+                t.entry_check_status
           FROM (
-                 SELECT rec.talent_name,
-                        rec.mobile,
-                        dirc.label talent_type,
-                        rl.`name` rc_label,
-                        org.ORG_FULLNAME org_full_name,
-                        xb.label sex,
-                        TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
-                        TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
-                        rec.final_post_name,
-                        rec.birthday,
-                        rec.workdate,
-                        rec.email,
-                        rec.photo
-                FROM  mp_recruitment rec
-                LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX' AND dirc.VALUE = rec.talent_type
-                LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
-                LEFT JOIN mp_organization org on org.id= rec.org_id
-                LEFT JOIN sys_dict_item xb ON xb.type = 'SEX' AND xb.VALUE = rec.sex
-                <where>
-                    <if test="id != null ">
-                        AND rec.id = #{id}
-                    </if>
-                </where>
+                     SELECT rec.talent_name,
+                            rec.mobile,
+                            dirc.label talent_type,
+                            rl.`name` rc_label,
+                            org.ORG_FULLNAME org_full_name,
+                            xb.label sex,
+                            TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age ,
+                            TIMESTAMPDIFF(YEAR ,rec.workdate, now())  work_age ,
+                            rec.final_post_name,
+                            rec.birthday,
+                            rec.workdate,
+                            rec.email,
+                            rec.photo,
+                            (
+                                    SELECT
+                                    case when app.entry_check_status=1 then '未提交'
+                                    else '已提交' end
+                                 FROM mp_staff_entrypost_approve app
+                                    WHERE  app.recruitment_id = rec.id
+                                    ORDER BY app.creator_time desc  LIMIT 1
+                            ) entry_check_status
+                    FROM  mp_recruitment rec
+                    LEFT JOIN sys_dict_item dirc ON dirc.type = 'ZPRCLX' AND dirc.VALUE = rec.talent_type
+                    LEFT JOIN mp_recruitment_label rl ON rl.recruitment_id = rec.id AND rl.del_flag=0
+                    LEFT JOIN mp_organization org on org.id= rec.org_id
+                    LEFT JOIN sys_dict_item xb ON xb.type = 'SEX' AND xb.VALUE = rec.sex
+                    <where>
+                        <if test="id != null ">
+                            AND rec.id = #{id}
+                        </if>
+                    </where>
                 )t  GROUP BY  t.talent_name,
                               t.mobile,
                               t.talent_type,
@@ -254,16 +263,15 @@
     <select id="fetchResumeJobIntent" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO">
        SELECT 	rec.id,
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age ,
-				rec.workdate,
+				rec.workdate work_date_local,
 				org.org_name,
-				ps.POST_NAME intentionPostName,
 				rec.minimum_levelIncome,
 				rec.expected_levelIncome,
-				rec.induction_time,
+				rec.induction_time induction_time_local,
 				rec.career_plan,
-				rec.professional_experience,
-				rec.management_experience,
-				rec.real_estate_experience,
+				rec.professional_experience professional_experience_local,
+				rec.management_experience management_experience_local,
+				rec.real_estate_experience real_estate_experience_local,
 				rec.writing_ability,
 				rec.professional_competence,
 				rec.management,
@@ -278,10 +286,9 @@
 				rec.address,
 				rec.other_request,
                 rec.org_id,
-                rec.intention_post_id
+                rec.intention_post_name
           FROM 	mp_recruitment rec
           LEFT JOIN mp_organization org on org.id=rec.org_id
-          LEFT JOIN mp_post ps on ps.id =  rec.recruitment_post_id
          <where>
              rec.DEL_FLAG = 0
             <if test="id != null ">
@@ -292,20 +299,22 @@
 
     <!-- 人才简历-录用情况-列表分页 -->
     <select id="fetchEmploy" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO">
-           SELECT CASE WHEN
+           SELECT t.id,
+                    CASE WHEN
                     t.STATUS != 1 THEN
                     '录用' ELSE '未录用'
                     END result,
                   t.ORG_NAME,
                   t.POST_NAME,
                   t.PIPELINE_NAME,
-                  t.entry_post_time,
+                  t.entry_post_time entry_post_time_local,
                   CASE WHEN t.entry_status = 'RZZT02' THEN
                      '已到岗' ELSE '未到岗'
                   END duty_status
             FROM
               (
-                SELECT  app.STATUS,
+                SELECT  app.id,
+                        app.STATUS,
                         org.ORG_NAME,
                         pst.POST_NAME,
                         pp.PIPELINE_NAME,
@@ -334,7 +343,7 @@
                 TIMESTAMPDIFF(YEAR ,rec.birthday, now()) age,
                 rec.talent_type,
                 rec.resume_source,
-                rec.birthday,
+                rec.birthday birthday_local,
                 rec.nation,
                 rec.birthplace,
                 rec.fertility,
@@ -346,7 +355,6 @@
                 rec.emergency_contacts,
                 rec.EMERGENCY_PHONE
                 FROM  mp_recruitment rec
-           left join mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
@@ -358,13 +366,13 @@
     <select id="fetchRecruitmentIntent" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO">
         SELECT  rec.id,
                 TIMESTAMPDIFF(YEAR ,rec.workdate, now()) work_age,
-                rec.workdate,
-                mp.POST_NAME,
+                rec.induction_time induction_time_local,
+                rec.workdate work_date_local,
+                rec.intention_post_name post_name,
                 rec.minimum_levelIncome,
                 rec.expected_levelIncome,
                 rec.other_request
           FROM  mp_recruitment rec
-          left join mp_post mp on mp.ID=rec.intention_post_id
         <where>
             <if test="id != null ">
                 AND rec.id = #{id}
@@ -377,8 +385,8 @@
         SELECT     rec.id,
                    rec.highest_education,
                    rec.education_degree,
-                   rec.begin_date,
-                   rec.end_date,
+                   rec.begin_date begin_date_local,
+                   rec.end_date end_date_local,
                    rec.learn_form,
                    rec.graduated,
                    rec.professional
@@ -398,7 +406,7 @@
                 rec.relative_post_name,
                 rec.accept_assignment_location,
                 rec.applicant_sign,
-                rec.resume_access_time,
+                rec.resume_access_time resume_access_time_local,
                 rec.resume_access,
                 rec.remark
         FROM  mp_recruitment rec
@@ -411,41 +419,48 @@
 
     <!-- 编辑人才简历-个人基本信息-详情 -->
     <select id="fetchRecruitmentBaseInfo" resultType="net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo">
-        	SELECT  rec.id,
-                    rec.talent_name,
-                    rec.birthday,
-                    rec.sex,
-                    rec.nation,
-                    rec.marital_status,
-                    rec.fertility,
-                    rec.health_status,
-                    rec.height,
-                    rec.weight,
-                    rec.political_landscape,
-                    rec.emergency_contacts,
-                    rec.emergency_phone,
-                    rec.highest_education,
-                    rec.professional,
-                    rec.highest_diplomano,
-                    rec.graduated,
-                    rec.home_phone,
-                    rec.now_address,
-                    rec.zipcode,
-                    rec.account_address,
-                    rec.interests,
-                    rec.specialty,
-                    rec.advantage,
-                    rec.shortcoming,
-                    rec.characteristics,
-                    rec.nationality,
-                    rec.english_name,
-                    rec.email,
-                    rec.certificate_type,
-                    rec.certificate_no,
-                    rec.mobile,
-                    rec.account_type,
-                    rec.resume_source
-            FROM  mp_recruitment rec
+        SELECT  rec.id,
+                rec.talent_name,
+                rec.birthday birthday_local,
+                rec.sex,
+                rec.nation,
+                rec.marital_status,
+                rec.fertility,
+                rec.health_status,
+                rec.height,
+                rec.weight,
+                rec.political_landscape,
+                rec.emergency_contacts,
+                rec.emergency_phone,
+                rec.nationality,
+                rec.mobile,
+                rec.english_name,
+                rec.email,
+                rec.account_type,
+                rec.resume_source,
+                rec.certificate_type,
+                rec.certificate_no,
+                rec.highest_education,
+                rec.professional,
+                rec.highest_diplomano,
+                rec.graduated,
+                rec.home_phone,
+                rec.now_address,
+                rec.zipcode,
+                rec.account_type,
+                rec.account_address,
+                rec.interests,
+                rec.specialty,
+                rec.advantage,
+                rec.shortcoming,
+                rec.characteristics,
+                rec.birthplace,
+                rec.org_id,
+                rec.resume_access,
+                rec.talent_type,
+                TIMESTAMPDIFF(YEAR ,rec.birthday, now())  age
+
+        FROM mp_recruitment rec
              <where>
                 <if test="id != null ">
                     AND rec.id = #{id}

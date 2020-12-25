@@ -26,6 +26,12 @@ public class PostDTO extends Post {
     @ApiModelProperty("职等")
     private String jobGradeName;
 
+    @ApiModelProperty("职等1")
+    private String jobGradeName1;
+
+    @ApiModelProperty("职等2")
+    private String jobGradeName2;
+
     @ApiModelProperty("所属集团")
     private String groupName;
 

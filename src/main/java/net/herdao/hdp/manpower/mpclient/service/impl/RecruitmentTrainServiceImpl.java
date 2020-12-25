@@ -16,11 +16,13 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTrainDTO;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentTrain;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentTrainMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentTrainService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +38,12 @@ public class RecruitmentTrainServiceImpl extends ServiceImpl<RecruitmentTrainMap
     @Override
     public List<RecruitmentTrainDTO> findRecruitmentTrainList(Long recruitmentId) {
         List<RecruitmentTrainDTO> list = this.baseMapper.findRecruitmentTrainList(recruitmentId);
+        if (CollectionUtil.isNotEmpty(list)){
+            for (RecruitmentTrainDTO dto : list) {
+                dto.setBeginDate(LocalDateTimeUtils.convert2Long(dto.getBeginDateLocal()));
+                dto.setEndDate(LocalDateTimeUtils.convert2Long(dto.getEndDateLocal()));
+            }
+        }
         return list;
     }
 }

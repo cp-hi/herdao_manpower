@@ -19,6 +19,7 @@ package net.herdao.hdp.manpower.mpclient.entity;
 
 import java.time.LocalDateTime;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -196,4 +197,20 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value = "修改ID" ,hidden = true)
     private Long modifierId;
+
+    /**
+     * 员工姓名
+     */
+    @ExcelProperty(value = "员工姓名")
+    @ApiModelProperty(value="员工姓名")
+	@TableField(exist = false)
+    private String staffName;
+
+    /**
+     * 员工工号
+     */
+    @ExcelProperty(value = "员工工号")
+    @ApiModelProperty(value="员工工号")
+	@TableField(exist = false)
+    private String staffCode;
 }

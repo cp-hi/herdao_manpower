@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -27,15 +28,29 @@ public class RecruitmentTrainDTO {
     private Long id;
 
     /**
+     * 开始培训时间-LocalDateTime
+     */
+    @ApiModelProperty(value="开始培训时间-LocalDateTime",hidden = true)
+    private LocalDateTime beginDateLocal;
+
+    /**
      * 开始培训时间
      */
     @ApiModelProperty(value="开始培训时间")
-    private Date beginDate;
+    private Long beginDate;
+
+    /**
+     * 结束培训时间-LocalDateTime
+     */
+    @ApiModelProperty(value="结束培训时间-LocalDateTime",hidden = true)
+    private LocalDateTime endDateLocal;
+
     /**
      * 结束培训时间
      */
     @ApiModelProperty(value="结束培训时间")
-    private Date endDate;
+    private Long endDate;
+
     /**
      * 培训内容
      */

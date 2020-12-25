@@ -61,18 +61,16 @@ public class RecruitmentEducation extends Model<RecruitmentEducation> {
     private String recruitmentOid;
 
     /**
-     * 入学日期
+     * 入学日期-LocalDateTime
      */
-    @ApiModelProperty(value="入学日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date period;
+    @ApiModelProperty(value="入学日期-LocalDateTime",hidden = true)
+    private LocalDateTime period;
 
     /**
-     * 毕业日期
+     * 毕业日期-LocalDateTime
      */
-    @ApiModelProperty(value="毕业日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date todate;
+    @ApiModelProperty(value="毕业日期-LocalDateTime")
+    private LocalDateTime todate;
 
     /**
      * 毕业院校

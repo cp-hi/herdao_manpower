@@ -1,23 +1,28 @@
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import net.herdao.hdp.admin.api.entity.SysGrade;
-import net.herdao.hdp.admin.api.feign.RemoteGradeService;
-import net.herdao.hdp.common.core.util.R;
-import net.herdao.hdp.manpower.mpclient.entity.*;
-import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
-import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
-import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
-import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
-import net.herdao.hdp.manpower.sys.service.CacheService;
-import net.herdao.hdp.manpower.sys.utils.RemoteCallUtils;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import net.herdao.hdp.common.core.util.R;
+import net.herdao.hdp.manpower.mpclient.entity.Group;
+import net.herdao.hdp.manpower.mpclient.entity.JobGrade;
+import net.herdao.hdp.manpower.mpclient.entity.JobLevel;
+import net.herdao.hdp.manpower.mpclient.mapper.JobLevelMapper;
+import net.herdao.hdp.manpower.mpclient.service.JobGradeService;
+import net.herdao.hdp.manpower.mpclient.service.JobLevelService;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelBatchVO;
+import net.herdao.hdp.manpower.mpclient.vo.jobLevel.JobLevelListVO;
+import net.herdao.hdp.manpower.sys.service.CacheService;
+import net.herdao.hdp.manpower.sys.utils.DtoConverter;
 
 /**
  * @ClassName JobLevelServiceImpl
@@ -34,8 +39,14 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
     CacheService cacheService;
     @Autowired
     JobGradeService jobGradeService;
-    @Autowired
-    private RemoteGradeService remoteGradeService;
+    
+    public R<IPage<JobLevelListVO>> getPage(Page page, JobLevel jobLevel) {
+        IPage p = this.baseMapper.page(page, jobLevel);
+        List<JobLevelListVO> vos = DtoConverter.dto2vo(p.getRecords(), JobLevelListVO.class);
+        p.setRecords(vos);
+        return R.ok(p);
+    }
+    
     @Override
     public List<Map> jobLevelList(Long groupId) {
         return baseMapper.jobLevelList(groupId);
@@ -113,23 +124,4 @@ public class JobLevelServiceImpl extends EntityServiceImpl<JobLevelMapper, JobLe
         }
     }
 
-    @Override
-    public Boolean isSync() {
-        return Boolean.TRUE;
-    }
-
-    @Override
-    public void saveOrUpdateSync(JobLevel jobLevel) {
-        SysGrade grade = convert(jobLevel);
-        R<Long> longR = remoteGradeService.saveOrUpdate(grade);
-        RemoteCallUtils.checkData(longR);
-    }
-    private SysGrade convert(JobLevel jobLevel){
-        SysGrade grade = new SysGrade();
-        grade.setCpId(jobLevel.getId());
-        grade.setName(jobLevel.getJobLevelName());
-        grade.setCode(jobLevel.getJobLevelCode());
-        grade.setGroupId(jobLevel.getGroupId());
-        return grade;
-    }
 }

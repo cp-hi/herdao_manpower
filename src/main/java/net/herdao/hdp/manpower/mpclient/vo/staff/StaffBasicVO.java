@@ -49,4 +49,13 @@ public class StaffBasicVO {
 
     @ApiModelProperty(value = "职级名称", name = "jobLevelName")
     private String nowJobLevelName;
+
+    @ApiModelProperty(value="性别")
+    private String sex;
+
+    @ApiModelProperty(value="年龄")
+    private int age;
+
+    @ApiModelProperty(value="籍贯")
+    private String birthplace;
 }

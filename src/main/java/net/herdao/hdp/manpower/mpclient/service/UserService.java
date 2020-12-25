@@ -18,9 +18,9 @@
 package net.herdao.hdp.manpower.mpclient.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-
 import net.herdao.hdp.manpower.mpclient.dto.comm.UserMsgDTO;
 import net.herdao.hdp.manpower.mpclient.entity.User;
+import net.herdao.hdp.manpower.mpclient.vo.staff.positive.StaffPositiveApprovalPage;
 
 /**
  * 
@@ -46,4 +46,12 @@ public interface UserService extends IService<User> {
 	 * @return
 	 */
     UserMsgDTO getUserMsg(long id);
+
+	/**
+	 * 获取用户任职日期
+	 *
+	 * @param userId 用户id
+	 * @return
+	 */
+	StaffPositiveApprovalPage getUserStartDate(Long userId);
 }

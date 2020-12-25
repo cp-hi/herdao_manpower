@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,7 +78,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @param recruitmentId 人才ID
      * @return RecruitmentEmployeeDTO
      */
-    RecruitmentEmployeeDTO fetchEmploy(String recruitmentId);
+    List<RecruitmentEmployeeDTO> fetchEmploy(Long recruitmentId);
 
     /**
      * 获取人才简历-个人基本情况-详情
@@ -93,12 +94,7 @@ public interface RecruitmentService extends IService<Recruitment> {
      */
     RecruitmentIntentDTO fetchRecruitmentIntent(Long id);
 
-    /**
-     * 获取人才简历-最高教育经历-详情
-     * @param id 主键ID
-     * @return RecruitmentTopEduDTO
-     */
-    RecruitmentTopEduDTO fetchRecruitmentTopEdu(@Param("id") Long id);
+
 
     /**
      * 候选人H5登录
@@ -157,4 +153,39 @@ public interface RecruitmentService extends IService<Recruitment> {
      * @return
      */
     RecruitmentMobileProgressVO fetchMobileInfoProgress(Long id);
+
+    /**
+     *简历详情-工作情况-手机端
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentWorkDetailsDTO fetchResumeWorkDetailsByMobile(Long id);
+
+    /**
+     * 人才管理-人才简历
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentDetailsDTO fetchRecruitmentDetailsDTO(Long id);
+
+    /**
+     *简历详情-工作情况
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentWorkDetailsDTO fetchResumeWorkDetails(Long id);
+
+    /**
+     * 简历详情-基础信息-个人基本信息
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentEditDetailsDTO fetchResumeEditDetails(Long id);
+
+    /**
+     * 简历详情-基础信息-个人基本信息-手机端
+     * @param id 人才ID
+     * @return
+     */
+    RecruitmentEditDetailsDTO fetchResumeEditDetailsByMobile(Long id);
 }

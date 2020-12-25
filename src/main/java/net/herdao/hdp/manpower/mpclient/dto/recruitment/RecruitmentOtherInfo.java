@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -57,8 +58,13 @@ public class RecruitmentOtherInfo {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date resumeAccessTime;
+    private Long resumeAccessTime;
+
+    /**
+     * 简历入库时间-LocalDateTime
+     */
+    @ApiModelProperty(value="简历入库时间-LocalDateTime",hidden = true)
+    private LocalDateTime resumeAccessTimeLocal;
 
     /**
      * 获得招聘信息途径

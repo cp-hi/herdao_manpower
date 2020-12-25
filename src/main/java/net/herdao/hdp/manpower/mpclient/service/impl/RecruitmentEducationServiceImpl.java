@@ -16,6 +16,7 @@
  */
 package net.herdao.hdp.manpower.mpclient.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -30,6 +31,7 @@ import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentEducationMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.mpclient.utils.LocalDateTimeUtils;
 import net.herdao.hdp.manpower.sys.annotation.OperationEntity;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import org.springframework.beans.BeanUtils;
@@ -73,6 +75,13 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
             education.setCreatorName(sysUser.getAliasName());
         }
 
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            education.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            education.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
+        }
+
         BeanUtils.copyProperties(education,dto);
         super.save(education);
 
@@ -97,8 +106,14 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
             education.setModifierName(sysUser.getAliasName());
         }
 
-        BeanUtils.copyProperties(education,dto);
+        if (ObjectUtil.isNotNull(dto.getPeriod())){
+            education.setPeriod(LocalDateTimeUtils.convert2LocalDateTime(dto.getPeriod()));
+        }
+        if (ObjectUtil.isNotNull(dto.getTodate())){
+            education.setTodate(LocalDateTimeUtils.convert2LocalDateTime(dto.getTodate()));
+        }
         super.updateById(education);
+        BeanUtils.copyProperties(education,dto);
 
         return dto;
     }
@@ -106,6 +121,16 @@ public class RecruitmentEducationServiceImpl extends ServiceImpl<RecruitmentEduc
     @Override
     public List<RecruitmentEduDTO> fetchResumeEduList(Long recruitmentId) {
         List<RecruitmentEduDTO> list = this.baseMapper.fetchResumeEduList(recruitmentId);
+        if (CollectionUtil.isNotEmpty(list)){
+            for (RecruitmentEduDTO eduDTO : list) {
+                if (ObjectUtil.isNotNull(eduDTO.getPeriodLocal())){
+                    eduDTO.setPeriod(LocalDateTimeUtils.convert2Long(eduDTO.getPeriodLocal()));
+                }
+                if (ObjectUtil.isNotNull(eduDTO.getToDateLocal())){
+                    eduDTO.setTodate(LocalDateTimeUtils.convert2Long(eduDTO.getToDateLocal()));
+                }
+            }
+        }
         return list;
     }
 

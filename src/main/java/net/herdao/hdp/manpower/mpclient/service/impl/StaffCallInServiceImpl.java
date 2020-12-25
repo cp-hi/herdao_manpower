@@ -109,16 +109,16 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         jobLevelService.validityCheck(dto.getNowJobLevelId(), "原职级信息有误，请再次确认");
         jobLevelService.validityCheck(dto.getTransJobLevelId(), "调动后职级信息有误，请再次确认");
 
-        if (dto.getFundUnitId() != null) {
-            companyService.validityCheck(dto.getFundUnitId(), "公积金缴纳单位信息有误，请再次确认");
+        if (dto.getFundUnitsId() != null) {
+            companyService.validityCheck(dto.getFundUnitsId(), "公积金缴纳单位信息有误，请再次确认");
         }
 
-        if (dto.getPaidUnitId() != null) {
-            companyService.validityCheck(dto.getPaidUnitId(), "工资发放单位信息有误，请再次确认");
+        if (dto.getPaidUnitsId() != null) {
+            companyService.validityCheck(dto.getPaidUnitsId(), "工资发放单位信息有误，请再次确认");
         }
 
-        if (dto.getSecurityUnitId() != null) {
-            companyService.validityCheck(dto.getSecurityUnitId(), "社保发放单位信息有误，请再次确认");
+        if (dto.getSecurityUnitsId() != null) {
+            companyService.validityCheck(dto.getSecurityUnitsId(), "社保发放单位信息有误，请再次确认");
         }
 
     }
@@ -142,13 +142,14 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
         StaffTransferApprove entity = new StaffTransferApprove();
         BeanUtils.copyProperties(dto, entity);
 
+        // 前端传参有误，主注释掉
         // 根据 post_org_id(与页面上岗位组件传入的"岗位"对应) 获取到 post_id 保存
         // 从语义上来讲，post_org_id 才是员工就职的岗位 id，而 post_id 是标准岗位 id，需要注意
-        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
-        PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
-
-        entity.setNowPostId(nowPostOrg.getPostId());
-        entity.setTransPostId(transPostOrg.getPostId());
+//        PostOrg nowPostOrg = postOrgService.getById(dto.getNowPostOrgId());
+//        PostOrg transPostOrg = postOrgService.getById(dto.getTransPostOrgId());
+//
+//        entity.setNowPostId(nowPostOrg.getPostId());
+//        entity.setTransPostId(transPostOrg.getPostId());
         LocalDateTime transStartDate = LocalDateTimeUtils.convert2LocalDateTime(dto.getTransStartDate());
         entity.setTransStartDate(transStartDate);
         entity.setTransferType(StaffChangesApproveTypeConstants.CALL_IN);
@@ -222,17 +223,17 @@ public class StaffCallInServiceImpl extends ServiceImpl<StaffTransferApproveMapp
 
         Company paidUnit = companyService.getById(from.getPaidUnitsId());
         if (paidUnit != null) {
-            to.setPayUnitName(paidUnit.getCompanyName());
+            to.setPayUnitsName(paidUnit.getCompanyName());
         }
 
         Company fundUnit = companyService.getById(from.getFundUnitsId());
         if (fundUnit != null) {
-            to.setFundUnitName(fundUnit.getCompanyName());
+            to.setFundUnitsName(fundUnit.getCompanyName());
         }
 
         Company securityUnit = companyService.getById(from.getSecurityUnitsId());
         if (securityUnit != null) {
-            to.setSecurityUnitName(securityUnit.getCompanyName());
+            to.setSecurityUnitsName(securityUnit.getCompanyName());
         }
 
         StaffBasicVO staffBasicVO = staffService.selectBasicByUserId(from.getUserId());

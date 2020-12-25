@@ -36,9 +36,9 @@ public class Recruitment extends Model<Recruitment> {
     @ApiModelProperty(value="人才ID")
     private Long id;
     /**
-     * 人才类型
+     * 人才类别
      */
-    @ApiModelProperty(value="人才类型")
+    @ApiModelProperty(value="人才类别")
     private String talentType;
     /**
      * 来源类型
@@ -74,8 +74,7 @@ public class Recruitment extends Model<Recruitment> {
      * 出生日期
      */
     @ApiModelProperty(value="出生日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+    private LocalDateTime birthday;
     /**
      * 移动电话
      */
@@ -153,8 +152,7 @@ public class Recruitment extends Model<Recruitment> {
      * 参加工作日期
      */
     @ApiModelProperty(value="参加工作日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date workdate;
+    private LocalDateTime workdate;
 
     /**
      * 最近工作单位名称
@@ -227,12 +225,12 @@ public class Recruitment extends Model<Recruitment> {
      * 身高
      */
     @ApiModelProperty(value="身高")
-    private BigDecimal height;
+    private Integer height;
     /**
      * 体重
      */
     @ApiModelProperty(value="体重")
-    private BigDecimal weight;
+    private Integer weight;
     /**
      * 政治面貌
      */
@@ -587,7 +585,7 @@ public class Recruitment extends Model<Recruitment> {
      * 意向岗位
      */
     @ApiModelProperty(value="意向岗位")
-    private String intentionPostId;
+    private String intentionPostName;
     /**
      * 联系号码
      */
@@ -624,8 +622,7 @@ public class Recruitment extends Model<Recruitment> {
      * 简历入库时间
      */
     @ApiModelProperty(value="简历入库时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date resumeAccessTime;
+    private LocalDateTime resumeAccessTime;
 
     /**
      * 职称证号
