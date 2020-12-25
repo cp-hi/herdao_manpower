@@ -19,16 +19,11 @@ package net.herdao.hdp.manpower.mpclient.service.impl;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import cn.hutool.core.collection.CollectionUtil;
-import net.herdao.hdp.manpower.mpclient.dto.recruitment.*;
-import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
-import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
-import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
-import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -42,6 +37,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esms.MessageData;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -56,11 +52,31 @@ import net.herdao.hdp.common.message.config.SmsTemplate;
 import net.herdao.hdp.common.message.constant.SmsConstant;
 import net.herdao.hdp.common.security.service.HdpUser;
 import net.herdao.hdp.common.security.util.SecurityUtils;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentAddFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfo;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentBaseInfoMobileDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditBaseInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEditOtherInfoDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentEmployeeDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentFamilyDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentIntentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentJobIntentDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentOtherInfo;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentPersonDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentTopEduDTO;
+import net.herdao.hdp.manpower.mpclient.dto.recruitment.RecruitmentUpdateFormDTO;
+import net.herdao.hdp.manpower.mpclient.dto.workExperience.RecruitmentWorkExperienceDTO;
 import net.herdao.hdp.manpower.mpclient.entity.Recruitment;
 import net.herdao.hdp.manpower.mpclient.entity.RecruitmentEducation;
 import net.herdao.hdp.manpower.mpclient.mapper.RecruitmentMapper;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentEducationService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentFamilyStatusService;
 import net.herdao.hdp.manpower.mpclient.service.RecruitmentService;
+import net.herdao.hdp.manpower.mpclient.service.RecruitmentWorkexperienceService;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileProgressVO;
+import net.herdao.hdp.manpower.mpclient.vo.recruitment.RecruitmentMobileVO;
 import net.herdao.hdp.manpower.sys.utils.SysUserUtils;
 import net.herdao.hdp.middle.api.feign.RemoteWorkflowService;
 
@@ -442,6 +458,7 @@ public class RecruitmentServiceImpl extends ServiceImpl<RecruitmentMapper, Recru
     	}
     	String contentFK = recordId;
     	String flowContent = flowType;
+    	//contentUrl = java.net.URLEncoder.encode(contentUrl);
     	return remoteWorkflowService.generateWorkflow(parameterJson, contentUrl, contentFK, flowContent);
 
     }
