@@ -109,4 +109,14 @@ public class PostOrgServiceImpl extends ServiceImpl<PostOrgMapper, PostOrg> impl
         return String.format("%06d",Integer.parseInt(code)+1);
     }
 
+    @Override
+    public String getPostOrgName(Long id) {
+        PostOrg postOrg = getById(id);
+
+        if (postOrg != null) {
+            return postOrg.getPostName();
+        }
+        return "";
+    }
+
 }

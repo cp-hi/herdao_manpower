@@ -20,7 +20,7 @@ public class AppointmentAndRemovalPageVO {
     private Long id;
 
     @ApiModelProperty(value = "员工 id")
-    private Long staffId;
+    private Long userId;
 
     @ApiModelProperty("员工姓名")
     private String staffName;

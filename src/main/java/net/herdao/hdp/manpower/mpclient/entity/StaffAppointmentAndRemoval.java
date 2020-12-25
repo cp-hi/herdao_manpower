@@ -6,15 +6,10 @@
 
 package net.herdao.hdp.manpower.mpclient.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.herdao.hdp.manpower.mpclient.entity.base.BaseEntity;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -23,8 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("mp_staff_appointment_removal")
-@EqualsAndHashCode(callSuper = true)
-public class StaffAppointmentAndRemoval extends BaseEntity<StaffAppointmentAndRemoval> {
+public class StaffAppointmentAndRemoval {
 
     @ApiModelProperty(value = "兼职任免id")
     @TableId(value = "id", type = IdType.AUTO)
@@ -33,28 +27,34 @@ public class StaffAppointmentAndRemoval extends BaseEntity<StaffAppointmentAndRe
     @ApiModelProperty(value = "状态")
     private String status;
 
-    @ApiModelProperty(value = "任命部门id")
+    @ApiModelProperty(value = "主岗部门id")
     private Long orgId;
 
-    @ApiModelProperty(value = "任命岗位id(业务岗)")
+    @ApiModelProperty(value = "主岗位id(业务岗)")
     private Long postId;
 
     @ApiModelProperty(value = "新建人工号")
+    @TableField(value = "creator_code", fill = FieldFill.INSERT)
     private String creatorCode;
 
     @ApiModelProperty(value = "新建人")
+    @TableField(value = "creator_name", fill = FieldFill.INSERT)
     private String creatorName;
 
     @ApiModelProperty(value = "新建时间")
+    @TableField(value = "creator_time", fill = FieldFill.INSERT)
     private LocalDateTime creatorTime;
 
     @ApiModelProperty(value = "修改人工号")
+    @TableField(value = "modifier_code", fill = FieldFill.UPDATE)
     private String modifierCode;
 
     @ApiModelProperty(value = "修改人")
+    @TableField(value = "modifier_name", fill = FieldFill.UPDATE)
     private String modifierName;
 
     @ApiModelProperty(value = "修改人时间")
+    @TableField(value = "modifier_time", fill = FieldFill.UPDATE)
     private LocalDateTime modifierTime;
 
     @ApiModelProperty(value = "用户id")
@@ -65,4 +65,12 @@ public class StaffAppointmentAndRemoval extends BaseEntity<StaffAppointmentAndRe
 
     @ApiModelProperty(value = "附件列表 id", name = "appendixIds")
     private String appendixIds;
+
+    @ApiModelProperty(value = "租户 id")
+    private Long tenantId;
+
+    @TableLogic
+    private Boolean delFlag;
+
+    private Long postOrgId;
 }
