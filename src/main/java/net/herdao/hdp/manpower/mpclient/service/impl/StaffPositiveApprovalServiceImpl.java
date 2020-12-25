@@ -161,9 +161,8 @@ public class StaffPositiveApprovalServiceImpl extends ServiceImpl<StaffPositiveA
         //入职转正试用期不能超过3个月
         if (StaffPositiveApproval.POSITIVE_IN.equals(entity.getPositiveType()) &&
                 probation > 3){
-            throw  new Exception("操作失败,转正类型选择不正确！");
+            throw  new Exception("操作失败,入职转正试用期不能超过3个月！");
         }
-
 
         entity.setStatus(StaffChangesApproveStatusConstants.APPROVING);
         entity.setProbation(String.valueOf(probation));
