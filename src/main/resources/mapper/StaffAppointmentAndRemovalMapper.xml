@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ All rights Reserved, Designed By HerDao
+  ~ Copyright:    Copyright(C) 2020-2099
+  ~ Company:      HerDao Ltd.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.herdao.hdp.manpower.mpclient.mapper.StaffAppointmentAndRemovalMapper">
+
+    <select id="selectAppointmentAndRemovalPage" resultType="net.herdao.hdp.manpower.mpclient.vo.staff.appointmentAndRemoval.AppointmentAndRemovalPage">
+        SELECT
+        ar.id,
+        ar.user_id,
+        s.staff_name,
+        s.staff_code,
+        org.org_name,
+        po.post_name post_org_name,
+        jl.job_level_name,
+        ar.modifier_name,
+        ar.modifier_time
+
+        FROM mp_staff_appointment_removal ar
+        LEFT JOIN mp_staff s ON ar.user_id = s.user_id
+        LEFT JOIN mp_organization org ON ar.org_id = org.id
+        LEFT JOIN mp_post_org po ON ar.post_org_id = po.id
+        LEFT JOIN mp_job_level jl ON ar.job_level_id = jl.id
+
+        <where>
+
+            <if test="searchText != '' and searchText != null">
+                and
+                concat(
+                IFNULL(s.staff_name, ''),
+                IFNULL(s.staff_code, ''),
+                IFNULL(org.org_name, ''),
+                IFNULL(po.post_name, ''),
+                IFNULL(jl.job_level_name, ''),
+                IFNULL(ar.modifier_name, '')
+                ) LIKE concat(#{searchText},'%')
+            </if>
+            <if test="status != '' and status != null">
+                and ar.`status` = #{status}
+            </if>
+            <if test="orgId != '' and orgId != null">
+                and org.`id` = #{orgId}
+            </if>
+            and ar.`del_flag` = '0'
+        </where>
+    </select>
+</mapper>

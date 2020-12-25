@@ -16,6 +16,18 @@ import lombok.Data;
 @Data
 public class SaveAppointAndRemovalDTO {
 
+    @ApiModelProperty(value = "主岗组织 id", name = "orgId")
+    private Long orgId;
+
+    @ApiModelProperty(value = "主岗业务岗 id", name = "postOrgId")
+    private Long postOrgId;
+
+    @ApiModelProperty(value = "主岗职级 id", name = "postOrgId")
+    private Long jobLevelId;
+
+    @ApiModelProperty(value = "主岗标准岗 id", name = "postId")
+    private Long postId;
+
     @ApiModelProperty(value = "用户id", name = "userId")
     private Long userId;
 

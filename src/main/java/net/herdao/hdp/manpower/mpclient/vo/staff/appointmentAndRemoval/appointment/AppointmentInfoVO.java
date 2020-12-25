@@ -29,7 +29,7 @@ public class AppointmentInfoVO {
     private Long postOrgId;
 
     @ApiModelProperty(value = "兼职岗位名称")
-    private String potOrgName;
+    private String postOrgName;
 
     @ApiModelProperty(value = "兼职岗位开始时间")
     private Long startDate;
