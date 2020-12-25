@@ -6,3 +6,11 @@ spring:
     active: dev
   application:
     name: @artifactId@
+    
+# 短信平台配置
+sms:
+  platform:
+    account: hdwfw
+    password: x123456w
+    address: 10.1.16.80
+    port: 8090
